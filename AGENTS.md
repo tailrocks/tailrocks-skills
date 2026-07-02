@@ -9,6 +9,15 @@ One `skills/<name>/SKILL.md` source serves every agent (Claude Code, Codex, Amp,
 OpenCode, Kimi). Keep skills source-neutral — no agent-specific instructions in
 `SKILL.md` bodies.
 
+All skills are **manual-only**: every `SKILL.md` sets `disable-model-invocation:
+true`, so nothing auto-fires. Invoke each explicitly (in Claude Code,
+`/tailrocks-skills:<name>`). The trigger-rich `description` is the fallback for
+agents that lack that field.
+
+**Token usage is a design criterion.** Skills stay lean: scale effort (subagents,
+depth) to the task, prefer pointers (`file:line`/URL) over copied blocks, skip
+stages that add no value, and never produce an artifact that will not be read.
+
 ## Available Skills
 
 ### rust-best-practices
@@ -29,10 +38,34 @@ rustfmt, `rust-toolchain.toml`, mise-managed tooling, and the cargo-deny / audit
 
 Skill definition: `skills/rust-project-setup/SKILL.md`
 
+### propose
+
+Turn a rough idea into an enriched, evidence-backed proposal. Recon plus parallel
+subagents gather prior art, codebase touchpoints, constraints, risks, and
+alternative directions into a per-idea folder (`proposals/<slug>/`) of sourced
+findings, candidate directions, and open questions. Read-only advisor — never
+writes code or the final plan; hands back for the human to choose a direction.
+
+Skill definition: `skills/propose/SKILL.md`
+
+### research
+
+Take a confirmed proposal direction and produce the deliverable: deep, sourced
+research plus incredibly detailed, self-contained handoff plans a zero-context
+executor can follow. Writes `research/` evidence and `plans/NNN-*.md` (handoff
+template) into the same per-idea folder; pauses for a human confirm on the
+implementation shape before writing plans. Read-only on source.
+
+Skill definition: `skills/research/SKILL.md`
+
+The `propose → research` pair is a workflow: `propose` enriches broadly and stops;
+you clarify direction in conversation; `research` goes deep on the one direction
+and writes the plan. Both are read-only advisors and manual-only.
+
 ## Adding a Skill
 
-1. Create `skills/<name>/SKILL.md` with `name` and a trigger-rich, agent-neutral
-   `description` in the frontmatter.
+1. Create `skills/<name>/SKILL.md` with `name`, a trigger-rich, agent-neutral
+   `description`, and `disable-model-invocation: true` in the frontmatter.
 2. Put deep material under `skills/<name>/references/` and copy-ready assets under
    `skills/<name>/templates/`; keep `SKILL.md` a concise router.
 3. Both plugin manifests auto-discover the new skill from `skills/` — no manifest

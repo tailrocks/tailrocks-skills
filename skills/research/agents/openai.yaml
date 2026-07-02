@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research"
+  short_description: "Deep-research a direction into a detailed handoff plan"
+  default_prompt: "Use $research on a proposal slug to run deep sourced research on the confirmed direction and write incredibly detailed, self-contained handoff plans into the proposal folder."

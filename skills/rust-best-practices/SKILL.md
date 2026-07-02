@@ -1,6 +1,7 @@
 ---
 name: rust-best-practices
-description: Apply strict, idiomatic Rust engineering guidance when writing, reviewing, refactoring, or explaining Rust code. Use this skill for .rs files, ownership and borrowing decisions, public API design, error handling and panic policy, testing and doc tests, unsafe and thread-safety review, performance-sensitive code, and readability or architecture feedback. For project structure, workspace layout, lint/Clippy/rustfmt configuration, toolchain pinning, mise, and supply-chain gates, use the rust-project-setup skill.
+description: Strict, idiomatic Rust code guidance for writing, reviewing, and refactoring Rust — ownership, API design, errors, tests, docs, unsafe, and performance. Invoke explicitly for code-level work; for workspace, lint, toolchain, and tooling setup, use rust-project-setup.
+disable-model-invocation: true
 ---
 
 # Rust Best Practices

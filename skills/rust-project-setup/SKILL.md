@@ -1,6 +1,7 @@
 ---
 name: rust-project-setup
-description: Scaffold and enforce a strict, modern Rust project — workspace layout, crate separation, edition 2024, workspace lint and Clippy tables, rustfmt, a pinned toolchain via rust-toolchain.toml, mise-managed tooling, and supply-chain and test gates (cargo-deny, cargo-audit, cargo-shear, cargo-hack, cargo-nextest). Use when creating a new Rust project, crate, or Cargo workspace; setting up or reviewing Cargo.toml lints, clippy.toml, or rustfmt.toml; adding a toolchain or mise config; wiring CI gates; or auditing an existing project's structure and strictness.
+description: Set up or audit a strict, modern Rust project — workspace and crate layout, lint/Clippy/rustfmt config, a pinned toolchain, mise tooling, and supply-chain and test gates. Invoke explicitly to scaffold or harden project structure and tooling; for code-level guidance, use rust-best-practices.
+disable-model-invocation: true
 ---
 
 # Rust Project Setup
