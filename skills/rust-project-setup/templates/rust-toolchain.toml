@@ -1,0 +1,16 @@
+# The single source of truth for the toolchain. Read by rustup, rust-analyzer,
+# CI, and mise (via `idiomatic_version_file_enable_tools = ["rust"]`) — so the
+# Rust version is declared here and NOWHERE else. Commit this file.
+#
+# Pin an exact stable release and bump it deliberately (never track `stable`,
+# which silently moves under you). The MSRV *floor* is `rust-version` in
+# Cargo.toml and may be older than this pinned build channel; a dedicated CI job
+# verifies the floor still builds.
+
+[toolchain]
+# Replace with the current stable release (see https://releases.rs).
+channel = "1.90.0"
+components = ["clippy", "rustfmt"]
+# Pin the targets you build and cross-compile for so `mise install` / CI provision
+# them up front.
+# targets = ["x86_64-unknown-linux-gnu", "aarch64-unknown-linux-gnu"]

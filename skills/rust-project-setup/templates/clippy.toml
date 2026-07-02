@@ -1,0 +1,31 @@
+# Clippy configuration. Copy to the repository root. Pairs with the strict
+# `[workspace.lints.clippy]` table in Cargo.toml.
+
+# Test code may use the ergonomic panicking helpers that are denied elsewhere.
+allow-expect-in-tests = true
+allow-panic-in-tests = true
+allow-print-in-tests = true
+allow-unwrap-in-tests = true
+
+# Complexity ceilings. Set each just above your current maximum so the lints fire
+# nothing on day one, then ratchet the numbers down over time. Every new
+# violation is either refactored or grandfathered with a narrow
+# `#[expect(clippy::<lint>, reason = "...")]`.
+too-many-lines-threshold = 150
+cognitive-complexity-threshold = 60
+excessive-nesting-threshold = 5
+too-many-arguments-threshold = 7
+
+# Ban calls that block the thread. Essential on async runtimes and render/event
+# loops, where a blocking call stalls every task on the executor. Tune the list
+# to your project; each entry carries the reason Clippy prints at the call site.
+disallowed-methods = [
+    { path = "std::thread::sleep", reason = "blocking sleep must not run on async/runtime threads; use an async sleep or spawn_blocking" },
+    { path = "std::process::Command::output", reason = "blocking subprocess wait; use an async process API or spawn_blocking" },
+    { path = "std::fs::File::open", reason = "blocking filesystem open; use async file work or spawn_blocking" },
+]
+
+# Ban problem types outright (uncomment and tune):
+# disallowed-types = [
+#     { path = "std::collections::HashMap", reason = "use a deterministic-order or seeded-hasher map at boundaries" },
+# ]

@@ -1,0 +1,25 @@
+# rustfmt configuration. Copy to the repository root. Formatting is mechanical
+# and non-negotiable: run `cargo fmt` before every commit and gate
+# `cargo fmt --check` in CI.
+
+# Parse and format as Rust 2024. Must match Cargo.toml `edition`.
+edition = "2024"
+
+# Use the Rust 2024 style guide: trailing commas everywhere, let-else
+# indentation, updated chain and match formatting. Keep this in lockstep with
+# `edition` so formatting decisions track the latest style recommendations.
+style_edition = "2024"
+
+# ---------------------------------------------------------------------------
+# Stricter import and comment hygiene. These options are NIGHTLY-only today, so
+# they are commented out to keep `cargo fmt` working on the pinned stable
+# toolchain. Enable them only if the project standardizes on `cargo +nightly
+# fmt` (e.g. a dedicated `fmt` CI job). They collapse imports to one path per
+# crate, order groups deterministically, and reflow comments and doc-comment
+# code blocks.
+# ---------------------------------------------------------------------------
+# imports_granularity = "Crate"
+# group_imports = "StdExternalCrate"
+# wrap_comments = true
+# format_code_in_doc_comments = true
+# normalize_comments = true

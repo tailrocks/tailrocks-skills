@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rust Best Practices"
+  short_description: "Review and write idiomatic Rust code"
+  default_prompt: "Use $rust-best-practices to review this Rust module for readability, API design, errors, tests, and performance."

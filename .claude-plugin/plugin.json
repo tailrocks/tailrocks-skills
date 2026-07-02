@@ -1,0 +1,26 @@
+{
+  "name": "tailrocks-skills",
+  "description": "Tailrocks engineering skills for Claude Code and other agents: strict, modern Rust best practices and idiomatic project setup",
+  "version": "0.2.0",
+  "author": {
+    "name": "tailrocks",
+    "url": "https://github.com/tailrocks"
+  },
+  "homepage": "https://github.com/tailrocks/tailrocks-skills",
+  "repository": "https://github.com/tailrocks/tailrocks-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "tailrocks",
+    "rust",
+    "edition-2024",
+    "skills",
+    "best-practices",
+    "clippy",
+    "rustfmt",
+    "cargo-deny",
+    "nextest",
+    "mise",
+    "workspace",
+    "code-review"
+  ]
+}
