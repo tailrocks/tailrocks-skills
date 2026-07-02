@@ -13,10 +13,10 @@ default.
 
 | Skill | Description |
 |---|---|
-| `rust-best-practices` | Write, review, and refactor Rust code: ownership, API design, errors, tests, docs, and readability. |
-| `rust-project-setup` | Scaffold and enforce a strict, modern Rust project: workspace layout, `crates/` separation, workspace lint and Clippy tables, rustfmt, `rust-toolchain.toml`, mise, and cargo-deny/audit/shear/hack/nextest gates. |
-| `propose` | Turn a rough idea into an enriched, evidence-backed proposal. Parallel analysis gathers prior art, codebase touchpoints, constraints, risks, and alternatives into a per-idea folder of findings. Read-only. |
-| `research` | Take a confirmed proposal direction, run deep sourced research, and write incredibly detailed, self-contained handoff plans a zero-context executor can follow — in the same per-idea folder. |
+| `tailrocks-rust-best-practices` | Write, review, and refactor Rust code: ownership, API design, errors, tests, docs, and readability. |
+| `tailrocks-rust-project-setup` | Scaffold and enforce a strict, modern Rust project: workspace layout, `crates/` separation, workspace lint and Clippy tables, rustfmt, `rust-toolchain.toml`, mise, and cargo-deny/audit/shear/hack/nextest gates. |
+| `tailrocks-propose` | Turn a rough idea into an enriched, evidence-backed proposal. Parallel analysis gathers prior art, codebase touchpoints, constraints, risks, and alternatives into a per-idea folder of findings. Read-only. |
+| `tailrocks-research` | Take a confirmed proposal direction, run deep sourced research, and write incredibly detailed, self-contained handoff plans a zero-context executor can follow — in the same per-idea folder. |
 
 More skills land in `skills/` over time; the layout and install flow below are
 built to grow.
@@ -36,8 +36,8 @@ agent; only the install path differs.
 Then invoke a namespaced skill:
 
 ```text
-/tailrocks-skills:rust-best-practices review this crate
-/tailrocks-skills:rust-project-setup set up a strict workspace here
+/tailrocks-skills:tailrocks-rust-best-practices review this crate
+/tailrocks-skills:tailrocks-rust-project-setup set up a strict workspace here
 ```
 
 ### Codex, Amp, OpenCode, Kimi
@@ -72,20 +72,20 @@ tailrocks-skills/
 ├── .codex-plugin/
 │   └── plugin.json          # Codex plugin manifest ("skills": "./skills/")
 ├── skills/
-│   ├── rust-best-practices/
+│   ├── tailrocks-rust-best-practices/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   └── agents/
-│   ├── rust-project-setup/
+│   ├── tailrocks-rust-project-setup/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   ├── templates/       # copy-ready Cargo.toml, clippy.toml, mise.toml, …
 │   │   └── agents/
-│   ├── propose/             # idea → enriched, evidence-backed proposal
+│   ├── tailrocks-propose/   # idea → enriched, evidence-backed proposal
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   └── agents/
-│   └── research/            # confirmed direction → deep research + handoff plans
+│   └── tailrocks-research/  # confirmed direction → deep research + handoff plans
 │       ├── SKILL.md
 │       ├── references/
 │       └── agents/

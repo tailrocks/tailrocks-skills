@@ -21,7 +21,7 @@ to a release tag in production:
 npx -y skills add "tailrocks/tailrocks-skills#vX.Y.Z" -s '*' -a codex --global --yes
 ```
 
-Install a single skill instead of all with `-s rust-project-setup`.
+Install a single skill instead of all with `-s tailrocks-rust-project-setup`.
 
 ## Option 2: Reference from a Project
 
@@ -37,16 +37,16 @@ Add a note to the target project's `AGENTS.md`:
 ## Tailrocks Skills
 
 Rust guidance is available in `../tailrocks-skills/skills/`. When asked to write
-or review Rust code, follow `rust-best-practices/SKILL.md`; when scaffolding or
-auditing project structure and tooling, follow `rust-project-setup/SKILL.md`.
+or review Rust code, follow `tailrocks-rust-best-practices/SKILL.md`; when scaffolding or
+auditing project structure and tooling, follow `tailrocks-rust-project-setup/SKILL.md`.
 ```
 
 ## Option 3: Symlink into Codex Skills
 
 ```sh
 mkdir -p .codex/skills
-ln -s /path/to/tailrocks-skills/skills/rust-best-practices .codex/skills/rust-best-practices
-ln -s /path/to/tailrocks-skills/skills/rust-project-setup  .codex/skills/rust-project-setup
+ln -s /path/to/tailrocks-skills/skills/tailrocks-rust-best-practices .codex/skills/tailrocks-rust-best-practices
+ln -s /path/to/tailrocks-skills/skills/tailrocks-rust-project-setup  .codex/skills/tailrocks-rust-project-setup
 ```
 
 ## Option 4: Copy into Codex Home

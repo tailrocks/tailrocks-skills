@@ -1,4 +1,0 @@
-interface:
-  display_name: "Rust Project Setup"
-  short_description: "Scaffold a strict, modern Rust workspace and tooling"
-  default_prompt: "Use $rust-project-setup to set up (or audit) this Rust project's workspace layout, strict lints, rustfmt, toolchain, mise, and supply-chain and test gates."

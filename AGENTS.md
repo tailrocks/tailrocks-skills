@@ -20,25 +20,25 @@ stages that add no value, and never produce an artifact that will not be read.
 
 ## Available Skills
 
-### rust-best-practices
+### tailrocks-rust-best-practices
 
 Write, review, or refactor Rust code. Covers ownership and borrowing, public API
 design, error and panic policy, tests and doc tests, unsafe and thread-safety
 review, performance discipline, and readability.
 
-Skill definition: `skills/rust-best-practices/SKILL.md`
+Skill definition: `skills/tailrocks-rust-best-practices/SKILL.md`
 
-### rust-project-setup
+### tailrocks-rust-project-setup
 
 Scaffold and enforce a strict, modern Rust project: edition 2024, `resolver = 3`,
 `crates/` workspace layout, the strict `[workspace.lints]` tables, `clippy.toml`,
 rustfmt, `rust-toolchain.toml`, mise-managed tooling, and the cargo-deny / audit
 / shear / hack / nextest gates. Ships copy-ready config under
-`skills/rust-project-setup/templates/`.
+`skills/tailrocks-rust-project-setup/templates/`.
 
-Skill definition: `skills/rust-project-setup/SKILL.md`
+Skill definition: `skills/tailrocks-rust-project-setup/SKILL.md`
 
-### propose
+### tailrocks-propose
 
 Turn a rough idea into an enriched, evidence-backed proposal. Recon plus parallel
 subagents gather prior art, codebase touchpoints, constraints, risks, and
@@ -46,9 +46,9 @@ alternative directions into a per-idea folder (`proposals/<slug>/`) of sourced
 findings, candidate directions, and open questions. Read-only advisor — never
 writes code or the final plan; hands back for the human to choose a direction.
 
-Skill definition: `skills/propose/SKILL.md`
+Skill definition: `skills/tailrocks-propose/SKILL.md`
 
-### research
+### tailrocks-research
 
 Take a confirmed proposal direction and produce the deliverable: deep, sourced
 research plus incredibly detailed, self-contained handoff plans a zero-context
@@ -56,11 +56,12 @@ executor can follow. Writes `research/` evidence and `plans/NNN-*.md` (handoff
 template) into the same per-idea folder; pauses for a human confirm on the
 implementation shape before writing plans. Read-only on source.
 
-Skill definition: `skills/research/SKILL.md`
+Skill definition: `skills/tailrocks-research/SKILL.md`
 
-The `propose → research` pair is a workflow: `propose` enriches broadly and stops;
-you clarify direction in conversation; `research` goes deep on the one direction
-and writes the plan. Both are read-only advisors and manual-only.
+The `tailrocks-propose → tailrocks-research` pair is a workflow: `tailrocks-propose`
+enriches broadly and stops; you clarify direction in conversation;
+`tailrocks-research` goes deep on the one direction and writes the plan. Both are
+read-only advisors and manual-only.
 
 ## Adding a Skill
 

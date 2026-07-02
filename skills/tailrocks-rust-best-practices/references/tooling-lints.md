@@ -6,7 +6,7 @@ and suppressing lints correctly.
 
 **Configuration and CI setup live elsewhere.** The strict `[workspace.lints]`
 tables, `clippy.toml`, `rustfmt.toml`, the toolchain, and the cargo-deny / audit
-/ shear / hack / nextest gates are owned by the `rust-project-setup` skill. This
+/ shear / hack / nextest gates are owned by the `tailrocks-rust-project-setup` skill. This
 file assumes that strict baseline is already in place and focuses on working
 within it.
 
@@ -109,4 +109,4 @@ cargo test --workspace --doc --locked
   design, and say why.
 - Never add a broad crate-level allow to make a check pass. If many warnings are
   genuinely acceptable, that policy belongs in the central lint table (owned by
-  `rust-project-setup`), with a comment — not scattered attributes.
+  `tailrocks-rust-project-setup`), with a comment — not scattered attributes.

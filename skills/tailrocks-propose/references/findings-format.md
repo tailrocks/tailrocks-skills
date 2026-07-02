@@ -43,13 +43,13 @@ human's decision and for the later research pass.
   "Auth considerations".
 - **No recommendation, no plan.** Findings inform the decision; they do not make
   it. The candidate directions live in the item `README.md`; the plan is the
-  `research` skill's output.
+  `tailrocks-research` skill's output.
 - **No secrets.** Credential locations and types only, never values.
 
 ## How findings feed forward
 
 - The item `README.md` links each finding in one line and clusters them into
   candidate directions.
-- The `research` skill reads the findings as its starting evidence, then goes
+- The `tailrocks-research` skill reads the findings as its starting evidence, then goes
   deeper on the confirmed direction and turns the whole thing into the detailed
   plan.

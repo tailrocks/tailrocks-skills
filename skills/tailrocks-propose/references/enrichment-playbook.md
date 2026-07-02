@@ -1,6 +1,6 @@
 # Enrichment Playbook
 
-How the `propose` skill widens a rough idea into an evidence-backed proposal:
+How the `tailrocks-propose` skill widens a rough idea into an evidence-backed proposal:
 which facets to explore, how to brief parallel subagents, and how to vet what
 comes back. The goal is breadth with evidence — surface the directions, risks,
 and questions a single pass would miss, without deciding or planning.
@@ -71,4 +71,4 @@ constraints.
 
 `propose` does not choose a direction, write steps, or touch source. It hands back
 the enriched item — candidate directions + open questions + evidence — for the
-human to react to. Planning is the `research` skill's job.
+human to react to. Planning is the `tailrocks-research` skill's job.

@@ -1,6 +1,6 @@
 ---
-name: rust-best-practices
-description: Strict, idiomatic Rust code guidance for writing, reviewing, and refactoring Rust — ownership, API design, errors, tests, docs, unsafe, and performance. Invoke explicitly for code-level work; for workspace, lint, toolchain, and tooling setup, use rust-project-setup.
+name: tailrocks-rust-best-practices
+description: Strict, idiomatic Rust code guidance for writing, reviewing, and refactoring Rust — ownership, API design, errors, tests, docs, unsafe, and performance. Invoke explicitly for code-level work; for workspace, lint, toolchain, and tooling setup, use tailrocks-rust-project-setup.
 disable-model-invocation: true
 ---
 
@@ -13,7 +13,7 @@ every cost visible at the call site. Follow the project's existing conventions
 first; when the project is new or silent, apply the guidance here rather than a
 softer default.
 
-This skill covers the **code you write**. Its sibling, `rust-project-setup`, owns
+This skill covers the **code you write**. Its sibling, `tailrocks-rust-project-setup`, owns
 the **project around it** — workspace layout, `crates/` separation, the strict
 `[workspace.lints]` tables, `clippy.toml`, rustfmt, `rust-toolchain.toml`, mise,
 and the cargo-deny / audit / shear / hack / nextest gates. Reach for that skill
@@ -36,7 +36,7 @@ whenever the task touches structure or tooling.
      naming, control flow, helper functions, and dependency boundaries.
    - `references/tooling-lints.md` for reading Clippy as a design-review signal,
      acting on high-value lints, suppression discipline, and profiling. Config
-     and CI setup live in the `rust-project-setup` skill.
+     and CI setup live in the `tailrocks-rust-project-setup` skill.
 3. Make the smallest coherent change. Separate API boundary changes, dependency
    additions, and broad refactors from local implementation edits when practical.
 4. Validate with the workspace's commands. Prefer the `mise run` task wrappers;
@@ -103,7 +103,7 @@ whenever the task touches structure or tooling.
 
 - Tests are readable examples of behavior: precise names, minimal fixtures, and
   success plus failure-path coverage. Live in their own file per the layout rule
-  (see `rust-project-setup`), not inline `#[cfg(test)] mod tests { ... }`.
+  (see `tailrocks-rust-project-setup`), not inline `#[cfg(test)] mod tests { ... }`.
 - Prefer behavior tests at stable boundaries over tests that freeze incidental
   helper APIs.
 - Use doc tests for public API examples; propagate errors with `?` rather than

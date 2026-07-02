@@ -1,6 +1,6 @@
 ---
-name: rust-project-setup
-description: Set up or audit a strict, modern Rust project — workspace and crate layout, lint/Clippy/rustfmt config, a pinned toolchain, mise tooling, and supply-chain and test gates. Invoke explicitly to scaffold or harden project structure and tooling; for code-level guidance, use rust-best-practices.
+name: tailrocks-rust-project-setup
+description: Set up or audit a strict, modern Rust project — workspace and crate layout, lint/Clippy/rustfmt config, a pinned toolchain, mise tooling, and supply-chain and test gates. Invoke explicitly to scaffold or harden project structure and tooling; for code-level guidance, use tailrocks-rust-best-practices.
 disable-model-invocation: true
 ---
 
@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Set up Rust projects that are strict by default, modern by default, and
 reproducible by default. This skill owns **project structure and tooling**; the
-`rust-best-practices` skill owns the code you write inside that structure.
+`tailrocks-rust-best-practices` skill owns the code you write inside that structure.
 
 The stance: adopt the latest stable edition, the strictest lint posture that
 still ships, and pinned, single-source toolchains. Opt *out* of a rule

@@ -156,7 +156,7 @@ crates/your-core/src/parser/tests.rs   # ALL tests for parser, inline, nothing e
 ## Item Order and Naming
 
 Optimize each file for a first-time reader; the deeper rules live in the
-`rust-best-practices` skill (`references/readability-style-architecture.md`).
+`tailrocks-rust-best-practices` skill (`references/readability-style-architecture.md`).
 
 - Public or entry-point items first, then supporting private helpers.
 - The module's main type or function before its details.

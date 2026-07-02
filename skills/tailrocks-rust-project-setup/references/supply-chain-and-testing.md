@@ -3,7 +3,7 @@
 Use this reference to wire the supply-chain and test gates: cargo-deny,
 cargo-audit, cargo-shear, cargo-hack, and cargo-nextest. All are installed
 through mise (see `toolchain-and-mise.md`). Test *authoring* — what to assert,
-error-path coverage, doc tests, snapshots — lives in the `rust-best-practices`
+error-path coverage, doc tests, snapshots — lives in the `tailrocks-rust-best-practices`
 skill (`references/errors-testing-docs.md`); this file is about the runners and
 policy gates.
 

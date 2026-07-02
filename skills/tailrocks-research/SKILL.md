@@ -1,6 +1,6 @@
 ---
-name: research
-description: Take a confirmed proposal direction and produce an incredibly detailed, self-contained implementation plan. Runs deep parallel research (web + codebase), records sourced evidence, then writes handoff plans a zero-context executor can follow — inside the same per-idea folder the propose skill created. Read-only on source; writes only plan and research files. Invoke explicitly with a proposal slug.
+name: tailrocks-research
+description: Take a confirmed proposal direction and produce an incredibly detailed, self-contained implementation plan. Runs deep parallel research (web + codebase), records sourced evidence, then writes handoff plans a zero-context executor can follow — inside the same per-idea folder the tailrocks-propose skill created. Read-only on source; writes only plan and research files. Invoke explicitly with a proposal slug.
 argument-hint: "<slug> [direction] [--deep]"
 disable-model-invocation: true
 ---
@@ -52,7 +52,7 @@ Deep research is the most expensive stage — spend only where it pays off.
 
 ## Inputs and folder
 
-Operates on the folder the `propose` skill created (or scaffolds one if research
+Operates on the folder the `tailrocks-propose` skill created (or scaffolds one if research
 is run directly):
 
 ```text

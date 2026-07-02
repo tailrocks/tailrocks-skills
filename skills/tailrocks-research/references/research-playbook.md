@@ -2,7 +2,7 @@
 
 How to run the deep research pass: fan out across modalities, hold a strict
 evidence standard, and converge until every load-bearing unknown is small. Used
-by the `research` skill after a direction is confirmed.
+by the `tailrocks-research` skill after a direction is confirmed.
 
 ## Evidence standard
 
