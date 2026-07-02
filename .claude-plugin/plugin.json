@@ -1,7 +1,7 @@
 {
   "name": "tailrocks-skills",
-  "description": "Tailrocks engineering skills for Claude Code and other agents: strict, modern Rust best practices and idiomatic project setup",
-  "version": "0.2.0",
+  "description": "Tailrocks engineering skills for Claude Code and other agents: strict Rust engineering, project setup, proposal discovery, and research planning",
+  "version": "0.3.0",
   "author": {
     "name": "tailrocks",
     "url": "https://github.com/tailrocks"
@@ -21,6 +21,8 @@
     "nextest",
     "mise",
     "workspace",
-    "code-review"
+    "code-review",
+    "proposal",
+    "research"
   ]
 }
