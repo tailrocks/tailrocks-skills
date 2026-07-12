@@ -1,7 +1,9 @@
 ---
 name: tailrocks-rust-best-practices
-description: Apply strict idiomatic Rust contracts when writing, reviewing, or refactoring Rust code. Use for ownership, API, failure, unsafe, test, readability, and measured-performance decisions; not for workspace scaffolding or HTTP-specific policy.
+description: >-
+  Use only when the user explicitly requests this skill. Apply strict idiomatic Rust contracts when writing, reviewing, or refactoring Rust code. Use for ownership, API, failure, unsafe, test, readability, and measured-performance decisions; not for workspace scaffolding or HTTP-specific policy.
 disable-model-invocation: true
+license: Apache-2.0
 user-invocable: true
 ---
 

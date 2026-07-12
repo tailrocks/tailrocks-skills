@@ -1,7 +1,9 @@
 ---
 name: tailrocks-rust-project-setup
-description: Scaffold, audit, or remediate a latest-compatible strict Rust workspace baseline. Use for workspace layout, toolchains, lints, formatting, mise, dependency policy, and test gates; audits are read-only unless remediation is explicitly requested.
+description: >-
+  Use only when the user explicitly requests this skill. Scaffold, audit, or remediate a latest-compatible strict Rust workspace baseline. Use for workspace layout, toolchains, lints, formatting, mise, dependency policy, and test gates; audits are read-only unless remediation is explicitly requested.
 disable-model-invocation: true
+license: Apache-2.0
 user-invocable: true
 ---
 

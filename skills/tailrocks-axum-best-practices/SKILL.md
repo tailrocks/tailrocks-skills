@@ -1,7 +1,9 @@
 ---
 name: tailrocks-axum-best-practices
-description: Apply production Axum HTTP-adapter practices when building, reviewing, or refactoring routers, handlers, extractors, Tower middleware, lifecycle, and transport tests. Do not use for Rust code without an HTTP boundary.
+description: >-
+  Use only when the user explicitly requests this skill. Apply production Axum HTTP-adapter practices when building, reviewing, or refactoring routers, handlers, extractors, Tower middleware, lifecycle, and transport tests. Do not use for Rust code without an HTTP boundary.
 disable-model-invocation: true
+license: Apache-2.0
 user-invocable: true
 ---
 

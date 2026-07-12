@@ -1,7 +1,9 @@
 ---
 name: tailrocks-code-health
-description: Establish, audit, or tighten measurable shrink-only code-health ratchets. Use when existing architecture, lint, dependency, flake, defect, documentation, or verification debt must stop growing; do not use as a generic request to add every quality tool.
+description: >-
+  Use only when the user explicitly requests this skill. Establish, audit, or tighten measurable shrink-only code-health ratchets. Use when existing architecture, lint, dependency, flake, defect, documentation, or verification debt must stop growing; do not use as a generic request to add every quality tool.
 disable-model-invocation: true
+license: Apache-2.0
 user-invocable: true
 ---
 

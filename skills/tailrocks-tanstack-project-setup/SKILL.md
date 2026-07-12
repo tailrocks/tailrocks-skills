@@ -1,7 +1,9 @@
 ---
 name: tailrocks-tanstack-project-setup
-description: Scaffold, migrate, audit, or remediate the Tailrocks Bun/TanStack Start application baseline. Use for project layout, exact versions, Router and Query ownership, server boundaries, shadcn, Tailwind, Oxc, tests, and CI; audit mode is read-only.
+description: >-
+  Use only when the user explicitly requests this skill. Scaffold, migrate, audit, or remediate the Tailrocks Bun/TanStack Start application baseline. Use for project layout, exact versions, Router and Query ownership, server boundaries, shadcn, Tailwind, Oxc, tests, and CI; audit mode is read-only.
 disable-model-invocation: true
+license: Apache-2.0
 user-invocable: true
 ---
 

@@ -1,8 +1,10 @@
 ---
 name: tailrocks-research
-description: Research a confirmed, substantial proposal direction into evidence-backed, zero-context handoff plans. Use when implementation still has material API, integration, migration, or sequencing uncertainty; do not use for routine changes that fit one execution session.
+description: >-
+  Use only when the user explicitly requests this skill. Research a confirmed, substantial proposal direction into evidence-backed, zero-context handoff plans. Use when implementation still has material API, integration, migration, or sequencing uncertainty; do not use for routine changes that fit one execution session.
 argument-hint: "<slug> [direction] [--deep]"
 disable-model-invocation: true
+license: Apache-2.0
 user-invocable: true
 ---
 

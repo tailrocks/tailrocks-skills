@@ -1,8 +1,10 @@
 ---
 name: tailrocks-propose
-description: Enrich a substantial, ambiguous idea into a sourced proposal before implementation planning. Use when repository evidence and genuine design choices could change direction; do not use for small, already-specified tasks.
+description: >-
+  Use only when the user explicitly requests this skill. Enrich a substantial, ambiguous idea into a sourced proposal before implementation planning. Use when repository evidence and genuine design choices could change direction; do not use for small, already-specified tasks.
 argument-hint: "<short idea description> [--slug <name>]"
 disable-model-invocation: true
+license: Apache-2.0
 user-invocable: true
 ---
 

@@ -1,8 +1,10 @@
 ---
 name: tailrocks-correctness-first
-description: Analyze or remediate a proven defect, inconsistency, violated invariant, or known-wrong state through correctness-first architectural redesign. Use for substantial structural refactoring when price, duration, effort, implementation size, or sunk cost are being used to defend a symptom patch; derive the greenfield design that prevents the entire defect class and pursue that result regardless of investment. Do not use for speculative cleanup or unproven product preferences.
+description: >-
+  Use only when the user explicitly requests this skill. Analyze or remediate a proven defect, inconsistency, violated invariant, or known-wrong state through correctness-first architectural redesign. Use for substantial structural refactoring when price, duration, effort, implementation size, or sunk cost are being used to defend a symptom patch; derive the greenfield design that prevents the entire defect class and pursue that result regardless of investment. Do not use for speculative cleanup or unproven product preferences.
 argument-hint: "[analyze|fix] <known defect or inconsistency>"
 disable-model-invocation: true
+license: Apache-2.0
 user-invocable: true
 ---
 

@@ -91,8 +91,12 @@ invocation-policy matrix.
 | GitHub Copilot and VS Code | `.github/skills`, `.agents/skills`, or personal skills | `/<name>` | Yes, `disable-model-invocation` |
 | Gemini CLI | `.gemini/skills` or `.agents/skills` | Skill activation with consent | No documented portable per-skill control |
 | OpenCode | `.opencode/skills` or `.agents/skills` | Request the named skill | No documented per-skill control |
-| Amp | `.agents/skills` | `skill: invoke` | No documented per-skill control |
+| Amp | `.agents/skills/` | Prompt Amp to use the named skill | Semantic explicit-intent guard only; current Amp has no manual skill command |
 
+
+### Manual-only portability limit
+
+Claude Code, Codex, Kimi Code, GitHub Copilot, and compatible Grok paths can honor client controls. Amp, OpenCode, Gemini CLI, and any client that ignores `disable-model-invocation` cannot provide identical hard enforcement. For those clients, explicitly request the skill by its frontmatter `name`; the description guard tells the model not to select it otherwise. Do not put `$name`, `/name`, or plugin namespaces in shared `SKILL.md` bodies.
 Unknown extension fields are ignored by standards-based clients. The portable
 contract remains `name`, `description`, relative bundled resources, and the
 agent-neutral Markdown body.

@@ -35,8 +35,12 @@ client after installation when its documentation requires it.
 | OpenCode | `.opencode/skills/` or `.agents/skills/` | `~/.config/opencode/skills/` or `~/.agents/skills/` | Ask it to use the named skill |
 | Gemini CLI | `.gemini/skills/` or `.agents/skills/` | `~/.gemini/skills/` | `/skills`, then activate |
 | GitHub Copilot | `.github/skills/` or `.agents/skills/` | `~/.copilot/skills/` or `~/.agents/skills/` | `/<name>` |
-| Amp | `.agents/skills/` | `~/.config/agents/skills/` or `~/.agents/skills/` | `skill: invoke` |
+| Amp | `.agents/skills/` | Prompt Amp to use the named skill |
 
+
+### Manual-only portability limit
+
+Claude Code, Codex, Kimi Code, GitHub Copilot, and compatible Grok paths can honor client controls. Amp, OpenCode, Gemini CLI, and any client that ignores `disable-model-invocation` cannot provide identical hard enforcement. For those clients, explicitly request the skill by its frontmatter `name`; the description guard tells the model not to select it otherwise. Do not put `$name`, `/name`, or plugin namespaces in shared `SKILL.md` bodies.
 ## Invocation guarantees
 
 - Claude Code, Kimi Code, and GitHub Copilot honor

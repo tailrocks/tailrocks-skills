@@ -45,6 +45,7 @@ for (const directory of entries) {
   if (name !== directory) errors.push(`${directory}: name must match directory`);
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(name ?? "")) errors.push(`${directory}: invalid skill name`);
   if (!description || description.length > 1024) errors.push(`${directory}: description must contain 1-1024 characters`);
+  if (field(block[1], "license") !== "Apache-2.0") errors.push(`${directory}: Apache-2.0 license metadata missing`);
   if (field(block[1], "disable-model-invocation") !== "true") errors.push(`${directory}: Claude manual-only policy missing`);
   if (field(block[1], "user-invocable") !== "true") errors.push(`${directory}: explicit user invocation policy missing`);
 
