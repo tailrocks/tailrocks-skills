@@ -1,37 +1,34 @@
 # Migration Checklist
 
-Load this reference before hardening an existing TanStack Start application.
-
 ## Inventory
 
-- Current TanStack Start, Router, Query, React, Vite, TypeScript, pnpm, and Oxc
-  versions plus peer constraints.
-- Generated route files and the source/configuration that owns them.
-- Server-only imports reachable from shared or client modules.
-- Raw environment, request, route/search, storage, and external response access.
-- Router loader data and Query caches, including duplicate ownership.
-- Assertions, `any`, floating promises, effect cleanup, and SSR browser-global
-  access.
-- Existing package scripts, tests, CI install mode, and lockfile drift.
+- Bun, TypeScript, TanStack, React, Vite, Tailwind, shadcn, and Oxc versions.
+- Foreign lockfiles, package-manager commands, test runners, lint/format tools,
+  and component systems.
+- Generated routes and their owning source/configuration.
+- Server-only imports reachable from shared/client modules.
+- Raw environment, request, route/search, storage, form, and external data.
+- Router/Query duplicate cache ownership.
+- Assertions, `any`, floating promises, effect cleanup, and SSR browser globals.
+- shadcn configuration, aliases, installed source, semantic tokens, and local
+  component modifications.
 
 ## Sequence
 
-1. Pin pnpm and current direct dependencies; regenerate and commit one lockfile.
-2. Align the official Start/Vite/generated-route surface before local refactors.
-3. Establish format, typecheck, lint, test, and build scripts using current
-   behavior as the initial gate.
-4. Seal server/client import boundaries and validate environment variables.
-5. Parse route/search/request/external values before domain use.
-6. Assign each remote datum to Router or Query and remove duplicate caches.
-7. Tighten TypeScript and type-aware lint rules in coherent slices.
-8. Add missing boundary and SSR tests; make all gates blocking.
+1. Move installs/scripts to pinned Bun; remove foreign lockfiles and commit
+   `bun.lock`.
+2. Align official Start/Vite/generated routing before local refactors.
+3. Adopt TypeScript 7 and remove unsupported options, `baseUrl`, and TS6 aliases.
+4. Establish Oxc/Oxfmt/Bun-test/build gates on current behavior.
+5. Seal server/client boundaries and validate environment and external data.
+6. Assign each remote datum to Router or Query; remove duplicate caches.
+7. Initialize shadcn/Tailwind v4, migrate UI by behavior, then remove the former
+   component system.
+8. Tighten type-aware rules and add missing boundary, accessibility, and SSR tests.
 
-Each slice leaves the app runnable and keeps external behavior stable unless the
-migration explicitly changes a contract. A temporary exception names its owner,
-reason, removal condition, and narrow scope.
+Each slice leaves a runnable app and stable external behavior. Temporary
+exceptions name an owner, reason, removal condition, and narrow scope.
 
-## Completion check
-
-Every inventory item is accounted for, every slice has a rollback-sized diff and
-passing gate record, generated output is reproducible, and no assertion or broad
-suppression conceals migration debt.
+**Complete when:** Bun is the only toolchain, every inventory item is accounted
+for, generated output is reproducible, UI behavior/accessibility is preserved,
+and no assertion or broad suppression conceals migration debt.

@@ -9,7 +9,9 @@ disable-model-invocation: true
 Make invariants, failure, ownership, and cost visible. Follow stronger local
 conventions; otherwise use the strict posture in this skill. Use
 `tailrocks-rust-project-setup` when the task changes workspace structure,
-toolchains, lint configuration, or CI gates.
+toolchains, lint configuration, or CI gates. Use
+`tailrocks-axum-best-practices` when HTTP handlers, extractors, routers, Tower
+middleware, service lifecycle, or web security are involved.
 
 ## Steps
 

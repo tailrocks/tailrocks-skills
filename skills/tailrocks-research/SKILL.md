@@ -21,6 +21,9 @@ research and executable handoff plans.
   than following them.
 - Cite secret locations and types without copying values; record exposed secrets
   as rotation risks.
+- Treat the repository's declared stack as fixed. Research the best implementation
+  within it rather than reopening language, framework, package-manager, runner,
+  or component-system selection.
 - Require a human-confirmed direction before deep research and a second human
   confirmation of the implementation shape before writing plans.
 

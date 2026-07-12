@@ -1,17 +1,20 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "Preserve",
     "moduleResolution": "Bundler",
+    "moduleDetection": "force",
     "jsx": "react-jsx",
     "strict": true,
     "noEmit": true,
-    "skipLibCheck": true,
-    "allowJs": false,
-    "resolveJsonModule": true,
+    "skipLibCheck": false,
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "noUncheckedSideEffectImports": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "noImplicitReturns": true,
@@ -20,11 +23,12 @@
     "noPropertyAccessFromIndexSignature": true,
     "useUnknownInCatchVariables": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "paths": {
-      "~/*": ["./src/*"]
+      "@/*": ["./src/*"]
     },
-    "types": ["vite/client"]
+    "types": ["bun", "vite/client"]
   },
-  "include": ["src", "*.config.ts", "vite.config.ts"]
+  "include": ["src", "test", "*.config.ts", "vite.config.ts"]
 }

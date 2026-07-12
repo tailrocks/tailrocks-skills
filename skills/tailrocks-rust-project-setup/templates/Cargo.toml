@@ -1,153 +1,151 @@
-# Workspace root manifest — the single source of truth for members, shared
-# package metadata, dependency versions, lints, and build profiles. Every member
-# crate opts into the shared metadata and lints so policy lives in exactly one
-# place. Copy this file to the repository root and tune the marked fields.
+# Tailrocks Rust 2024 workspace baseline. Every member inherits package policy,
+# dependencies, and lints from this virtual root.
 
 [workspace]
-# Edition 2024 resolver. Required for `edition = "2024"`; do not use resolver 1/2.
 resolver = "3"
-# Glob keeps the member list maintenance-free. Prefer one crate per bounded
-# concern under `crates/`. List members explicitly only if you need to exclude a
-# sibling directory.
 members = ["crates/*"]
 
-# Shared package metadata. Members inherit each field with `edition.workspace =
-# true`, `license.workspace = true`, etc. Never copy these into member crates.
 [workspace.package]
 edition = "2024"
-# MSRV floor. Verify it in CI (`cargo +<rust-version> check`); bump deliberately.
-# The *pinned build toolchain* lives in rust-toolchain.toml and may be newer.
-rust-version = "1.90"
+rust-version = "1.97.0"
 license = "Apache-2.0"
 repository = "https://github.com/your-org/your-repo"
 
-# Declare every third-party version once here; members write `serde.workspace =
-# true`. One version per crate across the workspace — no drift, no duplicate
-# builds.
 [workspace.dependencies]
-# serde = { version = "1", features = ["derive"] }
-# thiserror = "2"
-# tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+# House HTTP stack. Keep compatible upgrades in one lockfile change.
+axum = "0.8.9"
+http-body-util = "0.1.3"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.150"
+thiserror = "2.0.18"
+tokio = { version = "1.52.3", features = ["macros", "rt-multi-thread", "signal"] }
+tower = { version = "0.5.3", features = ["limit", "load-shed", "timeout", "util"] }
+tower-http = { version = "0.7.0", features = ["catch-panic", "compression-gzip", "cors", "limit", "request-id", "sensitive-headers", "timeout", "trace"] }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter", "json"] }
+uuid = { version = "1.23.4", features = ["serde", "v7"] }
 
-# ---------------------------------------------------------------------------
-# Strict lint policy. Members activate it with:
-#
-#   [lints]
-#   workspace = true
-#
-# `priority = -1` lets a broad group set a baseline that specific lints below
-# override. Levels: forbid > deny > warn > allow. CI promotes warnings to errors
-# with `-D warnings` rather than baking `deny(warnings)` into the manifest, so a
-# new compiler warning never bricks local builds on a toolchain bump.
-# ---------------------------------------------------------------------------
 [workspace.lints.rust]
 rust_2024_compatibility = { level = "deny", priority = -1 }
 future_incompatible = { level = "deny", priority = -1 }
 rust_2018_idioms = { level = "deny", priority = -1 }
 nonstandard_style = { level = "deny", priority = -1 }
 unused = { level = "deny", priority = -1 }
-unused_imports = "deny"
-unused_variables = "deny"
-unused_must_use = "deny"
-dead_code = "deny"
-unreachable_pub = "deny"
-# Rust 2024 unsafe-hygiene lints.
+unsafe_code = "forbid"
 unsafe_op_in_unsafe_fn = "deny"
 unsafe_attr_outside_unsafe = "deny"
 missing_unsafe_on_extern = "deny"
 never_type_fallback_flowing_into_unsafe = "deny"
-# No unsafe anywhere. Relax to `deny` on the specific crate that genuinely needs
-# FFI or low-level memory work, and document every block with `// SAFETY:`.
-unsafe_code = "forbid"
-unused_qualifications = "deny"
-unused_lifetimes = "deny"
-redundant_lifetimes = "deny"
-trivial_casts = "deny"
-trivial_numeric_casts = "deny"
-unnameable_types = "deny"
-unit_bindings = "deny"
+dead_code = "deny"
+elided_lifetimes_in_paths = "deny"
+explicit_outlives_requirements = "deny"
+let_underscore_drop = "deny"
 macro_use_extern_crate = "deny"
 meta_variable_misuse = "deny"
+non_ascii_idents = "deny"
+redundant_lifetimes = "deny"
 single_use_lifetimes = "deny"
-let_underscore_drop = "deny"
-missing_debug_implementations = "warn"
-# `async fn` in traits is stable and idiomatic in edition 2024; the lint only
-# warns about auto-trait leakage, which callers control via bounds.
-async_fn_in_trait = "allow"
+trivial_casts = "deny"
+trivial_numeric_casts = "deny"
+unit_bindings = "deny"
+unnameable_types = "deny"
+unreachable_pub = "deny"
+unused_crate_dependencies = "allow" # cargo-shear owns this class across targets.
+unused_imports = "deny"
+unused_lifetimes = "deny"
+unused_must_use = "deny"
+unused_qualifications = "deny"
+unused_variables = "deny"
+unexpected_cfgs = { level = "warn", check-cfg = ["cfg(coverage,coverage_nightly)"] }
+missing_debug_implementations = "deny"
+missing_docs = "warn"
+unfulfilled_lint_expectations = "deny"
+
+[workspace.lints.rustdoc]
+broken_intra_doc_links = "deny"
+private_intra_doc_links = "warn"
+redundant_explicit_links = "warn"
+unescaped_backticks = "warn"
 
 [workspace.lints.clippy]
-# `all` = correctness + suspicious + style + complexity + perf. Deny it.
 all = { level = "deny", priority = -1 }
-# `pedantic` is opinionated and has false positives — warn, don't deny. Silence
-# individual pedantic lints below rather than dropping the whole group.
 pedantic = { level = "warn", priority = -1 }
-# `cargo` group: manifest hygiene (metadata, feature names, duplicate deps).
 cargo = { level = "warn", priority = -1 }
-# Never-ship markers.
+
+# Correctness, async, and panic policy.
+await_holding_lock = "deny"
+await_holding_refcell_ref = "deny"
+assertions_on_result_states = "deny"
 dbg_macro = "deny"
+expect_used = "deny"
+get_unwrap = "deny"
+indexing_slicing = "deny"
+let_underscore_future = "deny"
+let_underscore_must_use = "deny"
+map_err_ignore = "deny"
+mem_forget = "deny"
+panic = "deny"
+panic_in_result_fn = "deny"
+string_slice = "deny"
 todo = "deny"
 unimplemented = "deny"
-# Enforce Rust 2024 self-named module files — no `foo/mod.rs`.
-mod_module_files = "deny"
-# Unsafe discipline (relevant only where `unsafe_code` is relaxed to `deny`).
-undocumented_unsafe_blocks = "deny"
-multiple_unsafe_ops_per_block = "deny"
-mem_forget = "deny"
-# Blocking-call ban is configured in clippy.toml (`disallowed-methods`).
-disallowed_methods = "deny"
-# Route output through a writer/logger, not ad-hoc printing.
-print_stdout = "deny"
-print_stderr = "deny"
-exit = "warn"
-# No unwrap/expect/panic as validation on runtime inputs. Tests are exempted in
-# clippy.toml.
+unwrap_in_result = "deny"
 unwrap_used = "deny"
-expect_used = "deny"
-panic = "deny"
-manual_assert = "deny"
-# Maintainability lints kept at warn; CI's `-D warnings` still fails on them.
-manual_let_else = "warn"
-match_bool = "warn"
-trivially_copy_pass_by_ref = "warn"
-large_enum_variant = "warn"
-result_large_err = "warn"
-clone_on_ref_ptr = "warn"
-rc_buffer = "warn"
-str_to_string = "warn"
-return_self_not_must_use = "warn"
-struct_excessive_bools = "warn"
-fn_params_excessive_bools = "warn"
-too_many_lines = "warn"
+unused_result_ok = "deny"
+
+# API, architecture, and maintainability policy.
+allow_attributes_without_reason = "deny"
+clone_on_ref_ptr = "deny"
+debug_assert_with_mut_call = "deny"
+disallowed_methods = "deny"
+error_impl_error = "deny"
+expl_impl_clone_on_copy = "deny"
+future_not_send = "deny"
+impl_trait_in_params = "warn"
+infallible_try_from = "deny"
+invalid_upcast_comparisons = "deny"
+iter_not_returning_iterator = "deny"
+large_futures = "warn"
+lossy_float_literal = "deny"
+missing_assert_message = "warn"
+mod_module_files = "deny"
+multiple_inherent_impl = "warn"
+multiple_unsafe_ops_per_block = "deny"
+print_stderr = "deny"
+print_stdout = "deny"
+rest_pat_in_fully_bound_structs = "deny"
+rc_mutex = "deny"
+tests_outside_test_module = "deny"
+undocumented_unsafe_blocks = "deny"
+verbose_file_reads = "deny"
+wildcard_enum_match_arm = "deny"
+wildcard_imports = "deny"
+
+# Numeric conversions and comparisons must make loss/rounding explicit.
+cast_possible_truncation = "warn"
+cast_possible_wrap = "warn"
+cast_precision_loss = "warn"
+cast_sign_loss = "deny"
+float_cmp = "deny"
+float_cmp_const = "deny"
+
+# Measured complexity ceilings from clippy.toml.
 cognitive_complexity = "warn"
 excessive_nesting = "warn"
-# Pedantic lints intentionally silenced — noisy or contrary to a deliberate API
-# shape. Trim this list to taste; each entry is a conscious exception.
-needless_pass_by_value = "allow"
-implicit_hasher = "allow"
-similar_names = "allow"
-match_same_arms = "allow"
-items_after_statements = "allow"
-unnecessary_wraps = "allow"
-unused_self = "allow"
-float_cmp = "allow"
-struct_field_names = "allow"
-missing_errors_doc = "allow"
-missing_panics_doc = "allow"
-must_use_candidate = "allow"
-module_name_repetitions = "allow"
-cast_possible_truncation = "allow"
-cast_possible_wrap = "allow"
-cast_sign_loss = "allow"
-cast_precision_loss = "allow"
-cargo_common_metadata = "allow"
-multiple_crate_versions = "allow"
+fn_params_excessive_bools = "warn"
+large_enum_variant = "warn"
+result_large_err = "warn"
+struct_excessive_bools = "warn"
+too_many_lines = "warn"
 
-# ---------------------------------------------------------------------------
-# Build profiles.
-# ---------------------------------------------------------------------------
+# Narrow intentional exceptions to pedantic/cargo policy.
+module_name_repetitions = "allow"
+needless_pass_by_value = "allow"
+similar_names = "allow"
+struct_field_names = "allow"
+multiple_crate_versions = "allow" # cargo-deny owns duplicate-version policy.
+
 [profile.dev]
-# Line tables only: ~30-50% smaller artifacts and faster links; backtraces still
-# resolve to file:line.
 debug = 1
 
 [profile.release]

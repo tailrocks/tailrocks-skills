@@ -1,0 +1,8 @@
+# Shrink-only quarantine. Unlisted pass-on-retry tests fail.
+# Delete an entry when the flake is fixed.
+
+# [[test]]
+# name = "crate_or_file::module::test_name"
+# owner = "team-or-person"
+# reason = "specific nondeterministic mechanism; tracked as #NNN"
+# since = "YYYY-MM-DD"

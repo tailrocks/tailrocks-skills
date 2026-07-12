@@ -4,10 +4,19 @@ export default defineConfig({
   options: {
     typeAware: true,
   },
-  plugins: ["typescript", "react", "unicorn", "import", "promise"],
+  plugins: [
+    "typescript",
+    "react",
+    "react-hooks",
+    "jsx-a11y",
+    "unicorn",
+    "import",
+    "promise",
+  ],
   categories: {
     correctness: "error",
     suspicious: "error",
+    pedantic: "warn",
     perf: "warn",
   },
   rules: {

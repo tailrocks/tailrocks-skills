@@ -1,52 +1,59 @@
-# mise is the toolchain and dev-tool manager for this project. One `mise install`
-# provisions every tool below at a pinned version; `mise.lock` records the exact
-# resolved versions (commit it). CI uses the same file via `jdx/mise-action`, so
-# local and CI toolchains never drift.
-#
-# Rust itself is NOT listed here. It is read from rust-toolchain.toml via
-# `idiomatic_version_file_enable_tools = ["rust"]` below — the single source of
-# truth. Never duplicate the Rust channel in this file.
-
 [tools]
-# Prefer exact versions over "latest" once you have run `mise install` — copy the
-# resolved versions from `mise.lock` so builds are reproducible.
-"cargo:cargo-nextest" = "latest" # fast test runner
-"cargo:cargo-deny" = "latest"    # advisories / licenses / bans / sources
-"cargo:cargo-audit" = "latest"   # RustSec advisory gate (duplicates deny's advisories)
-"cargo:cargo-shear" = "latest"   # unused deps + unlinked source files
-"cargo:cargo-hack" = "latest"    # feature-powerset checks
-cargo-binstall = "latest"        # fetch prebuilt cargo tools instead of compiling
+"cargo:cargo-nextest" = "0.9.140"
+"cargo:cargo-deny" = "0.20.2"
+"cargo:cargo-audit" = "0.22.2"
+"cargo:cargo-shear" = "1.13.1"
+"cargo:cargo-hack" = "0.6.45"
+"cargo:cargo-llvm-cov" = "0.8.7"
+"cargo:cargo-semver-checks" = "0.48.0"
+"cargo:cargo-vet" = "0.10.2"
+"cargo:cargo-mutants" = "27.1.0"
+"cargo:cargo-careful" = "0.4.10"
+"cargo:cargo-dylint" = "6.0.1"
+"cargo:dylint-link" = "6.0.1"
+cargo-binstall = "1.20.1"
 
 [settings]
-# Install `cargo:` tools with cargo-binstall (prebuilt binaries) when available.
 cargo.binstall = true
-# Read the Rust toolchain from rust-toolchain.toml instead of a [tools] entry.
 idiomatic_version_file_enable_tools = ["rust"]
-# Fail if mise.lock is missing or stale — enforces reproducible tool versions.
 lockfile = true
 
-# ---------------------------------------------------------------------------
-# Tasks: one command name per check class. Run `mise run lint`, `mise run test`,
-# `mise run deny`. CI invokes the same tasks so failures reproduce locally.
-# ---------------------------------------------------------------------------
+[tasks.check]
+run = "cargo check --workspace --all-targets --all-features --locked"
+
 [tasks.lint]
-description = "Format check + strict clippy over the whole workspace"
 run = [
     "cargo fmt --check",
     "cargo clippy --workspace --all-targets --all-features --locked -- -D warnings",
 ]
 
 [tasks.test]
-description = "Run the test suite (nextest) and doctests"
 run = [
     "cargo nextest run --workspace --all-features --locked",
-    "cargo test --workspace --doc --locked",
+    "cargo test --workspace --doc --all-features --locked",
 ]
 
-[tasks.deny]
-description = "Supply-chain gates: advisories, licenses, bans, sources"
-run = "cargo deny check advisories licenses bans sources"
+[tasks.supply-chain]
+run = [
+    "cargo deny check advisories licenses bans sources",
+    "cargo audit",
+    "cargo vet",
+]
 
 [tasks.hygiene]
-description = "Unused-dependency and unlinked-file scan"
 run = "cargo shear"
+
+[tasks.features]
+run = "cargo hack check --workspace --feature-powerset --all-targets --locked"
+
+[tasks.coverage]
+run = "cargo llvm-cov nextest --workspace --all-features --locked"
+
+[tasks.semver]
+run = "cargo semver-checks check-release --workspace"
+
+[tasks.mutants]
+run = "cargo mutants --workspace --test-tool=nextest"
+
+[tasks.careful]
+run = "cargo +nightly-2026-07-10 careful test --workspace --all-features --locked"

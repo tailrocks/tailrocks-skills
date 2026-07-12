@@ -1,0 +1,19 @@
+# Unified shrink-only budgets. Providers are project-owned and deterministic.
+
+[[family]]
+id = "example-numeric-debt"
+kind = "numeric"
+provider = "replace_with_project_provider"
+mode = "report"
+# cap = 0
+# [[family.entry]]
+# key = "path/or/module"
+# bound = 1
+
+[[family]]
+id = "example-presence-debt"
+kind = "presence"
+provider = "replace_with_project_provider"
+mode = "report"
+# [[family.entry]]
+# key = "exact-existing-violation"

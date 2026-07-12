@@ -9,6 +9,12 @@ One `skills/<name>/SKILL.md` source serves every agent (Claude Code, Codex, Amp,
 OpenCode, Kimi). Keep skills source-neutral — no agent-specific instructions in
 `SKILL.md` bodies.
 
+The house stack is fixed: Rust 2024 with Axum/Tokio/Tower, and TypeScript 7 with
+Bun, TanStack Start, React, shadcn/ui, Tailwind CSS v4, and Oxc. Skills deepen
+this stack; they do not offer alternative frameworks, package managers, test
+runners, or component systems. Every setup targets the latest stable release and
+latest stable major available at execution time; older majors are unsupported.
+
 All skills are **manual-only**: every `SKILL.md` sets `disable-model-invocation:
 true`, so nothing auto-fires. Invoke each explicitly (in Claude Code,
 `/tailrocks-skills:<name>`). The trigger-rich `description` is the fallback for
@@ -38,9 +44,18 @@ rustfmt, `rust-toolchain.toml`, mise-managed tooling, and the cargo-deny / audit
 
 Skill definition: `skills/tailrocks-rust-project-setup/SKILL.md`
 
+### tailrocks-axum-best-practices
+
+Build and review production Axum services with typed state and extractors,
+stable error responses, ordered Tower middleware, security limits, tracing,
+graceful shutdown, async task ownership, and contract tests.
+
+Skill definition: `skills/tailrocks-axum-best-practices/SKILL.md`
+
 ### tailrocks-typescript-best-practices
 
-Write, review, or refactor strict Rust-inspired TypeScript and React code:
+Write, review, or refactor strict Rust-inspired TypeScript 7 and React code with
+Bun-owned tooling:
 exhaustive state, typed failure, runtime validation, domain values, readonly
 mutation boundaries, async correctness, React rules, and tests.
 
@@ -48,12 +63,22 @@ Skill definition: `skills/tailrocks-typescript-best-practices/SKILL.md`
 
 ### tailrocks-tanstack-project-setup
 
-Scaffold, migrate, and enforce strict TanStack Start applications with current
-TypeScript, pnpm, Vite, Oxc, React, Router, Query, validated server/client
-boundaries, tests, exact version policy, and CI gates. Copy-ready configuration
-lives under `skills/tailrocks-tanstack-project-setup/templates/`.
+Scaffold, migrate, and enforce strict Bun-only TanStack Start applications with
+TypeScript 7, Vite, Oxc, React, Router, Query, shadcn/ui, Tailwind CSS v4,
+validated server/client boundaries, Bun tests, exact versions, and CI gates.
+Copy-ready configuration lives under
+`skills/tailrocks-tanstack-project-setup/templates/`.
 
 Skill definition: `skills/tailrocks-tanstack-project-setup/SKILL.md`
+
+### tailrocks-code-health
+
+Turn code quality into executable, monotonic contracts across the house stack:
+architecture DAGs, measured baselines, shrink-only debt budgets, flake quarantine,
+defect-to-gate learning, structured gate output, tiered verification, and
+automated latest-version enforcement.
+
+Skill definition: `skills/tailrocks-code-health/SKILL.md`
 
 ### tailrocks-propose
 

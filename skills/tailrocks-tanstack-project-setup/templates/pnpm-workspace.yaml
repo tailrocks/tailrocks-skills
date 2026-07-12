@@ -1,6 +1,0 @@
-packages:
-  - "."
-
-nodeVersion: "22"
-saveExact: true
-minimumReleaseAge: 1440

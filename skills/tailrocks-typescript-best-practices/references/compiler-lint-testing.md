@@ -1,16 +1,23 @@
-# Compiler, Lint, Testing, and Migration
+# TypeScript 7, Oxc, Bun Test, and Migration
 
-Load this reference when establishing strictness, selecting checks, testing type
-contracts, or migrating a brownfield codebase.
-
-## Compiler baseline
-
-For new code, enable the strongest compatible baseline:
+TypeScript 7 is the only compiler. It provides native `tsc`, enables `strict`
+and side-effect import checking by default, removes `baseUrl`, and defaults
+`types` to empty. Keep critical policy explicit:
 
 ```json
 {
   "compilerOptions": {
+    "target": "ESNext",
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
     "strict": true,
+    "noEmit": true,
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "noUncheckedSideEffectImports": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "noImplicitReturns": true,
@@ -18,59 +25,40 @@ For new code, enable the strongest compatible baseline:
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "useUnknownInCatchVariables": true,
-    "forceConsistentCasingInFileNames": true
+    "skipLibCheck": false,
+    "types": ["bun", "vite/client"]
   }
 }
 ```
 
-Honor runtime and framework requirements. In brownfield repositories, measure the
-affected surface, migrate one project or boundary at a time, and gate each clean
-slice in CI. Assertions that merely silence newly exposed uncertainty fail the
-migration.
+Paths are relative to the config (`"@/*": ["./src/*"]`). Set `rootDir`
+explicitly when emitting or project layout requires it. TypeScript 7.0 has no
+compiler API; use Oxc and API-independent tools rather than installing a hidden
+TypeScript 6 alias.
 
-## Lint baseline
+Use type-aware Oxc correctness, suspicious, promise, React hooks, accessibility,
+and unsafe-flow rules. CI denies warnings. A suppression is local, reasoned, and
+names its removal condition.
 
-Use the installed linter's current type-aware strict presets when compatible.
-Require equivalents of exhaustive switches, unsafe-flow checks, floating/misused
-promise checks, caught-error narrowing, and disciplined assertions. Inspect the
-installed major version and configuration style before changing syntax.
+Use Dependency Cruiser for import-graph invariants that a file-local linter
+cannot prove: cycles, unresolved imports, layer direction, route isolation, and
+entry-point-only feature access. Use Knip for unused files, exports, and direct
+dependencies. Known violations enter a shrink-only baseline; unlisted violations
+fail immediately.
 
-Configuration owns policy once. A local suppression identifies the rule, reason,
-and compatibility boundary; broad file/project disables require a documented
-migration owner.
+Bun owns tests. Use `bun:test`, preload happy-dom only for browser-facing tests,
+cleanup Testing Library state after each test, and prefer accessible behavior.
+Runtime tests cover parsing, errors, transitions, adapters, async cleanup, and
+mutation. Type tests use reasoned `@ts-expect-error` only for public constraints.
 
-## Tests
+Migration order:
 
-Add the smallest durable tests for:
+1. Move install/scripts/tests to Bun and commit `bun.lock`.
+2. Adopt TypeScript 7 config; remove unsupported options and `baseUrl`.
+3. Stop new `any`, casts, ignored failures, and floating promises.
+4. Parse external values and add high-value domain types.
+5. Model invalid state and expected failure explicitly.
+6. Localize mutation/effects and enable remaining strict checks.
 
-- valid and invalid parser input, including unknown-key policy;
-- behavior-bearing error variants and legal/rejected transitions;
-- adapters that translate dependency exceptions;
-- visible mutation/immutability and async cleanup/cancellation;
-- public type constraints whose regression would compile unsafe callers.
-
-Use the existing type-test tool or a compile-only fixture. Each intentional
-`@ts-expect-error` includes a reason. Avoid type tests that merely restate obvious
-compiler behavior.
-
-## Migration order
-
-1. Stop new `any`, unchecked casts, ignored errors, and floating promises.
-2. Parse external input.
-3. Add domain values at high-confusion boundaries.
-4. Replace invalid state combinations with discriminated unions.
-5. Make expected failures typed.
-6. Localize mutation and async ownership.
-7. Enable indexed-access and optional-property strictness incrementally.
-8. Gate exhaustive and unsafe-flow linting.
-9. Add type tests for public contracts.
-
-Each slice compiles, tests, and preserves external behavior unless the requested
-change explicitly alters it.
-
-## Validation record
-
-Infer the package manager from the lockfile and prefer repository scripts. Record
-typecheck, lint, and focused tests as passed, change-caused failure, pre-existing
-failure, unavailable, or intentionally unrun. Claim only commands that actually
-completed successfully.
+Each slice passes `bun run typecheck`, `bun run lint`, and `bun test` and preserves
+external behavior unless the migration explicitly changes a contract.

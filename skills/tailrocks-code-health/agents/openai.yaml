@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Health"
+  short_description: "Build measurable monotonic code-health gates"
+  default_prompt: "Use $tailrocks-code-health to establish architecture checks, shrink-only ratchets, flake and defect ledgers, tiered verification, structured reports, and latest-version enforcement."

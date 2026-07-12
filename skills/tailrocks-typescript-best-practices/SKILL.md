@@ -1,6 +1,6 @@
 ---
 name: tailrocks-typescript-best-practices
-description: Write, review, refactor, or migrate strict Rust-inspired TypeScript and React with exhaustive state, typed failure, validated boundaries, domain values, explicit mutation, safe async behavior, and durable tests.
+description: Write, review, refactor, or migrate Bun-based TypeScript 7 and React with exhaustive state, typed failure, validated boundaries, domain values, explicit mutation, safe async behavior, and durable tests.
 disable-model-invocation: true
 ---
 
@@ -9,6 +9,11 @@ disable-model-invocation: true
 Make invalid state, recoverable failure, untrusted input, mutation, and async
 ownership visible. Borrow Rust's modeling discipline without claiming Rust's
 ownership or runtime guarantees.
+
+The tooling stack is fixed: Bun owns installation, scripts, runtime helpers, and
+tests; TypeScript 7 owns type checking; Oxc owns linting and formatting. Do not
+introduce alternative package managers, test runners, or TypeScript 6 compiler
+aliases.
 
 ## Steps
 

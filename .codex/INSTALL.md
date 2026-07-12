@@ -9,7 +9,7 @@ Codex, Amp, OpenCode, and Kimi all read `~/.agents/skills/`. Install the whole
 collection there with the [`skills`](https://www.npmjs.com/package/skills) CLI:
 
 ```sh
-npx -y skills add "tailrocks/tailrocks-skills" -s '*' -a codex --global --yes
+bunx --bun skills add "tailrocks/tailrocks-skills" -s '*' -a codex --global --yes
 ```
 
 `-s '*'` installs every skill in the collection; `--global` writes the canonical
@@ -18,7 +18,7 @@ additionally picks up `.codex-plugin/plugin.json` through its `/plugins` flow. P
 to a release tag in production:
 
 ```sh
-npx -y skills add "tailrocks/tailrocks-skills#vX.Y.Z" -s '*' -a codex --global --yes
+bunx --bun skills add "tailrocks/tailrocks-skills#vX.Y.Z" -s '*' -a codex --global --yes
 ```
 
 Install a single skill instead of all with `-s tailrocks-rust-project-setup`.

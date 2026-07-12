@@ -10,6 +10,13 @@ Establish one reproducible baseline for project structure and tooling. Use
 `tailrocks-rust-best-practices` for code-level ownership, API, error, test, and
 performance decisions.
 
+Before changing configuration, read
+[`version-policy.md`](references/version-policy.md), refresh every recorded
+version from its primary release source, and update the templates as one
+compatible latest-stable set. An older stable major is not a compatibility
+option. Use `tailrocks-code-health` to install ratchets, architecture/docs gates,
+flake policy, Renovate, and tiered verification.
+
 ## Copy-ready baseline
 
 Copy from `templates/` rather than reconstructing policy:

@@ -1,31 +1,35 @@
-# Clippy configuration. Copy to the repository root. Pairs with the strict
-# `[workspace.lints.clippy]` table in Cargo.toml.
+# Pairs with the workspace lint table. Keep MSRV equal to workspace.package.
+msrv = "1.97.0"
+check-incompatible-msrv-in-tests = true
+avoid-breaking-exported-api = true
 
-# Test code may use the ergonomic panicking helpers that are denied elsewhere.
+# Tests retain explicit expect/panic helpers but not silent unwraps or printing.
 allow-expect-in-tests = true
 allow-panic-in-tests = true
-allow-print-in-tests = true
-allow-unwrap-in-tests = true
+allow-print-in-tests = false
+allow-unwrap-in-tests = false
 
-# Complexity ceilings. Set each just above your current maximum so the lints fire
-# nothing on day one, then ratchet the numbers down over time. Every new
-# violation is either refactored or grandfathered with a narrow
-# `#[expect(clippy::<lint>, reason = "...")]`.
-too-many-lines-threshold = 150
-cognitive-complexity-threshold = 60
-excessive-nesting-threshold = 5
-too-many-arguments-threshold = 7
+# Ratchet from measured repository maxima; never raise to silence new code.
+too-many-lines-threshold = 120
+cognitive-complexity-threshold = 30
+excessive-nesting-threshold = 4
+too-many-arguments-threshold = 6
+future-size-threshold = 16_384
 
-# Ban calls that block the thread. Essential on async runtimes and render/event
-# loops, where a blocking call stalls every task on the executor. Tune the list
-# to your project; each entry carries the reason Clippy prints at the call site.
-disallowed-methods = [
-    { path = "std::thread::sleep", reason = "blocking sleep must not run on async/runtime threads; use an async sleep or spawn_blocking" },
-    { path = "std::process::Command::output", reason = "blocking subprocess wait; use an async process API or spawn_blocking" },
-    { path = "std::fs::File::open", reason = "blocking filesystem open; use async file work or spawn_blocking" },
+await-holding-invalid-types = [
+    { path = "std::cell::Ref", reason = "a Ref borrow must end before await" },
+    { path = "std::cell::RefMut", reason = "a RefMut borrow must end before await" },
+    { path = "std::sync::MutexGuard", reason = "a blocking mutex guard must end before await" },
+    { path = "std::sync::RwLockReadGuard", reason = "a blocking read guard must end before await" },
+    { path = "std::sync::RwLockWriteGuard", reason = "a blocking write guard must end before await" },
 ]
 
-# Ban problem types outright (uncomment and tune):
-# disallowed-types = [
-#     { path = "std::collections::HashMap", reason = "use a deterministic-order or seeded-hasher map at boundaries" },
-# ]
+disallowed-methods = [
+    { path = "std::thread::sleep", reason = "use tokio::time::sleep on runtime threads" },
+    { path = "std::process::Command::output", reason = "use tokio::process or spawn_blocking" },
+    { path = "std::process::Command::status", reason = "use tokio::process or spawn_blocking" },
+    { path = "std::fs::read", reason = "use tokio::fs or spawn_blocking" },
+    { path = "std::fs::read_to_string", reason = "use tokio::fs or spawn_blocking" },
+    { path = "std::fs::write", reason = "use tokio::fs or spawn_blocking" },
+    { path = "std::net::TcpStream::connect", reason = "use tokio::net on runtime threads" },
+]
