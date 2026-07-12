@@ -1,6 +1,6 @@
 {
   "name": "tailrocks-skills",
-  "version": "0.4.0",
+  "version": "0.5.1",
   "description": "Cross-agent Tailrocks skills for strict Rust, Axum, TypeScript, TanStack, code-health ratchets, proposals, and research",
   "author": {
     "name": "tailrocks",
@@ -26,8 +26,24 @@
     "mise",
     "workspace",
     "code-review",
+    "root-cause",
+    "correctness",
     "proposal",
     "research"
   ],
-  "skills": "./skills/"
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Tailrocks Skills",
+    "shortDescription": "Strict Rust and TypeScript engineering workflows",
+    "longDescription": "Tailrocks workflows for Rust, Axum, TypeScript, TanStack, correctness-first remediation, code-health ratchets, proposals, and research.",
+    "developerName": "Tailrocks",
+    "category": "Developer Tools",
+    "capabilities": ["Review", "Scaffold", "Remediate", "Research"],
+    "websiteURL": "https://github.com/tailrocks/tailrocks-skills",
+    "defaultPrompt": [
+      "Review this Rust module.",
+      "Audit this TanStack project.",
+      "Find the enabling cause of this defect."
+    ]
+  }
 }

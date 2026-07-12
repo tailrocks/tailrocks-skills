@@ -1,0 +1,17 @@
+{
+  "name": "tailrocks-skills",
+  "version": "0.5.1",
+  "description": "Cross-agent Tailrocks skills for strict Rust, Axum, TypeScript, TanStack, correctness-first remediation, code-health ratchets, proposals, and research",
+  "keywords": ["rust", "axum", "typescript", "bun", "tanstack", "root-cause", "research"],
+  "author": {
+    "name": "tailrocks",
+    "url": "https://github.com/tailrocks"
+  },
+  "homepage": "https://github.com/tailrocks/tailrocks-skills",
+  "license": "Apache-2.0",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Tailrocks Skills",
+    "shortDescription": "Strict Rust and TypeScript engineering workflows"
+  }
+}

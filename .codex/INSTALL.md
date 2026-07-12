@@ -52,3 +52,11 @@ client after installation when its documentation requires it.
 Do not add client-specific commands, tool names, or directory assumptions to a
 `SKILL.md` body. Keep such integration metadata and installation guidance
 outside the shared skill source.
+
+Kimi Code can also install this repository as a native plugin because
+`.kimi-plugin/plugin.json` points at the shared `./skills/` tree:
+
+```text
+/plugins install https://github.com/tailrocks/tailrocks-skills
+/plugins reload
+```

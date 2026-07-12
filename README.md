@@ -1,7 +1,7 @@
 # tailrocks-skills
 
 A cross-agent collection of Tailrocks engineering skills, packaged for Claude
-Code and Codex and portable through the shared `SKILL.md` standard to Grok
+Code, Codex, and Kimi Code and portable through the shared `SKILL.md` standard to Grok
 Build, Kimi Code, OpenCode, Gemini CLI, GitHub Copilot, VS Code, Amp, and other
 Agent Skills clients.
 
@@ -20,14 +20,15 @@ and component systems are outside scope.
 | `tailrocks-typescript-best-practices` | Write, review, and refactor strict Rust-inspired TypeScript 7 and React code using Bun-owned tooling. |
 | `tailrocks-tanstack-project-setup` | Scaffold, migrate, and audit Bun-only TanStack Start projects with TypeScript 7, Oxc, Router, Query, shadcn/ui, Tailwind CSS v4, tests, and CI. |
 | `tailrocks-code-health` | Establish, audit, or tighten one measurable shrink-only debt ratchet using architecture, lint, dependency, flake, defect, documentation, or verification providers. |
+| `tailrocks-correctness-first` | Derive the greenfield architecture that eliminates a proven defect class, then pursue the complete structural correction regardless of price, duration, effort, implementation size, or sunk cost. |
 | `tailrocks-propose` | Turn a rough idea into an enriched, evidence-backed proposal. Parallel analysis gathers prior art, codebase touchpoints, constraints, risks, and alternatives into a per-idea folder of findings. Read-only. |
 | `tailrocks-research` | Take a substantial confirmed proposal direction, resolve material uncertainty, and write sufficient self-contained handoff plans a zero-context executor can follow. |
 
 More skills land in `skills/` over time; the layout and install flow below are
 built to grow.
 
-The Rust, Axum, TypeScript, TanStack, and code-health skills form the stack-policy
-family. `tailrocks-propose` and `tailrocks-research` form a separate delivery
+The Rust, Axum, TypeScript, TanStack, code-health, and correctness-first skills
+form the engineering-policy family. `tailrocks-propose` and `tailrocks-research` form a separate delivery
 workflow family; they do not define stack policy.
 
 ## Installation
@@ -70,8 +71,9 @@ bunx --bun skills add "tailrocks/tailrocks-skills" -s '*' --global
 
 For deterministic manual installation, copy `skills/*` to
 `~/.agents/skills/`. Codex additionally reads `.codex-plugin/plugin.json`;
-Grok also reads Claude-compatible plugins and skills; Kimi Code additionally
-reads `$KIMI_CODE_HOME/skills/`; Gemini additionally reads `.gemini/skills/`;
+Grok also reads Claude-compatible plugins and skills; Kimi Code supports the
+native `.kimi-plugin/plugin.json` and additionally reads
+`$KIMI_CODE_HOME/skills/`; Gemini additionally reads `.gemini/skills/`;
 Copilot additionally reads `~/.copilot/skills/` and `.github/skills/`.
 
 Pin the repository to a release tag in production. See
@@ -85,7 +87,7 @@ invocation-policy matrix.
 | Claude Code | Plugin or `.claude/skills` | `/tailrocks-skills:<name>` | Yes, `disable-model-invocation` |
 | Codex | Plugin or `.agents/skills` | `$<name>` | Yes, `agents/openai.yaml` policy |
 | Grok Build | Claude-compatible plugin, `.grok/skills`, or `.agents/skills` | `/<name>` | Through its documented Claude-compatible skill surface |
-| Kimi Code | `.kimi-code/skills` or `.agents/skills` | `/skill:<name>` | Yes, accepts `disable-model-invocation` |
+| Kimi Code | Native plugin, `.kimi-code/skills`, or `.agents/skills` | `/skill:<name>` | Yes, accepts `disable-model-invocation` |
 | GitHub Copilot and VS Code | `.github/skills`, `.agents/skills`, or personal skills | `/<name>` | Yes, `disable-model-invocation` |
 | Gemini CLI | `.gemini/skills` or `.agents/skills` | Skill activation with consent | No documented portable per-skill control |
 | OpenCode | `.opencode/skills` or `.agents/skills` | Request the named skill | No documented per-skill control |
@@ -109,6 +111,8 @@ tailrocks-skills/
 │   └── plugin.json          # Claude Code plugin manifest
 ├── .codex-plugin/
 │   └── plugin.json          # Codex plugin manifest ("skills": "./skills/")
+├── .kimi-plugin/
+│   └── plugin.json          # Kimi Code plugin manifest
 ├── skills/
 │   ├── tailrocks-rust-best-practices/
 │   │   ├── SKILL.md

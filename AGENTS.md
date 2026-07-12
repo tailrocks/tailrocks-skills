@@ -1,9 +1,9 @@
 # AGENTS.md
 
 This repository publishes **tailrocks-skills**: a cross-agent collection of
-reusable engineering skills, packaged as one Claude Code plugin
-(`.claude-plugin/plugin.json`) and one Codex plugin (`.codex-plugin/plugin.json`)
-over a shared `skills/` tree.
+reusable engineering skills, packaged as Claude Code, Codex, and Kimi Code
+plugins (`.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, and
+`.kimi-plugin/plugin.json`) over a shared `skills/` tree.
 
 One `skills/<name>/SKILL.md` source serves every agent (Claude Code, Codex, Amp,
 OpenCode, Kimi). Keep skills source-neutral — no agent-specific instructions in
@@ -107,6 +107,16 @@ enriches broadly and stops; you clarify direction in conversation;
 `tailrocks-research` goes deep on the one direction and writes the plan. Both are
 read-only advisors and manual-only.
 
+### tailrocks-correctness-first
+
+Analyze or remediate a proven defect, inconsistency, violated invariant, or
+known-wrong state. Derives a greenfield architecture that prevents the complete
+defect class and pursues that result without considering price, duration, effort,
+implementation size, ROI, or sunk cost. Rejects speculative generality and
+permits urgent containment without calling it complete remediation.
+
+Skill definition: `skills/tailrocks-correctness-first/SKILL.md`
+
 ## Adding a Skill
 
 1. Create `skills/<name>/SKILL.md` with `name`, a trigger-rich, agent-neutral
@@ -123,7 +133,7 @@ read-only advisors and manual-only.
 
 ## Validation
 
-Before publishing changes, run the Bun-native skill and manifest validator:
+Before publishing changes, run the Bun-native skill and all three manifest validator:
 
 ```sh
 bun run scripts/validate-skills.ts
@@ -136,6 +146,9 @@ claude --plugin-dir .
 ```
 
 ## Commit Messages
+
+Commit and push every completed repository change. Do not leave finished work
+uncommitted unless the user explicitly requests otherwise.
 
 All commits in this repository should follow Conventional Commits 1.0.0.
 
