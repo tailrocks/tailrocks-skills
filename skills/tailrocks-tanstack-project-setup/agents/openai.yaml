@@ -1,0 +1,4 @@
+interface:
+  display_name: "TanStack Project Setup"
+  short_description: "Scaffold a strict TanStack Start application"
+  default_prompt: "Use $tailrocks-tanstack-project-setup to scaffold or audit this TanStack Start app with strict TypeScript, pnpm, Vite, Oxc, validated boundaries, Router/Query ownership, tests, and CI gates."

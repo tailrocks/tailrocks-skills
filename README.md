@@ -15,6 +15,8 @@ default.
 |---|---|
 | `tailrocks-rust-best-practices` | Write, review, and refactor Rust code: ownership, API design, errors, tests, docs, and readability. |
 | `tailrocks-rust-project-setup` | Scaffold and enforce a strict, modern Rust project: workspace layout, `crates/` separation, workspace lint and Clippy tables, rustfmt, `rust-toolchain.toml`, mise, and cargo-deny/audit/shear/hack/nextest gates. |
+| `tailrocks-typescript-best-practices` | Write, review, and refactor strict Rust-inspired TypeScript and React code. |
+| `tailrocks-tanstack-project-setup` | Scaffold, migrate, and audit strict TanStack Start projects with TypeScript, Oxc, React, Router, Query, tests, and CI. |
 | `tailrocks-propose` | Turn a rough idea into an enriched, evidence-backed proposal. Parallel analysis gathers prior art, codebase touchpoints, constraints, risks, and alternatives into a per-idea folder of findings. Read-only. |
 | `tailrocks-research` | Take a confirmed proposal direction, run deep sourced research, and write incredibly detailed, self-contained handoff plans a zero-context executor can follow — in the same per-idea folder. |
 
@@ -38,6 +40,8 @@ Then invoke a namespaced skill:
 ```text
 /tailrocks-skills:tailrocks-rust-best-practices review this crate
 /tailrocks-skills:tailrocks-rust-project-setup set up a strict workspace here
+/tailrocks-skills:tailrocks-typescript-best-practices review this TypeScript module
+/tailrocks-skills:tailrocks-tanstack-project-setup set up a strict Start app here
 ```
 
 ### Codex, Amp, OpenCode, Kimi

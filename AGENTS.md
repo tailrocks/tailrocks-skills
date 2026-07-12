@@ -38,6 +38,23 @@ rustfmt, `rust-toolchain.toml`, mise-managed tooling, and the cargo-deny / audit
 
 Skill definition: `skills/tailrocks-rust-project-setup/SKILL.md`
 
+### tailrocks-typescript-best-practices
+
+Write, review, or refactor strict Rust-inspired TypeScript and React code:
+exhaustive state, typed failure, runtime validation, domain values, readonly
+mutation boundaries, async correctness, React rules, and tests.
+
+Skill definition: `skills/tailrocks-typescript-best-practices/SKILL.md`
+
+### tailrocks-tanstack-project-setup
+
+Scaffold, migrate, and enforce strict TanStack Start applications with current
+TypeScript, pnpm, Vite, Oxc, React, Router, Query, validated server/client
+boundaries, tests, exact version policy, and CI gates. Copy-ready configuration
+lives under `skills/tailrocks-tanstack-project-setup/templates/`.
+
+Skill definition: `skills/tailrocks-tanstack-project-setup/SKILL.md`
+
 ### tailrocks-propose
 
 Turn a rough idea into an enriched, evidence-backed proposal. Recon plus parallel
