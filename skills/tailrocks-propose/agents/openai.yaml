@@ -1,4 +1,6 @@
 interface:
   display_name: "Propose"
   short_description: "Enrich a rough idea into an evidence-backed proposal"
-  default_prompt: "Use $tailrocks-propose to enrich this idea into a proposal — gather prior art, codebase touchpoints, constraints, risks, and alternative directions as findings, then hand back candidate directions and open questions."
+  default_prompt: "Use $tailrocks-propose for this substantial ambiguous idea: gather evidence, recommend one default direction, include only genuine alternatives, and stop before implementation planning."
+policy:
+  allow_implicit_invocation: false

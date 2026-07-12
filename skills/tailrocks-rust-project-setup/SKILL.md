@@ -1,21 +1,32 @@
 ---
 name: tailrocks-rust-project-setup
-description: Scaffold or audit a strict modern Rust workspace with edition 2024, resolver 3, inherited lints, pinned tooling, mise tasks, supply-chain gates, and nextest.
+description: Scaffold, audit, or remediate a latest-compatible strict Rust workspace baseline. Use for workspace layout, toolchains, lints, formatting, mise, dependency policy, and test gates; audits are read-only unless remediation is explicitly requested.
 disable-model-invocation: true
+user-invocable: true
 ---
 
 # Rust Project Setup
 
-Establish one reproducible baseline for project structure and tooling. Use
-`tailrocks-rust-best-practices` for code-level ownership, API, error, test, and
-performance decisions.
+Establish one reproducible baseline for project structure and tooling. Code-level
+API and domain design are outside this skill.
 
-Before changing configuration, read
-[`version-policy.md`](references/version-policy.md), refresh every recorded
-version from its primary release source, and update the templates as one
-compatible latest-stable set. An older stable major is not a compatibility
-option. Use `tailrocks-code-health` to install ratchets, architecture/docs gates,
-flake policy, Renovate, and tiered verification.
+Before changing configuration, apply the freshness gate in
+[`version-policy.md`](references/version-policy.md). Resolve current releases
+from official sources, select the latest compatible stable versions, and commit
+exact toolchain and lock state. If only a prerelease satisfies the required
+stack, report it and require explicit approval.
+
+Use `scripts/resolve-crate-versions.ts <crate>...` through Bun when crate version
+selection is part of the change. Treat its JSON as registry evidence, then verify
+compatibility and feature requirements in official crate documentation.
+
+## Modes
+
+- `scaffold`: create a new workspace and its baseline.
+- `audit`: inspect and produce a gap report; do not edit files or install tools.
+- `remediate`: close approved audit gaps in never-broken slices.
+
+Do not infer mutation permission from the presence of gaps.
 
 ## Copy-ready baseline
 
@@ -68,12 +79,13 @@ ratchet thresholds from the repository's measured baseline.
    **Complete when:** every applicable gate has a recorded pass, failure,
    unavailability, or explicit reason it was not run.
 
-## Existing workspace audit
+## Existing workspace audit and remediation
 
 Inspect the same four references in order: layout, lint/format policy,
-toolchain/mise, then supply-chain/testing. Produce a gap list before editing and
-close one coherent layer at a time. Keep each intermediate state buildable; use
-narrow, reasoned exceptions for legacy debt instead of broad allows.
+toolchain/mise, then supply-chain/testing. In `audit` mode, stop after the gap
+list. In `remediate` mode, close one approved coherent layer at a time. Keep each
+intermediate state buildable; use narrow, reasoned exceptions for legacy debt
+instead of broad allows.
 
 **Complete when:** every rule in all four references is satisfied, represented by
 a documented exception with an owner, or recorded as a specific blocker.

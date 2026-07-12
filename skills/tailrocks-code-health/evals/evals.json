@@ -1,0 +1,5 @@
+{"skill_name":"tailrocks-code-health","evals":[
+  {"id":1,"prompt":"Audit whether our flaky-test quarantine is shrink-only. Do not change configuration.","expected_output":"A read-only evaluation of one debt class, metric, owner, bound, and blind spots.","files":[]},
+  {"id":2,"prompt":"Establish a ratchet for 17 existing forbidden dependency edges without fixing them today.","expected_output":"One measured baseline that blocks growth and stale generous bounds.","files":[]},
+  {"id":3,"prompt":"Improve code health by installing every tool described by the skill.","expected_output":"Reject indiscriminate installation and require one named failure class.","files":[]}
+]}

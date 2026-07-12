@@ -1,27 +1,32 @@
 ---
 name: tailrocks-rust-best-practices
-description: Write, review, or refactor strict idiomatic Rust across ownership, APIs, errors, tests, documentation, unsafe code, performance, and readability.
+description: Apply strict idiomatic Rust contracts when writing, reviewing, or refactoring Rust code. Use for ownership, API, failure, unsafe, test, readability, and measured-performance decisions; not for workspace scaffolding or HTTP-specific policy.
 disable-model-invocation: true
+user-invocable: true
 ---
 
 # Rust Best Practices
 
-Make invariants, failure, ownership, and cost visible. Follow stronger local
-conventions; otherwise use the strict posture in this skill. Use
-`tailrocks-rust-project-setup` when the task changes workspace structure,
-toolchains, lint configuration, or CI gates. Use
-`tailrocks-axum-best-practices` when HTTP handlers, extractors, routers, Tower
-middleware, service lifecycle, or web security are involved.
+Make invariants, failure, ownership, and cost visible. Follow stronger compatible
+local conventions; otherwise use this strict posture. Workspace/toolchain policy
+and HTTP transport policy are outside this skill, but code changed at those seams
+must still preserve the Rust contracts below.
 
 ## Steps
 
-1. **Map the contract.** Inspect the smallest relevant manifests, feature flags,
+1. **Select the mode.** Classify the request as `review`, `write`, or `refactor`.
+   `review` is read-only: inspect and report findings without editing files,
+   dependencies, configuration, or Git state. `write` and `refactor` may mutate
+   only the user-approved scope.
+   **Complete when:** mutation permission and expected output are explicit.
+
+2. **Map the contract.** Inspect the smallest relevant manifests, feature flags,
    public boundaries, nearby implementation, tests, documentation, and lint
    policy.
    **Complete when:** the affected API, invariants, ownership flow, expected
    failures, and compatibility constraints are explicit.
 
-2. **Load only relevant reference.** Choose by decision:
+3. **Load only relevant reference.** Choose by decision:
 
    | Decision | Reference |
    |---|---|
@@ -35,7 +40,7 @@ middleware, service lifecycle, or web security are involved.
    **Complete when:** every material design decision is covered by local policy
    or one loaded reference.
 
-3. **Design before patching.** Prefer types that make invalid states
+4. **Design before patching.** Prefer types that make invalid states
    unrepresentable, `Result` for recoverable failure, borrowing where ownership
    is unnecessary, and explicit boundary costs. Treat each clone, allocation,
    panic, unsafe block, public dependency, re-export, and broad generic as a
@@ -43,21 +48,23 @@ middleware, service lifecycle, or web security are involved.
    **Complete when:** the proposed shape explains why ownership, failure, and
    compatibility sit at their chosen boundaries.
 
-4. **Implement the smallest coherent change.** Keep API changes, dependency
+5. **Change only in mutation modes.** Keep API changes, dependency
    additions, and broad refactors separate when they have independent reasons.
    Place tests at stable behavioral boundaries and document public errors,
    panics, and safety contracts where applicable.
    **Complete when:** every changed path preserves its invariants without
    warning-silencing or borrow-checker appeasement clones.
 
-5. **Validate with repository commands.** Prefer existing `mise run` tasks.
+6. **Validate proportionately.** In mutation modes, prefer existing `mise run`
+   tasks. In review mode, run commands only when the user requested execution or
+   repository policy requires it; otherwise identify the missing evidence.
    Otherwise use the applicable set: `cargo fmt --check`, strict workspace
    Clippy with `-D warnings`, nextest, and doctests. Adjust for documented feature
    exclusions or custom runners.
    **Complete when:** each applicable gate has a recorded pass, failure,
    unavailability, or explicit reason it was not run.
 
-6. **Report.** For reviews, lead with severity-ordered findings containing
+7. **Report.** For reviews, lead with severity-ordered findings containing
    `file:line`, impact, violated contract, and practical correction. For changes,
    state the convention followed, validation outcomes, and residual API,
    testing, unsafe, or performance risk.

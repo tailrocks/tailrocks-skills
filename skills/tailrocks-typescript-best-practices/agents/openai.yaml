@@ -2,3 +2,5 @@ interface:
   display_name: "TypeScript Best Practices"
   short_description: "Write strict, explicit TypeScript and React contracts"
   default_prompt: "Use $tailrocks-typescript-best-practices to review this TypeScript or React code for invalid states, hidden failures, unvalidated boundaries, mutation, async ownership, and missing tests."
+policy:
+  allow_implicit_invocation: false

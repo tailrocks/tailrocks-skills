@@ -1,7 +1,8 @@
 ---
 name: tailrocks-typescript-best-practices
-description: Write, review, refactor, or migrate Bun-based TypeScript 7 and React with exhaustive state, typed failure, validated boundaries, domain values, explicit mutation, safe async behavior, and durable tests.
+description: Apply strict Rust-inspired TypeScript 7 contracts when writing, reviewing, refactoring, or migrating TypeScript. Use for state, typed failure, runtime validation, readonly APIs, async ownership, and tests; use Bun and Oxc only, and keep review mode read-only.
 disable-model-invocation: true
+user-invocable: true
 ---
 
 # TypeScript Best Practices
@@ -15,15 +16,25 @@ tests; TypeScript 7 owns type checking; Oxc owns linting and formatting. Do not
 introduce alternative package managers, test runners, or TypeScript 6 compiler
 aliases.
 
+This skill owns language-level React purity, effect, and async contracts. Router,
+Query, server-function, SSR, shadcn, and application-layout decisions are
+framework policy outside this skill.
+
 ## Steps
 
-1. **Map the contract.** Inspect the smallest relevant package manifest,
+1. **Select the mode.** Classify the request as `review`, `write`, `refactor`, or
+   `migrate`. `review` is read-only. Other modes may mutate only the approved
+   scope. A non-Bun lockfile is migration evidence, not permission to run its
+   package manager.
+   **Complete when:** mutation permission and expected output are explicit.
+
+2. **Map the contract.** Inspect the smallest relevant package manifest,
    lockfile, TypeScript and lint configuration, module boundaries, domain types,
    adapters, React components, and tests.
    **Complete when:** the affected invariants, trust boundaries, failure owners,
    mutation aliases, async lifetimes, and compatibility constraints are explicit.
 
-2. **Load only relevant reference.** Choose by decision:
+3. **Load only relevant reference.** Choose by decision:
 
    | Decision | Reference |
    |---|---|
@@ -36,27 +47,29 @@ aliases.
    **Complete when:** every material design decision is governed by local policy
    or one loaded reference.
 
-3. **Design before implementation.** Model alternatives and failures first;
+4. **Design before implementation.** Model alternatives and failures first;
    parse external values from `unknown`; construct validated domain values at one
    boundary; expose readonly data and narrow capabilities; assign every promise
    and effect a visible owner.
    **Complete when:** callers cannot accidentally skip a meaningful state,
    failure, validation step, mutation boundary, or async cleanup.
 
-4. **Implement the smallest coherent change.** Preserve an established
+5. **Change only in mutation modes.** Preserve an established
    convention when it enforces the same safety property. Introduce a library,
    compiler flag, brand, `Result`, or state abstraction only when the changed
    contract requires it.
    **Complete when:** unsafe assertions are removed or sealed behind checked,
    documented adapters and unrelated behavior remains unchanged.
 
-5. **Test the contract.** Add runtime tests for behavior and boundary parsing;
-   add type tests only for high-value public constraints. Prefer repository
-   scripts and infer the package manager from the lockfile.
+6. **Test the contract proportionately.** Add runtime tests for behavior and
+   boundary parsing; add type tests only for high-value public constraints.
+   Prefer repository Bun scripts. If the repository is not yet Bun-owned, report
+   the migration blocker; never execute npm, pnpm, or yarn as a fallback.
    **Complete when:** every new variant, expected failure, parser policy, and
    externally visible async/mutation behavior has proportionate coverage.
 
-6. **Validate and report.** Run the applicable typecheck, lint, and focused test
+7. **Validate and report.** In mutation modes, run the applicable typecheck,
+   lint, and focused test
    commands. Report changed contracts, safety gained, exact outcomes, and
    residual escape hatches or migration risk.
    **Complete when:** each applicable gate is recorded as passed, failed,

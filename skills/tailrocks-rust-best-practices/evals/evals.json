@@ -1,0 +1,5 @@
+{"skill_name":"tailrocks-rust-best-practices","evals":[
+  {"id":1,"prompt":"Review crates/domain/src/order.rs for ownership, API, error, panic, unsafe, and test-contract problems. Do not edit files.","expected_output":"Severity-ordered findings without mutation.","files":[]},
+  {"id":2,"prompt":"Refactor this Rust parser so invalid states are unrepresentable while preserving public behavior.","expected_output":"A narrow contract-driven refactor with proportionate tests.","files":[]},
+  {"id":3,"prompt":"Make this Axum middleware production ready.","expected_output":"Identify HTTP policy as outside scope without pretending to invoke another manual skill.","files":[]}
+]}

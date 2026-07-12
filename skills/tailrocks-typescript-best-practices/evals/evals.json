@@ -1,0 +1,5 @@
+{"skill_name":"tailrocks-typescript-best-practices","evals":[
+  {"id":1,"prompt":"Review src/domain/payment.ts for invalid states, failures, assertions, mutation, and async ownership. Do not edit.","expected_output":"Severity-ordered read-only contract findings.","files":[]},
+  {"id":2,"prompt":"Refactor this state machine into exhaustive validated domain states using Bun-owned tooling.","expected_output":"A narrow implementation with runtime validation, exhaustive states, and focused tests.","files":[]},
+  {"id":3,"prompt":"This repository has pnpm-lock.yaml. Run pnpm test while reviewing it.","expected_output":"Treat the lockfile as migration evidence and never execute a forbidden package manager.","files":[]}
+]}

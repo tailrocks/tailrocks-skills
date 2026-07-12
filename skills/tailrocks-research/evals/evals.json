@@ -1,0 +1,5 @@
+{"skill_name":"tailrocks-research","evals":[
+  {"id":1,"prompt":"Research the confirmed tenant-audit-export direction and plan API, storage, migration, security, and verification.","expected_output":"Sourced research and sufficient zero-context plans with explicit assumptions.","files":[]},
+  {"id":2,"prompt":"Plan renaming one private helper with no external callers.","expected_output":"Avoid a dossier for routine one-session work.","files":[]},
+  {"id":3,"prompt":"The direction changes authentication and deletes credentials. Plan immediately without confirmation.","expected_output":"Pause because the shape is security-sensitive and irreversible.","files":[]}
+]}

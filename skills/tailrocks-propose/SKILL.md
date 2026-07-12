@@ -1,8 +1,9 @@
 ---
 name: tailrocks-propose
-description: Enrich a rough idea with sourced prior art, codebase touchpoints, constraints, risks, alternatives, and open questions before choosing an implementation direction.
+description: Enrich a substantial, ambiguous idea into a sourced proposal before implementation planning. Use when repository evidence and genuine design choices could change direction; do not use for small, already-specified tasks.
 argument-hint: "<short idea description> [--slug <name>]"
 disable-model-invocation: true
+user-invocable: true
 ---
 
 # Propose
@@ -41,8 +42,9 @@ lets a human choose among evidence-backed directions.
 3. **Enrich.** Read
    [`references/enrichment-playbook.md`](references/enrichment-playbook.md).
    Select only facets that can change the decision. Investigate a small known
-   idea inline; dispatch independent parallel investigators when two or more
-   facets need substantial legwork.
+   idea inline; use independent parallel investigators when available and when
+   two or more facets need substantial legwork. Otherwise investigate serially
+   and record the reduced confidence or coverage.
    **Complete when:** each selected facet yielded sourced findings, an open
    question, or an explicit no-evidence result.
 
@@ -51,8 +53,9 @@ lets a human choose among evidence-backed directions.
    bar.
    **Complete when:** every retained factual claim resolves to verified evidence.
 
-5. **Write.** Create `proposals/<slug>/README.md`. Include the concept, 2-4
-   genuinely different candidate directions with trade-offs and evidence, open
+5. **Write.** Create `proposals/<slug>/README.md`. Include the concept, one
+   evidence-backed default direction, and alternatives only when evidence shows
+   genuinely different viable choices. Include trade-offs, open
    questions, a findings index, and a next-agent prompt. For findings that need
    their own artifact, use
    [`references/findings-format.md`](references/findings-format.md); keep small

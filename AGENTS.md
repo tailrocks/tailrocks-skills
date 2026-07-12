@@ -15,10 +15,12 @@ this stack; they do not offer alternative frameworks, package managers, test
 runners, or component systems. Every setup targets the latest stable release and
 latest stable major available at execution time; older majors are unsupported.
 
-All skills are **manual-only**: every `SKILL.md` sets `disable-model-invocation:
-true`, so nothing auto-fires. Invoke each explicitly (in Claude Code,
-`/tailrocks-skills:<name>`). The trigger-rich `description` is the fallback for
-agents that lack that field.
+Skills are manual-only where the client supports per-skill policy. Claude Code,
+Kimi Code, GitHub Copilot, and VS Code use `disable-model-invocation: true` and
+`user-invocable: true`; Codex uses `agents/openai.yaml` with
+`allow_implicit_invocation: false`; Grok consumes the Claude-compatible surface.
+Gemini CLI, OpenCode, and Amp remain compatible but do not document the same
+portable per-skill automatic-invocation control.
 
 **Token usage is a design criterion.** Skills stay lean: scale effort (subagents,
 depth) to the task, prefer pointers (`file:line`/URL) over copied blocks, skip
@@ -108,21 +110,23 @@ read-only advisors and manual-only.
 ## Adding a Skill
 
 1. Create `skills/<name>/SKILL.md` with `name`, a trigger-rich, agent-neutral
-   `description`, and `disable-model-invocation: true` in the frontmatter.
-2. Put deep material under `skills/<name>/references/` and copy-ready assets under
+   `description`, `disable-model-invocation: true`, and `user-invocable: true`
+   in the frontmatter.
+2. Add `agents/openai.yaml` with `policy.allow_implicit_invocation: false`.
+3. Add `evals/evals.json` with realistic normal, boundary, and safety cases.
+4. Put deep material under `skills/<name>/references/` and copy-ready assets under
    `skills/<name>/templates/`; keep `SKILL.md` a concise router.
-3. Both plugin manifests auto-discover the new skill from `skills/` — no manifest
+5. Both plugin manifests auto-discover the new skill from `skills/` — no manifest
    edit needed. Add the skill to the tables in `README.md` and this file.
-4. List the skill in `tailrocks-marketplace` only if the plugin split changes;
+6. List the skill in `tailrocks-marketplace` only if the plugin split changes;
    the marketplace references this whole plugin, not individual skills.
 
 ## Validation
 
-Before publishing changes, validate both manifests parse:
+Before publishing changes, run the Bun-native skill and manifest validator:
 
 ```sh
-python3 -m json.tool .claude-plugin/plugin.json >/dev/null
-python3 -m json.tool .codex-plugin/plugin.json >/dev/null
+bun run scripts/validate-skills.ts
 ```
 
 Load the plugin locally in Claude Code:

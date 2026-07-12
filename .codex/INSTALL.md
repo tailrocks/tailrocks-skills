@@ -1,57 +1,54 @@
-# Installing tailrocks-skills for Codex
+# Installing tailrocks-skills across agents
 
-`tailrocks-skills` is a cross-agent skill collection. Codex (and Amp, OpenCode,
-Kimi) consume the same `skills/<name>/` sources that the Claude Code plugin does.
+The shared `skills/<name>/` directories follow the Agent Skills specification.
+Client-specific metadata adds invocation controls without changing the shared
+Markdown bodies.
 
-## Option 1: The `skills` CLI (recommended)
+## Canonical shared install
 
-Codex, Amp, OpenCode, and Kimi all read `~/.agents/skills/`. Install the whole
-collection there with the [`skills`](https://www.npmjs.com/package/skills) CLI:
-
-```sh
-bunx --bun skills add "tailrocks/tailrocks-skills" -s '*' -a codex --global --yes
-```
-
-`-s '*'` installs every skill in the collection; `--global` writes the canonical
-`~/.agents/skills/<skill>/` tree that OpenCode and Kimi also read. Codex
-additionally picks up `.codex-plugin/plugin.json` through its `/plugins` flow. Pin
-to a release tag in production:
+Use Bun to run the installer and select every detected target agent:
 
 ```sh
-bunx --bun skills add "tailrocks/tailrocks-skills#vX.Y.Z" -s '*' -a codex --global --yes
+bunx --bun skills add "tailrocks/tailrocks-skills#vX.Y.Z" -s '*' --global
 ```
 
-Install a single skill instead of all with `-s tailrocks-rust-project-setup`.
-
-## Option 2: Reference from a Project
-
-Clone the repository alongside the target project:
+Or install deterministically without another package manager:
 
 ```sh
-git clone https://github.com/tailrocks/tailrocks-skills.git
+git clone --branch vX.Y.Z https://github.com/tailrocks/tailrocks-skills.git
+mkdir -p ~/.agents/skills
+cp -R tailrocks-skills/skills/* ~/.agents/skills/
 ```
 
-Add a note to the target project's `AGENTS.md`:
+The generic `~/.agents/skills/` location is supported by Codex, Grok Build,
+Kimi Code, OpenCode, Gemini CLI, GitHub Copilot, and Amp. Restart or reload the
+client after installation when its documentation requires it.
 
-```markdown
-## Tailrocks Skills
+## Native locations
 
-Rust guidance is available in `../tailrocks-skills/skills/`. When asked to write
-or review Rust code, follow `tailrocks-rust-best-practices/SKILL.md`; when scaffolding or
-auditing project structure and tooling, follow `tailrocks-rust-project-setup/SKILL.md`.
-```
+| Client | Project | User | Invocation |
+|---|---|---|---|
+| Claude Code | Plugin or `.claude/skills/` | `~/.claude/skills/` | `/tailrocks-skills:<name>` |
+| Codex | `.agents/skills/` | `~/.agents/skills/` | `$<name>` |
+| Grok Build | `.grok/skills/` or Claude plugin | `~/.grok/skills/` or `~/.agents/skills/` | `/<name>` |
+| Kimi Code | `.kimi-code/skills/` or `.agents/skills/` | `$KIMI_CODE_HOME/skills/` or `~/.agents/skills/` | `/skill:<name>` |
+| OpenCode | `.opencode/skills/` or `.agents/skills/` | `~/.config/opencode/skills/` or `~/.agents/skills/` | Ask it to use the named skill |
+| Gemini CLI | `.gemini/skills/` or `.agents/skills/` | `~/.gemini/skills/` | `/skills`, then activate |
+| GitHub Copilot | `.github/skills/` or `.agents/skills/` | `~/.copilot/skills/` or `~/.agents/skills/` | `/<name>` |
+| Amp | `.agents/skills/` | `~/.config/agents/skills/` or `~/.agents/skills/` | `skill: invoke` |
 
-## Option 3: Symlink into Codex Skills
+## Invocation guarantees
 
-```sh
-mkdir -p .codex/skills
-ln -s /path/to/tailrocks-skills/skills/tailrocks-rust-best-practices .codex/skills/tailrocks-rust-best-practices
-ln -s /path/to/tailrocks-skills/skills/tailrocks-rust-project-setup  .codex/skills/tailrocks-rust-project-setup
-```
+- Claude Code, Kimi Code, and GitHub Copilot honor
+  `disable-model-invocation: true` and `user-invocable: true`.
+- Codex honors `policy.allow_implicit_invocation: false` in
+  `agents/openai.yaml`.
+- Grok documents full Claude Code compatibility and reads Claude plugins and
+  skill directories.
+- Gemini CLI, OpenCode, and Amp do not document a portable per-skill automatic
+  invocation disable. The skills remain usable there, but the host may offer
+  them to the model automatically.
 
-## Option 4: Copy into Codex Home
-
-```sh
-mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
-cp -R /path/to/tailrocks-skills/skills/* "${CODEX_HOME:-$HOME/.codex}/skills/"
-```
+Do not add client-specific commands, tool names, or directory assumptions to a
+`SKILL.md` body. Keep such integration metadata and installation guidance
+outside the shared skill source.

@@ -1,7 +1,8 @@
 ---
 name: tailrocks-tanstack-project-setup
-description: Scaffold, migrate, or audit a Bun-only TanStack Start application with TypeScript 7, React, Router, Query, shadcn/ui, Tailwind CSS v4, Oxc, Bun tests, exact versions, and CI gates.
+description: Scaffold, migrate, audit, or remediate the Tailrocks Bun/TanStack Start application baseline. Use for project layout, exact versions, Router and Query ownership, server boundaries, shadcn, Tailwind, Oxc, tests, and CI; audit mode is read-only.
 disable-model-invocation: true
+user-invocable: true
 ---
 
 # TanStack Project Setup
@@ -9,6 +10,8 @@ disable-model-invocation: true
 Use one frontend stack: Bun, TypeScript 7, TanStack Start/Router/Query, React,
 shadcn/ui, Tailwind CSS v4, and Oxc. Alternative package managers, frameworks,
 component systems, linters, formatters, and test runners are outside scope.
+This skill owns framework and project integration; general TypeScript domain and
+API contracts remain language policy and are not duplicated here.
 
 ## Copy-ready baseline
 
@@ -25,45 +28,63 @@ component systems, linters, formatters, and test runners are outside scope.
 | `dependency-cruiser.config.mjs` | `dependency-cruiser.config.mjs` |
 | `knip.json` | `knip.json` |
 
-Versions are a compatible snapshot. Resolve current versions as one stack,
-pin every direct package exactly, and commit `bun.lock` with the change.
-Read [`version-policy.md`](references/version-policy.md) first and update its
-dated table whenever any template version changes.
+Apply [`version-policy.md`](references/version-policy.md) before copying the
+baseline; it owns version selection, exact pins, and lockfile freshness.
+
+Resolve the current official release channel before work. Prefer stable releases.
+When a required framework remains pre-1.0, use its latest official release only
+when the repository explicitly accepts that channel, pin it exactly, and record
+the upgrade trigger. "Latest" never means an unexamined prerelease.
+
+Use `scripts/resolve-package-versions.ts <package>...` through Bun for registry
+evidence before changing exact pins. Verify peer compatibility and release status
+in each project's official documentation.
+
+## Modes
+
+- `scaffold`: create a new application baseline.
+- `audit`: inspect and report gaps without editing or installing.
+- `migrate`: move an existing application to the house stack in never-broken slices.
+- `remediate`: close explicitly approved audit gaps.
 
 ## Steps
 
-1. **Scaffold.** Use the current official TanStack CLI through Bun and select the
+1. **Select the mode.** Confirm mutation permission and expected output. In
+   `audit`, stop after the gap report.
+   **Complete when:** the mode is explicit.
+
+2. **Scaffold when requested.** Use the current official TanStack CLI through Bun and select the
    Start template. Reconcile generated structure with
    [`stack-and-layout.md`](references/stack-and-layout.md).
    **Complete when:** generated route plumbing is intact and each module has a
    route, feature, domain, server, client, adapter, or UI owner.
 
-2. **Install the baseline.** Copy templates, run `bun install`, initialize
+3. **Install the baseline in mutation modes.** Copy templates, run `bun install`, initialize
    shadcn through the pinned CLI, and read
    [`tooling-and-quality.md`](references/tooling-and-quality.md).
    **Complete when:** exact packages, Bun version, TypeScript, Oxc, Oxfmt,
    Tailwind, tests, and CI resolve from committed config and `bun.lock`.
 
-3. **Establish boundaries.** Read
+4. **Establish or audit boundaries.** Read
    [`boundaries-and-data.md`](references/boundaries-and-data.md). Validate server
    function input, environment, route/search params, forms, and external
    responses. Mark execution environment explicitly.
    **Complete when:** secrets cannot reach clients and every untrusted value
    crosses one checked boundary.
 
-4. **Assign data ownership.** Router owns route lifecycle; Query owns shared,
+5. **Assign or audit data ownership.** Router owns route lifecycle; Query owns shared,
    interactive, invalidated, or background-refetched server state. Share one
    query-options factory between loader preload and components.
    **Complete when:** every remote datum has one cache owner, stable keys,
    semantic freshness, and an invalidation path.
 
-5. **Build UI from shadcn source.** Read
+6. **Build or audit UI from shadcn source.** Read
    [`shadcn-ui.md`](references/shadcn-ui.md). Inspect project info, search the
    registry, read component docs, preview changes, then add/compose components.
    **Complete when:** UI uses installed shadcn components, semantic tokens,
    accessible composition, project aliases, and reviewed registry source.
 
-6. **Gate.** Run format check, TS7 typecheck, type-aware lint, architecture,
+7. **Gate mutation modes.** Run format check, TS7 typecheck, type-aware lint, architecture,
    unused-code/dependency hygiene, Bun tests, and a production build through
    package scripts.
    **Complete when:** each gate has a recorded pass, failure, unavailability, or

@@ -1,0 +1,5 @@
+{"skill_name":"tailrocks-axum-best-practices","evals":[
+  {"id":1,"prompt":"Review this Axum router and Tower stack. Do not edit.","expected_output":"A read-only transport review covering rejections, order, limits, lifecycle, and tests.","files":[]},
+  {"id":2,"prompt":"Refactor these handlers into thin HTTP adapters without changing response contracts.","expected_output":"A narrow change with stable HTTP contract tests.","files":[]},
+  {"id":3,"prompt":"Improve this Rust iterator implementation.","expected_output":"Decline Axum-specific work because no HTTP boundary exists.","files":[]}
+]}

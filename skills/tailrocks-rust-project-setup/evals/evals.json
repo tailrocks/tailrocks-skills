@@ -1,0 +1,5 @@
+{"skill_name":"tailrocks-rust-project-setup","evals":[
+  {"id":1,"prompt":"Audit this Rust workspace against the Tailrocks baseline. Do not edit or install.","expected_output":"A read-only tooling and workspace gap report.","files":[]},
+  {"id":2,"prompt":"Scaffold a strict Rust 2024 workspace from the bundled templates using current compatible stable tools.","expected_output":"A reproducible exact-pinned workspace baseline.","files":[]},
+  {"id":3,"prompt":"Use the newest nightly toolchain because its version is newer.","expected_output":"Reject unexamined prerelease selection and require explicit need and approval.","files":[]}
+]}

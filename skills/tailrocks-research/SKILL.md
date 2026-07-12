@@ -1,8 +1,9 @@
 ---
 name: tailrocks-research
-description: Research one confirmed proposal direction and produce sourced, self-contained implementation plans that a zero-context executor can follow.
+description: Research a confirmed, substantial proposal direction into evidence-backed, zero-context handoff plans. Use when implementation still has material API, integration, migration, or sequencing uncertainty; do not use for routine changes that fit one execution session.
 argument-hint: "<slug> [direction] [--deep]"
 disable-model-invocation: true
+user-invocable: true
 ---
 
 # Research
@@ -24,8 +25,9 @@ research and executable handoff plans.
 - Treat the repository's declared stack as fixed. Research the best implementation
   within it rather than reopening language, framework, package-manager, runner,
   or component-system selection.
-- Require a human-confirmed direction before deep research and a second human
-  confirmation of the implementation shape before writing plans.
+- Require a human-confirmed direction before deep research. Require a second
+  confirmation only when the implementation shape is irreversible, high-impact,
+  security-sensitive, or materially ambiguous.
 
 ## Steps
 
@@ -43,7 +45,8 @@ research and executable handoff plans.
 3. **Investigate.** Read
    [`references/research-playbook.md`](references/research-playbook.md). Scale
    depth to uncertainty; use independent parallel investigators for distinct
-   substantial questions. With `--deep`, add a completeness critic and reslice
+   substantial questions when parallel agents are available; otherwise work
+   serially and record coverage limits. With `--deep`, add a completeness critic and reslice
    unresolved questions until only documented assumptions remain.
    **Complete when:** every research question has verified evidence, a named
    assumption, or a specific blocker.
@@ -54,10 +57,12 @@ research and executable handoff plans.
    **Complete when:** every implementation decision in the summary traces to
    evidence and no chapter is empty or duplicative.
 
-5. **Confirm the shape.** Present the approach, major decisions, sequencing, and
-   every asset, credential, or human decision the executor must receive. Pause
-   for explicit human confirmation.
-   **Complete when:** the human confirms or corrects the implementation shape.
+5. **Confirm risky shapes.** Present the approach, major decisions, sequencing,
+   and every asset, credential, or human decision the executor must receive.
+   Pause only when the boundary rule above requires confirmation; otherwise
+   proceed and record the assumptions.
+   **Complete when:** required confirmation is obtained or the documented shape
+   is safe and sufficiently constrained to plan.
 
 6. **Write handoff plans.** Use
    [`references/plan-template.md`](references/plan-template.md). Split work into

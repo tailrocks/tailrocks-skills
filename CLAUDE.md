@@ -8,6 +8,8 @@ manifest is `.codex-plugin/plugin.json`. Skills live under `skills/<name>/` and
 are auto-discovered from that directory by both manifests.
 
 Current skills: `tailrocks-rust-best-practices`, `tailrocks-rust-project-setup`,
+`tailrocks-axum-best-practices`, `tailrocks-typescript-best-practices`,
+`tailrocks-tanstack-project-setup`, `tailrocks-code-health`,
 `tailrocks-propose`, and `tailrocks-research`.
 
 Use `claude --plugin-dir .` from this repository root to test the plugin locally.
