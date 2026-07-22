@@ -13,8 +13,7 @@ transitions, or asynchronous work.
 - Let events own user-triggered work. Let effects synchronize with external
   systems and return cleanup that exactly reverses setup.
 - Keep effect dependencies truthful. Stabilize a value only when identity is part
-  of the contract; moving code or data to its real owner is preferable to memo
-  cargo cults.
+  of the contract; moving code or data to its real owner beats memo cargo cults.
 - Use stable domain keys for lists. An array index is valid only for a truly
   static sequence with no insertion, deletion, sorting, or stateful children.
 - Represent loading, empty, success, and recoverable failure explicitly. Error

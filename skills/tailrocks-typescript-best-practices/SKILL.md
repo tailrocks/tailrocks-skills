@@ -14,20 +14,18 @@ ownership visible. Borrow Rust's modeling discipline without claiming Rust's
 ownership or runtime guarantees.
 
 The tooling stack is fixed: Bun owns installation, scripts, runtime helpers, and
-tests; TypeScript 7 owns type checking; Oxc owns linting and formatting. Do not
-introduce alternative package managers, test runners, or TypeScript 6 compiler
-aliases.
+tests; TypeScript 7 owns type checking; Oxc owns linting and formatting. No
+alternative package managers, test runners, or TypeScript 6 compiler aliases.
 
-This skill owns language-level React purity, effect, and async contracts. Router,
-Query, server-function, SSR, shadcn, and application-layout decisions are
-framework policy outside this skill.
+This skill owns language-level React purity, effect, and async contracts.
+Router, Query, server-function, SSR, shadcn, and application-layout decisions
+are framework policy outside this skill.
 
 ## Steps
 
-1. **Select the mode.** Classify the request as `review`, `write`, `refactor`, or
-   `migrate`. `review` is read-only. Other modes may mutate only the approved
-   scope. A non-Bun lockfile is migration evidence, not permission to run its
-   package manager.
+1. **Select the mode.** Classify as `review`, `write`, `refactor`, or `migrate`.
+   `review` is read-only; other modes mutate only the approved scope. A non-Bun
+   lockfile is migration evidence, not permission to run its package manager.
    **Complete when:** mutation permission and expected output are explicit.
 
 2. **Map the contract.** Inspect the smallest relevant package manifest,
@@ -50,30 +48,28 @@ framework policy outside this skill.
    or one loaded reference.
 
 4. **Design before implementation.** Model alternatives and failures first;
-   parse external values from `unknown`; construct validated domain values at one
-   boundary; expose readonly data and narrow capabilities; assign every promise
-   and effect a visible owner.
+   parse external values from `unknown`; construct validated domain values at
+   one boundary; expose readonly data and narrow capabilities; give every
+   promise and effect a visible owner.
    **Complete when:** callers cannot accidentally skip a meaningful state,
    failure, validation step, mutation boundary, or async cleanup.
 
-5. **Change only in mutation modes.** Preserve an established
-   convention when it enforces the same safety property. Introduce a library,
-   compiler flag, brand, `Result`, or state abstraction only when the changed
-   contract requires it.
+5. **Change only in mutation modes.** Preserve an established convention when it
+   enforces the same safety property. Introduce a library, compiler flag, brand,
+   `Result`, or state abstraction only when the changed contract requires it.
    **Complete when:** unsafe assertions are removed or sealed behind checked,
    documented adapters and unrelated behavior remains unchanged.
 
-6. **Test the contract proportionately.** Add runtime tests for behavior and
-   boundary parsing; add type tests only for high-value public constraints.
-   Prefer repository Bun scripts. If the repository is not yet Bun-owned, report
-   the migration blocker; never execute npm, pnpm, or yarn as a fallback.
+6. **Test the contract proportionately.** Runtime tests for behavior and
+   boundary parsing; type tests only for high-value public constraints. Prefer
+   repository Bun scripts. If the repository is not yet Bun-owned, report the
+   migration blocker; never execute npm, pnpm, or yarn as a fallback.
    **Complete when:** every new variant, expected failure, parser policy, and
    externally visible async/mutation behavior has proportionate coverage.
 
 7. **Validate and report.** In mutation modes, run the applicable typecheck,
-   lint, and focused test
-   commands. Report changed contracts, safety gained, exact outcomes, and
-   residual escape hatches or migration risk.
+   lint, and focused test commands. Report changed contracts, safety gained,
+   exact outcomes, and residual escape hatches or migration risk.
    **Complete when:** each applicable gate is recorded as passed, failed,
    unavailable, or intentionally unrun with a reason.
 
@@ -82,8 +78,8 @@ framework policy outside this skill.
 Prioritize unvalidated external data, representable invalid states, hidden
 recoverable failure, unsound guards/assertions, unowned async work, invisible
 mutation, non-exhaustive variants, unchecked lookup, and API drift. Lead with
-severity-ordered `file:line` findings; defer style-only churn while safety defects
-remain.
+severity-ordered `file:line` findings; defer style-only churn while safety
+defects remain.
 
 ## Final gate
 

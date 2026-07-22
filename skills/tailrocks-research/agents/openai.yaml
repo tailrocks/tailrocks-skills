@@ -1,6 +1,6 @@
 interface:
   display_name: "Research"
-  short_description: "Deep-research a direction into a detailed handoff plan"
-  default_prompt: "Use $tailrocks-research on a substantial confirmed proposal direction to resolve material uncertainty and write sufficient zero-context handoff plans."
+  short_description: "Deep-research a question or roadmap item into a reusable topic"
+  default_prompt: "Use $tailrocks-research on this question or roadmap item to produce a vetted, sourced research topic under research/."
 policy:
   allow_implicit_invocation: false

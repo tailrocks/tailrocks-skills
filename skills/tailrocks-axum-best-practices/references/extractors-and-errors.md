@@ -1,7 +1,7 @@
 # Extractors and Errors
 
-Use typed `Path`, `Query`, `State`, headers, and `Json` extractors. Put body
-extractors last because request bodies can be consumed once. Wrap external IDs,
+Use typed `Path`, `Query`, `State`, headers, and `Json` extractors. Body
+extractors go last — request bodies can be consumed once. Wrap external IDs,
 pagination, auth, and validated JSON in custom extractors when multiple routes
 share the contract.
 
@@ -14,7 +14,7 @@ Define a closed `ApiError` adapter over domain/application failures. Its
 `IntoResponse` implementation maps each variant to a stable status, machine code,
 safe message, details shape, and request ID. Preserve unexpected sources for
 tracing while returning an opaque internal error. Log an error once at the layer
-that has the full context; avoid duplicate handler/middleware logs.
+with full context; no duplicate handler/middleware logs.
 
 Handler success types state the intended status explicitly. Use separate request
 and response DTOs so database/domain representation never becomes an accidental

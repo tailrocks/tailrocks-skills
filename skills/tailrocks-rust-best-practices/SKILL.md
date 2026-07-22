@@ -60,8 +60,8 @@ must still preserve the Rust contracts below.
 6. **Validate proportionately.** In mutation modes, prefer existing `mise run`
    tasks. In review mode, run commands only when the user requested execution or
    repository policy requires it; otherwise identify the missing evidence.
-   Otherwise use the applicable set: `cargo fmt --check`, strict workspace
-   Clippy with `-D warnings`, nextest, and doctests. Adjust for documented feature
+   Default set: `cargo fmt --check`, strict workspace Clippy with
+   `-D warnings`, nextest, and doctests. Adjust for documented feature
    exclusions or custom runners.
    **Complete when:** each applicable gate has a recorded pass, failure,
    unavailability, or explicit reason it was not run.

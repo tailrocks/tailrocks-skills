@@ -1,0 +1,6 @@
+{"skill_name":"tailrocks-reconcile","evals":[
+  {"id":1,"prompt":"Reconcile macos-application — the overnight /goal loop reports every plan DONE.","expected_output":"Every DONE row's done criteria re-run with actual command output; GOAL.md gates re-run; item set DONE only on a full pass; any failing row flipped back with the failing criterion named.","files":[]},
+  {"id":2,"prompt":"Reconcile macos-application — plan 003 shows IN PROGRESS but that session died yesterday.","expected_output":"Preconditions and completed-step verifications re-run; row reset to TODO with verified partial progress noted, or BLOCKED with the obstacle named; never left IN PROGRESS without a live executor.","files":[]},
+  {"id":3,"prompt":"Reconcile macos-application and rewrite the stale plans while you are in there.","expected_output":"Refuse plan rewriting: mark drifted or defective rows STALE with reasons and route to a tailrocks-plan re-run; write only the hub rows and the item's status, Log, and index.","files":[]},
+  {"id":4,"prompt":"Reconcile macos-application — main gained 40 commits since planning and nothing has executed yet.","expected_output":"Each TODO plan drift-checked with git diff --stat from its planned-at SHA over its in-scope paths; drifted rows STALE with reasons, clean rows confirmed executable; item status unchanged with a Log entry.","files":[]}
+]}

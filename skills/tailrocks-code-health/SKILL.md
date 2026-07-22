@@ -16,9 +16,9 @@ not a mandate to install every quality program.
 
 ## Steps
 
-1. **Select the mode and debt class.** Use `audit` for read-only measurement,
-   `establish` to create an approved ratchet, or `tighten` to lower an existing
-   bound. Select only debt whose growth would represent a named failure class.
+1. **Select the mode and debt class.** `audit` measures read-only; `establish`
+   creates an approved ratchet; `tighten` lowers an existing bound. Select only
+   debt whose growth would represent a named failure class.
    **Complete when:** mutation permission, metric, owner, and prevented failure
    are explicit.
 
@@ -62,9 +62,9 @@ not a mandate to install every quality program.
    **Complete when:** latest stable majors are continuously detected and an older
    major cannot remain without a visible failing blocker.
 
-8. **Enforce the selected ratchet.** Run its provider. Fail when debt grows and when measured debt is
-   below its bound until the bound is tightened. Delete ledger entries when debt
-   disappears.
+8. **Enforce the selected ratchet.** Run its provider. Fail when debt grows and
+   when measured debt is below its bound until the bound is tightened. Delete
+   ledger entries when debt disappears.
    **Complete when:** baselines are honest snapshots, improvements are monotonic,
    and stale generous budgets cannot survive.
 

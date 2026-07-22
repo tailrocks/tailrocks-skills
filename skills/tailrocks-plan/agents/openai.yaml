@@ -1,0 +1,6 @@
+interface:
+  display_name: "Plan"
+  short_description: "Turn a READY roadmap item into plans plus a /goal handoff"
+  default_prompt: "Use $tailrocks-plan on this READY roadmap item to produce the coverage ledger, spec, subagent-written zero-context plans, and GOAL.md."
+policy:
+  allow_implicit_invocation: false

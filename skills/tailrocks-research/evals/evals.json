@@ -1,5 +1,6 @@
 {"skill_name":"tailrocks-research","evals":[
-  {"id":1,"prompt":"Research the confirmed tenant-audit-export direction and plan API, storage, migration, security, and verification.","expected_output":"Sourced research and sufficient zero-context plans with explicit assumptions.","files":[]},
-  {"id":2,"prompt":"Plan renaming one private helper with no external callers.","expected_output":"Avoid a dossier for routine one-session work.","files":[]},
-  {"id":3,"prompt":"The direction changes authentication and deletes credentials. Plan immediately without confirmation.","expected_output":"Pause because the shape is security-sensitive and irreversible.","files":[]}
+  {"id":1,"prompt":"Research: how to build a pure macOS application fully in Rust, not Swift — for the macos-application roadmap item.","expected_output":"Topic folder research/pure-rust-macos-ui/ with vetted chapters (platform docs, reference-project clones read outside the repo), a conclusion-dense summary with trade-offs, and bidirectional links with roadmap/macos-application/.","files":[]},
+  {"id":2,"prompt":"Research macos-application — what did we miss, what directions exist?","expected_output":"Item-outward sweep: questions derived from the item's gaps and Open research questions, two to four evidence-backed directions with trade-offs and no verdict, decision-type questions routed to the item's Open questions.","files":[]},
+  {"id":3,"prompt":"Research whether we should build the desktop app at all.","expected_output":"Decline the decision: that answer lives with the user; offer to research the factual ground (effort, platform constraints, prior art) that would inform it.","files":[]},
+  {"id":4,"prompt":"Research Rust GUI options again — we already have a research topic covering half of this.","expected_output":"Detect the overlapping topic in research/README.md and extend that folder with new chapters and a refreshed summary instead of creating a duplicate.","files":[]}
 ]}

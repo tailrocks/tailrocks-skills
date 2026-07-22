@@ -1,7 +1,7 @@
 {
   "name": "tailrocks-skills",
-  "version": "0.5.1",
-  "description": "Cross-agent Tailrocks skills for strict Rust, Axum, TypeScript, TanStack, code-health ratchets, proposals, and research",
+  "version": "0.10.0",
+  "description": "Cross-agent Tailrocks skills for strict Rust, Axum, TypeScript, TanStack, code-health ratchets, and the roadmap delivery pipeline (idea, brainstorm, research, record-decision, finalize, plan, reconcile, /goal handoff)",
   "author": {
     "name": "tailrocks",
     "url": "https://github.com/tailrocks"
@@ -28,17 +28,26 @@
     "code-review",
     "root-cause",
     "correctness",
-    "proposal",
-    "research"
+    "research",
+    "roadmap",
+    "planning",
+    "goal"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Tailrocks Skills",
     "shortDescription": "Strict Rust and TypeScript engineering workflows",
-    "longDescription": "Tailrocks workflows for Rust, Axum, TypeScript, TanStack, correctness-first remediation, code-health ratchets, proposals, and research.",
+    "longDescription": "Tailrocks workflows for Rust, Axum, TypeScript, TanStack, correctness-first remediation, code-health ratchets, and the roadmap delivery pipeline from idea capture to /goal handoff.",
     "developerName": "Tailrocks",
     "category": "Developer Tools",
-    "capabilities": ["Review", "Scaffold", "Remediate", "Research"],
+    "capabilities": [
+      "Review",
+      "Scaffold",
+      "Remediate",
+      "Research",
+      "Roadmap",
+      "Plan"
+    ],
     "websiteURL": "https://github.com/tailrocks/tailrocks-skills",
     "defaultPrompt": [
       "Review this Rust module.",

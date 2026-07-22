@@ -82,32 +82,61 @@ automated latest-version enforcement.
 
 Skill definition: `skills/tailrocks-code-health/SKILL.md`
 
-### tailrocks-propose
+### The delivery family — roadmap-driven pipeline
 
-Turn a rough idea into an enriched, evidence-backed proposal. Recon plus parallel
-subagents gather prior art, codebase touchpoints, constraints, risks, and
-alternative directions into a per-idea folder (`proposals/<slug>/`) of sourced
-findings, candidate directions, and open questions. Read-only advisor — never
-writes code or the final plan; hands back for the human to choose a direction.
+Seven skills drive an idea from capture through autonomous execution and
+back to verified truth. Artifacts:
+roadmap items in `roadmap/<slug>/README.md` (status machine: DRAFT → SHAPING
+→ READY → PLANNED → IN EXECUTION → DONE, plus PARKED), standing research
+topics in `research/<topic>/` (independent of items, many-to-many links),
+implementation packages in `plans/<slug>/` (coverage ledger, OpenSpec-grammar
+spec, zero-context plans, GOAL.md for the /goal command of Claude Code,
+Codex, or Grok).
 
-Skill definition: `skills/tailrocks-propose/SKILL.md`
+- **tailrocks-idea** — capture a raw idea as a DRAFT item with a
+  content-derived slug and an index row. Capture only; gaps stay visibly
+  empty. Definition: `skills/tailrocks-idea/SKILL.md`
+- **tailrocks-brainstorm** — the shaping interview: decision-tree frontier,
+  one question at a time (numbered rounds with `--batch`), recommended answer
+  on every question, decisions asked while facts are looked up, every answer
+  written into the item immediately. Sets SHAPING.
+  Definition: `skills/tailrocks-brainstorm/SKILL.md`
+- **tailrocks-research** — deep research into reusable `research/<topic>/`
+  folders: parallel investigators write vetted sourced chapters; a question
+  invocation answers it deeply, a roadmap-slug invocation sweeps the item
+  outward (missed angles, candidate directions with trade-offs, no verdicts).
+  Extends overlapping topics instead of forking.
+  Definition: `skills/tailrocks-research/SKILL.md`
+- **tailrocks-record-decision** — record one user decision: validate against settled
+  ground, date it with its reason, propagate through the item, reopen
+  READY/PLANNED items and mark stale plan rows when intent changes.
+  Definition: `skills/tailrocks-record-decision/SKILL.md`
+- **tailrocks-finalize** — the closing interview and the only source of
+  READY: screens collected as confirmed schematic mockups, flows walked,
+  every open question resolved, deferred with a reason, or reclassified as
+  researchable; READY only when the full readiness checklist passes.
+  Definition: `skills/tailrocks-finalize/SKILL.md`
+- **tailrocks-plan** — READY item → `plans/<slug>/`: coverage ledger, gap
+  research landed as reusable topics, OpenSpec-grammar spec with screen
+  contracts and a must-not registry, one zero-context plan per manifest item
+  (each written by its own subagent, cold-reviewed by fresh-context
+  reviewers), and GOAL.md — machine-checkable bounded /goal condition plus
+  kickoff and resume prompts. Sets PLANNED.
+  Definition: `skills/tailrocks-plan/SKILL.md`
+- **tailrocks-reconcile** — execution truth-sync: re-verify DONE rows by
+  re-running their done criteria, reset dead-session rows, re-test
+  BLOCKED reasons, drift-check TODO plans against HEAD, mark stale rows,
+  and true up the item's status. Run it when a /goal loop finishes,
+  stalls, or the repository moved on.
+  Definition: `skills/tailrocks-reconcile/SKILL.md`
 
-### tailrocks-research
+Grilling mechanics descend from Matt Pocock's `grilling` family; the plan
+template and the reconcile stage descend from the shadcn `improve` skill.
+All seven write only their own artifacts (`roadmap/`, `research/`,
+`plans/`) and never touch source.
 
-Take a confirmed proposal direction and produce the deliverable: deep, sourced
-research plus incredibly detailed, self-contained handoff plans a zero-context
-executor can follow. Writes `research/` evidence and `plans/NNN-*.md` (handoff
-template) into the same per-idea folder; pauses for a human confirm on the
-implementation shape before writing plans. Read-only on source.
 
-Skill definition: `skills/tailrocks-research/SKILL.md`
-
-The `tailrocks-propose → tailrocks-research` pair is a workflow: `tailrocks-propose`
-enriches broadly and stops; you clarify direction in conversation;
-`tailrocks-research` goes deep on the one direction and writes the plan. Both are
-read-only advisors and manual-only.
-
-### tailrocks-correctness-first
+### tailrocks-remediate
 
 Analyze or remediate a proven defect, inconsistency, violated invariant, or
 known-wrong state. Derives a greenfield architecture that prevents the complete
@@ -115,7 +144,7 @@ defect class and pursues that result without considering price, duration, effort
 implementation size, ROI, or sunk cost. Rejects speculative generality and
 permits urgent containment without calling it complete remediation.
 
-Skill definition: `skills/tailrocks-correctness-first/SKILL.md`
+Skill definition: `skills/tailrocks-remediate/SKILL.md`
 
 ## Adding a Skill
 
