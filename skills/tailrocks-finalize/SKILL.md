@@ -1,5 +1,5 @@
 ---
-name: tailrocks-grill-roadmap
+name: tailrocks-finalize
 description: >-
   Use only when the user explicitly requests this skill. Finalize a SHAPING roadmap item through a closing interview: collect every screen and flow, resolve or classify every open question, verify the readiness checklist, and set the item READY for planning. The only skill that grants READY. Do not use on a raw DRAFT (tailrocks-brainstorm first) or without a live human.
 argument-hint: "<roadmap-slug> [--batch]"
@@ -8,7 +8,7 @@ license: Apache-2.0
 user-invocable: true
 ---
 
-# Grill Roadmap
+# Finalize
 
 The closing interview. Where `tailrocks-brainstorm` opened the item up, this
 skill drives it shut: every screen described or mocked, every flow walked,

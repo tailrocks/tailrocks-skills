@@ -1,6 +1,6 @@
 # Readiness and the Closing Interview
 
-How `tailrocks-grill-roadmap` drives a roadmap item to READY: the closing
+How `tailrocks-finalize` drives a roadmap item to READY: the closing
 interview's mechanics, the screen-collection discipline, and the readiness
 checklist that is the only gate to READY.
 

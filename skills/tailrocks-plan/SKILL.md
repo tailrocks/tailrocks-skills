@@ -1,7 +1,7 @@
 ---
 name: tailrocks-plan
 description: >-
-  Use only when the user explicitly requests this skill. Convert a READY roadmap item into the full implementation package under plans/<slug>/: coverage ledger, gap-filling research, an OpenSpec-grammar spec, one zero-context plan per work item — each written by its own subagent and cold-reviewed — plus a copy-pasteable GOAL.md for the /goal command of Claude Code, Codex, or Grok. Do not use on unshaped items (brainstorm and grill-roadmap first) or for routine one-session changes.
+  Use only when the user explicitly requests this skill. Convert a READY roadmap item into the full implementation package under plans/<slug>/: coverage ledger, gap-filling research, an OpenSpec-grammar spec, one zero-context plan per work item — each written by its own subagent and cold-reviewed — plus a copy-pasteable GOAL.md for the /goal command of Claude Code, Codex, or Grok. Do not use on unshaped items (brainstorm and finalize first) or for routine one-session changes.
 argument-hint: "<roadmap-slug> [additional context] [--deep]"
 disable-model-invocation: true
 license: Apache-2.0
@@ -113,7 +113,7 @@ together is possible on explicit request but recorded as the exception.
 ## Re-runs
 
 When `plans/<slug>/` exists, reconcile instead of duplicating: refresh
-`STALE` rows (marked by `tailrocks-decision`) against the updated item,
+`STALE` rows (marked by `tailrocks-record-decision`) against the updated item,
 keep numbering monotonic, mark superseded plans stale rather than deleting,
 record spec deltas per the spec format, and regenerate GOAL.md last.
 

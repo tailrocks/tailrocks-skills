@@ -20,31 +20,32 @@ and component systems are outside scope.
 | `tailrocks-typescript-best-practices` | Write, review, and refactor strict Rust-inspired TypeScript 7 and React code using Bun-owned tooling. |
 | `tailrocks-tanstack-project-setup` | Scaffold, migrate, and audit Bun-only TanStack Start projects with TypeScript 7, Oxc, Router, Query, shadcn/ui, Tailwind CSS v4, tests, and CI. |
 | `tailrocks-code-health` | Establish, audit, or tighten one measurable shrink-only debt ratchet using architecture, lint, dependency, flake, defect, documentation, or verification providers. |
-| `tailrocks-correctness-first` | Derive the greenfield architecture that eliminates a proven defect class, then pursue the complete structural correction regardless of price, duration, effort, implementation size, or sunk cost. |
+| `tailrocks-remediate` | Derive the greenfield architecture that eliminates a proven defect class, then pursue the complete structural correction regardless of price, duration, effort, implementation size, or sunk cost. |
 | `tailrocks-idea` | Capture a raw idea as a DRAFT roadmap item: content-derived slug, item template, index row. Capture only — no interviewing, no invention. |
 | `tailrocks-brainstorm` | Shape a young roadmap item through a relentless interview: one question at a time with a recommended answer, decisions asked, facts looked up, every answer written into the item immediately. |
 | `tailrocks-research` | Deep-research a specific question or a roadmap item into a reusable multi-page topic under `research/` — vetted sourced chapters, candidate directions with trade-offs, many-to-many links with roadmap items. |
-| `tailrocks-decision` | Record one user decision on a roadmap item: validate against settled ground, date it with its reason, propagate through the item, reopen READY/PLANNED items and mark stale plans when intent changes. |
-| `tailrocks-grill-roadmap` | The closing interview that earns READY: collect every screen and flow, resolve or classify every open question, pass the readiness checklist — the only skill that grants READY. |
+| `tailrocks-record-decision` | Record one user decision on a roadmap item: validate against settled ground, date it with its reason, propagate through the item, reopen READY/PLANNED items and mark stale plans when intent changes. |
+| `tailrocks-finalize` | The closing interview that earns READY: collect every screen and flow, resolve or classify every open question, pass the readiness checklist — the only skill that grants READY. |
 | `tailrocks-plan` | Turn a READY roadmap item into `plans/<slug>/`: coverage ledger, gap research, OpenSpec-grammar spec, one cold-reviewed zero-context plan per work item (each written by its own subagent), and a copy-pasteable GOAL.md for the /goal command of Claude Code, Codex, or Grok. |
 | `tailrocks-reconcile` | True up an executing implementation package with reality: re-verify DONE rows by re-running their done criteria, reset dead-session rows, drift-check TODO plans against HEAD, mark stale rows, and reconcile the roadmap item's status. |
 
 More skills land in `skills/` over time; the layout and install flow below are
 built to grow.
 
-The Rust, Axum, TypeScript, TanStack, code-health, and correctness-first skills
+The Rust, Axum, TypeScript, TanStack, code-health, and remediation skills
 form the engineering-policy family. The delivery family —
 `tailrocks-idea`, `tailrocks-brainstorm`, `tailrocks-research`,
-`tailrocks-decision`, `tailrocks-grill-roadmap`, `tailrocks-plan`, and
+`tailrocks-record-decision`, `tailrocks-finalize`, `tailrocks-plan`, and
 `tailrocks-reconcile` — is a roadmap-driven pipeline and does not define
 stack policy:
 
 ```text
-idea ──► brainstorm ──► grill-roadmap ──► plan ──► /goal executor
- DRAFT     SHAPING    ▲      READY    ▲  PLANNED    IN EXECUTION → DONE
-                      │               │
-        research ◄────┘   decision ───┘   (both usable at any stage;
-        research/ topics are standing assets, many-to-many with items)
+idea ──► brainstorm ──► finalize ──► plan ──► /goal executor ──► reconcile
+ DRAFT     SHAPING    ▲   READY   ▲  PLANNED   IN EXECUTION → DONE
+                      │           │
+        research ◄────┘           └── record-decision
+        (both usable at any stage; research/ topics are standing
+        assets, many-to-many with items)
 ```
 
 Roadmap items live in `roadmap/<slug>/README.md` with a status machine
@@ -182,10 +183,10 @@ tailrocks-skills/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   └── agents/
-│   ├── tailrocks-decision/      # record + propagate one decision
+│   ├── tailrocks-record-decision/      # record + propagate one decision
 │   │   ├── SKILL.md
 │   │   └── agents/
-│   ├── tailrocks-grill-roadmap/ # closing interview → READY
+│   ├── tailrocks-finalize/ # closing interview → READY
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   └── agents/

@@ -107,15 +107,15 @@ Codex, or Grok).
   outward (missed angles, candidate directions with trade-offs, no verdicts).
   Extends overlapping topics instead of forking.
   Definition: `skills/tailrocks-research/SKILL.md`
-- **tailrocks-decision** — record one user decision: validate against settled
+- **tailrocks-record-decision** — record one user decision: validate against settled
   ground, date it with its reason, propagate through the item, reopen
   READY/PLANNED items and mark stale plan rows when intent changes.
-  Definition: `skills/tailrocks-decision/SKILL.md`
-- **tailrocks-grill-roadmap** — the closing interview and the only source of
+  Definition: `skills/tailrocks-record-decision/SKILL.md`
+- **tailrocks-finalize** — the closing interview and the only source of
   READY: screens collected as confirmed schematic mockups, flows walked,
   every open question resolved, deferred with a reason, or reclassified as
   researchable; READY only when the full readiness checklist passes.
-  Definition: `skills/tailrocks-grill-roadmap/SKILL.md`
+  Definition: `skills/tailrocks-finalize/SKILL.md`
 - **tailrocks-plan** — READY item → `plans/<slug>/`: coverage ledger, gap
   research landed as reusable topics, OpenSpec-grammar spec with screen
   contracts and a must-not registry, one zero-context plan per manifest item
@@ -136,7 +136,7 @@ All seven write only their own artifacts (`roadmap/`, `research/`,
 `plans/`) and never touch source.
 
 
-### tailrocks-correctness-first
+### tailrocks-remediate
 
 Analyze or remediate a proven defect, inconsistency, violated invariant, or
 known-wrong state. Derives a greenfield architecture that prevents the complete
@@ -144,7 +144,7 @@ defect class and pursues that result without considering price, duration, effort
 implementation size, ROI, or sunk cost. Rejects speculative generality and
 permits urgent containment without calling it complete remediation.
 
-Skill definition: `skills/tailrocks-correctness-first/SKILL.md`
+Skill definition: `skills/tailrocks-remediate/SKILL.md`
 
 ## Adding a Skill
 

@@ -2,8 +2,8 @@
 
 The single product-oriented document per idea that the whole delivery family
 reads and writes: `tailrocks-idea` creates it, `tailrocks-brainstorm`,
-`tailrocks-decision`, and `tailrocks-research` shape it,
-`tailrocks-grill-roadmap` finalizes it, `tailrocks-plan` consumes it. One item
+`tailrocks-record-decision`, and `tailrocks-research` shape it,
+`tailrocks-finalize` finalizes it, `tailrocks-plan` consumes it. One item
 = one folder `roadmap/<slug>/` with `README.md` as the item and optional
 sibling assets (mockup images, diagrams).
 
@@ -15,8 +15,8 @@ index. Statuses and their owners:
 | Status | Meaning | Set by |
 |---|---|---|
 | `DRAFT` | Raw capture; not yet shaped | `tailrocks-idea` |
-| `SHAPING` | Being shaped; open questions remain | `tailrocks-brainstorm`, `tailrocks-decision`, `tailrocks-research` (first touch of a DRAFT item) |
-| `READY` | Product-complete: no open decision-type questions; fit for planning | `tailrocks-grill-roadmap` only (or an explicit user override, recorded in the Log) |
+| `SHAPING` | Being shaped; open questions remain | `tailrocks-brainstorm`, `tailrocks-record-decision`, `tailrocks-research` (first touch of a DRAFT item) |
+| `READY` | Product-complete: no open decision-type questions; fit for planning | `tailrocks-finalize` only (or an explicit user override, recorded in the Log) |
 | `PLANNED` | `plans/<slug>/` exists with a GOAL.md | `tailrocks-plan` |
 | `IN EXECUTION` | An executor started working the plans | the executor protocol in `plans/<slug>/README.md` |
 | `DONE` | All plan rows DONE and the goal condition met | the executor protocol |
@@ -26,7 +26,7 @@ Transition rules:
 
 - Forward movement follows the table; skipping `READY` is possible only by
   user override and the override is logged.
-- A `tailrocks-decision` on a `READY`/`PLANNED`/`IN EXECUTION` item that
+- A `tailrocks-record-decision` on a `READY`/`PLANNED`/`IN EXECUTION` item that
   changes product intent moves it back to `SHAPING` and marks affected plans
   stale — a reopened decision reopens the item; silence about it is a defect.
 - Every status change appends a Log entry: date, skill, one-line reason.
@@ -125,7 +125,7 @@ Section rules:
   considered", an empty one as "not yet known", and only the latter is
   honest.
 - Decisions, Vocabulary, and Must not are settled once written; changing them
-  goes through `tailrocks-decision` so the change is dated, reasoned, and
+  goes through `tailrocks-record-decision` so the change is dated, reasoned, and
   propagated.
 - Open questions vs Open research questions is the decision/fact split: "do
   we sync at all?" is a decision; "which sync engine fits?" is researchable.

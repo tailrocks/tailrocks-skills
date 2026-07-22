@@ -12,8 +12,8 @@ user-invocable: true
 
 Catch the idea while it is hot. Turn whatever the user brings — a sentence, a
 paragraph, pasted notes — into a roadmap item that the rest of the delivery
-family can work on: `tailrocks-brainstorm` and `tailrocks-decision` to shape
-it, `tailrocks-research` to inform it, `tailrocks-grill-roadmap` to finalize
+family can work on: `tailrocks-brainstorm` and `tailrocks-record-decision` to shape
+it, `tailrocks-research` to inform it, `tailrocks-finalize` to finalize
 it, `tailrocks-plan` to turn it into executable plans.
 
 This skill is a capture tool, not a thinking tool. It preserves the user's
@@ -41,7 +41,7 @@ normal case.
    Derive a short kebab-case slug from the idea's content (e.g. "start a
    native macOS app for our CLI" → `macos-application`). If
    `roadmap/<slug>/` already exists, this is an update request in disguise —
-   stop and point at `tailrocks-brainstorm` or `tailrocks-decision` instead.
+   stop and point at `tailrocks-brainstorm` or `tailrocks-record-decision` instead.
    **Complete when:** the slug is unique, content-derived, and stable.
 
 2. **Pour it in.** Create `roadmap/<slug>/README.md` from the item template:

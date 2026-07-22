@@ -2,7 +2,7 @@
 
 How `tailrocks-brainstorm` runs its interview. The stage matters: this is the
 expansion pass, where the item is young and the goal is a clear shape, not a
-closed spec. `tailrocks-grill-roadmap` owns the closing pass.
+closed spec. `tailrocks-finalize` owns the closing pass.
 
 ## The decision tree
 
@@ -69,7 +69,7 @@ belongs to a later round. Everything else is unchanged.
 1. **Frontier empties** — every branch visited at shaping depth. Say what
    got settled and steer toward the next skill. Do not push into
    finalization territory (pixel-level screen detail, exhaustive edge
-   cases) — that is `tailrocks-grill-roadmap`'s job, and duplicating it
+   cases) — that is `tailrocks-finalize`'s job, and duplicating it
    here exhausts the user before the pass that needs them.
 2. **User steers out** ("wrap up", "enough"). Honor immediately: every
    still-open decision goes to Open questions with your recommendation

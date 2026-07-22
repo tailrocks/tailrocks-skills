@@ -1,5 +1,5 @@
 ---
-name: tailrocks-decision
+name: tailrocks-record-decision
 description: >-
   Use only when the user explicitly requests this skill. Record one user decision on a roadmap item: validate it against settled ground, date it with its reason, propagate it through the item's sections, and flag everything it invalidates — including reopening READY/PLANNED items and marking stale plans. Do not use to make decisions for the user or for open-ended shaping (tailrocks-brainstorm).
 argument-hint: "<roadmap-slug> <decision>"
@@ -8,7 +8,7 @@ license: Apache-2.0
 user-invocable: true
 ---
 
-# Decision
+# Record Decision
 
 Take one decision the user has made and make the roadmap item true to it. A
 decision that lives only in chat does not exist; a decision recorded but not

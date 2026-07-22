@@ -1,7 +1,7 @@
 ---
 name: tailrocks-brainstorm
 description: >-
-  Use only when the user explicitly requests this skill. Shape a DRAFT or SHAPING roadmap item through a relentless interview: one question at a time with a recommended answer, decisions asked while facts are looked up, every resolved answer written into the item immediately. Use early, to expand and sharpen a rough item; do not use for final readiness (tailrocks-grill-roadmap) or without a live human.
+  Use only when the user explicitly requests this skill. Shape a DRAFT or SHAPING roadmap item through a relentless interview: one question at a time with a recommended answer, decisions asked while facts are looked up, every resolved answer written into the item immediately. Use early, to expand and sharpen a rough item; do not use for final readiness (tailrocks-finalize) or without a live human.
 argument-hint: "<roadmap-slug> [--batch]"
 disable-model-invocation: true
 license: Apache-2.0
@@ -14,7 +14,7 @@ Grill the user about a young roadmap item until its shape is clear: what it
 really is, who it serves, which directions are chosen and which are dead. This
 is the expansion-stage interview — divergence is welcome, new branches are
 progress, and the item may leave the session bigger and rougher than a
-finalization pass would allow. `tailrocks-grill-roadmap` closes it later;
+finalization pass would allow. `tailrocks-finalize` closes it later;
 this skill opens it up properly.
 
 The deliverable is the updated item, not the conversation: every resolved
@@ -48,7 +48,7 @@ answer lands in `roadmap/<slug>/README.md` the moment it resolves.
    Vocabulary, and Must not are settled ground you never re-ask. If the slug
    does not exist, list available items and stop. If status is `READY` or
    later, say the item is past brainstorming and point at
-   `tailrocks-decision` (targeted change) or `tailrocks-grill-roadmap`
+   `tailrocks-record-decision` (targeted change) or `tailrocks-finalize`
    (re-finalize).
    **Complete when:** the item is loaded and its settled ground is mapped.
 
@@ -72,8 +72,8 @@ answer lands in `roadmap/<slug>/README.md` the moment it resolves.
 4. **Close the session.** Update the Updated date and index row, append a
    Log entry summarizing what was settled and what remains, and name the
    natural next step: more research (`tailrocks-research`), targeted
-   decisions (`tailrocks-decision`), or finalization
-   (`tailrocks-grill-roadmap`) when Open questions looks thin.
+   decisions (`tailrocks-record-decision`), or finalization
+   (`tailrocks-finalize`) when Open questions looks thin.
    **Complete when:** a reader of the item alone — without this
    conversation — knows exactly what is settled and what is still open.
 

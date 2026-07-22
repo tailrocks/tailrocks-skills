@@ -23,7 +23,7 @@ Two invocation shapes:
 - **A roadmap slug** → research the item outward: what its shape misses, what
   the referenced world offers, which genuinely different directions exist —
   each direction with evidence and trade-offs, none chosen. Choosing is the
-  user's, via `tailrocks-decision`.
+  user's, via `tailrocks-record-decision`.
 
 ## Boundaries
 

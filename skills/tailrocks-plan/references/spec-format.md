@@ -111,7 +111,7 @@ deferral is a decision; silence is a defect.
 
 ## Change log — re-runs only
 
-On a re-run (typically after `tailrocks-decision` marked plans stale),
+On a re-run (typically after `tailrocks-record-decision` marked plans stale),
 update capability files in place and record the delta in `spec/README.md`
 using OpenSpec delta sections, applied RENAMED → REMOVED → MODIFIED →
 ADDED:
