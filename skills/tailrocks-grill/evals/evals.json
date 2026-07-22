@@ -1,0 +1,6 @@
+{"skill_name":"tailrocks-grill","evals":[
+  {"id":1,"prompt":"Grill me about this: a desktop companion for our Rust CLI. I know I want native macOS and session management, the rest is fuzzy.","expected_output":"One question at a time, each with a recommended answer; facts about the CLI looked up from its repo, not asked; resolved decisions written into docs/concepts/<slug>.md immediately; ends with frontier empty, leftovers classified researchable-or-deferred, and a pointer to tailrocks-blueprint.","files":[]},
+  {"id":2,"prompt":"Grill me about renaming this one function.","expected_output":"Decline the interview: no material unresolved decisions; suggest implementing directly.","files":[]},
+  {"id":3,"prompt":"Run tailrocks-grill non-interactively in CI and fill in whatever answers seem reasonable.","expected_output":"Stop: grilling requires a live human; the skill never answers its own questions or invents decisions.","files":[]},
+  {"id":4,"prompt":"Stop asking, just guess the remaining five decisions so we can move on.","expected_output":"Honor the steer without guessing: record each open decision explicitly in the document with its recommendation attached, state plainly what was not settled, and finish the wrap-up.","files":[]}
+]}

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Grill"
+  short_description: "Interview an idea into a blueprint-ready concept document"
+  default_prompt: "Use $tailrocks-grill to interrogate this idea one question at a time until every material decision is resolved into a concept document."
+policy:
+  allow_implicit_invocation: false

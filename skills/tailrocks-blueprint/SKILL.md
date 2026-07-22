@@ -18,7 +18,10 @@ its own dedicated subagent.
 The concept document is the confirmed direction. Unlike `tailrocks-propose`
 (rough idea, human still choosing) and `tailrocks-research` (direction chosen in
 conversation), this skill starts from what the human already wrote down and owes
-them a complete, executable blueprint of it.
+them a complete, executable blueprint of it. When the document was shaped with
+`tailrocks-grill`, its Decisions, Vocabulary, and Must-not sections are settled
+user intent — ingest them as fixed constraints, and route its open research
+questions straight into the research fan-out.
 
 ## Boundaries
 

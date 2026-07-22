@@ -24,16 +24,19 @@ and component systems are outside scope.
 | `tailrocks-propose` | Turn a rough idea into an enriched, evidence-backed proposal. Parallel analysis gathers prior art, codebase touchpoints, constraints, risks, and alternatives into a per-idea folder of findings. Read-only. |
 | `tailrocks-research` | Take a substantial confirmed proposal direction, resolve material uncertainty, and write sufficient self-contained handoff plans a zero-context executor can follow. |
 | `tailrocks-blueprint` | Convert an authored concept document (feature or whole app, with mockup screens) into sourced research, a traceable OpenSpec-grammar requirement spec, and subagent-written zero-context implementation plans. |
+| `tailrocks-grill` | Relentlessly interview the user about an idea — one question at a time, each with a recommended answer, decisions asked and facts looked up — until every material decision resolves into a blueprint-ready concept document. |
 
 More skills land in `skills/` over time; the layout and install flow below are
 built to grow.
 
 The Rust, Axum, TypeScript, TanStack, code-health, and correctness-first skills
 form the engineering-policy family. `tailrocks-propose`, `tailrocks-research`,
-and `tailrocks-blueprint` form a separate delivery workflow family; they do not
-define stack policy. Propose and research pair up when the direction is still
-being chosen in conversation; blueprint is the standalone entry point when the
-human has already written a concept document.
+`tailrocks-grill`, and `tailrocks-blueprint` form a separate delivery workflow
+family; they do not define stack policy. Propose and research pair up when the
+direction is still being chosen in conversation; grill interrogates an idea
+living in the user's head into a concept document; blueprint turns that concept
+document into research, a spec, and executable plans. The
+`tailrocks-grill → tailrocks-blueprint` chain is the idea-to-plans pipeline.
 
 ## Installation
 
@@ -157,7 +160,11 @@ tailrocks-skills/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   └── agents/
-│   └── tailrocks-blueprint/ # concept document → research + spec + handoff plans
+│   ├── tailrocks-blueprint/ # concept document → research + spec + handoff plans
+│   │   ├── SKILL.md
+│   │   ├── references/
+│   │   └── agents/
+│   └── tailrocks-grill/     # idea + interview → blueprint-ready concept document
 │       ├── SKILL.md
 │       ├── references/
 │       └── agents/

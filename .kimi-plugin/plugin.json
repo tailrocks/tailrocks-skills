@@ -1,7 +1,7 @@
 {
   "name": "tailrocks-skills",
-  "version": "0.6.0",
-  "description": "Cross-agent Tailrocks skills for strict Rust, Axum, TypeScript, TanStack, correctness-first remediation, code-health ratchets, proposals, research, and blueprints",
+  "version": "0.7.0",
+  "description": "Cross-agent Tailrocks skills for strict Rust, Axum, TypeScript, TanStack, correctness-first remediation, code-health ratchets, proposals, research, blueprints, and idea grilling",
   "keywords": [
     "rust",
     "axum",
@@ -10,7 +10,8 @@
     "tanstack",
     "root-cause",
     "research",
-    "blueprint"
+    "blueprint",
+    "grill"
   ],
   "author": {
     "name": "tailrocks",

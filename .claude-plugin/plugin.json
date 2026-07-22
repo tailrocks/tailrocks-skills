@@ -1,7 +1,7 @@
 {
   "name": "tailrocks-skills",
-  "description": "Cross-agent Tailrocks skills for strict Rust, Axum, TypeScript, TanStack, code-health ratchets, proposals, research, and blueprints",
-  "version": "0.6.0",
+  "description": "Cross-agent Tailrocks skills for strict Rust, Axum, TypeScript, TanStack, code-health ratchets, proposals, research, blueprints, and idea grilling",
+  "version": "0.7.0",
   "author": {
     "name": "tailrocks",
     "url": "https://github.com/tailrocks"
@@ -30,6 +30,7 @@
     "correctness",
     "proposal",
     "research",
-    "blueprint"
+    "blueprint",
+    "grill"
   ]
 }

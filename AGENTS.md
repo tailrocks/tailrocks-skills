@@ -122,6 +122,20 @@ outside `blueprints/<slug>/`.
 
 Skill definition: `skills/tailrocks-blueprint/SKILL.md`
 
+### tailrocks-grill
+
+Relentlessly interview the user about an idea, plan, or draft until every
+material decision is resolved, writing each answer into a blueprint-ready
+concept document the moment it lands. Mechanics: model the idea as a decision
+tree, ask only the frontier, one question at a time (numbered frontier rounds
+with `--batch`), every question with a recommended answer; decisions are asked,
+facts are looked up with the house evidence standard; no question cap — the
+user steers with words, and a steered wrap-up records open decisions instead of
+assuming. Writes only the concept document. The
+`tailrocks-grill → tailrocks-blueprint` chain is the idea-to-plans pipeline.
+
+Skill definition: `skills/tailrocks-grill/SKILL.md`
+
 ### tailrocks-correctness-first
 
 Analyze or remediate a proven defect, inconsistency, violated invariant, or
