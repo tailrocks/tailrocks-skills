@@ -1,0 +1,6 @@
+interface:
+  display_name: "Idea"
+  short_description: "Capture a raw idea as a DRAFT roadmap item"
+  default_prompt: "Use $tailrocks-idea to capture this idea as a new roadmap item with a content-derived slug."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Decision"
+  short_description: "Record and propagate one decision on a roadmap item"
+  default_prompt: "Use $tailrocks-decision to record this decision on the named roadmap item and reconcile the item with it."
+policy:
+  allow_implicit_invocation: false

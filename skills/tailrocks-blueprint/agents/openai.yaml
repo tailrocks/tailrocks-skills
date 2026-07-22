@@ -1,6 +1,0 @@
-interface:
-  display_name: "Blueprint"
-  short_description: "Turn a concept document into research, spec, and handoff plans"
-  default_prompt: "Use $tailrocks-blueprint on a written concept document to produce sourced research, a traceable requirement spec, and zero-context implementation plans."
-policy:
-  allow_implicit_invocation: false

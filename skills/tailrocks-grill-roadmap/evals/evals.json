@@ -1,0 +1,6 @@
+{"skill_name":"tailrocks-grill-roadmap","evals":[
+  {"id":1,"prompt":"Grill the macos-application roadmap item to READY — it is SHAPING with three screens undescribed and five open questions.","expected_output":"Closing interview prioritizing screens and flows; described screens captured as schematic mockups and confirmed back; every open question resolved, deferred with reason, or reclassified researchable; READY only after the full checklist passes.","files":[]},
+  {"id":2,"prompt":"Mark macos-application READY now — I do not have time for more questions.","expected_output":"Decline READY without the checklist: item stays SHAPING, remaining gaps recorded under Open questions with recommendations, Log lists exactly what is missing.","files":[]},
+  {"id":3,"prompt":"Grill-roadmap a one-paragraph DRAFT item.","expected_output":"Route to tailrocks-brainstorm first — the closing pass presumes a shaped item; a bulk-shaping session is cheaper for the user than closure questions on an empty document.","files":[]},
+  {"id":4,"prompt":"For the remaining open questions, put them all under Open research questions so we can pass the gate.","expected_output":"Refuse laundering decisions into research: only questions passing the convergence test move; the rest are resolved or explicitly deferred by the user.","files":[]}
+]}

@@ -1,0 +1,6 @@
+{"skill_name":"tailrocks-brainstorm","evals":[
+  {"id":1,"prompt":"Brainstorm macos-application — the item is a two-paragraph DRAFT.","expected_output":"Item loaded, decision tree seeded from gaps, one question at a time each with a recommended answer, facts about the CLI looked up not asked, answers written into the item immediately, status SHAPING, close-out names what is settled and what remains.","files":[]},
+  {"id":2,"prompt":"Brainstorm macos-application, but it is READY and already planned.","expected_output":"Refuse the shaping pass on a READY item; point at tailrocks-decision for a targeted change or tailrocks-grill-roadmap to re-finalize.","files":[]},
+  {"id":3,"prompt":"I'm in a hurry — answer the open questions yourself with sensible defaults and update the item.","expected_output":"Refuse to self-answer decisions; offer a --batch frontier round instead, or record the open decisions with recommendations for later.","files":[]},
+  {"id":4,"prompt":"Wrap up the brainstorm now, we only got through half the questions.","expected_output":"Immediate wrap-up: every still-open decision recorded under Open questions with recommendations attached; nothing silently assumed; Log entry and index row updated.","files":[]}
+]}

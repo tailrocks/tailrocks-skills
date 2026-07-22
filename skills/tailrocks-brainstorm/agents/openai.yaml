@@ -1,0 +1,6 @@
+interface:
+  display_name: "Brainstorm"
+  short_description: "Shape a young roadmap item through a relentless interview"
+  default_prompt: "Use $tailrocks-brainstorm on this roadmap item: interview me one question at a time and write every resolved answer into the item."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Grill Roadmap"
+  short_description: "Closing interview that earns a roadmap item its READY status"
+  default_prompt: "Use $tailrocks-grill-roadmap on this roadmap item: interview me to closure — screens, flows, every open question — and set it READY only when the checklist passes."
+policy:
+  allow_implicit_invocation: false

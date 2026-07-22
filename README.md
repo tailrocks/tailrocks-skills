@@ -21,22 +21,35 @@ and component systems are outside scope.
 | `tailrocks-tanstack-project-setup` | Scaffold, migrate, and audit Bun-only TanStack Start projects with TypeScript 7, Oxc, Router, Query, shadcn/ui, Tailwind CSS v4, tests, and CI. |
 | `tailrocks-code-health` | Establish, audit, or tighten one measurable shrink-only debt ratchet using architecture, lint, dependency, flake, defect, documentation, or verification providers. |
 | `tailrocks-correctness-first` | Derive the greenfield architecture that eliminates a proven defect class, then pursue the complete structural correction regardless of price, duration, effort, implementation size, or sunk cost. |
-| `tailrocks-propose` | Turn a rough idea into an enriched, evidence-backed proposal. Parallel analysis gathers prior art, codebase touchpoints, constraints, risks, and alternatives into a per-idea folder of findings. Read-only. |
-| `tailrocks-research` | Take a substantial confirmed proposal direction, resolve material uncertainty, and write sufficient self-contained handoff plans a zero-context executor can follow. |
-| `tailrocks-blueprint` | Convert an authored concept document (feature or whole app, with mockup screens) into sourced research, a traceable OpenSpec-grammar requirement spec, and subagent-written zero-context implementation plans. |
-| `tailrocks-grill` | Relentlessly interview the user about an idea — one question at a time, each with a recommended answer, decisions asked and facts looked up — until every material decision resolves into a blueprint-ready concept document. |
+| `tailrocks-idea` | Capture a raw idea as a DRAFT roadmap item: content-derived slug, item template, index row. Capture only — no interviewing, no invention. |
+| `tailrocks-brainstorm` | Shape a young roadmap item through a relentless interview: one question at a time with a recommended answer, decisions asked, facts looked up, every answer written into the item immediately. |
+| `tailrocks-research` | Deep-research a specific question or a roadmap item into a reusable multi-page topic under `research/` — vetted sourced chapters, candidate directions with trade-offs, many-to-many links with roadmap items. |
+| `tailrocks-decision` | Record one user decision on a roadmap item: validate against settled ground, date it with its reason, propagate through the item, reopen READY/PLANNED items and mark stale plans when intent changes. |
+| `tailrocks-grill-roadmap` | The closing interview that earns READY: collect every screen and flow, resolve or classify every open question, pass the readiness checklist — the only skill that grants READY. |
+| `tailrocks-plan` | Turn a READY roadmap item into `plans/<slug>/`: coverage ledger, gap research, OpenSpec-grammar spec, one cold-reviewed zero-context plan per work item (each written by its own subagent), and a copy-pasteable GOAL.md for the /goal command of Claude Code, Codex, or Grok. |
 
 More skills land in `skills/` over time; the layout and install flow below are
 built to grow.
 
 The Rust, Axum, TypeScript, TanStack, code-health, and correctness-first skills
-form the engineering-policy family. `tailrocks-propose`, `tailrocks-research`,
-`tailrocks-grill`, and `tailrocks-blueprint` form a separate delivery workflow
-family; they do not define stack policy. Propose and research pair up when the
-direction is still being chosen in conversation; grill interrogates an idea
-living in the user's head into a concept document; blueprint turns that concept
-document into research, a spec, and executable plans. The
-`tailrocks-grill → tailrocks-blueprint` chain is the idea-to-plans pipeline.
+form the engineering-policy family. The delivery family —
+`tailrocks-idea`, `tailrocks-brainstorm`, `tailrocks-research`,
+`tailrocks-decision`, `tailrocks-grill-roadmap`, and `tailrocks-plan` — is a
+roadmap-driven pipeline and does not define stack policy:
+
+```text
+idea ──► brainstorm ──► grill-roadmap ──► plan ──► /goal executor
+ DRAFT     SHAPING    ▲      READY    ▲  PLANNED    IN EXECUTION → DONE
+                      │               │
+        research ◄────┘   decision ───┘   (both usable at any stage;
+        research/ topics are standing assets, many-to-many with items)
+```
+
+Roadmap items live in `roadmap/<slug>/README.md` with a status machine
+(DRAFT → SHAPING → READY → PLANNED → IN EXECUTION → DONE, plus PARKED);
+research topics live in `research/<topic>/` independent of items; plans live
+in `plans/<slug>/` with a GOAL.md whose blocks paste directly into the
+`/goal` command of Claude Code, Codex, or Grok.
 
 ## Installation
 
@@ -152,19 +165,26 @@ tailrocks-skills/
 │   │   ├── references/
 │   │   ├── templates/
 │   │   └── agents/
-│   ├── tailrocks-propose/   # idea → enriched, evidence-backed proposal
+│   ├── tailrocks-idea/          # raw idea → DRAFT roadmap item
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   └── agents/
-│   ├── tailrocks-research/  # confirmed direction → deep research + handoff plans
+│   ├── tailrocks-brainstorm/    # shaping interview on a young item
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   └── agents/
-│   ├── tailrocks-blueprint/ # concept document → research + spec + handoff plans
+│   ├── tailrocks-research/      # question or item → reusable research topic
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   └── agents/
-│   └── tailrocks-grill/     # idea + interview → blueprint-ready concept document
+│   ├── tailrocks-decision/      # record + propagate one decision
+│   │   ├── SKILL.md
+│   │   └── agents/
+│   ├── tailrocks-grill-roadmap/ # closing interview → READY
+│   │   ├── SKILL.md
+│   │   ├── references/
+│   │   └── agents/
+│   └── tailrocks-plan/          # READY item → plans + spec + GOAL.md
 │       ├── SKILL.md
 │       ├── references/
 │       └── agents/
