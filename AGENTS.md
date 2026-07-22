@@ -84,7 +84,8 @@ Skill definition: `skills/tailrocks-code-health/SKILL.md`
 
 ### The delivery family — roadmap-driven pipeline
 
-Six skills drive an idea from capture to autonomous execution. Artifacts:
+Seven skills drive an idea from capture through autonomous execution and
+back to verified truth. Artifacts:
 roadmap items in `roadmap/<slug>/README.md` (status machine: DRAFT → SHAPING
 → READY → PLANNED → IN EXECUTION → DONE, plus PARKED), standing research
 topics in `research/<topic>/` (independent of items, many-to-many links),
@@ -122,10 +123,17 @@ Codex, or Grok).
   reviewers), and GOAL.md — machine-checkable bounded /goal condition plus
   kickoff and resume prompts. Sets PLANNED.
   Definition: `skills/tailrocks-plan/SKILL.md`
+- **tailrocks-reconcile** — execution truth-sync: re-verify DONE rows by
+  re-running their done criteria, reset dead-session rows, re-test
+  BLOCKED reasons, drift-check TODO plans against HEAD, mark stale rows,
+  and true up the item's status. Run it when a /goal loop finishes,
+  stalls, or the repository moved on.
+  Definition: `skills/tailrocks-reconcile/SKILL.md`
 
 Grilling mechanics descend from Matt Pocock's `grilling` family; the plan
-template descends from the shadcn `improve` skill. All six write only their
-own artifacts (`roadmap/`, `research/`, `plans/`) and never touch source.
+template and the reconcile stage descend from the shadcn `improve` skill.
+All seven write only their own artifacts (`roadmap/`, `research/`,
+`plans/`) and never touch source.
 
 
 ### tailrocks-correctness-first

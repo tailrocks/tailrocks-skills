@@ -170,6 +170,9 @@ broken between steps — add the new path, switch callers, remove the old.)
 
 - New tests, in which file, covering which cases — at minimum one per spec
   scenario above, plus named edge cases.
+- Expected values come from an independent source of truth — a test that
+  recomputes the expected value the way the code does passes while
+  proving nothing.
 - Structural pattern to model after: <existing test, or the research
   chapter's reference example for greenfield>.
 - **Verify**: `<test command>` → all pass, including the N new tests.

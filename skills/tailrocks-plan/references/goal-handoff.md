@@ -49,13 +49,15 @@ One plan per fresh session or loop iteration:
 
 1. Re-read this file first — other sessions may have updated it. Set the
    roadmap item's status to IN EXECUTION on the first plan you start.
-2. Pick the first TODO plan whose dependencies are all DONE. Set its row
-   to IN PROGRESS.
+2. Pick the first TODO plan whose dependencies are all DONE. Re-run the
+   cheapest done criterion of the most recent DONE dependency before
+   building on it. Set the picked row to IN PROGRESS.
 3. Read the plan file fully. Run its preconditions; a failure is a STOP.
 4. Follow the steps; run every verification; honor every STOP condition
    and Must NOT.
-5. On completion: check every done criterion, set the row to DONE, commit
-   per the plan's git workflow.
+5. On completion: check every done criterion against actual command
+   output from this session — never from memory or a prior report — set
+   the row to DONE, commit per the plan's git workflow.
 6. On a STOP: set the row to BLOCKED with a one-line reason and stop the
    loop — do not start dependent plans on top of a BLOCKED one.
 7. When every row is DONE: run the goal condition's commands yourself,
@@ -64,6 +66,10 @@ One plan per fresh session or loop iteration:
 Plans are self-contained — do not read the roadmap item, spec, or
 research to fill a gap; a gap is a plan defect to report, not improvise
 around.
+
+If a loop died, stalled, or the repository moved on since planning, run
+the tailrocks-reconcile skill on this slug before resuming — statuses in
+this file are only trustworthy after reconciliation.
 ```
 
 The manifest-first order means plan writing is commissioned against a
@@ -125,6 +131,12 @@ the Executor protocol as normal.
   condition if plans are added.
 - Suggested permission mode: <acceptEdits or the repo's convention> — a
   permission prompt mid-loop stalls the goal.
+
+## Headless (Claude Code)
+
+`claude -p "/goal <block 1>"` runs the loop to completion without the
+UI. After an interruption, add `--resume <session id>` and send block 3
+as the first message. Condition and bounds stay identical to block 1.
 ```
 
 ## Writing the condition — rules
@@ -140,8 +152,9 @@ condition against the transcript each turn):
   verification-tooling research: `mise run test` / `mise run lint` for
   Rust workspaces, `bun run test` / `bun run typecheck` for TanStack
   apps. Two gates maximum — the plans' own done criteria carry the rest.
-- **Always bounded**: "or stop after <N> turns" — a runaway loop is worse
-  than an unfinished one. Size N to plan count, generously.
+- **Always bounded**: "or stop after <N> turns" (or "<M> minutes" when
+  wall-clock fits better) — a runaway loop is worse than an unfinished
+  one. Size the bound to plan count, generously.
 - **Under 4000 characters**, self-contained, no relative references to
   "the conversation".
 

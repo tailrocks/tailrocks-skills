@@ -74,11 +74,17 @@ together is possible on explicit request but recorded as the exception.
    evidence.
 
 4. **Slice the manifest.** Decompose the spec into ordered, never-broken
-   increments. Write `plans/<slug>/README.md` first — manifest, item
+   increments: vertical tracer-bullet slices, each cutting a complete,
+   independently verifiable path through every layer it touches, sized to
+   one fresh executor session — never one layer spread across the whole
+   surface. Wide refactors use expand–contract: expand the new form,
+   migrate call sites in batches that keep the build green, contract the
+   old form last. Write `plans/<slug>/README.md` first — manifest, item
    briefs, dependency notes, executor protocol — per
    [`references/goal-handoff.md`](references/goal-handoff.md).
-   **Complete when:** the dependency graph is acyclic and every
-   requirement is assigned or explicitly deferred.
+   **Complete when:** the dependency graph is acyclic, every requirement
+   is assigned or explicitly deferred, and every slice is demoable or
+   verifiable on its own.
 
 5. **Write plans via subagents.** Read
    [`references/plan-template.md`](references/plan-template.md) including

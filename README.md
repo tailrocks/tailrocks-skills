@@ -27,6 +27,7 @@ and component systems are outside scope.
 | `tailrocks-decision` | Record one user decision on a roadmap item: validate against settled ground, date it with its reason, propagate through the item, reopen READY/PLANNED items and mark stale plans when intent changes. |
 | `tailrocks-grill-roadmap` | The closing interview that earns READY: collect every screen and flow, resolve or classify every open question, pass the readiness checklist — the only skill that grants READY. |
 | `tailrocks-plan` | Turn a READY roadmap item into `plans/<slug>/`: coverage ledger, gap research, OpenSpec-grammar spec, one cold-reviewed zero-context plan per work item (each written by its own subagent), and a copy-pasteable GOAL.md for the /goal command of Claude Code, Codex, or Grok. |
+| `tailrocks-reconcile` | True up an executing implementation package with reality: re-verify DONE rows by re-running their done criteria, reset dead-session rows, drift-check TODO plans against HEAD, mark stale rows, and reconcile the roadmap item's status. |
 
 More skills land in `skills/` over time; the layout and install flow below are
 built to grow.
@@ -34,8 +35,9 @@ built to grow.
 The Rust, Axum, TypeScript, TanStack, code-health, and correctness-first skills
 form the engineering-policy family. The delivery family —
 `tailrocks-idea`, `tailrocks-brainstorm`, `tailrocks-research`,
-`tailrocks-decision`, `tailrocks-grill-roadmap`, and `tailrocks-plan` — is a
-roadmap-driven pipeline and does not define stack policy:
+`tailrocks-decision`, `tailrocks-grill-roadmap`, `tailrocks-plan`, and
+`tailrocks-reconcile` — is a roadmap-driven pipeline and does not define
+stack policy:
 
 ```text
 idea ──► brainstorm ──► grill-roadmap ──► plan ──► /goal executor
@@ -49,7 +51,10 @@ Roadmap items live in `roadmap/<slug>/README.md` with a status machine
 (DRAFT → SHAPING → READY → PLANNED → IN EXECUTION → DONE, plus PARKED);
 research topics live in `research/<topic>/` independent of items; plans live
 in `plans/<slug>/` with a GOAL.md whose blocks paste directly into the
-`/goal` command of Claude Code, Codex, or Grok.
+`/goal` command of Claude Code, Codex, or Grok. After execution,
+`tailrocks-reconcile` re-earns every plan status with commands run now and
+trues up the item — run it whenever a loop finishes, stalls, or the
+repository moved on since planning.
 
 ## Installation
 
@@ -184,9 +189,12 @@ tailrocks-skills/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   └── agents/
-│   └── tailrocks-plan/          # READY item → plans + spec + GOAL.md
+│   ├── tailrocks-plan/          # READY item → plans + spec + GOAL.md
+│   │   ├── SKILL.md
+│   │   ├── references/
+│   │   └── agents/
+│   └── tailrocks-reconcile/     # execution truth-sync on plans + item
 │       ├── SKILL.md
-│       ├── references/
 │       └── agents/
 ├── .codex/
 │   └── INSTALL.md

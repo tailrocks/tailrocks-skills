@@ -1,0 +1,6 @@
+interface:
+  display_name: "Reconcile"
+  short_description: "True up an implementation package with execution reality"
+  default_prompt: "Use $tailrocks-reconcile to re-verify the named roadmap item's plan statuses against reality and true up the package and item."
+policy:
+  allow_implicit_invocation: false
