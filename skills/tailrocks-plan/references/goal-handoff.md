@@ -72,10 +72,6 @@ the tailrocks-reconcile skill on this slug before resuming — statuses in
 this file are only trustworthy after reconciliation.
 ```
 
-The manifest-first order means plan writing is commissioned against a
-reviewed decomposition; the protocol lives in the hub so every executor —
-human-driven or `/goal` loop — reads the same rules.
-
 ## GOAL.md — the copy-paste handoff
 
 Three fenced blocks, each independently pasteable. Claude Code: paste
@@ -141,8 +137,7 @@ as the first message. Condition and bounds stay identical to block 1.
 
 ## Writing the condition — rules
 
-Distilled from how `/goal` evaluators work (a small model judges the
-condition against the transcript each turn):
+A small model judges the condition against the transcript each turn:
 
 - **Machine-checkable phrasing**: "every row … is DONE" (grep-able file
   state) and "`<command>` exits 0" — never "tests pass" or "the feature
@@ -153,17 +148,15 @@ condition against the transcript each turn):
   Rust workspaces, `bun run test` / `bun run typecheck` for TanStack
   apps. Two gates maximum — the plans' own done criteria carry the rest.
 - **Always bounded**: "or stop after <N> turns" (or "<M> minutes" when
-  wall-clock fits better) — a runaway loop is worse than an unfinished
-  one. Size the bound to plan count, generously.
+  wall-clock fits better). Size the bound to plan count, generously.
 - **Under 4000 characters**, self-contained, no relative references to
   "the conversation".
 
 ## Why this shape
 
 - Status rows in the hub are the loop's persistent memory: any fresh
-  iteration, session, or agent product reconstructs exact progress by
-  reading one file.
+  session reconstructs exact progress by reading one file.
 - The kickoff prompt never duplicates plan content — plans are the source
   of truth; the prompt only wires protocol to files.
-- Everything is agent-neutral: no product-specific commands or
-  namespaces, so the same GOAL.md drives Claude Code, Codex, or Grok.
+- Everything is agent-neutral: no product-specific commands or namespaces —
+  the same GOAL.md drives Claude Code, Codex, or Grok.

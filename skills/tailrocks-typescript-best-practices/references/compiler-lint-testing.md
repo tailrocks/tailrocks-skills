@@ -33,15 +33,15 @@ and side-effect import checking by default, removes `baseUrl`, and defaults
 
 Paths are relative to the config (`"@/*": ["./src/*"]`). Set `rootDir`
 explicitly when emitting or project layout requires it. TypeScript 7.0 has no
-compiler API; use Oxc and API-independent tools rather than installing a hidden
-TypeScript 6 alias.
+compiler API; use Oxc and API-independent tools, never a hidden TypeScript 6
+alias.
 
 Use type-aware Oxc correctness, suspicious, promise, React hooks, accessibility,
 and unsafe-flow rules. CI denies warnings. A suppression is local, reasoned, and
 names its removal condition.
 
-Use Dependency Cruiser for import-graph invariants that a file-local linter
-cannot prove: cycles, unresolved imports, layer direction, route isolation, and
+Use Dependency Cruiser for import-graph invariants a file-local linter cannot
+prove: cycles, unresolved imports, layer direction, route isolation, and
 entry-point-only feature access. Use Knip for unused files, exports, and direct
 dependencies. Known violations enter a shrink-only baseline; unlisted violations
 fail immediately.

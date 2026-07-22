@@ -1,8 +1,8 @@
 # Readiness and the Closing Interview
 
-How `tailrocks-finalize` drives a roadmap item to READY: the closing
-interview's mechanics, the screen-collection discipline, and the readiness
-checklist that is the only gate to READY.
+How `tailrocks-finalize` drives a roadmap item to READY: closing-interview
+mechanics, screen collection, and the readiness checklist — the only gate to
+READY.
 
 ## Closing interview mechanics
 
@@ -23,32 +23,31 @@ Same core method as the shaping stage, different pressure:
 - **Concrete scenarios over abstract preferences.** "The CLI updates while
   the desktop app is open — what does the session list show?" beats "how
   should versioning work?".
-- **Confront contradictions plainly** and record the resolution as a dated
+- **Confront contradictions plainly**; record the resolution as a dated
   decision.
-- **Depth is the point here.** Unlike shaping, closing drills each screen's
-  states and each flow's failure points to the bottom. Redundancy is still
-  the failure to police — never re-ask settled ground.
+- **Depth is the point.** Closing drills each screen's states and each
+  flow's failure points to the bottom. Never re-ask settled ground.
 
 ## Collecting screens
 
-The heaviest user input, and the reason this skill exists as its own pass:
+The heaviest user input:
 
 - Every capability the item promises must be reachable through some screen
   or explicitly declared headless. Orphan capabilities are frontier
   questions.
-- For each screen, collect until stateable: purpose (one line), a schematic
+- Per screen, collect until stateable: purpose (one line), a schematic
   mockup, states (default / empty / loading / error — which exist, what
   each shows), key interactions, navigation in and out.
 - Users describe; you draw. Turn their prose into an ASCII schematic (or
   Mermaid) in the item, show it back, and iterate until they say it matches
   what they see in their head. Image files they provide land in the item's
   folder and are referenced from the screen section.
-- Mockups are layout intent — structure, regions, states. Refuse the pull
-  toward pixel detail; it burns interview time on execution concerns.
+- Mockups are layout intent — structure, regions, states. Refuse pixel
+  detail.
 
 ## Classifying the remainder
 
-Every open question must end the session as exactly one of:
+Every open question ends the session as exactly one of:
 
 1. **Resolved** — answer in its section, decision dated if it settled a
    choice.
@@ -88,8 +87,7 @@ All must hold; check each against the live item, not memory:
       without inventing or asking anything.
 
 Any unchecked box means `SHAPING`, named in the Log, said plainly to the
-user. READY granted with a known gap is a defect that surfaces weeks later
-as an executor's guess.
+user.
 
 ## Stopping
 
@@ -97,9 +95,4 @@ as an executor's guess.
   `tailrocks-plan <slug>`.
 - **User steers out early** → honor immediately; remaining gaps go to Open
   questions with recommendations, status stays `SHAPING`, close-out lists
-  exactly what a future session must still collect. Never trade the
-  checklist for momentum.
-
-Credit: interview mechanics descend from Matt Pocock's `grilling` skill
-family; the readiness-gate discipline follows the house rule that
-completion criteria are checkable and exhaustive, not vibes.
+  exactly what a future session must still collect.

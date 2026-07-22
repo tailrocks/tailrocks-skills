@@ -5,10 +5,9 @@ grammar extended with screen contracts, a must-not registry, and ledger
 traceability. The spec is the contract between the roadmap item and the
 plans — plans implement requirements, never raw item prose.
 
-The grammar intentionally matches OpenSpec (`### Requirement:` /
-`#### Scenario:` heading shapes, SHALL/MUST bodies, delta sections), so
-`openspec validate`-style tooling can be pointed at these files later
-without rewrites.
+The grammar matches OpenSpec (`### Requirement:` /
+`#### Scenario:` heading shapes, SHALL/MUST bodies, delta sections) so
+`openspec validate`-style tooling works on these files without rewrites.
 
 ## Layout
 

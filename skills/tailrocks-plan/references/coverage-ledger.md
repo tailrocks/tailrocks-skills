@@ -1,14 +1,13 @@
 # Coverage Ledger
 
 The traceability spine of `tailrocks-plan`: every normative statement in the
-roadmap item gets an ID at ingest, and that ID is tracked through spec,
-plans, and the final gate. A statement without an ID is a statement an
-executor will eventually guess about.
+roadmap item gets an ID at ingest, tracked through spec, plans, and the
+final gate.
 
 ## Inventory pass
 
-Read the roadmap item end to end before extracting. The item's structure
-maps directly — the sections were designed for this intake:
+Read the roadmap item end to end before extracting. The item's sections map
+directly:
 
 | Prefix | Source section | Meaning |
 |---|---|---|
@@ -26,7 +25,7 @@ Rules:
 - Every normative sentence in the item maps to at least one ID; leftovers
   become an `F#`, an `N#`, or a logged deferral — never silently dropped.
 - Deferred entries in the item carry their IDs too, marked
-  `deferred (reason)` from birth — a conscious deferral travels visibly.
+  `deferred (reason)` from birth.
 - `D#` entries are never re-litigated: they scope research and constrain
   the spec. A `D#` contradicted by repository reality is a surfaced
   conflict, not a silent correction.

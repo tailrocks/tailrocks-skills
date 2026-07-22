@@ -9,17 +9,17 @@ user-invocable: true
 
 # Axum Best Practices
 
-Treat Axum as the HTTP adapter over domain/application code and Tower as the
-transport policy engine. Apply strict Rust ownership, failure, and lifecycle
-contracts directly; this skill does not depend on loading another skill.
-Before relying on API syntax, verify the current official Axum and Tower docs.
-Prefer the latest compatible stable release, then preserve the repository's
-exact pins. Never silently select an older line for familiarity.
+Axum is the HTTP adapter over domain/application code; Tower is the transport
+policy engine. Apply strict Rust ownership, failure, and lifecycle contracts
+directly — this skill is self-contained. Verify current official Axum and Tower
+docs before relying on API syntax. Prefer the latest compatible stable release,
+then preserve the repository's exact pins; never silently select an older line
+for familiarity.
 
 ## Steps
 
-1. **Select the mode.** Classify the request as `review`, `build`, or `refactor`.
-   `review` is read-only. The other modes may mutate only the approved scope.
+1. **Select the mode.** Classify as `review`, `build`, or `refactor`. `review`
+   is read-only; other modes mutate only the approved scope.
    **Complete when:** mutation permission and expected output are explicit.
 
 2. **Map the boundary.** Inspect router construction, state, extractors, response
@@ -41,26 +41,26 @@ exact pins. Never silently select an older line for familiarity.
 
 4. **Design inward.** Keep Axum types in the HTTP crate. Convert validated
    transport input into domain commands, call narrow application capabilities,
-   and map domain output back to stable HTTP DTOs.
+   map domain output to stable HTTP DTOs.
    **Complete when:** domain/application crates compile without Axum, HTTP, Tower,
    or serialization dependencies unless serialization is itself domain policy.
 
-5. **Compose policy in mutation modes; audit it in review mode.** Use one
-   auditable Tower stack with request identity,
-   sensitive-header handling, tracing, body/concurrency/timeout limits, panic
-   containment, compression, CORS, and route-specific authorization.
+5. **Compose policy in mutation modes; audit it in review mode.** One auditable
+   Tower stack: request identity, sensitive-header handling, tracing,
+   body/concurrency/timeout limits, panic containment, compression, CORS, and
+   route-specific authorization.
    **Complete when:** layer order is documented by request/response flow and every
    fallible service error becomes an HTTP response.
 
 6. **Own lifecycle.** Bind explicitly, serve with graceful shutdown, propagate
-   cancellation, drain tracked tasks, bound blocking/concurrent work, and emit
+   cancellation, drain tracked tasks, bound blocking/concurrent work, emit
    structured startup/shutdown failures.
    **Complete when:** no detached task, blocking runtime call, or unbounded queue
    can outlive service ownership invisibly.
 
-7. **Test contracts proportionately.** Exercise routers as Tower services; add real-socket tests
-   only for connection/transport behavior. Cover rejection bodies, auth, limits,
-   middleware order, cancellation, and graceful shutdown.
+7. **Test contracts proportionately.** Exercise routers as Tower services;
+   real-socket tests only for connection/transport behavior. Cover rejection
+   bodies, auth, limits, middleware order, cancellation, and graceful shutdown.
    **Complete when:** every externally stable status/body/header contract and
    transport policy has a focused test or named residual risk.
 

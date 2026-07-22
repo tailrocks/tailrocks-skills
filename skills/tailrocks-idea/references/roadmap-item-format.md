@@ -1,16 +1,16 @@
 # Roadmap Item Format
 
-The single product-oriented document per idea that the whole delivery family
-reads and writes: `tailrocks-idea` creates it, `tailrocks-brainstorm`,
-`tailrocks-record-decision`, and `tailrocks-research` shape it,
-`tailrocks-finalize` finalizes it, `tailrocks-plan` consumes it. One item
-= one folder `roadmap/<slug>/` with `README.md` as the item and optional
+One product-oriented document per idea, read and written by the whole
+delivery family: `tailrocks-idea` creates it; `tailrocks-brainstorm`,
+`tailrocks-record-decision`, and `tailrocks-research` shape it;
+`tailrocks-finalize` finalizes it; `tailrocks-plan` consumes it. One item =
+one folder `roadmap/<slug>/` with `README.md` as the item plus optional
 sibling assets (mockup images, diagrams).
 
 ## Status machine
 
-Exactly one status at all times, shown in the item header and mirrored in the
-index. Statuses and their owners:
+Exactly one status at all times, in the item header and mirrored in the
+index. Statuses and owners:
 
 | Status | Meaning | Set by |
 |---|---|---|
@@ -24,13 +24,14 @@ index. Statuses and their owners:
 
 Transition rules:
 
-- Forward movement follows the table; skipping `READY` is possible only by
-  user override and the override is logged.
-- A `tailrocks-record-decision` on a `READY`/`PLANNED`/`IN EXECUTION` item that
-  changes product intent moves it back to `SHAPING` and marks affected plans
-  stale — a reopened decision reopens the item; silence about it is a defect.
+- Forward movement follows the table; skipping `READY` requires a user
+  override, and the override is logged.
+- A `tailrocks-record-decision` on a `READY`/`PLANNED`/`IN EXECUTION` item
+  that changes product intent moves it back to `SHAPING` and marks affected
+  plans stale — a reopened decision reopens the item; silence about it is a
+  defect.
 - Every status change appends a Log entry: date, skill, one-line reason.
-- A status a skill does not own is never written by that skill.
+- A skill never writes a status it does not own.
 
 ## Item template — `roadmap/<slug>/README.md`
 
@@ -121,11 +122,10 @@ Consciously postponed decisions: reason + revisit trigger.
 
 Section rules:
 
-- Empty sections stay present and empty — an absent section reads as "never
-  considered", an empty one as "not yet known", and only the latter is
-  honest.
-- Decisions, Vocabulary, and Must not are settled once written; changing them
-  goes through `tailrocks-record-decision` so the change is dated, reasoned, and
+- Empty sections stay present and empty — an absent section reads "never
+  considered", an empty one "not yet known"; only the latter is honest.
+- Decisions, Vocabulary, and Must not are settled once written; changes go
+  through `tailrocks-record-decision` so they are dated, reasoned, and
   propagated.
 - Open questions vs Open research questions is the decision/fact split: "do
   we sync at all?" is a decision; "which sync engine fits?" is researchable.
@@ -143,4 +143,4 @@ Section rules:
 
 Rows sorted by Updated, newest first. Every skill that changes an item's
 status updates its row in the same edit. The index is a board, not a store —
-one line per item, all content lives in the item.
+one line per item; all content lives in the item.

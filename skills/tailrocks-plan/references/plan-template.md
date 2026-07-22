@@ -225,7 +225,7 @@ brief contains:
   unverifiable excerpt, report back instead of improvising.
 
 The orchestrator spot-verifies each returned plan's excerpts against the
-cited sources before review — a wrong excerpt becomes a wrong build.
+cited sources before review.
 
 ## Cold-reviewer brief
 
@@ -249,7 +249,3 @@ re-reviews when fixes were structural.
 - STOP conditions reflect this plan's actual risks.
 - Commands cited to the verification-tooling research.
 - No secret values; planned-at SHA filled; manifest row exists.
-
-Credit: this template descends from the shadcn `improve` skill's handoff
-plan template, extended with preconditions, spec and screen contracts,
-inlined guardrails, and the house executor toolkit.

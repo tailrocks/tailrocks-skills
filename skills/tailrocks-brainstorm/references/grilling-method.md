@@ -1,16 +1,16 @@
 # Grilling Method — Shaping Stage
 
-How `tailrocks-brainstorm` runs its interview. The stage matters: this is the
-expansion pass, where the item is young and the goal is a clear shape, not a
-closed spec. `tailrocks-finalize` owns the closing pass.
+How `tailrocks-brainstorm` runs its interview. This is the expansion pass:
+the item is young, the goal is a clear shape, not a closed spec.
+`tailrocks-finalize` owns the closing pass.
 
 ## The decision tree
 
-Model the item as a tree of decisions, not a list of topics. A **decision** is
-any point where two defensible options exist and choosing changes what gets
-built. Decisions depend on each other: "what does the settings screen show?"
-is unanswerable before "is configuration in-app at all?". Resolve parents
-before children.
+Model the item as a tree of decisions, not a list of topics. A **decision**
+is any point where two defensible options exist and choosing changes what
+gets built. Decisions depend on each other: "what does the settings screen
+show?" is unanswerable before "is configuration in-app at all?". Resolve
+parents before children.
 
 Seed the roots from the item itself: empty sections, one-line sections that
 carry a paragraph of implications, vague statements ("fast", "simple",
@@ -39,11 +39,11 @@ result in when it lands.
 
 ## Question craft
 
-- **One at a time.** Ask, wait, then continue. Multiple simultaneous
-  questions are bewildering and produce half-answers.
+- **One at a time.** Ask, wait, continue. Multiple simultaneous questions
+  produce half-answers.
 - **Recommend in every question.** One or two sentences: the answer you
   would pick and why, grounded in looked-up facts. A rejected recommendation
-  is itself information about the user's intent.
+  is itself information about intent.
 - **Concrete over abstract.** "The CLI is mid-run and the desktop app
   closes — what happens to the session?" beats "how should lifecycle be
   handled?".
@@ -61,16 +61,16 @@ result in when it lands.
 
 Present the entire current frontier as one numbered list, each question with
 its recommended answer; wait; recompute the frontier from the answers; next
-round. A question depending on another question still open in the same round
-belongs to a later round. Everything else is unchanged.
+round. A question depending on another still open in the same round belongs
+to a later round. Everything else is unchanged.
 
 ## Stopping
 
 1. **Frontier empties** — every branch visited at shaping depth. Say what
    got settled and steer toward the next skill. Do not push into
    finalization territory (pixel-level screen detail, exhaustive edge
-   cases) — that is `tailrocks-finalize`'s job, and duplicating it
-   here exhausts the user before the pass that needs them.
+   cases) — that is `tailrocks-finalize`'s job, and duplicating it here
+   exhausts the user before the pass that needs them.
 2. **User steers out** ("wrap up", "enough"). Honor immediately: every
    still-open decision goes to Open questions with your recommendation
    attached, stated plainly in the close-out. Never silently assume.
@@ -92,8 +92,3 @@ what makes grilling feel like interrogation.
   sit empty. Breadth first at this stage.
 - **Chat-only answers** — an answer that never reached the item file does
   not exist.
-
-Credit: the interview mechanics descend from Matt Pocock's `grilling` /
-`grill-me` skills and the `batch-grill-me` frontier variant (decision tree,
-one-question rule, recommended answers, fact/decision split, non-blocking
-fact lookups, no question cap), retargeted to shape Tailrocks roadmap items.

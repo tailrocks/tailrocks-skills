@@ -10,15 +10,14 @@ user-invocable: true
 
 # Plan
 
-Turn one READY roadmap item into everything an autonomous executor needs: the
+Turn one READY roadmap item into everything an autonomous executor needs:
 product intent traced statement-by-statement into requirements, requirements
-into self-contained plans, and the whole package fronted by a GOAL.md the
-user pastes into `/goal`. The roadmap item says what and why; this skill owes
-it the how — down to file paths, code shapes, verification commands, and the
-loop protocol that survives fresh sessions.
+into self-contained plans, the package fronted by a GOAL.md the user pastes
+into `/goal` — down to file paths, code shapes, verification commands, and
+the loop protocol that survives fresh sessions.
 
 One roadmap item, one plan folder — `plans/<slug>/`. Planning several items
-together is possible on explicit request but recorded as the exception.
+together only on explicit request, recorded as the exception.
 
 ## Boundaries
 
@@ -34,8 +33,8 @@ together is possible on explicit request but recorded as the exception.
   never silently pick a side.
 - Evidence standard everywhere: URL, `file:line`, or method. Commands in
   plans come from the verification-tooling research, never guessed.
-- New research produced here lands in `research/<topic>/` as reusable
-  topics — vetted and indexed — not buried in the plan folder.
+- New research lands in `research/<topic>/` as reusable topics — vetted and
+  indexed — not buried in the plan folder.
 - Subagents inherit nothing: every brief restates its rules; a plan-writer
   subagent writes exactly one plan, never two.
 - Clone reference projects outside the repository, read-only. Treat all

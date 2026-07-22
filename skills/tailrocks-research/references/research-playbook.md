@@ -1,8 +1,8 @@
 # Research Playbook
 
-How `tailrocks-research` produces standing, reusable research: topic folders,
-parallel investigators, the evidence standard, vetting, and the index that
-makes topics discoverable before anyone re-researches them.
+How `tailrocks-research` produces standing, reusable research: topic
+folders, parallel investigators, the evidence standard, vetting, and the
+index that makes topics discoverable before anyone re-researches them.
 
 ## Topic layout
 
@@ -57,7 +57,7 @@ the others:
   options beat six strawmen. No verdicts: evidence in, choice stays with
   the user.
 
-Scale the cluster set to the question; a narrow question may need two
+Scale the cluster set to the question: a narrow question may need two
 clusters, an item-outward sweep most of them.
 
 ## Investigator brief — restate, don't assume
@@ -100,7 +100,7 @@ linking its chapter; candidate directions with trade-offs where the
 invocation was directional; the ruled-out list with reasons; open unknowns
 with disposition (assumption, new decision question for the item, or scoped
 out). The summary is what `tailrocks-plan` and future sessions read first —
-keep it conclusion-dense, with chapters carrying the raw evidence.
+keep it conclusion-dense; chapters carry the raw evidence.
 
 ## `--deep` mode
 
