@@ -10,6 +10,7 @@ collection. Manifests live at `.claude-plugin/plugin.json`,
 Current skills: `tailrocks-rust-best-practices`, `tailrocks-rust-project-setup`,
 `tailrocks-axum-best-practices`, `tailrocks-typescript-best-practices`,
 `tailrocks-tanstack-project-setup`, `tailrocks-code-health`,
-`tailrocks-correctness-first`, `tailrocks-propose`, and `tailrocks-research`.
+`tailrocks-correctness-first`, `tailrocks-propose`, `tailrocks-research`, and
+`tailrocks-blueprint`.
 
 Use `claude --plugin-dir .` from this repository root to test the plugin locally.

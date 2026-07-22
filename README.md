@@ -23,13 +23,17 @@ and component systems are outside scope.
 | `tailrocks-correctness-first` | Derive the greenfield architecture that eliminates a proven defect class, then pursue the complete structural correction regardless of price, duration, effort, implementation size, or sunk cost. |
 | `tailrocks-propose` | Turn a rough idea into an enriched, evidence-backed proposal. Parallel analysis gathers prior art, codebase touchpoints, constraints, risks, and alternatives into a per-idea folder of findings. Read-only. |
 | `tailrocks-research` | Take a substantial confirmed proposal direction, resolve material uncertainty, and write sufficient self-contained handoff plans a zero-context executor can follow. |
+| `tailrocks-blueprint` | Convert an authored concept document (feature or whole app, with mockup screens) into sourced research, a traceable OpenSpec-grammar requirement spec, and subagent-written zero-context implementation plans. |
 
 More skills land in `skills/` over time; the layout and install flow below are
 built to grow.
 
 The Rust, Axum, TypeScript, TanStack, code-health, and correctness-first skills
-form the engineering-policy family. `tailrocks-propose` and `tailrocks-research` form a separate delivery
-workflow family; they do not define stack policy.
+form the engineering-policy family. `tailrocks-propose`, `tailrocks-research`,
+and `tailrocks-blueprint` form a separate delivery workflow family; they do not
+define stack policy. Propose and research pair up when the direction is still
+being chosen in conversation; blueprint is the standalone entry point when the
+human has already written a concept document.
 
 ## Installation
 
@@ -149,7 +153,11 @@ tailrocks-skills/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   └── agents/
-│   └── tailrocks-research/  # confirmed direction → deep research + handoff plans
+│   ├── tailrocks-research/  # confirmed direction → deep research + handoff plans
+│   │   ├── SKILL.md
+│   │   ├── references/
+│   │   └── agents/
+│   └── tailrocks-blueprint/ # concept document → research + spec + handoff plans
 │       ├── SKILL.md
 │       ├── references/
 │       └── agents/

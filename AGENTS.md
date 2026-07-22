@@ -107,6 +107,21 @@ enriches broadly and stops; you clarify direction in conversation;
 `tailrocks-research` goes deep on the one direction and writes the plan. Both are
 read-only advisors and manual-only.
 
+### tailrocks-blueprint
+
+Convert a human-authored concept document (.md/.mdx describing a feature or a
+whole application, optionally with schematic screen mockups) into the full
+handoff package: an ID-addressed coverage ledger, parallel-subagent research
+chapters, an OpenSpec-grammar requirement spec with screen contracts and a
+must-not registry, and one zero-context implementation plan per item — each plan
+written by its own dedicated subagent, then cold-reviewed by fresh-context
+reviewers. The standalone entry point of the delivery family: where
+`tailrocks-propose`/`tailrocks-research` start from a rough idea and a chosen
+direction, blueprint starts from the concept the human already wrote. Read-only
+outside `blueprints/<slug>/`.
+
+Skill definition: `skills/tailrocks-blueprint/SKILL.md`
+
 ### tailrocks-correctness-first
 
 Analyze or remediate a proven defect, inconsistency, violated invariant, or
