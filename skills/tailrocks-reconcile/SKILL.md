@@ -65,8 +65,10 @@ the repository moved on.
 5. **Drift-check TODO.** Per row:
    `git diff --stat <planned-at SHA>..HEAD -- <in-scope paths>`. On any
    in-scope change, compare the plan's Starting state excerpts against
-   live code — mismatch → `STALE` with reason; clean → confirmed
-   executable.
+   live code — mismatch → `STALE` with reason; clean → confirmed executable.
+   Re-test every `A#` assumption the TODO plans name in STOP conditions
+   against its "Falsified by" signal. A dead assumption marks leaning plans
+   STALE and routes to `tailrocks-record-decision` for item propagation.
    **Complete when:** every TODO row is either confirmed against HEAD or
    marked `STALE`.
 

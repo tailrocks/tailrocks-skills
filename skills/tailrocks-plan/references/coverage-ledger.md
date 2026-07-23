@@ -71,7 +71,9 @@ item anchors only.
 | ID | Reference | Kind | Research topics |
 
 ## Assumptions
-| ID | Assumption | Why safe | Falsified by |
+| ID | Assumption | Why safe | Falsified by | Status |
+|----|------------|----------|---------------|--------|
+| A1 | ... | ... | ... | holds |
 
 ## Research questions
 | ID | Question | Research topic | Status |
@@ -79,6 +81,7 @@ item anchors only.
 
 Status values: `covered` | `deferred (reason)` | `dropped (reason)`. An
 empty cell is a planning defect; a deferral is a decision on record.
+Assumption status values are `holds` or `falsified (date, routed)`.
 
 ## How the pipeline uses it
 

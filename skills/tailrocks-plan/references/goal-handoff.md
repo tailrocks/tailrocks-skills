@@ -70,7 +70,10 @@ One plan per fresh session or loop iteration:
    output from this session — never from memory or a prior report — set
    the row to DONE, commit per the plan's git workflow.
 6. On a STOP: set the row to BLOCKED with a one-line reason and stop the
-   loop — do not start dependent plans on top of a BLOCKED one.
+   loop — do not start dependent plans on top of a BLOCKED one. If an
+   assumption fails, report which `A#` failed and what was observed; the
+   user routes it through tailrocks-record-decision, which marks leaning
+   plans STALE.
 7. When every row is DONE or REJECTED and none is STALE, BLOCKED, or IN
    PROGRESS: run the goal condition's commands yourself, set
    `roadmap/<slug>/README.md` to DONE with a Log entry, update its
