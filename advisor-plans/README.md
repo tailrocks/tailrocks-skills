@@ -19,7 +19,7 @@ and update your row when done.
 | 004 | CI workflow running the validator | P1 | S | 003 | DONE |
 | 006 | Injection & secrets hardening (14 skills + GOAL surfaces) | P1 | S | — | DONE |
 | 005 | Eval fixtures + judgeable expectations | P2 | M | — (003 composes) | DONE |
-| 007 | Stack-skill corrections (6 confirmed defects) | P2 | M | — | BLOCKED — registry latest router-devtools is 1.167.0; no required 1.170.x release exists |
+| 007 | Stack-skill corrections (6 confirmed defects) | P2 | M | — | DONE — latest independent pins; devtools 1.167.0 peers with Router ^1.170.0 |
 | 008 | External-claims verification (bun ci, vite, shadcn, renovate) | P2 | S | — | DONE — TRUE: bun ci, Vite tsconfigPaths, base-nova, both Renovate keys |
 | 009 | Canonical shared rules across the delivery family | P2 | M | 001, 002, 006 | DONE |
 | 010 | Contributor DX (PR workflow, Bun bootstrap, pinning, release) | P2 | S | — | DONE |

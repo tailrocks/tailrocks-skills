@@ -5,7 +5,8 @@
 - Pin Bun exactly in `packageManager`; commit `bun.lock`.
 - Pin direct dependencies exactly and add them with `bun add --exact`.
 - Use `bun ci` in CI; lockfile drift fails.
-- Set Bun's minimum package release age in `bunfig.toml`.
+- Do not configure a minimum release age: the house contract requires each
+  current stable release to remain installable immediately.
 - Keep `trustedDependencies` minimal; lifecycle scripts run only after review.
 - Upgrade Start, Router, Query, React, Vite, Tailwind, shadcn, TS7, and Oxc as
   one compatibility change with release-note review.

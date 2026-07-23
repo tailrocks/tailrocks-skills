@@ -44,6 +44,9 @@ upgrade trigger. "Latest" never means an unexamined prerelease.
 Use `scripts/resolve-package-versions.ts <package>...` through Bun for registry
 evidence before changing exact pins. Verify peer compatibility and release
 status in each project's official documentation.
+Before copying the baseline, run
+`scripts/resolve-package-versions.ts --check-template templates/package.json`;
+any stale direct pin is a failing gate, not advisory output.
 
 ## Modes
 
