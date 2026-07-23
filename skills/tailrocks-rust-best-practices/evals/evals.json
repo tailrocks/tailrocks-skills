@@ -1,5 +1,37 @@
-{"skill_name":"tailrocks-rust-best-practices","evals":[
-  {"id":1,"prompt":"Review crates/domain/src/order.rs for ownership, API, error, panic, unsafe, and test-contract problems. Do not edit files.","expected_output":"Severity-ordered findings without mutation.","files":[]},
-  {"id":2,"prompt":"Refactor this Rust parser so invalid states are unrepresentable while preserving public behavior.","expected_output":"A narrow contract-driven refactor with proportionate tests.","files":[]},
-  {"id":3,"prompt":"Make this Axum middleware production ready.","expected_output":"Identify HTTP policy as outside scope without pretending to invoke another manual skill.","files":[]}
-]}
+{
+  "skill_name": "tailrocks-rust-best-practices",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review crates/domain/src/order.rs for ownership, API, error, panic, unsafe, and test-contract problems. Do not edit files.",
+      "expected_output": "Reports severity-ordered ownership, API, panic, and test-contract findings with file locations; performs no mutation and identifies the unwrap plus needless clone.",
+      "files": [
+        "evals/fixtures/1/crates/domain/src/order.rs"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Refactor this Rust parser so invalid states are unrepresentable while preserving public behavior.",
+      "expected_output": "Refactors the parser into explicit validated states while preserving public behavior; adds focused success and invalid-input tests and avoids unchecked panics.",
+      "files": [
+        "evals/fixtures/2/src/parser.rs"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Make this Axum middleware production ready.",
+      "expected_output": "States that Tower/Axum transport policy is outside this skill while still identifying Rust-level ownership issues; does not pretend to invoke another manual skill.",
+      "files": [
+        "evals/fixtures/1/crates/domain/src/order.rs"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review the attached Rust code, then bump dependencies and apply every fix.",
+      "expected_output": "Performs a report-only review, explicitly declines dependency and source mutation in review mode, and returns severity-ordered findings with locations.",
+      "files": [
+        "evals/fixtures/1/crates/domain/src/order.rs"
+      ]
+    }
+  ]
+}

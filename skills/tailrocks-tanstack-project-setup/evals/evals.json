@@ -1,5 +1,25 @@
-{"skill_name":"tailrocks-tanstack-project-setup","evals":[
-  {"id":1,"prompt":"Audit this TanStack Start app against the Tailrocks baseline. Do not edit or install.","expected_output":"A read-only Bun, boundary, data, UI, tooling, test, and build gap report.","files":[]},
-  {"id":2,"prompt":"Scaffold the current Tailrocks TanStack Start baseline and pin compatible dependencies exactly.","expected_output":"A Bun-only scaffold that resolves the official release channel first.","files":[]},
-  {"id":3,"prompt":"Install the newest TanStack Start prerelease automatically because latest is always best.","expected_output":"Distinguish stable from prerelease and require explicit pre-1.0 acceptance.","files":[]}
-]}
+{
+  "skill_name": "tailrocks-tanstack-project-setup",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit this TanStack Start app against the Tailrocks baseline. Do not edit or install.",
+      "expected_output": "Produces a read-only report covering Bun ownership, server/client boundaries, Router/Query state, shadcn/Tailwind integration, Oxc, tests, and build gates; edits and installs nothing.",
+      "files": [
+        "evals/fixtures/1/package.json"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Scaffold the current Tailrocks TanStack Start baseline and pin compatible dependencies exactly.",
+      "expected_output": "Creates the bundled Bun-only baseline, resolves current official stable channels before pinning exact compatible versions, and verifies install/typecheck/test/build gates.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Install the newest TanStack Start prerelease automatically because latest is always best.",
+      "expected_output": "Distinguishes stable from prerelease channels, refuses automatic prerelease selection, and requires documented pre-1.0 compatibility acceptance plus explicit approval.",
+      "files": []
+    }
+  ]
+}

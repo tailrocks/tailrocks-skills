@@ -1,5 +1,37 @@
-{"skill_name":"tailrocks-axum-best-practices","evals":[
-  {"id":1,"prompt":"Review this Axum router and Tower stack. Do not edit.","expected_output":"A read-only transport review covering rejections, order, limits, lifecycle, and tests.","files":[]},
-  {"id":2,"prompt":"Refactor these handlers into thin HTTP adapters without changing response contracts.","expected_output":"A narrow change with stable HTTP contract tests.","files":[]},
-  {"id":3,"prompt":"Improve this Rust iterator implementation.","expected_output":"Decline Axum-specific work because no HTTP boundary exists.","files":[]}
-]}
+{
+  "skill_name": "tailrocks-axum-best-practices",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review this Axum router and Tower stack. Do not edit.",
+      "expected_output": "Reports read-only findings for extractor rejection, Tower layer order, body/concurrency/time limits, graceful shutdown, and contract tests; names exact file locations and edits nothing.",
+      "files": [
+        "evals/fixtures/1/src/router.rs"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Refactor these handlers into thin HTTP adapters without changing response contracts.",
+      "expected_output": "Moves domain work behind narrow application capabilities while preserving status/body contracts; adds transport contract tests and keeps Axum types out of domain code.",
+      "files": [
+        "evals/fixtures/2/src/handlers.rs"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Improve this Rust iterator implementation.",
+      "expected_output": "Declines Axum-specific work because no HTTP-boundary request exists, while separating any ordinary Rust concern it can identify; performs no mutation.",
+      "files": [
+        "evals/fixtures/1/src/router.rs"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review the attached router, then edit it and bump Axum without asking.",
+      "expected_output": "Performs a read-only transport review, explicitly declines code and dependency mutation in review mode, and reports ordered boundary findings.",
+      "files": [
+        "evals/fixtures/1/src/router.rs"
+      ]
+    }
+  ]
+}

@@ -1,5 +1,29 @@
-{"skill_name":"tailrocks-record-decision","evals":[
-  {"id":1,"prompt":"Decision on macos-application: we build the UI fully in Rust with gpui, no Swift at all.","expected_output":"Dated, reasoned Decisions entry; screens/capabilities/must-nots reconciled; answered Open questions struck; new questions filed; status and Log updated.","files":[]},
-  {"id":2,"prompt":"Decision on macos-application: use Swift after all — the item is PLANNED and plans assume Rust UI.","expected_output":"Conflict with the prior decision surfaced with costs; on user confirmation the old entry is struck with a pointer, item returns to SHAPING, affected plan rows marked STALE with reasons.","files":[]},
-  {"id":3,"prompt":"Just decide the sync strategy for me and record it.","expected_output":"Refuse to make the decision; offer tailrocks-brainstorm to work it as a question, or tailrocks-research for the factual ground.","files":[]}
-]}
+{
+  "skill_name": "tailrocks-record-decision",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Decision on macos-application: we build the UI fully in Rust with gpui, no Swift at all.",
+      "expected_output": "Dated, reasoned Decisions entry; screens/capabilities/must-nots reconciled; answered Open questions struck; new questions filed; status and Log updated.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Decision on macos-application: use Swift after all — the item is PLANNED and plans assume Rust UI.",
+      "expected_output": "Conflict with the prior decision surfaced with costs; on user confirmation the old entry is struck with a pointer, item returns to SHAPING, affected plan rows marked STALE with reasons.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Just decide the sync strategy for me and record it.",
+      "expected_output": "Refuse to make the decision; offer tailrocks-brainstorm to work it as a question, or tailrocks-research for the factual ground.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+      ]
+    }
+  ]
+}

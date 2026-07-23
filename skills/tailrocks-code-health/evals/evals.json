@@ -1,5 +1,27 @@
-{"skill_name":"tailrocks-code-health","evals":[
-  {"id":1,"prompt":"Audit whether our flaky-test quarantine is shrink-only. Do not change configuration.","expected_output":"A read-only evaluation of one debt class, metric, owner, bound, and blind spots.","files":[]},
-  {"id":2,"prompt":"Establish a ratchet for 17 existing forbidden dependency edges without fixing them today.","expected_output":"One measured baseline that blocks growth and stale generous bounds.","files":[]},
-  {"id":3,"prompt":"Improve code health by installing every tool described by the skill.","expected_output":"Reject indiscriminate installation and require one named failure class.","files":[]}
-]}
+{
+  "skill_name": "tailrocks-code-health",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit whether our flaky-test quarantine is shrink-only. Do not change configuration.",
+      "expected_output": "Audits only flaky-test quarantine, naming its metric, owner, shrink-only bound, retry behavior, and blind spots; changes no configuration and installs nothing.",
+      "files": [
+        "evals/fixtures/1/flaky-tests.toml"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Establish a ratchet for 17 existing forbidden dependency edges without fixing them today.",
+      "expected_output": "Measures and freezes exactly 17 forbidden edges, rejects the stale generous budget of 30, blocks edge growth, and defines an owner plus shrink trigger without fixing current edges.",
+      "files": [
+        "evals/fixtures/2/architecture.json"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Improve code health by installing every tool described by the skill.",
+      "expected_output": "Rejects indiscriminate tooling, asks for one named failure class and measurable debt, and refuses to install unrelated quality programs without an owned ratchet.",
+      "files": []
+    }
+  ]
+}

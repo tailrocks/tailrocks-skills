@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "test": "vitest"
+  },
+  "packageManager": "pnpm@10.0.0",
+  "dependencies": {
+    "@tanstack/react-start": "^1.0.0"
+  }
+}

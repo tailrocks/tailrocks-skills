@@ -1,0 +1,5 @@
+{
+  "allowed": [["domain", "shared"]],
+  "observed_forbidden_edges": 17,
+  "budget": 30
+}

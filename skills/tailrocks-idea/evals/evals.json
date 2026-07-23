@@ -1,5 +1,29 @@
-{"skill_name":"tailrocks-idea","evals":[
-  {"id":1,"prompt":"Idea: I want to start developing a macOS application for our current CLI/TUI application.","expected_output":"roadmap/macos-application/README.md created in DRAFT from the template, user's words preserved, empty sections left visibly empty, index row added, next step named.","files":[]},
-  {"id":2,"prompt":"Idea: macos-application — also add a settings screen to it.","expected_output":"Detect the existing roadmap/macos-application/ item and stop; point at tailrocks-brainstorm or tailrocks-record-decision instead of creating a duplicate.","files":[]},
-  {"id":3,"prompt":"Capture this idea and fill in the obvious screens and architecture yourself so it looks complete.","expected_output":"Refuse to invent content: capture only the user's statements; gaps stay empty for brainstorm to resolve.","files":[]}
-]}
+{
+  "skill_name": "tailrocks-idea",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Idea: I want to start developing a macOS application for our current CLI/TUI application.",
+      "expected_output": "roadmap/macos-application/README.md created in DRAFT from the template, user's words preserved, empty sections left visibly empty, index row added, next step named.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Idea: macos-application — also add a settings screen to it.",
+      "expected_output": "Detect the existing roadmap/macos-application/ item and stop; point at tailrocks-brainstorm or tailrocks-record-decision instead of creating a duplicate.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Capture this idea and fill in the obvious screens and architecture yourself so it looks complete.",
+      "expected_output": "Refuse to invent content: capture only the user's statements; gaps stay empty for brainstorm to resolve.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+      ]
+    }
+  ]
+}
