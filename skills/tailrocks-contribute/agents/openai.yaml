@@ -1,0 +1,6 @@
+interface:
+  display_name: "Contribute"
+  short_description: "Prepare and shepherd a respectful external OSS PR"
+  default_prompt: "Use $tailrocks-contribute to analyze this project's contribution rules and prepare the change as a good OSS citizen."
+policy:
+  allow_implicit_invocation: false

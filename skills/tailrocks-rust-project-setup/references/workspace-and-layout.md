@@ -9,10 +9,10 @@ first commit, and Rust 2024 self-named module files with no `mod.rs`.
 - Set `edition = "2024"` in `[workspace.package]` and inherit it in every
   member.
 - Set `resolver = "3"` in `[workspace]` — the edition-2024 feature resolver.
-- `rust-version` in `[workspace.package]` is the **MSRV floor** — the oldest
-  toolchain you promise to build on. Keep it honest with a CI job that builds
-  on exactly that version. It is independent of, and usually older than, the
-  pinned build channel in `rust-toolchain.toml`.
+- By default, keep `rust-version` in `[workspace.package]` equal to the
+  pinned channel in `rust-toolchain.toml`. If published crates promise an
+  older MSRV, set that floor explicitly and add a CI job on exactly that
+  version; otherwise the equal pin is the only supported toolchain.
 
 ## Everything Is a Workspace
 
@@ -63,7 +63,7 @@ Root `Cargo.toml`:
 ```toml
 [workspace.package]
 edition = "2024"
-rust-version = "1.90"
+rust-version = "1.97.0"
 license = "Apache-2.0"
 repository = "https://github.com/your-org/your-repo"
 

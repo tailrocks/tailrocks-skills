@@ -1,0 +1,5 @@
+[[tests]]
+name = "integration::eventually_consistent"
+owner = ""
+retries = 3
+expires = "2099-01-01"

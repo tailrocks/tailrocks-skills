@@ -18,9 +18,9 @@ index. Statuses and owners:
 | `SHAPING` | Being shaped; open questions remain | `tailrocks-brainstorm`, `tailrocks-record-decision`, `tailrocks-research` (first touch of a DRAFT item) |
 | `READY` | Product-complete: no open decision-type questions; fit for planning | `tailrocks-finalize` only (or an explicit user override, recorded in the Log) |
 | `PLANNED` | `plans/<slug>/` exists with a GOAL.md | `tailrocks-plan` |
-| `IN EXECUTION` | An executor started working the plans | the executor protocol in `plans/<slug>/README.md` |
-| `DONE` | All plan rows DONE and the goal condition met | the executor protocol |
-| `PARKED (reason)` | Deliberately paused at any stage | the user, via any skill |
+| `IN EXECUTION` | An executor started working the plans | the executor protocol; `tailrocks-reconcile` when truing up |
+| `DONE` | All plan rows DONE and the goal condition met | the executor protocol; `tailrocks-reconcile` when truing up |
+| `PARKED (reason; was: STATUS)` | Deliberately paused at any stage | the user, via any skill; un-parked by `tailrocks-record-decision` |
 
 Transition rules:
 
@@ -32,6 +32,11 @@ Transition rules:
   defect.
 - Every status change appends a Log entry: date, skill, one-line reason.
 - A skill never writes a status it does not own.
+- Parking: any skill may set `PARKED (reason; was: SHAPING)` on the user's
+  explicit instruction, recording the status it left in the header and Log.
+- Resuming: `tailrocks-record-decision` un-parks on explicit user instruction
+  to the recorded `was:` status. A READY/PLANNED item whose intent changed
+  while parked follows the normal reopen rule instead. Record a Log entry.
 
 ## Item template — `roadmap/<slug>/README.md`
 

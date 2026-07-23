@@ -56,4 +56,7 @@ run = "cargo semver-checks check-release --workspace"
 run = "cargo mutants --workspace --test-tool=nextest"
 
 [tasks.careful]
-run = "cargo +nightly-2026-07-10 careful test --workspace --all-features --locked"
+run = [
+    "rustup toolchain install nightly-2026-07-10 --profile minimal",
+    "cargo +nightly-2026-07-10 careful test --workspace --all-features --locked",
+]

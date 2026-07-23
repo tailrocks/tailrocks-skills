@@ -141,7 +141,19 @@ Grilling mechanics descend from Matt Pocock's `grilling` family; the plan
 template and the reconcile stage descend from the shadcn `improve` skill.
 All seven write only their own artifacts (`roadmap/`, `research/`,
 `plans/`) and never touch source.
+Worked walkthrough: `docs/pipeline-walkthrough.md`.
 
+### tailrocks-contribute
+
+Contribute to external open-source projects through project-contract recon,
+hard-stop-aware proposal, gated preparation, explicit per-contribution
+submission approval, and human-approved review response.
+
+Skill definition: `skills/tailrocks-contribute/SKILL.md`
+
+tailrocks-contribute descends from the tesslio `good-oss-citizen` plugin's
+recon/propose/preflight structure, extended with submission approval,
+review-response, and pacing.
 
 ### tailrocks-remediate
 
@@ -172,10 +184,13 @@ Skill definition: `skills/tailrocks-remediate/SKILL.md`
 
 ## Validation
 
-Before publishing changes, run the Bun-native skill and manifest validator:
+Requires Bun, pinned in `mise.toml`; `mise install` provisions it. Before
+publishing changes, run the Bun-native skill and manifest validator:
 
 ```sh
 bun run scripts/validate-skills.ts
+# or
+mise run validate
 ```
 
 Load the plugin locally in Claude Code:
@@ -184,10 +199,18 @@ Load the plugin locally in Claude Code:
 claude --plugin-dir .
 ```
 
+## Contributing workflow
+
+Main is protected and PR-only. Work on a feature branch (`feat/…`, `fix/…`,
+or `advisor/…`), commit every completed change with DCO signoff
+(`git commit -s`), and open a PR (`gh pr create`) when the change set is
+complete. Never push to main directly. Do not leave finished work uncommitted
+on the branch.
+
 ## Commit Messages
 
-Commit and push every completed repository change. Do not leave finished work
-uncommitted unless the user explicitly requests otherwise.
+Commit every completed repository change unless the user explicitly requests
+otherwise.
 
 All commits in this repository should follow Conventional Commits 1.0.0.
 
@@ -211,3 +234,15 @@ Allowed types:
 
 Breaking changes use `!` after the type or scope and include a `BREAKING CHANGE:`
 footer in the body.
+
+## Releasing
+
+1. Run `mise run validate`; it must be green.
+2. Bump `version` in `.claude-plugin/plugin.json`,
+   `.codex-plugin/plugin.json`, `.kimi-plugin/plugin.json`, and the
+   `.claude-plugin/marketplace.json` entry in one commit.
+3. Re-run the validator; it enforces version lockstep.
+4. Update pinned-tag examples in INSTALL.md and README.md to the new tag.
+5. Tag `vX.Y.Z` on the merge commit and push the tag.
+6. Re-verify the INSTALL.md matrix commands against current client versions
+   and refresh its verified date.

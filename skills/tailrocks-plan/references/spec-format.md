@@ -99,9 +99,10 @@ Every `N#`, phrased bindingly:
 | N1 | The app MUST NOT embed a web renderer for primary UI | item §Must not | 001, 004, 007 |
 ```
 
-The "Enforced in plans" column fills during plan writing: every plan whose
-scope could tempt a violation inlines that must-not verbatim. An `N#` with
-an empty column at the final gate is a coverage failure.
+This is the sole must-not registry. The orchestrator fills "Enforced in
+plans" during plan writing: every plan whose scope could tempt a violation
+inlines that must-not verbatim. An `N#` with an empty column at the final
+gate is a coverage failure.
 
 ## Deferrals — in `spec/README.md`
 
@@ -134,7 +135,7 @@ all scenarios; the log records that it changed and which plans went stale.
 
 ## Quality gate before slicing
 
-- Every `S#`, `F#`, `W#`, `N#` resolves to a spec location or a logged
+- Every `S#`, `F#`, `W#`, `N#`, `B#` resolves to a spec location or a logged
   deferral.
 - Every requirement: SHALL/MUST body, ≥1 four-hash scenario, `Covers:` and
   `Evidence:` trailers pointing at real IDs and vetted chapters.

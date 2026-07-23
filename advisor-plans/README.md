@@ -13,23 +13,23 @@ and update your row when done.
 
 | Plan | Title | Priority | Effort | Depends on | Status |
 |------|-------|----------|--------|------------|--------|
-| 001 | Executor-contract fixes (/goal loop finishable) | P1 | M | — | TODO |
-| 002 | Completeness-chain fixes (ledger→spec→plans) | P1 | M | 001 (soft: same files) | TODO |
-| 003 | Validator hardening + catalog truth | P1 | M | — | TODO |
-| 004 | CI workflow running the validator | P1 | S | 003 | TODO |
-| 006 | Injection & secrets hardening (14 skills + GOAL surfaces) | P1 | S | — | TODO |
-| 005 | Eval fixtures + judgeable expectations | P2 | M | — (003 composes) | TODO |
-| 007 | Stack-skill corrections (6 confirmed defects) | P2 | M | — | TODO |
-| 008 | External-claims verification (bun ci, vite, shadcn, renovate) | P2 | S | — | TODO |
-| 009 | Canonical shared rules across the delivery family | P2 | M | 001, 002, 006 | TODO |
-| 010 | Contributor DX (PR workflow, Bun bootstrap, pinning, release) | P2 | S | — | TODO |
-| 011 | Worked example plan package (quality anchor) | P2 | L | 001, 002 | TODO |
-| 017 | tailrocks-contribute — OSS-contribution skill | P2 | L | soft: 003, 006, 009 | TODO |
-| 016 | PARKED exit + assumption lifecycle | P3 | S | 001, 002 | TODO |
-| 012 | Pipeline walkthrough doc | P3 | M | 011 (soft) | TODO |
-| 013 | Eval-runner design spike | P3 | M | 005 (soft) | TODO |
-| 014 | Effort-tiers design spike | P3 | M | after 001/002/009 | TODO |
-| 015 | Brownfield on-ramp design spike | P3 | L | — | TODO |
+| 001 | Executor-contract fixes (/goal loop finishable) | P1 | M | — | DONE |
+| 002 | Completeness-chain fixes (ledger→spec→plans) | P1 | M | 001 (soft: same files) | DONE |
+| 003 | Validator hardening + catalog truth | P1 | M | — | DONE |
+| 004 | CI workflow running the validator | P1 | S | 003 | DONE |
+| 006 | Injection & secrets hardening (14 skills + GOAL surfaces) | P1 | S | — | DONE |
+| 005 | Eval fixtures + judgeable expectations | P2 | M | — (003 composes) | DONE |
+| 007 | Stack-skill corrections (6 confirmed defects) | P2 | M | — | DONE — latest independent pins; devtools 1.167.0 peers with Router ^1.170.0 |
+| 008 | External-claims verification (bun ci, vite, shadcn, renovate) | P2 | S | — | DONE — TRUE: bun ci, Vite tsconfigPaths, base-nova, both Renovate keys |
+| 009 | Canonical shared rules across the delivery family | P2 | M | 001, 002, 006 | DONE |
+| 010 | Contributor DX (PR workflow, Bun bootstrap, pinning, release) | P2 | S | — | DONE |
+| 011 | Worked example plan package (quality anchor) | P2 | L | 001, 002 | DONE |
+| 017 | tailrocks-contribute — OSS-contribution skill | P2 | L | soft: 003, 006, 009 | DONE |
+| 016 | PARKED exit + assumption lifecycle | P3 | S | 001, 002 | DONE |
+| 012 | Pipeline walkthrough doc | P3 | M | 011 (soft) | DONE |
+| 013 | Eval-runner design spike | P3 | M | 005 (soft) | DONE — go scheduled; both cases stable 3/3 pass |
+| 014 | Effort-tiers design spike | P3 | M | after 001/002/009 | DONE — go; suggest-only light/standard/deep proposal |
+| 015 | Brownfield on-ramp design spike | P3 | L | — | DONE — go; distinct provenance-marked survey intake |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason)
 | REJECTED (with one-line rationale — finding fixed independently or

@@ -21,6 +21,7 @@ and component systems are outside scope.
 | `tailrocks-typescript-best-practices` | Write, review, and refactor strict Rust-inspired TypeScript 7 and React code using Bun-owned tooling. |
 | `tailrocks-tanstack-project-setup` | Scaffold, migrate, and audit Bun-only TanStack Start projects with TypeScript 7, Oxc, Router, Query, shadcn/ui, Tailwind CSS v4, tests, and CI. |
 | `tailrocks-code-health` | Establish, audit, or tighten one measurable shrink-only debt ratchet using architecture, lint, dependency, flake, defect, documentation, or verification providers. |
+| `tailrocks-contribute` | Recon, prepare, submit with per-contribution approval, and shepherd a respectful contribution to an external open-source project. |
 | `tailrocks-remediate` | Derive the greenfield architecture that eliminates a proven defect class, then pursue the complete structural correction regardless of price, duration, effort, implementation size, or sunk cost. |
 | `tailrocks-idea` | Capture a raw idea as a DRAFT roadmap item: content-derived slug, item template, index row. Capture only — no interviewing, no invention. |
 | `tailrocks-brainstorm` | Shape a young roadmap item through a relentless interview: one question at a time with a recommended answer, decisions asked, facts looked up, every answer written into the item immediately. |
@@ -57,6 +58,9 @@ in `plans/<slug>/` with a GOAL.md whose blocks paste directly into the
 `tailrocks-reconcile` re-earns every plan status with commands run now and
 trues up the item — run it whenever a loop finishes, stalls, or the
 repository moved on since planning.
+
+Worked format anchor: [`examples/plan-package/`](examples/plan-package/).
+Worked walkthrough: [`docs/pipeline-walkthrough.md`](docs/pipeline-walkthrough.md).
 
 ## Installation
 
@@ -126,11 +130,13 @@ tailrocks-skills/
 │   ├── tailrocks-rust-best-practices/
 │   │   ├── SKILL.md
 │   │   ├── references/
+│   │   ├── evals/            # per-skill evals (all skills)
 │   │   └── agents/
 │   ├── tailrocks-rust-project-setup/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   ├── templates/       # copy-ready Cargo.toml, clippy.toml, mise.toml, …
+│   │   ├── scripts/
 │   │   └── agents/
 │   ├── tailrocks-axum-best-practices/
 │   │   ├── SKILL.md
@@ -144,11 +150,21 @@ tailrocks-skills/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   ├── templates/
+│   │   ├── scripts/
 │   │   └── agents/
 │   ├── tailrocks-code-health/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   ├── templates/
+│   │   └── agents/
+│   ├── tailrocks-contribute/
+│   │   ├── SKILL.md
+│   │   ├── references/
+│   │   ├── scripts/
+│   │   └── agents/
+│   ├── tailrocks-remediate/
+│   │   ├── SKILL.md
+│   │   ├── references/
 │   │   └── agents/
 │   ├── tailrocks-idea/          # raw idea → DRAFT roadmap item
 │   │   ├── SKILL.md
@@ -187,8 +203,12 @@ tailrocks-skills/
 
 ## Validation
 
+Requires Bun, pinned in `mise.toml`; `mise install` provisions it.
+
 ```sh
 bun run scripts/validate-skills.ts
+# or
+mise run validate
 ```
 
 ## License

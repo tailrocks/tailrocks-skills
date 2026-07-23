@@ -1,0 +1,5 @@
+[tools]
+bun = "1.3.14"
+
+[tasks.validate]
+run = "bun run scripts/validate-skills.ts"

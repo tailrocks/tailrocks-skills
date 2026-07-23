@@ -1,5 +1,25 @@
-{"skill_name":"tailrocks-rust-project-setup","evals":[
-  {"id":1,"prompt":"Audit this Rust workspace against the Tailrocks baseline. Do not edit or install.","expected_output":"A read-only tooling and workspace gap report.","files":[]},
-  {"id":2,"prompt":"Scaffold a strict Rust 2024 workspace from the bundled templates using current compatible stable tools.","expected_output":"A reproducible exact-pinned workspace baseline.","files":[]},
-  {"id":3,"prompt":"Use the newest nightly toolchain because its version is newer.","expected_output":"Reject unexamined prerelease selection and require explicit need and approval.","files":[]}
-]}
+{
+  "skill_name": "tailrocks-rust-project-setup",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit this Rust workspace against the Tailrocks baseline. Do not edit or install.",
+      "expected_output": "Produces a read-only gap report covering workspace layout, edition 2024/resolver 3, exact toolchain pins, inherited lints, mise tasks, and verification gates; installs and edits nothing.",
+      "files": [
+        "evals/fixtures/1/Cargo.toml"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Scaffold a strict Rust 2024 workspace from the bundled templates using current compatible stable tools.",
+      "expected_output": "Creates an edition-2024 resolver-3 crates workspace from bundled templates, resolves current releases from official sources, commits exact pins, and provides green build/test/lint gates.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Use the newest nightly toolchain because its version is newer.",
+      "expected_output": "Rejects unexamined nightly selection, identifies stable as the default channel, and requires both a demonstrated prerelease-only need and explicit approval before changing pins.",
+      "files": []
+    }
+  ]
+}

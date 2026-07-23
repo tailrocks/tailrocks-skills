@@ -19,6 +19,7 @@ directly:
 | `D#` | Decisions | Settled choices — constraints, not questions |
 | `A#` | (created here) | Assumption made where the item is silent and research cannot close it; each names its falsifying signal |
 | `Q#` | Open research questions | Researchable facts the research pass must close |
+| `B#` | Quality bar | One per acceptance statement; each must resolve to at least one spec scenario |
 
 Rules:
 
@@ -51,8 +52,17 @@ Override: <none | READY skipped by user — gaps: ...>
 ## Flows
 | ID | Flow | Screens touched | Spec | Plans | Status |
 
-## Must-not registry (mirrored in spec/README.md)
-| ID | Statement | Reason | Enforced in plans |
+## Must-not anchors
+| ID | Statement | Reason | Registry |
+|----|-----------|--------|----------|
+| N1 | ... | ... | spec/README.md |
+
+The sole must-not registry lives in `spec/README.md`; this ledger keeps the
+item anchors only.
+
+## Quality bar
+| ID | Statement anchor | Spec scenario(s) | Status |
+|----|------------------|------------------|--------|
 
 ## Decisions (constraints)
 | ID | Decision | Dated | Constrains |
@@ -61,7 +71,9 @@ Override: <none | READY skipped by user — gaps: ...>
 | ID | Reference | Kind | Research topics |
 
 ## Assumptions
-| ID | Assumption | Why safe | Falsified by |
+| ID | Assumption | Why safe | Falsified by | Status |
+|----|------------|----------|---------------|--------|
+| A1 | ... | ... | ... | holds |
 
 ## Research questions
 | ID | Question | Research topic | Status |
@@ -69,17 +81,22 @@ Override: <none | READY skipped by user — gaps: ...>
 
 Status values: `covered` | `deferred (reason)` | `dropped (reason)`. An
 empty cell is a planning defect; a deferral is a decision on record.
+Assumption status values are `holds` or `falsified (date, routed)`.
 
 ## How the pipeline uses it
 
 - **Research pass**: `Q#` and `R#` rows name what to investigate; each
-  research topic lists the IDs it informs; `Q#` rows close with a topic
-  link or become `A#` assumptions.
-- **Spec gate**: every `S#`, `F#`, `W#`, `N#` resolves to a spec location
-  or a logged deferral before slicing.
+  `Q#`/`R#` row links the research topic that answers it (topics key on
+  items, not ledger IDs); `Q#` rows close with a topic link or become
+  `A#` assumptions.
+- **Spec gate**: every `S#`, `F#`, `W#`, `N#`, and `B#` resolves to a spec
+  location or a logged deferral before slicing. Every `B#` resolves to a
+  `#### Scenario:` or a logged deferral.
 - **Plan gate**: every requirement's IDs resolve to plan numbers; every
   `N#` lists the plans that inline it as a guardrail; every `A#` appears
   in the STOP conditions of the plans that lean on it.
+- **Vocabulary** gets no IDs — it constrains naming in spec and plans; the
+  spec gate checks terms are used per the item's Vocabulary section.
 - **Re-runs**: diff the updated item against the ledger — new statements
   get new IDs, changed ones keep their ID with a note, removed ones flip
   to `dropped (item revised)`. IDs are never reused.
