@@ -15,7 +15,7 @@ and update your row when done.
 |------|-------|----------|--------|------------|--------|
 | 001 | Executor-contract fixes (/goal loop finishable) | P1 | M | — | DONE |
 | 002 | Completeness-chain fixes (ledger→spec→plans) | P1 | M | 001 (soft: same files) | DONE |
-| 003 | Validator hardening + catalog truth | P1 | M | — | IN PROGRESS |
+| 003 | Validator hardening + catalog truth | P1 | M | — | DONE |
 | 004 | CI workflow running the validator | P1 | S | 003 | TODO |
 | 006 | Injection & secrets hardening (14 skills + GOAL surfaces) | P1 | S | — | TODO |
 | 005 | Eval fixtures + judgeable expectations | P2 | M | — (003 composes) | TODO |
