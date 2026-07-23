@@ -17,3 +17,4 @@ Current skills: `tailrocks-rust-best-practices`, `tailrocks-rust-project-setup`,
 `tailrocks-finalize`, `tailrocks-plan`, and `tailrocks-reconcile`.
 
 Use `claude --plugin-dir .` from this repository root to test the plugin locally.
+Main is PR-only: feature branch + `git commit -s` + PR; see AGENTS.md.

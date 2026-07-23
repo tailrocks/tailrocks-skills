@@ -194,8 +194,12 @@ tailrocks-skills/
 
 ## Validation
 
+Requires Bun, pinned in `mise.toml`; `mise install` provisions it.
+
 ```sh
 bun run scripts/validate-skills.ts
+# or
+mise run validate
 ```
 
 ## License

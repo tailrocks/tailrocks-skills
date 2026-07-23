@@ -4,7 +4,8 @@ This document is the verified cross-agent contract for this repository: how each
 supported agent discovers skills and plugins, how to install `tailrocks-skills`
 for it, and how to keep one shared `skills/` tree from ever being shown twice in
 any client. Everything below was verified in July 2026 against official
-documentation, shipped client binaries, and live installs.
+documentation, shipped client binaries, and live installs. Re-verify the
+matrix and every command at each release; see the AGENTS.md release checklist.
 
 Supported agents:
 
@@ -60,6 +61,10 @@ claude plugin marketplace add tailrocks/tailrocks-skills
 claude plugin install tailrocks-skills@tailrocks-skills
 ```
 
+Production pin: client syntax can vary by release; verify against your client,
+then add the marketplace at the tag:
+`claude plugin marketplace add tailrocks/tailrocks-skills@v0.11.0`.
+
 - Manifest: `.claude-plugin/plugin.json` (`name` is the only required field);
   `skills/` at the plugin root is auto-discovered.
 - Installed plugins are cached under `~/.claude/plugins/cache/`.
@@ -80,6 +85,10 @@ marketplaces, so the same self-listing marketplace works:
 codex plugin marketplace add tailrocks/tailrocks-skills
 codex plugin add tailrocks-skills
 ```
+
+Production pin: client syntax can vary by release; verify against your client,
+then add the marketplace at the tag:
+`codex plugin marketplace add tailrocks/tailrocks-skills@v0.11.0`.
 
 - Manifest: `.codex-plugin/plugin.json` with `"skills": "./skills/"` (the
   official Codex plugin manifest location; only `plugin.json` belongs inside
@@ -106,10 +115,12 @@ OpenCode has no plugin channel for skills (its JS/TS plugins cannot register
 skills), so use its own global skills directory:
 
 ```sh
-git clone --depth 1 https://github.com/tailrocks/tailrocks-skills.git /tmp/tailrocks-skills
+git clone --depth 1 --branch v0.11.0 https://github.com/tailrocks/tailrocks-skills.git /tmp/tailrocks-skills
 mkdir -p ~/.config/opencode/skills
 cp -R /tmp/tailrocks-skills/skills/* ~/.config/opencode/skills/
 ```
+
+Use the latest release tag in place of `v0.11.0` when upgrading.
 
 - Frontmatter: OpenCode recognizes only `name`, `description`, `license`,
   `compatibility`, `metadata`; unknown fields (including
@@ -190,9 +201,11 @@ or `brew install --cask antigravity-cli`), then install the plugin from a
 local clone (the CLI installs plugins from local paths):
 
 ```sh
-git clone --depth 1 https://github.com/tailrocks/tailrocks-skills.git
+git clone --depth 1 --branch v0.11.0 https://github.com/tailrocks/tailrocks-skills.git
 agy plugin install ./tailrocks-skills
 ```
+
+Use the latest release tag in place of `v0.11.0` when upgrading.
 
 - Manifest: root `plugin.json` with the
   `https://antigravity.google/schemas/v1/plugin.json` schema; the `skills/`
