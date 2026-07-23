@@ -57,8 +57,10 @@ together only on explicit request, recorded as the exception.
    vet-check they are still current. Derive what planning still lacks —
    platform facts, integration seams, reference-project practice, and
    always the exact build/test/lint commands for the target stack. Fan out
-   investigators per the research playbook shape into `research/<topic>/`
-   folders (extend overlapping topics, never fork), vet, and index them.
+   investigators per
+   [`references/research-shape.md`](references/research-shape.md) into
+   `research/<topic>/` folders (extend overlapping topics, never fork), vet,
+   and index them.
    With `--deep`, add completeness-critic rounds.
    **Complete when:** every ledger unknown has vetted evidence, a named
    assumption, or an explicit deferral — and verification commands are
@@ -69,8 +71,9 @@ together only on explicit request, recorded as the exception.
    `plans/<slug>/spec/README.md` (capability index, must-not registry,
    deferrals) and one capability file per area: requirements with
    scenarios, screen contracts per mockup.
-   **Complete when:** every ledger ID lands in the spec or a logged
-   deferral, and every requirement cites its item anchor and research
+   **Complete when:** every `S#`, `F#`, `W#`, `N#`, `B#` lands in the spec
+   or a logged deferral; `D#`/`R#`/`A#`/`Q#` resolve per the ledger's
+   pipeline table; and every requirement cites its item anchor and research
    evidence.
 
 4. **Slice the manifest.** Decompose the spec into ordered, never-broken
@@ -79,7 +82,12 @@ together only on explicit request, recorded as the exception.
    one fresh executor session — never one layer spread across the whole
    surface. Wide refactors use expand–contract: expand the new form,
    migrate call sites in batches that keep the build green, contract the
-   old form last. Write `plans/<slug>/README.md` first — manifest, item
+   old form last. Greenfield chains: slice 001 must stand up the verification
+   baseline — task runner, build, test, lint gates all green on an empty
+   skeleton — before any feature slice; GOAL.md's gate commands and every
+   later precondition may reference only tooling an earlier slice guarantees.
+   For existing repos with working gates, note the proven commands instead.
+   Write `plans/<slug>/README.md` first — manifest, item
    briefs, dependency notes, executor protocol — per
    [`references/goal-handoff.md`](references/goal-handoff.md).
    **Complete when:** the dependency graph is acyclic, every requirement
@@ -91,6 +99,9 @@ together only on explicit request, recorded as the exception.
    its writer brief. One subagent per manifest item, parallel where
    dependencies allow, each producing `plans/<slug>/NNN-<slug>.md`.
    Spot-verify every returned plan's excerpts against the cited sources.
+   After accepting each plan, the orchestrator backfills the ledger's Plans
+   columns and the must-not registry's "Enforced in plans" column — writer
+   subagents never touch shared files.
    **Complete when:** every manifest row has a plan file passing the
    template's quality bar.
 
@@ -120,8 +131,9 @@ record spec deltas per the spec format, and regenerate GOAL.md last.
 
 ## Final gate
 
-Finish only when source is untouched, the ledger shows every ID covered or
-deferred aloud, every plan passed cold review with machine-checkable done
-criteria and specific STOP conditions, new research is indexed and reusable,
-GOAL.md's condition is machine-checkable and bounded, and the roadmap item
-is `PLANNED` with consistent links, Log, and index row.
+Finish only when source is untouched, the ledger shows every spec-bearing ID
+(`S#`/`F#`/`W#`/`N#`/`B#`) covered or deferred aloud and every other prefix
+resolved per the ledger's pipeline table, every plan passed cold review with
+machine-checkable done criteria and specific STOP conditions, new research
+is indexed and reusable, GOAL.md's condition is machine-checkable and bounded,
+and the roadmap item is `PLANNED` with consistent links, Log, and index row.
