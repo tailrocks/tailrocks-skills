@@ -46,12 +46,19 @@ Acceptable panics:
 - Truly unreachable code the type system cannot express.
 - Explicit application crashes when crashing is the chosen behavior.
 
+Under the house lint baseline (`workspace.lints` denies `expect_used`,
+`panic`, `todo`, and `unimplemented`), each otherwise-allowed use requires
+a narrow `#[expect(clippy::..., reason = "...")]` at the site. `todo!` and
+`unimplemented!` are denied outright outside tests; leave them only in code
+not yet wired into the workspace gates.
+
 Avoid panics on invalid user input; in parsers, servers, long-running tools,
 and background tasks; and in library APIs unless misuse is the documented
 contract.
 
-Use `todo!`, `unimplemented!`, and `unreachable!` when they communicate intent
-more precisely than a generic panic.
+Use `unreachable!` only when it communicates a proven invariant more precisely
+than a generic panic and carries the narrow lint expectation above. Do not use
+`todo!` or `unimplemented!` in code covered by the workspace gates.
 
 ## Comments
 

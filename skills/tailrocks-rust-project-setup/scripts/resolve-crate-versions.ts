@@ -15,14 +15,15 @@ if (crates.length === 0) {
 
 const results = await Promise.all(
   crates.map(async (name) => {
-    const response = await fetch(`https://crates.io/api/v1/crates/${encodeURIComponent(name)}`, {
+    try {
+      const response = await fetch(`https://crates.io/api/v1/crates/${encodeURIComponent(name)}`, {
       headers: { "user-agent": "tailrocks-skills-version-resolver/1.0" },
     });
-    if (!response.ok) throw new Error(`${name}: crates.io returned ${response.status}`);
+      if (!response.ok) throw new Error(`crates.io returned ${response.status}`);
     const body = (await response.json()) as CrateResponse;
     const stable = body.crate?.max_stable_version;
     const newest = body.crate?.newest_version;
-    return {
+      return {
       ecosystem: "crates.io",
       name,
       stable: stable ?? null,
@@ -30,8 +31,19 @@ const results = await Promise.all(
       selected_channel: stable ? "stable" : "prerelease-or-unknown",
       repository: body.crate?.repository ?? null,
       documentation: body.crate?.documentation ?? `https://docs.rs/${name}`,
-    };
+      };
+    } catch (error) {
+      return {
+        ecosystem: "crates.io",
+        name,
+        error: error instanceof Error ? error.message : String(error),
+      };
+    }
   }),
 );
 
-console.log(JSON.stringify({ resolved_at: new Date().toISOString(), results }, null, 2));
+console.log(JSON.stringify({
+  resolved_at: new Date().toISOString(),
+  results,
+  errors: results.filter((result) => "error" in result).length,
+}, null, 2));

@@ -21,9 +21,12 @@ The template provides these gates:
 | `coverage` | LLVM coverage through nextest |
 | `semver` | published library compatibility |
 | `mutants` | tests kill behavior mutations |
+| `careful` | advisory lane; installs its pinned nightly through rustup |
 
 Run feature, coverage, semver, and mutation tasks on scheduled/pre-release jobs
 when they exceed PR latency. Every task remains reproducible locally.
+Refresh the `careful` nightly pin through the same freshness gate as every
+other exact toolchain pin.
 
 **Complete when:** no tool uses `latest`, Rust is declared once, lockfiles are
 committed, and CI calls only committed mise tasks.
