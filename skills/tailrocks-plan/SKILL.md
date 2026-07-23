@@ -82,8 +82,8 @@ together only on explicit request, recorded as the exception.
    one fresh executor session — never one layer spread across the whole
    surface. Wide refactors use expand–contract: expand the new form,
    migrate call sites in batches that keep the build green, contract the
-   old form last. Greenfield chains: slice 001 must stand up the verification
-   baseline — task runner, build, test, lint gates all green on an empty
+   old form last. Greenfield chains: slice 001 must stand up the
+   verification baseline — task runner, build, test, lint gates all green on an empty
    skeleton — before any feature slice; GOAL.md's gate commands and every
    later precondition may reference only tooling an earlier slice guarantees.
    For existing repos with working gates, note the proven commands instead.
