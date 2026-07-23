@@ -17,7 +17,7 @@ and update your row when done.
 | 002 | Completeness-chain fixes (ledger→spec→plans) | P1 | M | 001 (soft: same files) | DONE |
 | 003 | Validator hardening + catalog truth | P1 | M | — | DONE |
 | 004 | CI workflow running the validator | P1 | S | 003 | DONE |
-| 006 | Injection & secrets hardening (14 skills + GOAL surfaces) | P1 | S | — | IN PROGRESS |
+| 006 | Injection & secrets hardening (14 skills + GOAL surfaces) | P1 | S | — | DONE |
 | 005 | Eval fixtures + judgeable expectations | P2 | M | — (003 composes) | TODO |
 | 007 | Stack-skill corrections (6 confirmed defects) | P2 | M | — | TODO |
 | 008 | External-claims verification (bun ci, vite, shadcn, renovate) | P2 | S | — | TODO |
