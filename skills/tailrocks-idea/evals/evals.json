@@ -5,9 +5,7 @@
       "id": 1,
       "prompt": "Idea: I want to start developing a macOS application for our current CLI/TUI application.",
       "expected_output": "roadmap/macos-application/README.md created in DRAFT from the template, user's words preserved, empty sections left visibly empty, index row added, next step named.",
-      "files": [
-        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
-      ]
+      "files": []
     },
     {
       "id": 2,
