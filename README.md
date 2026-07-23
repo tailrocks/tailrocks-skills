@@ -60,6 +60,7 @@ trues up the item — run it whenever a loop finishes, stalls, or the
 repository moved on since planning.
 
 Worked format anchor: [`examples/plan-package/`](examples/plan-package/).
+Worked walkthrough: [`docs/pipeline-walkthrough.md`](docs/pipeline-walkthrough.md).
 
 ## Installation
 
