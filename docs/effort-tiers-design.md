@@ -73,7 +73,7 @@ tier change in the package/topic log.
 
 ```diff
  ## Re-runs
- 
+
  When `plans/<slug>/` exists, reconcile instead of duplicating: refresh
 ...
 +Preserve the recorded effort tier unless the invocation supplies `--light`
