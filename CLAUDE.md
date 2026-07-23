@@ -12,7 +12,7 @@ directory. Cross-agent install and compatibility rules: `INSTALL.md`.
 Current skills: `tailrocks-rust-best-practices`, `tailrocks-rust-project-setup`,
 `tailrocks-axum-best-practices`, `tailrocks-typescript-best-practices`,
 `tailrocks-tanstack-project-setup`, `tailrocks-code-health`,
-`tailrocks-remediate`, and the delivery pipeline `tailrocks-idea`,
+`tailrocks-contribute`, `tailrocks-remediate`, and the delivery pipeline `tailrocks-idea`,
 `tailrocks-brainstorm`, `tailrocks-research`, `tailrocks-record-decision`,
 `tailrocks-finalize`, `tailrocks-plan`, and `tailrocks-reconcile`.
 

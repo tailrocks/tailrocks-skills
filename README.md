@@ -21,6 +21,7 @@ and component systems are outside scope.
 | `tailrocks-typescript-best-practices` | Write, review, and refactor strict Rust-inspired TypeScript 7 and React code using Bun-owned tooling. |
 | `tailrocks-tanstack-project-setup` | Scaffold, migrate, and audit Bun-only TanStack Start projects with TypeScript 7, Oxc, Router, Query, shadcn/ui, Tailwind CSS v4, tests, and CI. |
 | `tailrocks-code-health` | Establish, audit, or tighten one measurable shrink-only debt ratchet using architecture, lint, dependency, flake, defect, documentation, or verification providers. |
+| `tailrocks-contribute` | Recon, prepare, submit with per-contribution approval, and shepherd a respectful contribution to an external open-source project. |
 | `tailrocks-remediate` | Derive the greenfield architecture that eliminates a proven defect class, then pursue the complete structural correction regardless of price, duration, effort, implementation size, or sunk cost. |
 | `tailrocks-idea` | Capture a raw idea as a DRAFT roadmap item: content-derived slug, item template, index row. Capture only — no interviewing, no invention. |
 | `tailrocks-brainstorm` | Shape a young roadmap item through a relentless interview: one question at a time with a recommended answer, decisions asked, facts looked up, every answer written into the item immediately. |
@@ -154,6 +155,11 @@ tailrocks-skills/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   ├── templates/
+│   │   └── agents/
+│   ├── tailrocks-contribute/
+│   │   ├── SKILL.md
+│   │   ├── references/
+│   │   ├── scripts/
 │   │   └── agents/
 │   ├── tailrocks-remediate/
 │   │   ├── SKILL.md

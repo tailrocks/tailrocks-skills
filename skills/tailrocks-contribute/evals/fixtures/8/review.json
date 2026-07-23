@@ -1,0 +1,8 @@
+{
+  "comments": [
+    {"id": 1, "body": "Please add a regression test."},
+    {"id": 2, "body": "Keep the existing public name."}
+  ],
+  "checks": [{"name": "test", "state": "failure"}],
+  "revision_regime": "fixup-append"
+}

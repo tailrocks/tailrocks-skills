@@ -142,6 +142,17 @@ template and the reconcile stage descend from the shadcn `improve` skill.
 All seven write only their own artifacts (`roadmap/`, `research/`,
 `plans/`) and never touch source.
 
+### tailrocks-contribute
+
+Contribute to external open-source projects through project-contract recon,
+hard-stop-aware proposal, gated preparation, explicit per-contribution
+submission approval, and human-approved review response.
+
+Skill definition: `skills/tailrocks-contribute/SKILL.md`
+
+tailrocks-contribute descends from the tesslio `good-oss-citizen` plugin's
+recon/propose/preflight structure, extended with submission approval,
+review-response, and pacing.
 
 ### tailrocks-remediate
 
