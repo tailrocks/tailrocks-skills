@@ -1,7 +1,7 @@
 {
   "name": "tailrocks-skills",
   "description": "Cross-agent Tailrocks skills for strict Rust, Axum, TypeScript, TanStack, code-health ratchets, and the roadmap delivery pipeline (idea, brainstorm, research, record-decision, finalize, plan, reconcile, /goal handoff)",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "author": {
     "name": "tailrocks",
     "url": "https://github.com/tailrocks"

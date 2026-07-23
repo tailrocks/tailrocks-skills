@@ -92,7 +92,13 @@ for (const directory of entries) {
   }
 }
 
-for (const manifest of [".claude-plugin/plugin.json", ".codex-plugin/plugin.json", ".kimi-plugin/plugin.json"]) {
+for (const manifest of [
+  ".claude-plugin/plugin.json",
+  ".claude-plugin/marketplace.json",
+  ".codex-plugin/plugin.json",
+  ".kimi-plugin/plugin.json",
+  "plugin.json",
+]) {
   try {
     JSON.parse(await readFile(path.join(root, manifest), "utf8"));
   } catch {
@@ -103,7 +109,21 @@ for (const manifest of [".claude-plugin/plugin.json", ".codex-plugin/plugin.json
 const claudeManifest = JSON.parse(await readFile(path.join(root, ".claude-plugin/plugin.json"), "utf8"));
 const codexManifest = JSON.parse(await readFile(path.join(root, ".codex-plugin/plugin.json"), "utf8"));
 const kimiManifest = JSON.parse(await readFile(path.join(root, ".kimi-plugin/plugin.json"), "utf8"));
-if (new Set([claudeManifest.version, codexManifest.version, kimiManifest.version]).size !== 1) errors.push("plugin manifest versions differ");
+const antigravityManifest = JSON.parse(await readFile(path.join(root, "plugin.json"), "utf8"));
+const marketplace = JSON.parse(await readFile(path.join(root, ".claude-plugin/marketplace.json"), "utf8"));
+const marketplaceEntry = marketplace.plugins?.find((plugin: { name?: string }) => plugin.name === "tailrocks-skills");
+if (!marketplaceEntry || marketplaceEntry.source !== "./") errors.push("marketplace.json must self-list tailrocks-skills with source \"./\"");
+if (new Set([claudeManifest.version, codexManifest.version, kimiManifest.version, marketplaceEntry?.version]).size !== 1) {
+  errors.push("plugin manifest and marketplace versions differ");
+}
+for (const [file, manifest] of [
+  [".claude-plugin/plugin.json", claudeManifest],
+  [".codex-plugin/plugin.json", codexManifest],
+  [".kimi-plugin/plugin.json", kimiManifest],
+  ["plugin.json", antigravityManifest],
+] as const) {
+  if (manifest.name !== "tailrocks-skills") errors.push(`${file}: name must be tailrocks-skills`);
+}
 
 for (const catalog of ["README.md", "AGENTS.md"]) {
   const source = await readFile(path.join(root, catalog), "utf8");

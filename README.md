@@ -1,9 +1,10 @@
 # tailrocks-skills
 
-A cross-agent collection of Tailrocks engineering skills, packaged for Claude
-Code, Codex, and Kimi Code and portable through the shared `SKILL.md` standard to Grok
-Build, Kimi Code, OpenCode, Gemini CLI, GitHub Copilot, VS Code, Amp, and other
-Agent Skills clients.
+A cross-agent collection of Tailrocks engineering skills built on the portable
+`SKILL.md` Agent Skills standard and packaged natively for **Claude Code,
+Codex CLI, OpenCode, Grok Build, Kimi Code, the Antigravity CLI (Google
+Gemini), and Amp** — one shared `skills/` tree, one manifest per client, no
+duplicated listings.
 
 The skills are source-neutral and encode one Tailrocks house stack: Rust 2024
 with Axum/Tokio/Tower, and TypeScript 7 with Bun, TanStack Start, React,
@@ -59,78 +60,54 @@ repository moved on since planning.
 
 ## Installation
 
-`SKILL.md` is a portable standard; one `skills/<name>/` source serves every
-agent. Invocation policy is client-specific. Claude Code is manual-only through
-`disable-model-invocation: true`; Codex is manual-only through
-`agents/openai.yaml`. Amp, OpenCode, and Kimi support explicit invocation but do
-not all expose an equivalent portable per-skill auto-disable, so they may still
-offer a skill to the model automatically.
+One shared `skills/<name>/` source serves every agent; each agent gets exactly
+**one** install channel so no skill is ever listed twice. The full verified
+compatibility matrix, duplicate-avoidance rules, and the alternative
+`~/.agents/skills/`-based profile live in [INSTALL.md](INSTALL.md).
 
-### Claude Code
+| Agent | Install |
+|---|---|
+| Claude Code | `/plugin marketplace add tailrocks/tailrocks-skills` then `/plugin install tailrocks-skills@tailrocks-skills` |
+| Codex CLI | `codex plugin marketplace add tailrocks/tailrocks-skills` then `codex plugin add tailrocks-skills` |
+| OpenCode | copy `skills/*` to `~/.config/opencode/skills/` |
+| Grok Build | nothing if Claude Code has the plugin (auto-ingested); else `grok plugin install tailrocks/tailrocks-skills --trust` |
+| Kimi Code | `/plugins install https://github.com/tailrocks/tailrocks-skills` then `/plugins reload` |
+| Antigravity CLI | `git clone … && agy plugin install ./tailrocks-skills` |
+| Amp | `amp skill add tailrocks/tailrocks-skills --global` |
+
+Pin to a release tag (`@vX.Y.Z`, `/tree/vX.Y.Z`, or a tagged clone) in
+production.
+
+Invoke skills explicitly:
 
 ```text
-/plugin marketplace add tailrocks/tailrocks-marketplace
-/plugin install tailrocks-skills@tailrocks-marketplace
+Claude Code   /tailrocks-skills:tailrocks-rust-best-practices review this crate
+Codex CLI     $tailrocks-rust-best-practices  (type $ to pick, or /skills)
+Grok Build    /tailrocks-rust-best-practices review this crate
+Kimi Code     /skill:tailrocks-rust-best-practices review this crate
+Antigravity   /tailrocks-rust-best-practices
+OpenCode/Amp  ask for the skill by name ("use tailrocks-rust-best-practices …")
 ```
 
-Then invoke a namespaced skill:
+### Manual-only invocation policy
 
-```text
-/tailrocks-skills:tailrocks-rust-best-practices review this crate
-/tailrocks-skills:tailrocks-rust-project-setup set up a strict workspace here
-/tailrocks-skills:tailrocks-axum-best-practices review this Axum service
-/tailrocks-skills:tailrocks-typescript-best-practices review this TypeScript module
-/tailrocks-skills:tailrocks-tanstack-project-setup set up a strict Start app here
-/tailrocks-skills:tailrocks-code-health establish code-health ratchets and gates
-```
-
-### Shared Agent Skills install
-
-Codex, Grok Build, Kimi Code, OpenCode, Gemini CLI, GitHub Copilot, VS Code,
-and Amp discover the portable tree from `~/.agents/skills/` or their native
-alias. Install with the [`skills`](https://www.npmjs.com/package/skills) CLI
-through Bun, selecting the target agents presented by the installer:
-
-```sh
-bunx --bun skills add "tailrocks/tailrocks-skills" -s '*' --global
-```
-
-For deterministic manual installation, copy `skills/*` to
-`~/.agents/skills/`. Codex additionally reads `.codex-plugin/plugin.json`;
-Grok also reads Claude-compatible plugins and skills; Kimi Code supports the
-native `.kimi-plugin/plugin.json` and additionally reads
-`$KIMI_CODE_HOME/skills/`; Gemini additionally reads `.gemini/skills/`;
-Copilot additionally reads `~/.copilot/skills/` and `.github/skills/`.
-
-Pin the repository to a release tag in production. See
-[.codex/INSTALL.md](.codex/INSTALL.md) for the complete compatibility and
-invocation-policy matrix.
-
-### Invocation policy by client
-
-| Client | Discovery | Explicit invocation | Automatic invocation disabled |
-|---|---|---|---|
-| Claude Code | Plugin or `.claude/skills` | `/tailrocks-skills:<name>` | Yes, `disable-model-invocation` |
-| Codex | Plugin or `.agents/skills` | `$<name>` | Yes, `agents/openai.yaml` policy |
-| Grok Build | Claude-compatible plugin, `.grok/skills`, or `.agents/skills` | `/<name>` | Through its documented Claude-compatible skill surface |
-| Kimi Code | Native plugin, `.kimi-code/skills`, or `.agents/skills` | `/skill:<name>` | Yes, accepts `disable-model-invocation` |
-| GitHub Copilot and VS Code | `.github/skills`, `.agents/skills`, or personal skills | `/<name>` | Yes, `disable-model-invocation` |
-| Gemini CLI | `.gemini/skills` or `.agents/skills` | Skill activation with consent | No documented portable per-skill control |
-| OpenCode | `.opencode/skills` or `.agents/skills` | Request the named skill | No documented per-skill control |
-| Amp | `.agents/skills/` | Prompt Amp to use the named skill | Semantic explicit-intent guard only; current Amp has no manual skill command |
-
-
-### Manual-only portability limit
-
-Claude Code, Codex, Kimi Code, GitHub Copilot, and compatible Grok paths can honor client controls. Amp, OpenCode, Gemini CLI, and any client that ignores `disable-model-invocation` cannot provide identical hard enforcement. For those clients, explicitly request the skill by its frontmatter `name`; the description guard tells the model not to select it otherwise. Do not put `$name`, `/name`, or plugin namespaces in shared `SKILL.md` bodies.
-Unknown extension fields are ignored by standards-based clients. The portable
-contract remains `name`, `description`, relative bundled resources, and the
-agent-neutral Markdown body.
+Claude Code, Grok Build, and Kimi Code honor `disable-model-invocation: true`;
+Codex honors `policy.allow_implicit_invocation: false` in each skill's
+`agents/openai.yaml`. OpenCode, Amp, and the Antigravity CLI do not read those
+fields — there the guard sentence at the start of every `description` tells
+the model to wait for an explicit request, and OpenCode users can hard-enforce
+with `"permission": { "skill": { "tailrocks-*": "ask" } }`. Unknown
+frontmatter fields are ignored by standards-based clients, so the shared
+`SKILL.md` files stay portable: the contract is `name`, `description`,
+relative bundled resources, and the agent-neutral Markdown body — never put
+`$name`, `/name`, or plugin namespaces in a skill body.
 
 ### Local development
 
 ```sh
-claude --plugin-dir .
+claude --plugin-dir .        # session-scoped Claude Code load
+grok plugin validate .       # manifest + component check
+bun run scripts/validate-skills.ts
 ```
 
 ## Repository layout
@@ -138,11 +115,13 @@ claude --plugin-dir .
 ```text
 tailrocks-skills/
 ├── .claude-plugin/
-│   └── plugin.json          # Claude Code plugin manifest
+│   ├── plugin.json          # Claude Code plugin manifest
+│   └── marketplace.json     # self-listing marketplace (Claude Code, Codex, Grok)
 ├── .codex-plugin/
 │   └── plugin.json          # Codex plugin manifest ("skills": "./skills/")
 ├── .kimi-plugin/
 │   └── plugin.json          # Kimi Code plugin manifest
+├── plugin.json              # Antigravity CLI plugin manifest
 ├── skills/
 │   ├── tailrocks-rust-best-practices/
 │   │   ├── SKILL.md
@@ -197,12 +176,11 @@ tailrocks-skills/
 │   └── tailrocks-reconcile/     # execution truth-sync on plans + item
 │       ├── SKILL.md
 │       └── agents/
-├── .codex/
-│   └── INSTALL.md
 ├── scripts/
 │   └── validate-skills.ts   # Bun-native structure and policy validation
 ├── AGENTS.md
 ├── CLAUDE.md
+├── INSTALL.md               # verified cross-agent install + development guide
 ├── LICENSE
 └── README.md
 ```

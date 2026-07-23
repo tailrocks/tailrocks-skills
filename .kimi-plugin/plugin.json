@@ -1,6 +1,6 @@
 {
   "name": "tailrocks-skills",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Cross-agent Tailrocks skills for strict Rust, Axum, TypeScript, TanStack, correctness-first remediation, code-health ratchets, and the roadmap delivery pipeline (idea, brainstorm, research, record-decision, finalize, plan, reconcile, /goal handoff)",
   "keywords": [
     "rust",

@@ -1,13 +1,18 @@
 # AGENTS.md
 
 This repository publishes **tailrocks-skills**: a cross-agent collection of
-reusable engineering skills, packaged as Claude Code, Codex, and Kimi Code
-plugins (`.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, and
-`.kimi-plugin/plugin.json`) over a shared `skills/` tree.
+reusable engineering skills over a shared `skills/` tree, packaged as native
+plugins for Claude Code (`.claude-plugin/plugin.json` +
+`.claude-plugin/marketplace.json`, the self-listing marketplace that Claude
+Code, Codex, and Grok all consume), Codex (`.codex-plugin/plugin.json`), Kimi
+Code (`.kimi-plugin/plugin.json`), and the Antigravity CLI (root
+`plugin.json`).
 
-One `skills/<name>/SKILL.md` source serves every agent (Claude Code, Codex, Amp,
-OpenCode, Kimi). Keep skills source-neutral — no agent-specific instructions in
-`SKILL.md` bodies.
+One `skills/<name>/SKILL.md` source serves every supported agent — Claude
+Code, Codex CLI, OpenCode, Grok Build, Kimi Code, Antigravity CLI, and Amp.
+Keep skills source-neutral — no agent-specific instructions in `SKILL.md`
+bodies. Installation, the verified per-client compatibility matrix, and the
+duplicate-avoidance rules live in `INSTALL.md`.
 
 The house stack is fixed: Rust 2024 with Axum/Tokio/Tower, and TypeScript 7 with
 Bun, TanStack Start, React, shadcn/ui, Tailwind CSS v4, and Oxc. Skills deepen
@@ -15,12 +20,14 @@ this stack; they do not offer alternative frameworks, package managers, test
 runners, or component systems. Every setup targets the latest stable release and
 latest stable major available at execution time; older majors are unsupported.
 
-Skills are manual-only where the client supports per-skill policy. Claude Code,
-Kimi Code, GitHub Copilot, and VS Code use `disable-model-invocation: true` and
-`user-invocable: true`; Codex uses `agents/openai.yaml` with
-`allow_implicit_invocation: false`; Grok consumes the Claude-compatible surface.
-Gemini CLI, OpenCode, and Amp remain compatible but do not document the same
-portable per-skill automatic-invocation control.
+Skills are manual-only where the client supports per-skill policy. Claude
+Code, Grok Build, and Kimi Code honor `disable-model-invocation: true`
+(`user-invocable: true` documents the explicit-invocation intent for clients
+that read it); Codex uses `agents/openai.yaml` with
+`policy.allow_implicit_invocation: false`. OpenCode, Amp, and the Antigravity
+CLI ignore those fields — there the explicit-request guard sentence at the
+start of every `description` is the control, and OpenCode users can enforce
+it with `permission.skill` config.
 
 **Token usage is a design criterion.** Skills stay lean: scale effort (subagents,
 depth) to the task, prefer pointers (`file:line`/URL) over copied blocks, skip
@@ -155,14 +162,17 @@ Skill definition: `skills/tailrocks-remediate/SKILL.md`
 3. Add `evals/evals.json` with realistic normal, boundary, and safety cases.
 4. Put deep material under `skills/<name>/references/` and copy-ready assets under
    `skills/<name>/templates/`; keep `SKILL.md` a concise router.
-5. Both plugin manifests auto-discover the new skill from `skills/` — no manifest
-   edit needed. Add the skill to the tables in `README.md` and this file.
-6. List the skill in `tailrocks-marketplace` only if the plugin split changes;
-   the marketplace references this whole plugin, not individual skills.
+5. Every plugin manifest auto-discovers the new skill from `skills/` — no
+   manifest edit needed. Add the skill to the tables in `README.md` and this
+   file.
+6. Bump `version` in lockstep across `.claude-plugin/plugin.json`,
+   `.codex-plugin/plugin.json`, `.kimi-plugin/plugin.json`, and the
+   `.claude-plugin/marketplace.json` entry, and tag the release so installs
+   can pin.
 
 ## Validation
 
-Before publishing changes, run the Bun-native skill and all three manifest validator:
+Before publishing changes, run the Bun-native skill and manifest validator:
 
 ```sh
 bun run scripts/validate-skills.ts

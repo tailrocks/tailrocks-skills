@@ -3,9 +3,11 @@
 See [AGENTS.md](AGENTS.md) for shared agent instructions.
 
 This is a Claude Code plugin repository publishing the **tailrocks-skills**
-collection. Manifests live at `.claude-plugin/plugin.json`,
-`.codex-plugin/plugin.json`, and `.kimi-plugin/plugin.json`. Skills live under
-`skills/<name>/` and are auto-discovered from that shared directory.
+collection. Manifests live at `.claude-plugin/plugin.json` (plus the
+self-listing `.claude-plugin/marketplace.json`), `.codex-plugin/plugin.json`,
+`.kimi-plugin/plugin.json`, and the root `plugin.json` (Antigravity CLI).
+Skills live under `skills/<name>/` and are auto-discovered from that shared
+directory. Cross-agent install and compatibility rules: `INSTALL.md`.
 
 Current skills: `tailrocks-rust-best-practices`, `tailrocks-rust-project-setup`,
 `tailrocks-axum-best-practices`, `tailrocks-typescript-best-practices`,
