@@ -20,7 +20,7 @@ and update your row when done.
 | 006 | Injection & secrets hardening (14 skills + GOAL surfaces) | P1 | S | — | DONE |
 | 005 | Eval fixtures + judgeable expectations | P2 | M | — (003 composes) | DONE |
 | 007 | Stack-skill corrections (6 confirmed defects) | P2 | M | — | BLOCKED — registry latest router-devtools is 1.167.0; no required 1.170.x release exists |
-| 008 | External-claims verification (bun ci, vite, shadcn, renovate) | P2 | S | — | IN PROGRESS |
+| 008 | External-claims verification (bun ci, vite, shadcn, renovate) | P2 | S | — | DONE — TRUE: bun ci, Vite tsconfigPaths, base-nova, both Renovate keys |
 | 009 | Canonical shared rules across the delivery family | P2 | M | 001, 002, 006 | TODO |
 | 010 | Contributor DX (PR workflow, Bun bootstrap, pinning, release) | P2 | S | — | TODO |
 | 011 | Worked example plan package (quality anchor) | P2 | L | 001, 002 | TODO |
