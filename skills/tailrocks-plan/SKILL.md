@@ -23,8 +23,9 @@ together only on explicit request, recorded as the exception.
 
 - Write only under `plans/<slug>/`, `research/` (gap-filling topics), and
   the roadmap item's Plan link, status, and Log. Keep source, configuration,
-  dependencies, and Git state unchanged. Never implement — the package is
-  the deliverable.
+  and dependencies unchanged. The only Git change is one commit adding the
+  finished `plans/<slug>/` package (and the item's status flip) at hand-off;
+  never commit anything else. Never implement — the package is the deliverable.
 - Require `READY`. On anything less, name the missing stage and stop; the
   user may override explicitly, and the override plus the skipped gaps are
   recorded in the item's Log and the plan hub.
@@ -104,7 +105,8 @@ together only on explicit request, recorded as the exception.
 7. **Write GOAL.md and hand off.** Per the goal-handoff reference: the
    `/goal` condition (machine-checkable, bounded), the kickoff prompt, and
    the resume prompt — all copy-pasteable. Update the roadmap item: status
-   `PLANNED`, Plan link, Log entry, index row.
+   `PLANNED`, Plan link, Log entry, index row. Commit the package as the
+   final action before reporting.
    **Complete when:** a user can paste GOAL.md's blocks into Claude Code,
    Codex, or Grok and the executor can run to completion without this
    conversation.

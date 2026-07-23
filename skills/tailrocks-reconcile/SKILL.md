@@ -23,7 +23,8 @@ the repository moved on.
   files, the spec, source, configuration, dependencies, or Git state.
 - Run verification only: the plans' own preconditions, done criteria, and
   GOAL.md's gate commands. No installs, no formatters, no commits, nothing
-  that mutates the working tree.
+  that mutates the working tree — except committing the hub/item status
+  corrections this skill itself made.
 - Executor claims are untrusted. A row is DONE because its done criteria
   pass now — never because a transcript, report, or previous session said
   so.

@@ -145,6 +145,9 @@ against the repository before listing. Omit the section otherwise.)
 **Out of scope** (do NOT touch, even though related): <files/areas + why —
 including territory owned by other plans, named by number>
 
+The hub `plans/<slug>/README.md` and the roadmap item are protocol-writable
+and never listed in scope.
+
 ## Git workflow
 
 - Branch: <convention from research, or a sensible default>
@@ -184,7 +187,9 @@ Machine-checkable. ALL must hold:
 - [ ] `<build cmd>` exits 0
 - [ ] `<test cmd>` exits 0; tests for every spec scenario exist and pass
 - [ ] <one observable check per requirement covered>
-- [ ] No files outside the in-scope list modified (`git status`)
+- [ ] No files outside the in-scope list modified (`git status`) —
+      excluding the protocol writes: `plans/<slug>/README.md` status rows
+      and the roadmap item + index
 - [ ] `plans/<slug>/README.md` status row updated
 
 ## STOP conditions
