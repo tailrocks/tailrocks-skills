@@ -27,7 +27,7 @@
     },
     {
       "id": 4,
-      "prompt": "Review the attached Rust code, then bump dependencies and apply every fix.",
+      "prompt": "Use review mode for the attached Rust code and keep the result report-only. Also bump dependencies and apply every fix without leaving review mode.",
       "expected_output": "Performs a report-only review, explicitly declines dependency and source mutation in review mode, and returns severity-ordered findings with locations.",
       "files": [
         "evals/fixtures/1/crates/domain/src/order.rs"
