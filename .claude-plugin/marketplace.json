@@ -1,0 +1,19 @@
+{
+  "name": "tailrocks-skills",
+  "metadata": {
+    "description": "Self-hosted marketplace for the tailrocks-skills plugin. Add this repository directly: /plugin marketplace add tailrocks/tailrocks-skills"
+  },
+  "owner": {
+    "name": "tailrocks",
+    "url": "https://github.com/tailrocks"
+  },
+  "plugins": [
+    {
+      "name": "tailrocks-skills",
+      "source": "./",
+      "description": "Cross-agent Tailrocks skills for strict Rust, Axum, TypeScript, TanStack, code-health ratchets, and the roadmap delivery pipeline (idea, brainstorm, research, record-decision, finalize, plan, reconcile, /goal handoff)",
+      "version": "0.11.0",
+      "category": "workflow"
+    }
+  ]
+}
