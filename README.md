@@ -58,6 +58,8 @@ in `plans/<slug>/` with a GOAL.md whose blocks paste directly into the
 trues up the item — run it whenever a loop finishes, stalls, or the
 repository moved on since planning.
 
+Worked format anchor: [`examples/plan-package/`](examples/plan-package/).
+
 ## Installation
 
 One shared `skills/<name>/` source serves every agent; each agent gets exactly
