@@ -26,7 +26,7 @@ and update your row when done.
 | 011 | Worked example plan package (quality anchor) | P2 | L | 001, 002 | DONE |
 | 017 | tailrocks-contribute — OSS-contribution skill | P2 | L | soft: 003, 006, 009 | DONE |
 | 016 | PARKED exit + assumption lifecycle | P3 | S | 001, 002 | DONE |
-| 012 | Pipeline walkthrough doc | P3 | M | 011 (soft) | IN PROGRESS |
+| 012 | Pipeline walkthrough doc | P3 | M | 011 (soft) | DONE |
 | 013 | Eval-runner design spike | P3 | M | 005 (soft) | TODO |
 | 014 | Effort-tiers design spike | P3 | M | after 001/002/009 | TODO |
 | 015 | Brownfield on-ramp design spike | P3 | L | — | TODO |
