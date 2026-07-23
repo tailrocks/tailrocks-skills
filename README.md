@@ -126,11 +126,13 @@ tailrocks-skills/
 │   ├── tailrocks-rust-best-practices/
 │   │   ├── SKILL.md
 │   │   ├── references/
+│   │   ├── evals/            # per-skill evals (all skills)
 │   │   └── agents/
 │   ├── tailrocks-rust-project-setup/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   ├── templates/       # copy-ready Cargo.toml, clippy.toml, mise.toml, …
+│   │   ├── scripts/
 │   │   └── agents/
 │   ├── tailrocks-axum-best-practices/
 │   │   ├── SKILL.md
@@ -144,11 +146,16 @@ tailrocks-skills/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   ├── templates/
+│   │   ├── scripts/
 │   │   └── agents/
 │   ├── tailrocks-code-health/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   ├── templates/
+│   │   └── agents/
+│   ├── tailrocks-remediate/
+│   │   ├── SKILL.md
+│   │   ├── references/
 │   │   └── agents/
 │   ├── tailrocks-idea/          # raw idea → DRAFT roadmap item
 │   │   ├── SKILL.md
