@@ -16,7 +16,7 @@ The TUI exposes only reader state and preserves a strict observer boundary.
 
 ## Preconditions
 
-- `mise run test --package status-core` → parser tests pass.
+- `mise run test` → parser and workspace tests pass.
 
 ## Spec contract
 
@@ -58,7 +58,7 @@ Plan 002 exposes immutable typed snapshots and refresh errors.
 
 | Purpose | Command | Expected |
 |---|---|---|
-| TUI tests | `mise run test --package status-tui` | all pass |
+| TUI tests | `mise run test` | all workspace tests pass |
 | Full gates | `mise run check && mise run test && mise run lint` | exit 0 |
 
 Evidence: example://workspace-gates.

@@ -47,14 +47,15 @@ None — schema version 1 is inlined here.
 
 ## Starting state
 
-Plan 001 created `status-core`; no parser exists. Snapshot envelope:
+Plan 001 created `status-core`, exact workspace `serde`/`serde_json`
+dependencies, and all cited gates; no parser exists. Snapshot envelope:
 `{"version":1,"runs":[{"id":"docs","slice":"002","state":"active"}]}`.
 
 ## Commands you will need
 
 | Purpose | Command | Expected |
 |---|---|---|
-| Core tests | `mise run test --package status-core` | all pass |
+| Core tests | `mise run test` | all workspace tests pass |
 | Lint | `mise run lint` | exit 0 |
 
 Evidence: example://workspace-gates.

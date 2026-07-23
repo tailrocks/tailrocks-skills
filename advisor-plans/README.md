@@ -23,7 +23,7 @@ and update your row when done.
 | 008 | External-claims verification (bun ci, vite, shadcn, renovate) | P2 | S | — | DONE — TRUE: bun ci, Vite tsconfigPaths, base-nova, both Renovate keys |
 | 009 | Canonical shared rules across the delivery family | P2 | M | 001, 002, 006 | DONE |
 | 010 | Contributor DX (PR workflow, Bun bootstrap, pinning, release) | P2 | S | — | DONE |
-| 011 | Worked example plan package (quality anchor) | P2 | L | 001, 002 | IN PROGRESS |
+| 011 | Worked example plan package (quality anchor) | P2 | L | 001, 002 | DONE |
 | 017 | tailrocks-contribute — OSS-contribution skill | P2 | L | soft: 003, 006, 009 | TODO |
 | 016 | PARKED exit + assumption lifecycle | P3 | S | 001, 002 | TODO |
 | 012 | Pipeline walkthrough doc | P3 | M | 011 (soft) | TODO |
