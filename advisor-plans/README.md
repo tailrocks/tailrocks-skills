@@ -13,7 +13,7 @@ and update your row when done.
 
 | Plan | Title | Priority | Effort | Depends on | Status |
 |------|-------|----------|--------|------------|--------|
-| 001 | Executor-contract fixes (/goal loop finishable) | P1 | M | — | IN PROGRESS |
+| 001 | Executor-contract fixes (/goal loop finishable) | P1 | M | — | DONE |
 | 002 | Completeness-chain fixes (ledger→spec→plans) | P1 | M | 001 (soft: same files) | TODO |
 | 003 | Validator hardening + catalog truth | P1 | M | — | TODO |
 | 004 | CI workflow running the validator | P1 | S | 003 | TODO |

@@ -159,10 +159,11 @@ as the first message. Condition and bounds stay identical to block 1.
 
 A small model judges the condition against the transcript each turn:
 
-- **Machine-checkable phrasing**: "every row … is DONE" (grep-able file
-  state) and "`<command>` exits 0" — never "tests pass" or "the feature
-  works". The status file doubles as loop state that survives fresh
-  contexts.
+- **Machine-checkable phrasing**: "all rows have a terminal status
+  (DONE/REJECTED) and none has a nonterminal status
+  (STALE/BLOCKED/IN PROGRESS)" (grep-able file state) and
+  "`<command>` exits 0" — never "tests pass" or "the feature works". The
+  status file doubles as loop state that survives fresh contexts.
 - **The gate commands are the repository's real ones**, proven by the
   verification-tooling research: `mise run test` / `mise run lint` for
   Rust workspaces, `bun run test` / `bun run typecheck` for TanStack
