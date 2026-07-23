@@ -60,7 +60,8 @@ Conventional Commit and DCO signoff; do not push without operator instruction.
 1. Create the two-crate edition-2024 resolver-3 skeleton.
    Verify: `mise run check` exits 0.
 2. Add deterministic check/test/lint tasks and resolve exact stable
-   `serde`/`serde_json` workspace pins for plan 002.
+   `serde`, `serde_json`, and RFC-3339-capable `time` workspace pins for plan
+   002.
    Verify: all three commands above exit 0.
 
 ## Test plan
