@@ -95,6 +95,12 @@ Expected: deterministic multi-slice PASS, tests green, current skill count valid
   archive.
 - History rewrite or garbage collection.
 
+## Session structure
+
+Larger than one session. Session seams at green boundaries: 007a (steps 1-4,
+convergence), 007b (steps 5-6, apply and retirement), 007c (step 7, restore and
+skill updates). Track step progress in the README row note.
+
 ## Git workflow
 
 - Branch: `feat/verified-convergence`
@@ -107,11 +113,15 @@ Expected: deterministic multi-slice PASS, tests green, current skill count valid
 
 ### Step 1: Re-derive deterministic truth on the exact final tree
 
-At every nominal package completion, Stop checkpoint automatically invokes
-final reconcile. In a fresh verifier clone at the exact proposed final commit:
+At every nominal package completion, Stop checkpoint automatically enqueues
+final reconcile; whether it completes synchronously inside the hook or the hook
+returns "verification pending" and PASS releases at a later Stop is governed by
+plan 002's measured hook time budget. In a fresh verifier clone at the exact
+proposed final commit:
 
 1. revalidate READY and goal-contract digests;
-2. validate slice receipt ancestry/dependency/invalidation;
+2. validate slice receipt ancestry and dependency chain (every slice candidate
+   commit an ancestor of the final tree);
 3. rescan full tracked/untracked delta and path/effect mappings;
 4. rerun every package-final deterministic gate and oracle-mutation sentinel;
 5. verify exact tool/instruction/oracle/effective-hook resolution;
@@ -131,9 +141,14 @@ criterion as `deterministic`, `fresh_model`, `human`, or `external`.
 Deterministic scope mapping is not sent to a model again. A fresh model session
 is created only for criteria that genuinely require semantic judgment.
 
-Each reviewer receives a read-only clean clone, frozen READY/spec/contract,
-relevant house skill, and named evidence; it receives no executor transcript,
-status table, prior verdict, or other review. One session may return separate
+Reviewer transport is named, not implied: the controller invokes the provider
+CLI in its headless exec mode with the controller's own credential — legitimate
+here because reviewers are attestors, not the native `/goal` subject — under
+the same capability preflight as executors, restricted to a read-only clean
+clone, with a contract-declared per-reconcile session/cost bound. Each reviewer
+receives that read-only clone, frozen READY/spec/contract, relevant house
+skill, and named evidence; it receives no executor transcript, status table,
+prior verdict, or other review. One session may return separate
 Product and Engineering sections unless the contract's risk policy explicitly
 requires distinct sessions/providers. Every criterion is PASS/FAIL with concrete
 file/requirement evidence; no score or majority.
@@ -155,7 +170,11 @@ digest and available trust label. External gates record issuer, result, subject,
 freshness/expiry, and retrieval evidence; they never embed credentials.
 
 Any changed subject or expired evidence returns `AWAITING_ATTESTATION`, not PASS.
-Local declared approval is not called cryptographic identity. V1 external
+At the native-goal surface `AWAITING_ATTESTATION` maps to
+`BLOCKED(owner=<named human/issuer>, action=tailrocks attest ...)` — the goal
+does not burn attempt budget waiting on a human; recording the attestation
+re-arms checkpoint. Local declared approval is not called cryptographic
+identity. V1 external
 effects themselves remain operator-owned; their attestations may prove the
 operator completed them, not that the model was sandboxed.
 
@@ -180,6 +199,7 @@ Map failure class deterministically:
 | unresolved empirical fact | Prototype |
 | coverage/DAG/oracle/plan defect | Plan |
 | verifier or ground-truth defect | Remediate verifier; freeze acceptance |
+| nondeterministic gate (identical subject, differing result) | Plan (oracle defect); freeze that gate's acceptance |
 | human/external requirement | named operator/issuer |
 
 The model may explain this route but cannot override it. Generate the next
@@ -220,7 +240,11 @@ Build before deletion:
 - `roadmap/<slug>/completion.json` bound to READY, final Git tree, final receipt,
   verifier/trust versions, and durable spec/archive digests;
 - deterministic archive of exact active package bytes at
-  `archives/plans/sha256/<digest>.tar.zst`.
+  `archives/plans/sha256/<digest>.tar.zst`. The contract may declare an
+  out-of-repo archive destination for large packages (in-repo default is zstd
+  of text — tens of kilobytes); durability of an in-repo archive still depends
+  on the retirement commit reaching the protected branch, and the docs must say
+  so rather than implying feature-branch reachability suffices.
 
 Validate archive by extraction into a temp directory and byte comparison. Then
 delete only `plans/<slug>/`, update roadmap/index links, run post-retirement
@@ -242,8 +266,11 @@ the new decision, makes prior completion stale, and routes to SHAPING. After new
 READY, Plan creates a new package generation from current sources/spec; it never
 copies stale statuses/receipts as current.
 
-Update Reconcile to delegate machine truth to `tailrocks goal reconcile` and
-retain its manual recovery/audit role. Update artifact evals and the worked
+Update Reconcile to delegate machine truth to `tailrocks goal reconcile` when
+the binary is present, and to retain its full manual protocol (as hardened by
+plan 000) as the documented path when it is not — Reconcile must keep working
+on every client ecosystem that never gets a qualified kernel. Its manual
+recovery/audit role remains in both modes. Update artifact evals and the worked
 example through full PASS, apply, retire, restore-inspect, reopen, and replan.
 
 **Verify**: `mise run validate && bun test scripts/ && cargo test --workspace --all-features` → all exit 0; worked example has no dangling active-plan link after retirement.

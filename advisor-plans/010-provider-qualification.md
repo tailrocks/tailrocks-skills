@@ -1,8 +1,9 @@
 # Plan 010: Qualify Grok, then Claude, without weakening acceptance
 
-> **Executor instructions**: Qualification may conclude `UNSUPPORTED`. That is a
-> successful honest result; do not add a fallback supervisor, silently reduce
-> trust, or advertise parity. Qualify Grok first, Claude second. Run all gates.
+> **Executor instructions**: Qualification assigns the lowest tier the evidence
+> proves — TIER 0 is a successful honest result, not a failure to route around.
+> Do not add a fallback supervisor, silently reduce trust, or advertise one
+> tier as another. Qualify Grok first, Claude second. Run all gates.
 >
 > **Drift check (run first)**:
 > `git diff --stat b629fb9..HEAD -- integrations/ crates/ scripts/provider-conformance* research/native-goal-control/ .github/workflows/provider-conformance.yml .claude-plugin/ .codex-plugin/ .kimi-plugin/ README.md INSTALL.md AGENTS.md CLAUDE.md docs/`
@@ -48,12 +49,12 @@ workflow.
 
 ```sh
 rtk mise run verify
-rtk cargo run -p tailrocks-cli -- provider preflight codex --require supported
+rtk cargo run -p tailrocks-cli -- provider preflight codex --require tier2
 rtk grok --version
 rtk claude --version
 ```
 
-Expected: Codex remains supported; exact Grok/Claude versions are printed. Lack
+Expected: Codex remains TIER 2; exact Grok/Claude versions are printed. Lack
 of provider authentication blocks only that provider's live qualification, not
 truthful documentation of current static discovery.
 
@@ -71,13 +72,13 @@ truthful documentation of current static discovery.
 
 **In scope**:
 
-- `integrations/grok/**` (only if supported)
-- `integrations/claude/**` (only if supported)
+- `integrations/grok/**` (only at TIER 1+)
+- `integrations/claude/**` (only at TIER 1+)
 - provider-neutral adapter interfaces in `crates/**`
 - `scripts/provider-conformance.ts` and fixtures/tests
 - `research/native-goal-control/README.md`, sources, sanitized evidence
 - `.github/workflows/provider-conformance.yml`
-- client plugin/hook manifests only for a supported integration
+- client plugin/hook manifests only for a TIER 1+ integration
 - `README.md`, `INSTALL.md`, `AGENTS.md`, `CLAUDE.md`, relevant `docs/**`
 - four lockstep plugin versions only if user-visible integration changes
 
@@ -95,7 +96,7 @@ truthful documentation of current static discovery.
 
 - Branch: `feat/additional-goal-providers`
 - Commit each provider conclusion separately. Supported example:
-  `feat(goal): add verified Grok adapter`; unsupported example:
+  `feat(goal): add verified Grok adapter`; TIER 0 example:
   `docs(goal): record Grok control limitation`.
 - Use DCO/Codex co-author trailers. No push/PR/release without instruction.
 
@@ -116,12 +117,42 @@ Before provider-specific work, ensure the shared conformance schema requires:
 - sanitized evidence and trust label;
 - normal plus forged-status/oracle/scope/stale-receipt attacks.
 
-A provider is `SUPPORTED` only if every required row passes on a pinned version.
-`UNSUPPORTED` names exact failed capability; `INCONCLUSIVE` names missing live
-evidence. No partial support is advertised as equivalent.
+Conformance rows split into two orthogonal groups, because they fail
+independently and gate different things:
 
-**Verify**: harness tests reject evidence missing any required row and accept
-Codex plan-009 golden evidence unchanged.
+- **Containment rows** (sandbox, writable roots, environment inheritance,
+  web/search, MCP/apps/plugins/tools, additional directories, approvals,
+  egress, hook-placement outside executor-writable roots): mandatory for ANY
+  autonomous execution. A provider that cannot prove containment gets no
+  autonomous tier at all — this is a trust boundary, never a UX preference.
+- **Stop-control rows** (Stop interception, same-goal CONTINUE, current-PASS
+  stop, durable budgets across resume, hook time budget): these decide whether
+  completion interception is enforced or the operator must stay in the loop.
+
+The verdict is a qualification tier, not a binary:
+
+```text
+TIER 0  kernel CLI only — no autonomous native goal. The human drives sessions
+        (plan 000 prose loop or manual native goals); the kernel still owns
+        claim/submit/checkpoint/PASS. Containment is the human. Available on
+        every client that can run a shell command.
+TIER 1  attended native goal — containment rows proven, stop-control weak or
+        capped below the contract bound. The agent may stop early with a false
+        nominal claim; the documented ritual is that completion is believed
+        only from `tailrocks goal status`, never from the transcript. Honest
+        limitation: false claims are surfaced, not intercepted in-session.
+TIER 2  unattended native goal — containment and stop-control rows all proven
+        on a pinned version. Stop without current PASS must be zero; this is
+        the Codex release bar from plan 009 and the product's headline claim.
+```
+
+`UNSUPPORTED` remains the verdict for any tier a provider claims but cannot
+prove, and `INCONCLUSIVE` names missing live evidence. No tier is advertised as
+another; acceptance invariants (kernel-only PASS, scope, oracles, budgets,
+clean-clone verification) are identical at every tier.
+
+**Verify**: harness tests reject evidence missing any required row for the
+claimed tier and accept Codex plan-009 golden evidence unchanged as TIER 2.
 
 ### Step 2: Discover and qualify Grok first
 
@@ -131,14 +162,18 @@ origin. Record `built_in | plugin | skill | unknown`, package/version/digest, an
 whether its persistence belongs to the Grok client lifecycle.
 
 Run CONTINUE→PASS, resume, conflict, cap/timeout, config drift, and adversarial
-capability/outside-write/network-tool cases in the protected credential
-workflow. If current Grok Stop hooks are
-notification-only or no command lifecycle can force continuation, conclude
-UNSUPPORTED. Do not use `/loop` or implement a supervisor.
+capability/outside-write/network-tool cases per the plan 009 operator runbook.
+Assign the tier the evidence proves: no discoverable native `/goal` or no
+containment proof → TIER 0 (kernel CLI plus the plan 000 prose loop — still
+strictly better than today's Grok flow); containment proven but Stop hooks
+notification-only or continuation unforceable → TIER 1; all rows proven →
+TIER 2. Do not use `/loop` as a goal substitute or implement a supervisor at
+any tier.
 
-If and only if supported, add a thin adapter translating Grok-native events to
-the same `checkpoint` API and effective hook/capability preflight. Canonical
-contracts, journal, receipts, and routing remain provider-neutral.
+Only TIER 1 and above get an adapter: a thin translation of Grok-native events
+to the same `checkpoint` API and effective hook/capability preflight. TIER 0
+needs no provider code — that is the point. Canonical contracts, journal,
+receipts, and routing remain provider-neutral.
 
 **Verify**:
 
@@ -147,8 +182,9 @@ cargo test --workspace provider_grok
 bun scripts/provider-conformance.ts validate-release --provider grok research/native-goal-control/evidence/grok-current
 ```
 
-Expected: both exit 0 for one internally consistent `SUPPORTED`, `UNSUPPORTED`,
-or `INCONCLUSIVE` conclusion; only SUPPORTED may install/advertise an adapter.
+Expected: both exit 0 for one internally consistent tier (or `INCONCLUSIVE`)
+conclusion; only TIER 1+ may install/advertise an adapter, and only at the
+proven tier.
 
 ### Step 3: Discover and qualify Claude second
 
@@ -160,15 +196,17 @@ malformed/timeout behavior.
 Preflight must prove the effective consecutive-block limit is greater than or
 equal to the contract's durable attempt/continuation bound plus one, or reject
 the run. Resume never resets controller budgets. If the cap cannot be configured
-and enforced, or another hook can force stop, conclude UNSUPPORTED for packages
-whose bound exceeds proven capacity.
+and enforced, or another hook can force stop, Claude is TIER 2 only for packages
+whose bound fits the proven capacity and TIER 1 beyond it — the preflight
+decides per package, and the docs state the maximum enforceable bound.
 
 Apply the same execution-capability contract as Codex. A provider unable to
 disable external writes, secret-bearing environment, general network tools, or
-side-effecting integrations is UNSUPPORTED for autonomous local execution.
-Document same-user filesystem read confidentiality separately.
+side-effecting integrations gets no autonomous tier (TIER 0 only) — containment
+is not negotiable per tier. Document same-user filesystem read confidentiality
+separately.
 
-If supported, implement only event/config translation and concise continuation.
+At TIER 1+, implement only event/config translation and concise continuation.
 Never send receipt authority to Claude's goal evaluator.
 
 **Verify**:
@@ -178,38 +216,41 @@ cargo test --workspace provider_claude
 bun scripts/provider-conformance.ts validate-release --provider claude research/native-goal-control/evidence/claude-current
 ```
 
-Expected: both exit 0 for a consistent conclusion; any supported policy records
+Expected: both exit 0 for a consistent tier conclusion; any TIER 1+ policy records
 the maximum enforceable continuation budget.
 
 ### Step 4: Re-run cross-provider equivalence attacks
 
-For every SUPPORTED row, run the same frozen package/candidate fixtures and
+For every TIER 1+ provider, run the same frozen package/candidate fixtures and
 compare controller decisions, not model patches. Given identical frozen
 evidence, Codex/Grok/Claude adapters must yield identical
 CONTINUE/BLOCKED/PASS; provider metadata may differ. Test resume and Stop attacks
-per client.
+per client at its claimed tier.
 
-If a provider cannot represent a controller result, downgrade that provider to
-UNSUPPORTED rather than adding provider-specific canonical state.
+If a provider cannot represent a controller result, downgrade its tier rather
+than adding provider-specific canonical state.
 
-**Verify**: `cargo test --workspace provider_equivalence` → exit 0; all supported
-adapters agree on every golden decision and unsupported adapters cannot start.
+**Verify**: `cargo test --workspace provider_equivalence` → exit 0; all TIER 1+
+adapters agree on every golden decision and TIER 0 providers cannot start an
+adapter.
 
 ### Step 5: Publish the honest support matrix
 
 Update research evidence, README/INSTALL/docs, and plugin surfaces. For each
-provider publish exact tested client range/version, `/goal` origin, hook/budget
-constraints, trust mode, supported effects/platforms, last verified date, and
-requalification command. Unsupported/inconclusive rows say why and offer no
-silent alternative.
+provider publish its tier, exact tested client range/version, `/goal` origin,
+hook/budget constraints, trust mode, supported effects/platforms, last verified
+date, and requalification command. TIER 0/1 rows state exactly what is lost
+relative to TIER 2 (in-session interception; unattended completion) and what is
+kept (all acceptance invariants). Inconclusive rows say why and offer no silent
+alternative.
 
 If at least one user-visible adapter is added, bump all four plugin versions to
 one live-derived next release version and prepare but do not tag/publish. If both
-are unsupported and changes are documentation/evidence only, use the repository's
+land at TIER 0 and changes are documentation/evidence only, use the repository's
 normal docs release decision; do not fabricate a feature bump.
 
 **Verify**: `mise run verify` exits 0; support matrix is generated/checked against
-evidence JSON and no unsupported adapter appears in manifests or hooks.
+evidence JSON and no above-tier adapter appears in manifests or hooks.
 
 ## Test plan
 
@@ -219,27 +260,31 @@ evidence JSON and no unsupported adapter appears in manifests or hooks.
 - Claude transcript-evaluator isolation, block-cap preflight, resume budget,
   conflict/timeout/config drift, capability containment, normal/adversarial cases.
 - Cross-provider identical frozen-evidence decisions.
-- Unsupported provider cannot install/start/advertise.
+- A TIER 0 provider cannot install/start/advertise an adapter; no provider
+  advertises above its proven tier.
 - Docs/manifests/version/support-matrix consistency.
 
 ## Done criteria
 
 - [ ] Grok qualification is completed before Claude qualification.
-- [ ] Every provider has exact origin/version/evidence and one honest status.
-- [ ] SUPPORTED means full frozen conformance; partial parity is not advertised.
+- [ ] Every provider has exact origin/version/evidence and one honest tier.
+- [ ] TIER 2 means full frozen conformance; no tier is advertised as another,
+  and containment gates every autonomous tier.
 - [ ] No provider owns canonical contract/journal/receipt semantics.
 - [ ] Controller budgets survive resume and respect provider Stop limits.
-- [ ] Every supported provider enforces the repository-only capability profile.
+- [ ] Every TIER 1+ provider enforces the repository-only capability profile.
 - [ ] Supported adapters agree on identical frozen-evidence decisions.
 - [ ] Credentials never reach PR-head-controlled execution.
 - [ ] All verification/docs/version checks pass; no release occurs unapproved.
 
 ## STOP conditions
 
-Stop provider implementation if `/goal` origin is unknown, native continuation
-cannot be forced, PASS cannot cleanly release Stop, effective hooks/caps cannot be
-preflighted, resume bypasses controller budgets, evidence needs credentials in
-the repository, or parity would require a standalone loop or weaker acceptance.
+Stop *adapter* implementation — the provider stays TIER 0, which is a valid
+conclusion — if `/goal` origin is unknown, containment cannot be preflighted,
+native continuation cannot be forced at the claimed tier, PASS cannot cleanly
+release Stop, resume bypasses controller budgets, or evidence needs credentials
+in the repository. Stop the plan entirely only if honoring a tier would require
+a standalone loop or weaker acceptance.
 
 ## Maintenance notes
 

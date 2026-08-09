@@ -6,26 +6,30 @@
 >
 > **Drift check (run first)**:
 > `git diff --stat b629fb9..HEAD -- scripts/provider-conformance* research/native-goal-control/ docs/`
-> Only plan-001 dependency changes may exist. Rebase, inspect them, and update
-> `Planned at` before execution.
+> Empty output is expected. Plan 001 touches disjoint paths and may land before,
+> after, or in parallel; its changes are not drift for this plan.
 
 ## Status
 
 - **Priority**: P1
-- **Effort**: S
+- **Effort**: M (the live matrix is ~15 interactive TTY scenarios needing a
+  human operator mid-run; S was mis-sized)
 - **Risk**: HIGH
-- **Depends on**: `advisor-plans/001-artifact-grounded-evals.md`
+- **Depends on**: none — run this plan first; it is the existential feasibility
+  gate and shares no artifacts with plan 001
 - **Category**: direction, tests
-- **Planned at**: commit `b629fb9`, 2026-08-10; refresh after plan 001
+- **Planned at**: commit `b629fb9`, 2026-08-10
 
 ## Why this matters
 
-The whole product depends on native `/goal` attempting to stop, a trusted hook
-blocking that stop with an exact continuation, and a later PASS allowing stop.
-The first draft delayed this proof until its sixth large plan. This plan tests
-the load-bearing boundary first against a real installed Codex version. Failure
-invalidates the runtime architecture; it is not permission to add a standalone
-supervisor or pretend transcript evaluation is proof.
+The unattended product depends on native `/goal` attempting to stop, a trusted
+hook blocking that stop with an exact continuation, and a later PASS allowing
+stop. The first draft delayed this proof until its sixth large plan. This plan
+tests the load-bearing boundary first against a real installed Codex version.
+Failure blocks the TIER 2 (unattended, hook-enforced) runtime plans and forces
+an explicit operator decision on whether a TIER 0/1 kernel remains worth
+building; it is never permission to add a standalone supervisor or pretend
+transcript evaluation is proof.
 
 ## Current state
 
@@ -60,8 +64,16 @@ rtk bun test scripts/
 ```
 
 Expected: a concrete Codex version; both `goals` and `hooks` are stable/enabled;
-all plan-001 tests pass. If authentication or an interactive TTY is unavailable,
-mark this plan `BLOCKED`, not DONE.
+the currently checked-in script tests pass (whatever plan 001's state is). If
+authentication or an interactive TTY is unavailable, mark this plan `BLOCKED`,
+not DONE.
+
+Before building any harness code, run a thirty-minute manual spike: hand-write a
+throwaway Stop hook that always returns CONTINUE with a fixed prompt, start a
+native `/goal` in a scratch repository, and watch one stop attempt. If the hook
+is never consulted or the continuation is ignored, record that observation and
+skip straight to Step 5's decision write-up — do not build the evidence harness
+around a capability that a manual session already refutes.
 
 ## Commands you will need
 
@@ -119,7 +131,10 @@ checkpoint decisions, and sanitized terminal timestamps.
 
 `validate` rejects missing/duplicate/out-of-order Stop events, unrecognized
 fields, absolute home paths, environment values, and any evidence schema not
-explicitly versioned.
+explicitly versioned. Sanitization is capture-side allowlisting — only
+enumerated schema fields are ever written at the source — not scrub-side
+detection; do not claim "contains no credentials" beyond what the allowlist
+structurally guarantees.
 
 **Verify**: `bun test scripts/provider-conformance.test.ts` → exit 0; golden,
 missing-stop, reordered-event, secret-redaction, and malformed-hook cases pass.
@@ -168,6 +183,30 @@ whether Codex exposes enough configuration provenance to enumerate/digest every
 effective hook. Strong mode requires fail-closed rejection of conflicts or
 unverifiable effective configuration.
 
+Measure two additional load-bearing facts:
+
+1. **Hook time budget.** The maximum wall time Codex tolerates for the
+   Tailrocks Stop hook itself, and the exact terminal behavior when it is
+   exceeded (hook killed and stop proceeds? stop blocked? call retried?). Real
+   checkpoints run clean-clone gates for minutes; if a slow hook becomes an
+   uncontrolled stop, the synchronous-checkpoint design is infeasible and the
+   plan 003 hook must instead return fast (enqueue verification, reply CONTINUE
+   with a "verification pending — run `tailrocks goal status --wait`, then stop
+   again" prompt, and release PASS only at a later Stop with a completed current
+   verification). Record which of the two designs the measured budget supports.
+2. **Hook placement.** Whether any file influencing the effective hook set can
+   live inside the executor-writable repository. The required invariant is that
+   every effective hook/config byte resolves outside all executor-writable
+   roots; a project-level hook source inside the clone is a preflight rejection.
+   Add a case proving an in-repo hook edit either cannot occur or cannot alter
+   the effective set mid-session — otherwise the executor can delete its own
+   checkpoint and the next Stop simply never runs it.
+
+Also test the dependency-provisioning mode plan 006 will rely on: gates in a
+clean clone need cargo/bun dependencies; verify Codex tolerates an execution
+profile with general egress disabled while a controller-provisioned read-only
+dependency store (warmed from lockfiles outside the session) is present.
+
 Using the pinned CLI's least-privilege launch, also record and test the complete
 effective execution profile: sandbox mode, writable roots, environment
 inheritance policy, web/search, MCP servers, apps, plugins/skills with tools,
@@ -206,7 +245,12 @@ bun scripts/provider-conformance.ts validate-research research/native-goal-contr
 ```
 
 Expected: exit 0 only for internally consistent sources, evidence digests, and
-capability conclusion.
+capability conclusion. `validate-research` must also compare the recorded
+evidence's client version against the live `codex --version` and fail with a
+`STALE_EVIDENCE` error on mismatch — consumers (plan 003 preconditions, plan 009
+release gates) rely on this check to detect that Codex updated between this
+plan's run and theirs; a rerun of the affected cases is then required before the
+verdict may be consumed.
 
 ## Test plan
 
@@ -224,6 +268,10 @@ capability conclusion.
 - [ ] Native goal receives at least one enforced CONTINUE and later PASS.
 - [ ] Resume preserves controller-owned budget and rechecks effective hooks.
 - [ ] Effective hooks and execution capabilities are preflighted fail-closed.
+- [ ] Hook time budget and on-timeout terminal behavior are measured; the
+  supported checkpoint design (synchronous or enqueue-and-poll) is recorded.
+- [ ] Hook placement is proven outside executor-writable roots or the version
+  is marked unable to satisfy the placement invariant.
 - [ ] Local-mode confidentiality limitations are measured and labeled.
 - [ ] Sanitized evidence validates and contains no credentials/home paths.
 - [ ] Prototype temporary files are absent from `git status`.

@@ -173,12 +173,16 @@ owner for documentary, empirical, and normative questions.
 ### Step 5: Catalog and version the skill
 
 Add realistic normal, boundary, and safety evals. Add skill entries to README,
-AGENTS, and walkthrough. Bump the four version fields in lockstep from `0.11.0`
-to `0.12.0`; do not change root `plugin.json`, which has no version field. Do not
-update pinned release tags before an actual release.
+AGENTS, and walkthrough. Do not bump plugin versions here: version bumps are a
+release action, decided once per release from live manifest values (plan 009
+derives the next version; per-plan bumps produced the 0.12.0/0.13.0 arithmetic
+contradiction this revision removed). The lockstep-equality check must still
+pass unchanged; root `plugin.json` has no version field. Do not update pinned
+release tags before an actual release.
 
-**Verify**: version command, `mise run validate`, and `git diff --check` all exit
-0; validator finds exactly 16 skills and manual-invocation policy passes.
+**Verify**: version lockstep-equality command, `mise run validate`, and
+`git diff --check` all exit 0; validator finds exactly 16 skills and
+manual-invocation policy passes.
 
 ## Test plan
 

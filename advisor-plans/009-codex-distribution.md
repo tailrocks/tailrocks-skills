@@ -92,18 +92,28 @@ and SUPPORTED.
 
 ### Step 1: Build and verify portable CLI artifacts
 
-Add a native-runner matrix for:
+Add a native-runner matrix for the two targets with a real consumer today:
 
 ```text
-aarch64-apple-darwin, x86_64-apple-darwin,
-x86_64-unknown-linux-gnu, aarch64-unknown-linux-gnu,
-x86_64-pc-windows-msvc
+aarch64-apple-darwin      # operator development machines
+x86_64-unknown-linux-gnu  # CI and Linux hosts
 ```
+
+The matrix must be extensible by adding one entry, and every added target obeys
+the same rule: build success without a target-native install/smoke/uninstall
+proof is not support. Do not pre-build further targets speculatively — by this
+plan's own standard an untested target cannot be advertised, so an unrequested
+one is pure carrying cost. The named first expansion is
+`aarch64-unknown-linux-gnu`: it is the default architecture for Docker and
+devcontainers on Apple-silicon hosts, a plausible top Codex environment — add
+it the moment such an environment is real, with its own native smoke. Windows
+additionally requires porting the Unix-flavored tooling assumptions (mise
+tasks, shell hooks) and must not be promised before that work is scoped.
 
 Build locked release binaries, archive per target, emit SHA-256 manifest and
 provenance metadata, install each into a clean prefix, run
 `tailrocks --version` plus the offline tracer, uninstall, and prove no files
-remain. Build success without a target-native smoke is not support.
+remain.
 
 `verify-release-artifacts.ts` validates names, platform/architecture, checksum,
 version/contract compatibility, provenance fields, install layout, smoke result,
@@ -133,12 +143,23 @@ upgrade, and uninstall. All advertised install commands match artifact fixtures.
 
 ### Step 3: Qualify live Codex only from protected code
 
-`provider-conformance.yml` runs on protected default-branch
-`workflow_dispatch`/schedule after merge, or an approved immutable release
-candidate. It never executes PR-head code with provider credentials. Use an
-approved environment, least-scoped provider identity, no repository write token,
-and no remote in the executor fixture. Separate generation and verification jobs
-so the verifier has no provider credential.
+Native `/goal` is interactive: plan 002's negative proof forbids substituting
+`codex exec`, so a scheduled headless workflow cannot run the real lifecycle
+without pty automation nobody has built. Split honestly:
+
+- **Operator-run runbook (the live lifecycle)**: an interactive TTY session
+  driven from a printed checklist, producing the same versioned evidence JSON
+  as plan 002's harness. Manual, labeled manual, and required per release
+  candidate.
+- **Protected workflow (validation and publication)**: `provider-conformance.yml`
+  on protected default-branch `workflow_dispatch`/schedule validates and stores
+  the uploaded evidence, and runs the automatable subset (binary preflight,
+  offline scripted tracer, artifact checks) headlessly. It never executes
+  PR-head code with provider credentials. Use an approved environment,
+  least-scoped provider identity, no repository write token, and no remote in
+  the executor fixture. Separate generation and verification jobs so the
+  verifier has no provider credential. If pty automation is ever added, it is a
+  separate deliverable with its own fixtures — not assumed here.
 
 Run native Codex normal multi-slice, premature claim interception, resume and
 compaction, budget exhaustion, sibling hook conflict/mutation, candidate/oracle/
@@ -165,9 +186,21 @@ behavior. State that local same-user filesystem read confidentiality is not
 proven and sensitive hosts require a dedicated principal/container. Walk through
 Idea to retirement using primary artifact pointers.
 
-Bump the four plugin version fields together to the live-derived next feature
-version (expected `0.13.0` after plan 005's `0.12.0`). Embed the compatible CLI
-version/range in preflight and support docs. Update pinned tag examples only when
+Bump the four plugin version fields together to the next feature version
+derived **only** from the live manifest values at execution time — never from
+this plan's arithmetic (per-plan bump predictions have already been wrong once;
+version bumps are a release action and plans 004-007 deliberately do not bump).
+Embed the compatible CLI version/range in preflight and support docs.
+
+Add a plugin-payload deliverable: for each install channel in INSTALL.md,
+verify what the installed plugin actually contains and how large it is. The
+kernel workspace, fixtures, examples, and archives all ship inside the plugin
+today because every channel clones the repository root. If the measured payload
+is unacceptable, this is the point where open decision D1
+(`advisor-plans/README.md`) executes: split the kernel into its own repository
+and pin a released binary/version here — the release machinery this plan builds
+is exactly what a split needs, so deciding earlier was speculative and deciding
+later is too late. Update pinned tag examples only when
 the operator authorizes that actual tag; otherwise leave a clearly marked
 release checklist `READY, NOT PUBLISHED`.
 
@@ -176,7 +209,9 @@ lockstep, CLI/plugin compatibility, and clean-prefix install smoke all pass.
 
 ## Test plan
 
-- Five target artifact identity/checksum/install/offline-smoke/uninstall cases.
+- Per-target artifact identity/checksum/install/offline-smoke/uninstall cases
+  for both initial targets, plus one fixture proving an unlisted target is
+  rejected rather than silently advertised.
 - Binary discovery, PATH shadowing, digest/version mismatch, hook conflict/drift.
 - Protected-code workflow trigger/permissions/credential separation fixtures.
 - Native Codex normal, resume/compaction/budget, and trust-boundary attacks.

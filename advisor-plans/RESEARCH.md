@@ -177,7 +177,7 @@ three clients expose equivalent control.
 | Remove completed active plans without losing truth | 007 | PASS-independent explicit retirement, durable bundle/spec/receipt, reopen tests |
 | Measure real predictability | 001, 008 | retained per-trial outcomes, pass@1/pass^k intervals, blinded false-acceptance fixtures |
 | Preserve Rust/TypeScript/TanStack house rules | 006–008 | existing house-skill gates referenced by exact digest and rerun in clean verifier |
-| Support Grok then Claude when true | 010 | provider-origin/version/hook/resume conformance matrix; unsupported is explicit |
+| Support Grok then Claude when true | 010 | provider-origin/version/hook/resume conformance matrix; tier 0/1/2 verdicts with containment mandatory; no tier advertised as another |
 
 ## Trust and scope limits
 
@@ -192,15 +192,79 @@ three clients expose equivalent control.
 - No package retirement hidden inside native goal success. PASS is preserved,
   cleanup is explicit, and archived evidence does not depend on branch reachability.
 
+## Third adversarial pass (2026-08-10, PR #6 review)
+
+Method: the second draft's repository evidence was re-verified line by line
+against the working tree (all claims accurate; one literal mismatch found —
+plans quoted `Validated 15 skill(s).` where `scripts/validate-skills.ts:293`
+prints `Validated 15 skills.`, enough to STOP a compliant cold executor).
+Then two independent cold reviews ran in parallel: one instructed to defend the
+second draft against ten proposed simplifications (steelman), one instructed to
+find what the second draft still gets wrong without echoing its own resolved
+findings. Their disagreements were adjudicated on concrete failure scenarios,
+not vote counts.
+
+### Adopted findings
+
+| Finding | Resolution (owning plan) |
+|---|---|
+| Stop-hook wall-time budget never measured; slow honest checkpoints could become uncontrolled stops | 002 measures budget and on-timeout behavior; checkpoint is enqueue-and-poll when gates exceed it; PASS releases at a later Stop (003, 006, 007) |
+| "No egress" contradicted by cargo/bun dependency fetches in clean clones | Controller-provisioned read-only dependency store keyed to lockfile digests; warming is a labeled controller effect (006, tested in 002) |
+| Plans 004-007 rewrite shipped skills to require a binary users cannot install until 009; Claude/Grok flows regress before 010 | Mandatory no-binary fallback and dual-path skills; prose-path removal is an explicit recorded deprecation decision (004, 006, 007) |
+| Dependent plans' preconditions require PASS state living only in one machine's journal | Defined journal location; scripted provider-free tracer mode is the committed re-runnable proof; `inspect --require PASS` re-derives (003) |
+| 002 sized S despite ~15 human-attended TTY scenarios; 009 assumed the same lifecycle headlessly in scheduled CI | 002 resized M; 009 split into operator-run TTY runbook plus protected workflow validating evidence and running the automatable subset |
+| Effective hook sources inside the executor-writable clone let the executor delete its own checkpoint | Placement invariant: all effective hook/config bytes outside executor-writable roots; in-clone source is preflight rejection; checkpoint re-hashes the set (002, 003) |
+| Flaky gates had no detection, policy, or routing owner | Anchor-time k-run stability, identical-subject divergence sentinel, dedicated routing row freezing the gate (006, 007) |
+| Replay evals graded as if they proved skill behavior | Labeled `fixture-validated`; live credentialed smoke is the only skill proof (008) |
+| Trust-bearing strong mode had no plan number | CI receipt revalidation lane: credential-free `goal reconcile --final` rerun on PRs; merge-authoritative receipt is the CI-validated one (008) |
+| 003/006/007 violate the one-session slice doctrine the package cites | Explicit session seams at green step boundaries (003, 006, 007) |
+| 001→002 dependency was artificial; the existential gate ran second | 002 depends on nothing and runs first; a 30-minute manual spike precedes harness code; staleness is caught by a live-version check in `validate-research` (001, 002, 003) |
+| The diagnosed live false-completion hole stayed open for the whole runway | New plan 000: gate-first prose protocol, reconcile-before-done, opt-in advisory Stop hook, trust label `advisory_prose` |
+| "Selective invalidation trigger" had no defined grammar | Removed; validity = run-ref ancestry + final-tree rerun with full-delta authorization; slice receipts stay as audit evidence (006, 007) |
+| Reviewer transport, credentials, and AWAITING_ATTESTATION native-goal behavior unowned | Named headless exec-mode transport under capability preflight with cost bound; AWAITING_ATTESTATION maps to BLOCKED(owner) plus `tailrocks attest` (007) |
+| Controller-regenerated GOAL.md would appear in executor deltas | Controller commits on the run ref before next prepare; GOAL.md in an executor delta is a rejection (006) |
+| Version-bump policy self-contradictory (0.12.0/0.13.0 arithmetic) | Per-release bumping derived from live manifests only; 005's mid-stream bump removed (005, 009) |
+| Kernel workspace/fixtures/archives ship inside every plugin install across all channels | 009 payload deliverable measures per-channel installs; open decision D1 executes there if unacceptable |
+| Five speculative release targets | Two real targets; `aarch64-unknown-linux-gnu` named next for Apple-silicon devcontainers; Windows blocked on tooling port scope (009) |
+| Embedded example repositories cannot be committed as written | `git bundle` plus materialize script (003, 006) |
+| "Sanitized evidence" overclaimed scrub-side detection | Relabeled capture-side allowlisting: only enumerated schema fields are written at source (002) |
+| Pasted attachments may have no re-exportable original bytes | `capture_fidelity: bytes\|reference` on source records (004) |
+| Two goals against one repository had no concurrency semantics | One journal per repository plus a repo-wide execution lease (003) |
+| Binary SUPPORTED/UNSUPPORTED wastes the kernel on weaker clients | Qualification tiers 0/1/2: containment gates every autonomous tier; stop-control decides attended vs unattended; invariants identical (010) |
+| Per-package oracle proofs looked prohibitively expensive | Kept (see rejected table) but cost-bounded: reusable perturb templates for standard house gates; bespoke fixtures only for novel oracles (006) |
+
+### Proposed simplifications rejected under steelman
+
+These cuts were argued for and lost; recording why prevents relitigating them.
+
+| Proposed cut | Why it lost |
+|---|---|
+| Demote slice receipts to journal notes; final receipt as sole proof | A mid-package rebase that drops a slice commit leaves free-floating "done" booleans; slice-scoped gates are not rerun at final, so their evidence must survive as bound receipts. Ancestry validation plus dual receipts is the draft-1 deadlock fix, not decoration. |
+| Move per-package oracle negative controls into the kernel's own test suite | Kernel tests never see a future package's oracles. A gate whose test filter matches zero tests exits 0 and becomes a frozen, digested nothing; only an anchor-time seeded-defect proof catches it — "false completion defined by the checker under test" otherwise returns. |
+| Replace UUIDv7 records + CAS blobs + projection lease with an append-only JSONL log | Serial execution does not make capture serial: concurrent interview sessions exist by design. Torn-tail appends corrupt a JSONL log permanently; multi-KB answers exceed atomic-append sizes; temp-write+rename is the committed/uncommitted boundary the promises require; the lease only guards projection rebuilds that would otherwise clobber human-authored README sections. |
+| Drop committed tar.zst retirement archives (rely on specs/ + main history) | A package created and retired within one PR squash-merges to main as a single commit whose tree never contained the package; the pre-deletion bytes die with the feature branch and `completion.json` holds digests with no recoverable preimage. Kept, with destination/size options and documented merge-dependency. |
+| Drop journal replay/derived-state equality (keep transactions only) | Replay equality is the kernel's only self-audit: a bugged or page-corrupted state row claiming PASS without a supporting event chain is detected fail-closed at startup and routed as a verifier defect. Cheapest invariant in the system; sole detector of its class. |
+| Prune hostile-Git fixtures to observed model-shortcut behaviors | The matrix is mechanism-based protection against ambient accidental hazards squarely inside `local_non_adversarial`: git-lfs smudge/clean divergence between executor and sanitized verifier, `core.autocrlf` flipping byte-exact gates, local-clone alternates sharing objects with a mutable source repo. Behavior lists are open sets; mechanism closure is not. |
+| Reclassify hook enforcement as pure liveness (weak hooks ⇒ attended tier for everyone) | Adopted only in refined form: hook verification and capability containment share one introspection machinery, so a provider that cannot enumerate its effective config cannot prove containment either — containment stays mandatory for any autonomous tier; only stop-control became the attended/unattended axis, and Codex keeps the zero stop-without-PASS release bar. |
+
 ## Revised rollout
 
-1. Make eval assertions inspect actual artifacts.
-2. Prove Codex native stop/continue/resume behavior with retained evidence.
-3. Deliver one complete Codex slice before general schemas.
-4. Preserve intent and empirical evidence through READY.
-5. Generalize one canonical contract and serial runtime.
+0. Harden the existing prose loop today (gate-first condition, reconcile before
+   done, advisory hook) — the known hole does not wait for the kernel.
+1. Prove Codex native stop/continue/resume behavior, the hook time budget, and
+   hook placement with retained evidence (before or alongside step 2).
+2. Make eval assertions inspect actual artifacts.
+3. Deliver one complete Codex slice — scripted mode as committed proof, native
+   mode as qualification evidence — before general schemas.
+4. Preserve intent and empirical evidence through READY, dual-path on every
+   client.
+5. Generalize one canonical contract and serial runtime, with
+   controller-provisioned dependencies and anchor-time oracle proofs.
 6. Add current-evidence convergence and explicit recoverable retirement.
 7. Converge through declared semantic/human evidence and retire explicitly.
-8. Complete artifact evals and credential-free deterministic CI.
-9. Distribute and qualify Codex from protected code.
-10. Qualify Grok and Claude independently; never weaken invariants for parity.
+8. Complete artifact evals, credential-free deterministic CI, and the CI
+   receipt-revalidation lane that makes merge-authoritative PASS independent.
+9. Distribute and qualify Codex from protected code; measure plugin payloads
+   and execute the repo-split decision if needed.
+10. Assign Grok and Claude qualification tiers independently; containment gates
+    every autonomous tier and no tier is advertised as another.

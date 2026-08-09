@@ -13,7 +13,8 @@
 - **Priority**: P1
 - **Effort**: L
 - **Risk**: MED
-- **Depends on**: plan 003
+- **Depends on**: plans 001 and 003 (step 3's skill fixtures verify through plan
+  001's artifact-grounded runner)
 - **Category**: feature, migration
 - **Planned at**: commit `b629fb9`, 2026-08-10; refresh after plan 003
 
@@ -121,6 +122,12 @@ The record includes schema version, ID, media type, byte length, digest,
 timestamp, source kind, actor trust label, predecessor/supersedes IDs, and
 redaction metadata. It never duplicates raw content.
 
+Records carry `capture_fidelity: bytes | reference`. Several clients expose
+pasted images or attachments to the model without a re-exportable original
+file; such inputs are captured as `reference` (client, description, digest if
+available) rather than pretending byte fidelity exists. Only `bytes` records
+reference blobs.
+
 Use temp-write, flush/fsync where supported, atomic rename, and create-new
 semantics. A crash after blob write creates only a harmless orphan; a committed
 record may never reference a missing/wrong blob. Multiple writers can create
@@ -157,6 +164,16 @@ Update Idea, Brainstorm, Research, Record Decision, and Finalize:
 4. rebuild projections after synthesis;
 5. on interruption after append, resume from durable source rather than asking
    the user to reconstruct it.
+
+**No-binary fallback is mandatory.** These skills ship to every plugin channel
+(Claude, Codex, Grok, Kimi, Antigravity and manual installs) while the
+`tailrocks` binary is user-installable only after plan 009. Every changed skill
+must detect an absent binary and follow a documented manual path: write the
+same record/blob files directly per a `references/source-record-format.md`
+authored here, with `tailrocks source check` validating them later. A skill
+that instructs agents to run a nonexistent command is a release-blocking
+defect, not a forward reference. The existing interview behavior must remain
+fully functional on clients where the binary is never present.
 
 Research fact records include source URL/path, retrieval time, quoted/derived
 boundary, and freshness rule. They remain `informative` until a user decision

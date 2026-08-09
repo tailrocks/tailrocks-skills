@@ -103,6 +103,12 @@ vocabulary and its coverage/plan templates.
 - External effects, secrets, network, deploys, databases, devices, IPC.
 - Separate canonical manifest, coverage, effect, resolution, or oracle lock JSON.
 
+## Session structure
+
+Larger than one session. Each step ends in a committed green state; session
+seams are 006a (steps 1-3, compiler), 006b (steps 4-5, runtime), 006c (steps
+6-7, example and skill). Track step progress in the README row note.
+
 ## Git workflow
 
 - Branch: `feat/compiled-goal-contract`
@@ -149,6 +155,18 @@ budget. The contract records read-only reference roots/digests needed by gates
 and the executor's minimal visible inputs. Never claim post-hoc diff scanning can
 detect secret reads.
 
+**Dependency provisioning must be solved here, not assumed away.** House-stack
+gates (`cargo test`, `bun test`) fetch dependencies; a clean clone with general
+egress disabled cannot run them, and cargo/bun registry access is arbitrary
+egress (build scripts, postinstall). The contract therefore names a
+controller-provisioned read-only dependency store: warmed caches or vendored
+sources keyed to the exact lockfile digests, provisioned by the controller
+outside the executor/verifier sessions and mounted read-only into gate runs.
+Registry fetches during warming are a labeled controller-side effect, not
+agent-usable egress. A gate whose dependencies cannot be provisioned this way
+cannot compile into the contract. Plan 002 step 4 verifies the provider
+tolerates this profile.
+
 Compile the required provider capability profile from plan 003's measured
 fields. Before start and resume, runtime must recheck sandbox, writable roots,
 environment inheritance, web/search, MCP/apps/plugins/tools, additional
@@ -165,8 +183,18 @@ fixtures pass.
 
 Materialize deterministic gate argv, cwd, timeout, expected exit state, and
 protected reference files before execution. The planner may propose them; an
-operator/trusted planning step anchors their exact digests. Mutation tests must
-prove each oracle detects its named defect before the contract can compile.
+operator/trusted planning step anchors their exact digests. Two anchor-time
+proofs are required per gate, both cost-bounded:
+
+- **Sensitivity (negative control)**: one named seeded defect the gate must
+  fail on — a stored perturb fixture, not mutation coverage. This is what
+  catches the vacuous oracle (a test filter matching zero tests exits 0 and
+  would otherwise become a frozen, digested nothing). Standard house gates use
+  reusable perturb templates shipped with the kernel; only novel custom gates
+  need a bespoke fixture.
+- **Stability**: the gate runs `k` times on the frozen base and must agree with
+  itself; an unstable gate is refused at anchor time instead of surfacing later
+  as false CONTINUE noise.
 
 Record exact digests of `Cargo.lock`, Bun lockfiles if present, toolchain/config,
 relevant skill instructions, plan Markdown, generated GOAL, gate executables or
@@ -189,7 +217,9 @@ primary artifacts rather than copying the entire package.
 
 On each Stop, checkpoint derives one result:
 
-- `CONTINUE`: exact current failure and same-slice repair prompt;
+- `CONTINUE`: exact current failure and same-slice repair prompt (also the
+  response while an enqueued verification is still running, with a
+  "verification pending — `tailrocks goal status --wait`" prompt);
 - `NEXT`: current slice verified; concise next-slice prompt in the same native
   goal;
 - `BLOCKED`: deterministic reason and owning operator/upstream action;
@@ -197,6 +227,12 @@ On each Stop, checkpoint derives one result:
   receipt.
 
 Native model confidence and transcript evaluator never set these states.
+
+GOAL.md regeneration is a controller write: it lands as a controller-owned
+commit on the run ref before the next `prepare`, its path is excluded from
+every slice's `allowed_write_paths`, and a GOAL.md change appearing in an
+executor delta is a rejection — the executor never authors or absorbs
+controller bytes inside its candidate.
 
 **Verify**: `cargo test -p tailrocks-core multi_slice::goal_projection` → exit 0;
 generation is byte-stable and any contract/journal change invalidates stale
@@ -216,23 +252,49 @@ contract_digest, instruction/oracle/resolution digests,
 dependency receipt IDs, gate evidence, trust mode
 ```
 
-Later slices do not invalidate an earlier receipt merely because final tree
-changed. They must preserve its candidate commit in ancestry and satisfy any
-selective invalidation trigger declared by the contract. Before final PASS,
-rerun all package-final gates on the exact final tree and issue one final receipt
-bound to that tree and the complete receipt DAG.
+Later slices do not invalidate an earlier receipt merely because the final tree
+changed; they must preserve its candidate commit in run-ref ancestry. There is
+no per-contract "selective invalidation trigger" — that draft-2 phrase had no
+defined grammar and a cold executor would have had to invent one. The division
+of labor is fixed instead: slice receipts are durable audit evidence of what
+was verified when; the only validity claims are (a) ancestry — every slice's
+candidate commit is an ancestor of the final tree, and (b) the final receipt —
+all package-final gates rerun on the exact final tree plus a full-delta
+authorization scan (plan 007 step 1). A dropped slice commit fails (a); deleted
+tests or unmapped changes fail (b). Before final PASS, rerun all package-final
+gates on the exact final tree and issue one final receipt bound to that tree
+and the complete receipt DAG.
 
 Implementation is serial even when DAG paths are disjoint. Parallel reviewers
 remain allowed later.
 
+Two runtime rules join here:
+
+- **Latency budget.** Verifier clones share objects with the controller store,
+  and gate runs may reuse a controller-owned build cache keyed by toolchain and
+  lockfile digests (never executor-clone state). Record per-checkpoint wall time
+  against plan 003's measured baseline; a checkpoint that costs more than the
+  slice it verifies is a defect to fix, not ambient overhead to accept. In
+  `local_non_adversarial` mode a warm cache is an acceptable trust trade and must
+  be labeled in the receipt; strong/CI mode reruns cold.
+- **Determinism sentinel.** If the same candidate tree yields different gate
+  results across runs, the gate has broken its determinism contract. Classify as
+  a verifier/gate defect, freeze acceptance for that gate, and route to Plan —
+  never burn executor attempt budget or emit CONTINUE blaming the candidate for
+  a flaky oracle.
+
 **Verify**: `cargo test -p tailrocks-core multi_slice::integration` → exit 0;
 three-slice linear, diamond, stale-base, ref-CAS race, dependency tamper,
-post-slice allowed change, invalidating change, and final-tree tests pass.
+post-slice allowed change, dropped-ancestor rejection, unmapped-delta rejection,
+and final-tree tests pass.
 
 ### Step 6: Execute a deterministic multi-slice native goal
 
 Create `examples/deterministic-goal/multi-slice/` with three small vertical
-slices and a diamond dependency, all deterministic/repo-local. Run through
+slices and a diamond dependency, all deterministic/repo-local. As in the tracer,
+the frozen base is a `git bundle` plus materialize script, and the committed
+proof is the scripted mode rerun by every consumer; native Codex runs are
+qualification evidence. Run through
 native Codex `/goal`: each nominal completion triggers clean verification and
 NEXT; final deterministic reconcile yields PASS.
 
@@ -256,6 +318,13 @@ still creates readable coverage/spec/zero-context plan files and cold reviews
 them. After review, it invokes the compiler, anchors protected inputs, and emits
 GOAL. It must refuse packages whose required command/tool was not guaranteed by
 an earlier slice.
+
+The skill remains dual-path: with no `tailrocks` binary present (every plugin
+channel until plan 009, and any never-qualified client), Plan emits the current
+prose package and the plan 000 gate-first GOAL.md unchanged; the compiled
+contract path activates only when the binary is detected. Removing the prose
+path is a separate, explicitly recorded deprecation decision — not a side
+effect of this plan.
 
 Every dependent plan handoff includes an observable precondition and a scoped
 drift command against the dependency tip. The package manifest must be acyclic

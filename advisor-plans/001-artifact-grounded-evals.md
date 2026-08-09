@@ -28,7 +28,8 @@ is retained, and a failing trial can never be hidden by an aggregate.
 
 This is evaluation infrastructure only. It does not implement native `/goal`
 sessions, resume, or provider adapters; those must drive one shared Rust adapter
-after plans 003/006.
+after plans 003/006. Plan 002 does not depend on this plan and should run first
+or in parallel: nothing here gates the existential Codex feasibility question.
 
 ## Current state
 
@@ -66,7 +67,8 @@ rtk bun run scripts/validate-skills.ts
 ```
 
 Expected: RTK prints a version; all seven current tests pass; validator reports
-`Validated 15 skill(s).`
+`Validated 15 skills.` (the validator's exact current string — re-check it
+before treating a mismatch as failure).
 
 ## Commands you will need
 
@@ -177,7 +179,10 @@ subject summary as sole proof.
 Refactor `scripts/run-evals.ts` to use the modules above. Accept explicit
 `--results <path>` and `--driver claude|replay`. `replay` consumes only checked-in
 test transcripts/actions and exists to test the harness; it is not a provider
-implementation.
+implementation. `claude` is a manual credentialed diagnostic only: its results
+are never a CI acceptance input, and no second provider driver may be added
+here — live provider lifecycles belong to the plan 003+ Rust adapter (this
+plan's maintenance rule).
 
 Emit aggregate pass@1/pass^k counts and per-state counts for reporting. Exit:
 

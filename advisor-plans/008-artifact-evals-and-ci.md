@@ -6,15 +6,16 @@
 >
 > **Drift check (run first)**:
 > `git diff --stat b629fb9..HEAD -- .github/workflows/validate.yml mise.toml scripts/ skills/*/evals/ crates/ tests/ examples/ docs/eval-runner-design.md`
-> Rebase onto plans 005 and 007, refresh this baseline/current state, and rerun
-> both dependency branches before editing.
+> Rebase onto plan 007 (and plan 005 if it has landed), refresh this
+> baseline/current state, and rerun dependency branches before editing.
 
 ## Status
 
 - **Priority**: P1
 - **Effort**: L
 - **Risk**: HIGH
-- **Depends on**: plans 005 and 007
+- **Depends on**: plans 001 and 007. Plan 005 is a soft dependency: its evals
+  migrate here only if that skill has landed; do not block this plan on it
 - **Category**: tests, ci
 - **Planned at**: commit `b629fb9`, 2026-08-10; refresh after dependencies
 
@@ -116,6 +117,14 @@ routing, write ownership, and terminal refusal. Static review/setup cases assert
 exact workspace files/diff/commands. Safety cases assert refusal trace and
 unchanged workspace.
 
+Be honest about what replay proves: a scripted transcript replayed against
+assertions written by the same authors tests the assertions and the harness,
+never the skill's live behavior. Replay evals therefore gate CI as
+assertion/harness regressions, and the eval report labels them
+`fixture-validated`, not `skill-proven`. Skill behavior is proven only by the
+credentialed live smoke lane (plan 009's protected workflow) using these same
+artifact assertions; that lane, not replay, is the support claim's evidence.
+
 Live provider trials are not added here. After the last migration, delete v1
 compatibility; summary-only evidence cannot produce any terminal state.
 
@@ -156,6 +165,14 @@ Run `mise run verify` in `validate.yml` with pinned actions and least
 permissions. PR jobs receive no provider secret, privileged token, writable
 remote, deploy environment, or release permission. Caches may accelerate but a
 clean no-cache fixture remains.
+
+Add the first strong-mode lane while here, because it is nearly free: when a PR
+contains a plan package with receipts, a credential-free CI job reruns
+`tailrocks goal reconcile --final` offline against the exact final tree
+(deterministic gates only — no provider credential needed). This gives every
+package an independent verifier on separate infrastructure, which is what local
+mode by its own label cannot be. Local PASS remains the fast loop; the
+CI-validated receipt is the merge-authoritative one, and the trust docs say so.
 
 `scripts/validate-workflows.ts` rejects secret references in PR jobs, mutable
 action refs where policy forbids them, `pull_request_target` execution of head

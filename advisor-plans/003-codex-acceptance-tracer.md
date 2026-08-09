@@ -53,8 +53,10 @@ rtk bun test scripts/
 rtk mise run validate
 ```
 
-Expected: provider conclusion `SUPPORTED`; all script tests pass; 15 skills
-validate. If not, stop.
+Expected: provider conclusion `SUPPORTED` and evidence current for the installed
+`codex --version` (`validate-research` fails with `STALE_EVIDENCE` on version
+mismatch — rerun the affected plan 002 cases first); all script tests pass; 15
+skills validate. If not, stop.
 
 ## Commands you will need
 
@@ -98,6 +100,14 @@ templates rather than inventing a weaker workspace.
   writes outside the disposable clone. Provider inference transport remains.
 - Claims of malicious-host isolation.
 
+## Session structure
+
+This plan is larger than one session. Steps 1-6 are resumable checkpoints: each
+ends in a committed green state (`cargo test -p ... <module>` per step), and an
+executor may end a session at any green boundary — 003a (steps 1-2), 003b
+(steps 3-4), 003c (steps 5-6) are the natural seams. Track step progress in the
+README row note; never leave a session mid-step.
+
 ## Git workflow
 
 - Branch: `feat/codex-acceptance-tracer`
@@ -136,8 +146,14 @@ pass.
 
 ### Step 2: Put all authoritative runtime state in one transaction journal
 
-Implement a SQLite WAL database outside the executor clone. Migrations create
-one event table and immutable evidence blob references. Typed events cover:
+Implement a SQLite WAL database outside the executor clone at a defined,
+documented location: one journal per subject repository under the operator's
+state directory (default `~/.tailrocks/state/<repo-id>/journal.sqlite`,
+overridable), never inside any clone and never committed. One journal owns all
+packages of its repository and holds a repo-wide execution lease so two goals
+cannot run serial slices against the same repository concurrently. Migrations
+create one event table and immutable evidence blob references. Typed events
+cover:
 
 ```text
 RunPrepared, SliceClaimed, CandidateSubmitted, VerificationStarted,
@@ -183,9 +199,11 @@ config/hook/filter/alternate/ref, and stable-tree tests pass.
 ### Step 4: Verify the candidate in a second disposable clone
 
 Import only the controller-generated candidate object into a new disposable full
-clone. Use sanitized environment/config, checkout the exact candidate commit,
-verify contract and protected-file digests, then run the fixed argv gate with
-timeout and captured stdout/stderr. Do not use `sh -c` or executor-authored gate
+clone. The clone may share objects with the controller-owned store
+(`--reference`/`--shared` against controller-owned objects is safe; sharing with
+the executor clone is not). Use sanitized environment/config, checkout the exact
+candidate commit, verify contract and protected-file digests, then run the fixed
+argv gate with timeout and captured stdout/stderr. Do not use `sh -c` or executor-authored gate
 commands. Gate processes receive no provider/repository credentials or writable
 remote, run with repo/temp-only writes and no agent-usable egress, and cannot
 write protected inputs.
@@ -203,16 +221,26 @@ tests pass.
 
 ### Step 5: Connect the proven Codex Stop contract
 
-Implement the exact Codex integration proven in plan 002. Preflight enumerates
-the complete effective hook/config and execution-capability set: sandbox,
-writable roots, environment policy, web/search, MCP/apps/plugins/tools,
+Implement the exact Codex integration proven in plan 002, in the checkpoint
+shape plan 002's measured hook time budget supports. If clean-clone gates fit
+the budget, the hook may checkpoint synchronously; otherwise the hook enqueues
+verification and returns CONTINUE with a "verification pending — run
+`tailrocks goal status --wait`, then stop again" prompt, and PASS is released
+only at a Stop that finds a completed current verification for the submitted
+candidate. Every effective hook/config byte must resolve outside executor-
+writable roots; an in-clone hook source is a preflight rejection. Preflight
+enumerates the complete effective hook/config and execution-capability set:
+sandbox, writable roots, environment policy, web/search, MCP/apps/plugins/tools,
 additional directories, approvals, and egress. Record digests/client version;
 reject conflicts, unknown precedence, external writes/tools, or secret-bearing
 environment. Document that same-user filesystem read confidentiality is not
 proven in local mode. The hook performs one bounded call to
 `tailrocks goal checkpoint`; current PASS allows Stop, CONTINUE returns the
 controller's concise repair prompt, and BLOCKED returns a terminal operator
-message without claiming success.
+message without claiming success. Checkpoint itself re-hashes the effective hook
+set recorded at preflight — start/resume-only verification leaves a mid-session
+mutation window; a mismatch at checkpoint downgrades the run's trust label and
+returns BLOCKED rather than PASS.
 
 Generated executor text contains only the current slice, allowed paths, fixed
 gate name, budget remaining, and checkpoint command. Hash every byte the model
@@ -227,13 +255,30 @@ tests pass.
 
 Create `examples/deterministic-goal/tracer/` with a frozen base, one goal
 contract, one allowed target, one protected expected-value fixture, and exact
-README commands. Use `tailrocks goal prepare` to produce the disposable clone,
-then start native Codex `/goal` there. The model creates the target, nominally
-finishes, and the Stop hook checkpoints it.
+README commands. Represent the frozen base as a `git bundle` plus a materialize
+script — an embedded repository cannot be committed directly (gitlink), and no
+executor may be left to invent a representation.
+
+The example must run in two modes:
+
+- **Scripted mode (committed proof)**: `tailrocks goal prepare`, scripted
+  candidate edits, `submit`, `checkpoint` — no provider involved. This is the
+  re-runnable fixture every dependent plan and CI uses as its precondition;
+  `goal inspect --require PASS` re-derives PASS by re-running this mode, never
+  by trusting a journal left on some earlier machine.
+- **Native mode (qualification evidence)**: start native Codex `/goal` in the
+  prepared clone; the model creates the target, nominally finishes, and the
+  Stop hook checkpoints it. Its sanitized evidence complements plan 002.
 
 Run three adversarial variants: forged DONE text, protected-oracle edit, and
 outside-path edit. None may produce PASS. The normal variant must produce both
 slice and final receipts and PASS.
+
+Record checkpoint latency in the run evidence: wall time from Stop event to
+controller decision, split into clone, digest verification, and gate execution.
+This number is a first-class product constraint — if honest checkpoints are slow,
+users will bypass the controller, which is the worst outcome for a trust tool.
+Plan 006 must design gate caching against this measured baseline, not guesses.
 
 **Verify**:
 
@@ -265,6 +310,11 @@ one clean-clone gate, `local_non_adversarial`, and no external effects.
 - [ ] Slice receipt binds delta; final receipt binds exact final tree.
 - [ ] Runtime states `local_non_adversarial`; external effects/tools are rejected
   and same-user read-confidentiality limits are explicit.
+- [ ] The forward-committed API surface is named in `docs/deterministic-goal-trust.md`:
+  dual slice/final receipt types and their digest fields, the
+  `status/claim/submit/checkpoint` verbs, and contract v1 fields. Plans 004-010
+  extend this surface; they do not migrate it. A change that breaks it is a
+  failed tracer, not a downstream refactor.
 - [ ] Format, Clippy, test, docs, skill validator, and diff checks pass.
 
 ## STOP conditions
