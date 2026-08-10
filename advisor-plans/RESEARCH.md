@@ -1,9 +1,196 @@
 # Research Synthesis — Predictable Agent Delivery
 
-Fourth adversarial pass, 2026-08-10. Reverified against repository commit
-`1e809bd`, PR #6, installed clients, official provider docs, and three cold
-read-only reviewers. Context7 MCP was unavailable; volatile provider claims use
-official documentation and local CLI discovery instead.
+Fifth adversarial pass, 2026-08-10, against design baseline `9af83c2` (the
+fourth pass). The fifth-pass record is the section directly below; everything
+from "Outcome and proof boundary" onward is the retained fourth-pass record —
+its repository-defect evidence stands, its architecture is superseded where
+the fifth pass says so. Context7 MCP remains unavailable; volatile provider
+claims use official documentation and local CLI discovery, dated.
+
+## Fifth adversarial pass
+
+Method: independent reconstruction of the user goal from primary evidence,
+line-verification of every repository claim the fourth pass anchored to, then
+per-mechanism falsification of the fourth-pass architecture. New evidence not
+available to earlier passes: the user's explicit directive — *"Simplify it as
+much as we can, don't overengineer it, but achieve the goal of making
+predictable planning which gives a predictable AI result."* That directive
+restates the objective function; it does not waive correctness.
+
+Re-verified and confirmed from the working tree this pass:
+
+- `goal-handoff.md` success blocks still end `Or stop after <N> turns.`;
+  the "Always bounded" rule mandates that shape. (F4-13 stands.)
+- `run-evals.ts` judges `subject.text`, flattens fixture paths by basename,
+  deletes every workspace in `finally`, and exits on `passed > runs / 2`.
+- `validate-skills.ts:293` prints `Validated ${entries.length} skills.` — the
+  third-pass PR comment's claim that the string is `Validated 15 skill(s).`
+  is false against the tree.
+- `tailrocks-reconcile/SKILL.md:29-50` already holds "executor claims are
+  untrusted; DONE means criteria pass now."
+- PR #6 `validate` is red: the live latest-stable gate reports 3 stale
+  TanStack template packages (upstream drift after `b629fb9`) — a branch
+  defect outside advisor write scope, reported not hidden.
+
+### Findings
+
+#### F5-01 — CRITICAL — The architecture's threat model has no user anchor
+
+- **Evidence**: F4-45 asserts "The user requires the complete implementation
+  in one branch, one PR, and one merge" with no file/commit/message anchor;
+  PR #6's own body says "one branch or PR per plan"; the user's current
+  directive says simplify. COVERAGE.md at `9af83c2` binds 30+ of 46 plans to
+  release/protected/supply-chain guardrails (N19 alone lists 19 plans).
+- **Impact**: ~85% of the corpus (release lanes, protected workflows, signed
+  envelopes, OS principals, OCI evidence chains) defends claims made to third
+  parties that no user requirement asked anyone to make.
+- **Root cause**: unbounded threat-model recursion — each pass's "cold
+  security review" attacked machinery the previous pass invented (F4-31
+  through F4-50 all cite fourth-pass drafts as their own evidence), and no
+  pass was permitted to question whether the defended component served the
+  goal.
+- **Resolution**: reconstruct the goal from primary evidence; retain only
+  components whose invariant the goal requires. Chosen architecture in
+  README.md.
+- **Confidence**: HIGH. **Attribution**: introduced `f2e079f`-`9af83c2`,
+  compounding.
+
+#### F5-02 — CRITICAL — The corpus violates the repository contract it cites
+
+- **Evidence**: `AGENTS.md` — "Token usage is a design criterion… never
+  produce an artifact that will not be read." `skills/tailrocks-plan/SKILL.md:83-99`
+  requires vertical one-session zero-context plans. At `9af83c2` the corpus
+  is 46 plans / 14,263 lines; plan 018 is 818 lines, plan 023 is 623; 36
+  plans embed `<implementation-branch>`/`<integration-sha>` placeholders that
+  must be "recut" by a kickoff ritual before any precondition can run.
+- **Impact**: no executor session can hold the corpus; the placeholder ritual
+  makes every plan non-executable as written — the package maximizes the
+  unpredictability it exists to remove. This is a correctness failure against
+  the goal, not a cost complaint.
+- **Root cause**: architecture dossiers styled as plans (the same defect
+  F4-23 diagnosed, reproduced at 4× scale by the pass that diagnosed it).
+- **Resolution**: 4 plans, 2 edges, zero placeholders, every precondition
+  runnable verbatim.
+- **Confidence**: HIGH. **Attribution**: introduced `9af83c2`.
+
+#### F5-03 — CRITICAL — The privileged controller is the root enabling condition
+
+- **Evidence**: dependency chain in fourth-pass RESEARCH: controller verdict
+  must outlive the session → F4-01 demands OCI confinement → confinement
+  needs a distributed verifier → F4-24/F4-31 demand GHCR/provenance →
+  released trust needs protected workflows → F4-34/F4-38/F4-46 demand token
+  scoping and Ed25519 envelopes → F4-50 demands OS principals.
+- **Impact**: five layers of machinery, each existing to defend the layer
+  above it; removing the root removes all five with zero loss of the goal
+  invariant.
+- **Root cause**: the acceptance verdict was modeled as a durable artifact
+  that must survive a hostile executor, when the goal needs a *reproducible
+  decision* any session can recompute. A verdict that is a deterministic
+  function of the committed tree needs no custody chain — rerun it.
+- **Resolution**: per-package `goal-check.sh` (Plan 002): the verdict is
+  recomputed, never stored, never trusted across sessions. Gate execution
+  trust is the client harness sandbox — the same boundary every dev command
+  already crosses; a second boundary enforced nothing (label:
+  `deterministic_local`, honestly non-adversarial).
+- **Confidence**: HIGH. **Attribution**: introduced `f2e079f`, maximal at
+  `9af83c2`.
+
+#### F5-04 — MEDIUM — Coverage authority contradicts itself
+
+- **Evidence**: `9af83c2:advisor-plans/COVERAGE.md:168` "46 numbered plans
+  and 54 hard edges"; `:180` "All 53 dependencies are reciprocal". Manual
+  count of the edge list is 54.
+- **Impact**: the document claiming byte-for-byte bidirectional proof fails
+  its own consistency bar — symptomatic of a corpus past maintainable scale.
+- **Resolution**: fifth-pass COVERAGE has 2 edges, countable by eye.
+- **Confidence**: HIGH. **Attribution**: introduced `9af83c2`.
+
+#### F5-05 — LOW — Meta-claims drifted from the tree
+
+- **Evidence**: PR #6 third-pass comment claims the precondition string was
+  fixed to `Validated 15 skill(s).`; `validate-skills.ts:293` prints
+  `Validated 15 skills.` (the plans were right, the comment wrong). PR body
+  still describes ten plans and all-green checks while `validate` is red.
+- **Impact**: reviewers reading PR metadata get a false inventory.
+- **Resolution**: recorded here and in README handoff; PR metadata is outside
+  advisor write scope.
+- **Confidence**: HIGH. **Attribution**: accumulated; pre-existing (F4-17)
+  and still true after `9af83c2`.
+
+#### F5-06 — HIGH — The two real, user-facing defects (confirmed, pre-existing)
+
+- **Evidence**: budget-as-success in `goal-handoff.md:109-115,132-134,187-189`;
+  transcript-graded majority-pass workspace-deleting evals in
+  `run-evals.ts:72-140`.
+- **Impact**: these are the only defects in the whole record with direct
+  user-goal impact — false completion and unmeasured skill behavior.
+- **Resolution**: Plans 000 and 001 fix exactly these; they survive from the
+  earlier passes essentially intact (000 de-ritualized, 001 rescoped).
+- **Confidence**: HIGH. **Attribution**: pre-existing repository defects.
+
+#### F5-07 — MEDIUM — Second-worktree verification was a false-safety trade
+
+- **Evidence**: fourth-pass verification runs candidates in a second clean
+  worktree/clone; house gates (`bun run test`, `cargo` suites) require
+  installed dependency state a cold worktree lacks.
+- **Impact**: cold-tree gate runs would fail on missing dependencies —
+  false BLOCKED — or force dependency provisioning machinery (the fourth
+  pass's read-only store) to exist at all.
+- **Root cause**: "frozen evidence" was equated with "separate directory".
+  The invariant is *evidence = committed tree*, which a clean-status check
+  establishes in place.
+- **Resolution**: `goal-check.sh` requires `git status --porcelain` empty and
+  runs gates in place; dirty tree is BLOCKED before any gate runs.
+- **Confidence**: MED-HIGH. **Attribution**: introduced `f2e079f`.
+
+#### F5-08 — HIGH — Distribution dissolves structurally
+
+- **Evidence**: fourth-pass plans 009/018/030/033/039-042 exist to ship a
+  verifier binary/image; `AGENTS.md` and `INSTALL.md` show the plugin channel
+  already delivers `skills/<name>/templates/**` to every supported client.
+- **Impact**: a POSIX-sh check template generated into each plan package
+  reaches every target project with zero new channels, so the entire
+  release/supply-chain problem space never comes into existence.
+- **Resolution**: Plan 002 ships `goal-check.sh` as a tailrocks-plan
+  template.
+- **Confidence**: HIGH. **Attribution**: fifth-pass design decision.
+
+### Disposition of previously defended simplifications
+
+The third pass recorded six simplifications as "failed adversarial defense".
+Each verdict is re-examined under the corrected objective; none is restored
+as it was rejected — the components they defended are dissolved, which is a
+different move with new evidence:
+
+| Rejected simplification | Fifth-pass disposition |
+|---|---|
+| Demote slice receipts | Receipts removed entirely: final-tree rerun (the fourth pass's own rule) is the acceptance authority; resume = rerun. |
+| Move oracle negative controls into kernel suite | Preserved at correct scale: Plan 001's failing-run retention and Plan 002's failing-gate/tamper fixtures are the negative controls. |
+| JSONL source store | Source store deferred wholly — no repository defect anchored it; prose pipeline owns intent today. |
+| Drop retirement archives | Dropped with retirement itself — proof persistence beyond Git served third-party trust nobody required. |
+| Drop journal replay-equality | Journal removed; nothing to replay. |
+| Prune hostile-Git fixture matrix | Pruned to the one realistic case: tampered plan/GOAL bytes → `BLOCKED plan-drift`. |
+
+### Before/after
+
+| Measure | Fourth pass (`9af83c2`) | Fifth pass |
+|---|---|---|
+| Plan files / lines | 46 / 14,263 | 4 / ~700 |
+| Hard dependency edges | 54 (self-reported 53) | 2 |
+| Canonical authorities | 6 | 4 (package @ generation SHA, git identities, gate exit codes, verdict line) |
+| Trust labels | 6 labels + 3 tiers | 3 labels |
+| Placeholders requiring ritual | 36 files | 0 |
+| New runtimes/channels | Rust controller, OCI verifier, GHCR, protected workflows, Ed25519, OS principals | one sh template + one TS test file |
+| Pre-existing defects fixed | 000/001 equivalents present but kickoff-blocked | 000/001 executable today |
+
+### What survives from earlier passes
+
+Gate-first acceptance semantics; budget exhaustion as BLOCKED; "executor
+claims are untrusted" (already the reconcile rule); artifact-grounded eval
+grading; honest, dated, per-client capability claims (including the Grok
+correction); oracle tamper-evidence; the principle that hashes/samples/
+attestations are never semantic completeness. These are the load-bearing
+ideas; the fifth pass keeps them and removes their scaffolding.
 
 ## Outcome and proof boundary
 
