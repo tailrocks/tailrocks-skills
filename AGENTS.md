@@ -14,8 +14,9 @@ Keep skills source-neutral — no agent-specific instructions in `SKILL.md`
 bodies. Installation, the verified per-client compatibility matrix, and the
 duplicate-avoidance rules live in `INSTALL.md`.
 
-The house stack is fixed: Rust 2024 with Axum/Tokio/Tower, and TypeScript 7 with
-Bun, TanStack Start, React, shadcn/ui, Tailwind CSS v4, and Oxc. Skills deepen
+The house stack is fixed: Rust 2024 with Axum/Tokio/Tower, TypeScript 7 with Bun,
+TanStack Start, React, shadcn/ui, Tailwind CSS v4, and Oxc, and native macOS with
+Swift, SwiftUI, AppKit where it earns its place, and Liquid Glass. Skills deepen
 this stack; they do not offer alternative frameworks, package managers, test
 runners, or component systems. Every setup targets the latest stable release and
 latest stable major available at execution time; older majors are unsupported.
@@ -79,6 +80,61 @@ Copy-ready configuration lives under
 `skills/tailrocks-tanstack-project-setup/templates/`.
 
 Skill definition: `skills/tailrocks-tanstack-project-setup/SKILL.md`
+
+### The macOS family — design to verified pixels
+
+Six skills take a native macOS feature from a design file through implementation
+to rendered, audited evidence. They exist because the ecosystem gap is real:
+Apple's own exported agent skills contain no Liquid Glass skill and no macOS
+skill, and the highest-traction design-taste skills are built for the web, where
+their defaults (avoid system fonts, avoid neutral grays, avoid spring easing) are
+reasonable and on Apple platforms are wrong.
+
+Exactly one skill owns each responsibility. Never run two skills that both encode
+aesthetic taste — they conflict, and the conflict surfaces as inconsistency
+across features rather than as an error.
+
+- **tailrocks-macos-design** — the taste authority. Experience brief,
+  information architecture, and the native component map that classifies every
+  region `NATIVE` / `NATIVE-COMPOSED` / `CUSTOM`; structurally different
+  alternatives with realistic fixtures; macOS density, typography, colour, and
+  iconography; the custom component contract; a weighted rubric with hard
+  failures and a correction order. Writes design artifacts only, never source.
+  Definition: `skills/tailrocks-macos-design/SKILL.md`
+- **tailrocks-liquid-glass** — the material authority. Content-versus-functional
+  layer split, the standard-component-first decision order, exact SwiftUI and
+  AppKit API surface with per-symbol availability, ten anti-patterns each stating
+  its mechanism, and the glass acceptance gate. Definition:
+  `skills/tailrocks-liquid-glass/SKILL.md`
+- **tailrocks-swift-best-practices** — code-level policy. Actor isolation as a
+  design decision, state ownership and view identity, work kept out of `body`,
+  narrow AppKit interop boundaries, typed failure, availability guards with
+  decided fallbacks, accessibility as a code obligation. Definition:
+  `skills/tailrocks-swift-best-practices/SKILL.md`
+- **tailrocks-swift-project-setup** — the baseline an agent can drive from a
+  terminal. Declarative project generation with a synchronized source folder, the
+  four recorded target values and two SDK lanes, ad-hoc local signing, strict
+  format and lint gates, test wiring, mise-pinned tooling, and Xcode agent
+  integration with a one-owner-per-responsibility skill policy. Definition:
+  `skills/tailrocks-swift-project-setup/SKILL.md`
+- **tailrocks-macos-visual-qa** — the verification loop. The atomic
+  kill-launch-capture invocation, capture by window ID rather than screen
+  rectangle, accessibility-tree driving, the appearance and accessibility state
+  matrix with restore, `performAccessibilityAudit`, and pixel regression on
+  captures rather than detached snapshots. Definition:
+  `skills/tailrocks-macos-visual-qa/SKILL.md`
+- **tailrocks-sketch-handoff** — design file to implementable package. Sketch
+  MCP wiring, Apple's official macOS UI kit, token extraction into committed
+  code, the symbol-to-SwiftUI design map that replaces a formal design-to-code
+  binding, and approved-frame exports. Definition:
+  `skills/tailrocks-sketch-handoff/SKILL.md`
+
+Two findings shape the whole family and are worth stating up front. Apple's own
+UI kit contains **zero enabled blur effects** — Liquid Glass is baked there as
+static fill, blend-mode, and shadow recipes — so no design file is authoritative
+for the material; the operating system is. And Liquid Glass surfaces snapshot
+**fully transparent** from a detached view, so any verification of glass chrome
+must screen-capture the running app.
 
 ### tailrocks-code-health
 

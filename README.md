@@ -7,9 +7,10 @@ Gemini), and Amp** — one shared `skills/` tree, one manifest per client, no
 duplicated listings.
 
 The skills are source-neutral and encode one Tailrocks house stack: Rust 2024
-with Axum/Tokio/Tower, and TypeScript 7 with Bun, TanStack Start, React,
-shadcn/ui, Tailwind CSS v4, and Oxc. Alternative frameworks, package managers,
-and component systems are outside scope.
+with Axum/Tokio/Tower, TypeScript 7 with Bun, TanStack Start, React, shadcn/ui,
+Tailwind CSS v4, and Oxc, and native macOS with Swift, SwiftUI, AppKit where it
+earns its place, and Liquid Glass. Alternative frameworks, package managers, and
+component systems are outside scope.
 
 ## Skills
 
@@ -20,6 +21,12 @@ and component systems are outside scope.
 | `tailrocks-axum-best-practices` | Build and review production Axum services: typed HTTP boundaries, Tower middleware, security, tracing, graceful shutdown, and tests. |
 | `tailrocks-typescript-best-practices` | Write, review, and refactor strict Rust-inspired TypeScript 7 and React code using Bun-owned tooling. |
 | `tailrocks-tanstack-project-setup` | Scaffold, migrate, and audit Bun-only TanStack Start projects with TypeScript 7, Oxc, Router, Query, shadcn/ui, Tailwind CSS v4, tests, and CI. |
+| `tailrocks-swift-best-practices` | Write, review, and refactor Swift and SwiftUI for a native macOS app: actor isolation, state ownership and view identity, AppKit interop boundaries, typed failure, availability guards, and accessibility semantics. |
+| `tailrocks-swift-project-setup` | Scaffold and enforce a strict native macOS app baseline: declarative project generation, deployment target and two SDK lanes, ad-hoc local signing, strict `swift-format` and SwiftLint gates, test wiring, mise-pinned tooling, and Xcode agent integration. |
+| `tailrocks-liquid-glass` | Apply, audit, or remediate Liquid Glass on macOS: the content-versus-functional layer split, `glassEffect` and `GlassEffectContainer`, `NSGlassEffectView`, scroll edge effects, concentric corners, tint policy, per-symbol availability, and the glass accessibility gate. |
+| `tailrocks-macos-design` | Design a macOS feature to Apple-ecosystem quality before any code: the experience brief, a native component map classifying every region NATIVE / NATIVE-COMPOSED / CUSTOM, structural alternatives, macOS density and typography, custom component contracts, and a scored rubric with hard failures. |
+| `tailrocks-macos-visual-qa` | Build, launch, capture, drive, and verify a native macOS app so an agent can see its own interface: the atomic loop, capture by window ID, accessibility-tree driving, appearance and accessibility toggles, `performAccessibilityAudit`, and pixel regression. |
+| `tailrocks-sketch-handoff` | Turn a Sketch design into a handoff an agent implements faithfully: Sketch MCP wiring, Apple's official macOS UI kit, token extraction into committed code, the symbol-to-SwiftUI design map, and approved-frame exports. |
 | `tailrocks-code-health` | Establish, audit, or tighten one measurable shrink-only debt ratchet using architecture, lint, dependency, flake, defect, documentation, or verification providers. |
 | `tailrocks-contribute` | Recon, prepare, submit with per-contribution approval, and shepherd a respectful contribution to an external open-source project. |
 | `tailrocks-remediate` | Derive the greenfield architecture that eliminates a proven defect class, then pursue the complete structural correction regardless of price, duration, effort, implementation size, or sunk cost. |
@@ -34,8 +41,32 @@ and component systems are outside scope.
 More skills land in `skills/` over time; the layout and install flow below are
 built to grow.
 
-The Rust, Axum, TypeScript, TanStack, code-health, and remediation skills
-form the engineering-policy family. The delivery family —
+The Rust, Axum, TypeScript, TanStack, Swift, code-health, and remediation
+skills form the engineering-policy family. The macOS family —
+`tailrocks-swift-best-practices`, `tailrocks-swift-project-setup`,
+`tailrocks-liquid-glass`, `tailrocks-macos-design`,
+`tailrocks-macos-visual-qa`, and `tailrocks-sketch-handoff` — is a
+design-to-verified-pixels loop for native Apple-ecosystem apps:
+
+```text
+sketch-handoff ──► macos-design ──► liquid-glass ──► swift-best-practices
+   tokens,           brief,            layer split,     isolation, identity,
+   design map        component map,    APIs,            interop, availability
+                     alternatives,     anti-patterns          │
+                     rubric                                   ▼
+                        ▲                            swift-project-setup
+                        │                             build and test gates
+                        └───────── macos-visual-qa ◄────────┘
+                              render, drive, audit, diff
+```
+
+Exactly one skill owns each responsibility: material policy is
+`tailrocks-liquid-glass`, visual direction and acceptance is
+`tailrocks-macos-design`, verification is `tailrocks-macos-visual-qa`. Never
+run two skills that both encode aesthetic taste — they conflict, and the
+conflict surfaces as inconsistency across features rather than as an error.
+
+The delivery family —
 `tailrocks-idea`, `tailrocks-brainstorm`, `tailrocks-research`,
 `tailrocks-record-decision`, `tailrocks-finalize`, `tailrocks-plan`, and
 `tailrocks-reconcile` — is a roadmap-driven pipeline and does not define
@@ -151,6 +182,34 @@ tailrocks-skills/
 │   │   ├── references/
 │   │   ├── templates/
 │   │   ├── scripts/
+│   │   └── agents/
+│   ├── tailrocks-swift-best-practices/
+│   │   ├── SKILL.md
+│   │   ├── references/
+│   │   └── agents/
+│   ├── tailrocks-swift-project-setup/
+│   │   ├── SKILL.md
+│   │   ├── references/
+│   │   ├── templates/
+│   │   └── agents/
+│   ├── tailrocks-liquid-glass/       # macOS material policy
+│   │   ├── SKILL.md
+│   │   ├── references/
+│   │   └── agents/
+│   ├── tailrocks-macos-design/       # brief → component map → rubric
+│   │   ├── SKILL.md
+│   │   ├── references/
+│   │   ├── templates/
+│   │   └── agents/
+│   ├── tailrocks-macos-visual-qa/    # render, drive, audit, diff
+│   │   ├── SKILL.md
+│   │   ├── references/
+│   │   ├── templates/
+│   │   └── agents/
+│   ├── tailrocks-sketch-handoff/     # design file → implementable package
+│   │   ├── SKILL.md
+│   │   ├── references/
+│   │   ├── templates/
 │   │   └── agents/
 │   ├── tailrocks-code-health/
 │   │   ├── SKILL.md

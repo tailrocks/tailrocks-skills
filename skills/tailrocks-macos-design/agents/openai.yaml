@@ -1,0 +1,6 @@
+interface:
+  display_name: "macOS Design"
+  short_description: "Design a macOS feature to Apple-ecosystem quality before any code"
+  default_prompt: "Use $tailrocks-macos-design to write the experience brief, classify every region in a native component map, generate structurally different alternatives with realistic fixtures, and score the selected direction against the rubric and its hard failures."
+policy:
+  allow_implicit_invocation: false
