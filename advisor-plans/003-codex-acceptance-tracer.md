@@ -1,332 +1,264 @@
-# Plan 003: Ship one complete Codex acceptance tracer bullet
+# Plan 003: Ship one provider-free exact-final-tree tracer
 
-> **Executor instructions**: Deliver exactly one production-shaped path from a
-> native Codex goal to a current PASS. Keep the schema deliberately narrow.
-> Run every gate. Stop rather than generalizing around missing provider behavior.
->
-> **Drift check (run first)**:
-> `git diff --stat b629fb9..HEAD -- Cargo.toml Cargo.lock rust-toolchain.toml rustfmt.toml clippy.toml deny.toml crates/ schemas/ integrations/ examples/deterministic-goal/ docs/deterministic-goal-trust.md mise.toml`
-> Rebase onto completed plan 002, refresh this baseline, and confirm plan
-> 002's research verdict is `SUPPORTED` before changing code.
+> **Executor instructions**: Finish this vertical slice in one session. Build
+> one narrow scripted path from untrusted workspace bytes to exact-tree PASS.
+> Do not add provider transport, multi-slice state, async work, or generalized
+> schemas. Every candidate process runs inside plan 002's proven OCI verifier.
 
 ## Status
 
 - **Priority**: P1
-- **Effort**: L
+- **Dispatch**: BLOCKED until plan 002 has a current same-branch completion
+  receipt with `verifier_backend=PROVEN`; then recut at that exact head
+- **Effort**: M; one session
 - **Risk**: HIGH
 - **Depends on**: plan 002
-- **Category**: direction, security, feature
-- **Planned at**: commit `b629fb9`, 2026-08-10; refresh after plan 002
+- **Covers**: G07, G08, G12
+- **Guardrails**: N01, N04-N08, N12-N14, N16, N18
+- **Research basis**: `advisor-plans/RESEARCH.md` F4-01, F4-04, F4-09,
+  F4-10, F4-19, F4-21, F4-25
+- **Planned at**: design baseline `1e809bd`; same-branch dependency recut required
 
 ## Why this matters
 
-This slice tests the whole architecture before generalization: one frozen
-contract, one serial candidate, one controller-generated Git tree, one clean
-verification clone, one transactional journal, one Codex Stop adapter, and one
-final receipt. It breaks the first draft's schema→anchor→replay dependency cycle
-and gives later plans a working API instead of imagined layers.
+This is the first useful kernel slice: one contract, controller-built candidate,
+confined gate, external journal, exact final receipt, and PASS. It falsifies the
+acceptance design without any provider lifecycle. Progress is journal audit
+state, never proof.
 
-The local tracer is explicitly `local_non_adversarial`. A disposable clone and
-trusted plumbing reduce accidental/self-certification failures; they do not
-secure one unrestricted OS user against itself.
+## Preconditions — run before anything else
 
-## Current state
-
-- No Rust workspace or `tailrocks` executable exists.
-- `mise.toml` pins only Bun.
-- Plan 002 must have retained live evidence that native Codex `/goal` obeys
-  CONTINUE, PASS, resume, and effective-hook preflight.
-- `skills/tailrocks-plan/references/goal-handoff.md:60-79` currently lets the
-  executor write DONE. The tracer must instead let the executor submit only a
-  workspace candidate.
-- Git plumbing provides canonical identity: `git write-tree` writes a tree from
-  an index; `git commit-tree` creates a commit from that tree. Do not invent a
-  separate subject-tree algorithm.
-
-## Preconditions
-
-Run after rebasing onto dependency tips:
+After recutting from the same-branch plan-002 completion, run:
 
 ```sh
-rtk bun scripts/provider-conformance.ts validate-research research/native-goal-control
+rtk git fetch origin main
+test "$(rtk git branch --show-current)" = "<implementation-branch>"
+test "$(gh pr view <implementation-pr-number> --json headRefName --jq .headRefName)" = "<implementation-branch>"
+test "$(gh pr view <implementation-pr-number> --json headRefOid --jq .headRefOid)" = "$(rtk git rev-parse HEAD)"
+test "$(gh pr view <implementation-pr-number> --json baseRefName --jq .baseRefName)" = main
+test "$(gh pr view <implementation-pr-number> --json state --jq .state)" = OPEN
+test "$(gh pr view <implementation-pr-number> --json isDraft --jq .isDraft)" = true
+test -z "$(rtk git status --porcelain=v1)"
+test "$(rtk git rev-parse HEAD)" = "<integration-sha>"
+test "$(rtk git rev-parse origin/main)" = "<frozen-base-sha>"
+test "$(rtk git merge-base HEAD "<frozen-base-sha>")" = "<frozen-base-sha>"
+rtk git merge-base --is-ancestor <plan-002-completion-sha> HEAD
+rtk git diff --stat <last-reviewed-sha>..HEAD -- Cargo.toml Cargo.lock rust-toolchain.toml rustfmt.toml clippy.toml deny.toml crates schemas integrations/verifier examples/deterministic-goal docs/deterministic-goal-trust.md mise.toml
+rtk bun scripts/provider-conformance.ts validate-research research/native-goal-control --require verifier_backend=PROVEN
 rtk bun test scripts/
 rtk mise run validate
 ```
 
-Expected: provider conclusion `SUPPORTED` and evidence current for the installed
-`codex --version` (`validate-research` fails with `STALE_EVIDENCE` on version
-mismatch — rerun the affected plan 002 cases first); all script tests pass; 15
-skills validate. If not, stop.
+Expected after recut: shared PR head/base and plan-002 ancestry match recorded
+commits; scoped diff is empty; the OCI axis is current/PROVEN; 7 script tests and
+15 skills pass. Codex auth,
+executor-profile, and Stop-control results may be FAILED/INCONCLUSIVE because
+this plan does not depend on them.
+
+## Spec contract
+
+### Requirement G07/G08/G12: one external acceptance path
+
+The executor SHALL request submission of its controller-registered workspace
+only. The controller SHALL construct
+the Git candidate, verify it in the proven OCI backend, update one external
+transaction journal, and issue one final receipt bound to the exact candidate
+tree. Executor status, refs/index/commits, candidate-authored expected values,
+and transcript claims SHALL NOT mint PASS.
+
+#### Scenario: forged completion
+
+- **WHEN** the executor writes DONE/PASS text, edits a protected input, adds a
+  gitlink, or changes an outside-scope path
+- **THEN** no final receipt exists and checkpoint returns CONTINUE/BLOCKED.
+
+#### Scenario: exact pass
+
+- **WHEN** the controller-built candidate and controller-owned oracle pass in
+  the pinned OCI verifier and every bound input is current
+- **THEN** one `local_non_adversarial + isolated_candidate` final receipt exists.
+
+## Must NOT
+
+- **N01**: executor/model status must not create PASS.
+- **N04/N05**: clean clone is not confinement; all candidate code stays in OCI.
+- **N06/N07**: no secrets; branch-built verifier is not protected authority.
+- **N08**: no slice receipt or historical progress discharges final acceptance.
+- **N12**: no provider-specific canonical state.
+- **N13**: hash Tailrocks-controlled payload only.
+- **N14**: no cross-candidate writable build/result cache.
+- **N16**: candidate paths/workspace/process/output/evidence are all bounded;
+  overflow fails rather than passing truncated data.
+- **N18**: a repeatable comparison result cannot be called hidden/confidential.
+
+## Inputs to provide
+
+- The recut records plan 002's exact same-branch completion checkpoint, frozen
+  attempt base, and current shared head. No stale/nonancestor receipt is accepted.
+- Current plan-002 verifier evidence and immutable local image ID. No provider
+  credential is needed or copied.
+
+## Starting state
+
+- No Rust workspace or `tailrocks` binary exists at `1e809bd`.
+- Plan 002 supplies the hostile-canary image/profile and terminal backend result.
+- Existing prose lets executors author DONE; this tracer ignores it.
+- Base commit plus candidate tree and complete delta are acceptance identity.
+  Controller commit is an operational carrier recorded outside receipt equality.
+- The fixed house stack is Rust 2024. Use the repository Rust setup/best-practice
+  skills at execution time.
 
 ## Commands you will need
 
-| Purpose | Command | Expected |
+| Purpose | Command | Expected on success |
 |---|---|---|
-| Toolchain | `mise install` | pinned Bun/Rust tools installed |
-| Format | `cargo fmt --all --check` | exit 0 |
-| Lint | `cargo clippy --workspace --all-targets --all-features -- -D warnings` | exit 0 |
-| Tests | `cargo test --workspace --all-features` | exit 0 |
-| Docs | `RUSTDOCFLAGS='-D warnings' cargo doc --workspace --no-deps` | exit 0 |
-| Skills | `mise run validate` | 15 skills valid |
+| Format | `rtk cargo fmt --all --check` | exit 0 |
+| Lint | `rtk cargo clippy --workspace --all-targets --all-features -- -D warnings` | exit 0 |
+| Tests | `rtk cargo test --workspace --all-features` | exit 0 |
+| Docs | `RUSTDOCFLAGS='-D warnings' rtk cargo doc --workspace --no-deps` | exit 0 |
+| Tracer | `rtk cargo run -p tailrocks-cli -- goal inspect --example examples/deterministic-goal/tracer --mode scripted --require PASS` | exit 0; one final receipt |
+| Skills | `rtk mise run validate` | exit 0; 15 skills |
 
 ## Suggested executor toolkit
 
-Explicitly invoke `tailrocks-rust-project-setup` for workspace/tooling and
-`tailrocks-rust-best-practices` for public APIs, failure types, tests, and docs.
-Use current crate documentation before selecting APIs/versions. Follow their
-templates rather than inventing a weaker workspace.
+Invoke `tailrocks-rust-project-setup` before workspace creation and
+`tailrocks-rust-best-practices` before public APIs/error types. Resolve current
+crate APIs from primary docs when repository policy requires it.
 
 ## Scope
 
 **In scope**:
 
-- `Cargo.toml`, `Cargo.lock`, `rust-toolchain.toml`, `rustfmt.toml`,
-  `clippy.toml`, `deny.toml`, `mise.toml`
-- `crates/tailrocks-core/**` (new)
-- `crates/tailrocks-cli/**` (new)
-- `schemas/goal-contract.schema.json` (new, tracer subset)
-- `schemas/receipt.schema.json` (new)
-- `integrations/codex/**` (new; exact hook shape proven by plan 002)
-- `examples/deterministic-goal/tracer/**` (new)
-- `docs/deterministic-goal-trust.md` (new)
+- Rust workspace/tooling: `Cargo.toml`, `Cargo.lock`, `rust-toolchain.toml`,
+  `rustfmt.toml`, `clippy.toml`, `deny.toml`, `mise.toml`
+- `crates/tailrocks-core/**`, `crates/tailrocks-cli/**` (new, tracer only)
+- `schemas/goal-contract.schema.json`, `schemas/final-receipt.schema.json` (new)
+- `integrations/verifier/**` (new productionized fixture profile)
+- `examples/deterministic-goal/tracer/**` (new scripted fixture)
+- `docs/deterministic-goal-trust.md` (new provider-free trust boundary)
 
 **Out of scope**:
 
-- General roadmap/plan compilation, provenance, semantic reviewers, package
-  retirement, Grok, Claude, publication, or plugin version bumps.
-- Parallel implementation.
-- Agent-usable network tools/egress, injected credentials, subprocesses other
-  than allowlisted Git/gate commands, database/deploy/device/IPC effects, or
-  writes outside the disposable clone. Provider inference transport remains.
-- Claims of malicious-host isolation.
-
-## Session structure
-
-This plan is larger than one session. Steps 1-6 are resumable checkpoints: each
-ends in a committed green state (`cargo test -p ... <module>` per step), and an
-executor may end a session at any green boundary — 003a (steps 1-2), 003b
-(steps 3-4), 003c (steps 5-6) are the natural seams. Track step progress in the
-README row note; never leave a session mid-step.
+- Codex/provider integration; plan 011 owns it.
+- Multi-slice planning/runtime; plan 012 owns it.
+- Source provenance, semantic reviewers, apply, retirement, distribution.
+- Async workers/daemons, shared writable cache, external effects, remote refs,
+  credentials, or host execution of candidate gates.
 
 ## Git workflow
 
-- Branch: `feat/codex-acceptance-tracer`
-- Use vertical commits that remain green. Final subject example:
-  `feat(goal): add Codex acceptance tracer`.
-- Every commit uses `git commit -s` plus
+- Shared branch: `<implementation-branch>`; existing PR: `<implementation-pr-number>`
+- Commit subject: `feat(goal): add provider-free acceptance tracer`
+- One green commit with `rtk git commit -s` and
   `Co-authored-by: Codex <codex@openai.com>`.
-- Do not push/open a PR without operator instruction.
+- Do not open or merge another PR; Plan 043 alone merges the shared PR.
 
 ## Steps
 
-### Step 1: Establish the strict Rust workspace and minimal contract
+### Step 1: Cross the complete provider-free path
 
-Use the repository's Rust project-setup templates. Create library
-`tailrocks-core` and thin binary `tailrocks`. Add only current stable direct
-dependencies needed for typed JSON, SHA-256, errors, temp directories, and
-SQLite with bundled/reproducible support. Keep dependency features minimal and
-exactly locked.
+Create the strict Rust workspace and a private `GoalContractV1` containing only:
+schema/package/base IDs, controlled payload digests, allowed/protected paths,
+one fixed gate argv/cwd/timeout, verifier image/profile digests, attempt budget,
+and accepted verifier mode `isolated_candidate`.
 
-Define a versioned `GoalContractV1` containing only:
+Prepare a disposable full executor clone with no writable remote. Submit SHALL
+enumerate tracked/untracked/deleted/symlink bytes, reject protected/out-of-scope
+paths, gitlinks/submodules and unsupported file kinds, then use a sanitized
+temporary Git index/object store plus `write-tree`/`commit-tree`. Git filters,
+hooks, alternates, executor config/index/refs, and commit metadata are ignored.
+
+Mount only controller candidate, immutable dependency sources, and fresh scratch
+into plan 002's exact OCI profile. Fixed argv only; no shell. Keep protected
+expected values in a trusted comparator outside the candidate namespace; it
+executes no candidate code and receives only bounded outputs. This tracer's
+repeatable black-box gate is explicitly `integrity_only`: expected bytes remain
+unmounted, the contract fixes a strict cumulative query count, and neither the
+receipt nor documentation claims confidentiality. Candidate-visible iteration
+checks contain no protected expectation. One SQLite
+transaction outside every clone records candidate, gate
+evidence, budget transition, and CONTINUE/BLOCKED or the one final receipt.
+`--state-dir` is explicit; no implicit global repository ID exists.
+
+Create a committed Git-bundle fixture with one allowed implementation, public
+behavior contract, candidate-visible iteration check, and independently owned
+integrity-only comparator case. Normal scripted edit reaches PASS; forged
+status, an over-budget adaptive query, oracle edit, gitlink, and outside-path
+variants cannot. Evidence and trust labels state that bounded comparison may
+leak information and proves no secrecy property.
+
+**Verify**: `rtk cargo test -p tailrocks-core tracer` exits 0; normal PASS and
+all negative variants pass. The Tracer command prints one receipt.
+
+### Step 2: Harden crash and hostile-Git boundaries
+
+Keep the tracer API fixed while extracting typed contract, journal, candidate,
+verifier, and receipt modules. Legal journal events are exactly:
 
 ```text
-package_id, base_commit, instruction_files[{path, sha256}],
-allowed_write_paths, protected_paths, gate{program,args,cwd,timeout},
-attempt_budget, trust_mode=local_non_adversarial
+RunPrepared, CandidateSubmitted, VerificationStarted, GateRecorded,
+Continued, Blocked, Passed
 ```
 
-Serialize once in Rust with a fixed field order and hash the exact emitted
-bytes. Validate paths as repository-relative, normalized, non-overlapping where
-required, and default-deny. Do not add manifest/coverage/resolution/oracle lock
-files or RFC-8785/cross-language validators.
+One transaction writes event, derived state, budget, and evidence reference.
+Startup replay must equal stored derived state. Orphan evidence from an
+uncommitted transaction is ignored; duplicate checkpoint is idempotent.
+Receipt bytes exclude wall-clock time, provider metadata, and operational commit
+metadata; those remain journal audit fields. Receipt identity is the canonical
+encoding of base commit, exact final tree, complete delta, contract/profile/
+oracle/evidence digests, and terminal result, so identical frozen inputs repeat
+byte-for-byte even when the carrier commit author/time differs.
 
-**Verify**: `cargo test -p tailrocks-core contract` → exit 0; round-trip,
-unknown-version, duplicate path, traversal, overlap, and byte-stability tests
-pass.
-
-### Step 2: Put all authoritative runtime state in one transaction journal
-
-Implement a SQLite WAL database outside the executor clone at a defined,
-documented location: one journal per subject repository under the operator's
-state directory (default `~/.tailrocks/state/<repo-id>/journal.sqlite`,
-overridable), never inside any clone and never committed. One journal owns all
-packages of its repository and holds a repo-wide execution lease so two goals
-cannot run serial slices against the same repository concurrently. Migrations
-create one event table and immutable evidence blob references. Typed events
-cover:
-
-```text
-RunPrepared, SliceClaimed, CandidateSubmitted, VerificationStarted,
-GateRecorded, SliceVerified, FinalVerified, Continued, Blocked, Passed
-```
-
-One transaction writes the event, derived current state, budget decrement, and
-receipt reference. Enforce legal transitions and one active serial claim. On
-restart, replay/derived state must match; partial evidence blobs without a
-committed event are ignored and can be garbage-collected.
-
-Expose executor-safe commands `status`, `claim`, `submit`, and `checkpoint`.
-Keep `anchor`, `integrate`, and final PASS internal/operator-only in API shape,
-while documenting that same-user local mode is logical, not hostile isolation.
-
-**Verify**: `cargo test -p tailrocks-core journal` → exit 0; crash-before-commit,
-crash-after-blob, duplicate checkpoint, budget persistence, illegal transition,
-and concurrent-claim tests pass.
-
-### Step 3: Create candidate Git objects without trusting executor Git state
-
-`tailrocks goal prepare` creates a disposable full clone with no writable remote
-and records the frozen base. The executor may edit working files but its refs,
-index, hooks, config, and commits are never authoritative.
-
-At submit/checkpoint, the controller uses a sanitized Git environment, a
-controller-owned object store and temporary index to:
-
-1. read the frozen base tree;
-2. enumerate tracked and untracked workspace paths including symlinks;
-3. reject any delta outside `allowed_write_paths` or inside protected paths;
-4. stage allowed bytes without user/system Git config, filters, or hooks;
-5. call `git write-tree` and `git commit-tree -p <base>`;
-6. record base, candidate commit/tree, and sorted delta digest.
-
-Never exclude broad “control paths” from identity. Contract/instruction/oracle
-digests are separate receipt fields.
-
-**Verify**: `cargo test -p tailrocks-core git_candidate` → exit 0; allowed edit,
-untracked file, deletion, symlink escape, outside-path edit, dirty index, hostile
-config/hook/filter/alternate/ref, and stable-tree tests pass.
-
-### Step 4: Verify the candidate in a second disposable clone
-
-Import only the controller-generated candidate object into a new disposable full
-clone. The clone may share objects with the controller-owned store
-(`--reference`/`--shared` against controller-owned objects is safe; sharing with
-the executor clone is not). Use sanitized environment/config, checkout the exact
-candidate commit, verify contract and protected-file digests, then run the fixed
-argv gate with timeout and captured stdout/stderr. Do not use `sh -c` or executor-authored gate
-commands. Gate processes receive no provider/repository credentials or writable
-remote, run with repo/temp-only writes and no agent-usable egress, and cannot
-write protected inputs.
-
-The tracer has one deterministic gate over one expected file. A passing gate
-writes a slice receipt bound to base+candidate+tree+delta+contract+gate evidence,
-then a package-final receipt bound to exact candidate tree and all current
-evidence. FAIL returns CONTINUE while budget remains; exhausted budget returns
-BLOCKED. Only the journal may derive PASS.
-
-**Verify**: `cargo test -p tailrocks-core verifier` → exit 0; clean pass,
-wrong-content fail, oracle tamper, gate timeout, candidate mismatch, stale
-contract, credential/environment absence, blocked egress, and replay idempotency
-tests pass.
-
-### Step 5: Connect the proven Codex Stop contract
-
-Implement the exact Codex integration proven in plan 002, in the checkpoint
-shape plan 002's measured hook time budget supports. If clean-clone gates fit
-the budget, the hook may checkpoint synchronously; otherwise the hook enqueues
-verification and returns CONTINUE with a "verification pending — run
-`tailrocks goal status --wait`, then stop again" prompt, and PASS is released
-only at a Stop that finds a completed current verification for the submitted
-candidate. Every effective hook/config byte must resolve outside executor-
-writable roots; an in-clone hook source is a preflight rejection. Preflight
-enumerates the complete effective hook/config and execution-capability set:
-sandbox, writable roots, environment policy, web/search, MCP/apps/plugins/tools,
-additional directories, approvals, and egress. Record digests/client version;
-reject conflicts, unknown precedence, external writes/tools, or secret-bearing
-environment. Document that same-user filesystem read confidentiality is not
-proven in local mode. The hook performs one bounded call to
-`tailrocks goal checkpoint`; current PASS allows Stop, CONTINUE returns the
-controller's concise repair prompt, and BLOCKED returns a terminal operator
-message without claiming success. Checkpoint itself re-hashes the effective hook
-set recorded at preflight — start/resume-only verification leaves a mid-session
-mutation window; a mismatch at checkpoint downgrades the run's trust label and
-returns BLOCKED rather than PASS.
-
-Generated executor text contains only the current slice, allowed paths, fixed
-gate name, budget remaining, and checkpoint command. Hash every byte the model
-sees.
-
-**Verify**: `cargo test --workspace codex` → exit 0; golden event fixtures from
-plan 002, sibling conflict, hook mutation, timeout, malformed output, duplicate
-Stop, resume, outside write, environment injection, external tool, and egress
-tests pass.
-
-### Step 6: Run the native end-to-end tracer
-
-Create `examples/deterministic-goal/tracer/` with a frozen base, one goal
-contract, one allowed target, one protected expected-value fixture, and exact
-README commands. Represent the frozen base as a `git bundle` plus a materialize
-script — an embedded repository cannot be committed directly (gitlink), and no
-executor may be left to invent a representation.
-
-The example must run in two modes:
-
-- **Scripted mode (committed proof)**: `tailrocks goal prepare`, scripted
-  candidate edits, `submit`, `checkpoint` — no provider involved. This is the
-  re-runnable fixture every dependent plan and CI uses as its precondition;
-  `goal inspect --require PASS` re-derives PASS by re-running this mode, never
-  by trusting a journal left on some earlier machine.
-- **Native mode (qualification evidence)**: start native Codex `/goal` in the
-  prepared clone; the model creates the target, nominally finishes, and the
-  Stop hook checkpoints it. Its sanitized evidence complements plan 002.
-
-Run three adversarial variants: forged DONE text, protected-oracle edit, and
-outside-path edit. None may produce PASS. The normal variant must produce both
-slice and final receipts and PASS.
-
-Record checkpoint latency in the run evidence: wall time from Stop event to
-controller decision, split into clone, digest verification, and gate execution.
-This number is a first-class product constraint — if honest checkpoints are slow,
-users will bypass the controller, which is the worst outcome for a trust tool.
-Plan 006 must design gate caching against this measured baseline, not guesses.
+Test hostile Git system/global/repository config, hooks, filters, alternates,
+refs/index, gitlinks, untracked deletion, symlink escape, stable trees, crash at
+every boundary, illegal transition, concurrent checkpoint, stale contract,
+changed image/profile, gate timeout, oracle mutation, and OCI escape. Candidate
+tests remain candidate evidence and cannot redefine the controller oracle.
+Enforce contract caps on path length, file count, workspace bytes, stdout/stderr,
+evidence count/bytes, and ingestion time. Stream/hash bounded output; overflow
+kills the worker and fails without treating truncation as success.
 
 **Verify**:
 
 ```sh
-cargo run -p tailrocks-cli -- goal inspect --example examples/deterministic-goal/tracer --require PASS
+rtk cargo test -p tailrocks-core contract
+rtk cargo test -p tailrocks-core journal
+rtk cargo test -p tailrocks-core git_candidate
+rtk cargo test -p tailrocks-core verifier
+rtk cargo run -p tailrocks-cli -- goal inspect --example examples/deterministic-goal/tracer --mode scripted --require PASS
 ```
 
-Expected: exit 0; output names exact base/candidate/tree/contract/receipt digests,
-one clean-clone gate, `local_non_adversarial`, and no external effects.
+Expected: all exit 0; final receipt bytes are stable.
 
 ## Test plan
 
-- Contract path/version/serialization property tests.
-- SQLite transition, crash recovery, idempotency, budget, and serialization
-  tests.
-- Git hostile-config/ref/hook/filter/symlink/untracked/out-of-scope fixtures.
-- Clean-clone oracle/candidate/gate/timeout/replay fixtures.
-- Codex Stop/continue/pass/resume/effective-hook fixtures from plan 002.
-- Native happy path plus forged status, oracle tamper, and scope mutation.
+- Contract/path/payload byte stability and stale-input rejection.
+- Journal transaction/replay/crash/idempotency/budget tests.
+- Hostile Git candidate construction including gitlinks and external filters.
+- Workspace/output/evidence/time overflow fails closed with bounded diagnostics.
+- Real OCI canaries plus gate pass/fail/timeout/oracle mutation.
+- Integrity-only oracle query-cap and no-confidentiality-label tests.
+- One final receipt; forged status/progress cannot PASS.
 
 ## Done criteria
 
-- [ ] One native Codex `/goal` run reaches PASS only through the controller.
-- [ ] One contract, one journal, Git identities, and one final receipt are the
-  only authorities.
-- [ ] Executor-authored status/refs/index/config cannot create PASS in fixtures.
-- [ ] All verification occurs against a controller-generated candidate in a
-  second disposable clone.
-- [ ] Slice receipt binds delta; final receipt binds exact final tree.
-- [ ] Runtime states `local_non_adversarial`; external effects/tools are rejected
-  and same-user read-confidentiality limits are explicit.
-- [ ] The forward-committed API surface is named in `docs/deterministic-goal-trust.md`:
-  dual slice/final receipt types and their digest fields, the
-  `status/claim/submit/checkpoint` verbs, and contract v1 fields. Plans 004-010
-  extend this surface; they do not migrate it. A change that breaks it is a
-  failed tracer, not a downstream refactor.
-- [ ] Format, Clippy, test, docs, skill validator, and diff checks pass.
+- [ ] Recut names plan-002 completion checkpoint, frozen base, and shared head.
+- [ ] Current `verifier_backend=PROVEN`; no Codex axis is assumed.
+- [ ] Scripted tracer reaches PASS; every hostile variant fails closed.
+- [ ] Every candidate process runs in the exact pinned OCI profile.
+- [ ] One journal and one final receipt own live state/proof; no slice receipt.
+- [ ] Format, lint, tests, docs, skills, and `rtk git diff --check` pass.
+- [ ] One signed/co-authored commit contains only Scope paths.
 
 ## STOP conditions
 
-Stop if plan 002 is not SUPPORTED, strong behavior requires trusting executor
-Git metadata, verification cannot run in a disposable clone, a gate requires
-network/secrets, provider capability preflight cannot reject external effects,
-SQLite transitions cannot commit atomically, or the slice needs general
-planning/provenance/provider abstractions to work.
+Stop on stale/nonancestor dependency receipt, failed verifier backend, host candidate
+process, required network/secret, controller Git unable to ignore executor
+metadata, unsupported gitlink/filter behavior, SQLite unable to atomically bind
+PASS to its final receipt, or any query/visibility class represented more
+strongly than the enforced policy.
 
 ## Maintenance notes
 
-Plan 006 generalizes this working slice. Preserve its command/receipt API unless
-a failing tracer demonstrates the shape is wrong. Portable binary installation
-ships with plan 009; until then this example is development-only.
+Plans 004/006 extend this provider-free API. Plan 011 adds Codex transport.
+Contract/receipt field changes require explicit schema compatibility.

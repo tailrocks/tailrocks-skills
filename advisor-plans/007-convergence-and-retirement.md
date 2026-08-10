@@ -1,311 +1,195 @@
-# Plan 007: Converge on current evidence and retire packages explicitly
+# Plan 007: Converge exact-tree evidence and route every failure
 
-> **Executor instructions**: Extend the working multi-slice runtime. Deterministic
-> truth runs first; unresolved semantic/human/external seams remain visible.
-> PASS and retirement are separate transitions. Run every gate and stop on any
-> ambiguous owner or destructive target.
->
-> **Drift check (run first)**:
-> `git diff --stat b629fb9..HEAD -- crates/ schemas/ skills/tailrocks-reconcile/ skills/tailrocks-{plan,record-decision}/ skills/tailrocks-idea/references/roadmap-item-format.md specs/ archives/ examples/plan-package/ docs/`
-> Rebase onto plan 006, refresh this baseline, and prove its multi-slice example
-> still reaches deterministic PASS.
+> **Executor instructions**: Finish convergence/review/routing in one session.
+> Reuse plan 012 final proof. Do not implement apply or retirement; plans 013/014
+> own those explicit operator transitions.
 
 ## Status
 
 - **Priority**: P1
-- **Effort**: L
+- **Dispatch**: BLOCKED until plan 012 has a current same-branch completion receipt
+- **Effort**: M; one session
 - **Risk**: HIGH
-- **Depends on**: plan 006
-- **Category**: feature, correctness
-- **Planned at**: commit `b629fb9`, 2026-08-10; refresh after plan 006
+- **Depends on**: plan 012
+- **Covers**: G09-G12
+- **Guardrails**: N01, N06-N09, N11-N14, N16
+- **Research basis**: `advisor-plans/RESEARCH.md` F4-04, F4-11, F4-12, F4-15
+- **Planned at**: design baseline `1e809bd`; dependency recut required
 
 ## Why this matters
 
-Real packages include semantics, design quality, visual judgment, and human or
-external approvals that deterministic commands cannot prove. Repeating the
-executor's checks or voting among reviewers is not independence. This plan
-re-derives deterministic truth on the exact final tree, collects only declared
-fresh attestations, routes each failure to its owner, and creates PASS only when
-the conjunction is current.
+Some contract seams require semantic, visual, human, or external judgment.
+Votes and reviewer repetition cannot replace deterministic truth, and one failed
+axis must never hide another. This slice binds current attestations to the exact
+final subject, reruns deterministic truth, retains the complete failure set, and
+routes causal roots without giving reviewers or executors kernel authority.
 
-Deletion is deliberately outside goal success. PASS remains valid if cleanup
-fails; an explicit idempotent operator action syncs durable truth, archives the
-active package, then removes only `plans/<slug>/`.
-
-## Current state
-
-- `skills/tailrocks-reconcile/SKILL.md:29-50` distrusts executor status and reruns
-  done criteria, but those criteria may share the same blind spot.
-- Plan 006 can PASS only deterministic-only fixtures. Its final receipt and
-  journal are the extension points.
-- Scope/path/effect checks are deterministic in v1; universally asking a model
-  to repeat them adds correlation, not proof.
-- Fresh Product and Engineering review can still find omissions not encoded in
-  tests. Keep their verdicts distinct and conjunctive.
-- Git branch history is not durable archive under squash/rebase/branch deletion;
-  do not promise `<retirement-commit>^` will retain the package.
-
-## Preconditions
+## Preconditions — run before anything else
 
 ```sh
+rtk git fetch origin main
+test "$(rtk git branch --show-current)" = "<implementation-branch>"
+test "$(gh pr view <implementation-pr-number> --json headRefName --jq .headRefName)" = "<implementation-branch>"
+test "$(gh pr view <implementation-pr-number> --json headRefOid --jq .headRefOid)" = "$(rtk git rev-parse HEAD)"
+test "$(gh pr view <implementation-pr-number> --json baseRefName --jq .baseRefName)" = main
+test "$(gh pr view <implementation-pr-number> --json state --jq .state)" = OPEN
+test "$(gh pr view <implementation-pr-number> --json isDraft --jq .isDraft)" = true
+test -z "$(rtk git status --porcelain=v1)"
+test "$(rtk git rev-parse HEAD)" = "<integration-sha>"
+test "$(rtk git rev-parse origin/main)" = "<frozen-base-sha>"
+test "$(rtk git merge-base HEAD "<frozen-base-sha>")" = "<frozen-base-sha>"
+rtk git merge-base --is-ancestor <plan-012-completion-sha> HEAD
+rtk git diff --stat <last-reviewed-sha>..HEAD -- crates/tailrocks-core/src/convergence crates/tailrocks-cli/src schemas/final-receipt.schema.json skills/tailrocks-reconcile examples/plan-package docs/deterministic-goal-trust.md
 rtk cargo run -p tailrocks-cli -- goal inspect --example examples/deterministic-goal/multi-slice --require PASS --require-slices 3
 rtk cargo test --workspace --all-features
 rtk mise run validate
 ```
 
-Expected: deterministic multi-slice PASS, tests green, current skill count valid.
+Expected: exact integration/ancestry and scoped drift pass; deterministic
+multi-slice fixture has one current final-tree receipt; all gates are green.
+
+## Spec contract
+
+### Requirement G09-G12: current conjunctive truth and causal routing
+
+PASS SHALL require plan-012 deterministic final proof plus every contract-
+declared current attestation over identical READY/contract/final-tree/evidence
+digests. All failures SHALL remain recorded. The active route SHALL be the
+earliest causal owner, or BLOCKED with all incomparable roots. Only an operator
+capability may import attestations.
+
+#### Scenario: stale semantic approval
+
+- **WHEN** a passing review names an older final tree or expired evidence
+- **THEN** state is AWAITING_ATTESTATION; no historical verdict can PASS.
+
+#### Scenario: compound failure
+
+- **WHEN** intent and implementation checks both fail
+- **THEN** retain both; route intent first and suspend downstream repair until
+  the intent generation changes.
+
+## Must NOT
+
+- **N01/N08**: scores, votes, transcripts, ancestry, or progress cannot PASS.
+- **N06/N07**: reviewer credentials/home/tools stay outside candidate/PR control.
+- **N09**: reviewer prose cannot become contract authority.
+- **N11**: PASS does not apply, push, merge, release, or retire.
+- **N12-N14**: reviewers do not own state/oracle; hash claims stay narrow; no
+  shared writable cache.
+- **N16**: reviewer payload/response/evidence counts and bytes are bounded.
+
+## Inputs to provide
+
+- Contract-declared attestation criteria, issuers, accepted exact trust modes,
+  freshness/expiry, and subject digests. Missing evidence remains awaiting.
+- Operator-controlled reviewer outputs; no model credential may enter the run.
+
+## Starting state
+
+- Plan 012 reruns the complete deterministic union on exact final tree and owns
+  broker submit/checkpoint/status.
+- Protected expected values remain in the trusted comparator; reviewers cannot
+  author or read reusable deterministic ground truth.
+- Reconcile currently distrusts DONE claims but needs typed current attestations
+  and complete causal routing.
 
 ## Commands you will need
 
 | Purpose | Command | Expected |
 |---|---|---|
-| Reconcile tests | `cargo test -p tailrocks-core convergence` | exit 0 |
-| Retirement tests | `cargo test -p tailrocks-core retirement` | exit 0 |
-| Reconcile example | `cargo run -p tailrocks-cli -- goal reconcile --example examples/plan-package --final` | exact PASS or fixture-declared route |
-| Preview | `cargo run -p tailrocks-cli -- plan retire goal-live-status --dry-run --json` | exit 0, exact paths, eligible true |
-| Full gates | `cargo fmt --all --check && cargo clippy --workspace --all-targets --all-features -- -D warnings && cargo test --workspace --all-features && mise run validate` | exit 0 |
+| Attestation | `rtk cargo test -p tailrocks-core convergence::attestation` | exit 0 |
+| Review | `rtk cargo test -p tailrocks-core convergence::review` | exit 0 |
+| Deterministic union | `rtk cargo test -p tailrocks-core convergence::deterministic` | exit 0 |
+| Routing | `rtk cargo test -p tailrocks-core convergence::routing` | exit 0 |
+| Example | `rtk cargo run -p tailrocks-cli -- goal reconcile --example examples/plan-package --final` | fixture-declared exact state |
 
 ## Scope
 
 **In scope**:
 
-- `crates/tailrocks-core/src/convergence/**` (new)
-- `crates/tailrocks-core/src/retirement/**` (new)
-- `crates/tailrocks-cli/src/**` for reconcile/apply/retire/restore inspection
-- `schemas/goal-contract.schema.json` review policy fields
-- `schemas/receipt.schema.json` final/attestation fields
-- `schemas/completion.schema.json` (new)
-- `skills/tailrocks-reconcile/**`
-- `skills/tailrocks-plan/**` review/retirement handoff only
-- `skills/tailrocks-record-decision/**` reopen behavior
-- `skills/tailrocks-idea/references/roadmap-item-format.md`
-- `specs/**` (new durable shipped specification tree)
-- `archives/plans/sha256/**` (new deterministic package archives)
-- `examples/plan-package/**`
-- `docs/pipeline-walkthrough.md`, `docs/deterministic-goal-trust.md`
+- `crates/tailrocks-core/src/convergence/**`
+- CLI `goal reconcile`, reviewer payload export, operator-only `attest`
+- final-receipt review/freshness fields
+- `skills/tailrocks-reconcile/**`, worked example, trust docs
 
 **Out of scope**:
 
-- Universal three-session review, reviewer votes/scores, or reviewer-authored
-  deterministic expected values.
-- Allowing a model to choose the authoritative backtrack destination.
-- Automatic remote push/merge/release.
-- Automatic retirement inside native `/goal`.
-- Deleting roadmap sources, research, durable spec, completion, receipt, or
-  archive.
-- History rewrite or garbage collection.
-
-## Session structure
-
-Larger than one session. Session seams at green boundaries: 007a (steps 1-4,
-convergence), 007b (steps 5-6, apply and retirement), 007c (step 7, restore and
-skill updates). Track step progress in the README row note.
+- Apply/retirement, provider calls, oracle authoring, external-effect execution.
+- Reviewer votes/scores or reviewer-authored deterministic expected values.
 
 ## Git workflow
 
-- Branch: `feat/verified-convergence`
-- Commit subject: `feat(goal): add current-evidence convergence`.
-- Retirement creates a separate explicit local commit only after `--apply` and
-  operator authorization. All commits use DCO and Codex co-author trailer.
-- Never push/open a PR without instruction.
+- Shared branch: `<implementation-branch>`; existing PR: `<implementation-pr-number>`
+- Commit subject: `feat(goal): converge current acceptance evidence`
+- One signed/co-authored checkpoint commit on that branch; do not open or merge another PR.
 
 ## Steps
 
-### Step 1: Re-derive deterministic truth on the exact final tree
+### Step 1: Close attestation identity and freshness
 
-At every nominal package completion, Stop checkpoint automatically enqueues
-final reconcile; whether it completes synchronously inside the hook or the hook
-returns "verification pending" and PASS releases at a later Stop is governed by
-plan 002's measured hook time budget. In a fresh verifier clone at the exact
-proposed final commit:
+Schema includes criterion/result, issuer and exact trust mode, READY/contract/
+final-tree/evidence digests, issued/expiry/freshness rule, and signature/policy
+where external. Allowed modes are explicit sets: `declared_human`,
+`local_model_attested`, or `external_issuer`. Unknown mode/field fails.
 
-1. revalidate READY and goal-contract digests;
-2. validate slice receipt ancestry and dependency chain (every slice candidate
-   commit an ancestor of the final tree);
-3. rescan full tracked/untracked delta and path/effect mappings;
-4. rerun every package-final deterministic gate and oracle-mutation sentinel;
-5. verify exact tool/instruction/oracle/effective-hook resolution;
-6. invalidate all downstream evidence on any mismatch.
+**Verify**: Attestation tests reject stale/wrong subject, unknown issuer/mode,
+missing criterion, prior-verdict reuse, and executor/model self-approval.
 
-Write results and derived state in one SQLite transaction, referencing immutable
-evidence blobs. Do not add a separate convergence log/head.
+### Step 2: Keep reviewer transport outside the executor
 
-**Verify**: `cargo test -p tailrocks-core convergence::deterministic` → exit 0;
-stale contract, changed final tree, broken ancestry, unmapped delta, stale tool,
-oracle tamper, missing trial, and idempotent clean rerun tests pass.
+Export minimal sensitivity-cleared payloads. Import only through operator CLI;
+the three-method broker gains no endpoint. Local model review runs in a fresh
+no-shell/no-home/no-tools session and is labeled local. External evidence must
+verify its declared issuer policy. Review never sees protected expectations or
+mutates candidate/contract/journal.
 
-### Step 2: Dispatch only unresolved independent verdict axes
+**Verify**: Review tests reject broker submission, credential/tool leakage,
+forged executor evidence, stale subject, and prior-verdict leakage.
 
-The contract declares each Product Contract, Scope, and Engineering Integrity
-criterion as `deterministic`, `fresh_model`, `human`, or `external`.
-Deterministic scope mapping is not sent to a model again. A fresh model session
-is created only for criteria that genuinely require semantic judgment.
+### Step 3: Conjoin with fresh deterministic proof
 
-Reviewer transport is named, not implied: the controller invokes the provider
-CLI in its headless exec mode with the controller's own credential — legitimate
-here because reviewers are attestors, not the native `/goal` subject — under
-the same capability preflight as executors, restricted to a read-only clean
-clone, with a contract-declared per-reconcile session/cost bound. Each reviewer
-receives that read-only clone, frozen READY/spec/contract, relevant house
-skill, and named evidence; it receives no executor transcript, status table,
-prior verdict, or other review. One session may return separate
-Product and Engineering sections unless the contract's risk policy explicitly
-requires distinct sessions/providers. Every criterion is PASS/FAIL with concrete
-file/requirement evidence; no score or majority.
+Rerun plan 012's complete final union, then require every current declared
+attestation on the same subject. Atomically write the generation result and one
+final receipt. Changed tree/policy/expired evidence creates a new generation;
+old receipt is historical.
 
-Reviewer output is an attestation with provider/model/config/version and input
-digests. It cannot change candidate, contract, oracle, journal, or expected
-values. Same-provider/model correlation is labeled, not described as statistical
-independence.
+**Verify**: Deterministic tests cover stale slice evidence, changed attestation,
+failing axis, receipt replay, and one-receipt atomicity.
 
-**Verify**: `cargo test -p tailrocks-core convergence::review` → exit 0; clean
-context, leaked prior verdict, score/majority, missing criterion, candidate write,
-one failing axis, and correlated-trust-label tests pass.
+### Step 4: Retain and route the complete causal set
 
-### Step 3: Collect visual, human, and external gates honestly
+Map implementation→slice; intent/flow→Brainstorm/Finalize; decision→Record
+Decision; documentary fact→Research; empirical fact→Prototype; plan/oracle/DAG
+→Plan; verifier/flaky gate→freeze plus Remediate; human/external→issuer. Preserve
+incomparable roots and BLOCK. Update Reconcile and absent-CLI advisory fallback.
 
-Visual artifacts must name viewport/state/input and immutable screenshot or
-render digests. Human approval names the exact contract/final-tree/evidence
-digest and available trust label. External gates record issuer, result, subject,
-freshness/expiry, and retrieval evidence; they never embed credentials.
-
-Any changed subject or expired evidence returns `AWAITING_ATTESTATION`, not PASS.
-At the native-goal surface `AWAITING_ATTESTATION` maps to
-`BLOCKED(owner=<named human/issuer>, action=tailrocks attest ...)` — the goal
-does not burn attempt budget waiting on a human; recording the attestation
-re-arms checkpoint. Local declared approval is not called cryptographic
-identity. V1 external
-effects themselves remain operator-owned; their attestations may prove the
-operator completed them, not that the model was sandboxed.
-
-**Verify**: `cargo test -p tailrocks-core convergence::attestation` → exit 0;
-stale screenshot, changed tree, expired external result, forged executor
-approval, unavailable signer, and valid current evidence tests pass.
-
-### Step 4: Derive PASS and one authoritative failure route
-
-PASS exists only when every required deterministic result and attestation is
-current and passing on the same final tree/contract. Persist one final receipt
-and transition atomically. A concrete FAIL always wins over any PASS/score.
-
-Map failure class deterministically:
-
-| Failure class | Owner/route |
-|---|---|
-| implementation or slice gate | same plan/slice repair |
-| incomplete/contradictory requirement or flow | Brainstorm/Finalize |
-| changed user decision | Record Decision, then re-Finalize |
-| missing documentary fact | Research |
-| unresolved empirical fact | Prototype |
-| coverage/DAG/oracle/plan defect | Plan |
-| verifier or ground-truth defect | Remediate verifier; freeze acceptance |
-| nondeterministic gate (identical subject, differing result) | Plan (oracle defect); freeze that gate's acceptance |
-| human/external requirement | named operator/issuer |
-
-The model may explain this route but cannot override it. Generate the next
-native GOAL prompt from state. Append only a new finding/evidence event inside
-the existing transaction journal.
-
-**Verify**: `cargo test -p tailrocks-core convergence::routing` → exit 0; every
-failure enum maps to exactly one owner and unknown/multiple-owner input fails
-closed.
-
-### Step 5: Apply a PASS candidate by explicit compare-and-swap
-
-PASS proves a controller-owned final candidate; it does not silently rewrite the
-operator branch. Add `tailrocks goal apply --run <id> --target <feature-branch>
---expected <sha>`. Preflight clean target state, exact expected ref, final receipt,
-and target-not-main policy. Import objects and fast-forward with ref CAS; never
-reset a worktree, overwrite local changes, push, or merge remotely.
-
-If target moved, PASS remains valid for its subject but apply fails with an exact
-rebase/reverify route. If target already equals the candidate, apply is
-idempotent.
-
-**Verify**: `cargo test -p tailrocks-core convergence::apply` → exit 0; clean
-fast-forward, already-applied, dirty worktree, main target, moved ref, non-FF,
-and missing-object cases pass without destructive mutation.
-
-### Step 6: Separate PASS from explicit retirement
-
-Define `PASS -> RETIRING -> RETIRED`. Native `/goal` may stop at PASS. An
-operator later runs `tailrocks plan retire <slug> --dry-run`, reviews exact
-writes/deletion, then explicitly runs `--apply`.
-
-Preflight requires applied final tree, current PASS, no active claim, exact
-`plans/<slug>/` target, clean non-main feature branch, and expected-ref CAS.
-Build before deletion:
-
-- human-readable final spec under `specs/<slug>/`;
-- `roadmap/<slug>/completion.json` bound to READY, final Git tree, final receipt,
-  verifier/trust versions, and durable spec/archive digests;
-- deterministic archive of exact active package bytes at
-  `archives/plans/sha256/<digest>.tar.zst`. The contract may declare an
-  out-of-repo archive destination for large packages (in-repo default is zstd
-  of text — tens of kilobytes); durability of an in-repo archive still depends
-  on the retirement commit reaching the protected branch, and the docs must say
-  so rather than implying feature-branch reachability suffices.
-
-Validate archive by extraction into a temp directory and byte comparison. Then
-delete only `plans/<slug>/`, update roadmap/index links, run post-retirement
-gates, and create one local Conventional Commit by CAS. A failure before CAS
-leaves operator branch unchanged. A failure after PASS leaves state PASS plus
-`retirement_pending`; it never revokes successful goal completion.
-
-**Verify**: `cargo test -p tailrocks-core retirement` → exit 0; failure injection
-at every phase, wrong/broad/symlink target, archive mismatch, moved ref, squash-
-history fixture, retry/idempotency, and PASS-survives-failure tests pass.
-
-### Step 7: Define restore/reopen without resurrecting stale truth
-
-`tailrocks plan restore --archive <digest> --to <temp-path>` is forensic/read-
-only by default and verifies the archive digest. It does not reactivate a plan.
-
-Record Decision on a retired item preserves old spec/completion/archive, appends
-the new decision, makes prior completion stale, and routes to SHAPING. After new
-READY, Plan creates a new package generation from current sources/spec; it never
-copies stale statuses/receipts as current.
-
-Update Reconcile to delegate machine truth to `tailrocks goal reconcile` when
-the binary is present, and to retain its full manual protocol (as hardened by
-plan 000) as the documented path when it is not — Reconcile must keep working
-on every client ecosystem that never gets a qualified kernel. Its manual
-recovery/audit role remains in both modes. Update artifact evals and the worked
-example through full PASS, apply, retire, restore-inspect, reopen, and replan.
-
-**Verify**: `mise run validate && bun test scripts/ && cargo test --workspace --all-features` → all exit 0; worked example has no dangling active-plan link after retirement.
+**Verify**: Routing and Example commands cover compound/incomparable causes,
+backtracking, renewed generation, and no-binary advisory behavior.
 
 ## Test plan
 
-- Exact final-tree deterministic rerun and evidence invalidation.
-- Conditional fresh review contexts; separate conjunctive axes; no voting.
-- Visual/human/external subject/freshness/trust binding.
-- Exhaustive one-owner failure routing and verifier-defect freeze.
-- PASS/apply CAS safety and non-main/dirty/non-FF guards.
-- Explicit retirement preview/apply, phase failures, exact deletion target,
-  deterministic archive recovery after branch history loss.
-- PASS survives retirement failure; retirement retry is idempotent.
-- Full retire/reopen/replan generation lifecycle.
+- Exact-subject/freshness/signature/trust-set attestations.
+- Reviewer capability isolation and secret/oracle redaction.
+- Deterministic union plus conjunctive failing axes and generation rollover.
+- Complete routing table, compound/incomparable roots, advisory fallback.
 
 ## Done criteria
 
-- [ ] Final reconcile is automatic on nominal completion and exact-tree bound.
-- [ ] Review axes remain distinct; fresh sessions run only where required.
-- [ ] One failed criterion blocks; no score/majority override exists.
-- [ ] Every failure class has exactly one state-derived owner.
-- [ ] PASS, branch apply, and retirement are separate explicit states/actions.
-- [ ] Retirement removes only active package after spec/completion/archive proof.
-- [ ] Archive recovery works in a fresh clone without feature-branch history.
-- [ ] Full Rust/skill/eval/example/diff gates pass.
+- [ ] Recut records plan-012 checkpoint, frozen base, and shared-head SHAs.
+- [ ] PASS names one exact current deterministic+attestation conjunction.
+- [ ] Broker cannot attest; reviewers cannot own oracle or kernel state.
+- [ ] Every failure remains visible and routes to earliest causal owner.
+- [ ] No apply/retirement behavior exists; commands/scope checks pass.
+- [ ] One signed/co-authored commit contains only Scope paths.
 
 ## STOP conditions
 
-Stop if final checks do not share one exact subject, a reviewer can mutate proof
-inputs, an axis needs subjective averaging, failure ownership is ambiguous,
-apply requires destructive reset/non-FF branch mutation, retirement target is
-not exact, or archive/spec/completion cannot be validated before deletion.
+Stop if reviewer transport exposes credentials/home/tools, executor can attest,
+evidence cannot bind one exact subject, deterministic truth needs reviewer
+authorship, failures need another state authority, or work exceeds one session.
 
 ## Maintenance notes
 
-Review policy is contract data, not a fixed reviewer count. New effect classes
-need enforceable observation/sandboxing before they can become autonomous.
+Plan 013 applies a PASS candidate explicitly; Plan 014 later retires it. Neither
+may modify this acceptance predicate.

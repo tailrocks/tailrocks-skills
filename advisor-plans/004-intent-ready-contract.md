@@ -1,268 +1,196 @@
-# Plan 004: Preserve primary intent and freeze one READY contract
+# Plan 004: Persist sensitivity-safe immutable sources
 
-> **Executor instructions**: Extend the working Rust kernel; do not create a
-> second state authority in skill prose. Every interactive answer must be durable
-> before synthesis. Run all gates and honor STOP conditions.
->
-> **Drift check (run first)**:
-> `git diff --stat b629fb9..HEAD -- crates/ schemas/ skills/tailrocks-{idea,brainstorm,research,record-decision,finalize}/ skills/tailrocks-plan/references/coverage-ledger.md examples/plan-package/ docs/pipeline-walkthrough.md`
-> Rebase onto plan 003, update this baseline, and verify its tracer remains green.
+> **Executor instructions**: Finish the source-store seam in one session. Classify
+> sensitivity before hashing or writing. Do not touch interactive skills or
+> READY compilation; those belong to plans 015/016.
 
 ## Status
 
 - **Priority**: P1
-- **Effort**: L
-- **Risk**: MED
-- **Depends on**: plans 001 and 003 (step 3's skill fixtures verify through plan
-  001's artifact-grounded runner)
-- **Category**: feature, migration
-- **Planned at**: commit `b629fb9`, 2026-08-10; refresh after plan 003
+- **Dispatch**: BLOCKED until plan 003 has a current same-branch completion
+  receipt; recut from its exact checkpoint
+- **Effort**: M; one session
+- **Risk**: HIGH
+- **Depends on**: plan 003
+- **Covers**: G01
+- **Guardrails**: N06, N09, N13, N16
+- **Research basis**: `advisor-plans/RESEARCH.md` F4-05, F4-07, F4-14
+- **Planned at**: design baseline `1e809bd`; dependency recut required
 
 ## Why this matters
 
-Verification cannot recover words discarded during capture. Today interactive
-skills rewrite one mutable roadmap README, so later agents cannot distinguish
-the user's voice from synthesis. This plan makes raw inputs immutable, derived
-views rebuildable, research non-normative by default, and READY one approved,
-content-addressed intent contract.
+Verification cannot restore user words discarded during synthesis. Source
+history must be immutable and rebuildable, but a pasted credential must never
+become an immutable Git blob or even a low-entropy digest. This slice creates
+the only canonical capture primitive and no higher-level workflow changes.
 
-## Current state
+## Preconditions — run before anything else
 
-- `skills/tailrocks-idea/references/roadmap-item-format.md` defines one mutable
-  `roadmap/<slug>/README.md` as the item.
-- Idea, Brainstorm, Research, Record Decision, and Finalize write summaries but
-  do not share an append-before-synthesis primitive.
-- Finalize alone grants READY; preserve that authority.
-- `skills/tailrocks-plan/SKILL.md:78-81` expects stable `S#`, `F#`, `W#`, `N#`,
-  `B#`, decision/research/assumption/question anchors. Keep those readable IDs.
-- Plan 003 provides the Rust workspace, deterministic bytes, SQLite journal
-  pattern, and CLI failure conventions. Reuse them.
-
-Canonical item shape after this plan:
-
-```text
-roadmap/<slug>/
-  README.md                         # generated human projection
-  sources/
-    records/<uuidv7>.json           # immutable metadata, written last
-    blobs/sha256/<digest>            # immutable raw text/image/file bytes
-    index.json                       # generated; never primary
-  ready.intent.json                  # sole frozen READY intent contract
-```
-
-## Preconditions
+After recut replaces placeholders with full SHAs:
 
 ```sh
-rtk cargo run -p tailrocks-cli -- goal inspect --example examples/deterministic-goal/tracer --require PASS
+rtk git fetch origin main
+test "$(rtk git branch --show-current)" = "<implementation-branch>"
+test "$(gh pr view <implementation-pr-number> --json headRefName --jq .headRefName)" = "<implementation-branch>"
+test "$(gh pr view <implementation-pr-number> --json headRefOid --jq .headRefOid)" = "$(rtk git rev-parse HEAD)"
+test "$(gh pr view <implementation-pr-number> --json baseRefName --jq .baseRefName)" = main
+test "$(gh pr view <implementation-pr-number> --json state --jq .state)" = OPEN
+test "$(gh pr view <implementation-pr-number> --json isDraft --jq .isDraft)" = true
+test -z "$(rtk git status --porcelain=v1)"
+test "$(rtk git rev-parse HEAD)" = "<integration-sha>"
+test "$(rtk git rev-parse origin/main)" = "<frozen-base-sha>"
+test "$(rtk git merge-base HEAD "<frozen-base-sha>")" = "<frozen-base-sha>"
+rtk git merge-base --is-ancestor <plan-003-completion-sha> HEAD
+rtk git diff --stat <last-reviewed-sha>..HEAD -- Cargo.toml Cargo.lock crates/tailrocks-core/src/source_store crates/tailrocks-cli/src schemas/source-record.schema.json examples/source-store docs/source-provenance.md
+rtk cargo run -p tailrocks-cli -- goal inspect --example examples/deterministic-goal/tracer --mode scripted --require PASS
 rtk cargo test --workspace --all-features
 rtk mise run validate
 ```
 
-Expected: tracer PASS, Rust tests green, 15 skills valid.
+Expected: exact shared-PR head/base and ancestry checks exit 0; scoped diff is
+empty; tracer PASS; tests and 15-skill validation pass.
+
+## Spec contract
+
+### Requirement G01: safe primary-source persistence
+
+Every accepted word, correction, attachment, or reference SHALL become an
+immutable causal record before later synthesis. Sensitivity SHALL be classified
+before repository persistence or hashing. Generated indexes/README sections
+SHALL be deterministic projections, never authority.
+
+#### Scenario: pasted credential
+
+- **WHEN** input is or may contain a credential value
+- **THEN** retain no value/preview/digest, record only type/location, advise
+  rotation, and require a safe redacted restatement or external reference.
+
+#### Scenario: interruption during append
+
+- **WHEN** the process stops at any write boundary
+- **THEN** no committed record references missing/wrong bytes; at worst one
+  harmless unreferenced approved blob remains.
+
+## Must NOT
+
+- **N06**: sensitive/credential bytes cannot enter Git, logs, fixtures, or model
+  tool output.
+- **N09**: projections cannot be parsed back into source authority.
+- **N13**: digests establish identity only, not completeness or consent.
+- **N16**: source path/count/byte limits are checked before or during streamed
+  capture; overflow retains no partial canonical record.
+
+## Inputs to provide
+
+None. Ambiguous sensitivity is `secret_refused` until the user supplies an
+explicit safe representation; the executor must not ask tools to inspect the
+suspected value.
+
+## Starting state
+
+- Roadmap items currently use one mutable README; no append-before-synthesis
+  primitive exists.
+- Plan 003 supplies Rust workspace, deterministic bytes, and failure conventions.
+- Canonical item shape after this plan is `sources/records/*.json`, approved
+  `sources/blobs/sha256/*`, generated `sources/index.json`, and generated README
+  sections. `ready.intent.json` does not exist until plan 016.
 
 ## Commands you will need
 
 | Purpose | Command | Expected |
 |---|---|---|
-| Source tests | `cargo test -p tailrocks-core source_store` | exit 0 |
-| READY tests | `cargo test -p tailrocks-core ready_contract` | exit 0 |
-| Eval tests | `bun test scripts/` | exit 0 |
-| Skills | `mise run validate` | 15 skills valid |
-| Rust gates | `cargo fmt --all --check && cargo clippy --workspace --all-targets --all-features -- -D warnings && cargo test --workspace --all-features` | exit 0 |
-
-## Suggested executor toolkit
-
-Invoke `tailrocks-rust-best-practices` for the storage/API work. Use the
-repository's existing delivery skills as the protocol authority; do not replace
-their narrow write ownership or one-question interview behavior.
+| Schema | `rtk cargo test -p tailrocks-core source_store::schema` | exit 0 |
+| Append | `rtk cargo test -p tailrocks-core source_store::append` | exit 0 |
+| Projection | `rtk cargo test -p tailrocks-core source_projection` | exit 0 |
+| Full Rust | `rtk cargo test --workspace --all-features` | exit 0 |
+| Repository | `rtk mise run validate` | exit 0 |
 
 ## Scope
 
 **In scope**:
 
-- `crates/tailrocks-core/src/source_store/**` (new)
-- `crates/tailrocks-core/src/ready_contract/**` (new)
-- `crates/tailrocks-cli/src/**` for `source` and `ready` commands
-- `schemas/source-record.schema.json` (new)
-- `schemas/ready-intent.schema.json` (new)
-- `skills/tailrocks-idea/**`
-- `skills/tailrocks-brainstorm/**`
-- `skills/tailrocks-research/**`
-- `skills/tailrocks-record-decision/**`
-- `skills/tailrocks-finalize/**`
-- `skills/tailrocks-plan/references/coverage-ledger.md`
-- `examples/plan-package/**`
-- `docs/pipeline-walkthrough.md`
+- `Cargo.toml`, `Cargo.lock` only for required source-store dependencies
+- `crates/tailrocks-core/src/source_store/**`
+- `crates/tailrocks-cli/src/**` only for `source append/rebuild/check`
+- `schemas/source-record.schema.json`
+- `examples/source-store/**`
+- `docs/source-provenance.md`
 
 **Out of scope**:
 
-- `tailrocks-prototype` (plan 005).
-- Executable plan/runtime contract compilation (plan 006).
-- Replacing roadmap README or research chapters with opaque JSON.
-- Treating research facts, model summaries, or inferred preferences as user
-  decisions.
-- Cryptographic user identity. Local approvals are labeled
-  `declared_user_approval`, not adversary-resistant signatures.
+- Interactive skills, READY/compiler/runtime/provider behavior.
+- A mutable authoritative index/counter or another source format.
+- Cryptographic actor identity or secret storage/encryption.
 
 ## Git workflow
 
-- Branch: `feat/immutable-intent-ready`
-- Commit subject: `feat(delivery): preserve intent through READY`.
-- Use `git commit -s` and the Codex co-author trailer. Do not push/open a PR
-  without operator instruction.
+- Shared branch: `<implementation-branch>`; existing PR: `<implementation-pr-number>`
+- Commit subject: `feat(delivery): preserve immutable source intent`
+- One signed/co-authored checkpoint commit on that branch; do not open or merge another PR.
 
 ## Steps
 
-### Step 1: Implement atomic immutable source capture
+### Step 1: Define storage classes before persistence
 
-Add `tailrocks source append`. Generate collision-resistant UUIDv7 record IDs;
-do not allocate from a shared mutable counter. Store raw UTF-8 or binary input as
-`sources/blobs/sha256/<digest>`, then atomically write the immutable record last.
-The record includes schema version, ID, media type, byte length, digest,
-timestamp, source kind, actor trust label, predecessor/supersedes IDs, and
-redaction metadata. It never duplicates raw content.
+Define `SourceRecordV1` with `repository_plain`, `repository_redacted`,
+`external_sensitive`, and `secret_refused`. Repository classes store only
+approved bytes; external records store an opaque access-controlled reference;
+refused records contain credential type/location only. Attachment fidelity is
+`bytes | reference`. Never hash a refused or low-entropy secret.
 
-Records carry `capture_fidelity: bytes | reference`. Several clients expose
-pasted images or attachments to the model without a re-exportable original
-file; such inputs are captured as `reference` (client, description, digest if
-available) rather than pretending byte fidelity exists. Only `bytes` records
-reference blobs.
+**Verify**: Schema rejects unknown class, missing consent, unsafe digest/preview,
+path traversal, malformed causal links, or reference claiming byte fidelity.
 
-Use temp-write, flush/fsync where supported, atomic rename, and create-new
-semantics. A crash after blob write creates only a harmless orphan; a committed
-record may never reference a missing/wrong blob. Multiple writers can create
-unique records concurrently. Acquire an item-scoped lease only for rebuilding
-derived index/README, with compare-and-swap against the prior projection digest.
+### Step 2: Append atomically without mutable identity
 
-**Verify**: `cargo test -p tailrocks-core source_store` → exit 0; duplicate
-content, concurrent append, blob collision, crash at each write boundary,
-missing blob, stale projection CAS, supersedence, and redaction tests pass.
+Use collision-resistant UUIDv7 IDs, blob-first/record-last create-new writes,
+flush/fsync where supported, collision checks, and immutable supersedence.
+Exact duplicates may share approved blobs but never rewrite records. Concurrent
+writers require no authoritative counter.
 
-### Step 2: Make projections fully derivable and drift-detectable
+**Verify**: Append tests cover concurrent writers, every crash boundary,
+missing/wrong blob, duplicate, correction, redaction, external reference, and
+credential refusal.
 
-Add `tailrocks source rebuild <item>`. Sort records deterministically by causal
-predecessor then ID, validate the graph, emit `sources/index.json`, and update
-only generated source/decision/log sections of README. Preserve explicitly
-human-authored sections outside generated markers. A second clean rebuild must
-be byte-identical.
+### Step 3: Rebuild and check deterministic projections
 
-Add `tailrocks source check <item>` that fails for orphan references, cycles,
-stale projections, invented projection text without a source anchor, or a
-normative statement sourced only from model synthesis.
-
-**Verify**: `cargo test -p tailrocks-core source_projection` → exit 0; clean
-rebuild is idempotent and every rendered normative line has a source ID.
-
-### Step 3: Change interactive skills to append before synthesis
-
-Update Idea, Brainstorm, Research, Record Decision, and Finalize:
-
-1. capture each user answer/correction/attachment through `tailrocks source
-   append` before interpreting it;
-2. cite source IDs in every derived statement;
-3. use supersedence for corrections; never edit old record/blob bytes;
-4. rebuild projections after synthesis;
-5. on interruption after append, resume from durable source rather than asking
-   the user to reconstruct it.
-
-**No-binary fallback is mandatory.** These skills ship to every plugin channel
-(Claude, Codex, Grok, Kimi, Antigravity and manual installs) while the
-`tailrocks` binary is user-installable only after plan 009. Every changed skill
-must detect an absent binary and follow a documented manual path: write the
-same record/blob files directly per a `references/source-record-format.md`
-authored here, with `tailrocks source check` validating them later. A skill
-that instructs agents to run a nonexistent command is a release-blocking
-defect, not a forward reference. The existing interview behavior must remain
-fully functional on clients where the binary is never present.
-
-Research fact records include source URL/path, retrieval time, quoted/derived
-boundary, and freshness rule. They remain `informative` until a user decision
-adopts them. Never let a model-authored research conclusion become normative by
-itself.
-
-**Verify**: `bun test scripts/` → exit 0 with artifact-grounded Idea,
-Brainstorm-correction/resume, Research, Decision reversal, and Finalize fixtures.
-
-### Step 4: Compile and approve one READY intent contract
-
-Add `tailrocks ready compile` and `tailrocks ready approve`. The compiler emits
-exact deterministic bytes to `ready.intent.json` containing:
-
-- item ID and digest of the complete source-record set;
-- stable requirement IDs and exact normative text/source anchors;
-- primary, alternate, error, recovery, accessibility, performance/security, and
-  explicit-exclusion coverage or sourced deferral reasons;
-- decisions, unresolved research facts, empirical uncertainties, and explicit
-  assumptions;
-- declared deterministic, semantic, visual, human, and external verification
-  seams;
-- approval evidence/trust label and schema version.
-
-READY is refused while a normative statement lacks primary source, a scenario
-class is silently absent, an empirical uncertainty lacks prototype/defer route,
-or an external effect lacks operator ownership. `approve` may not be invoked by
-the later goal executor capability. Any newer/superseding normative source makes
-the READY contract stale; recompilation requires renewed approval.
-
-Do not create `contract.lock.json` plus another READY file. This one file is the
-sole stage authority; plan 006 references its digest rather than copying intent
-text.
-
-**Verify**: `cargo test -p tailrocks-core ready_contract` → exit 0; missing
-class/source, adopted fact, empirical route, correction invalidation, forged
-executor approval, stable bytes, and reapproval cases pass.
-
-### Step 5: Migrate the worked example and document the boundary
-
-Migrate `examples/plan-package/` to immutable source records, generated
-projection, and `ready.intent.json`. Preserve the current human-readable
-walkthrough. Add one correction and one research fact so supersedence and
-informative-vs-normative behavior are visible.
-
-Update `docs/pipeline-walkthrough.md` and coverage-ledger guidance. State that
-hashes prove identity, not completeness; Finalize's checklist and user approval
-remain the completeness boundary.
+Validate the causal graph, sort by predecessors then ID, rebuild index/marked
+README sections with CAS against the previous projection digest, and preserve
+human sections outside markers. Second rebuild must be byte-identical.
 
 **Verify**:
 
 ```sh
-cargo run -p tailrocks-cli -- source check examples/plan-package/roadmap/goal-live-status
-cargo run -p tailrocks-cli -- ready verify examples/plan-package/roadmap/goal-live-status --require READY
-git diff --exit-code -- examples/plan-package/roadmap/goal-live-status/sources/index.json examples/plan-package/roadmap/goal-live-status/README.md
+rtk cargo run -p tailrocks-cli -- source rebuild examples/source-store/basic
+rtk cargo run -p tailrocks-cli -- source check examples/source-store/basic
+rtk git diff --exit-code -- examples/source-store/basic
 ```
 
-Expected: all exit 0 after a clean rebuild.
+Expected: all exit 0 after the clean rebuild.
 
 ## Test plan
 
-- Concurrent/interrupt/crash source-write tests and projection idempotency.
-- Text, image/blob, correction, exact duplicate, redaction, missing/corrupt blob.
-- Interactive multi-turn capture-before-synthesis and resume fixtures.
-- Research facts remain informative until an anchored decision adopts them.
-- READY coverage classes, verification seams, assumptions, empirical routes,
-  approval capability, invalidation, and deterministic-byte tests.
-- Full worked-example rebuild from sources only.
+- Text/binary/reference attachments and exact duplicates.
+- Redacted, external-sensitive, credential-refused, and no-secret-digest cases.
+- Concurrent/interrupted writes, orphan blob, wrong blob, causal cycle.
+- Stale projection CAS, stable rebuild, and source-ID retention.
 
 ## Done criteria
 
-- [ ] Raw sources/decisions are immutable; derived views rebuild byte-identically.
-- [ ] Concurrent/interrupted capture cannot lose a committed record.
-- [ ] Every normative READY requirement cites primary user/decision sources.
-- [ ] Research is non-normative until adopted.
-- [ ] READY has one canonical file and becomes stale on relevant source change.
-- [ ] Executor capability cannot approve READY.
-- [ ] Worked example rebuild/verify commands pass.
-- [ ] Rust, script, skill-validator, and diff gates pass.
+- [ ] Recut records full plan-003 and shared-branch final-head SHAs.
+- [ ] Classification precedes every repository write/hash.
+- [ ] Committed records are immutable, causal, and crash-safe.
+- [ ] Projections rebuild byte-identically and remain non-authoritative.
+- [ ] Commands, format, Clippy, rustdoc, diff, and scope checks pass.
+- [ ] One signed/co-authored commit contains only Scope paths.
 
 ## STOP conditions
 
-Stop if source capture requires a mutable global ID/index to be authoritative,
-README synthesis cannot be derived without losing human text boundaries,
-approval identity is represented as stronger than available trust, or READY
-would permit unresolved empirical uncertainty without evidence or sourced defer.
+Stop on unresolved sensitivity, lossy fidelity, unsafe hashing, need for a
+mutable authoritative index/counter, non-atomic committed record, Markdown
+authority, stale/nonancestor dependency receipt, or work exceeding one session.
 
 ## Maintenance notes
 
-Plan 005 adds that empirical route; plan 006 consumes only the digest and stable
-IDs from `ready.intent.json`. Schema migration must preserve old source bytes and
-emit an explicit new approval, never silently rewrite records.
+Plan 015 is the only next owner of interactive capture. Schema migration must
+preserve prior bytes/records and emit explicit new projections.

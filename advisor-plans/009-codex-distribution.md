@@ -1,240 +1,318 @@
-# Plan 009: Distribute and qualify the Codex runtime
+# Plan 009: Build the release-candidate artifact lane
 
-> **Executor instructions**: Ship the binary and Codex integration as one
-> coherent release candidate. Live credentials run only against protected code.
-> Do not tag, publish, push, or create a release without operator authorization.
->
-> **Drift check (run first)**:
-> `git diff --stat b629fb9..HEAD -- .github/workflows/ integrations/codex/ scripts/provider-conformance* scripts/verify-release-artifacts* .claude-plugin/ .codex-plugin/ .kimi-plugin/ README.md INSTALL.md AGENTS.md CLAUDE.md docs/`
-> Rebase onto plan 008, refresh the baseline/current version, and prove
-> `mise run verify` is green.
+> **Executor instructions**: In one session, implement only the protected
+> `release_candidate` lane: deterministic native binaries, multi-arch verifier,
+> complete provenance, and install/image lifecycle. Do not add package bootstrap,
+> qualification/recovery, protected policy, or publish a release.
 
 ## Status
 
 - **Priority**: P1
-- **Effort**: M
+- **Dispatch**: BLOCKED until plans 027 and 045 have current same-branch
+  completion receipts at one integration head
+- **Effort**: M; one session
 - **Risk**: HIGH
-- **Depends on**: plan 008
-- **Category**: build, feature, docs
-- **Planned at**: commit `b629fb9`, 2026-08-10; refresh after plan 008
+- **Depends on**: plans 027 and 045
+- **Covers**: G06, G08, G14, G15
+- **Guardrails**: N05-N08, N11, N13, N16, N17
+- **Research basis**: `advisor-plans/RESEARCH.md` F4-02, F4-06, F4-16,
+  F4-22, F4-24, F4-27, F4-28, F4-37, F4-50
+- **Planned at**: design baseline `1e809bd`; dependency recut required
 
 ## Why this matters
 
-Hooks that require an unavailable controller are not a feature. Users need a
-version-matched, checksum-verifiable CLI before the plugin advertises native-goal
-enforcement. Live Codex qualification must test the real TTY lifecycle without
-giving provider credentials to PR-head-controlled code.
+PR binaries and mutable image tags cannot become protected or released truth.
+This slice makes one protected-default build lane whose exact files, index, and
+platform children can be installed and verified without rebuild.
 
-## Current state
-
-- Plans 003–007 provide a development `tailrocks` binary and Codex integration.
-- Plan 008 provides the complete offline gate and credential-free PR CI.
-- No portable release assets, clean-prefix install smoke, or protected-code live
-  provider workflow exists yet.
-- Plan 005 is expected to have bumped plugin version to `0.12.0`; derive the live
-  value before selecting the next version.
-- The repo supports multiple clients/platforms. An untested target must remain
-  unadvertised, not inferred from successful compilation.
-
-## Preconditions
+## Preconditions — run before anything else
 
 ```sh
-rtk mise run verify
-rtk cargo build --workspace --release --locked
-rtk bun scripts/provider-conformance.ts validate-research research/native-goal-control
+rtk git fetch origin main
+test "$(rtk git branch --show-current)" = "<implementation-branch>"
+test "$(gh pr view <implementation-pr-number> --json headRefName --jq .headRefName)" = "<implementation-branch>"
+test "$(gh pr view <implementation-pr-number> --json headRefOid --jq .headRefOid)" = "$(rtk git rev-parse HEAD)"
+test "$(gh pr view <implementation-pr-number> --json baseRefName --jq .baseRefName)" = main
+test "$(gh pr view <implementation-pr-number> --json state --jq .state)" = OPEN
+test "$(gh pr view <implementation-pr-number> --json isDraft --jq .isDraft)" = true
+test -z "$(rtk git status --porcelain=v1)"
+test "$(rtk git rev-parse HEAD)" = "<integration-sha>"
+test "$(rtk git rev-parse origin/main)" = "<frozen-base-sha>"
+test "$(rtk git merge-base HEAD "<frozen-base-sha>")" = "<frozen-base-sha>"
+rtk git merge-base --is-ancestor <plan-027-completion-sha> HEAD
+rtk git merge-base --is-ancestor <plan-045-completion-sha> HEAD
+rtk git diff --stat <last-reviewed-sha>..HEAD -- .github/workflows/release-artifacts.yml scripts tests integrations/codex docs/deterministic-goal-distribution.md Cargo.toml Cargo.lock
+rtk mise run verify-kernel
+rtk mise run eval-all-replay
+rtk bun scripts/validate-workflows.ts --fixtures tests/fixtures/release-candidate-workflow
 ```
 
-Expected: offline verification/build pass; Codex feasibility evidence is current
-and SUPPORTED.
+Expected: exact clean plan-027/045 fan-in, full offline gate, and reviewed
+release/native-boundary scope. GHCR package creation/visibility is not exercised here;
+plan 033 adds those modes and plan 030 performs the attended bootstrap.
+
+## Spec contract
+
+### Requirement G06/G08/G14/G15: immutable installable release subjects
+
+A protected-default hosted workflow SHALL build raw
+`aarch64-apple-darwin` and `x86_64-unknown-linux-musl` CLI binaries plus a
+multi-arch OCI index with exact `linux/arm64` and `linux/amd64` children. Every
+subject SHALL carry complete direct-workflow provenance and a closed manifest.
+Install, upgrade, rollback, uninstall, digest pull, platform selection, and
+repull SHALL preserve exact identity.
+
+#### Scenario: mutable OCI tag
+
+- **WHEN** runtime configuration names a tag, omits the index, or omits the
+  selected child digest
+- **THEN** preflight rejects it before worker creation.
+
+#### Scenario: PR-built attestation
+
+- **WHEN** a feature workflow exercises the lane
+- **THEN** record `origin=pr_head` and `trust=pr_head_self_checked`; it cannot
+  enter protected policy or release evidence.
+
+## Must NOT
+
+- **N05/N17**: candidate code never runs on host or sees registry/operator
+  credentials; worker gets no network/socket/auth.
+- **N06/N07**: only protected-default hosted workflow tokens sign/push; PR
+  output stays self-checked.
+- **N08/N13**: every final subject/digest is reverified; tag/hash alone is not
+  semantic qualification.
+- **N11**: no version tag, Git tag, GitHub Release, policy, or support claim.
+- **N16**: actions, tools, subjects, children, paths, files, output, and registry
+  operations are closed/bounded.
+
+## Inputs to provide
+
+- Exact protected source SHA when testing the workflow after merge.
+- Process-only registry credentials only for fixture-registry/live protected
+  operations; never repository/evidence/candidate input.
+
+## Starting state
+
+- Plan 027 provides honest credential-free PR self-check CI.
+- Plan 045 provides the root-owned account/broker/UID-lease base protocol.
+- No authenticated immutable OCI lifecycle or complete native artifact manifest
+  exists.
+- Plans 033/034 extend the same workflow with separately reviewed modes.
 
 ## Commands you will need
 
 | Purpose | Command | Expected |
 |---|---|---|
-| Build | `cargo build --workspace --release --locked` | exit 0 |
-| Artifact fixtures | `bun test scripts/verify-release-artifacts.test.ts` | exit 0 |
-| Artifact verify | `bun scripts/verify-release-artifacts.ts --fixtures scripts/fixtures/release-artifacts` | exit 0 |
-| Workflow lint | `bun scripts/validate-workflows.ts` | exit 0 |
-| Live evidence | `bun scripts/provider-conformance.ts validate-release artifacts/provider-conformance/codex-current` | exit 0 |
-| Full gate | `mise run verify` | exit 0 |
+| Binary | `rtk bun test scripts/verify-release-artifacts.test.ts` | exit 0 |
+| OCI | `rtk bun test scripts/verify-oci-artifacts.test.ts scripts/oci-release.test.ts` | exit 0 |
+| Native boundary | `rtk bun test scripts/native-client-sandbox.test.ts --test-name-pattern 'codex platform'` | distinct-principal mode exact |
+| Installer | `rtk bun test scripts/install-tailrocks.test.ts` | exit 0 |
+| Workflow | `rtk bun scripts/validate-workflows.ts --fixtures tests/fixtures/release-candidate-workflow` | release-candidate schema/permissions exact |
+| Repository | `rtk mise run verify-kernel && rtk mise run eval-all-replay` | exit 0 |
 
 ## Scope
 
 **In scope**:
 
-- `.github/workflows/provider-conformance.yml` (new)
-- `.github/workflows/release-artifacts.yml` (new)
-- `scripts/verify-release-artifacts.ts` and test/fixtures (new)
-- `scripts/provider-conformance.ts` release validation only
-- `integrations/codex/**`
-- `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`
-- `.codex-plugin/plugin.json`, `.kimi-plugin/plugin.json`
-- `README.md`, `INSTALL.md`, `AGENTS.md`, `CLAUDE.md`
-- `docs/deterministic-goal-*.md`, `docs/pipeline-walkthrough.md`
+- `.github/workflows/release-artifacts.yml` with only `release_candidate`
+- `scripts/verify-release-artifacts.ts`, `verify-oci-artifacts.ts`,
+  `oci-release.ts`, Plan 045's `native-client-sandbox.ts` Codex-platform mode,
+  installer and their fixtures
+- deterministic CLI, Plan-045 broker, and image build inputs; manifest schemas;
+  Codex installer/hook/image preflight assets; distribution design docs
 
 **Out of scope**:
 
-- Grok/Claude (plan 010).
-- Modifying acceptance invariants or offline ground truth.
-- Credentials in PR jobs or execution of PR-head scripts/hooks with credentials.
-- Autonomous external effects.
-- Automatic installer execution, tag/release publication, push, or remote merge.
-- Advertising a target/client whose live smoke did not pass.
+- `package_preflight`, `package_visibility_verify`, `release_finalize`.
+- Qualification evidence/recovery bundle/publication state.
+- Version bump/tag/release, policy/protected candidate/provider matrix.
+- Reusable signer, self-hosted/emulated target, mutable runtime image tag.
 
 ## Git workflow
 
-- Branch: `feat/codex-goal-distribution`
-- Commit subject: `feat(goal): package verified Codex runtime`.
-- DCO signoff and Codex co-author trailer required. No remote/release action
-  without explicit instruction.
+- Shared branch: `<implementation-branch>`; existing PR: `<implementation-pr-number>`
+- Commit subject: `build(goal): add release candidate artifacts`
+- One signed/co-authored checkpoint commit on that branch; do not open or merge another PR.
 
 ## Steps
 
-### Step 1: Build and verify portable CLI artifacts
+### Step 1: Build deterministic native, broker, and OCI subjects
 
-Add a native-runner matrix for the two targets with a real consumer today:
+Pin actions, base images, Buildx/builder, Rust/toolchain, and installer inputs by
+full commit/digest. Use GitHub-hosted native runners and literal
+`environment: tailrocks-protected-verifier`. Log in to GHCR only with
+`${{ github.token }}`/`${{ github.actor }}` and require
+`org.opencontainers.image.source=https://github.com/tailrocks/tailrocks-skills`.
+The lane requires an already-public/source-linked verifier package, pushes one
+unique request candidate tag, records the returned full index and two child
+digests, and never treats the tag as subject identity.
+
+Use distinct forms:
 
 ```text
-aarch64-apple-darwin      # operator development machines
-x86_64-unknown-linux-gnu  # CI and Linux hosts
+OCI_ATTESTATION_SUBJECT=oci://ghcr.io/tailrocks/tailrocks-verifier@sha256:<hex>
+OCI_IMAGE_REF=ghcr.io/tailrocks/tailrocks-verifier@sha256:<hex>
 ```
 
-The matrix must be extensible by adding one entry, and every added target obeys
-the same rule: build success without a target-native install/smoke/uninstall
-proof is not support. Do not pre-build further targets speculatively — by this
-plan's own standard an untested target cannot be advertised, so an unrequested
-one is pure carrying cost. The named first expansion is
-`aarch64-unknown-linux-gnu`: it is the default architecture for Docker and
-devcontainers on Apple-silicon hosts, a plausible top Codex environment — add
-it the moment such an environment is real, with its own native smoke. Windows
-additionally requires porting the Unix-flavored tooling assumptions (mise
-tasks, shell hooks) and must not be promised before that work is scoped.
+Build two CLI files plus matching `tailrocks-native-client-broker` files for
+`aarch64-apple-darwin` and `x86_64-unknown-linux-musl` from Plan 045's exact
+source. The broker files are standalone fixed-protocol executables; they are
+not embedded, locally rebuilt, or fetched from another release. The closed
+manifest binds version, purpose=`release_candidate`, source/workflow SHAs, all
+four native target/file hashes and roles, OCI URI/index/children, schemas,
+toolchain, build identities, `released=false`, and dispatch context. Reject
+self-hosted or emulated subjects.
 
-Build locked release binaries, archive per target, emit SHA-256 manifest and
-provenance metadata, install each into a clean prefix, run
-`tailrocks --version` plus the offline tracer, uninstall, and prove no files
-remain.
+**Verify**: Binary/OCI/Workflow commands reject nondeterminism, floating pin,
+wrong token/source link, private package, tag-only identity, missing child,
+missing/swapped broker role, wrong platform, unexpected output, or broad
+permissions.
 
-`verify-release-artifacts.ts` validates names, platform/architecture, checksum,
-version/contract compatibility, provenance fields, install layout, smoke result,
-and uninstall result. No download executes automatically.
+### Step 2: Require full provenance and safe registry helpers
 
-**Verify**: artifact test and fixture commands exit 0; wrong checksum/version,
-missing target, cross-labeled binary, partial install, failed offline tracer, and
-uninstall residue are rejected.
+Direct top-level workflow attests every CLI, broker, index, and child.
+Verification always
+supplies repository, signer workflow, protected source ref, source SHA,
+`job_workflow_sha` signer SHA, and deny-self-hosted; source and signer must equal
+the exact authority SHA. Workflow permissions are exactly:
 
-### Step 2: Enable Codex hooks only after binary preflight
+```yaml
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+  attestations: write
+```
 
-Package the exact integration proven by plans 002/003. On goal start/resume,
-preflight resolves one `tailrocks` binary, checks executable ownership/path,
-version and digest against the supported release manifest, then enumerates the
-complete effective Codex hook/config and execution-capability set from plans
-002/003. Missing/wrong/conflicting state, external writable root, secret-bearing
-environment, web/search, side-effecting tool, or agent-usable egress fails with
-exact remediation.
+Implement closed OCI `inspect`, `verify`, `promote`, and `repull`. `promote`
+copies exact manifest bytes to a version tag without rebuild and then checks
+index/children unchanged; wrong/concurrent tag blocks. Implement
+`require-registry-auth`, `require-no-registry-auth`, and
+`require-child-env-clean`; all accept explicit task configs, reject ambient
+credentials, never print values, and prove installed children cannot inherit
+token/config paths. `require-registry-auth --config <dir> --repository
+<host/path> --require-action <pull|push>` repeats bounded flags, follows the
+registry Bearer challenge without uploading, and requires the issued token's
+closed repository access claim to contain every requested action. Unknown or
+broader repository/scope fails.
 
-Never auto-download, execute an unverified binary, bypass hook trust, or fall
-back to transcript evaluation/custom loops. Document install/upgrade/uninstall
-for every advertised platform and clean-prefix test each instruction.
+Extend Plan 045's fixed native-client launcher with one Codex-platform mode and
+no caller-selected argv:
 
-**Verify**: integration tests cover missing/duplicate/wrong-version/wrong-digest
-binary, PATH shadowing, hook/capability conflict or mutation, clean install,
-upgrade, and uninstall. All advertised install commands match artifact fixtures.
+```text
+native-client-sandbox.ts run-codex-platform --principal tailrocks-native-client
+  --task-home <new-0700-dir> --controller-signing-key <mode-0600-path>
+  --native-boundary-receipt <verified-native-boundary-v1-json>
+  --target <closed-target> --tag <vX.Y.Z> --release-dir <verified-dir>
+  --output <new-json>
+native-client-sandbox.ts assert-quiescent --principal tailrocks-native-client
+```
 
-### Step 3: Qualify live Codex only from protected code
+The launcher requires Plan 045's canonical `native-boundary-v1` live receipt,
+including exact root-owned broker/account/policy identities, and a client UID
+distinct from controller UID. It revalidates that receipt under the lease before
+auth exposure and seals its canonical SHA-256 into output evidence. The broker atomically takes
+the UID-wide system lock, proves no process/session/job/persistence/run dir,
+then creates/populates the task home and exposes credentials; it holds the lock
+through credential deletion, process-group/UID-wide reap, output validation and
+copy-back, task-home/ACL cleanup, and final zero-process/job/dir proof. The
+account has no sudo/Docker/admin group; GH/Git configuration and environment are
+empty/allowlisted. Kernel probes must deny controller home, signing key, parent
+environment, Git/GH stores/helpers, and SSH/GPG/agent/Docker sockets. Release
+inputs are read-only and only the named output is copied back. Same UID, absent/
+mutable broker, pre-existing/concurrent process, lock/ACL/persistence drift,
+ambient `GH_TOKEN`/`GITHUB_TOKEN`/`CR_PAT`, inherited config/socket, unknown env,
+missing/stale/mismatched boundary receipt, or unavailable enforcement fails
+before auth exposure.
 
-Native `/goal` is interactive: plan 002's negative proof forbids substituting
-`codex exec`, so a scheduled headless workflow cannot run the real lifecycle
-without pty automation nobody has built. Split honestly:
+The manifest exposes a closed target-to-broker digest/file mapping consumed by
+Plan 045's renderer. Install and `verify-live` accept only a broker file whose
+direct attestation, source/signer workflow SHA, target, role, and SHA-256 match
+that mapping.
 
-- **Operator-run runbook (the live lifecycle)**: an interactive TTY session
-  driven from a printed checklist, producing the same versioned evidence JSON
-  as plan 002's harness. Manual, labeled manual, and required per release
-  candidate.
-- **Protected workflow (validation and publication)**: `provider-conformance.yml`
-  on protected default-branch `workflow_dispatch`/schedule validates and stores
-  the uploaded evidence, and runs the automatable subset (binary preflight,
-  offline scripted tracer, artifact checks) headlessly. It never executes
-  PR-head code with provider credentials. Use an approved environment,
-  least-scoped provider identity, no repository write token, and no remote in
-  the executor fixture. Separate generation and verification jobs so the
-  verifier has no provider credential. If pty automation is ever added, it is a
-  separate deliverable with its own fixtures — not assumed here.
+**Verify**: provenance fixtures mutate each identity/runner/role claim; registry
+fixtures cover auth absence, pull-only versus pull+push, cross-repository target,
+concurrent tag, partial promotion, credential helper residue, and hostile child
+environment.
 
-Run native Codex normal multi-slice, premature claim interception, resume and
-compaction, budget exhaustion, sibling hook conflict/mutation, candidate/oracle/
-scope tamper, outside-write/network-tool/environment-injection attempts, and
-controller BLOCKED. Retain sanitized artifacts only.
+### Step 3: Prove install and image lifecycle
 
-Report separately:
+Clean-install into an empty explicit prefix; verify mode, PATH resolution,
+version, digest, provenance, hook/image preflight, and offline tracer. Upgrade
+atomically from prior release; failed upgrade leaves prior binary usable.
+Uninstall removes only managed files and preserves user data. Reject shadowing,
+duplicates, partial install, wrong target/version/digest.
 
-- premature claims intercepted (control metric, may be nonzero);
-- successful stop without current PASS (must be zero);
-- accepted candidate failing blinded ground truth (must be zero);
-- stochastic task success/consistency with intervals (not proof).
+For OCI, authenticate only controller lookup, prove anonymous digest pull with
+a separate empty config, pull index before worker creation, validate child, and
+run `--pull never` under the fixed verifier profile. Remove/repull and repeat
+benign/hostile canaries. Add closed `--release-dir` and
+`verify-documented-installs` APIs for later post-release platform plans.
 
-**Verify**: workflow lint proves safe trigger/permissions/data flow; downloaded
-protected-run output at `artifacts/provider-conformance/codex-current` passes the
-Live evidence command.
+Implement and mutation-test this exact downstream evidence surface here:
 
-### Step 4: Publish exact Codex support docs and release readiness
+```text
+validate-platform-evidence --target <closed-target> <canonical-json>
+run-platform-evidence --target <closed-target> --tag <vX.Y.Z>
+  --release-dir <verified-release-dir> --client-principal tailrocks-native-client
+  --client-task-home <new-0700-dir> --controller-signing-key <mode-0600-path>
+  --native-boundary-receipt <verified-native-boundary-v1-json>
+  --output <new-json>
+fan-in-platform-evidence --input <json> --input <json>
+  --require-tag <vX.Y.Z> --output <new-json>
+verify-documented-installs --evidence <fan-in-json>
+  --docs <closed-comma-separated-paths>
+```
 
-Document trust modes, repository-only effects, supported platforms, manual
-binary verification, hook preflight, native `/goal`, resume/recovery,
-PASS/apply/retire separation, CI credential boundary, and explicit unsupported
-behavior. State that local same-user filesystem read confidentiality is not
-proven and sensitive hosts require a dedicated principal/container. Walk through
-Idea to retirement using primary artifact pointers.
+`run-platform-evidence` delegates its installed/Codex portion only through
+`native-client-sandbox.ts run-codex-platform`, never as the controller UID. It
+performs the target-native documented install/image lifecycle against the exact
+verified release directory and emits, but does not validate by self-assertion,
+one canonical operator record. Tests prove UID/ACL/home/parent-env/credential-
+socket denial and post-run quiescence, not merely environment-variable removal.
+Each platform record binds the canonical `native-boundary-v1` receipt SHA-256,
+release tag/authority, immutable-release result,
+release/profile/qualification/index/selected-child identities, native physical
+host/target, install lifecycle, Codex version/tier, auth-clean result, run date,
+and canonical digest. Fan-in accepts exactly one macOS arm64 and one Linux
+x86_64 record with distinct non-emulated hosts and byte-equal shared fields.
+Docs mode validates only claims derivable from that fan-in record.
 
-Bump the four plugin version fields together to the next feature version
-derived **only** from the live manifest values at execution time — never from
-this plan's arithmetic (per-plan bump predictions have already been wrong once;
-version bumps are a release action and plans 004-007 deliberately do not bump).
-Embed the compatible CLI version/range in preflight and support docs.
-
-Add a plugin-payload deliverable: for each install channel in INSTALL.md,
-verify what the installed plugin actually contains and how large it is. The
-kernel workspace, fixtures, examples, and archives all ship inside the plugin
-today because every channel clones the repository root. If the measured payload
-is unacceptable, this is the point where open decision D1
-(`advisor-plans/README.md`) executes: split the kernel into its own repository
-and pin a released binary/version here — the release machinery this plan builds
-is exactly what a split needs, so deciding earlier was speculative and deciding
-later is too late. Update pinned tag examples only when
-the operator authorizes that actual tag; otherwise leave a clearly marked
-release checklist `READY, NOT PUBLISHED`.
-
-**Verify**: `mise run verify`, artifact/workflow checks, docs links, version
-lockstep, CLI/plugin compatibility, and clean-prefix install smoke all pass.
+**Verify**: Installer/OCI fixtures reject residue, rollback damage, PATH attack,
+mutable tag, wrong child, auth inheritance, network, canary drift, and repull
+identity change.
 
 ## Test plan
 
-- Per-target artifact identity/checksum/install/offline-smoke/uninstall cases
-  for both initial targets, plus one fixture proving an unlisted target is
-  rejected rather than silently advertised.
-- Binary discovery, PATH shadowing, digest/version mismatch, hook conflict/drift.
-- Protected-code workflow trigger/permissions/credential separation fixtures.
-- Native Codex normal, resume/compaction/budget, and trust-boundary attacks.
-- Docs links, support matrix, version lockstep, clean-prefix instructions.
+- Native deterministic artifacts and closed manifest/schema.
+- Six provenance constraints for files/index/children.
+- Public digest versus authenticated OCI attestation separation.
+- Install/upgrade/rollback/uninstall/PATH lifecycle.
+- Index/child resolution, fixed worker profile, promote/repull identity.
+- Platform-evidence canonicalization, exact two-target fan-in, and
+  evidence-derived documentation mutations.
+- Closed permissions, no PR/protected trust confusion, bounded outputs.
 
 ## Done criteria
 
-- [ ] Every advertised target has a native install/offline-smoke/uninstall proof.
-- [ ] Codex hooks cannot activate with missing/unverified/incompatible CLI.
-- [ ] PR code never receives provider credentials.
-- [ ] Protected-code live qualification has zero stop bypass/false acceptance.
-- [ ] Stochastic results retain trials and intervals; never define invariants.
-- [ ] Docs/version/CLI compatibility and `mise run verify` pass.
-- [ ] Release is `READY, NOT PUBLISHED` unless operator separately authorizes it.
+- [ ] Two CLI files, two platform broker files, and one two-child index are
+  exact and directly attested.
+- [ ] Release manifest/context and every provenance field are closed.
+- [ ] Installer and image lifecycle/rollback/repull fixtures pass.
+- [ ] Controller-only auth and hostile child-env tests pass.
+- [ ] Later platform validate/fan-in/docs APIs are implemented and closed.
+- [ ] No package bootstrap, qualification, release, policy, or support claim.
+- [ ] Commands, diff/scope checks, and one signed/co-authored commit pass.
 
 ## STOP conditions
 
-Stop if an advertised target cannot run its own smoke, plugin hooks can start
-without a verified CLI, a credentialed workflow needs untrusted branch code,
-live Codex violates stop/PASS behavior, or completion requires a tag/publish/push
-not explicitly authorized.
+Stop on missing deterministic target, public/source-link prerequisite drift,
+floating identity, broader workflow permission, self-hosted/emulated output,
+credential exposure, mutable runtime tag, rebuild during promote, external
+publication, scope drift, or work beyond one session.
 
 ## Maintenance notes
 
-Codex support expires on client, binary, contract, or effective-hook digest
-change. Requalify before widening documented version ranges.
+Plan 033 adds package bootstrap modes without changing this lane. Plan 034 adds
+qualification/recovery/finalization contracts. Only plans 018/023 publish.
