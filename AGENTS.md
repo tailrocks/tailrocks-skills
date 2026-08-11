@@ -260,6 +260,24 @@ Rules for changing a `SKILL.md`:
 - Load-bearing router lines — ones an eval case depends on — are not edited
   casually. Check `evals/evals.json` before rewording a gate, a rejection rule,
   or a "complete when" clause.
+- **A load-bearing requirement gets a structural cue, not a mid-paragraph
+  clause.** A requirement an eval depends on needs a named bullet, a heading, or
+  its own sentence with a label. Buried as the third idea in a four-idea
+  paragraph it competes with better-signposted ideas elsewhere in the file and
+  surfaces only sometimes — which reads as a flaky eval rather than as the
+  prose defect it is.
+
+  The case: the content-layer *mechanism* argument sat mid-paragraph in
+  `tailrocks-liquid-glass`, while layer classification and render-pass cost each
+  had dedicated bullets. Subjects reliably produced the well-signposted two and
+  intermittently omitted the third, even though its eval case demanded it
+  specifically. Promoting rule / mechanism / exception to named bullets — with
+  the wording unchanged — made it pass consecutively.
+
+  Corollary for debugging: an eval that fails on one missing element while
+  everything else is correct is usually a signposting defect, not a knowledge
+  gap. Look at where the requirement sits in the file before rewriting what it
+  says.
 5. Every plugin manifest auto-discovers the new skill from `skills/` — no
    manifest edit needed. Add the skill to the tables in `README.md` and this
    file.
