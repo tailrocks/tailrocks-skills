@@ -27,7 +27,7 @@ REJECTED (one-line rationale).
 | [011](011-sketch-handoff-fixes.md) | 6th | Sketch-handoff self-consistency + safe extraction | P2 | S | 004 (coord. 008) | BLOCKED — case 5 is 2/2 after NATIVE-minimum promotion, but full-suite case 1 is 1/2; failing run omitted platform-over-screenshot source order owned by blocked 008 |
 | [012](012-repo-ci-install-hardening.md) | 6th | CI topology, v0.12.0 pins, validator gaps, age gate | P2 | M | — | BLOCKED — maintainer decision: require only `validate` + `templates-macos` in branch protection and create post-merge `v0.12.0` tag; repository changes/tests prepared |
 | [013](013-dogfood-example-and-intake.md) | 6th | Ship w6 dogfood example; land its learnings | P2 | S–M | 006, 007 | BLOCKED — affected liquid-glass case 1 is 1/2; failing run missed `project.yml` deployment target and skipped its required symbol-availability check |
-| [014](014-spikes-state-injection-and-distribution.md) | 6th | Spikes: injection fidelity; distribution memo; icon fix | P3 | M | 007 | BLOCKED — STOP: required plan-007 capture command has no sidecar-manifest emission; that change belongs to blocked plan 013 and `capture.sh` is out of 014 scope |
+| [014](014-spikes-state-injection-and-distribution.md) | 6th | Spikes: injection fidelity; distribution memo; icon fix | P3 | M | 007 | DONE — `014a-injection-fidelity.md` has 8 numeric rows and verified restores; `014b-distribution-scope.md` records sourced scope and maintainer decision |
 
 ## Dependency notes
 
