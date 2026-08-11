@@ -60,6 +60,13 @@ fi
 
 mkdir -p "$(dirname "$OUT")"
 
+# Re-activate immediately before capturing: the capture is taken from the
+# invoking terminal, and a window that lost key status renders the inactive
+# appearance — gray traffic lights, no vibrancy — which silently invalidates
+# any "active window" state row.
+open "$APP"
+sleep 1
+
 # -x no sound, -o no window shadow, -l capture by window ID.
 # Capture by ID works even when the window is off the current Space, where a
 # rectangle capture would silently grab unrelated pixels.
