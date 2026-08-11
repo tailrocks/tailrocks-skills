@@ -55,6 +55,9 @@ system.
 A detached system symbol is the moment the design stopped being native. In an
 audit, enumerate detached instances of kit symbols and report each one. Either it
 should be re-attached, or it is a `CUSTOM` component and needs a contract.
+Treat any implementation identifier that is absent from the approved kit/source
+inventory as detached until provenance proves otherwise; names such as
+`DetachedKitSymbol42` are direct findings, not evidence of approval.
 
 ## Maintenance
 

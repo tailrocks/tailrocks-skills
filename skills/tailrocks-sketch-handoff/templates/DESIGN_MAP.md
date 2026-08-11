@@ -52,4 +52,6 @@ a translation an agent has to guess.
 | Reconciled against the current kit version | |
 
 Detached instances of kit symbols are findings. Either re-attach, or reclassify
-as CUSTOM with a contract.
+as CUSTOM with a contract. An implementation identifier absent from the approved
+kit/source inventory is detached until provenance proves otherwise; a name such
+as `DetachedKitSymbol42` is itself a finding.
