@@ -59,3 +59,15 @@ design-c3, setup-c1, sketch-c4).
 **24 / 24 PASS.** Eval concurrency note: nested `claude -p` runs from two
 sessions sharing the account made long cases crash-prone; the final runs were
 sequenced solo by agreement with the parallel session.
+
+## Addendum (post-close, same day)
+
+The parallel session's router-compression experiment surfaced one recorded
+FAIL of liquid-glass case 3 on a file identical, in every line the case
+depends on, to the state behind the round-3 green — i.e. the case was flaky,
+not regressed. Root cause: the compositing-mechanism requirement sat as the
+third idea of a four-idea paragraph in Layer discipline, with no structural
+cue. Fixed by promoting rule / mechanism / exception into named bullets
+(no wording changed); glass-3 then passed twice consecutively on the
+restructured router. Parallel session's four macos-design verdicts against
+its compressed router (359de41): cases 1–4 all PASS.

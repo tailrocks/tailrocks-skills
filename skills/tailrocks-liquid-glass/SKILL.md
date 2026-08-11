@@ -67,12 +67,16 @@ the need; record why each earlier step was insufficient.
 Read [`layer-model.md`](references/layer-model.md) before classifying any
 surface. The normative rule is absolute: do not use Liquid Glass in the content
 layer. Lists, tables, cards, media, document surfaces, and form rows use standard
-materials, not glass. The mechanism, not just the rule: content-layer glass
-sits in the wrong compositing layer, so the scroll edge effect and the
-material's content-derived light/dark adaptation have nothing to key off —
-and it destroys the one cue separating controls from content. The one
-documented exception is a transient interactive element — a slider or toggle
-taking glass while a person is actively manipulating it.
+materials, not glass. Every content-layer finding names both halves:
+
+- **The rule** — content uses standard materials; glass is the functional
+  layer's material.
+- **The mechanism** — content-layer glass sits in the wrong compositing
+  layer, so the scroll edge effect and the material's content-derived
+  light/dark adaptation have nothing to key off, and it destroys the one cue
+  separating controls from content.
+- **The exception** — a transient interactive element only: a slider or
+  toggle taking glass while a person is actively manipulating it.
 
 Classify every region of the screen as `CONTENT` or `FUNCTIONAL` before any
 glass API is written. A surface that cannot be classified is a design defect,
