@@ -80,7 +80,14 @@ may be reproduced:
 A `CUSTOM` classification with no written record of the native alternatives
 evaluated is not a classification, it is a shortcut. Reject it. A custom
 control that is functionally or accessibly weaker than an available native
-component is a **hard failure**, not a styling preference.
+component is a **hard failure**, not a styling preference. And when gating or
+rejecting a custom-control request, never say "it needs a full contract" and
+move on — enumerate the contract's required sections in the response itself
+(product reason; native alternatives evaluated; geometry; states including
+keyboard-focused and inactive window; input including the menu-bar command
+equivalent; accessibility; material and Reduce Transparency substitution;
+motion with Reduce Motion; localization; fallback), so the asker sees the
+full price of custom.
 
 **Complete when:** every visible region carries a classification, every `CUSTOM`
 region carries a completed contract, and every `NATIVE` region names its exact

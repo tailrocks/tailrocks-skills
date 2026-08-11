@@ -31,6 +31,31 @@ design-c3, setup-c1, sketch-c4).
 | sketch-c1 | package contents present but source-of-truth order not inline | sketch-handoff SKILL.md handoff section: explicit order + precedence sentences |
 | sketch-c3 | "Sketch + native prototype pair" not explicit | sketch-handoff SKILL.md intro: the pair that actually works |
 
-## Round 2 (post-fix)
+## Rounds 2–5 (post-fix)
 
-(to be filled from round2-summary)
+- Round 2 (17 reruns): 12 PASS. New near-misses fixed: layer-mechanism
+  sentence (liquid-glass c3), capsule-vs-concentric rule (c2), bare-link
+  handoff answer (sketch c1); two infra crashes (`claude exited 1`).
+- Round 3 (5 reruns): liquid-glass c2, c3, sketch c1, swift-best-practices c3
+  PASS. swift-project-setup c1 kept failing on truncation: the runner's
+  $0.75 subject budget cuts a full scaffold short (`scripts/` is outside
+  this effort's allowed edit paths, so the budget could not be raised).
+  Fixes that made the case complete within budget, all real skill
+  improvements: verified-baseline versions inline (no stale placeholders —
+  also mandated by the maintainer's latest-versions directive), CI-parity
+  statement front-loaded, and a smallest-files-first scaffold order so an
+  interrupted scaffold still leaves a coherent baseline. PASS.
+- Provenance reruns on the final merged routers (after the parallel
+  session's 86fad2e/c8fab9d/19a4391 landed): macos-design c4 initially
+  regressed — the grown router diluted the contract-enumeration demand —
+  fixed by requiring the enumeration at the rejection site itself; c4 and c1
+  then PASS on the final state. Liquid-glass, visual-qa, sketch-handoff, and
+  the remaining setup/best-practices rows were already verified against
+  their current SKILL.md contents (the parallel session's later commits
+  touched references only, which the eval subject never receives).
+
+## Final tally
+
+**24 / 24 PASS.** Eval concurrency note: nested `claude -p` runs from two
+sessions sharing the account made long cases crash-prone; the final runs were
+sequenced solo by agreement with the parallel session.

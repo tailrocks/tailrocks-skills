@@ -37,10 +37,24 @@ Do not infer mutation permission from the presence of gaps.
 
 ## Copy-ready baseline
 
-Copy from `templates/` rather than reconstructing policy. When scaffolding,
-write `mise.toml` first and say in the same breath that its `[tasks]` are the
-single entry points local runs **and continuous integration** share — CI
-invokes `mise run generate / format:check / lint / build / test` verbatim.
+Copy from `templates/` rather than reconstructing policy. Scaffold in this
+exact order — smallest, highest-leverage files first, so an interrupted
+scaffold still leaves a coherent baseline rather than a torso:
+
+1. `mise.toml` — pins **and** `[tasks]`; state in the same breath that the
+   tasks are the single entry points local runs **and continuous
+   integration** share (CI invokes `mise run generate / format:check / lint /
+   build / test` verbatim).
+2. `.gitignore` — `*.xcodeproj`, `*.xcworkspace`, `.build/`, `DerivedData/`;
+   the generated project is never committed.
+3. `project.yml` — with the deployment target and **both SDK lanes recorded
+   as comments in the manifest** (shipping and forward-validation), ad-hoc
+   signing, synchronized source folders, app + unit-test + UI-test targets.
+4. `.swift-format` and `.swiftlint.yml` — and name the strict invocations.
+5. One Swift Testing unit test and one XCUITest with the scoped
+   accessibility audit — never empty test targets.
+6. The app entry-point stub, then everything else.
+
 Templates:
 
 | Template | Destination |
