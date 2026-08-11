@@ -21,7 +21,8 @@ obvious to a person who has the setting on.
 | 6 | macOS 27 Liquid Glass slider | Settings | **none** | Same as 4 and 5, across the range |
 | 7 | Reduce Transparency | Accessibility ▸ Display | `accessibilityReduceTransparency` / `NSWorkspace.accessibilityDisplayShouldReduceTransparency` | Custom glass substitutes an opaque background; text contrast maintained |
 | 8 | Increase Contrast | Accessibility ▸ Display | `colorSchemeContrast` / `NSWorkspace.accessibilityDisplayShouldIncreaseContrast`; `NSAppearance.Name.accessibilityHighContrast*` | HIG contrast minimums met; borders appear |
-| 9 | Reduce Motion | Accessibility ▸ Display | `accessibilityReduceMotion` / `NSWorkspace.accessibilityDisplayShouldReduceMotion` | Glass morph animations replaced by fades |
+| 8b | Show Borders (macOS 27) | Accessibility ▸ Display | environment value | Custom surfaces gain explicit boundaries and stay aligned. A surface whose only edge was the material itself must acquire a real one. |
+| 9 | Reduce Motion | Accessibility ▸ Display | `accessibilityReduceMotion` / `NSWorkspace.accessibilityDisplayShouldReduceMotion` | Glass morph animations replaced by fades. A glass morph is an animated blur, and Apple's Reduce Motion guidance says to avoid animating into and out of blurs. |
 | 10 | Differentiate Without Color | Accessibility ▸ Display | `accessibilityDifferentiateWithoutColor` / `NSWorkspace.…` | Tinted glass is not the sole state signal |
 | 11 | System accent color — all built-ins, custom, multicolor | Appearance ▸ Accent color | `NSColor.controlAccentColor` | Sidebar icons display the chosen color; prominent buttons re-tint |
 | 12 | Highlight color | Appearance ▸ Highlight color | `NSColor.selectedContentBackgroundColor` | Selection legible on glass |

@@ -148,6 +148,27 @@ governs this skill: *"Do not delegate critical thinking to these tools… Rememb
 you always have final say."* Divergent exploration is delegable. Edge cases,
 judgement, and approval are not.
 
+## The behavior contract
+
+Read [`native-behavior.md`](references/native-behavior.md). Appearance is the
+cheap half of native; this is the expensive half, and it is where an app that
+passes the visual review still feels foreign within seconds.
+
+It covers what a design must specify before layout: continuity (windows,
+positions, sidebar width, expanded sections, selection, sort, filters, and search
+scope all surviving a relaunch — per window, not per app); interaction latency as
+distinct from frame rate; menus as the command model, with a command palette as
+an accelerator that never replaces them; keyboard completeness with a visible
+focus ring; pointer, selection, and direct manipulation; documents, undo, and
+destructive-action policy; search as a mode that preserves scope and restores the
+previous view; empty, loading, and error states; inspectors including mixed
+values on multiple selection; and which system integrations are in scope.
+
+The rule underneath all of it: **do not draw what the system can own.** Every
+hand-drawn equivalent forfeits material updates, accessibility adaptation, shape
+grammar, window states, keyboard behavior, focus, localization, and every future
+refinement — permanently and silently.
+
 ## macOS is not a large iPhone
 
 Read [`macos-craft.md`](references/macos-craft.md) before making density,

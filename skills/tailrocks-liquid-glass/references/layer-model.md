@@ -24,6 +24,54 @@ The one documented exception:
 Transient means *while the person is manipulating it*. A permanently glass
 control sitting in a list row is not covered by this exception.
 
+## Three planes, not two
+
+The content/functional split is the rule. Splitting the functional layer in two
+is what makes it usable, because the two halves behave differently and get
+different treatments.
+
+| Plane | Purpose | Contents | Behavior |
+|---|---|---|---|
+| **Content** | the person's work | documents, tables, lists, canvases, media, code, maps | opaque or standard materials; never glass |
+| **Structural** | persistent navigation and commands | toolbar, sidebar, inspector chrome, search | glass, system-supplied, present at rest |
+| **Transient** | temporary interaction | menus, popovers, sheets, contextual editors, floating palettes | glass, system-supplied, appears from its source and leaves |
+
+Why the split earns its keep:
+
+- **Structural glass is always on screen**, so it must be quiet. It is judged on
+  legibility over the worst content the app can show.
+- **Transient glass is brief and has an origin.** It is judged on whether it
+  emerges from the thing that invoked it and returns attention afterwards.
+
+Most custom-glass mistakes are a transient element built as structural — a
+palette that never leaves, an editor docked instead of arising from the
+selection — or a structural element given transient drama.
+
+The `CUSTOM` glass that is usually justified is transient: a contextual editor
+originating at the selected object, a floating control group over a canvas that
+disappears when a sheet takes over. The structural plane is nearly always better
+served by a standard component.
+
+## Quiet at rest
+
+Liquid Glass should not shimmer, refract, or deform continuously. The interface
+is not the subject; the work is.
+
+The intended sequence:
+
+1. **At rest** — controls recede. Nothing moves.
+2. **On hover** — the interface clarifies what is interactive.
+3. **On press** — the control responds physically, but subtly.
+4. **During transition** — related surfaces morph rather than cut.
+5. **After completion** — attention returns to the content.
+
+Apple's own restraint note on the macOS 27 interactive-glass bounce is the
+calibration for step 3: *"A little goes a long way!"*
+
+A resting state that draws the eye is a defect regardless of how good it looks in
+a screenshot, because a person sees the resting state for hours and the
+interaction states for milliseconds.
+
 ## Classify before implementing
 
 Produce this table for every screen before writing any glass code. A region that

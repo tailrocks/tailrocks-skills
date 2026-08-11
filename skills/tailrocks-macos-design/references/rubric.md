@@ -46,9 +46,15 @@ the screen? Does the layout reflect the object model? Is progressive disclosure
 used where complexity warrants it? Is anything present that could be deleted?
 
 **macOS nativeness.** Native components where native components exist. Menu-bar
-commands. Keyboard and focus order. Window and resize behavior. Density
-appropriate to sustained desktop work. Correct control geometry for control size.
-No iOS pattern enlarged to desktop scale.
+commands, with every toolbar action present as one. Keyboard completeness and
+focus order, with the focus ring always visible. Standard selection, context
+menus, drag and drop. Window and resize behavior across the supported range.
+Density appropriate to sustained desktop work. Correct control geometry for
+control size — capsules reserved for prominent controls, rounded rectangles for
+dense ones. No iOS pattern enlarged to desktop scale. No command palette standing
+in for the menu bar.
+
+The full contract is in `native-behavior.md`; this category scores against it.
 
 **Visual hierarchy and composition.** Does content dominate chrome? Alignment,
 rhythm, optical balance, negative space. Is the first thing perceived the correct
@@ -74,6 +80,16 @@ Reduce Transparency behavior, text expansion, right-to-left.
 values, offline, permission denied, destructive-pending. Glass effect count and
 container batching. Frame pacing during resize.
 
+Two axes that carry more weight here than their share suggests, because failing
+either makes every other score irrelevant to the person using the app:
+
+- **Interaction latency**, distinct from frame rate. A control acknowledges input
+  the moment it is used, even when the work behind it is asynchronous. Menus open
+  immediately, selection changes immediately, loading does not move the layout.
+- **Continuity.** Windows, positions, sizes, sidebar width, inspector state,
+  expanded sections, selection, sort, filters, and search scope all survive a
+  quit and relaunch — per window, not per app.
+
 ## Hard failures
 
 Any one of these rejects the feature regardless of score.
@@ -88,6 +104,12 @@ Any one of these rejects the feature regardless of score.
 - Missing empty, loading, or error handling.
 - Broken behavior under Reduce Motion, Reduce Transparency, or Increase Contrast.
 - A destructive action with no confirmation, undo, or recovery.
+- **A path by which a person can lose work.** This outranks every visual finding
+  in the list.
+- **Window state not restored across quit and relaunch** — position, size,
+  sidebar width, open documents.
+- A command reachable only through a command palette, with no menu equivalent.
+- A function reachable only by hover, or only by drag and drop.
 - A toolbar action with no menu-bar command.
 - No validation of the inactive-window appearance.
 - No rendered output.

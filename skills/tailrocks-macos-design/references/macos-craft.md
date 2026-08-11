@@ -130,6 +130,24 @@ For custom surfaces adjacent to a system container, derive the radius
 concentrically rather than choosing one. See `tailrocks-liquid-glass` for the
 mechanism and the correct API spellings.
 
+### Capsule or rounded rectangle
+
+Liquid Glass does not mean every control becomes a capsule. The Mac shape grammar
+keeps mini, small, and medium controls as rounded rectangles and reserves capsule
+geometry for larger, more prominent ones. Getting this wrong is the single most
+recognizable AI-generated tell on macOS, because it destroys density.
+
+**Capsule** — a prominent primary action; a compact status-and-action pair; a
+self-contained playback control; a short segmented choice; a free-floating
+transient control group.
+
+**Rounded rectangle** — inspector fields; dense toolbar controls; steppers;
+pop-up buttons; filters; professional editing controls; table and list actions.
+
+**Neither** — capsule table rows, capsule navigation items, large rounded cards
+nested inside an already-rounded window, and any radius that differs from its
+neighbours without a structural reason.
+
 ## Icons
 
 SF Symbols first — over 7,000 symbols aligned to San Francisco, with matching
