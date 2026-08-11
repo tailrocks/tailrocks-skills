@@ -35,7 +35,7 @@ component systems are outside scope.
 | `tailrocks-research` | Deep-research a specific question or a roadmap item into a reusable multi-page topic under `research/` — vetted sourced chapters, candidate directions with trade-offs, many-to-many links with roadmap items. |
 | `tailrocks-record-decision` | Record one user decision on a roadmap item: validate against settled ground, date it with its reason, propagate through the item, reopen READY/PLANNED items and mark stale plans when intent changes. |
 | `tailrocks-finalize` | The closing interview that earns READY: collect every screen and flow, resolve or classify every open question, pass the readiness checklist — the only skill that grants READY. |
-| `tailrocks-plan` | Turn a READY roadmap item into `plans/<slug>/`: coverage ledger, gap research, OpenSpec-grammar spec, one cold-reviewed zero-context plan per work item (each written by its own subagent), and a copy-pasteable GOAL.md for the /goal command of Claude Code, Codex, or Grok. |
+| `tailrocks-plan` | Turn a READY roadmap item into `plans/<slug>/`: coverage ledger, gap research, OpenSpec-grammar spec, one cold-reviewed zero-context plan per work item (each written by its own subagent), and GOAL.md for Claude Code/Codex `/goal` or manual Grok prompting. |
 | `tailrocks-reconcile` | True up an executing implementation package with reality: re-verify DONE rows by re-running their done criteria, reset dead-session rows, drift-check TODO plans against HEAD, mark stale rows, and reconcile the roadmap item's status. |
 
 More skills land in `skills/` over time; the layout and install flow below are
@@ -85,7 +85,7 @@ Roadmap items live in `roadmap/<slug>/README.md` with a status machine
 (DRAFT → SHAPING → READY → PLANNED → IN EXECUTION → DONE, plus PARKED);
 research topics live in `research/<topic>/` independent of items; plans live
 in `plans/<slug>/` with a GOAL.md whose blocks paste directly into the
-`/goal` command of Claude Code, Codex, or Grok. After execution,
+`/goal` command of Claude Code or Codex, or a manual Grok prompt. After execution,
 `tailrocks-reconcile` re-earns every plan status with commands run now and
 trues up the item — run it whenever a loop finishes, stalls, or the
 repository moved on since planning.
