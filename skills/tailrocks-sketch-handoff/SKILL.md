@@ -58,6 +58,10 @@ native toolbar item has specified a frozen imitation. Read
 [`apple-kit.md`](references/apple-kit.md) before treating any kit value as a
 specification.
 
+**NATIVE audit minimum:** every NATIVE design-map row forbids all seven internal
+appearance values: background, material, blur, opacity, stroke, shadow, and
+corner radius. Missing even one is a finding, not a compliant row.
+
 ## Wire the agent
 
 Read [`sketch-mcp.md`](references/sketch-mcp.md). The server is local, disabled
