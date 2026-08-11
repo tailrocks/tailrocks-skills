@@ -41,8 +41,8 @@ preconditionFailure("Selection referenced record \(id), which is not in the stor
 ```
 
 Never trap on input, on the network, on the file system, or on anything a person
-can cause. Force unwrapping and force casting are errors in application code;
-tests may force where the failure *is* the assertion.
+can cause. Force operations remain errors; the strict lint gate currently has no
+test-only exemption.
 
 ## API surface
 

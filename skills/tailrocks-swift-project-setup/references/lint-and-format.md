@@ -56,8 +56,9 @@ Same rule: strict in the gate.
 
 Copy `templates/swiftlint.yml`. Two policy points worth stating explicitly in it:
 
-- Force unwrapping, force casting, and force `try` are errors in application
-  code and allowed in tests only where the failure is the assertion.
+- Force unwrapping, force casting, and force `try` remain errors. The proposed
+  warning-only test config is incompatible with the required `--strict` gate;
+  no test exemption is shipped until that policy conflict is resolved.
 - Rules disabled for legacy debt carry a narrow path scope and a reason comment,
   never a repository-wide disable.
 

@@ -87,28 +87,8 @@ a pinned tool nobody can justify is removed at the next audit.
 
 Local and continuous-integration commands must resolve through the same
 definitions, or the two drift and the pipeline stops predicting the local result.
-
-```toml
-[tasks.generate]
-run = "xcodegen generate"
-
-[tasks.format]
-run = "xcrun swift-format format -i -r -p Sources Tests UITests"
-
-[tasks."format:check"]
-run = "xcrun swift-format lint --strict -r -p Sources Tests UITests"
-
-[tasks.lint]
-run = "swiftlint --strict"
-
-[tasks.build]
-depends = ["generate"]
-run = "set -o pipefail && xcodebuild -project App.xcodeproj -scheme App -configuration Debug -derivedDataPath $HOME/Library/Developer/AppBuild build | xcbeautify"
-
-[tasks.test]
-depends = ["generate"]
-run = "set -o pipefail && xcodebuild test -project App.xcodeproj -scheme App -destination 'platform=macOS' | xcbeautify"
-```
+The canonical task set is `templates/mise.toml`;
+continuous integration invokes those task names without restating commands.
 
 ## Language mode
 
@@ -116,3 +96,6 @@ Target the current Swift language mode with strict concurrency. Record the
 language mode explicitly in build settings rather than inheriting whatever the
 toolchain defaults to, so a toolchain bump does not silently change the
 diagnostics an agent sees.
+
+`SWIFT_VERSION` is the language mode, not the compiler release. Legal values are
+`4`, `4.2`, `5`, and `6`; never write a release such as `6.3` there.

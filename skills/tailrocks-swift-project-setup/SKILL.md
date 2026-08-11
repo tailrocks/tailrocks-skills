@@ -63,8 +63,10 @@ Templates:
 | [`swift-format.json`](templates/swift-format.json) | `.swift-format` |
 | [`swiftlint.yml`](templates/swiftlint.yml) | `.swiftlint.yml` |
 | [`mise.toml`](templates/mise.toml) | `mise.toml` |
+| [`gitignore`](templates/gitignore) | `.gitignore` |
 
-Preserve stronger compatible local policy. Replace marked project values.
+Preserve stronger compatible local policy. Resolve version markers to the latest
+stable pin and remove brackets; replace other marked project values literally.
 
 ## New project
 

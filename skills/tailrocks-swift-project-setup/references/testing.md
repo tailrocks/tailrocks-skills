@@ -12,6 +12,15 @@ Practical split:
 - UI automation, accessibility audits, launch and lifecycle tests — older
   framework.
 
+## Swift Testing API surface
+
+Use `@Test` and `@Suite`, `#expect` for ordinary assertions, and `#require` when
+later assertions require an unwrapped value. Known defects use `withKnownIssue`;
+traits include `.disabled`, `.tags`, `.timeLimit`, and `.serialized`. Tests run
+in parallel by default; use `@MainActor` for main-isolated UI state and
+`.serialized` only for proven shared-state conflicts. In an Xcode selector such
+as `AppTests/MathSuite/addsNumbers()`, `MathSuite` is the suite type name.
+
 ## The silent-failure trap
 
 Filtering differs between the two entry points, and the difference produces a
@@ -107,7 +116,7 @@ application instead.
 | Tier | Cadence | Contents |
 |---|---|---|
 | Pull request | every change | generate, strict format check, strict lint, build, unit tests |
-| Merge | every merge to the default branch | the above plus UI tests and the accessibility audit |
+| Merge | every merge to the default branch | the above plus `mise run test:ui` and the accessibility audit |
 | Scheduled | nightly or weekly | dead-code scan, forward-validation SDK build, visual state matrix, performance profile |
 
 Continuous integration cannot run the interactive parts without a graphical

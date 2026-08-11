@@ -68,13 +68,24 @@ disabled_rules:
   # swift-format owns layout. Leaving both to argue about it produces churn.
   - line_length
   - trailing_comma
+  - attributes
+  - closure_end_indentation
+  - closure_spacing
+  - collection_alignment
+  - literal_expression_end_indentation
+  - multiline_arguments
+  - multiline_parameters
+  - operator_usage_whitespace
+  - vertical_parameter_alignment_on_call
 
 # Force operations are errors in application code. Tests may force where the
 # failure IS the assertion.
 force_cast: error
 force_try: error
 force_unwrapping: error
-implicitly_unwrapped_optional: error
+implicitly_unwrapped_optional:
+  severity: error
+  mode: all
 
 identifier_name:
   min_length:
@@ -106,8 +117,8 @@ nesting:
 custom_rules:
   hardcoded_corner_radius:
     name: "Hard-coded corner radius"
-    regex: "cornerRadius:\\s*[0-9]"
-    message: "Derive the radius concentrically for surfaces adjacent to a system container. See the Liquid Glass rules."
+    regex: "(?:cornerRadius|cornerRadii)\\s*[:=(]\\s*[0-9]"
+    message: "Derive the radius concentrically from the containing system surface; a numeric radius adjacent to a system container is a hard failure."
     severity: warning
     excluded: ".*Tests.*"
 
