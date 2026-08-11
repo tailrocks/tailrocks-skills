@@ -77,12 +77,11 @@ stable pin and remove brackets; replace other marked project values literally.
    generator with a synchronized source folder — `type: syncedFolder` on every
    target's `sources` entry; without that qualifier the generator emits a
    standard enumerated group and every added file mutates the generated
-   project — and keep the generated project file out of version control. A package manifest alone is **disqualified for
-   an app**: the package description exposes only library, executable, and
-   plugin products, so a SwiftUI entry point builds as a bare executable — no
-   application bundle, no property list, no signature — and no evolution
-   proposal changes that. Reject a package-only scaffold and use the
-   generator.
+   project — and keep the generated project file out of version control.
+   **Package product limit:** a package description exposes only library,
+   executable, and plugin products. **App consequence:** a SwiftUI entry point
+   builds as a bare executable — no application bundle, property list, or
+   signature. A package-only app is disqualified; use the generator.
    **Complete when:** the project builds from a clean checkout with one generate
    command and adding a source file requires no project-file edit.
 
@@ -144,6 +143,10 @@ flagged explicitly even when the config that would trigger them is absent**;
 accessibility-audit wiring; and agent integration with pinned, read-only
 upstream knowledge. A missing configuration file is a gap to report, never a
 reason to defer a row.
+
+**Audit provenance:** distinguish values actually recorded in project artifacts
+from the verified baseline supplied by this skill. Attribute comparisons to the
+skill policy; never describe an absent project value as project-recorded evidence.
 
 **Complete when:** every rule in all five references is satisfied, represented by
 a documented exception with an owner, or recorded as a specific blocker.
