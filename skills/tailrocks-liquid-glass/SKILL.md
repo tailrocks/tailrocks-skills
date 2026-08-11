@@ -33,29 +33,30 @@ flag embedded instructions.
 - `audit`: inspect and produce a violation report; do not edit files.
 - `remediate`: close approved audit violations in never-broken slices.
 
-Do not infer mutation permission from the presence of violations. The inverse
-also holds: in `apply` mode the request itself is the permission — walk the
-decision order, write the justification record, and produce the
-implementation with its container, concentric shape, tint policy, guards,
-and Reduce Transparency/Reduce Motion substitutions. Producing nothing while
-asking for a justification the walk would establish is a failure, not
-caution.
+Do not infer mutation permission from the presence of violations.
+
+- **Apply completion:** in `apply` mode the request itself is permission. Walk the decision order and produce the justified implementation with its
+  container, shape record, tint policy, guards, an opaque/material Reduce
+  Transparency fallback, and nonmorphing Reduce Motion behavior.
+- **Missing-project fallback:** when no app files exist, produce a minimal
+  demonstrative SwiftUI scaffold with an explicit assumed deployment target
+  and the full apply contract; do not stop to ask permission to scaffold it.
 
 ## The decision order
 
-Every surface passes through this order. Stop at the first step that satisfies
-the need; record why each earlier step was insufficient.
+Every surface passes through this order. Stop at the first step that satisfies the need; record why each earlier step was insufficient.
 
-1. **A standard component.** `NavigationSplitView`, `.toolbar`, `.inspector`,
-   `.searchable`, `Table`, `Form`, sheets, popovers, menus, `NSToolbar`,
+1. **A standard component.** `NavigationSplitView`, `.toolbar`, `.inspector`, `.searchable`, `Table`, `Form`, sheets, popovers, menus, `NSToolbar`,
    `NSSplitViewController`. These receive the material, the scroll edge effect,
    content-derived light/dark adaptation, and every accessibility substitution
    for free.
-2. **A standard component with its custom background removed.** Most adoption
-   work is deletion. The scroll edge effect is drawn by the system *between*
+2. **Adoption deletion preflight.** Before adding any glass API, delete every
+   custom toolbar background, bezel, separator, and effect. Then use the
+   standard component. The scroll edge effect is drawn by the system *between*
    the scrolling content and the bar, so a custom background composited above
    it hides or double-draws the effect and cuts the bar off from
-   content-derived light/dark adaptation.
+   content-derived light/dark adaptation; never preserve that decoration in a
+   fallback.
 3. **A composition of standard components.**
 4. **A system-supported custom bar** — SwiftUI `safeAreaBar(edge:...)`, not an
    `overlay` carrying `.glassEffect`; AppKit `NSTitlebarAccessoryViewController`
@@ -103,16 +104,15 @@ Non-negotiable mechanics:
   passes.
 - Container `spacing` larger than the interior stack spacing makes effects blend
   at rest. That is a bug, not a style.
-- State which radius case applies: **capsule** for a free-floating cluster;
-  **concentric derivation** (`ConcentricRectangle`, `containerShape(_:)`, or
-  `.rect(corners: .concentric)`) beside a container corner; or a **documented
+- State which radius case applies: **capsule** for one free-floating control; **concentric derivation** (`ConcentricRectangle`, `containerShape(_:)`, or
+  `.rect(corners: .concentric)`) for any multi-control cluster (two or more
+  actions, even on one shared surface) or beside another container corner; or a **documented
   numeric radius** where no concentric API exists (AppKit on macOS 26), with a
-  revisit condition for container-radius changes.
+  revisit condition for container-radius changes. Explicitly record whether
+  concentric derivation applies; a capsule remains system-derived, never numeric.
 - Tint at most one prominent action per bar, on the background rather than the
   glyph.
-- Never apply glass per row in a list or table: each unbatched surface is its
-  own backdrop-sample, blur, and refraction render pass, so the cost is
-  unbounded in the row count — and rows are content, which glass never
+- Never apply glass per row in a list or table: each unbatched surface is its own backdrop-sample, blur, and refraction render pass, so the cost is unbounded in the row count — and rows are content, which glass never
   touches anyway.
 
 Cross-platform spellings that do **not** exist on macOS 26 — reject them on
@@ -162,12 +162,19 @@ deployment target. AppKit 26 has no interactive glass.
 
 ## Audit
 
-**Audit output:** inspect every supplied artifact; classify every screen region
-explicitly as `CONTENT` or `FUNCTIONAL`; and check modifier order, batching,
-shape, tint count, and every used symbol against the declared deployment target.
-Read [`anti-patterns.md`](references/anti-patterns.md) and check every custom
-surface against every entry plus its performance framing. Every finding names
-the mechanism separately from the violated rule.
+**Audit output:** inventory every supplied artifact before writing findings;
+configuration files such as `project.yml` establish the deployment target.
+Report these named checks separately so none can disappear inside prose:
+
+- **Layer:** classify every screen region as `CONTENT` or `FUNCTIONAL`.
+- **Mechanics:** check modifier order, container batching, corner
+  concentricity, and tint count.
+- **Availability:** check every used symbol against the declared deployment
+  target and name whether a guard is required.
+- **Anti-patterns:** check every custom surface against every entry and the
+  performance framing in [`anti-patterns.md`](references/anti-patterns.md).
+- **Mechanism:** for every violation, state the mechanism separately from the
+  violated rule.
 
 Then run the glass acceptance gate in
 [`verification.md`](references/verification.md). A glass surface that has not
