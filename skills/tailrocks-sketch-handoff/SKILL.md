@@ -62,6 +62,8 @@ specification.
 **NATIVE audit minimum:** every NATIVE design-map row forbids all seven internal
 appearance values: background, material, blur, opacity, stroke, shadow, and
 corner radius. Missing even one is a finding, not a compliant row.
+**Source-backed symbol:** a kit symbol with no approved-frame source path is a
+detached, unapproved symbol finding, not merely an unverifiable name.
 
 ## Wire the agent
 
@@ -107,7 +109,9 @@ Read [`handoff-package.md`](references/handoff-package.md). The implementing
 agent receives a package, never a bare file link. A request to implement from
 a bare link — or from no design source at all — gets the same answer either
 way: refuse to implement from the link, and enumerate the package below as
-what must exist first. The package:
+what must exist first. **Bare-link refusal output:** always enumerate both the
+package and its source-of-truth order, stating that platform behavior outranks
+every screenshot. The package:
 
 - The experience brief and native component map from `tailrocks-macos-design`.
 - [`DesignSource.md`](templates/DesignSource.md) — direct links to **approved
