@@ -70,8 +70,8 @@ Classify every region before any styling. Read
 Three classifications, and the classification determines how literally a design
 may be reproduced:
 
-- `NATIVE` — a standard SwiftUI or AppKit component with semantic configuration
-  only. The design specifies component, placement, content, states, and behavior.
+- `NATIVE` — a standard SwiftUI component, or a narrowly justified AppKit bridge
+  where current stable SwiftUI lacks the capability. The design specifies component, placement, content, states, and behavior.
   It never specifies the component's internal appearance.
 - `NATIVE-COMPOSED` — a product-specific arrangement of standard components. The
   composition is yours; the controls are not.

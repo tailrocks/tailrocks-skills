@@ -8,9 +8,10 @@ duplicated listings.
 
 The skills are source-neutral and encode one Tailrocks house stack: Rust 2024
 with Axum/Tokio/Tower, TypeScript 7 with Bun, TanStack Start, React, shadcn/ui,
-Tailwind CSS v4, and Oxc, and native macOS with Swift, SwiftUI, AppKit where it
-earns its place, and Liquid Glass. Alternative frameworks, package managers, and
-component systems are outside scope.
+Tailwind CSS v4, and Oxc, and native macOS with Swift, SwiftUI-first app and UI
+architecture, narrow capability-only AppKit bridges, and Liquid Glass. Existing
+AppKit apps migrate toward that architecture. Alternative frameworks, package
+managers, and component systems are outside scope.
 
 ## Skills
 

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, test } from "bun:test";
 import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { aggregateVerdicts, collectArtifacts, fixtureDestination, stageFixtures } from "./run-evals";
+import { aggregateVerdicts, collectArtifacts, fixtureDestination, stageFixtures, withRetries } from "./run-evals";
 
 const cleanup: string[] = [];
 afterEach(async () => { await Promise.all(cleanup.splice(0).map((item) => rm(item, { recursive: true, force: true }))); });
@@ -31,5 +31,24 @@ describe("eval runner helpers", () => {
     expect(result.exitCode).toBe(1);
     expect(result.summary.passed).toBe(2);
     expect(result.summary.retained_workspaces).toEqual(["/tmp/run-3"]);
+  });
+
+  test("retries transient execution failure and returns success", async () => {
+    let calls = 0;
+    expect(await withRetries(2, async () => {
+      calls += 1;
+      if (calls === 1) throw new Error("transient");
+      return "ok";
+    })).toBe("ok");
+    expect(calls).toBe(2);
+  });
+
+  test("rethrows after the retry budget is exhausted", async () => {
+    let calls = 0;
+    await expect(withRetries(2, async () => {
+      calls += 1;
+      throw new Error(`failure-${calls}`);
+    })).rejects.toThrow("failure-2");
+    expect(calls).toBe(2);
   });
 });

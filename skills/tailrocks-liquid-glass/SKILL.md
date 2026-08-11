@@ -87,8 +87,8 @@ not an implementation question.
 
 ## Implementation
 
-For SwiftUI, read [`swiftui-api.md`](references/swiftui-api.md). For AppKit,
-read [`appkit-api.md`](references/appkit-api.md). Both carry exact signatures and
+Use SwiftUI for new surfaces and read [`swiftui-api.md`](references/swiftui-api.md).
+At a justified AppKit capability boundary, read [`appkit-api.md`](references/appkit-api.md). Both carry exact signatures and
 per-symbol availability. Apple ships no downloadable AppKit Liquid Glass sample
 and no AppKit listing in its adoption guide; WWDC26 session 289 does include an
 Apple-authored AppKit `cornerConfiguration` listing. Verify every symbol against
