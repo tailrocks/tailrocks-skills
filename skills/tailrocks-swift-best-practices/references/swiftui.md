@@ -76,7 +76,8 @@ macOS windowing has no iOS analogue and is routinely skipped by iOS-shaped code:
 - Restore state per window, not per app, wherever a person can have two windows
   showing different things.
 - Handle main, key, and inactive appearance. Inactive windows do not use
-  materials and appear subdued; custom chrome must desaturate to match.
+  vibrancy and appear subdued; custom chrome must follow the system-defined
+  appearances.
 
 ## Focus and keyboard
 

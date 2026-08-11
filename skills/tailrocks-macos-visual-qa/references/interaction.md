@@ -57,13 +57,14 @@ try app.performAccessibilityAudit(for: [
 ])
 ```
 
-macOS 14+. Available audit types: action, contrast, dynamic type, element
-detection, hit region, parent-child, sufficient element description, text
-clipped, trait.
+macOS 14+. Audit types available on macOS: action, contrast, element detection,
+hit region, parent-child, sufficient element description. The dynamic-type,
+text-clipped, and trait audits are iOS-family only — they do not exist in the
+macOS SDK, so auditing `.all` never runs them (and macOS has no Dynamic Type
+anyway).
 
 This reads the real view hierarchy, which makes it far stronger than inferring
-contrast from pixels. Dynamic type is semantically meaningless on macOS — macOS
-has no Dynamic Type — so exclude it.
+contrast from pixels.
 
 It runs through the test action, so it needs a graphical session like everything
 else here.

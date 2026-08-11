@@ -159,7 +159,8 @@ macOS 26.0. The view is duplicated into mirrored copies placed around it on any
 edge with available safe area, then blurred.
 
 > Apply this modifier with discretion. This should often be used with only a
-> single instance of background content.
+> single instance of background content with consideration of visual clarity
+> and performance.
 
 The modifier clips the view to prevent copies overlapping. Two placement rules
 from Apple's own sample:
@@ -179,10 +180,15 @@ view, which defeats the auto-adjustment that lets content scroll underneath.
 func safeAreaBar(edge: HorizontalEdge, alignment: VerticalAlignment = .center,
                  spacing: CGFloat? = nil,
                  @ContentBuilder content: () -> some View) -> some View
+func safeAreaBar(edge: VerticalEdge, alignment: HorizontalAlignment = .center,
+                 spacing: CGFloat? = nil,
+                 @ContentBuilder content: () -> some View) -> some View
 ```
 
-macOS 26.0. Makes space for the content view by insetting the modified view,
-adjusting the safe area **and scroll edge effects** to match.
+macOS 26.0, two overloads: `HorizontalEdge` for a bar beside the view,
+`VerticalEdge` for a bar above or below it. Makes space for the content view by
+insetting the modified view, adjusting the safe area **and scroll edge
+effects** to match.
 
 This is the correct way to build a custom bar that participates in the glass
 layer. An `overlay` carrying `.glassEffect` adjusts neither the safe area nor the
@@ -197,7 +203,7 @@ scroll edge effect and is the wrong construction.
 | `ToolbarContent.sharedBackgroundVisibility(_:)` | `func sharedBackgroundVisibility(_ visibility: Visibility) -> some ToolbarContent` | macOS 26.0 |
 | `DefaultToolbarItem` | `struct DefaultToolbarItem` | macOS 26.0 |
 | `ToolbarContent.hidden(_:)` | `func hidden(_ hidden: Bool = true) -> some ToolbarContent` | macOS 15.0 |
-| `ToolbarContent.visibilityPriority(_:)` | | macOS **26.1** |
+| `ToolbarContent.visibilityPriority(_:)` | `func visibilityPriority(_ priority: ToolbarItemVisibilityPriority) -> some ToolbarContent` | macOS **26.1** at runtime — but the symbol is **absent from the macOS 26.5 SDK** (Xcode 26.6); it compiles only against the macOS 27 beta SDK. Other platforms are 27.0 beta. |
 | `toolbarMinimizationBehavior(_:for:)` | | macOS **27.0 beta** |
 | `toolbarOverflowMenu(content:)`, `ToolbarItemPlacement.topBarPinnedTrailing` | | **no macOS availability** |
 
@@ -284,8 +290,8 @@ macOS 27 beta adds `GeometryProxy.concentricCornerRadii` and
 | `presentationBackground(_:)`, `presentationBackground(alignment:content:)` | macOS 13.3 | No glass-specific API. The rule is to *remove* custom sheet and popover backgrounds. |
 | `presentationBackgroundInteraction(_:)` | macOS 13.3 | unchanged |
 | `glassBackgroundEffect(...)` | **visionOS 1.0 only** | Not available on macOS. Frequent hallucination. |
-| `WindowStyle` | macOS 11.0 | `.automatic`, `.titleBar`, `.hiddenTitleBar`, `.plain`. No new glass window style in 26 or 27 beta. |
-| `containerBackground(_:for:)`, `ContainerBackgroundPlacement.window` | macOS 14.0 | pre-existing |
+| `WindowStyle` | macOS 11.0 (`.plain` is macOS **15.0**) | `.automatic`, `.titleBar`, `.hiddenTitleBar`, `.plain`. No new glass window style in 26 or 27 beta. |
+| `containerBackground(_:for:)` | macOS 14.0 | `ContainerBackgroundPlacement.window` is macOS **15.0** |
 | `windowToolbarStyle(_:)`, `WindowToolbarStyle` | macOS 11.0 | pre-existing |
 | `MenuBarExtra`, `MenuBarExtraStyle` | macOS 13.0 | **No Liquid Glass API surface.** Appearance is entirely system-supplied. |
 

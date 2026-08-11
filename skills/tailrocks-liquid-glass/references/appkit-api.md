@@ -252,7 +252,7 @@ sidebars extend to the window's edges.
 ## Split views, sidebars, inspectors
 
 - `NSSplitViewController`, `NSSplitViewItem.init(inspectorWithViewController:)`
-  (macOS 14).
+  (macOS 11.0).
 - macOS 26.0 additions: `NSSplitViewItemAccessoryViewController`,
   `NSSplitViewItem.topAlignedAccessoryViewControllers` and
   `.bottomAlignedAccessoryViewControllers`.

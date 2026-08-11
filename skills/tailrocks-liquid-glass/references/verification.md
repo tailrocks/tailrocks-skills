@@ -21,11 +21,11 @@ obvious to a person who has the setting on.
 | 6 | macOS 27 Liquid Glass slider | Settings | **none** | Same as 4 and 5, across the range |
 | 7 | Reduce Transparency | Accessibility ▸ Display | `accessibilityReduceTransparency` / `NSWorkspace.accessibilityDisplayShouldReduceTransparency` | Custom glass substitutes an opaque background; text contrast maintained |
 | 8 | Increase Contrast | Accessibility ▸ Display | `colorSchemeContrast` / `NSWorkspace.accessibilityDisplayShouldIncreaseContrast`; `NSAppearance.Name.accessibilityHighContrast*` | HIG contrast minimums met; borders appear |
-| 9 | Reduce Motion | Accessibility ▸ Display | `accessibilityReduceMotion`, `accessibilityPrefersCrossFadeTransitions` | Glass morph animations replaced by fades |
+| 9 | Reduce Motion | Accessibility ▸ Display | `accessibilityReduceMotion` / `NSWorkspace.accessibilityDisplayShouldReduceMotion` | Glass morph animations replaced by fades |
 | 10 | Differentiate Without Color | Accessibility ▸ Display | `accessibilityDifferentiateWithoutColor` / `NSWorkspace.…` | Tinted glass is not the sole state signal |
 | 11 | System accent color — all built-ins, custom, multicolor | Appearance ▸ Accent color | `NSColor.controlAccentColor` | Sidebar icons display the chosen color; prominent buttons re-tint |
 | 12 | Highlight color | Appearance ▸ Highlight color | `NSColor.selectedContentBackgroundColor` | Selection legible on glass |
-| 13 | Window main / key / inactive | click away | — | Inactive windows do not use materials; custom chrome must desaturate too |
+| 13 | Window main / key / inactive | click away | — | Inactive windows do not use vibrancy; custom chrome must follow the system-defined appearances |
 | 14 | Sidebar icon size small / medium / large | General settings | — | Row metrics reflow |
 | 15 | Scroll bars: Always / When scrolling / Automatic | Appearance | — | Scroll edge effect still correct with no visible scrollers |
 | 16 | Display scale 1x / 2x, and dragging between displays | Displays | — | Corner radii and blurs resolve correctly on move |

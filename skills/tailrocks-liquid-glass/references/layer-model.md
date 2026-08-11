@@ -86,13 +86,14 @@ From HIG ▸ Scroll views:
 
 > Apply one scroll edge effect per view. In split view layouts on iPad and Mac,
 > each pane can have its own scroll edge effect; in this case, keep them
-> consistent in height.
+> consistent in height to maintain alignment.
 
-> Prefer the automatic scroll edge effect style. This style provides a more
+> Prefer the automatic scroll edge effect style. … This style provides a more
 > opaque visual separation for top toolbars that contain a large number of
 > controls, text that appears outside of Liquid Glass controls, and pinned table
 > headers. If you use the soft scroll edge effect style instead, thoroughly test
-> your interface.
+> your interface to ensure your controls maintain legibility in a variety of
+> contexts.
 
 ## Variant selection
 
@@ -153,8 +154,8 @@ These have no iOS equivalent and are routinely missed:
   row metrics must reflow.
 - Avoid putting critical information or actions at the bottom of a sidebar.
 - Window main, key, and inactive appearances come from the system. Inactive
-  windows do not use materials, which makes them appear subdued; custom chrome
-  must desaturate to match.
+  windows do not use vibrancy, which makes them appear subdued and visually
+  farther away; custom chrome must follow the system-defined appearances.
 - Avoid creating custom window UI. Do not make custom window frames or controls
   and do not replicate the system-provided appearance.
 - macOS has no Dynamic Type. The type scale is fixed: Large Title 26/32 through

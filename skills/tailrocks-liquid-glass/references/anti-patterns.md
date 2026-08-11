@@ -38,8 +38,8 @@ effect.
 
 **Rule.** "Any custom backgrounds and appearances you use in these elements might
 overlay or interfere with Liquid Glass or other effects that the system provides,
-such as the scroll edge effect." And: "Reduce the use of toolbar backgrounds and
-tinted controls."
+such as the scroll edge effect." And: "Reduce your use of custom backgrounds in
+controls and navigation elements."
 
 **Mechanism.** The scroll edge effect is drawn by the system *between* the
 scrolling content and the bar. An opaque custom background composites above it,
@@ -157,7 +157,7 @@ applied **before** `.overlay` or the overlay content slides under the sidebar.
 ## 10. Shipping `UIDesignRequiresCompatibility` as a strategy
 
 **Rule.** The key is documented as temporary: "Temporarily use this key while
-reviewing and refining your app's UI."
+reviewing and refining your app's UI for the design in the latest SDKs."
 
 **Mechanism.** The system **ignores the key when the app is built against the 27
 SDK or later**, and Apple has stated it is removing support for opting into the
@@ -175,8 +175,8 @@ it as such if it appears in a review.
 
 What Apple does say: combine custom effects in a container to improve rendering
 performance; apply `backgroundExtensionEffect()` with discretion and generally to
-only a single instance of background content; and limit the number of Liquid
-Glass effects onscreen at once. Glass cost scales with what is behind it, not
+only a single instance of background content; and "Limit the use of Liquid Glass
+effects onscreen at the same time." Glass cost scales with what is behind it, not
 only with its own area, because the system adapts the material in response to the
 underlying content.
 

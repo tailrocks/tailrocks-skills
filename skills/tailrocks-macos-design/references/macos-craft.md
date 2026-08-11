@@ -24,8 +24,8 @@ Concrete obligations that agent output most often drops:
   settings; row metrics must reflow.
 - **Avoid critical information or actions at the bottom** of a window or sidebar.
 - **Window main, key, and inactive appearances come from the system.** Inactive
-  windows do not use materials and appear subdued; custom chrome must desaturate
-  to match.
+  windows do not use vibrancy and appear subdued; custom chrome must follow the
+  system-defined appearances.
 - **Avoid custom window UI.** Do not build custom window frames or controls, and
   do not replicate the system-provided appearance.
 - **Hover-only actions need a keyboard and menu equivalent.** A pointer-only

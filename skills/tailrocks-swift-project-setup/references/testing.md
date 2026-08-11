@@ -67,8 +67,9 @@ func testAccessibility() throws {
 }
 ```
 
-macOS 14+. Exclude the dynamic-type audit — macOS has no Dynamic Type, so it is
-semantically meaningless here.
+macOS 14+. There is no dynamic-type audit to exclude on macOS —
+`XCUIAccessibilityAuditType.dynamicType` has no macOS availability, and macOS
+has no Dynamic Type.
 
 This reads the real view hierarchy, which makes it substantially stronger than
 inferring contrast from captured pixels. It runs through the test action, so it

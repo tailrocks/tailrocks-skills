@@ -43,7 +43,7 @@ Nothing was added or deprecated between 26.1 and 26.6 except three items:
 |---|---|
 | `NSScrollEdgeEffectStyle` | macOS **26.1** — not 26.0 |
 | `NSTitlebarAccessoryViewController.preferredScrollEdgeEffectStyle` | macOS **26.1** |
-| SwiftUI `ToolbarContent.visibilityPriority(_:)` | macOS **26.1** |
+| SwiftUI `ToolbarContent.visibilityPriority(_:)` | macOS **26.1** at runtime, but declared only in the macOS **27 beta SDK** — it does not compile against SDK 26.5 (Xcode 26.6) |
 
 macOS 26.4 fixed one glass defect: a non-opaque window hosting glass content now
 updates the backdrop behind the glass while the window is inactive.

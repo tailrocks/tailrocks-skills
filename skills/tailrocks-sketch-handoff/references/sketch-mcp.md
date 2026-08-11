@@ -73,20 +73,19 @@ deliberate about what an agent is allowed to run — it can modify the document.
   Design edits are a separate, deliberate act with the same review as any other
   change.
 
-## Official Sketch agent skills
+## Keep design authority project-local
 
-Sketch publishes a skills catalogue containing a design-to-code skill and a
-design-from-reference skill. Use them for the mechanics of reading a document and
-producing implementation context.
+Vendor-published design-to-code guidance exists for this tool, but this
+collection does not adopt or reference external skills — the document-reading
+mechanics an agent needs are fully covered by the MCP tools above, and the
+extraction workflow in this skill family is the distilled, Apple-verified
+version of that knowledge.
 
-Two cautions before adopting them wholesale:
-
-- At the time of writing the catalogue ships **no license file**. Install and use
-  it; do not vendor its content into your own repository.
-- They own *mechanics*. Design quality, Apple-platform correctness, and material
-  policy stay with the project's own skills. Do not let a generic design-to-code
-  skill become the authority on which native component to use — that is what
-  produces rectangles-into-Swift output.
+The division of authority that matters: tooling mechanics come from the MCP
+server; design quality, Apple-platform correctness, and material policy come
+from the project's own skills. A generic design-to-code workflow left in
+charge of component choice produces rectangles-into-Swift output — the design
+map, not the tool, decides which native component a region becomes.
 
 ## What this does not give you
 

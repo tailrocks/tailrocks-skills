@@ -78,9 +78,10 @@ the machine is loaded.
 ## Legacy asynchronous code
 
 Wrap a callback API in a continuation once, at the boundary, and never resume a
-continuation twice or zero times — both are undefined behavior rather than an
-error you will see in testing. Where a callback can fire more than once, a
-continuation is the wrong tool; use a stream.
+continuation twice or zero times. With an unsafe continuation both are undefined
+behavior; a checked continuation traps on double-resume and logs a leak — which
+is why the checked form is the default choice. Where a callback can fire more
+than once, a continuation is the wrong tool; use a stream.
 
 ## Verify against the toolchain in use
 

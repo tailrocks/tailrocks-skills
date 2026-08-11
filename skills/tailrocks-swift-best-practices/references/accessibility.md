@@ -39,7 +39,7 @@ than six fragments. Hide decorative elements so they are not announced.
 |---|---|---|
 | Reduce Transparency | `accessibilityReduceTransparency`, `NSWorkspace.accessibilityDisplayShouldReduceTransparency` | Custom translucent surfaces substitute an opaque background. System components do this automatically; hand-rolled ones do not. |
 | Increase Contrast | `colorSchemeContrast`, `NSWorkspace.accessibilityDisplayShouldIncreaseContrast` | Meet the contrast minimums; borders appear where they were implied. |
-| Reduce Motion | `accessibilityReduceMotion`, `accessibilityPrefersCrossFadeTransitions` | Replace positional and scaling transitions with fades; reduce automatic and repetitive animation. |
+| Reduce Motion | `accessibilityReduceMotion`, `NSWorkspace.accessibilityDisplayShouldReduceMotion` | Replace positional and scaling transitions with fades; reduce automatic and repetitive animation. |
 | Differentiate Without Color | `accessibilityDifferentiateWithoutColor`, `NSWorkspace.…` | No state communicated by color alone. |
 
 The failure mode for the first two is specific and easy to miss: a hand-rolled
@@ -68,8 +68,9 @@ locale.
 ## Verification
 
 Run the audit in a UI test for contrast, element detection, hit region, and
-sufficient element description. Exclude the dynamic-type audit — it is
-semantically meaningless on macOS.
+sufficient element description. There is no dynamic-type audit to exclude on
+macOS: `XCUIAccessibilityAuditType.dynamicType` has no macOS availability, so
+auditing `.all` never runs it.
 
 The audit reads the real view hierarchy, which makes it far stronger than
 inferring contrast from captured pixels. It cannot judge focus order, keyboard

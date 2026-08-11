@@ -212,7 +212,7 @@ Statuses: none unresolved.
 | apple-kit.md: public token export disabled, inspection enabled | Sketch GraphQL: publicTokenExport "DISABLED", publicInspectEnabled true | VERIFIED |
 | apple-kit.md: icon guidance | HIG app-icons + Icon Composer doc (verbatim: system handles effects, four-group maximum, .icon replaces asset catalog) | VERIFIED |
 | sketch-mcp.md: first-party MCP server, 2025.2.4+, non-MAS build, off by default, Local Network permission, localhost:31126/mcp, local-only, eight tools incl. run_code | sketch.com/docs/mcp-server + changelog — every detail verbatim | VERIFIED |
-| sketch-mcp.md: official skills catalogue with no license | github.com/sketch-hq/agents — "Skills catalog for Sketch", license NONE | VERIFIED |
+| sketch-mcp.md: vendor skills catalogue | verified (sketch-hq "Skills catalog for Sketch", no license) but the shipped file no longer references external skills per maintainer direction — section distilled to project-local authority guidance | CORRECTED (reworked) |
 | token-extraction.md: schema packages archived | sketch-hq/sketch-document archived (2023), sketch-file-format-ts archived (2021), sketch-reference-files archived (2021) | VERIFIED |
 | token-extraction.md / design-map.md: light/dark paired by name; naming renames break maps | parsed swatches `System Colors/Light|Dark/*`; kit change log rename entries | VERIFIED |
 | design-map.md: SF Symbol names (plus, trash, sidebar.right, arrow.clockwise, magnifyingglass) | standard SF Symbols (resolve via NSImage(systemSymbolName:)) | VERIFIED |

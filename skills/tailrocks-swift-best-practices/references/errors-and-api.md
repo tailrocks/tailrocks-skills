@@ -63,13 +63,12 @@ Every symbol newer than the minimum deployment target needs a guard, and the
 fallback path needs a decision:
 
 ```swift
-if #available(macOS 27.0, *) {
-    view.cornerConfiguration = .containerConcentric()
+if #available(macOS 26.1, *) {
+    accessory.preferredScrollEdgeEffectStyle = .hard
 } else {
-    // macOS 26 has no concentric-corner API in this framework.
-    // Radius derived from the container's known geometry; revisit if the
-    // window corner radius changes.
-    view.layer?.cornerRadius = derivedRadius
+    // macOS 26.0 has no scroll-edge style preference; ship the default
+    // automatic effect. Remove this branch when the minimum target
+    // reaches 26.1.
 }
 ```
 

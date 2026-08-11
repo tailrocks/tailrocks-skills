@@ -52,8 +52,8 @@ Light and dark are **paired by name** (`System Colors/Light/*` versus
 `System Colors/Dark/*`), which makes generating a colour set mechanical rather
 than judgemental.
 
-Of the 285 layer styles, 127 are named under an over-glass hierarchy with a full
-state taxonomy — idle, clicked, disabled, and so on. That taxonomy is worth
+Of the 285 layer styles, 98 are named under the `Over-Glass/` hierarchy with a
+full state taxonomy — idle, clicked, disabled, and so on. That taxonomy is worth
 mirroring in the design map, because it is the vocabulary Apple's own components
 use.
 
