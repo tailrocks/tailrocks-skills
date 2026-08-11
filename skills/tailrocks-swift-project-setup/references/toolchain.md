@@ -99,3 +99,9 @@ diagnostics an agent sees.
 
 `SWIFT_VERSION` is the language mode, not the compiler release. Legal values are
 `4`, `4.2`, `5`, and `6`; never write a release such as `6.3` there.
+
+The Xcode 26.6 build-settings reference exposes `SWIFT_STRICT_CONCURRENCY` but
+does not expose build-setting keys for "default isolation" or "approachable
+concurrency". The template therefore pins only the confirmed key. Do not invent
+silent YAML keys; re-probe the build-settings reference when the toolchain lane
+changes and record any newly shipping names before adding them.

@@ -56,9 +56,11 @@ Same rule: strict in the gate.
 
 Copy `templates/swiftlint.yml`. Two policy points worth stating explicitly in it:
 
-- Force unwrapping, force casting, and force `try` remain errors. The proposed
-  warning-only test config is incompatible with the required `--strict` gate;
-  no test exemption is shipped until that policy conflict is resolved.
+- Force unwrapping, force casting, and force `try` remain errors in application
+  code. Copy `templates/Tests.swiftlint.yml` as `Tests/.swiftlint.yml` and
+  `UITests/.swiftlint.yml`; it disables those rules only in test trees where the
+  failure is the assertion. Warning severity is forbidden because `--strict`
+  promotes warnings to gate failures.
 - Rules disabled for legacy debt carry a narrow path scope and a reason comment,
   never a repository-wide disable.
 

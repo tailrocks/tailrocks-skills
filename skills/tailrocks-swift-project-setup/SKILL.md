@@ -62,6 +62,7 @@ Templates:
 | [`project.yml`](templates/project.yml) | project root |
 | [`swift-format.json`](templates/swift-format.json) | `.swift-format` |
 | [`swiftlint.yml`](templates/swiftlint.yml) | `.swiftlint.yml` |
+| [`Tests.swiftlint.yml`](templates/Tests.swiftlint.yml) | `Tests/.swiftlint.yml` and `UITests/.swiftlint.yml` |
 | [`mise.toml`](templates/mise.toml) | `mise.toml` |
 | [`gitignore`](templates/gitignore) | `.gitignore` |
 

@@ -48,8 +48,9 @@ preconditionFailure("Selection referenced record \(id), which is not in the stor
 ```
 
 Never trap on input, on the network, on the file system, or on anything a person
-can cause. Force operations remain errors; the strict lint gate currently has no
-test-only exemption.
+can cause. Force operations remain errors in application code. The setup skill's
+nested config disables them only inside test targets where failure is the
+assertion, keeping the strict lint gate warning-free.
 
 ## API surface
 

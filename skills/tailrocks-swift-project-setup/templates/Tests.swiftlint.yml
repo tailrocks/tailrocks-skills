@@ -1,0 +1,10 @@
+# Copy as Tests/.swiftlint.yml and UITests/.swiftlint.yml.
+# Test-only force operations may express the assertion itself. Application
+# sources retain the parent config's error severities; `--strict` stays green
+# because these rules are disabled, not downgraded to warnings.
+parent_config: ../.swiftlint.yml
+disabled_rules:
+  - force_cast
+  - force_try
+  - force_unwrapping
+  - implicitly_unwrapped_optional
