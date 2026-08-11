@@ -26,7 +26,7 @@ REJECTED (one-line rationale).
 | [010](010-swift-best-practices-corrections.md) | 6th | Coordinator lifetime + named APIs | P2 | M | 004 (coord. 009) | BLOCKED — corrected case 3 failed 0/2; output omitted survival across representable re-creation |
 | [011](011-sketch-handoff-fixes.md) | 6th | Sketch-handoff self-consistency + safe extraction | P2 | S | 004 (coord. 008) | BLOCKED — full eval suite ×2: case 5 failed 0/2; audit omitted one required finding and falsely marked that row clean |
 | [012](012-repo-ci-install-hardening.md) | 6th | CI topology, v0.12.0 pins, validator gaps, age gate | P2 | M | — | BLOCKED — maintainer decision: require only `validate` + `templates-macos` in branch protection and create post-merge `v0.12.0` tag; repository changes/tests prepared |
-| [013](013-dogfood-example-and-intake.md) | 6th | Ship w6 dogfood example; land its learnings | P2 | S–M | 006, 007 | TODO |
+| [013](013-dogfood-example-and-intake.md) | 6th | Ship w6 dogfood example; land its learnings | P2 | S–M | 006, 007 | BLOCKED — dependency 006 is not DONE (its eval case 5 failed 0/2 because the `extract` procedure is undefined) |
 | [014](014-spikes-state-injection-and-distribution.md) | 6th | Spikes: injection fidelity; distribution memo; icon fix | P3 | M | 007 | TODO |
 
 ## Dependency notes
