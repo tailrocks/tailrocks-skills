@@ -14,7 +14,7 @@ REJECTED (one-line rationale).
 | Plan | Pass | Title | Priority | Effort | Depends on | Status |
 |------|------|-------|----------|--------|------------|--------|
 | [000](000-goal-condition-hardening.md) | 5th | Gate-first goal condition; exhaustion = BLOCKED | P1 | S | — | TODO |
-| [001](001-artifact-graded-evals.md) | 5th | Artifact-graded, failure-preserving eval runner | P1 | M | — | TODO (preconditions re-verified present 2026-08-11 at `64df333`; validator count refreshed to 21) |
+| [001](001-artifact-graded-evals.md) | 5th | Artifact-graded, failure-preserving eval runner | P1 | M | — | DONE — `scripts/run-evals.test.ts`; artifact caps, nested staging, all-runs verdict verified |
 | [002](002-package-goal-check.md) | 5th | Deterministic per-package goal-check script | P2 | M | 000 | TODO |
 | [003](003-client-wiring-and-reconcile.md) | 5th | Client wiring + reconcile integration | P2 | M | 002 | TODO |
 | [004](004-macos-eval-fixtures-and-coverage.md) | 6th | macOS eval fixtures + mode/gate coverage | P1 | L | 001 | TODO |
