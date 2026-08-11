@@ -53,4 +53,12 @@ screencapture -x -o -l "$WID" "$OUT"
 [ -f "$OUT" ] && [ "$(wc -c < "$OUT")" -ge 8192 ] || { echo "capture empty — check the Screen Recording grant for this terminal" >&2; exit 1; }
 dims=$(sips -g pixelWidth -g pixelHeight "$OUT" 2>/dev/null)
 echo "$dims" | grep -Eq 'pixelWidth: [1-9][0-9]*' && echo "$dims" | grep -Eq 'pixelHeight: [1-9][0-9]*' || { echo "capture has zero dimensions" >&2; exit 1; }
+pixel_width=$(echo "$dims" | awk '/pixelWidth:/ { print $2 }')
+pixel_height=$(echo "$dims" | awk '/pixelHeight:/ { print $2 }')
+SIDECAR="$OUT.json"
+if [ -n "$WINDOW_NAME" ]; then "$TOOL" "$OWNER" "$WINDOW_NAME" --json > "$SIDECAR"; else "$TOOL" "$OWNER" --json > "$SIDECAR"; fi
+plutil -replace pixelDimensions -json "{\"width\":$pixel_width,\"height\":$pixel_height}" "$SIDECAR"
+frame_width=$(plutil -extract frameSize.width raw "$SIDECAR")
+scale=$(awk -v pixels="$pixel_width" -v points="$frame_width" 'BEGIN { if (points > 0) printf "%.3f", pixels / points; else print "0" }')
+plutil -replace backingScale -float "$scale" "$SIDECAR"
 echo "$OUT"

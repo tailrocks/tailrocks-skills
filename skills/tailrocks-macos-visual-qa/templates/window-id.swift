@@ -15,6 +15,7 @@
 //
 //   screencapture -x -o -l "$WID" out.png
 
+import AppKit
 import CoreGraphics
 import Foundation
 
@@ -64,7 +65,8 @@ guard arguments.count >= 2 else {
 }
 
 let owner = arguments[1]
-let filter = arguments.count >= 3 ? arguments[2] : nil
+let jsonMode = arguments.contains("--json")
+let filter = arguments.dropFirst(2).first { $0 != "--json" }
 
 // Layer 0 is the normal window layer. Anything above it is a panel, menu, or
 // status item and is almost never the window under verification.
@@ -104,4 +106,21 @@ if matches.count > 1 {
     FileHandle.standardError.write(Data("multiple windows matched [\(alternatives)]; pass a window title to disambiguate\n".utf8))
 }
 
-print(window.id)
+if jsonMode {
+    let active = NSWorkspace.shared.frontmostApplication?.localizedName == owner
+    let object: [String: Any] = [
+        "windowID": Int(window.id),
+        "owner": window.owner,
+        "windowTitle": window.name,
+        "frameSize": ["width": window.bounds.width, "height": window.bounds.height],
+        "contentSize": NSNull(),
+        "contentSizeNote": "CGWindow exposes frame bounds; content size requires app-side geometry",
+        "onScreen": window.onScreen,
+        "keyStatus": active ? "active" : "inactive",
+    ]
+    let data = try JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted, .sortedKeys])
+    FileHandle.standardOutput.write(data)
+    FileHandle.standardOutput.write(Data("\n".utf8))
+} else {
+    print(window.id)
+}

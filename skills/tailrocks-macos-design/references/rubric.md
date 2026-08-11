@@ -8,6 +8,11 @@ Score against **rendered evidence**. A design scored from source code has not
 been scored — the model will otherwise write flattering prose about work it
 cannot see.
 
+**Evidence integrity:** a named capture matches its declared window size exactly
+(pixels = backing scale × logical size, with chrome height noted); verify
+dimensions, not filenames. Every non-inactive capture shows colored traffic
+lights, or it cannot support appearance, selection, or enabled-state claims.
+
 The scoring agent must not be the implementing agent. A model reviewing its own
 output rationalizes rather than reviews.
 
@@ -84,6 +89,8 @@ Hard failures:    zero
 Rendered evidence: mandatory
 Reviewer:         not the implementing agent
 ```
+
+A filled, rejected review with captures lives at examples/macos-screen/.
 
 A category minimum matters as much as the total. A 92 built from a perfect visual
 score and a failing accessibility score is a worse product than an 88 that is

@@ -48,6 +48,8 @@ skills form the engineering-policy family. The macOS family —
 `tailrocks-macos-visual-qa`, and `tailrocks-sketch-handoff` — is a
 design-to-verified-pixels loop for native Apple-ecosystem apps:
 
+A filled loop that correctly rejects its screen is in [`examples/macos-screen/`](examples/macos-screen/).
+
 ```text
 sketch-handoff ──► macos-design ──► liquid-glass ──► swift-best-practices
    tokens,           brief,            layer split,     isolation, identity,

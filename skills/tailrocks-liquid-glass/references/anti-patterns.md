@@ -167,6 +167,16 @@ SDK bump, not with a deprecation warning.
 **Fix.** Treat it as a short migration window with a dated exit, and schedule the
 adoption work inside that window.
 
+## 11. Mid-merge spacing at rest
+
+**Rule.** Container spacing must not leave neighboring surfaces permanently
+half-fused at rest. Use spacing no larger than the interior spacing for distinct
+surfaces, or intentionally build one merged capsule.
+
+**Mechanism.** Merging is a proximity transition. Holding surfaces in its
+mid-band makes the metaball seam permanent, as the captures and disposition at
+examples/macos-screen/ record.
+
 ## Performance framing
 
 Apple publishes **no numeric cost, no per-effect budget, and no Liquid-Glass
