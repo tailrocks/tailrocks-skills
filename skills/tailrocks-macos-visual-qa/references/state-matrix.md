@@ -1,0 +1,96 @@
+# The rendered state matrix
+
+A feature is not visually complete because its default light appearance looks
+good at one window size.
+
+**These commands change the user's real system settings.** Snapshot the original
+values first, restore them at the end including on failure, and report explicitly
+if a restore did not happen.
+
+## Appearance
+
+The appearance toggle propagates live to running applications and is the most
+reliable of the toggles.
+
+```sh
+osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true'
+osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to false'
+```
+
+Requires an **Automation ▸ System Events** permission, granted once through a
+graphical prompt.
+
+## Accessibility settings
+
+```sh
+defaults write com.apple.universalaccess increaseContrast -bool true
+defaults write com.apple.universalaccess reduceTransparency -bool true
+defaults write com.apple.universalaccess reduceMotion -bool true
+defaults write com.apple.universalaccess differentiateWithoutColor -bool true
+```
+
+Restore by deleting the key rather than writing false, so the machine returns to
+its original unset state:
+
+```sh
+defaults delete com.apple.universalaccess increaseContrast
+```
+
+Caveats:
+
+- Writing these succeeds without a permission prompt, but **live propagation to
+  already-running applications is weaker than the appearance toggle**. Allow a
+  second or two and re-capture, or relaunch the application.
+- Snapshot the originals first. Some of these will already be on for the person
+  whose machine this is, and a blind restore-to-false is a real change to their
+  environment.
+- Nothing here is blocked by system integrity protection.
+
+## Settings with no programmatic control
+
+These must be flipped by hand. Say so in the report rather than silently omitting
+the row.
+
+| Setting | Why |
+|---|---|
+| Liquid Glass appearance — clear or tinted (macOS 26.1+) | No `defaults` key and **no read API** in any framework |
+| Liquid Glass slider — ultraclear to fully tinted (macOS 27) | No read API in the beta |
+| System accent color and highlight color | Verify the full set including custom and multicolor |
+| Sidebar icon size | User-controllable in General settings; row metrics must reflow |
+| Scroll bar visibility | Affects whether the scroll edge effect appears |
+| Display scale and dragging between displays | Corner radii and blurs must resolve on move |
+| Wallpaper | Glass refracts it; test bright photo, dark photo, and solid |
+
+The absence of a read API for the Liquid Glass setting is not an inconvenience,
+it is a design constraint: a custom glass surface **cannot** adapt
+programmatically, so it must be visually verified under both looks.
+
+## Required states
+
+| Group | States |
+|---|---|
+| Appearance | light, dark, auto, active window, inactive window, Liquid Glass clear, Liquid Glass tinted |
+| Accessibility | Reduce Transparency, Increase Contrast, Reduce Motion, Differentiate Without Color, VoiceOver, Full Keyboard Access with focus ring visible |
+| Geometry | minimum supported window, typical, wide, full screen, sidebar expanded and collapsed, inspector open and closed, toolbar under width pressure |
+| Content | empty, loading, normal, very large dataset, long strings, missing values, error, offline, permission denied, destructive operation pending |
+| Interaction | hover, keyboard focus, pressed, selected, disabled, context menu, drag and drop, rapid repeated input, resize during loading or animation |
+| Background | mostly white content, mostly dark content, colorful content, detailed photographic content, scrolling text, empty content |
+| Localization | English, a language with significant text expansion, right-to-left where relevant, long dates and numbers, mixed scripts |
+
+Scale the matrix to the change. A one-line label edit does not need the full
+grid; a new screen does. State which rows were skipped and why — a skipped row
+recorded is information, a skipped row omitted is a false pass.
+
+## Ordering the run
+
+Flip the slowest-propagating settings least often. One efficient order:
+
+1. For each appearance (light, dark): capture every geometry and content state.
+2. Then enable Reduce Transparency and re-capture only the glass-bearing states.
+3. Then Increase Contrast, same subset.
+4. Then Differentiate Without Color, only the states where color carries meaning.
+5. Then Reduce Motion, only the animated transitions.
+6. Restore everything and verify the restore.
+
+Capture into a directory named for the state so a reviewer can navigate without
+opening files.

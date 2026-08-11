@@ -1,0 +1,29 @@
+{
+  "skill_name": "tailrocks-macos-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design the connection manager screen for our macOS database client. Make it look premium and Apple-quality.",
+      "expected_output": "Refuses to style before structuring: writes the experience brief first, produces a native component map classifying every region as NATIVE, NATIVE-COMPOSED, or CUSTOM, then generates structurally different alternatives with realistic fixtures, and requires a human selection before any implementation.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Review this screenshot of our records workspace against our design standards.",
+      "expected_output": "Scores the eight rubric categories against the rendered evidence, checks the hard-failure list explicitly, orders findings by severity from broken workflow down to micro-polish, names what can be deleted, and flags any required state that has no screenshot as a finding.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Give me ten design options for this screen.",
+      "expected_output": "Produces structurally distinct alternatives such as sidebar-led, table-led, inspector-led, keyboard-first, high-density, and minimum-width, explicitly rejects color, radius, blur, or spacing variations as alternatives, and gives each option a named preview with realistic fixtures rather than placeholder rows.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Build a custom sidebar component because the native one looks plain.",
+      "expected_output": "Rejects the custom classification for lacking a user-need reason, requires the native alternatives evaluated and why each was insufficient, notes that a custom control weaker than an available native component is a hard failure, and demands the full custom component contract including keyboard focus, inactive-window state, accessibility, and a menu-bar command equivalent before any implementation.",
+      "files": []
+    }
+  ]
+}

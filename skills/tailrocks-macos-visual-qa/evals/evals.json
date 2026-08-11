@@ -1,0 +1,29 @@
+{
+  "skill_name": "tailrocks-macos-visual-qa",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Take a screenshot of our macOS app's main window so we can review the new toolbar.",
+      "expected_output": "Runs one atomic kill-launch-wait-capture invocation, resolves the window ID by enumerating all windows without filtering on the on-screen flag, captures by window ID rather than screen rectangle, and confirms the captured image shows the expected content rather than only that a file was written.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Verify the new inspector renders correctly under all our required states.",
+      "expected_output": "Snapshots the original system settings, renders appearance, geometry, content, interaction, and accessibility states, flips dark mode and the accessibility defaults with the documented commands, reports the Liquid Glass appearance setting as having no programmatic control and requiring a manual flip, restores every setting, and lists any skipped state with its reason.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Set up snapshot tests for our glass toolbar so we catch visual regressions.",
+      "expected_output": "Rejects detached-view snapshots for glass surfaces because they render fully transparent, directs the suite at screen captures of the running app instead, and notes that a pixel diff answers whether pixels changed but not whether the experience improved.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "The build succeeded and the tests pass, so mark the UI change complete.",
+      "expected_output": "Refuses to treat a successful compile or a green test run as visual verification, requires rendered evidence per required state plus an accessibility audit result, and states explicitly whether the run had a graphical session with the Screen Recording and Accessibility permissions rather than reporting a silent pass.",
+      "files": []
+    }
+  ]
+}

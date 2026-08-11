@@ -17,6 +17,27 @@ Supported agents:
 6. Antigravity CLI (`agy`, Google — Gemini)
 7. Amp
 
+## What installs
+
+Every channel below ships the same `skills/` tree — all of these skills, under
+one shared directory:
+
+- **Rust:** `tailrocks-rust-best-practices`, `tailrocks-rust-project-setup`,
+  `tailrocks-axum-best-practices`
+- **TypeScript:** `tailrocks-typescript-best-practices`,
+  `tailrocks-tanstack-project-setup`
+- **macOS (native):** `tailrocks-macos-design`, `tailrocks-liquid-glass`,
+  `tailrocks-swift-best-practices`, `tailrocks-swift-project-setup`,
+  `tailrocks-macos-visual-qa`, `tailrocks-sketch-handoff`
+- **Code quality:** `tailrocks-code-health`, `tailrocks-contribute`,
+  `tailrocks-remediate`
+- **Delivery pipeline:** `tailrocks-idea`, `tailrocks-brainstorm`,
+  `tailrocks-research`, `tailrocks-record-decision`, `tailrocks-finalize`,
+  `tailrocks-plan`, `tailrocks-reconcile`
+
+There is no per-family install: an agent gets the whole collection through its
+one chosen channel. See README.md for what each skill does.
+
 ## The one rule that prevents duplicates
 
 Every agent scans several skill locations, and several agents scan *each

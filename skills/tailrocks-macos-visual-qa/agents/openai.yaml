@@ -1,0 +1,6 @@
+interface:
+  display_name: "macOS Visual QA"
+  short_description: "Build, launch, capture, drive, and verify a native macOS app"
+  default_prompt: "Use $tailrocks-macos-visual-qa to build and launch this macOS app, capture the target window by window ID, drive it through the accessibility tree, render the required state matrix, run the accessibility audit, and restore every system setting it changed."
+policy:
+  allow_implicit_invocation: false

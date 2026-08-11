@@ -1,0 +1,29 @@
+{
+  "skill_name": "tailrocks-swift-best-practices",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review this SwiftUI list view. The text field loses focus while people type.",
+      "expected_output": "Identifies unstable view identity as the cause, points at index-based or content-derived identifiers that change on update, explains that identity churn re-creates state and restarts animations, and proposes stable unique identifiers rather than working around the symptom.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "The compiler complains about data races here. Add @unchecked Sendable so it builds.",
+      "expected_output": "Refuses an unexplained escape hatch, treats the conformance as a claim requiring a written invariant at the declaration, and first asks which of the four isolation categories the type belongs to rather than annotating until the diagnostic stops.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Wrap NSTableView in an NSViewRepresentable so we get column resizing, and put all the row rendering and selection logic in the coordinator.",
+      "expected_output": "Accepts the AppKit table as a legitimate reason to bridge but rejects a coordinator that owns a large surface of behavior, requires a typed boundary with an idempotent update method, callbacks rather than shared mutable state, stated isolation across the bridge, and a clear coordinator lifetime.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Add this macOS 27 corner configuration API to our app. Our deployment target is macOS 26.",
+      "expected_output": "Adds an availability guard, requires a decided fallback rather than a trap, records a removal condition for the fallback so it disappears when the minimum target moves, and notes that macOS 26 AppKit has no concentric-corner API so the fallback must derive the radius or host the surface in SwiftUI.",
+      "files": []
+    }
+  ]
+}

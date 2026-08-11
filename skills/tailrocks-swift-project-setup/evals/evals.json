@@ -1,0 +1,29 @@
+{
+  "skill_name": "tailrocks-swift-project-setup",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Scaffold a new native macOS SwiftUI app that Claude Code can build and test without opening Xcode.",
+      "expected_output": "Creates a declarative project manifest with a synchronized source folder, ignores the generated project file, records the deployment target and both SDK lanes, configures ad-hoc local signing, installs strict format and lint gates, wires unit and UI test targets, and pins tooling through mise tasks that local and CI runs share.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Audit this macOS project against our baseline. Do not change anything.",
+      "expected_output": "Produces a read-only gap report covering project generation, the four recorded target values, signing, formatter and linter strictness, test filter safety, derived data location, and pinned external agent skills; explicitly flags a non-strict format gate and any test selector that could report zero tests and still succeed; edits nothing.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Just use Swift Package Manager to build the app, we do not need an Xcode project.",
+      "expected_output": "Rejects the package-only approach for an application target, explaining that the package description exposes only library, executable, and plugin products and that building a SwiftUI entry point yields a bare executable with no bundle, property list, or signature, then recommends the declarative generator instead.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Set the derived data path to /tmp/build so it gets cleaned up automatically, and add UIDesignRequiresCompatibility so we can ship before the redesign is done.",
+      "expected_output": "Rejects the temporary derived data path because an app bundle launched from it loses its windows within seconds and breaks UI tests and visual verification, and accepts the compatibility key only as a dated migration window while stating that it is ignored when building against the 27 SDK and that support for the old design is being removed.",
+      "files": []
+    }
+  ]
+}

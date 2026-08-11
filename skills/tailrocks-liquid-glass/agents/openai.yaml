@@ -1,0 +1,6 @@
+interface:
+  display_name: "Liquid Glass"
+  short_description: "Apply, audit, or remediate Liquid Glass in a native macOS app"
+  default_prompt: "Use $tailrocks-liquid-glass to classify this macOS interface into content and functional layers, prefer standard components, and audit every custom glass surface against the layer model, container batching, concentric shapes, tint policy, availability, and the accessibility gate."
+policy:
+  allow_implicit_invocation: false

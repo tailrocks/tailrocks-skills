@@ -12,9 +12,13 @@ directory. Cross-agent install and compatibility rules: `INSTALL.md`.
 Current skills: `tailrocks-rust-best-practices`, `tailrocks-rust-project-setup`,
 `tailrocks-axum-best-practices`, `tailrocks-typescript-best-practices`,
 `tailrocks-tanstack-project-setup`, `tailrocks-code-health`,
-`tailrocks-contribute`, `tailrocks-remediate`, and the delivery pipeline `tailrocks-idea`,
-`tailrocks-brainstorm`, `tailrocks-research`, `tailrocks-record-decision`,
-`tailrocks-finalize`, `tailrocks-plan`, and `tailrocks-reconcile`.
+`tailrocks-contribute`, `tailrocks-remediate`, the macOS family
+`tailrocks-macos-design`, `tailrocks-liquid-glass`,
+`tailrocks-swift-best-practices`, `tailrocks-swift-project-setup`,
+`tailrocks-macos-visual-qa`, and `tailrocks-sketch-handoff`, and the delivery
+pipeline `tailrocks-idea`, `tailrocks-brainstorm`, `tailrocks-research`,
+`tailrocks-record-decision`, `tailrocks-finalize`, `tailrocks-plan`, and
+`tailrocks-reconcile`.
 
 Use `claude --plugin-dir .` from this repository root to test the plugin locally.
 Main is PR-only: feature branch + `git commit -s` + PR; see AGENTS.md.
