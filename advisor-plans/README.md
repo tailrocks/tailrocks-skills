@@ -19,7 +19,7 @@ REJECTED (one-line rationale).
 | [003](003-client-wiring-and-reconcile.md) | 5th | Client wiring + reconcile integration | P2 | M | 002 | TODO |
 | [004](004-macos-eval-fixtures-and-coverage.md) | 6th | macOS eval fixtures + mode/gate coverage | P1 | L | 001 | DONE — `004-run-record.md`: 37/37 ran, 28 pass, 9 routed findings |
 | [005](005-liquid-glass-corrections.md) | 6th | Liquid-glass self-contradictions + WWDC26 currency | P1 | M | 004 | DONE — audit/adopt/apply structural cues fixed within 200 lines; all 7 liquid-glass cases pass 2/2 |
-| [006](006-design-template-rubric-alignment.md) | 6th | Design templates carry what the rubric mandates | P1 | M | 004 | BLOCKED — mandatory full-suite head rerun aborted when Claude CLI exited 1 before verdict output; static criteria remain green |
+| [006](006-design-template-rubric-alignment.md) | 6th | Design templates carry what the rubric mandates | P1 | M | 004 | DONE — static template/rubric criteria green; all 6 macos-design cases pass 2/2 on HEAD |
 | [007](007-visual-qa-harness-hardening.md) | 6th | Visual-qa restore safety + capture/drive harness | P1 | M–L | — (004 for rerun) | BLOCKED — Claude CLI exited 1 during the mandatory head eval phase; shell/Swift parse and restore checks remain green |
 | [008](008-family-ownership-and-handoffs.md) | 6th | One owner per rule; working handoffs | P1 | M–L | 004, 005, 006, 007 | BLOCKED — dependency 005 hit its case-1 two-run STOP; step 5 `systematize` ownership landed to unblock 006 |
 | [009](009-swift-setup-template-fixes.md) | 6th | Setup templates pass their own gates | P2 | M | 004 | BLOCKED — scaffold/check/fixed-point and strict test exemption green, but Claude exited 1 twice on mandatory eval case 1 with no verdict |
