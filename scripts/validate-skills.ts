@@ -12,6 +12,10 @@ async function exists(file: string): Promise<boolean> {
   }
 }
 
+export function resolveEvalFixture(root: string, skillDir: string, fixture: string): string {
+  return fixture.startsWith("skills/") ? path.join(root, fixture) : path.join(skillDir, fixture);
+}
+
 async function filesUnder(directory: string): Promise<string[]> {
   if (!(await exists(directory))) return [];
   const output: string[] = [];
@@ -187,6 +191,7 @@ export async function validate(root: string): Promise<string[]> {
         ) {
           errors.push(`${directory}: evals require matching skill_name and at least 3 cases`);
         } else {
+          const ids = new Set<number>();
           for (const [index, value] of evaluation.evals.entries()) {
             const item = value as Record<string, unknown>;
             if (
@@ -198,6 +203,16 @@ export async function validate(root: string): Promise<string[]> {
               !Array.isArray(item.files)
             ) {
               errors.push(`${directory}: eval case ${index + 1} has invalid shape`);
+              continue;
+            }
+            if (ids.has(item.id as number)) {
+              errors.push(`${directory}: duplicate eval case id ${item.id}`);
+            }
+            ids.add(item.id as number);
+            for (const fixture of item.files as unknown[]) {
+              if (typeof fixture !== "string" || !(await exists(resolveEvalFixture(root, skillDir, fixture)))) {
+                errors.push(`${directory}: eval case ${item.id} fixture not found: ${String(fixture)}`);
+              }
             }
           }
         }

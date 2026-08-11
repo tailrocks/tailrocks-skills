@@ -227,7 +227,7 @@ Skill definition: `skills/tailrocks-remediate/SKILL.md`
    `description`, `disable-model-invocation: true`, and `user-invocable: true`
    in the frontmatter.
 2. Add `agents/openai.yaml` with `policy.allow_implicit_invocation: false`.
-3. Add `evals/evals.json` with realistic normal, boundary, and safety cases.
+3. Add `evals/evals.json` with realistic normal, boundary, and safety cases. Audit/review-shaped cases should reference fixtures under `evals/fixtures/<case>/`; refusal cases may stay fixture-free.
 4. Put deep material under `skills/<name>/references/` and copy-ready assets under
    `skills/<name>/templates/`; keep `SKILL.md` a concise router.
 
@@ -253,6 +253,8 @@ Rules for changing a `SKILL.md`:
   no benefit; the reference already says all of it, better.
 - Adding a section to a router is a change to **every** behavior in that file.
   Re-run that skill's eval cases, not only a case related to the new section.
+  Run `mise run evals -- --skill <name> --case <id> --runs 2`. This needs the
+  `claude` CLI and spends budget, so run it locally before tagging, not in PR CI.
 - Prefer strengthening an existing section over adding one. Two sections that
   both gesture at the same obligation are weaker than one that states it.
 - When a router grows past roughly 200 lines, the next addition should replace

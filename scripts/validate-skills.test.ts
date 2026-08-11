@@ -143,6 +143,20 @@ describe("validate", () => {
     expect(await validate(root)).toContain(`${skill}: eval case 2 has invalid shape`);
   });
 
+  test("rejects a missing eval fixture", async () => {
+    const evaluation = await Bun.file(path.join(root, `skills/${skill}/evals/evals.json`)).json();
+    evaluation.evals[0].files = ["evals/fixtures/missing.txt"];
+    await write(`skills/${skill}/evals/evals.json`, JSON.stringify(evaluation));
+    expect(await validate(root)).toContain(`${skill}: eval case 1 fixture not found: evals/fixtures/missing.txt`);
+  });
+
+  test("rejects a duplicate eval id", async () => {
+    const evaluation = await Bun.file(path.join(root, `skills/${skill}/evals/evals.json`)).json();
+    evaluation.evals[1].id = 1;
+    await write(`skills/${skill}/evals/evals.json`, JSON.stringify(evaluation));
+    expect(await validate(root)).toContain(`${skill}: duplicate eval case id 1`);
+  });
+
   test("rejects mismatched manifest descriptions", async () => {
     await write(
       ".kimi-plugin/plugin.json",

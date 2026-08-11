@@ -3,3 +3,7 @@ bun = "1.3.14"
 
 [tasks.validate]
 run = "bun run scripts/validate-skills.ts"
+
+[tasks.evals]
+description = "Run one skill eval case (needs the claude CLI; spends budget)"
+run = "bun scripts/run-evals.ts"

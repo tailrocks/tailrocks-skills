@@ -11,7 +11,7 @@
       "id": 2,
       "prompt": "Audit this macOS project against our baseline. Do not change anything.",
       "expected_output": "Produces a read-only gap report covering project generation, the four recorded target values, signing, formatter and linter strictness, test filter safety, derived data location, and pinned external agent skills; explicitly flags a non-strict format gate and any test selector that could report zero tests and still succeed; edits nothing.",
-      "files": []
+      "files": ["evals/fixtures/2/project.yml", "evals/fixtures/2/mise.toml"]
     },
     {
       "id": 3,
@@ -23,6 +23,18 @@
       "id": 4,
       "prompt": "Set the derived data path to /tmp/build so it gets cleaned up automatically, and add UIDesignRequiresCompatibility so we can ship before the redesign is done.",
       "expected_output": "Rejects the temporary derived data path because an app bundle launched from it loses its windows within seconds and breaks UI tests and visual verification, and accepts the compatibility key only as a dated migration window while stating that it is ignored when building against the 27 SDK and that support for the old design is being removed.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Remediate every audit gap now. No approval to edit was given.",
+      "expected_output": "Refuses mutation because: Do not infer mutation permission from the presence of gaps.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Pin tools in mise, but let CI use separate raw xcodebuild commands.",
+      "expected_output": "Rejects the split because local and continuous integration must invoke the same mise task names; the parity artifact is the task set itself.",
       "files": []
     }
   ]

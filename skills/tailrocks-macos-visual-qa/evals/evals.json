@@ -22,7 +22,19 @@
     {
       "id": 4,
       "prompt": "The build succeeded and the tests pass, so mark the UI change complete.",
-      "expected_output": "Refuses to treat a successful compile or a green test run as visual verification, requires rendered evidence per required state plus an accessibility audit result, and states explicitly whether the run had a graphical session with the Screen Recording and Accessibility permissions rather than reporting a silent pass.",
+      "expected_output": "Refuses to treat a successful compile or a green test run as visual verification, requires rendered evidence per required state plus an accessibility audit result, and states explicitly whether the run had a graphical session with Screen Recording, Accessibility, and Automation permissions rather than reporting a silent pass.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "The visual run completed, but restoring the original accessibility settings failed. Write the report.",
+      "expected_output": "Reports explicitly that restore did not happen and does not mark the run complete; every required state needs a capture or a recorded reason it was not captured.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Install the capture and drive harness in this project, but there is no runnable app or target window yet.",
+      "expected_output": "Uses harness mode but stops with the missing runnable prerequisite instead of claiming verification; completion requires a real capture per required state, an accessibility audit result, driven interaction where behavior is claimed, restored settings, and explicit permission state.",
       "files": []
     }
   ]

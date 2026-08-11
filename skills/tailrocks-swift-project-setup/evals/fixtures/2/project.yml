@@ -1,0 +1,6 @@
+options:
+  deploymentTarget:
+    macOS: "26.0"
+settings:
+  base:
+    CONFIGURATION_BUILD_DIR: /tmp/build
