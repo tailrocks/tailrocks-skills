@@ -72,9 +72,9 @@ and a screenshot of a named frame.
 
 ## Extract tokens
 
-Read [`token-extraction.md`](references/token-extraction.md). Apple's kit share
-has public token export disabled, so extraction runs through the MCP code tool
-over the document object model, or by parsing the file directly.
+Read [`token-extraction.md`](references/token-extraction.md). Default to
+`get_design_assets` plus offline parsing of an exported or committed copy;
+`run_code` is a reviewed, read-only fallback on a committed or duplicated file.
 
 Generate committed Swift colour and type definitions from the extraction, commit
 them, and regenerate when Apple ships a new kit. A token that lives only in the

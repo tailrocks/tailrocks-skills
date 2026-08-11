@@ -11,11 +11,11 @@ Last reconciled:
 
 | Symbol path | Class | Implementation | Allowed customization | Forbidden |
 |---|---|---|---|---|
-| `Native/Sidebar/<name>` | NATIVE | `NavigationSplitView` sidebar | row content, symbols | background, material, radius |
-| `Native/Toolbar/<name>` | NATIVE | `ToolbarItem(placement:)` | symbol, label, shortcut | bezel, blur, radius, shadow |
-| `Native/Search` | NATIVE | `.searchable(text:)` | placeholder, scopes | field background |
-| `Native/Inspector/<name>` | NATIVE | `.inspector(isPresented:)` | width range, content | material, radius |
-| `Native/Table/<name>` | NATIVE | `Table` | columns, sorting | row background, glass |
+| `Native/Sidebar/<name>` | NATIVE | `NavigationSplitView` sidebar | row content, symbols | background, material, blur, opacity, stroke, shadow, corner radius |
+| `Native/Toolbar/<name>` | NATIVE | `ToolbarItem(placement:)` | symbol, label, shortcut | background, material, blur, opacity, stroke, shadow, corner radius, bezel |
+| `Native/Search` | NATIVE | `.searchable(text:)` | placeholder, scopes | background, material, blur, opacity, stroke, shadow, corner radius, field background |
+| `Native/Inspector/<name>` | NATIVE | `.inspector(isPresented:)` | width range, content | background, material, blur, opacity, stroke, shadow, corner radius |
+| `Native/Table/<name>` | NATIVE | `Table` | columns, sorting | background, material, blur, opacity, stroke, shadow, corner radius, row background, glass |
 | `Composed/<name>` | NATIVE-COMPOSED | <composition> | proportion, spacing roles | added cards or containers |
 | `Product/<name>` | CUSTOM | `<TypeName>` | per contract | outside contract |
 
@@ -47,7 +47,7 @@ a translation an agent has to guess.
 | Every symbol in an approved frame has a row | |
 | Every CUSTOM row points at an existing contract | |
 | No detached instances of kit symbols | |
-| No row missing its forbidden column | |
+| Every NATIVE row's forbidden column contains all seven minimum items | |
 | Variant names match enumeration case names | |
 | Reconciled against the current kit version | |
 

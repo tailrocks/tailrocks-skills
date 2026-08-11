@@ -15,7 +15,7 @@ Design/
 ├── DesignSource.md            approved frame links, version, date
 ├── DESIGN_MAP.md              symbol path → implementation
 ├── SymbolMap.csv              design name → SF Symbol
-├── Tokens/                    generated, committed
+├── Tokens/                    pointer + provenance for Sources/DesignTokens/
 ├── StateMatrix.md             what must be rendered
 ├── MotionSpec.md              per animation: trigger, purpose, reduce-motion
 ├── CustomComponents/          one contract per custom component
@@ -28,6 +28,10 @@ Design/
     ├── RequiredStates.md
     └── CompletionCriteria.md
 ```
+
+Generated Swift tokens live in the app target at `Sources/DesignTokens/`, so a
+removed name fails the build. `Design/Tokens/` records that path and generation
+provenance; it does not hold an uncompiled duplicate.
 
 ## Source-of-truth order
 

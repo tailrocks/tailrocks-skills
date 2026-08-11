@@ -24,7 +24,7 @@ REJECTED (one-line rationale).
 | [008](008-family-ownership-and-handoffs.md) | 6th | One owner per rule; working handoffs | P1 | M–L | 004, 005, 006, 007 | BLOCKED — dependencies 005 and 006 are BLOCKED, not DONE |
 | [009](009-swift-setup-template-fixes.md) | 6th | Setup templates pass their own gates | P2 | M | 004 | BLOCKED — SwiftLint 0.65 warning exemption fails mandatory `--strict`; concurrency setting names absent in Xcode 26.6 |
 | [010](010-swift-best-practices-corrections.md) | 6th | Coordinator lifetime + named APIs | P2 | M | 004 (coord. 009) | BLOCKED — corrected case 3 failed 0/2; output omitted survival across representable re-creation |
-| [011](011-sketch-handoff-fixes.md) | 6th | Sketch-handoff self-consistency + safe extraction | P2 | S | 004 (coord. 008) | TODO |
+| [011](011-sketch-handoff-fixes.md) | 6th | Sketch-handoff self-consistency + safe extraction | P2 | S | 004 (coord. 008) | BLOCKED — full eval suite ×2: case 5 failed 0/2; audit omitted one required finding and falsely marked that row clean |
 | [012](012-repo-ci-install-hardening.md) | 6th | CI topology, v0.12.0 pins, validator gaps, age gate | P2 | M | — | TODO |
 | [013](013-dogfood-example-and-intake.md) | 6th | Ship w6 dogfood example; land its learnings | P2 | S–M | 006, 007 | TODO |
 | [014](014-spikes-state-injection-and-distribution.md) | 6th | Spikes: injection fidelity; distribution memo; icon fix | P3 | M | 007 | TODO |

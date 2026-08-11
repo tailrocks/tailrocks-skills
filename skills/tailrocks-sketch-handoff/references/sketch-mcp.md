@@ -1,5 +1,8 @@
 # The Sketch MCP server
 
+State as verified 2026-08-11 (unrecheckable in this run) — re-verify the Sketch
+version, port, and tool table before wiring.
+
 Sketch ships a **first-party** MCP server inside the Mac application. This is the
 single strongest argument for Sketch in an agent-driven workflow, and it is easy
 to miss because the server is absent from the public MCP registries and the
@@ -28,13 +31,6 @@ claude mcp add --transport http sketch http://localhost:31126/mcp
 claude mcp get sketch
 ```
 
-For an agent configured through a TOML file:
-
-```toml
-[mcp_servers.sketch]
-url = "http://localhost:31126/mcp"
-```
-
 Sketch's own documentation lists support for the major coding agents. Verify the
 current tool set against that documentation rather than this file — the tool
 names have changed across releases.
@@ -57,6 +53,9 @@ Eight, as documented at the time of writing:
 `run_code` is the reason this integration is more capable than a read-only design
 API: anything a plugin can do, an agent can do. It is also the reason to be
 deliberate about what an agent is allowed to run — it can modify the document.
+Use it only after the document is committed or duplicated, the emitted code is
+reviewed before execution, and the walk is read-only. Any write is a separate,
+deliberate act.
 
 ## Working practice
 
