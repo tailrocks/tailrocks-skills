@@ -21,3 +21,17 @@ jobs:
       - run: bun run scripts/validate-skills.ts
       - run: bun test scripts/
       - run: bun skills/tailrocks-tanstack-project-setup/scripts/resolve-package-versions.ts --check-template skills/tailrocks-tanstack-project-setup/templates/package.json
+
+  templates-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse Swift templates
+        run: find skills -path '*/templates/*.swift' -print0 | xargs -0 -n1 swiftc -parse
+      - name: Verify capture refuses a missing application
+        run: |
+          set +e
+          skills/tailrocks-macos-visual-qa/templates/capture.sh /tmp/Fake.app X out.png
+          code=$?
+          set -e
+          test "$code" -eq 2
