@@ -230,6 +230,36 @@ Skill definition: `skills/tailrocks-remediate/SKILL.md`
 3. Add `evals/evals.json` with realistic normal, boundary, and safety cases.
 4. Put deep material under `skills/<name>/references/` and copy-ready assets under
    `skills/<name>/templates/`; keep `SKILL.md` a concise router.
+
+## Router budget
+
+**References are free. Router lines are not.**
+
+A `SKILL.md` is loaded whole, every invocation, and every behavior it carries
+competes for the model's attention with every other behavior in the same file.
+Adding a section does not just add its own instruction — it dilutes the ones
+already there. Reference files carry no such cost: they are read on demand and
+their length is nearly free.
+
+This is not a theory. Every substantive eval failure during the macOS family's
+hardening was a router-dilution failure or a gate misread as permission to
+produce nothing. None was a references problem.
+
+Rules for changing a `SKILL.md`:
+
+- New material defaults to `references/`. The router gets **when to read it** and
+  at most one rule worth carrying at router level — not a summary of its
+  contents. A router section that reads like a table of contents is dilution with
+  no benefit; the reference already says all of it, better.
+- Adding a section to a router is a change to **every** behavior in that file.
+  Re-run that skill's eval cases, not only a case related to the new section.
+- Prefer strengthening an existing section over adding one. Two sections that
+  both gesture at the same obligation are weaker than one that states it.
+- When a router grows past roughly 200 lines, the next addition should replace
+  something rather than append.
+- Load-bearing router lines — ones an eval case depends on — are not edited
+  casually. Check `evals/evals.json` before rewording a gate, a rejection rule,
+  or a "complete when" clause.
 5. Every plugin manifest auto-discovers the new skill from `skills/` — no
    manifest edit needed. Add the skill to the tables in `README.md` and this
    file.
