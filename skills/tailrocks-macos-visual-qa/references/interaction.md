@@ -14,6 +14,13 @@ Requirements:
 
 - The terminal application holds the **Accessibility** permission.
 - The application is running with a real window (see the atomic loop).
+- **The window is on a Space the automation can reach.** On a machine where a
+  person is working in another Space, the accessibility tree reports the app
+  foreground with zero windows and every wait and click fails. For a
+  verification-target app, the reliable mitigation is app-side: insert
+  `.canJoinAllSpaces` into the window's `collectionBehavior` when a
+  verification flag is set, so the window is present on whichever Space the
+  automation session sees.
 - The pixel path and the automation path fail independently — capture by window
   ID can succeed while the window list reports zero windows. Do not treat a
   successful capture as proof that driving will work, or the reverse.
@@ -54,7 +61,14 @@ try app.performAccessibilityAudit(for: [
     .elementDetection,
     .hitRegion,
     .sufficientElementDescription,
-])
+]) { issue in
+    // The audit walks the whole session, including the system menu bar and
+    // screen containers the app cannot label; unscoped, it fails on any app.
+    // App-owned elements all carry accessibility identifiers, so scope by
+    // that and let system-owned issues pass through.
+    guard let element = issue.element else { return true }
+    return element.identifier.isEmpty
+}
 ```
 
 macOS 14+. Audit types available on macOS: action, contrast, element detection,

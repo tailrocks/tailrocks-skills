@@ -59,6 +59,11 @@ targets:
     sources:
       - path: Tests
         type: syncedFolder
+    settings:
+      base:
+        # Test bundles have no committed Info.plist; without this the test
+        # build fails at signing with "target does not have an Info.plist".
+        GENERATE_INFOPLIST_FILE: YES
     dependencies:
       - target: <App>
 
@@ -68,6 +73,9 @@ targets:
     sources:
       - path: UITests
         type: syncedFolder
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
     dependencies:
       - target: <App>
 
