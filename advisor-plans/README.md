@@ -21,7 +21,7 @@ REJECTED (one-line rationale).
 | [005](005-liquid-glass-corrections.md) | 6th | Liquid-glass self-contradictions + WWDC26 currency | P1 | M | 004 | BLOCKED — required HIG browser-read unavailable (`agent.browsers.list()` empty); steps 1–10 and DocC currency prepared |
 | [006](006-design-template-rubric-alignment.md) | 6th | Design templates carry what the rubric mandates | P1 | M | 004 | BLOCKED — eval case 5 failed 0/2: `extract` procedure is undefined and owned by plan 008 |
 | [007](007-visual-qa-harness-hardening.md) | 6th | Visual-qa restore safety + capture/drive harness | P1 | M–L | — (004 for rerun) | DONE — shell/Swift parse, symmetric restore, resolver smoke, evals 12/12 green |
-| [008](008-family-ownership-and-handoffs.md) | 6th | One owner per rule; working handoffs | P1 | M–L | 004, 005, 006, 007 | TODO |
+| [008](008-family-ownership-and-handoffs.md) | 6th | One owner per rule; working handoffs | P1 | M–L | 004, 005, 006, 007 | BLOCKED — dependencies 005 and 006 are BLOCKED, not DONE |
 | [009](009-swift-setup-template-fixes.md) | 6th | Setup templates pass their own gates | P2 | M | 004 | TODO |
 | [010](010-swift-best-practices-corrections.md) | 6th | Coordinator lifetime + named APIs | P2 | M | 004 (coord. 009) | TODO |
 | [011](011-sketch-handoff-fixes.md) | 6th | Sketch-handoff self-consistency + safe extraction | P2 | S | 004 (coord. 008) | TODO |
