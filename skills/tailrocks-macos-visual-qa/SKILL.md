@@ -98,6 +98,12 @@ failure. Report explicitly if a restore did not happen.
 **Complete when:** every required state has a capture, or a recorded reason it
 could not be produced.
 
+**Blocked-run state report:** if no runnable project exists, do not flip real
+settings purposelessly. Still enumerate the snapshot command, every dark-mode
+and accessibility flip through `state.sh`, the manual-only Liquid Glass
+appearance flip, the restore command, and each skipped state with its reason;
+label the whole record unexecuted rather than silently omitting the procedure.
+
 ## Regression
 
 Read [`regression.md`](references/regression.md). Diff captured screenshots, not
