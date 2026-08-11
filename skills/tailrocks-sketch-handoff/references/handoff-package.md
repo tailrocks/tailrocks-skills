@@ -10,13 +10,12 @@ Hand it a package.
 ```
 Design/
 ├── README.md                  what this is, and the source-of-truth order
-├── ExperienceBrief.md         from the design skill
-├── NativeComponentMap.md      from the design skill
+├── ExperienceBrief.md         from tailrocks-macos-design
+├── NativeComponentMap.md      from tailrocks-macos-design
 ├── DesignSource.md            approved frame links, version, date
 ├── DESIGN_MAP.md              symbol path → implementation
-├── SymbolMap.csv              design name → SF Symbol
 ├── Tokens/                    pointer + provenance for Sources/DesignTokens/
-├── StateMatrix.md             what must be rendered
+├── RequiredStates.md          pre-implementation states from the design brief
 ├── MotionSpec.md              per animation: trigger, purpose, reduce-motion
 ├── CustomComponents/          one contract per custom component
 ├── Fixtures/                  normal, empty, large, long-strings, errors
@@ -25,9 +24,12 @@ Design/
 │   └── rejected/              with reasons
 └── Acceptance/
     ├── Rubric.md
-    ├── RequiredStates.md
     └── CompletionCriteria.md
 ```
+
+`RequiredStates.md` is produced from `tailrocks-macos-design`'s brief before
+implementation; it is not the rendered capture matrix owned by
+`tailrocks-macos-visual-qa`.
 
 Generated Swift tokens live in the app target at `Sources/DesignTokens/`, so a
 removed name fails the build. `Design/Tokens/` records that path and generation

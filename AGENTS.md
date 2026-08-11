@@ -83,8 +83,9 @@ Skill definition: `skills/tailrocks-tanstack-project-setup/SKILL.md`
 
 ### The macOS family — design to verified pixels
 
-Six skills take a native macOS feature from a design file through implementation
-to rendered, audited evidence. They exist because the ecosystem gap is real:
+Six skills take a native macOS feature from an approved design through a
+design-file handoff to implementation and rendered, audited evidence. They exist
+because the ecosystem gap is real:
 Apple's own exported agent skills contain no Liquid Glass skill and no macOS
 skill, and the highest-traction design-taste skills are built for the web, where
 their defaults (avoid system fonts, avoid neutral grays, avoid spring easing) are
@@ -94,6 +95,9 @@ Exactly one skill owns each responsibility. Never run two skills that both encod
 aesthetic taste — they conflict, and the conflict surfaces as inconsistency
 across features rather than as an error.
 
+Inspection modes are named `audit`, except macOS design's scored `review` and
+visual QA's capture-producing `verify`.
+
 - **tailrocks-macos-design** — the taste authority. Experience brief,
   information architecture, and the native component map that classifies every
   region `NATIVE` / `NATIVE-COMPOSED` / `CUSTOM`; structurally different
@@ -101,7 +105,7 @@ across features rather than as an error.
   iconography; the custom component contract; a weighted rubric with hard
   failures and a correction order. Writes design artifacts only, never source.
   Definition: `skills/tailrocks-macos-design/SKILL.md`
-- **tailrocks-liquid-glass** — the material authority. Content-versus-functional
+- **tailrocks-liquid-glass** — the material authority. `CONTENT`-versus-`FUNCTIONAL`
   layer split, the standard-component-first decision order, exact SwiftUI and
   AppKit API surface with per-symbol availability, ten anti-patterns each stating
   its mechanism, and the glass acceptance gate. Definition:
@@ -113,7 +117,7 @@ across features rather than as an error.
   `skills/tailrocks-swift-best-practices/SKILL.md`
 - **tailrocks-swift-project-setup** — the baseline an agent can drive from a
   terminal. Declarative project generation with a synchronized source folder, the
-  four recorded target values and two SDK lanes, ad-hoc local signing, strict
+  three target values, a decided fallback behavior, and two SDK lanes, ad-hoc local signing, strict
   format and lint gates, test wiring, mise-pinned tooling, and Xcode agent
   integration with a one-owner-per-responsibility skill policy. Definition:
   `skills/tailrocks-swift-project-setup/SKILL.md`

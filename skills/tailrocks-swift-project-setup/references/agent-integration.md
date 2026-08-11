@@ -17,7 +17,7 @@ depend on a specific tool name; the tool list has changed between releases.
 ## Vendor upstream agent knowledge read-only
 
 Recent Xcode versions ship first-party agent skills that can be exported for use
-with external agents. Vendor the export into the repository and treat it as
+with external agents. Vendor the export into the application repository and treat it as
 read-only upstream material:
 
 ```
@@ -52,11 +52,14 @@ explicitly invoked:
 
 | Responsibility | Owner |
 |---|---|
-| Framework correctness | one general framework skill |
-| Material policy | the Liquid Glass skill |
-| Visual direction and acceptance | the macOS design skill |
-| Rendering and verification | the visual QA skill |
-| Project mechanics | this skill |
+| Framework correctness | `tailrocks-swift-best-practices` |
+| Material policy | `tailrocks-liquid-glass` |
+| Visual direction and acceptance rubric | `tailrocks-macos-design` |
+| Rendering and verification | `tailrocks-macos-visual-qa` |
+| Project mechanics | `tailrocks-swift-project-setup` |
+| Tokens | `tailrocks-sketch-handoff` |
+
+README's family ownership table is canonical.
 
 Never run two skills that both encode aesthetic taste. They conflict, and the
 conflict is invisible in the output — it surfaces as inconsistency across
@@ -64,7 +67,7 @@ features rather than as an error.
 
 ## Third-party skills are dependencies
 
-Treat every external skill as a dependency with the same review a library gets.
+Treat every installed third-party skill as a dependency with the same review a library gets.
 An empirical study of a large public skill corpus reported that roughly a quarter
 contained at least one identified vulnerability pattern, with skills bundling
 executable scripts significantly more likely to. That is one methodology and not

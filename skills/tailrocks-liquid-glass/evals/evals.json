@@ -10,7 +10,7 @@
     {
       "id": 2,
       "prompt": "Add a floating zoom control cluster over the canvas in this macOS app.",
-      "expected_output": "Walks the decision order before writing glass, records why no standard component suffices, places the cluster in the functional layer inside a single GlassEffectContainer, derives its shape concentrically rather than hard-coding a radius, tints at most one prominent action, and records the substitution under Reduce Transparency and Reduce Motion.",
+      "expected_output": "Walks the decision order before writing glass, records why no standard component suffices, places the cluster in the functional layer (FUNCTIONAL) inside a single GlassEffectContainer, derives its shape concentrically rather than hard-coding a radius, tints at most one prominent action, and records the substitution under Reduce Transparency and Reduce Motion.",
       "files": []
     },
     {

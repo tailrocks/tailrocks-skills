@@ -125,9 +125,9 @@ thing?
 
 Full: content dominance and rhythm are clear. Partial: local imbalance. Failing: chrome dominates or hierarchy reverses.
 
-**Liquid Glass correctness and restraint.** Glass confined to the functional
-layer. No glass-on-glass. Containers for clusters. Concentric geometry. One
-prominent tint. Scroll edge effects structural rather than decorative.
+**Liquid Glass correctness and restraint.** Score glass violations against
+`tailrocks-liquid-glass`'s layer model and anti-patterns; hard failures there are
+hard failures here. Keep this category's weight unchanged.
 
 Full: every glass rule is verified. Partial: one bounded correction. Failing: content glass, overlap, or unreadability.
 
@@ -169,8 +169,7 @@ score irrelevant to the person using the app:
 
 Any one of these rejects the feature regardless of score.
 
-- Pervasive glass content cards.
-- Independently overlapping or nested glass surfaces.
+- Glass violations that `tailrocks-liquid-glass` classifies as hard failures.
 - Unreadable content over complex or bright backgrounds.
 - Clipping or unusable behavior at the declared minimum window width.
 - A keyboard-navigation dead end.

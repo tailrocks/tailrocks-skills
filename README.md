@@ -23,7 +23,7 @@ component systems are outside scope.
 | `tailrocks-tanstack-project-setup` | Scaffold, migrate, and audit Bun-only TanStack Start projects with TypeScript 7, Oxc, Router, Query, shadcn/ui, Tailwind CSS v4, tests, and CI. |
 | `tailrocks-swift-best-practices` | Write, review, and refactor Swift and SwiftUI for a native macOS app: actor isolation, state ownership and view identity, AppKit interop boundaries, typed failure, availability guards, and accessibility semantics. |
 | `tailrocks-swift-project-setup` | Scaffold and enforce a strict native macOS app baseline: declarative project generation, deployment target and two SDK lanes, ad-hoc local signing, strict `swift-format` and SwiftLint gates, test wiring, mise-pinned tooling, and Xcode agent integration. |
-| `tailrocks-liquid-glass` | Apply, audit, or remediate Liquid Glass on macOS: the content-versus-functional layer split, `glassEffect` and `GlassEffectContainer`, `NSGlassEffectView`, scroll edge effects, concentric corners, tint policy, per-symbol availability, and the glass accessibility gate. |
+| `tailrocks-liquid-glass` | Apply, audit, or remediate Liquid Glass on macOS: the `CONTENT`-versus-`FUNCTIONAL` layer split, `glassEffect` and `GlassEffectContainer`, `NSGlassEffectView`, scroll edge effects, concentric corners, tint policy, per-symbol availability, and the glass acceptance gate. |
 | `tailrocks-macos-design` | Design a macOS feature to Apple-ecosystem quality before any code: the experience brief, a native component map classifying every region NATIVE / NATIVE-COMPOSED / CUSTOM, structural alternatives, macOS density and typography, custom component contracts, and a scored rubric with hard failures. |
 | `tailrocks-macos-visual-qa` | Build, launch, capture, drive, and verify a native macOS app so an agent can see its own interface: the atomic loop, capture by window ID, accessibility-tree driving, appearance and accessibility toggles, `performAccessibilityAudit`, and pixel regression. |
 | `tailrocks-sketch-handoff` | Turn a Sketch design into a handoff an agent implements faithfully: Sketch MCP wiring, Apple's official macOS UI kit, token extraction into committed code, the symbol-to-SwiftUI design map, and approved-frame exports. |
@@ -51,20 +51,23 @@ design-to-verified-pixels loop for native Apple-ecosystem apps:
 A filled loop that correctly rejects its screen is in [`examples/macos-screen/`](examples/macos-screen/).
 
 ```text
-sketch-handoff ──► macos-design ──► liquid-glass ──► swift-best-practices
-   tokens,           brief,            layer split,     isolation, identity,
-   design map        component map,    APIs,            interop, availability
-                     alternatives,     anti-patterns          │
-                     rubric                                   ▼
-                        ▲                            swift-project-setup
-                        │                             build and test gates
-                        └───────── macos-visual-qa ◄────────┘
-                              render, drive, audit, diff
+macos-design ──► sketch-handoff ──┬─► liquid-glass
+ brief, map,       tokens, map,       └─► swift-best-practices
+ alternatives,    approved frames             ▲
+ rubric                             swift-project-setup
+                                   build and test gates
+                                             │
+                                             ▼
+                                  macos-visual-qa
+                                  render, drive, audit, diff
 ```
 
-Exactly one skill owns each responsibility: material policy is
-`tailrocks-liquid-glass`, visual direction and acceptance is
-`tailrocks-macos-design`, verification is `tailrocks-macos-visual-qa`. Never
+Exactly one skill owns each responsibility: visual direction and the acceptance
+rubric → `tailrocks-macos-design`; tokens → `tailrocks-sketch-handoff`;
+material policy → `tailrocks-liquid-glass`; framework correctness →
+`tailrocks-swift-best-practices`; project mechanics →
+`tailrocks-swift-project-setup`; rendering and verification →
+`tailrocks-macos-visual-qa`. Never
 run two skills that both encode aesthetic taste — they conflict, and the
 conflict surfaces as inconsistency across features rather than as an error.
 

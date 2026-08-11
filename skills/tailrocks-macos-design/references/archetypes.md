@@ -146,8 +146,9 @@ source navigation; search, filters, metadata inspector, playback controls;
 explicit loading, unavailable, and external-device states.
 
 **Optimize:** legibility over *variable* content, smooth browsing, direct
-manipulation, continuity, and Clear glass **only** where its three conditions
-hold.
+manipulation, continuity, and Clear glass only for the content-tied temporary
+interaction defined in `tailrocks-liquid-glass/references/layer-model.md`, with
+the required dimming obligation.
 
 **Attracts:** text over uncontrolled imagery, permanently tinted glass, hidden
 playback state, animated artwork competing with the content. This is the

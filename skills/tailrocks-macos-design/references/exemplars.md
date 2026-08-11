@@ -255,6 +255,7 @@ the shape of a good Liquid Glass decision.
 Glass that is invisible at rest and appears only under direct manipulation. This
 is how a chart or a scrubber can be tactile without becoming decoration — and it
 sidesteps the content-layer prohibition, because at rest there is no material.
+The owning implementation rule is in `tailrocks-liquid-glass`.
 
 **On what actually improved, which was not the glass:**
 
@@ -317,9 +318,9 @@ The most-cited bad Liquid Glass Mac apps in 2025–2026 are Apple's.
   toolbar *"floats without any backing frame,"* with the acknowledged
   consequence that *"similarly-colored content sliding under a button can make it
   illegible."*
-- **Finder** — internally inconsistent: the icon view's toolbar is far more
-  transparent than the list view's. Inconsistency inside one app is its own
-  defect.
+- **Finder defect note** — Finder remains a model app overall, but its icon-view
+  toolbar is more transparent than its list-view toolbar. Avoid this scoped
+  inconsistency rather than rejecting the whole app.
 - **iWork and Final Cut Pro opted out of Liquid Glass entirely.** Apple's own pro
   apps declined it.
 
@@ -388,9 +389,9 @@ anyway.
 ## Using this corpus
 
 For each new screen, name the reference model it is following and say why. Then
-check it against the counter-example that most resembles it — a media-heavy
-screen against Music, a dense browser against Finder's inconsistency, a canvas
-against Freeform.
+check it against the counter-example or scoped defect that most resembles it — a
+media-heavy screen against Music, a dense browser against Finder's toolbar
+inconsistency, a canvas against Freeform.
 
 When you add your own references, use the annotation shape in
 [`reference-corpus.md`](reference-corpus.md): user job, what works and why, where
