@@ -71,3 +71,26 @@ cue. Fixed by promoting rule / mechanism / exception into named bullets
 (no wording changed); glass-3 then passed twice consecutively on the
 restructured router. Parallel session's four macos-design verdicts against
 its compressed router (359de41): cases 1–4 all PASS.
+
+## Addendum 2 — router growth at 71554af
+
+`feat(macos-design): add app archetypes, evidence classes, and score caps`
+(71554af, squashed into main as 64df333) grew the `tailrocks-macos-design`
+router from 220 to 228 lines by strengthening Stage 1 with archetype selection.
+
+Per the router budget rule in `AGENTS.md`, a router change is a change to every
+behavior in that file, so all four cases were rerun rather than only the one
+related to the edit. The run was still in flight when PR #7 was merged, and the
+merge commit records it as a known open item.
+
+Verdicts, against the merged state:
+
+| Case | Result |
+|---|---|
+| 1 | PASS |
+| 2 | PASS |
+| 3 | PASS |
+| 4 | PASS |
+
+No regression. The open item noted in 64df333 is closed; no follow-up fix was
+required.
