@@ -14,20 +14,20 @@ REJECTED (one-line rationale).
 | Plan | Pass | Title | Priority | Effort | Depends on | Status |
 |------|------|-------|----------|--------|------------|--------|
 | [000](000-goal-condition-hardening.md) | 5th | Gate-first goal condition; exhaustion = BLOCKED | P1 | S | — | TODO |
-| [001](001-artifact-graded-evals.md) | 5th | Artifact-graded, failure-preserving eval runner | P1 | M | — | TODO (preconditions re-verified present 2026-08-11 at `64df333`; validator count refreshed to 21) |
+| [001](001-artifact-graded-evals.md) | 5th | Artifact-graded, failure-preserving eval runner | P1 | M | — | DONE — `scripts/run-evals.test.ts`; artifact caps, nested staging, all-runs verdict verified |
 | [002](002-package-goal-check.md) | 5th | Deterministic per-package goal-check script | P2 | M | 000 | TODO |
 | [003](003-client-wiring-and-reconcile.md) | 5th | Client wiring + reconcile integration | P2 | M | 002 | TODO |
-| [004](004-macos-eval-fixtures-and-coverage.md) | 6th | macOS eval fixtures + mode/gate coverage | P1 | L | 001 | TODO |
-| [005](005-liquid-glass-corrections.md) | 6th | Liquid-glass self-contradictions + WWDC26 currency | P1 | M | 004 | TODO |
-| [006](006-design-template-rubric-alignment.md) | 6th | Design templates carry what the rubric mandates | P1 | M | 004 | TODO |
-| [007](007-visual-qa-harness-hardening.md) | 6th | Visual-qa restore safety + capture/drive harness | P1 | M–L | — (004 for rerun) | TODO |
-| [008](008-family-ownership-and-handoffs.md) | 6th | One owner per rule; working handoffs | P1 | M–L | 004, 005, 006, 007 | TODO |
-| [009](009-swift-setup-template-fixes.md) | 6th | Setup templates pass their own gates | P2 | M | 004 | TODO |
-| [010](010-swift-best-practices-corrections.md) | 6th | Coordinator lifetime + named APIs | P2 | M | 004 (coord. 009) | TODO |
-| [011](011-sketch-handoff-fixes.md) | 6th | Sketch-handoff self-consistency + safe extraction | P2 | S | 004 (coord. 008) | TODO |
-| [012](012-repo-ci-install-hardening.md) | 6th | CI topology, v0.12.0 pins, validator gaps, age gate | P2 | M | — | TODO |
-| [013](013-dogfood-example-and-intake.md) | 6th | Ship w6 dogfood example; land its learnings | P2 | S–M | 006, 007 | TODO |
-| [014](014-spikes-state-injection-and-distribution.md) | 6th | Spikes: injection fidelity; distribution memo; icon fix | P3 | M | 007 | TODO |
+| [004](004-macos-eval-fixtures-and-coverage.md) | 6th | macOS eval fixtures + mode/gate coverage | P1 | L | 001 | DONE — `004-run-record.md`: 37/37 ran, 28 pass, 9 routed findings |
+| [005](005-liquid-glass-corrections.md) | 6th | Liquid-glass self-contradictions + WWDC26 currency | P1 | M | 004 | DONE — audit/adopt/apply structural cues fixed within 200 lines; all 7 liquid-glass cases pass 2/2 |
+| [006](006-design-template-rubric-alignment.md) | 6th | Design templates carry what the rubric mandates | P1 | M | 004 | DONE — static template/rubric criteria green; all 6 macos-design cases pass 2/2 on HEAD |
+| [007](007-visual-qa-harness-hardening.md) | 6th | Visual-qa restore safety + capture/drive harness | P1 | M–L | — (004 for rerun) | DONE — shell/Swift/static harness gates green; all 6 visual-qa cases pass 2/2 |
+| [008](008-family-ownership-and-handoffs.md) | 6th | One owner per rule; working handoffs | P1 | M–L | 004, 005, 006, 007 | BLOCKED — STOP: swift-best-practices case 4 is 1/2 after single-owner availability dedup; pointer intermittently omits the required macOS-26 derived-radius/SwiftUI-host fallback, and the plan reserves pointer-vs-router resolution for maintainer decision |
+| [009](009-swift-setup-template-fixes.md) | 6th | Setup templates pass their own gates | P2 | M | 004 | DONE — scratch generate/check/build/test and fixed point green; one-test floor fails; radius/test exemptions verified; all 6 eval cases pass 2/2 on exact head |
+| [010](010-swift-best-practices-corrections.md) | 6th | Coordinator lifetime + named APIs | P2 | M | 004 (coord. 009) | DONE — separate lifecycle/accessibility/cancellation cues landed; all 6 swift-best-practices cases pass 2/2 |
+| [011](011-sketch-handoff-fixes.md) | 6th | Sketch-handoff self-consistency + safe extraction | P2 | S | 004 (coord. 008) | DONE — safe extraction, source-backed symbols, seven-field audit, and bare-link precedence verified; all 6 cases pass 2/2 on exact head |
+| [012](012-repo-ci-install-hardening.md) | 6th | CI topology, v0.12.0 pins, validator gaps, age gate | P2 | M | — | BLOCKED — maintainer decision: require only `validate` + `templates-macos` in branch protection and create post-merge `v0.12.0` tag; repository changes/tests prepared |
+| [013](013-dogfood-example-and-intake.md) | 6th | Ship w6 dogfood example; land its learnings | P2 | S–M | 006, 007 | BLOCKED — deterministic gates and isolated fixes pass, but the required complete design/liquid eval rerun cannot finish: `claude` repeatedly hangs 6–10 minutes then exits 1 with empty stderr; unblock by restoring stable Claude CLI execution, then rerun both suites ×2 |
+| [014](014-spikes-state-injection-and-distribution.md) | 6th | Spikes: injection fidelity; distribution memo; icon fix | P3 | M | 007 | DONE — `014a-injection-fidelity.md` has 8 numeric rows and verified restores; `014b-distribution-scope.md` records sourced scope and maintainer decision |
 
 ## Dependency notes
 

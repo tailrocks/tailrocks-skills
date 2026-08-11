@@ -32,16 +32,17 @@ architecture hiding inside the first.
 
 Rules for a bridge:
 
-- Inputs go in through the typed initializer and the update method. Outputs come
-  out through a coordinator and typed callbacks — never a shared mutable
-  reference.
-- The update method is called often. Make it idempotent, and compare before
+- Inputs enter through the typed initializer and `makeNSView(context:)` /
+  `updateNSView(_:context:)`. Outputs leave through a coordinator and typed
+  callbacks — never a shared mutable reference.
+- `updateNSView(_:context:)` is called often. Make it idempotent, and compare before
   assigning so an assignment does not trigger a change notification that
   re-enters the update.
-- The coordinator owns delegate conformance and any observation, and its lifetime
-  is the representable's lifetime.
-- Size the wrapped view through the sizing hooks rather than a fixed frame, so it
-  participates in the surrounding layout.
+- The coordinator owns delegate conformance and observation. `makeCoordinator()`
+  creates it once per represented view; it survives re-created representable
+  values while view identity holds. Tear down in
+  `dismantleNSView(_:coordinator:)`, never `updateNSView`.
+- Size through `sizeThatFits(_:nsView:context:)`, not a fixed frame.
 
 ## Isolation across the bridge
 
@@ -65,6 +66,10 @@ explicitly and record that it must be revisited when the window corner radius
 changes — which it did in 26 and does again in 27.
 
 ## Bridging the other direction
+
+`NSHostingView` embeds a SwiftUI view in an AppKit hierarchy;
+`NSHostingController` is for view-controller containment. Use `sizingOptions`
+when intrinsic-size reporting must be selected explicitly.
 
 Hosting SwiftUI inside AppKit is the correct move for incremental modernization
 and for getting SwiftUI-only capabilities into an existing Mac app. Two notes:

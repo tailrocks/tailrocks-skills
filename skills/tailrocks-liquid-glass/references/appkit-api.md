@@ -1,6 +1,6 @@
 # AppKit Liquid Glass API — macOS
 
-**Apple ships no AppKit Liquid Glass sample code.** Verified five independent
+**Apple ships no downloadable AppKit Liquid Glass sample code.** Verified five independent
 ways: the AppKit framework page has no sample-code section; the AppKit render
 index contains 50 sample nodes and none is glass-related; `NSGlassEffectView`,
 `NSGlassEffectContainerView`, and `NSBackgroundExtensionView` each have zero
@@ -11,8 +11,9 @@ link no sample.
 The `Adopting Liquid Glass` guide contains four code listings in total, **all
 SwiftUI or UIKit — not one AppKit listing.**
 
-For AppKit there is prose and API reference only. Verify every symbol against the
-SDK in use rather than transposing a SwiftUI pattern.
+WWDC26 session 289, *Modernize your AppKit app*, does ship an Apple-authored
+`cornerConfiguration` listing; WWDC25 session 310 and the adoption guide remain
+prose/API-led for AppKit Liquid Glass. Verify every symbol against the SDK in use.
 
 ## `NSGlassEffectView` — macOS 26.0
 
@@ -91,7 +92,7 @@ final class TransportCluster: NSView {
         row.orientation = .horizontal
         row.spacing = 12
 
-        container.spacing = 20   // merge distance ≥ row spacing, so neighbors fuse
+        container.spacing = 12   // equal spacing: distinct at rest, merge during proximity transitions
         container.contentView = row
 
         container.translatesAutoresizingMaskIntoConstraints = false
@@ -109,7 +110,7 @@ final class TransportCluster: NSView {
 }
 ```
 
-The glass views live inside the container's `contentView` hierarchy; the
+The numeric edit above was not re-probed. The glass views live inside the container's `contentView` hierarchy; the
 container merges any descendant glass views that come within `spacing` points
 of each other.
 
@@ -214,13 +215,14 @@ One prominent item per toolbar; prominence on every item is prominence on none.
 
 This is the availability most often gotten wrong on AppKit.
 
-- `NSScrollEdgeEffectStyle` (class) — macOS **26.1** — `.automatic`, `.hard`,
-  `.soft`.
+- `NSScrollEdgeEffectStyle` (class) — macOS **26.1** — Swift members
+  `.automatic`, `.hard`, `.soft` (spelling per Swift import convention; not
+  re-probed after this edit).
 - `NSTitlebarAccessoryViewController.preferredScrollEdgeEffectStyle` — macOS
   **26.1**.
 
-Apple's own snippet assigns `NSScrollEdgeEffectStyle.softStyle` to
-`preferredScrollEdgeEffectStyle`.
+Apple's quoted Objective-C snippet uses `softStyle`; the `…Style` suffix drops
+on Swift import.
 
 Worked pattern — a bottom title-bar accessory that forces a hard edge under a
 pinned filter bar. Compiles with `swiftc -c -target arm64-apple-macos26.0`
@@ -250,6 +252,13 @@ when there is free-floating text such as the window title in the title bar, and
 sidebars extend to the window's edges.
 
 ## Split views, sidebars, inspectors
+
+### System-supported bars
+
+| Position | AppKit API |
+|---|---|
+| Window title bar | `NSTitlebarAccessoryViewController` |
+| Split-item top/bottom | `NSSplitViewItemAccessoryViewController` via `topAlignedAccessoryViewControllers` / `bottomAlignedAccessoryViewControllers` |
 
 - `NSSplitViewController`, `NSSplitViewItem.init(inspectorWithViewController:)`
   (macOS 11.0).
@@ -299,3 +308,10 @@ of all of them. Two decisions are yours:
 
 Do not leave an `NSVisualEffectView` inside a popover's content view; the
 adoption guide says to remove those custom background views.
+
+| Existing `NSVisualEffectView` surface | Migration decision |
+|---|---|
+| Sidebar | Replace custom material with system sidebar construction; do not add glass manually. |
+| Toolbar accessory | Move into `NSTitlebarAccessoryViewController` or the split-item accessory APIs. |
+| Floating functional panel | Use `NSGlassEffectView` only after the layer model justifies a custom transient surface. |
+| Content | Keep the purpose-appropriate `NSVisualEffectView.Material`; content never becomes glass. |

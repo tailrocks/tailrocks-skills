@@ -83,8 +83,9 @@ Skill definition: `skills/tailrocks-tanstack-project-setup/SKILL.md`
 
 ### The macOS family — design to verified pixels
 
-Six skills take a native macOS feature from a design file through implementation
-to rendered, audited evidence. They exist because the ecosystem gap is real:
+Six skills take a native macOS feature from an approved design through a
+design-file handoff to implementation and rendered, audited evidence. They exist
+because the ecosystem gap is real:
 Apple's own exported agent skills contain no Liquid Glass skill and no macOS
 skill, and the highest-traction design-taste skills are built for the web, where
 their defaults (avoid system fonts, avoid neutral grays, avoid spring easing) are
@@ -94,6 +95,9 @@ Exactly one skill owns each responsibility. Never run two skills that both encod
 aesthetic taste — they conflict, and the conflict surfaces as inconsistency
 across features rather than as an error.
 
+Inspection modes are named `audit`, except macOS design's scored `review` and
+visual QA's capture-producing `verify`.
+
 - **tailrocks-macos-design** — the taste authority. Experience brief,
   information architecture, and the native component map that classifies every
   region `NATIVE` / `NATIVE-COMPOSED` / `CUSTOM`; structurally different
@@ -101,7 +105,7 @@ across features rather than as an error.
   iconography; the custom component contract; a weighted rubric with hard
   failures and a correction order. Writes design artifacts only, never source.
   Definition: `skills/tailrocks-macos-design/SKILL.md`
-- **tailrocks-liquid-glass** — the material authority. Content-versus-functional
+- **tailrocks-liquid-glass** — the material authority. `CONTENT`-versus-`FUNCTIONAL`
   layer split, the standard-component-first decision order, exact SwiftUI and
   AppKit API surface with per-symbol availability, ten anti-patterns each stating
   its mechanism, and the glass acceptance gate. Definition:
@@ -113,7 +117,7 @@ across features rather than as an error.
   `skills/tailrocks-swift-best-practices/SKILL.md`
 - **tailrocks-swift-project-setup** — the baseline an agent can drive from a
   terminal. Declarative project generation with a synchronized source folder, the
-  four recorded target values and two SDK lanes, ad-hoc local signing, strict
+  three target values, a decided fallback behavior, and two SDK lanes, ad-hoc local signing, strict
   format and lint gates, test wiring, mise-pinned tooling, and Xcode agent
   integration with a one-owner-per-responsibility skill policy. Definition:
   `skills/tailrocks-swift-project-setup/SKILL.md`
@@ -223,11 +227,13 @@ Skill definition: `skills/tailrocks-remediate/SKILL.md`
 
 ## Adding a Skill
 
-1. Create `skills/<name>/SKILL.md` with `name`, a trigger-rich, agent-neutral
-   `description`, `disable-model-invocation: true`, and `user-invocable: true`
-   in the frontmatter.
+1. Create `skills/<name>/SKILL.md` with `name`, `license: Apache-2.0`, a
+   trigger-rich, agent-neutral `description` starting exactly with “Use only
+   when the user explicitly requests this skill.”, `disable-model-invocation:
+   true`, and `user-invocable: true` in the frontmatter. Evidence belongs in
+   artifacts and references, never disguised as instructions.
 2. Add `agents/openai.yaml` with `policy.allow_implicit_invocation: false`.
-3. Add `evals/evals.json` with realistic normal, boundary, and safety cases.
+3. Add `evals/evals.json` with realistic normal, boundary, and safety cases. Audit/review-shaped cases should reference fixtures under `evals/fixtures/<case>/`; refusal cases may stay fixture-free.
 4. Put deep material under `skills/<name>/references/` and copy-ready assets under
    `skills/<name>/templates/`; keep `SKILL.md` a concise router.
 
@@ -253,6 +259,8 @@ Rules for changing a `SKILL.md`:
   no benefit; the reference already says all of it, better.
 - Adding a section to a router is a change to **every** behavior in that file.
   Re-run that skill's eval cases, not only a case related to the new section.
+  Run `mise run evals -- --skill <name> --case <id> --runs 2`. This needs the
+  `claude` CLI and spends budget, so run it locally before tagging, not in PR CI.
 - Prefer strengthening an existing section over adding one. Two sections that
   both gesture at the same obligation are weaker than one that states it.
 - When a router grows past roughly 200 lines, the next addition should replace
@@ -279,8 +287,8 @@ Rules for changing a `SKILL.md`:
   gap. Look at where the requirement sits in the file before rewriting what it
   says.
 5. Every plugin manifest auto-discovers the new skill from `skills/` — no
-   manifest edit needed. Add the skill to the tables in `README.md` and this
-   file.
+   manifest edit needed. Add the skill to the tables in `README.md`,
+   `INSTALL.md`, and this file.
 6. Bump `version` in lockstep across `.claude-plugin/plugin.json`,
    `.codex-plugin/plugin.json`, `.kimi-plugin/plugin.json`, and the
    `.claude-plugin/marketplace.json` entry, and tag the release so installs
@@ -350,3 +358,6 @@ footer in the body.
 5. Tag `vX.Y.Z` on the merge commit and push the tag.
 6. Re-verify the INSTALL.md matrix commands against current client versions
    and refresh its verified date.
+7. Re-verify macOS platform baselines using the W1/W2 DocC JSON availability
+   and `gdmf.apple.com/v2/pmv` procedure in
+   `plans/macos-skills-hardening/README.md`, then refresh verification stamps.

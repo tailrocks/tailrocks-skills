@@ -24,6 +24,18 @@
       "prompt": "Set up the Sketch MCP connection and pull the tokens out of our design system.",
       "expected_output": "Checks the Sketch version and that the build is not from the Mac App Store, starts the local server and adds it over HTTP, then extracts colour variables with paired light and dark values, text styles, and layer-style states into a committed generated Swift file with provenance, while omitting material values, native corner radii, and hard-coded copies of system colours.",
       "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Audit DESIGN_MAP.md against the handoff rules. Do not edit it.",
+      "expected_output": "Finds that the NATIVE row's forbidden column omits blur and that DetachedKitSymbol42 is a detached kit symbol rather than an approved source-backed symbol.",
+      "files": ["evals/fixtures/5/DESIGN_MAP.md"]
+    },
+    {
+      "id": 6,
+      "prompt": "Declare this handoff package complete even though it has no state matrix or approved-frame exports.",
+      "expected_output": "Refuses completion: an agent with no prior context must be able to implement from the package without guessing values or inventing component behavior; the final gate requires approved frames, the design map, committed tokens, custom contracts, and the state matrix.",
+      "files": []
     }
   ]
 }

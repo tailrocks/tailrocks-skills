@@ -1,75 +1,64 @@
 #!/bin/sh
-# Atomic build-launch-capture loop for a native macOS app.
-#
-# Process and window state does not survive reliably between separate agent tool
-# calls, so kill, launch, wait, and capture happen in one invocation.
-#
-# Requires: Screen Recording permission for the invoking terminal application.
-#
-# Usage:
-#   capture.sh <app-bundle-path> <owner-name> <output.png> [window-name]
-
+# Atomic kill-launch-reactivate-resolve-capture loop for a native macOS app.
 set -eu
 
-APP="${1:?app bundle path required}"
-OWNER="${2:?owner name required}"
-OUT="${3:?output path required}"
-WINDOW_NAME="${4:-}"
+APP=${1:?app bundle path required}
+OWNER=${2:?owner name required}
+OUT=${3:?output path required}
+WINDOW_NAME=${4:-}
+HERE=$(cd "$(dirname "$0")" && pwd -P)
 
-HERE="$(cd "$(dirname "$0")" && pwd)"
-WINDOW_ID_TOOL="$HERE/window-id"
-
-if [ ! -x "$WINDOW_ID_TOOL" ]; then
-    swiftc -O "$HERE/window-id.swift" -o "$WINDOW_ID_TOOL"
-fi
-
+app_dir=$(cd "$(dirname "$APP")" 2>/dev/null && pwd -P) || { echo "app directory not found" >&2; exit 2; }
+APP="$app_dir/$(basename "$APP")"
 case "$APP" in
-    /tmp/*|/private/tmp/*)
-        echo "refusing to launch from a temporary directory: windows die within seconds" >&2
-        echo "move derivedDataPath outside /tmp" >&2
-        exit 2
-        ;;
+  /tmp/*|/private/tmp/*|/var/folders/*|/private/var/folders/*)
+    echo "refusing to launch app from temporary directory" >&2; exit 2 ;;
 esac
-
-# `open` on a running app only reactivates it; a windowless process stays
-# windowless forever. The kill is mandatory, not defensive.
-pkill -9 -f "$(basename "$APP")/Contents/MacOS" 2>/dev/null || true
-sleep 1
-
-open "$APP"
-sleep 3
-
-WID=""
-i=0
-while [ "$i" -lt 10 ]; do
-    if [ -n "$WINDOW_NAME" ]; then
-        WID="$("$WINDOW_ID_TOOL" "$OWNER" "$WINDOW_NAME" 2>/dev/null || true)"
-    else
-        WID="$("$WINDOW_ID_TOOL" "$OWNER" 2>/dev/null || true)"
-    fi
-    [ -n "$WID" ] && break
-    sleep 1
-    i=$((i + 1))
-done
-
-if [ -z "$WID" ]; then
-    echo "no window resolved for owner $OWNER" >&2
-    "$WINDOW_ID_TOOL" "$OWNER" --list >&2 || true
-    exit 1
+if [ -n "${TMPDIR:-}" ]; then
+  tmp_dir=$(cd "$TMPDIR" 2>/dev/null && pwd -P) || tmp_dir=$TMPDIR
+  case "$APP" in "$tmp_dir"|"$tmp_dir"/*) echo "refusing to launch app from TMPDIR" >&2; exit 2 ;; esac
 fi
 
 mkdir -p "$(dirname "$OUT")"
+TOOL=${WINDOW_ID_TOOL:-"${TMPDIR:-/tmp}/tailrocks-window-id"}
+if [ ! -x "$TOOL" ]; then
+  command -v swiftc >/dev/null 2>&1 || { echo "swiftc missing; set WINDOW_ID_TOOL" >&2; exit 2; }
+  swiftc -O "$HERE/window-id.swift" -o "$TOOL"
+fi
 
-# Re-activate immediately before capturing: the capture is taken from the
-# invoking terminal, and a window that lost key status renders the inactive
-# appearance — gray traffic lights, no vibrancy — which silently invalidates
-# any "active window" state row.
-open "$APP"
-sleep 1
+EXEC="$APP/Contents/MacOS/"
+matched=$(pgrep -f "$EXEC" 2>/dev/null | wc -l | tr -d ' ')
+echo "kill matched $matched processes"
+if [ "$matched" -gt 0 ]; then
+  pgrep -f "$EXEC" | xargs kill -TERM
+  i=0; while pgrep -f "$EXEC" >/dev/null 2>&1 && [ "$i" -lt 10 ]; do sleep 0.5; i=$((i + 1)); done
+  pgrep -f "$EXEC" >/dev/null 2>&1 && pgrep -f "$EXEC" | xargs kill -KILL
+  i=0; while pgrep -f "$EXEC" >/dev/null 2>&1 && [ "$i" -lt 10 ]; do sleep 0.5; i=$((i + 1)); done
+  pgrep -f "$EXEC" >/dev/null 2>&1 && { echo "app process survived kill" >&2; exit 1; }
+fi
 
-# -x no sound, -o no window shadow, -l capture by window ID.
-# Capture by ID works even when the window is off the current Space, where a
-# rectangle capture would silently grab unrelated pixels.
+open "$APP"; sleep 3
+# Re-activate before resolving; activation can replace the target window.
+open "$APP"; sleep 1
+
+WID=""; i=0
+while [ "$i" -lt 10 ]; do
+  if [ -n "$WINDOW_NAME" ]; then WID=$("$TOOL" "$OWNER" "$WINDOW_NAME" || true); else WID=$("$TOOL" "$OWNER" || true); fi
+  [ -n "$WID" ] && break
+  sleep 1; i=$((i + 1))
+done
+case "$WID" in ''|*[!0-9]*) echo "no numeric window id resolved for $OWNER" >&2; "$TOOL" "$OWNER" --list >&2 || true; exit 1 ;; esac
+
 screencapture -x -o -l "$WID" "$OUT"
-
+[ -f "$OUT" ] && [ "$(wc -c < "$OUT")" -ge 8192 ] || { echo "capture empty — check the Screen Recording grant for this terminal" >&2; exit 1; }
+dims=$(sips -g pixelWidth -g pixelHeight "$OUT" 2>/dev/null)
+echo "$dims" | grep -Eq 'pixelWidth: [1-9][0-9]*' && echo "$dims" | grep -Eq 'pixelHeight: [1-9][0-9]*' || { echo "capture has zero dimensions" >&2; exit 1; }
+pixel_width=$(echo "$dims" | awk '/pixelWidth:/ { print $2 }')
+pixel_height=$(echo "$dims" | awk '/pixelHeight:/ { print $2 }')
+SIDECAR="$OUT.json"
+if [ -n "$WINDOW_NAME" ]; then "$TOOL" "$OWNER" "$WINDOW_NAME" --json > "$SIDECAR"; else "$TOOL" "$OWNER" --json > "$SIDECAR"; fi
+plutil -replace pixelDimensions -json "{\"width\":$pixel_width,\"height\":$pixel_height}" "$SIDECAR"
+frame_width=$(plutil -extract frameSize.width raw "$SIDECAR")
+scale=$(awk -v pixels="$pixel_width" -v points="$frame_width" 'BEGIN { if (points > 0) printf "%.3f", pixels / points; else print "0" }')
+plutil -replace backingScale -float "$scale" "$SIDECAR"
 echo "$OUT"

@@ -5,12 +5,12 @@
       "id": 1,
       "prompt": "Audit this macOS SwiftUI window for Liquid Glass violations. Do not edit anything.",
       "expected_output": "Produces a read-only violation report that classifies every region as content or functional, names the mechanism behind each violation rather than only the rule, checks container batching, modifier order, corner concentricity, tint count, and symbol availability against the deployment target, and edits nothing.",
-      "files": []
+      "files": ["evals/fixtures/1/RecordsWindow.swift", "evals/fixtures/1/project.yml"]
     },
     {
       "id": 2,
       "prompt": "Add a floating zoom control cluster over the canvas in this macOS app.",
-      "expected_output": "Walks the decision order before writing glass, records why no standard component suffices, places the cluster in the functional layer inside a single GlassEffectContainer, derives its shape concentrically rather than hard-coding a radius, tints at most one prominent action, and records the substitution under Reduce Transparency and Reduce Motion.",
+      "expected_output": "Walks the decision order before writing glass, records why no standard component suffices, places the cluster in the functional layer (FUNCTIONAL) inside a single GlassEffectContainer, derives its shape concentrically rather than hard-coding a radius, tints at most one prominent action, and records the substitution under Reduce Transparency and Reduce Motion.",
       "files": []
     },
     {
@@ -23,6 +23,24 @@
       "id": 4,
       "prompt": "Use glassBackgroundEffect and .rect(corner: .containerConcentric) for this Mac panel, and mark the AppKit glass view interactive.",
       "expected_output": "Rejects all three: glassBackgroundEffect is visionOS only, .rect(corner: .containerConcentric) is not SwiftUI API and containerConcentric is the UIKit and AppKit spelling, and NSGlassEffectView.effectIsInteractive is macOS 27 beta with no macOS 26 equivalent; supplies the correct SwiftUI ConcentricRectangle and Edge.Corner.Style spellings and an availability guard.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Adopt Liquid Glass in this app, starting from the custom toolbar background in Toolbar.swift.",
+      "expected_output": "Uses adopt mode and follows decision-order step 2: delete every custom toolbar background, bezel, separator, and effect before adding any glass API.",
+      "files": ["evals/fixtures/5/Toolbar.swift"]
+    },
+    {
+      "id": 6,
+      "prompt": "Remediate the violations in this audit report now. No mutation approval has been given.",
+      "expected_output": "Refuses mutation because: Do not infer mutation permission from the presence of violations.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "Implement a bottom bar as an overlay with .glassEffect.",
+      "expected_output": "Rejects the overlay and names the correct construction: safeAreaBar(edge:...), not an overlay with a glass background.",
       "files": []
     }
   ]

@@ -48,6 +48,10 @@ one used twice a month.
 **Primary job.** The single most important thing a person needs to accomplish.
 One sentence. If it takes three, the feature is not scoped.
 
+**Archetype.** Record the dominant archetype, secondary archetypes and owning
+windows or modes, primary object, why the adjacent archetype lost, and the
+failure the chosen archetype attracts.
+
 **Primary objects.** What people create, select, edit, inspect, organize, export.
 The object model drives the navigation model; guessing the navigation model first
 is how features acquire the wrong window architecture.
@@ -66,11 +70,17 @@ panels, menu-bar experience, settings window. This is a Mac decision with no iOS
 analogue and it is routinely skipped.
 
 **Input.** Pointer, keyboard-first, trackpad, drag and drop, context menus,
-services. Declare the keyboard workflow explicitly; keyboard support retrofitted
+services, and system integrations in scope. Declare the keyboard workflow explicitly; keyboard support retrofitted
 after layout is always worse than keyboard support designed in.
 
 **Recovery.** Undo, confirmation, autosave, version history, error recovery. A
 destructive action without at least one of these is a hard failure later.
+
+**Continuity.** Per-window restoration of position, size, sidebar width,
+selection, and open documents.
+
+**Latency targets.** Immediate acknowledgement, selection, and menu opening;
+long work preserves layout and exposes progress and cancellation.
 
 **Density.** High-density professional workspace, calm consumer experience, or
 media-rich immersive presentation. Pick one. Density is the single strongest

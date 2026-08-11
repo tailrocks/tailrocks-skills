@@ -7,6 +7,10 @@ identifier on the element. An agent can find an element by identifier and send i
 a press action, then read state back out of the same tree — no test target, no
 rebuild, no test host.
 
+Compile and use `templates/ax-drive.swift`:
+`ax-drive <pid|owner> find|press|read <AXIdentifier>`. AppleScript `System
+Events` cannot match `AXIdentifier`; this purpose-built AXUIElement tool can.
+
 This is a far tighter cycle than a full UI-test run, and it is the correct default
 for iterating on a screen.
 
@@ -82,6 +86,8 @@ contrast from pixels.
 
 It runs through the test action, so it needs a graphical session like everything
 else here.
+Harness mode installs `templates/AuditTests.swift`
+when the project has no UI-test target.
 
 **No accessibility inspector command-line tool exists. No HIG linter exists. No
 Liquid Glass linter exists** — not from Apple, not from anyone. This audit plus a

@@ -107,11 +107,19 @@ design and test against your worst-case content, never a neutral background.
 > Use tinting selectively to emphasize primary elements and actions.
 
 AppKit expresses this with `NSToolbarItem.Style.prominent` plus
-`backgroundTintColor`. Apple never publishes a numeric limit on tinted items; the
-practical rule stands at one per bar, on the trailing side, because a second one
-destroys the first one's meaning.
+`backgroundTintColor`. Apple publishes no numeric limit on *tint*, while the HIG
+mandates one primary action (quoted in `anti-patterns.md`); these are one rule:
+one tinted primary action per bar, on the trailing side.
 
-## Scroll edge effects: soft is the default, hard is the Mac case
+## Scroll edge effects: automatic is the default; hard is the Mac case
+
+HIG revision checked 2026-08-11: Scroll views (latest recorded change
+2026-03-24), Sidebars, Menus, App icons, and Design principles were reread from
+Apple's live Human Interface Guidelines. Platform-specific sidebar-adaptation
+language is not promoted into a macOS API rule without macOS availability.
+
+Prefer `.automatic`, which commonly resolves soft; force a style only for a
+tested structural need.
 
 > **Hard is mostly used on macOS.** It creates a stronger, more opaque boundary —
 > ideal for interactive text, controls without backgrounds, or pinned table

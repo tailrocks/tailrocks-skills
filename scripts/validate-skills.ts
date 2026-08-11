@@ -12,6 +12,10 @@ async function exists(file: string): Promise<boolean> {
   }
 }
 
+export function resolveEvalFixture(root: string, skillDir: string, fixture: string): string {
+  return fixture.startsWith("skills/") ? path.join(root, fixture) : path.join(skillDir, fixture);
+}
+
 async function filesUnder(directory: string): Promise<string[]> {
   if (!(await exists(directory))) return [];
   const output: string[] = [];
@@ -68,6 +72,15 @@ async function scanLinks(
     if (!raw || /^(?:https?:|mailto:)/.test(raw)) continue;
     const target = path.resolve(path.dirname(file), raw);
     if (raw.startsWith("../") || outside(skillDir, target)) {
+      errors.push(`${directory}: reference escapes skill directory: ${raw}`);
+    } else if (!(await exists(target))) {
+      errors.push(`${directory}: broken reference ${raw}`);
+    }
+  }
+  for (const match of proseWithoutFences(source).matchAll(/`((?:references|templates|scripts|evals)\/[^\s`]+)`/g)) {
+    const raw = match[1].replace(/[),.;:]+$/, "").split("#", 1)[0];
+    const target = path.resolve(skillDir, raw);
+    if (outside(skillDir, target)) {
       errors.push(`${directory}: reference escapes skill directory: ${raw}`);
     } else if (!(await exists(target))) {
       errors.push(`${directory}: broken reference ${raw}`);
@@ -187,6 +200,7 @@ export async function validate(root: string): Promise<string[]> {
         ) {
           errors.push(`${directory}: evals require matching skill_name and at least 3 cases`);
         } else {
+          const ids = new Set<number>();
           for (const [index, value] of evaluation.evals.entries()) {
             const item = value as Record<string, unknown>;
             if (
@@ -198,6 +212,16 @@ export async function validate(root: string): Promise<string[]> {
               !Array.isArray(item.files)
             ) {
               errors.push(`${directory}: eval case ${index + 1} has invalid shape`);
+              continue;
+            }
+            if (ids.has(item.id as number)) {
+              errors.push(`${directory}: duplicate eval case id ${item.id}`);
+            }
+            ids.add(item.id as number);
+            for (const fixture of item.files as unknown[]) {
+              if (typeof fixture !== "string" || !(await exists(resolveEvalFixture(root, skillDir, fixture)))) {
+                errors.push(`${directory}: eval case ${item.id} fixture not found: ${String(fixture)}`);
+              }
             }
           }
         }
@@ -212,6 +236,7 @@ export async function validate(root: string): Promise<string[]> {
     for (const template of await filesUnder(path.join(skillDir, "templates"))) {
       try {
         const text = await readFile(template, "utf8");
+        if (template.endsWith(".md")) await scanLinks(text, template, skillDir, directory, errors);
         for (const line of packageManagerCommands(text)) {
           errors.push(
             `${directory}:${path.relative(skillDir, template)}: forbidden package-manager command: ${line.trim()}`,
@@ -268,13 +293,34 @@ export async function validate(root: string): Promise<string[]> {
     marketplaceEntry?.description,
   ];
   if (new Set(descriptions).size !== 1) errors.push("plugin manifest descriptions differ");
+  const claudeKeywords = new Set<string>(claude?.keywords ?? []);
+  const kimiKeywords = new Set<string>(kimi?.keywords ?? []);
+  for (const keyword of claudeKeywords) {
+    if (!kimiKeywords.has(keyword)) errors.push(`.kimi-plugin/plugin.json: missing keyword ${keyword}`);
+  }
 
-  for (const catalog of ["README.md", "AGENTS.md", "CLAUDE.md"]) {
+  for (const catalog of ["README.md", "INSTALL.md", "AGENTS.md", "CLAUDE.md"]) {
     try {
       const source = await readFile(path.join(root, catalog), "utf8");
       for (const skill of entries) if (!source.includes(skill)) errors.push(`${catalog}: missing ${skill}`);
+      for (const token of source.matchAll(/\btailrocks-[a-z-]+\b/g)) {
+        if (token[0] !== "tailrocks-skills" && !entries.includes(token[0])) {
+          errors.push(`${catalog}: unknown skill ${token[0]}`);
+        }
+      }
     } catch {
       errors.push(`${catalog}: missing catalog`);
+    }
+  }
+  const expectedTag = `v${claude?.version}`;
+  for (const catalog of ["README.md", "INSTALL.md"]) {
+    try {
+      const source = await readFile(path.join(root, catalog), "utf8");
+      for (const tag of source.matchAll(/\bv\d+\.\d+\.\d+\b/g)) {
+        if (tag[0] !== expectedTag) errors.push(`${catalog}: release pin ${tag[0]} must equal ${expectedTag}`);
+      }
+    } catch {
+      // Catalog presence is checked above.
     }
   }
   return errors;
@@ -286,6 +332,12 @@ if (import.meta.main) {
   if (errors.length > 0) {
     for (const error of errors) console.error(`error: ${error}`);
     process.exit(1);
+  }
+  for (const entry of await readdir(path.join(root, "skills"), { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const file = path.join(root, "skills", entry.name, "SKILL.md");
+    const lines = (await readFile(file, "utf8")).split("\n").length;
+    if (lines > 200) console.log(`notice: ${entry.name}: SKILL.md is ${lines} lines (router budget: ~200)`);
   }
   const entries = (await readdir(path.join(root, "skills"), { withFileTypes: true })).filter(
     (entry) => entry.isDirectory(),

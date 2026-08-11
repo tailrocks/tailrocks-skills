@@ -55,9 +55,10 @@ macOS uses SF Pro. **macOS does not support Dynamic Type.** Do not design bars,
 rows, or truncation behavior around text-size scaling — that is an iOS concern
 and designing for it on the Mac produces slack layout with no benefit.
 
-The built-in scale runs from Large Title 26/32 to Caption 10/13. Use the `NSFont`
-dynamic variants — `controlContentFont`, `menuBarFont`, `titleBarFont` — to match
-system controls rather than restating point sizes.
+The built-in scale runs from Large Title 26/32 to Caption 10/13. Use system
+control fonts — `controlContentFont`, `menuBarFont`, `titleBarFont` — to track
+control metrics, not a user text-size setting. Semantic roles use
+`preferredFont(forTextStyle:)` or SwiftUI text styles.
 
 Define semantic roles, not arbitrary styling:
 

@@ -66,7 +66,7 @@ async function writeManifests(customDescription = "same"): Promise<void> {
       plugins: [{ ...base, source: "./" }],
     }),
   );
-  for (const catalog of ["README.md", "AGENTS.md", "CLAUDE.md"]) {
+  for (const catalog of ["README.md", "INSTALL.md", "AGENTS.md", "CLAUDE.md"]) {
     await write(catalog, skill);
   }
 }
@@ -143,11 +143,51 @@ describe("validate", () => {
     expect(await validate(root)).toContain(`${skill}: eval case 2 has invalid shape`);
   });
 
+  test("rejects a missing eval fixture", async () => {
+    const evaluation = await Bun.file(path.join(root, `skills/${skill}/evals/evals.json`)).json();
+    evaluation.evals[0].files = ["evals/fixtures/missing.txt"];
+    await write(`skills/${skill}/evals/evals.json`, JSON.stringify(evaluation));
+    expect(await validate(root)).toContain(`${skill}: eval case 1 fixture not found: evals/fixtures/missing.txt`);
+  });
+
+  test("rejects a duplicate eval id", async () => {
+    const evaluation = await Bun.file(path.join(root, `skills/${skill}/evals/evals.json`)).json();
+    evaluation.evals[1].id = 1;
+    await write(`skills/${skill}/evals/evals.json`, JSON.stringify(evaluation));
+    expect(await validate(root)).toContain(`${skill}: duplicate eval case id 1`);
+  });
+
   test("rejects mismatched manifest descriptions", async () => {
     await write(
       ".kimi-plugin/plugin.json",
       JSON.stringify({ name: "tailrocks-skills", version: "1.0.0", description: "different" }),
     );
     expect(await validate(root)).toContain("plugin manifest descriptions differ");
+  });
+
+  test("rejects broken backticked paths in references and templates", async () => {
+    await write(`skills/${skill}/references/guide.md`, "See `templates/missing.md`.\n");
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[Guide](references/guide.md)\n`,
+    );
+    expect(await validate(root)).toContain(`${skill}: broken reference templates/missing.md`);
+  });
+
+  test("rejects unknown reverse-catalog entries", async () => {
+    await write("INSTALL.md", `${skill}\ntailrocks-retired-skill\n`);
+    expect(await validate(root)).toContain("INSTALL.md: unknown skill tailrocks-retired-skill");
+  });
+
+  test("rejects stale release pins", async () => {
+    await write("INSTALL.md", `${skill}\nv0.9.0\n`);
+    expect(await validate(root)).toContain("INSTALL.md: release pin v0.9.0 must equal v1.0.0");
+  });
+
+  test("requires Kimi keywords to include Claude keywords", async () => {
+    const base = { name: "tailrocks-skills", version: "1.0.0", description: "same" };
+    await write(".claude-plugin/plugin.json", JSON.stringify({ ...base, keywords: ["swift"] }));
+    await write(".kimi-plugin/plugin.json", JSON.stringify({ ...base, keywords: [] }));
+    expect(await validate(root)).toContain(".kimi-plugin/plugin.json: missing keyword swift");
   });
 });

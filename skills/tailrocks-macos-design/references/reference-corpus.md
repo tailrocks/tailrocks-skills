@@ -135,7 +135,7 @@ redesigned from scratch on every agent invocation.
 
 ## Feeding the loop
 
-After every approved feature:
+After every approved or rejected feature:
 
 1. Save the selected screenshots to the positive corpus with annotations.
 2. Save the rejected alternatives with their reasons to the anti-reference
@@ -148,6 +148,17 @@ After every approved feature:
 
 Step 6 is the one that is always skipped and the only one that prevents the same
 review comment being written a fourth time.
+
+For a rejected run, disposition every item in its `Learned` block during the
+same run as an owning skill's anti-pattern, a rubric line, a dated decision, a
+harness fix, or an explicit rejection with reason. An undispositioned learned
+item means the review is incomplete.
+
+### Decision — macOS 26 narrow inspector behavior (2026-08-11)
+
+At narrow widths, SwiftUI `.inspector` presents as a system overlay over content;
+it does not promise automatic collapse. Briefs must not promise “auto-collapse,”
+and minimum-usability claims are verified with the inspector closed.
 
 ## A caution about accumulating guidance
 

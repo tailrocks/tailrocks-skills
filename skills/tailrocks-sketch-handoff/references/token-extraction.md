@@ -6,13 +6,16 @@ the kit or the design changes.
 
 ## Two paths
 
-**Through the MCP code tool.** Walk the document object model and emit JSON:
-colour variables, layer styles, text styles, and symbol names. This is the
-cheapest route and it works on the live document.
+**Through exported assets.** Use `get_design_assets`, then parse the exported or
+committed copy offline. This is the default because it cannot mutate the live
+document.
 
 **By parsing the file.** A `.sketch` is a ZIP of JSON. Unzip and read the
 document file directly. Use this for Apple's kit, for continuous integration, and
 whenever the design tool should not need to be running.
+
+**Fallback: `run_code`.** Use only after its code and read-only walk are reviewed
+and the document is committed or duplicated; never make it the default path.
 
 One caution on the second path: the published schema packages for the file format
 have been **archived since 2023**, so their type definitions are years stale and
@@ -46,8 +49,8 @@ reviewable in a diff, and fails the build when a name disappears:
 // Source: <document>, version <version>, extracted <date>.
 
 extension Color {
-    /// System Colors/{Light,Dark}/8 Blue
-    static let accentPrimary = Color("AccentPrimary")
+    /// Product/Status/Recording Red
+    static let statusRecording = Color("StatusRecording")
 }
 
 extension Font {
@@ -55,6 +58,9 @@ extension Font {
     static let bodyEmphasized = Font.system(size: 13, weight: .semibold)
 }
 ```
+
+For anything under `System Colors/`, emit nothing — use `Color.accentColor`,
+`NSColor.controlAccentColor`, and the semantic palette.
 
 Emit the design-file provenance in a comment on every entry. Six months later,
 that comment is the only thing that answers "where did this number come from".
@@ -84,6 +90,12 @@ separately so the diff is reviewable.
 Record in the generated header: the source document, its version, the kit
 version, and the extraction date. A generated file without provenance cannot be
 reproduced or trusted.
+
+## Symbol map
+
+SF Symbol names are hand-authored design decisions, not extractable tokens.
+Write `SymbolMap.csv` during design-map assembly, then review every mapping
+against the HIG symbol catalog. Use the CSV shape in `design-map.md`.
 
 ## Verify the extraction
 

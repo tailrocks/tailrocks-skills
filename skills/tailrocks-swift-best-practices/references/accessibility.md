@@ -9,18 +9,19 @@ that you are wrong before a person does.
 
 ## Semantics on every interactive element
 
-- **Label.** What the element is. Required on every icon-only control regardless
+- **Label — `.accessibilityLabel(_:)`.** What the element is. Required on every icon-only control regardless
   of what is shown in the interface — this is Apple's rule, not a preference.
-- **Value.** What it currently reads or holds, where that is not the label.
-- **Role and traits.** What kind of thing it is. A tappable rectangle with no
+- **Value — `.accessibilityValue(_:)`.** What it currently reads or holds.
+- **Traits — `.accessibilityAddTraits(_:)`.** What kind of thing it is. A tappable rectangle with no
   role is invisible to assistive technology.
-- **Custom actions.** Where a gesture or hover reveals functionality, expose it
+- **Custom actions — `.accessibilityAction(named:_:)`.** Where a gesture or hover reveals functionality, expose it
   as an action rather than leaving it unreachable.
-- **Identifier.** Stable, and present on everything a verification harness must
+- **Identifier — `.accessibilityIdentifier(_:)`.** Stable, and present on everything a verification harness must
   drive. An element with no identifier cannot be driven at all.
 
-Group related elements so a screen reader announces one meaningful unit rather
-than six fragments. Hide decorative elements so they are not announced.
+Group related elements with `.accessibilityElement(children:)`; hide decoration
+with `.accessibilityHidden(_:)`. SwiftUI authors traits; AppKit roles come from
+`NSAccessibilityProtocol` role properties.
 
 ## Focus and keyboard
 
@@ -40,7 +41,7 @@ than six fragments. Hide decorative elements so they are not announced.
 | Reduce Transparency | `accessibilityReduceTransparency`, `NSWorkspace.accessibilityDisplayShouldReduceTransparency` | Custom translucent surfaces substitute an opaque background. System components do this automatically; hand-rolled ones do not. |
 | Increase Contrast | `colorSchemeContrast`, `NSWorkspace.accessibilityDisplayShouldIncreaseContrast` | Meet the contrast minimums; borders appear where they were implied. |
 | Reduce Motion | `accessibilityReduceMotion`, `NSWorkspace.accessibilityDisplayShouldReduceMotion` | Replace positional and scaling transitions with fades; reduce automatic and repetitive animation. |
-| Differentiate Without Color | `accessibilityDifferentiateWithoutColor`, `NSWorkspace.…` | No state communicated by color alone. |
+| Differentiate Without Color | `accessibilityDifferentiateWithoutColor`, `NSWorkspace.shared.accessibilityDisplayShouldDifferentiateWithoutColor` | No state communicated by color alone. |
 
 The failure mode for the first two is specific and easy to miss: a hand-rolled
 translucent panel stays translucent while every system surface around it goes

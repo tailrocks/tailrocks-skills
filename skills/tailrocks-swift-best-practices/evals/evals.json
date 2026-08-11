@@ -5,7 +5,7 @@
       "id": 1,
       "prompt": "Review this SwiftUI list view. The text field loses focus while people type.",
       "expected_output": "Identifies unstable view identity as the cause, points at index-based or content-derived identifiers that change on update, explains that identity churn re-creates state and restarts animations, and proposes stable unique identifiers rather than working around the symptom.",
-      "files": []
+      "files": ["evals/fixtures/1/ListView.swift"]
     },
     {
       "id": 2,
@@ -16,13 +16,25 @@
     {
       "id": 3,
       "prompt": "Wrap NSTableView in an NSViewRepresentable so we get column resizing, and put all the row rendering and selection logic in the coordinator.",
-      "expected_output": "Accepts the AppKit table as a legitimate reason to bridge but rejects a coordinator that owns a large surface of behavior, requires a typed boundary with an idempotent update method, callbacks rather than shared mutable state, stated isolation across the bridge, and a clear coordinator lifetime.",
+      "expected_output": "Accepts the AppKit table as a legitimate reason to bridge but rejects a coordinator that owns a large surface of behavior, requires a typed boundary with an idempotent update method, callbacks rather than shared mutable state, stated isolation across the bridge, and states that the coordinator is created once per represented view, survives representable re-creation, and is torn down in dismantle.",
       "files": []
     },
     {
       "id": 4,
       "prompt": "Add this macOS 27 corner configuration API to our app. Our deployment target is macOS 26.",
       "expected_output": "Adds an availability guard, requires a decided fallback rather than a trap, records a removal condition for the fallback so it disappears when the minimum target moves, and notes that macOS 26 AppKit has no concentric-corner API so the fallback must derive the radius or host the surface in SwiftUI.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Review this icon-only SwiftUI button: Button(action: save) { Image(systemName: \"square.and.arrow.down\") }.",
+      "expected_output": "Flags missing accessibility semantics and requires labels, values, roles, focus order, and keyboard and menu parity.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Review this view: .onAppear { Task { await model.refresh() } } with no stored task or cancellation.",
+      "expected_output": "Flags unowned asynchronous work and requires an owner, cancellation tied to view lifetime, and tests that exercise the cancellation path.",
       "files": []
     }
   ]

@@ -92,3 +92,13 @@ changed. Do not assume a pattern from memory.
 Confirm the language mode and the concurrency-related build settings the project
 actually uses before writing or reviewing annotations, and check the release
 notes for the pinned toolchain rather than reasoning from a previous version.
+For Xcode 26.6, the setup baseline confirms only `SWIFT_STRICT_CONCURRENCY`;
+default-isolation and approachable-concurrency build-setting names are absent,
+so their behavior must not be claimed as pinned.
+
+## Parallel tests
+
+Swift Testing runs cases in parallel by default. Suites touching main-actor UI
+state need `@MainActor`; proven shared-state conflicts may require `.serialized`.
+Intermittent state bleed between cases is the failure signature, not harmless
+flake. See the setup skill's testing API surface for the full trait list.

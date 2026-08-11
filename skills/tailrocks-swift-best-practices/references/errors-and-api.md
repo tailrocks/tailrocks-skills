@@ -18,14 +18,21 @@ enum ConnectionFailure: Error {
 The test for a good error type: can a caller decide what to do from the case
 alone, without parsing a message? If not, the type is under-specified.
 
+### Typed throws
+
+Use `throws(E)` for a closed failure set at a module boundary where every caller
+benefits from exhaustive recovery. A public escaping boundary may still use
+`any Error` when failures are intentionally open-ended; generic and `rethrows`
+APIs should preserve the caller's error type rather than erase it accidentally.
+
 ## User-facing failure carries recovery
 
 An error surfaced to a person is not finished until it answers what happened,
 whether anything was lost, and what to do next. An alert that says only that an
 operation failed is a dead end.
 
-Provide a localized description, a failure reason where it is not obvious, and a
-recovery suggestion tied to an action a person can actually take. Where the
+Conform to `LocalizedError` and implement `errorDescription`, `failureReason`,
+and `recoverySuggestion`. Tie recovery to an action a person can take. Where the
 operation can be retried safely, offer the retry rather than describing it.
 
 Destructive operations need confirmation, undo, or recovery — at least one. This
@@ -41,8 +48,9 @@ preconditionFailure("Selection referenced record \(id), which is not in the stor
 ```
 
 Never trap on input, on the network, on the file system, or on anything a person
-can cause. Force unwrapping and force casting are errors in application code;
-tests may force where the failure *is* the assertion.
+can cause. Force operations remain errors in application code. The setup skill's
+nested config disables them only inside test targets where failure is the
+assertion, keeping the strict lint gate warning-free.
 
 ## API surface
 

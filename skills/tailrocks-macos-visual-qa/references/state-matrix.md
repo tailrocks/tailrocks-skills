@@ -3,9 +3,9 @@
 A feature is not visually complete because its default light appearance looks
 good at one window size.
 
-**These commands change the user's real system settings.** Snapshot the original
-values first, restore them at the end including on failure, and report explicitly
-if a restore did not happen.
+**These commands change the user's real system settings.** Reach every automated
+row through `templates/state.sh`, whose `with` mode
+snapshots and trap-restores on every exit. Report explicitly if restore fails.
 
 ## Appearance
 
@@ -29,22 +29,20 @@ defaults write com.apple.universalaccess reduceMotion -bool true
 defaults write com.apple.universalaccess differentiateWithoutColor -bool true
 ```
 
-Restore by deleting the key rather than writing false, so the machine returns to
-its original unset state:
-
-```sh
-defaults delete com.apple.universalaccess increaseContrast
-```
+Never use a bare restore recipe. `state.sh snapshot FILE` records each original
+value or `ABSENT`; `restore FILE` uses `defaults delete` only for an `ABSENT`
+record and writes every present original value back. Both apply and restore
+read back every key.
 
 Caveats:
 
-- Writing these succeeds without a permission prompt, but **live propagation to
+- A TCC prompt or silent no-op is possible on first use; verify on first run.
+  The script's read-back detects a no-op. **Live propagation to
   already-running applications is weaker than the appearance toggle**. Allow a
   second or two and re-capture, or relaunch the application.
-- Snapshot the originals first. Some of these will already be on for the person
-  whose machine this is, and a blind restore-to-false is a real change to their
-  environment.
-- Nothing here is blocked by system integrity protection.
+- Auto appearance is preserved through both `AppleInterfaceStyle` and
+  `AppleInterfaceStyleSwitchesAutomatically` in `NSGlobalDomain`; never pin an
+  Auto user's machine to explicit light or dark.
 
 ## Settings with no programmatic control
 
@@ -60,6 +58,8 @@ the row.
 | Scroll bar visibility | Affects whether the scroll edge effect appears |
 | Display scale and dragging between displays | Corner radii and blurs must resolve on move |
 | Wallpaper | Glass refracts it; test bright photo, dark photo, and solid |
+| VoiceOver | System Settings ▸ Accessibility ▸ VoiceOver; interferes with AX driving |
+| Full Keyboard Access | System Settings ▸ Accessibility ▸ Keyboard |
 
 The absence of a read API for the Liquid Glass setting is not an inconvenience,
 it is a design constraint: a custom glass surface **cannot** adapt
@@ -67,19 +67,22 @@ programmatically, so it must be visually verified under both looks.
 
 ## Required states
 
-| Group | States |
-|---|---|
-| Appearance | light, dark, auto, active window, inactive window, Liquid Glass clear, Liquid Glass tinted |
-| Accessibility | Reduce Transparency, Increase Contrast, Reduce Motion, Differentiate Without Color, VoiceOver, Full Keyboard Access with focus ring visible |
-| Geometry | minimum supported window, typical, wide, full screen, sidebar expanded and collapsed, inspector open and closed, toolbar under width pressure |
-| Content | empty, loading, normal, very large dataset, long strings, missing values, error, offline, permission denied, destructive operation pending |
-| Interaction | hover, keyboard focus, pressed, selected, disabled, context menu, drag and drop, rapid repeated input, resize during loading or animation |
-| Background | mostly white content, mostly dark content, colorful content, detailed photographic content, scrolling text, empty content |
-| Localization | English, a language with significant text expansion, right-to-left where relevant, long dates and numbers, mixed scripts |
+The canonical platform and material axis registry is
+`tailrocks-liquid-glass/references/verification.md`. Its full list applies,
+including Show Borders on macOS 27 and sRGB/Display P3 color profiles. This file
+owns how to reach and capture those states, not a second copy of the list.
+
+Add product content fixtures: empty, loading, normal, very large data, long
+strings, missing values, error, offline, permission denied, and destructive work
+pending. Exercise localization with text expansion, RTL where relevant, long
+dates and numbers, and mixed scripts. Also capture relevant hover, focus,
+pressed, selected, disabled, context-menu, drag, rapid-input, and resize states.
 
 Scale the matrix to the change. A one-line label edit does not need the full
 grid; a new screen does. State which rows were skipped and why — a skipped row
 recorded is information, a skipped row omitted is a false pass.
+See examples/macos-screen/StateMatrix.md for a rejected run that records skipped
+rows explicitly.
 
 ## Ordering the run
 

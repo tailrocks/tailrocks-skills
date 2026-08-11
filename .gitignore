@@ -2,3 +2,5 @@
 target/
 tmp/
 *.log
+window-id
+ax-drive

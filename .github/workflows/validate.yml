@@ -4,8 +4,14 @@ on:
     branches: [main]
   schedule:
     - cron: "17 3 * * *"
+
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   validate:
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,4 +20,43 @@ jobs:
           bun-version: "1.3.14"
       - run: bun run scripts/validate-skills.ts
       - run: bun test scripts/
+      - name: Parse shell templates
+        run: find skills -path '*/templates/*.sh' -print0 | xargs -0 -n1 sh -n
+
+  latest-stable:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.14"
       - run: bun skills/tailrocks-tanstack-project-setup/scripts/resolve-package-versions.ts --check-template skills/tailrocks-tanstack-project-setup/templates/package.json
+      - run: bun scripts/check-baseline-age.ts
+      - name: Open or update scheduled-gate issue
+        if: failure() && github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: "Scheduled latest-stable gate failed"
+        run: |
+          number=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number // empty')
+          body="Scheduled latest-stable or platform-baseline check failed in $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID."
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body "$body"
+          else
+            gh issue create --title "$TITLE" --body "$body"
+          fi
+
+  templates-macos:
+    if: github.event_name != 'schedule'
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse Swift templates
+        run: find skills -path '*/templates/*.swift' -print0 | xargs -0 -n1 swiftc -parse
+      - name: Verify capture refuses a missing application
+        run: |
+          set +e
+          skills/tailrocks-macos-visual-qa/templates/capture.sh /tmp/Fake.app X out.png
+          code=$?
+          set -e
+          test "$code" -eq 2

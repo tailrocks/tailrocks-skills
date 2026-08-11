@@ -1,0 +1,3 @@
+options:
+  deploymentTarget:
+    macOS: "26.0"

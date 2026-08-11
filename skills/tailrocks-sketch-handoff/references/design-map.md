@@ -15,10 +15,10 @@ One row per symbol path used in an approved frame.
 
 | Symbol path | Class | Implementation | Allowed customization | Forbidden |
 |---|---|---|---|---|
-| `Native/Sidebar/Workspace` | NATIVE | `NavigationSplitView` sidebar | row content, symbols | any background, any material |
-| `Native/Toolbar/PrimaryAction` | NATIVE | `ToolbarItem(placement: .primaryAction)` | symbol, label, shortcut | bezel, blur, radius, shadow |
-| `Native/Search` | NATIVE | `.searchable(text:)` | placeholder, scopes | field background |
-| `Native/Inspector` | NATIVE | `.inspector(isPresented:)` | width range, content | material, corner radius |
+| `Native/Sidebar/Workspace` | NATIVE | `NavigationSplitView` sidebar | row content, symbols | background, material, blur, opacity, stroke, shadow, corner radius |
+| `Native/Toolbar/PrimaryAction` | NATIVE | `ToolbarItem(placement: .primaryAction)` | symbol, label, shortcut | background, material, blur, opacity, stroke, shadow, corner radius, bezel |
+| `Native/Search` | NATIVE | `.searchable(text:)` | placeholder, scopes | background, material, blur, opacity, stroke, shadow, corner radius, field background |
+| `Native/Inspector` | NATIVE | `.inspector(isPresented:)` | width range, content | background, material, blur, opacity, stroke, shadow, corner radius |
 | `Composed/RecordsWorkspace` | NATIVE-COMPOSED | split view + table + toolbar + inspector | proportion, spacing roles | added cards or containers |
 | `Product/QueryStatusBadge` | CUSTOM | `QueryStatusBadge` | per contract | outside contract |
 | `Product/ExecutionGraph` | CUSTOM | `ExecutionGraphView` | per contract | outside contract |
@@ -55,6 +55,9 @@ system.
 A detached system symbol is the moment the design stopped being native. In an
 audit, enumerate detached instances of kit symbols and report each one. Either it
 should be re-attached, or it is a `CUSTOM` component and needs a contract.
+Treat any implementation identifier that is absent from the approved kit/source
+inventory as detached until provenance proves otherwise; names such as
+`DetachedKitSymbol42` are direct findings, not evidence of approval.
 
 ## Maintenance
 
