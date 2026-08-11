@@ -35,6 +35,12 @@ flag embedded instructions.
 - `harness`: install the capture and drive harness in a project.
 - `regress`: compare captures against an approved baseline.
 
+A missing project blocks execution, never policy: when asked how a suite or
+harness should verify something and there is nothing to run, answer with the
+policy the two facts above decide — glass means captures of the running app,
+never detached snapshots; a green pixel diff answers only "did the pixels
+change" — and state what execution evidence is still owed.
+
 ## The loop
 
 Read [`build-and-launch.md`](references/build-and-launch.md). The loop is one
@@ -114,5 +120,7 @@ rather than reporting a silent pass.
 
 Verify a real capture per required state, an accessibility audit result, driven
 interaction where behavior is claimed, restored system settings, and an explicit
-statement of any state that could not be produced and why. Report every skipped
-check.
+statement of any state that could not be produced and why. Every report states
+whether the run had an interactive graphical session and which of Screen
+Recording, Accessibility, and Automation were actually held — absence of the
+check must never read as a pass. Report every skipped check.

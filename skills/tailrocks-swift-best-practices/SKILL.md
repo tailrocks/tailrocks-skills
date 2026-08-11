@@ -28,7 +28,12 @@ Establish the deployment target and the two SDK lanes. Apple's documentation
 renders declarations from the newest published SDK, so a signature that looks
 current may not exist on the target. Every symbol introduced after the minimum
 target needs an availability guard, and the fallback path needs a decision, not a
-`fatalError`.
+`fatalError`. Write the guard and the fallback now — do not stall a change
+waiting for external verification when the platform fact is already recorded
+in this skill family (for example: macOS 26 AppKit has no concentric-corner
+API, so the fallback derives the radius or hosts the surface in SwiftUI) —
+and **mark every fallback with its removal condition**, the minimum-target
+bump that deletes it.
 
 ## Concurrency
 
@@ -63,9 +68,23 @@ most SwiftUI defects on macOS:
 ## AppKit interop
 
 Read [`appkit-interop.md`](references/appkit-interop.md). Bridge deliberately and
-narrowly. A representable view that owns a large surface of behavior is a hidden
-second architecture; a representable view that wraps one control with a typed
-boundary is a good trade.
+narrowly — and state *why* AppKit is legitimate for this control (mature
+table/outline behavior, advanced text, window management, responder chain,
+specialized drag and drop). A representable view that owns a large surface of
+behavior is a hidden second architecture; a representable view that wraps one
+control with a typed boundary is a good trade.
+
+The bridge rules, all mandatory:
+
+- Inputs enter through the typed initializer and update method; outputs leave
+  through coordinator **callbacks** — never a shared mutable reference, and a
+  two-way binding across the bridge counts as one.
+- The update method is **idempotent**: compare before assigning so an
+  assignment cannot trigger a change notification that re-enters the update.
+- The coordinator owns delegate conformance only — not row rendering or
+  business logic — and its **lifetime is the representable's lifetime**,
+  stated explicitly.
+- Size through the sizing hooks, never a fixed frame.
 
 Reach for AppKit for mature table and outline behavior, advanced text editing,
 window management beyond what scenes express, responder-chain integration,
