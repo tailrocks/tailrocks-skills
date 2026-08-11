@@ -149,25 +149,29 @@ After every approved feature:
 Step 6 is the one that is always skipped and the only one that prevents the same
 review comment being written a fourth time.
 
-## A caution about installing more skills
+## A caution about accumulating guidance
 
-More design guidance does not monotonically improve output. Published evaluation
-of curated agent skills found an average pass-rate improvement but a meaningful
-number of tasks made *worse*, with focused two-or-three-module skills
-outperforming comprehensive documentation, and self-generated skills providing no
-average benefit. Retrieval from very large skill collections degrades as the
-collection grows noisier.
+More design guidance does not monotonically improve output. Focused, narrow
+guidance outperforms comprehensive documentation, and the returns turn negative
+once the material is large enough that the relevant part stops surfacing. A
+corpus is a working reference, not an archive.
 
 Practical policy:
 
-- One automatic visual-direction authority. One automatic material authority. One
-  general framework authority. Everything else explicitly invoked.
-- Do not stack two skills that both encode aesthetic taste; they will conflict
-  and the conflict is invisible in the output.
-- Be especially careful with popular design skills built for the web. Their
-  defaults — avoid system fonts, avoid neutral grays, avoid spring easing — are
-  reasonable on the web and wrong on Apple platforms, where the system font,
-  semantic neutrals, and interruptible springs are the correct tools.
-- Treat every external skill as a dependency: pin it, read it in full, inspect
-  any bundled scripts or hooks, record which responsibility it owns, and disable
-  overlapping automatic skills.
+- **One owner per responsibility.** Visual direction, material policy, framework
+  correctness, and verification each have exactly one. Two sources of aesthetic
+  judgement conflict, and the conflict is invisible in the output — it surfaces
+  as inconsistency across features rather than as an error.
+- **Reject web design defaults on sight.** Guidance written for the web commonly
+  says to avoid system fonts, avoid neutral grays, and avoid spring easing. All
+  three are reasonable there and wrong here: on Apple platforms the system font,
+  semantic neutrals, and interruptible springs are the correct tools. A rule
+  that cannot name why it applies to macOS does not apply to macOS.
+- **Prune on the same cadence you add.** An entry that no longer changes a
+  decision is deleted, not archived. When a reference is superseded by an OS
+  release, replace it — a corpus documenting a superseded appearance teaches the
+  superseded appearance.
+- **Re-derive before adopting.** Any borrowed idea earns its place only after it
+  is confirmed against current Apple documentation or an SDK probe. An idea that
+  cannot be re-derived is an opinion, and it goes in the decision log with an
+  owner rather than into the rules.

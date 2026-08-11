@@ -11,6 +11,30 @@ application; its backing JSON is fetchable at
 — note `data/design/…`, not `data/documentation/design/…`, which returns 404.
 That path is how these rules are verifiable rather than remembered.
 
+Every API symbol named below was probe-verified against the local SDK, not
+recalled. The technique, which is worth reusing whenever availability matters:
+compile a file that touches each symbol with an artificially low target and read
+the diagnostics.
+
+```sh
+xcrun swiftc -c probe.swift -target arm64-apple-macos10.15 -o /dev/null
+```
+
+`'X' is only available in macOS N or newer` pins the exact introduction; `has no
+member` or `cannot find … in scope` means the symbol is absent from the SDK
+entirely. Documentation pages cannot give you this, because Apple renders
+declarations from the newest published SDK.
+
+Results against SDK 26.5: `Glass` (with `.identity`, `.interactive()`, `.tint`),
+`backgroundExtensionEffect()`, `ToolbarSpacer`, and SwiftUI
+`scrollEdgeEffectStyle(_:for:)` are **macOS 26.0**; `NSGlassEffectView`,
+`NSGlassEffectContainerView`, `NSBackgroundExtensionView`,
+`NSView.prefersCompactControlSizeMetrics`, `NSToolbarItem.style` and
+`.backgroundTintColor` are **macOS 26.0**; `NSScrollEdgeEffectStyle` and
+`NSTitlebarAccessoryViewController.preferredScrollEdgeEffectStyle` are **macOS
+26.1**, not 26.0 — that AppKit/SwiftUI split is the availability trap in this
+area.
+
 ## The layer rule, in Apple's words
 
 > It is best reserved for the navigation layer that floats above the content of
