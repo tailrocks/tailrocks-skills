@@ -15,6 +15,17 @@ probes), Landmarks sample zip (SHA-checked download from Apple).
 
 Statuses: none unresolved.
 
+Scope: this ledger covers the six skills' reference files as they stood at
+the W1 run on 2026-08-11. Files added later that day by the parallel
+exemplar-corpus session (`tailrocks-macos-design/references/exemplars.md`,
+`design-principles.md`, `motion.md`;
+`tailrocks-liquid-glass/references/apple-patterns.md`) were verified by their
+author using the same methods — HIG DocC JSON (`tutorials/data/design/…`)
+plus the swiftc probe technique — with the probe results recorded inside
+`apple-patterns.md` itself (all named symbols pinned: 26.0 for the SwiftUI
+glass surface and AppKit glass views, 26.1 for the AppKit scroll edge pair;
+zero missing symbols).
+
 ## tailrocks-liquid-glass
 
 ### platform-baseline.md
