@@ -153,8 +153,8 @@ roadmap items in `roadmap/<slug>/README.md` (status machine: DRAFT → SHAPING
 → READY → PLANNED → IN EXECUTION → DONE, plus PARKED), standing research
 topics in `research/<topic>/` (independent of items, many-to-many links),
 implementation packages in `plans/<slug>/` (coverage ledger, OpenSpec-grammar
-spec, zero-context plans, GOAL.md for Claude Code/Codex `/goal` or manual Grok
-prompting).
+spec, zero-context plans, GOAL.md for the /goal command of Claude Code,
+Codex, or Grok).
 
 - **tailrocks-idea** — capture a raw idea as a DRAFT item with a
   content-derived slug and an index row. Capture only; gaps stay visibly
