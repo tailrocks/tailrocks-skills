@@ -64,11 +64,54 @@ Apple's own note is the only place the mechanism is named:
 | `contentView: NSView?` | macOS 26.0 |
 | `spacing: CGFloat` — the proximity at which merging begins | macOS 26.0 |
 
+Worked pattern — a transport-control cluster whose glass surfaces merge when
+close. Compiles with `swiftc -c -target arm64-apple-macos26.0` against the
+macOS 26.5 SDK (Xcode 26.6):
+
 ```swift
-let container = NSGlassEffectContainerView()
-container.spacing = 20
-container.contentView = stackOfGlassEffectViews   // NSGlassEffectViews live inside
+import AppKit
+
+@available(macOS 26.0, *)
+final class TransportCluster: NSView {
+    private let container = NSGlassEffectContainerView()
+
+    init(buttons: [NSButton]) {
+        super.init(frame: .zero)
+
+        let glassViews: [NSGlassEffectView] = buttons.map { button in
+            let glass = NSGlassEffectView()
+            glass.style = .regular
+            glass.cornerRadius = 18
+            glass.tintColor = nil
+            glass.contentView = button
+            return glass
+        }
+
+        let row = NSStackView(views: glassViews)
+        row.orientation = .horizontal
+        row.spacing = 12
+
+        container.spacing = 20   // merge distance ≥ row spacing, so neighbors fuse
+        container.contentView = row
+
+        container.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(container)
+        NSLayoutConstraint.activate([
+            container.leadingAnchor.constraint(equalTo: leadingAnchor),
+            container.trailingAnchor.constraint(equalTo: trailingAnchor),
+            container.topAnchor.constraint(equalTo: topAnchor),
+            container.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) { fatalError("init(coder:) is not supported") }
+}
 ```
+
+The glass views live inside the container's `contentView` hierarchy; the
+container merges any descendant glass views that come within `spacing` points
+of each other.
 
 ## `NSBackgroundExtensionView` — macOS 26.0
 
@@ -79,6 +122,27 @@ the edges to fill the container.
 
 - `contentView: NSView?`
 - `automaticallyPlacesContentView: Bool`
+
+Worked pattern — a hero image that extends under the transparent title bar
+while its safe-area copy stays untouched. Compiles with
+`swiftc -c -target arm64-apple-macos26.0` against the macOS 26.5 SDK
+(Xcode 26.6):
+
+```swift
+import AppKit
+
+@available(macOS 26.0, *)
+func makeHeroPane(hero: NSImageView) -> NSView {
+    let extensionView = NSBackgroundExtensionView()
+    extensionView.contentView = hero
+    extensionView.automaticallyPlacesContentView = true
+    return extensionView
+}
+```
+
+Pin the returned view to the window content's full bounds (not the safe area);
+the extension view itself keeps `hero` inside the safe area and synthesizes the
+extended edges.
 
 ## Buttons and control metrics
 
@@ -103,6 +167,49 @@ the edges to fill the container.
 - macOS 27 beta: `NSToolbarItemGroup.role`, `NSToolbarItemGroupRole`,
   `NSSegmentedControl.role`, `NSSegmentedControlRole.tabs`.
 
+Worked pattern — one prominent tinted item for the toolbar's primary action.
+Compiles with `swiftc -c -target arm64-apple-macos26.0` against the macOS 26.5
+SDK (Xcode 26.6):
+
+```swift
+import AppKit
+
+extension NSToolbarItem.Identifier {
+    static let publish = NSToolbarItem.Identifier("com.example.publish")
+}
+
+final class PublishToolbarDelegate: NSObject, NSToolbarDelegate {
+    func toolbar(
+        _ toolbar: NSToolbar,
+        itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
+        willBeInsertedIntoToolbar flag: Bool
+    ) -> NSToolbarItem? {
+        guard itemIdentifier == .publish else { return nil }
+        let item = NSToolbarItem(itemIdentifier: itemIdentifier)
+        item.label = "Publish"
+        item.image = NSImage(
+            systemSymbolName: "paperplane.fill",
+            accessibilityDescription: "Publish"
+        )
+        if #available(macOS 26.0, *) {
+            item.style = .prominent
+            item.backgroundTintColor = .systemBlue
+        }
+        return item
+    }
+
+    func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
+        [.publish, .flexibleSpace]
+    }
+
+    func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
+        [.flexibleSpace, .publish]
+    }
+}
+```
+
+One prominent item per toolbar; prominence on every item is prominence on none.
+
 ## Scroll edge effects — macOS 26.1, not 26.0
 
 This is the availability most often gotten wrong on AppKit.
@@ -114,6 +221,26 @@ This is the availability most often gotten wrong on AppKit.
 
 Apple's own snippet assigns `NSScrollEdgeEffectStyle.softStyle` to
 `preferredScrollEdgeEffectStyle`.
+
+Worked pattern — a bottom title-bar accessory that forces a hard edge under a
+pinned filter bar. Compiles with `swiftc -c -target arm64-apple-macos26.0`
+against the macOS 26.5 SDK (Xcode 26.6); the 26.1-only symbols are guarded:
+
+```swift
+import AppKit
+
+@available(macOS 26.1, *)
+func installFilterBar(_ filterBar: NSView, in window: NSWindow) {
+    let accessory = NSTitlebarAccessoryViewController()
+    accessory.view = filterBar
+    accessory.layoutAttribute = .bottom
+    accessory.preferredScrollEdgeEffectStyle = .hard
+    window.addTitlebarAccessoryViewController(accessory)
+}
+```
+
+On a 26.0 deployment target the call site needs `if #available(macOS 26.1, *)`
+and a fallback that installs the accessory without a style preference.
 
 macOS 27 fixes: `NSScrollView` displays the system scroll edge effect when the
 scroll view has no visible scrollers.
