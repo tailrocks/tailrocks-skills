@@ -69,7 +69,14 @@ case "$command" in
     state=${2:?state required}; shift 2; [ "${1:-}" = -- ] || { echo "with requires --" >&2; exit 2; }; shift
     saved=$(mktemp "${TMPDIR:-/tmp}/tailrocks-state.XXXXXX")
     snapshot "$saved"
-    trap 'restore "$saved"; rm -f "$saved"' EXIT INT TERM
+    cleanup() {
+      status=$?
+      trap - EXIT INT TERM
+      restore "$saved" || status=1
+      rm -f "$saved"
+      exit "$status"
+    }
+    trap cleanup EXIT INT TERM
     apply_state "$state"
     "$@"
     ;;
