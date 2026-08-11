@@ -137,7 +137,7 @@ crates/your-core/src/parser/tests.rs   # ALL tests for parser, inline, nothing e
 
 Optimize each file for a first-time reader; the deeper rules live in the
 `tailrocks-rust-best-practices` skill
-(`references/readability-style-architecture.md`).
+(`tailrocks-rust-best-practices/references/readability-style-architecture.md`).
 
 - Public or entry-point items first, then supporting private helpers; the
   module's main type or function before its details.

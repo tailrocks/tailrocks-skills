@@ -77,6 +77,15 @@ async function scanLinks(
       errors.push(`${directory}: broken reference ${raw}`);
     }
   }
+  for (const match of proseWithoutFences(source).matchAll(/`((?:references|templates|scripts|evals)\/[^\s`]+)`/g)) {
+    const raw = match[1].replace(/[),.;:]+$/, "").split("#", 1)[0];
+    const target = path.resolve(skillDir, raw);
+    if (outside(skillDir, target)) {
+      errors.push(`${directory}: reference escapes skill directory: ${raw}`);
+    } else if (!(await exists(target))) {
+      errors.push(`${directory}: broken reference ${raw}`);
+    }
+  }
 }
 
 function packageManagerCommands(source: string): string[] {
@@ -227,6 +236,7 @@ export async function validate(root: string): Promise<string[]> {
     for (const template of await filesUnder(path.join(skillDir, "templates"))) {
       try {
         const text = await readFile(template, "utf8");
+        if (template.endsWith(".md")) await scanLinks(text, template, skillDir, directory, errors);
         for (const line of packageManagerCommands(text)) {
           errors.push(
             `${directory}:${path.relative(skillDir, template)}: forbidden package-manager command: ${line.trim()}`,
@@ -283,13 +293,34 @@ export async function validate(root: string): Promise<string[]> {
     marketplaceEntry?.description,
   ];
   if (new Set(descriptions).size !== 1) errors.push("plugin manifest descriptions differ");
+  const claudeKeywords = new Set<string>(claude?.keywords ?? []);
+  const kimiKeywords = new Set<string>(kimi?.keywords ?? []);
+  for (const keyword of claudeKeywords) {
+    if (!kimiKeywords.has(keyword)) errors.push(`.kimi-plugin/plugin.json: missing keyword ${keyword}`);
+  }
 
-  for (const catalog of ["README.md", "AGENTS.md", "CLAUDE.md"]) {
+  for (const catalog of ["README.md", "INSTALL.md", "AGENTS.md", "CLAUDE.md"]) {
     try {
       const source = await readFile(path.join(root, catalog), "utf8");
       for (const skill of entries) if (!source.includes(skill)) errors.push(`${catalog}: missing ${skill}`);
+      for (const token of source.matchAll(/\btailrocks-[a-z-]+\b/g)) {
+        if (token[0] !== "tailrocks-skills" && !entries.includes(token[0])) {
+          errors.push(`${catalog}: unknown skill ${token[0]}`);
+        }
+      }
     } catch {
       errors.push(`${catalog}: missing catalog`);
+    }
+  }
+  const expectedTag = `v${claude?.version}`;
+  for (const catalog of ["README.md", "INSTALL.md"]) {
+    try {
+      const source = await readFile(path.join(root, catalog), "utf8");
+      for (const tag of source.matchAll(/\bv\d+\.\d+\.\d+\b/g)) {
+        if (tag[0] !== expectedTag) errors.push(`${catalog}: release pin ${tag[0]} must equal ${expectedTag}`);
+      }
+    } catch {
+      // Catalog presence is checked above.
     }
   }
   return errors;
@@ -301,6 +332,12 @@ if (import.meta.main) {
   if (errors.length > 0) {
     for (const error of errors) console.error(`error: ${error}`);
     process.exit(1);
+  }
+  for (const entry of await readdir(path.join(root, "skills"), { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const file = path.join(root, "skills", entry.name, "SKILL.md");
+    const lines = (await readFile(file, "utf8")).split("\n").length;
+    if (lines > 200) console.log(`notice: ${entry.name}: SKILL.md is ${lines} lines (router budget: ~200)`);
   }
   const entries = (await readdir(path.join(root, "skills"), { withFileTypes: true })).filter(
     (entry) => entry.isDirectory(),

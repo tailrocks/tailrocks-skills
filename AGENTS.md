@@ -223,9 +223,11 @@ Skill definition: `skills/tailrocks-remediate/SKILL.md`
 
 ## Adding a Skill
 
-1. Create `skills/<name>/SKILL.md` with `name`, a trigger-rich, agent-neutral
-   `description`, `disable-model-invocation: true`, and `user-invocable: true`
-   in the frontmatter.
+1. Create `skills/<name>/SKILL.md` with `name`, `license: Apache-2.0`, a
+   trigger-rich, agent-neutral `description` starting exactly with “Use only
+   when the user explicitly requests this skill.”, `disable-model-invocation:
+   true`, and `user-invocable: true` in the frontmatter. Evidence belongs in
+   artifacts and references, never disguised as instructions.
 2. Add `agents/openai.yaml` with `policy.allow_implicit_invocation: false`.
 3. Add `evals/evals.json` with realistic normal, boundary, and safety cases. Audit/review-shaped cases should reference fixtures under `evals/fixtures/<case>/`; refusal cases may stay fixture-free.
 4. Put deep material under `skills/<name>/references/` and copy-ready assets under
@@ -281,8 +283,8 @@ Rules for changing a `SKILL.md`:
   gap. Look at where the requirement sits in the file before rewriting what it
   says.
 5. Every plugin manifest auto-discovers the new skill from `skills/` — no
-   manifest edit needed. Add the skill to the tables in `README.md` and this
-   file.
+   manifest edit needed. Add the skill to the tables in `README.md`,
+   `INSTALL.md`, and this file.
 6. Bump `version` in lockstep across `.claude-plugin/plugin.json`,
    `.codex-plugin/plugin.json`, `.kimi-plugin/plugin.json`, and the
    `.claude-plugin/marketplace.json` entry, and tag the release so installs
@@ -352,3 +354,6 @@ footer in the body.
 5. Tag `vX.Y.Z` on the merge commit and push the tag.
 6. Re-verify the INSTALL.md matrix commands against current client versions
    and refresh its verified date.
+7. Re-verify macOS platform baselines using the W1/W2 DocC JSON availability
+   and `gdmf.apple.com/v2/pmv` procedure in
+   `plans/macos-skills-hardening/README.md`, then refresh verification stamps.
