@@ -89,7 +89,7 @@ without treating any majority as success.
 | Purpose | Command | Expected on success |
 |---|---|---|
 | Script tests | `rtk bun test scripts/` | exit 0, includes new run-evals cases |
-| Skill validation | `rtk bun run scripts/validate-skills.ts` | `Validated 15 skills.` |
+| Skill validation | `rtk bun run scripts/validate-skills.ts` | `Validated 21 skills.` (count re-verified 2026-08-11 at `64df333`; was 15 when first written) |
 | Majority gone | `rtk rg -n 'majority' scripts/run-evals.ts` | exit 1, no output |
 | Whitespace | `rtk git diff --check` | exit 0, no output |
 
