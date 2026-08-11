@@ -47,10 +47,18 @@ Most ugly interfaces are information-architecture failures wearing visual
 decoration. The brief is where that is caught, at the only point where fixing it
 is cheap.
 
-**Complete when:** primary job, object model, navigation and window model,
-action frequency and destructiveness, density target, minimum usable window,
-recovery model, empty/loading/error states, keyboard workflow, and accessibility
-and localization risks are all written down and approved.
+Name the window's **dominant archetype** here, from
+[`archetypes.md`](references/archetypes.md), before any layout is considered. An
+agent that skips this reaches for one generic sidebar-content-inspector shell
+and fits every product to it; each archetype also attracts a characteristic
+failure, and naming that failure in advance is far cheaper than finding it in
+review.
+
+**Complete when:** dominant archetype and the failure it attracts, primary job,
+object model, navigation and window model, action frequency and destructiveness,
+density target, minimum usable window, recovery model, empty/loading/error
+states, keyboard workflow, and accessibility and localization risks are all
+written down and approved.
 
 ## Stage 2 — Native component map
 

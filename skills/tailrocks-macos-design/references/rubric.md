@@ -11,6 +11,56 @@ cannot see.
 The scoring agent must not be the implementing agent. A model reviewing its own
 output rationalizes rather than reviews.
 
+## Evidence classes
+
+Every finding states how it is known. This is the difference between a review
+and an opinion, and it stops the two most common review lies in both directions:
+claiming a behavior is broken from reading source, and claiming a layout works
+without ever rendering it.
+
+| Class | Means |
+|---|---|
+| **code-certain** | directly visible in source or project configuration |
+| **render-certain** | directly visible in a capture or preview |
+| **behavior-tested** | reproduced by driving the running app |
+| **inferred** | plausible, unverified |
+
+**Never present an inferred behavior as a fact.** An inferred finding is a
+question for the next pass, not a defect to fix.
+
+Note which classes a finding can even reach. "The toolbar action has no menu
+equivalent" is code-certain. "The focus ring is invisible on glass" is
+render-certain at best. "Undo restores the selection" is behavior-tested or it
+is nothing.
+
+## Finding format
+
+```text
+[P1] Missing menu equivalent for Export
+Evidence:       code-certain + behavior-tested
+Location:       MainWindow toolbar / File menu
+Impact:         the toolbar can be hidden or customized, so keyboard users
+                cannot discover or reach the action
+Recommendation: add File ▸ Export…, and route the toolbar item and the menu
+                item to one command
+Verification:   hide the toolbar, invoke the menu item, confirm the shortcut
+                appears and the disabled state is correct
+```
+
+The `Verification` line is the one that is always omitted and the one that makes
+the finding actionable — it tells the next agent how to know the fix worked.
+
+Severity:
+
+- **P0** — blocking. Data loss, an inaccessible core task, unreadable content or
+  material, broken destructive semantics, unusable at a supported window size.
+- **P1** — major. A platform-model violation, a missing important command or
+  state, weak architecture or selection, a serious consistency or accessibility
+  failure.
+- **P2** — minor. Friction, ambiguity, or a visible craft defect with a
+  workaround.
+- **P3** — polish. A refinement with no meaningful task impact.
+
 ## Categories
 
 | Category | Weight |
@@ -114,6 +164,60 @@ Any one of these rejects the feature regardless of score.
 - No validation of the inactive-window appearance.
 - No rendered output.
 - The implementing agent is also the only approving reviewer.
+
+## Score caps
+
+Hard failures reject outright. Caps are the graded companion: they say *how far
+from shippable* a feature is when the failure is real but the work is otherwise
+sound, which is more useful for planning than a bare rejection.
+
+Regardless of the points actually earned:
+
+| Condition | Cap |
+|---|---:|
+| A person can lose work, or restoration is critically broken | **49** |
+| A core task is not reachable by keyboard | **59** |
+| Material is unreadable under a supported accessibility setting | **59** |
+| A major window fails at a supported size | **59** |
+| The menu and command model is incomplete | **69** |
+| Only ideal placeholder data was reviewed | **69** |
+| The implementing agent is the only reviewer | **79** |
+
+The last two are process caps rather than product caps, and they are the ones a
+team is most tempted to waive. Do not. A 92 scored on placeholder data by the
+agent that wrote it is not a 92; it is an unreviewed design with a number
+attached.
+
+## Preserve
+
+Every review includes a **Preserve** section naming what must *not* change:
+
+- strong incumbent patterns,
+- correct native behavior already in place,
+- effective identity,
+- good use of restraint,
+- components that should not be redesigned.
+
+Without it, review drives churn: each pass rewrites the previous pass's
+intentional decisions because nothing recorded that they were intentional. An
+agent handed a findings list with no Preserve section will treat every unmodified
+thing as fair game.
+
+## Stopping
+
+The polish loop is bounded:
+
+1. Collect every P0 and P1, plus the high-value P2s.
+2. Fix by system, not one pixel at a time — a finding that recurs in six places
+   is one systemic fix, not six.
+3. Re-render the state matrix and re-run the behavior checks.
+4. One confirmation review.
+5. **Stop** when no hard failure and no cap remains, and further change is
+   subjective or low value.
+
+Step 5 is a real instruction. Unbounded polishing is its own failure mode: it
+consumes the budget that the next feature's structural work needed, and it
+produces changes no one asked for on a design that was already accepted.
 
 ## Correction order
 

@@ -268,6 +268,81 @@ And the failure it diagnoses:
 Also: *"tabs are for navigation, not for taking action"*, and each extra tab
 *"means one more decision for people to make."*
 
+## The inversion: a system default is not automatically slop
+
+Design guidance written for the web treats an untouched default as evidence that
+nobody made a decision. Ported to macOS unexamined, that rule actively damages
+the work — because on this platform many defaults **are** the considered choice.
+
+These are decisions, not omissions:
+
+SF Pro for app chrome · SF Mono for code, hashes, addresses, and aligned
+technical data · SF Symbols for standard concepts · the accent colour the person
+chose · native toolbar, sidebar, inspector, table, form, menu, popover, and sheet
+behavior · standard keyboard shortcuts · conventional File / Edit / View / Window
+/ Help menus · system active and inactive window appearance · system focus rings
+and selection · standard Open, Save, Export, Share, and permission panels ·
+system-owned Liquid Glass.
+
+They are shared platform vocabulary. Apple's Familiarity principle is explicit
+that established behavior lets people transfer knowledge they already have, and
+that things which look alike must behave alike. Replacing that vocabulary to
+avoid looking generic spends the user's learning budget to buy the designer's
+novelty.
+
+**Identity belongs somewhere else.** A Mac app differentiates through: how it
+represents domain content; the vocabulary of its commands and data; a
+distinctive but functional visualization; its information-density strategy; a
+direct-manipulation model specific to the work; the tone of its empty and error
+states; a restrained semantic accent; domain-specific symbols; its app icon;
+editorial voice; one or two tuned transitions; and how completely it preserves
+and restores a workspace.
+
+It does not differentiate through a custom title bar, replaced standard
+controls, exotic typography inside an inspector, or brand tint on every glass
+surface.
+
+This produces a second, subtler failure mode worth naming, because a capable
+model falls into it while trying to avoid the first: **overcorrected output.**
+Exotic fonts in operational UI, forced asymmetry, custom window chrome,
+animation on every state, a signature detail on every screen, standard controls
+rejected for looking ordinary. Generic output and overcorrected output are both
+failures to decide — one defaults to the statistical centre, the other defaults
+to visible effort.
+
+A restrained, familiar, compact, highly native interface is frequently the
+correct answer, and the skill should say so rather than treating restraint as
+timidity.
+
+## Familiarity or differentiation
+
+Resolve every candidate departure from the standard with this test, in order:
+
+1. **Is the concept standard on the Mac?** Use the standard pattern.
+2. **Is the concept domain-specific?** Design a domain-specific representation.
+3. **Is a standard pattern nearly right but insufficient?** Extend it while
+   preserving its behavior.
+4. **Is the change only visual novelty?** Remove it.
+
+Most proposals that reach step 4 arrived there because nobody asked steps 1
+through 3.
+
+## The restraint test
+
+Before adding any visible element — a container, border, icon, animation,
+material, or divider — answer:
+
+- What task or hierarchy does it clarify?
+- What state does it communicate?
+- What would be lost if it were removed?
+- Is the system already communicating this?
+- Is this one of the few places where expressive attention is genuinely worth
+  spending?
+
+If the answer is *nothing*, remove it. Apple's own Simplicity principle is the
+same instrument pointed at the whole screen: **in a simple interface, every
+element earns its place.**
+
 ## The citizenship tests
 
 Apple supplies axes. These practitioners supply pass/fail tests, and they test
