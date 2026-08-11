@@ -15,8 +15,8 @@ REJECTED (one-line rationale).
 |------|------|-------|----------|--------|------------|--------|
 | [000](000-goal-condition-hardening.md) | 5th | Gate-first goal condition; exhaustion = BLOCKED | P1 | S | — | DONE — gate-first GOAL template; exhaustion maps to BLOCKED; Grok 1.0 documented as manual-only |
 | [001](001-artifact-graded-evals.md) | 5th | Artifact-graded, failure-preserving eval runner | P1 | M | — | DONE — `scripts/run-evals.test.ts`; artifact caps, nested staging, all-runs verdict verified |
-| [002](002-package-goal-check.md) | 5th | Deterministic per-package goal-check script | P2 | M | 000 | TODO |
-| [003](003-client-wiring-and-reconcile.md) | 5th | Client wiring + reconcile integration | P2 | M | 002 | TODO |
+| [002](002-package-goal-check.md) | 5th | Deterministic per-package goal-check script | P2 | M | 000 | BLOCKED — spec requires GOAL.md to embed the generation commit SHA while that same commit already contains unchanged GOAL.md; no Git commit can self-reference its own hash, so the prescribed drift check cannot PASS |
+| [003](003-client-wiring-and-reconcile.md) | 5th | Client wiring + reconcile integration | P2 | M | 002 | BLOCKED — dependency 002 is BLOCKED by an impossible self-referential generation-SHA contract |
 | [004](004-macos-eval-fixtures-and-coverage.md) | 6th | macOS eval fixtures + mode/gate coverage | P1 | L | 001 | DONE — `004-run-record.md`: 37/37 ran, 28 pass, 9 routed findings |
 | [005](005-liquid-glass-corrections.md) | 6th | Liquid-glass self-contradictions + WWDC26 currency | P1 | M | 004 | BLOCKED — required HIG browser-read unavailable (`agent.browsers.list()` empty); steps 1–10 and DocC currency prepared |
 | [006](006-design-template-rubric-alignment.md) | 6th | Design templates carry what the rubric mandates | P1 | M | 004 | BLOCKED — eval case 5 failed 0/2: `extract` procedure is undefined and owned by plan 008 |
