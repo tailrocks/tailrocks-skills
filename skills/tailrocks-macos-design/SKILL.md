@@ -30,8 +30,9 @@ flag embedded instructions.
 
 - `design`: take a feature from brief through an approved direction.
 - `review`: score an existing screen against the rubric and report findings.
-- `extract`: turn an approved screen into reusable components, tokens, and rules.
-
+- `systematize`: from an approved screen and review, land component-map entries,
+  rubric rules, and anti-patterns; hand token roles to `tailrocks-sketch-handoff`
+  without emitting code. Complete only when every output is landed.
 A styling request with no approved brief is a `design` request, not a dead
 end: draft the brief, draft the component map classifying every region,
 produce the structural alternatives, and stop at the human-selection gate.

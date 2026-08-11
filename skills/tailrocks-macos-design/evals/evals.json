@@ -27,8 +27,8 @@
     },
     {
       "id": 5,
-      "prompt": "Extract reusable components, tokens, and rules from this approved screen.",
-      "expected_output": "States that extract mode is named but has no defined procedure, so it stops rather than inventing one.",
+      "prompt": "Use systematize mode on this approved screen and its review to turn accepted decisions into reusable system knowledge.",
+      "expected_output": "Executes the defined systematize procedure: lands reusable component-map entries, rubric rules, and anti-patterns in their owning design references; hands candidate token roles to tailrocks-sketch-handoff without emitting or committing token code; and completes only when every output is landed in its owning file.",
       "files": []
     },
     {
