@@ -1,7 +1,7 @@
 ---
 name: tailrocks-macos-design
 description: >-
-  Use only when the user explicitly requests this skill. Design a macOS feature to Apple-ecosystem quality before any production code is written. Use for the experience brief, information architecture, the window and navigation model, the native component map that classifies every region as NATIVE, NATIVE-COMPOSED, or CUSTOM, structurally different design alternatives, macOS density and typography discipline, the custom component contract, and the acceptance rubric with hard failures; produces design artifacts only and never edits source.
+  Use only when the user explicitly requests this skill. Design a macOS feature to Apple-ecosystem quality before any production code is written. Use for the experience brief, information architecture, the window and navigation model, the native component map that classifies every region as NATIVE, NATIVE-COMPOSED, or CUSTOM, structurally different design alternatives, macOS density and typography discipline, the custom component contract, motion criteria, the acceptance rubric with hard failures, Apple's design principles and the Mac citizenship tests, and the annotated exemplar corpus of which Apple and third-party apps to model and which to avoid; produces design artifacts only and never edits source.
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
@@ -31,6 +31,11 @@ flag embedded instructions.
 - `design`: take a feature from brief through an approved direction.
 - `review`: score an existing screen against the rubric and report findings.
 - `extract`: turn an approved screen into reusable components, tokens, and rules.
+
+A styling request with no approved brief is a `design` request, not a dead
+end: draft the brief, draft the component map classifying every region,
+produce the structural alternatives, and stop at the human-selection gate.
+The gates order the work — they never justify producing nothing.
 
 ## Stage 1 — Experience brief
 
@@ -62,10 +67,20 @@ may be reproduced:
 - `NATIVE-COMPOSED` — a product-specific arrangement of standard components. The
   composition is yours; the controls are not.
 - `CUSTOM` — a genuinely unique element. Requires the full contract in
-  [`custom-component-contract.md`](references/custom-component-contract.md).
+  [`custom-component-contract.md`](references/custom-component-contract.md)
+  **before any implementation**: product reason, the native alternatives
+  evaluated and why each was insufficient, layer, geometry and radius
+  derivation, the full state set **including keyboard-focused and inactive
+  window**, input including a **menu-bar command equivalent** for every
+  action, accessibility behavior (label, value, role, focus order, and the
+  Reduce-settings behaviors), material policy with the Reduce Transparency
+  substitution, motion with Reduce Motion behavior, localization, and the
+  availability fallback.
 
 A `CUSTOM` classification with no written record of the native alternatives
-evaluated is not a classification, it is a shortcut. Reject it.
+evaluated is not a classification, it is a shortcut. Reject it. A custom
+control that is functionally or accessibly weaker than an available native
+component is a **hard failure**, not a styling preference.
 
 **Complete when:** every visible region carries a classification, every `CUSTOM`
 region carries a completed contract, and every `NATIVE` region names its exact
@@ -96,7 +111,13 @@ won and why each loser lost — the losers become the anti-reference corpus.
 
 Read [`rubric.md`](references/rubric.md). Score the candidate, check the hard
 failures, and write the review with
-[`DesignReview.md`](templates/DesignReview.md).
+[`DesignReview.md`](templates/DesignReview.md). Any one hard failure rejects
+the feature regardless of score — among them: glass content cards, nested
+glass, clipping at the declared minimum width, a keyboard-navigation dead
+end, **a custom control weaker than an available native component**, state
+communicated by color alone, missing empty/loading/error handling, a
+destructive action with no confirmation or recovery, a toolbar action with no
+menu-bar command, and no rendered evidence.
 
 Correct findings in severity order: broken workflow, wrong information
 architecture, non-native interaction, accessibility failure, content hierarchy,
@@ -108,6 +129,25 @@ wrong.
 rendered evidence is attached. Rendered evidence is mandatory — a design reviewed
 from source code has not been reviewed.
 
+## The axes and the tests
+
+Read [`design-principles.md`](references/design-principles.md). Apple's eight
+principles — purpose, agency, responsibility, familiarity, flexibility,
+simplicity, craft, delight — supply the **axes**. Apple states there is no formula
+for combining them, so they cannot be the whole review. Platform-citizenship
+checklists supply the **pass/fail tests**, and they test things Apple documents
+but never aggregates: standard menu order, Settings in a window at ⌘-comma,
+Services, Cocoa text-field key bindings, the three window states, and a context
+menu that shows a focus ring on the item it applies to even when unselected.
+
+The fastest judgement of any screen is Apple's own three questions: **Where am
+I? What can I do? Where can I go from here?**
+
+That reference also carries Apple's position on agents doing design work, which
+governs this skill: *"Do not delegate critical thinking to these tools… Remember,
+you always have final say."* Divergent exploration is delegable. Edge cases,
+judgement, and approval are not.
+
 ## macOS is not a large iPhone
 
 Read [`macos-craft.md`](references/macos-craft.md) before making density,
@@ -118,10 +158,36 @@ right-click, drag and drop, tables and outlines, inspector and sidebar behavior,
 window resize down to the declared minimum, and the fact that macOS has no
 Dynamic Type.
 
+The inversion to hold onto: Apple's first macOS best practice is *"more content
+in fewer nested levels"*; iPhone's is *"limit the number of onscreen controls."*
+Progressive disclosure that is correct on iPhone is wrong on a Mac.
+
+## Motion
+
+Read [`motion.md`](references/motion.md) before adding or reviewing any
+animation. Motion is the one axis with a mechanical definition of correct: a
+duration-based easing curve cannot preserve velocity through an interruption, so
+any interruptible, gesture-driven, or retargetable motion built on one is a
+defect by Apple's own stated criterion rather than a preference.
+
+Two further pass/fail tests: dismissal reverses the reveal **along the same
+axis**, and no animation may be one a person must sit through twice. Under
+Reduce Motion, blur animations — which includes every glass morph — become fades.
+
 ## Building taste that persists
 
-Read [`reference-corpus.md`](references/reference-corpus.md). Maintain an
-annotated corpus of positive references, an anti-reference corpus of rejected
+Read [`exemplars.md`](references/exemplars.md) first — it is the populated
+corpus: which Apple apps to study by app shape and which to avoid, the two
+third-party Mac apps with substantive Liquid Glass reviews (both praised for
+*restraint*), Apple's only two endorsed native-Mac examples, a practitioner
+postmortem, and the documented counter-examples.
+
+The organizing finding: Apple's own apps split by whether they are Mac-shaped or
+iPhone-shaped, and the iPhone-shaped ones running on the Mac are the
+counter-examples. Copy the first group only.
+
+Then read [`reference-corpus.md`](references/reference-corpus.md) for how to
+extend it: annotated positive references, an anti-reference corpus of rejected
 output with the reason and the correction, and a decision log. Negative examples
 outperform additional adjectives. Every repeated rejection becomes either a
 documented anti-pattern or a rubric line — otherwise the same failure returns

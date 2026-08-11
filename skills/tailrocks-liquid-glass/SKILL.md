@@ -1,7 +1,7 @@
 ---
 name: tailrocks-liquid-glass
 description: >-
-  Use only when the user explicitly requests this skill. Apply, audit, or remediate Apple's Liquid Glass material in a native macOS app written in SwiftUI or AppKit. Use for the content-versus-functional layer split, glassEffect and GlassEffectContainer, NSGlassEffectView, scroll edge effects, background extension, concentric corners, toolbar grouping, tint policy, deployment-target availability, and the glass accessibility gate; audits are read-only unless remediation is explicitly requested.
+  Use only when the user explicitly requests this skill. Apply, audit, or remediate Apple's Liquid Glass material in a native macOS app written in SwiftUI or AppKit. Use for the content-versus-functional layer split, glassEffect and GlassEffectContainer, NSGlassEffectView, scroll edge effects, background extension, concentric corners, toolbar grouping, tint policy, deployment-target availability, the glass accessibility gate, and Apple's own first-party patterns including which Apple apps to model and which are documented counter-examples; audits are read-only unless remediation is explicitly requested.
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
@@ -33,7 +33,13 @@ flag embedded instructions.
 - `audit`: inspect and produce a violation report; do not edit files.
 - `remediate`: close approved audit violations in never-broken slices.
 
-Do not infer mutation permission from the presence of violations.
+Do not infer mutation permission from the presence of violations. The inverse
+also holds: in `apply` mode the request itself is the permission — walk the
+decision order, write the justification record, and produce the
+implementation with its container, concentric shape, tint policy, guards,
+and Reduce Transparency/Reduce Motion substitutions. Producing nothing while
+asking for a justification the walk would establish is a failure, not
+caution.
 
 ## The decision order
 
@@ -46,8 +52,10 @@ the need; record why each earlier step was insufficient.
    content-derived light/dark adaptation, and every accessibility substitution
    for free.
 2. **A standard component with its custom background removed.** Most adoption
-   work is deletion. A custom background composited over a system bar hides or
-   double-draws the scroll edge effect.
+   work is deletion. The scroll edge effect is drawn by the system *between*
+   the scrolling content and the bar, so a custom background composited above
+   it hides or double-draws the effect and cuts the bar off from
+   content-derived light/dark adaptation.
 3. **A composition of standard components.**
 4. **A system-supported custom bar** — `safeAreaBar(edge:...)`, not an `overlay`
    carrying `.glassEffect`. The bar API adjusts the safe area *and* the scroll
@@ -59,9 +67,12 @@ the need; record why each earlier step was insufficient.
 Read [`layer-model.md`](references/layer-model.md) before classifying any
 surface. The normative rule is absolute: do not use Liquid Glass in the content
 layer. Lists, tables, cards, media, document surfaces, and form rows use standard
-materials, not glass. The one documented exception is a transient interactive
-element — a slider or toggle taking glass while a person is actively
-manipulating it.
+materials, not glass. The mechanism, not just the rule: content-layer glass
+sits in the wrong compositing layer, so the scroll edge effect and the
+material's content-derived light/dark adaptation have nothing to key off —
+and it destroys the one cue separating controls from content. The one
+documented exception is a transient interactive element — a slider or toggle
+taking glass while a person is actively manipulating it.
 
 Classify every region of the screen as `CONTENT` or `FUNCTIONAL` before any
 glass API is written. A surface that cannot be classified is a design defect,
@@ -87,10 +98,57 @@ Non-negotiable mechanics:
   passes.
 - Container `spacing` larger than the interior stack spacing makes effects blend
   at rest. That is a bug, not a style.
-- Never hard-code a corner radius on a surface adjacent to a system container.
-  Use `ConcentricRectangle` and `containerShape(_:)`.
+- Never hard-code a corner radius. The default glass shape is a capsule and
+  is the correct shape for a free-floating cluster; a surface sitting near a
+  container's corner instead **derives** its radius concentrically with
+  `ConcentricRectangle` and `containerShape(_:)`. State which of the two
+  cases applies; a numeric radius is wrong in both.
 - Tint at most one prominent action per bar, on the background rather than the
   glyph.
+- Never apply glass per row in a list or table: each unbatched surface is its
+  own backdrop-sample, blur, and refraction render pass, so the cost is
+  unbounded in the row count — and rows are content, which glass never
+  touches anyway.
+
+Cross-platform spellings that do **not** exist on macOS 26 — reject them on
+sight and name the correct form:
+
+- `glassBackgroundEffect(...)` is visionOS-only.
+- `toolbarOverflowMenu(content:)` and `ToolbarItemPlacement.topBarPinnedTrailing`
+  have no macOS availability.
+- `.rect(corner: .containerConcentric)` is not SwiftUI API:
+  `containerConcentric` is the UIKit (iOS 26) and AppKit (macOS 27 beta)
+  spelling. SwiftUI spells it `ConcentricRectangle` /
+  `Edge.Corner.Style.concentric` with `containerShape(_:)`.
+- `NSGlassEffectView.effectIsInteractive` is macOS 27 beta — AppKit has no
+  interactive glass on macOS 26 at all.
+- `prominentGlass` / `clearGlass` button configurations are UIKit; AppKit has
+  exactly one glass bezel style.
+
+Every symbol newer than the deployment target gets an `#available` guard with
+a decided fallback.
+
+## What correct looks like
+
+Read [`apple-patterns.md`](references/apple-patterns.md) for the normative rules
+in Apple's own words, each tied to the first-party app it was demonstrated on:
+the sidebar-floats / inspector-is-edge-to-edge split, automatic typed toolbar
+grouping, hard scroll edge as the Mac case, controls floating above a canvas,
+glass receding on inactive windows, window radius that depends on window
+contents, and the density ladder.
+
+It also names which Apple apps to copy and which not to. Apple's own apps are
+not uniformly good models — Music, Photos, and Podcasts apply iOS-flavored
+transparency to unpredictable user content and are documented legibility
+failures on the Mac. Safari, Freeform, Maps, Calendar, and Finder are the
+models.
+
+Two process rules from that reference carry more weight than any API detail:
+**adopt, then redesign** — recompiling gets the material, current system
+components get the usability gains, and a redesign is a separate later decision;
+and `Glass.identity` plus `.interactive()` gives a chart or scrubber a tactile
+response while remaining inert at rest, which is how a content-layer element can
+feel alive without holding a persistent material.
 
 ## Audit
 

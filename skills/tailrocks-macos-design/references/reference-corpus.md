@@ -3,12 +3,19 @@
 Taste that lives only in a prompt evaporates between sessions. Taste encoded as a
 corpus, a decision log, and rubric lines compounds.
 
+**The starting corpus already exists** — read `exemplars.md` in this skill first.
+It carries the Apple first-party reference models by app shape, the third-party
+Mac exemplars, Apple's only two endorsed native-Mac Liquid Glass examples, a
+practitioner postmortem, and the documented counter-examples. This file is how
+you extend it with your own product's references and, more importantly, with your
+own rejected output.
+
 ## Three corpora
 
 ### Positive references
 
-Twenty to fifty annotated examples. Screenshots in a folder are not a corpus —
-the annotation is the artifact.
+Twenty to fifty annotated examples, starting from the ones in `exemplars.md`.
+Screenshots in a folder are not a corpus — the annotation is the artifact.
 
 For each reference record:
 

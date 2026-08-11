@@ -173,27 +173,24 @@ target's app icon to the file name without its extension.
 
 ## Motion
 
-Motion must explain causality. Every animation needs a stated purpose:
+Motion must explain causality. Distinguish decorative animation from
+state-transition continuity, spatial explanation, direct-manipulation feedback,
+focus transitions, navigation transitions, selection feedback, loading, and error
+recovery. Only the first is optional; the rest carry meaning.
 
-```
-Trigger:
-User-visible causal relationship:
-Duration or spring behavior:
-Interruption and reversal behavior:
-Behavior on rapid repeated input:
-Behavior during window resize:
-Reduce Motion behavior:
-Performance constraint:
-```
+Three pass/fail tests, before any judgement call:
 
-Distinguish decorative animation from state-transition continuity, spatial
-explanation, direct-manipulation feedback, focus transitions, navigation
-transitions, selection feedback, loading, and error recovery. Only the first is
-optional; the rest carry meaning.
+- An interruptible, gesture-driven, or retargetable animation must preserve
+  velocity through interruption — which a duration-based easing curve cannot do.
+- Dismissal reverses the reveal along the same axis.
+- No animation may be one a person must sit through twice.
 
-Under Reduce Motion, replace transitions in the x, y, and z axes with fades and
-reduce automatic and repetitive animation, including zooming, scaling, and
-peripheral motion.
+Under Reduce Motion, replace transitions in the x, y, and z axes with fades,
+reduce automatic and repetitive animation including zooming and scaling, and
+avoid animating into and out of blurs — which covers every glass morph.
+
+Full criteria, the motion specification, and the review questions are in the
+motion reference for this skill.
 
 ## Visual evaluation questions
 
