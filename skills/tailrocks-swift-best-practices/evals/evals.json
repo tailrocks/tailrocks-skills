@@ -16,7 +16,7 @@
     {
       "id": 3,
       "prompt": "Wrap NSTableView in an NSViewRepresentable so we get column resizing, and put all the row rendering and selection logic in the coordinator.",
-      "expected_output": "Accepts the AppKit table as a legitimate reason to bridge but rejects a coordinator that owns a large surface of behavior, requires a typed boundary with an idempotent update method, callbacks rather than shared mutable state, stated isolation across the bridge, and a clear coordinator lifetime.",
+      "expected_output": "Accepts the AppKit table as a legitimate reason to bridge but rejects a coordinator that owns a large surface of behavior, requires a typed boundary with an idempotent update method, callbacks rather than shared mutable state, stated isolation across the bridge, and states that the coordinator is created once per represented view, survives representable re-creation, and is torn down in dismantle.",
       "files": []
     },
     {

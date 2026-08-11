@@ -10,10 +10,11 @@ State lives at the **lowest node that spans every reader and every writer**.
 
 Ownership rules that hold up:
 
-- A view owns state no one else reads.
-- A parent owns state two children share.
-- A model object owns state that outlives any view.
-- Passing a binding down four levels means the state is at the wrong level.
+- `@State` owns view-local state no one else reads.
+- A parent owns shared state and passes focused `@Binding` projections.
+- An `@Observable` model owns state that outlives any view.
+- `@Environment` carries genuinely shared dependencies; passing a binding down
+  four levels means ownership is misplaced.
 
 Derived state is computed, not stored. Two stored properties that can disagree
 will eventually disagree.
@@ -100,8 +101,9 @@ The recurring causes on macOS, in rough order of frequency:
 
 1. Identity churn causing whole-subtree re-creation.
 2. Expensive work inside `body`.
-3. Observation scoped too broadly, so an unrelated property invalidates a large
-   subtree.
+3. Publisher-based `ObservableObject` / `@Published` scoped too broadly, so
+   whole-object `objectWillChange` invalidates unrelated readers. `@Observable`
+   tracks per-property reads; ask why a new model remains publisher-based.
 4. Unbatched material effects — each one is its own render pass.
 5. Large collections rendered eagerly instead of lazily.
 
