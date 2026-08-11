@@ -113,6 +113,11 @@ one tinted primary action per bar, on the trailing side.
 
 ## Scroll edge effects: automatic is the default; hard is the Mac case
 
+HIG revision checked 2026-08-11: Scroll views (latest recorded change
+2026-03-24), Sidebars, Menus, App icons, and Design principles were reread from
+Apple's live Human Interface Guidelines. Platform-specific sidebar-adaptation
+language is not promoted into a macOS API rule without macOS availability.
+
 Prefer `.automatic`, which commonly resolves soft; force a style only for a
 tested structural need.
 

@@ -42,6 +42,9 @@ Why the split earns its keep:
   legibility over the worst content the app can show.
 - **Transient glass is brief and has an origin.** It is judged on whether it
   emerges from the thing that invoked it and returns attention afterwards.
+- **Presentation morphing is system-owned.** Standard sheets and popovers
+  presented from glass controls receive the system transition; a hand-rolled
+  floating panel loses that relationship and must not imitate it.
 
 Most custom-glass mistakes are a transient element built as structural — a
 palette that never leaves, an editor docked instead of arising from the

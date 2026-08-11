@@ -121,6 +121,8 @@ sight and name the correct form:
 - `glassBackgroundEffect(...)` is visionOS-only.
 - `toolbarOverflowMenu(content:)` and `ToolbarItemPlacement.topBarPinnedTrailing`
   have no macOS availability.
+- `tabViewBottomAccessory(content:)` is documented for iPhone tab bars, not
+  macOS chrome; use a platform-native toolbar or safe-area bar on macOS.
 - `.rect(corner: .containerConcentric)` is not SwiftUI API:
   `containerConcentric` is the UIKit (iOS 26) and AppKit (macOS 27 beta)
   spelling. SwiftUI spells it `ConcentricRectangle` /
@@ -160,10 +162,12 @@ deployment target. AppKit 26 has no interactive glass.
 
 ## Audit
 
+**Audit output:** inspect every supplied artifact; classify every screen region
+explicitly as `CONTENT` or `FUNCTIONAL`; and check modifier order, batching,
+shape, tint count, and every used symbol against the declared deployment target.
 Read [`anti-patterns.md`](references/anti-patterns.md) and check every custom
-glass surface against every entry, including the performance framing that
-follows them. Each entry states the mechanism, so a finding must name the
-mechanism, not merely cite the rule.
+surface against every entry plus its performance framing. Every finding names
+the mechanism separately from the violated rule.
 
 Then run the glass acceptance gate in
 [`verification.md`](references/verification.md). A glass surface that has not

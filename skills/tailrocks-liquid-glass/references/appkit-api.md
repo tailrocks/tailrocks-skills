@@ -308,3 +308,10 @@ of all of them. Two decisions are yours:
 
 Do not leave an `NSVisualEffectView` inside a popover's content view; the
 adoption guide says to remove those custom background views.
+
+| Existing `NSVisualEffectView` surface | Migration decision |
+|---|---|
+| Sidebar | Replace custom material with system sidebar construction; do not add glass manually. |
+| Toolbar accessory | Move into `NSTitlebarAccessoryViewController` or the split-item accessory APIs. |
+| Floating functional panel | Use `NSGlassEffectView` only after the layer model justifies a custom transient surface. |
+| Content | Keep the purpose-appropriate `NSVisualEffectView.Material`; content never becomes glass. |

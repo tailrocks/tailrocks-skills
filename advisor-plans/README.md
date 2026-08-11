@@ -18,7 +18,7 @@ REJECTED (one-line rationale).
 | [002](002-package-goal-check.md) | 5th | Deterministic per-package goal-check script | P2 | M | 000 | TODO |
 | [003](003-client-wiring-and-reconcile.md) | 5th | Client wiring + reconcile integration | P2 | M | 002 | TODO |
 | [004](004-macos-eval-fixtures-and-coverage.md) | 6th | macOS eval fixtures + mode/gate coverage | P1 | L | 001 | DONE — `004-run-record.md`: 37/37 ran, 28 pass, 9 routed findings |
-| [005](005-liquid-glass-corrections.md) | 6th | Liquid-glass self-contradictions + WWDC26 currency | P1 | M | 004 | BLOCKED — required HIG browser-read unavailable (`agent.browsers.list()` empty); steps 1–10 and DocC currency prepared |
+| [005](005-liquid-glass-corrections.md) | 6th | Liquid-glass self-contradictions + WWDC26 currency | P1 | M | 004 | BLOCKED — STOP: case 1 failed 0/2 after audit-output wording fix; one run omitted modifier order, one omitted distinct symbol-availability audit |
 | [006](006-design-template-rubric-alignment.md) | 6th | Design templates carry what the rubric mandates | P1 | M | 004 | BLOCKED — eval case 5 failed 0/2: `extract` procedure is undefined and owned by plan 008 |
 | [007](007-visual-qa-harness-hardening.md) | 6th | Visual-qa restore safety + capture/drive harness | P1 | M–L | — (004 for rerun) | DONE — canonical/private temp guards exit 2; shell/Swift parse and restore smoke green; evals 12/12 green |
 | [008](008-family-ownership-and-handoffs.md) | 6th | One owner per rule; working handoffs | P1 | M–L | 004, 005, 006, 007 | BLOCKED — dependencies 005 and 006 are BLOCKED, not DONE |

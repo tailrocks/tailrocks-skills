@@ -27,13 +27,18 @@ macOS 26 at all.
 |---|---|
 | Latest shipping macOS | 26.6.1 "Tahoe" |
 | macOS 27 | Announced, named "Golden Gate", **not shipping** — beta, "coming this fall" |
-| Shipping toolchain | Xcode 26.6, Swift 6.3, macOS 26.5 SDK; requires host macOS 26.2+ |
+| Shipping toolchain | Xcode 26.6, Swift 6.3, macOS 26.5 SDK as reported by `xcrun --show-sdk-version` on 2026-08-11; requires host macOS 26.2+ |
 | Beta toolchain | Xcode 27 beta 5, Swift 6.4, macOS 27 SDK; requires host macOS 26.4+; checked 2026-08-11 |
 | Intel | Xcode 27 is Apple-silicon-only; `ARCHS_STANDARD` drops `x86_64` when the deployment target is 27.0 or later. Universal back-deploy to macOS 12 still supported. |
 
 Re-verify these before relying on them. Release notes:
 `developer.apple.com/documentation/macos-release-notes`,
 `developer.apple.com/documentation/xcode-release-notes`.
+
+Apple's macOS 26.6 release notes label the bundled SDK 26.6, while Xcode 26.6's
+release notes and the installed toolchain report 26.5. Treat the local
+`xcrun --show-sdk-version` result as the compile-lane authority; both release
+note pages were rechecked 2026-08-11.
 
 ## Almost every 26.x glass symbol is 26.0 — three exceptions
 
@@ -81,6 +86,11 @@ guard breaks a macOS 26 deployment target.
 | `toolbarMinimizationBehavior(_:for:)` | |
 | `toolbarMinimizationSafeAreaAdjustment(_:for:)` | |
 | `NSMenuItem.preferredImageVisibility` | controls menu-image visibility |
+| SwiftUI `windowResizeAnchor(_:)` | anchors content-driven window resizing; use `.topLeading` to avoid pixel cracking during animated macOS resizes |
+
+`tabViewBottomAccessory(content:)` was rechecked in DocC on 2026-08-11. Its
+documented behavior is iPhone tab-bar placement, so it is not a macOS bar
+construction and remains blocklisted in the router.
 
 ## macOS 27 rebuild changes
 
