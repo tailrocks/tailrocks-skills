@@ -48,7 +48,7 @@ atomic shell invocation — kill, launch, wait, act, capture — because process
 window state does not survive reliably between separate tool calls.
 
 ```
-pkill → open → wait → resolve window ID → screencapture -l
+pkill → open → wait → re-activate → resolve window ID → screencapture -l
 ```
 
 Copy the harness rather than reconstructing it:
@@ -118,7 +118,8 @@ rather than reporting a silent pass.
 
 ## Final gate
 
-Verify a real capture per required state, an accessibility audit result, driven
+Verify a real capture per required state, an accessibility audit result or a
+recorded blocker naming the missing UI-test target and `AuditTests.swift`, driven
 interaction where behavior is claimed, restored system settings, and an explicit
 statement of any state that could not be produced and why. Every report states
 whether the run had an interactive graphical session and which of Screen

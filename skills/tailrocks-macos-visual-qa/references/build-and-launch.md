@@ -27,7 +27,8 @@ xcodebuild -project App.xcodeproj -scheme App -configuration Debug \
   -derivedDataPath "$HOME/Library/Developer/AppBuild" build
 ```
 
-**The derived data path must not be under `/tmp` or `/private/tmp`.** An app
+**The derived data path must not be under `/tmp`, `/private/tmp`,
+`/var/folders`, or `$TMPDIR`.** An app
 bundle launched from a temporary directory loses its windows within seconds. This
 is the single most expensive trap in the loop.
 
@@ -54,15 +55,9 @@ ENABLE_HARDENED_RUNTIME = NO
 State does not survive reliably between separate agent tool calls. Run kill,
 launch, wait, act, and capture as **one** invocation.
 
-```sh
-APP="$HOME/Library/Developer/AppBuild/Build/Products/Debug/App.app"
-
-pkill -9 -f "App.app/Contents/MacOS" ; sleep 1
-open "$APP" ; sleep 3
-
-WID="$(./Scripts/window-id App "App")"
-screencapture -x -o -l "$WID" shot.png
-```
+Use `templates/capture.sh`: canonicalize and guard
+the app path, kill, launch, wait, re-activate, resolve the current window ID,
+capture by ID, then verify file size and dimensions.
 
 `-x` suppresses the capture sound, `-o` omits the window shadow, `-l` selects by
 window ID.

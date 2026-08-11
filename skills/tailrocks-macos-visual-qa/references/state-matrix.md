@@ -3,9 +3,9 @@
 A feature is not visually complete because its default light appearance looks
 good at one window size.
 
-**These commands change the user's real system settings.** Snapshot the original
-values first, restore them at the end including on failure, and report explicitly
-if a restore did not happen.
+**These commands change the user's real system settings.** Reach every automated
+row through `templates/state.sh`, whose `with` mode
+snapshots and trap-restores on every exit. Report explicitly if restore fails.
 
 ## Appearance
 
@@ -29,22 +29,20 @@ defaults write com.apple.universalaccess reduceMotion -bool true
 defaults write com.apple.universalaccess differentiateWithoutColor -bool true
 ```
 
-Restore by deleting the key rather than writing false, so the machine returns to
-its original unset state:
-
-```sh
-defaults delete com.apple.universalaccess increaseContrast
-```
+Never use a bare restore recipe. `state.sh snapshot FILE` records each original
+value or `ABSENT`; `restore FILE` uses `defaults delete` only for an `ABSENT`
+record and writes every present original value back. Both apply and restore
+read back every key.
 
 Caveats:
 
-- Writing these succeeds without a permission prompt, but **live propagation to
+- A TCC prompt or silent no-op is possible on first use; verify on first run.
+  The script's read-back detects a no-op. **Live propagation to
   already-running applications is weaker than the appearance toggle**. Allow a
   second or two and re-capture, or relaunch the application.
-- Snapshot the originals first. Some of these will already be on for the person
-  whose machine this is, and a blind restore-to-false is a real change to their
-  environment.
-- Nothing here is blocked by system integrity protection.
+- Auto appearance is preserved through both `AppleInterfaceStyle` and
+  `AppleInterfaceStyleSwitchesAutomatically` in `NSGlobalDomain`; never pin an
+  Auto user's machine to explicit light or dark.
 
 ## Settings with no programmatic control
 
@@ -60,6 +58,8 @@ the row.
 | Scroll bar visibility | Affects whether the scroll edge effect appears |
 | Display scale and dragging between displays | Corner radii and blurs must resolve on move |
 | Wallpaper | Glass refracts it; test bright photo, dark photo, and solid |
+| VoiceOver | System Settings ▸ Accessibility ▸ VoiceOver; interferes with AX driving |
+| Full Keyboard Access | System Settings ▸ Accessibility ▸ Keyboard |
 
 The absence of a read API for the Liquid Glass setting is not an inconvenience,
 it is a design constraint: a custom glass surface **cannot** adapt

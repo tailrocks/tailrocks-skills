@@ -37,13 +37,19 @@ running app.
 
 ## Diffing
 
+First compare `sips -g pixelWidth -g pixelHeight` output; unequal dimensions
+fail as "re-baseline on this display". Normalize untagged inputs with
+`sips --matchTo '/System/Library/ColorSync/Profiles/sRGB Profile.icc'`.
+
 ```sh
-magick compare -metric AE -fuzz 2% baseline.png candidate.png diff.png
+BUDGET=120
+count=$(magick compare -metric AE -fuzz 2% baseline.png candidate.png diff.png 2>&1 || true)
+[ "$count" -le "$BUDGET" ]
 odiff baseline.png candidate.png diff.png --threshold=0.1 --antialiasing
 ```
 
-Both report a non-zero exit on difference. The second is substantially faster on
-large sets.
+`compare`'s exit code alone is not the gate; AE is compared with the explicit
+per-state changed-pixel budget. `odiff --threshold` is its budget analogue.
 
 Tolerances matter more than usual here: glass composites against live content, so
 a small tolerance and antialiasing awareness prevent a suite that fails on every
@@ -66,7 +72,7 @@ approval.
 - Re-baseline everything after an OS or SDK update. Window corner radius, control
   metrics, and material rendering all changed between macOS releases and will
   change again; a suite that was not re-baselined reports noise and gets muted.
-- Record the macOS version, the SDK, the display scale, and the appearance
+- Record the macOS version, SDK, backing scale, color profile, and appearance
   alongside each baseline set. A baseline without that metadata cannot be
   reproduced.
 
