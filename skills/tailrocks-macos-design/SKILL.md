@@ -138,10 +138,10 @@ resize behavior, Liquid Glass misuse, typography and spacing, motion and polish.
 Do not spend three iterations on corner radii while the workflow is structurally
 wrong.
 
-Previews are built by an implementing agent and captured by
-`tailrocks-macos-visual-qa`. **Complete when:** the threshold is met, no hard
-failure remains, and rendered evidence is attached. Until captures exist, Stage
-5 is deferred, not waived; source review is not design review.
+Previews are captured by `tailrocks-macos-visual-qa`. **Review must run:** inspect all fixture files recursively; a capture manifest is rendered-evidence inventory.
+Never refuse for absent pixels, prior artifacts, template, or reference. Score unassessable categories zero and still emit eight category scores, all 18 hard-
+failure rows, severity-ordered findings, `## Deletion` and `## Preserve` lists (write `- None` when empty), and score-caps table. Make every missing required state its own hard-failure finding;
+never complete until the threshold is met, no hard failure remains, and required rendered states have evidence.
 
 ## The axes and the tests
 

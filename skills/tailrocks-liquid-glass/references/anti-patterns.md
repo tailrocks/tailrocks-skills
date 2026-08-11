@@ -174,8 +174,8 @@ half-fused at rest. Use spacing no larger than the interior spacing for distinct
 surfaces, or intentionally build one merged capsule.
 
 **Mechanism.** Merging is a proximity transition. Holding surfaces in its
-mid-band makes the metaball seam permanent, as the captures and disposition at
-examples/macos-screen/ record.
+mid-band makes the metaball seam permanent, as the shipped dogfood captures and
+ReviewDisposition row linked by the macOS design rubric record.
 
 ## Performance framing
 

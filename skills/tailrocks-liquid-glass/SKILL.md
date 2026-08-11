@@ -125,19 +125,19 @@ sight and name the correct form:
   have no macOS availability.
 - `tabViewBottomAccessory(content:)` is documented for iPhone tab bars, not
   macOS chrome; use a platform-native toolbar or safe-area bar on macOS.
-- `.rect(corner: .containerConcentric)` is not SwiftUI API:
-  `containerConcentric` is the UIKit (iOS 26) and AppKit (macOS 27 beta)
-  spelling. SwiftUI spells it `ConcentricRectangle` /
-  `Edge.Corner.Style.concentric` with `containerShape(_:)`; the macOS 26 API
-  `.rect(corners: .concentric)` is also valid.
+- **Concentric correction output:** reject `.rect(corner: .containerConcentric)`:
+  `containerConcentric` is UIKit (iOS 26) and AppKit (macOS 27 beta), not SwiftUI.
+  The response is incomplete unless it literally supplies both `ConcentricRectangle`
+  and `Edge.Corner.Style.concentric` with `containerShape(_:)`, even if its code
+  also uses the valid shorthand `.rect(corners: .concentric)`.
 - `NSGlassEffectView.effectIsInteractive` is macOS 27 beta — AppKit has no
   interactive glass on macOS 26 at all.
 - `prominentGlass` / `clearGlass` button configurations are UIKit. SwiftUI uses
   `.buttonStyle(.glassProminent)` (macOS 26.0); AppKit uses
   `NSToolbarItem.Style.prominent`.
 
-Every symbol newer than the deployment target gets an `#available` guard;
-fallback and removal-condition discipline belongs to `tailrocks-swift-best-practices`.
+**Correction guard:** always supply concrete `#available` code; when no target is present, state and use macOS 26. Every newer symbol gets a guard; fallback and
+removal-condition discipline belongs to `tailrocks-swift-best-practices`.
 
 ## What correct looks like
 
@@ -167,8 +167,8 @@ configuration files such as `project.yml` establish the deployment target.
 Report these named checks separately so none can disappear inside prose:
 
 - **Layer:** classify every screen region as `CONTENT` or `FUNCTIONAL`.
-- **Mechanics:** check modifier order, container batching, corner
-  concentricity, and tint count.
+- **Mechanics:** report modifier order as its own row (`glassEffect` before
+  padding is a violation), plus container batching, corner concentricity, and tint count.
 - **Availability:** check every used symbol against the declared deployment
   target and name whether a guard is required.
 - **Anti-patterns:** check every custom surface against every entry and the
