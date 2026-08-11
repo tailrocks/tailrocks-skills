@@ -57,9 +57,10 @@ the need; record why each earlier step was insufficient.
    it hides or double-draws the effect and cuts the bar off from
    content-derived light/dark adaptation.
 3. **A composition of standard components.**
-4. **A system-supported custom bar** — `safeAreaBar(edge:...)`, not an `overlay`
-   carrying `.glassEffect`. The bar API adjusts the safe area *and* the scroll
-   edge effects; an overlay adjusts neither.
+4. **A system-supported custom bar** — SwiftUI `safeAreaBar(edge:...)`, not an
+   `overlay` carrying `.glassEffect`; AppKit `NSTitlebarAccessoryViewController`
+   or split-item `top-`/`bottomAlignedAccessoryViewControllers`. These APIs
+   adjust bar geometry and scroll edge effects; an overlay adjusts neither.
 5. **A custom glass surface** inside a container, with a written justification.
 
 ## Layer discipline
@@ -86,10 +87,10 @@ not an implementation question.
 
 For SwiftUI, read [`swiftui-api.md`](references/swiftui-api.md). For AppKit,
 read [`appkit-api.md`](references/appkit-api.md). Both carry exact signatures and
-per-symbol availability. Apple ships **no AppKit Liquid Glass sample code and no
-AppKit code listing in its adoption guide** — for AppKit there is prose and API
-reference only, so verify each symbol against the SDK in use rather than
-pattern-matching from SwiftUI.
+per-symbol availability. Apple ships no downloadable AppKit Liquid Glass sample
+and no AppKit listing in its adoption guide; WWDC26 session 289 does include an
+Apple-authored AppKit `cornerConfiguration` listing. Verify every symbol against
+the SDK in use rather than transposing SwiftUI patterns.
 
 Non-negotiable mechanics:
 
@@ -102,11 +103,11 @@ Non-negotiable mechanics:
   passes.
 - Container `spacing` larger than the interior stack spacing makes effects blend
   at rest. That is a bug, not a style.
-- Never hard-code a corner radius. The default glass shape is a capsule and
-  is the correct shape for a free-floating cluster; a surface sitting near a
-  container's corner instead **derives** its radius concentrically with
-  `ConcentricRectangle` and `containerShape(_:)`. State which of the two
-  cases applies; a numeric radius is wrong in both.
+- State which radius case applies: **capsule** for a free-floating cluster;
+  **concentric derivation** (`ConcentricRectangle`, `containerShape(_:)`, or
+  `.rect(corners: .concentric)`) beside a container corner; or a **documented
+  numeric radius** where no concentric API exists (AppKit on macOS 26), with a
+  revisit condition for container-radius changes.
 - Tint at most one prominent action per bar, on the background rather than the
   glyph.
 - Never apply glass per row in a list or table: each unbatched surface is its
@@ -123,11 +124,13 @@ sight and name the correct form:
 - `.rect(corner: .containerConcentric)` is not SwiftUI API:
   `containerConcentric` is the UIKit (iOS 26) and AppKit (macOS 27 beta)
   spelling. SwiftUI spells it `ConcentricRectangle` /
-  `Edge.Corner.Style.concentric` with `containerShape(_:)`.
+  `Edge.Corner.Style.concentric` with `containerShape(_:)`; the macOS 26 API
+  `.rect(corners: .concentric)` is also valid.
 - `NSGlassEffectView.effectIsInteractive` is macOS 27 beta — AppKit has no
   interactive glass on macOS 26 at all.
-- `prominentGlass` / `clearGlass` button configurations are UIKit; AppKit has
-  exactly one glass bezel style.
+- `prominentGlass` / `clearGlass` button configurations are UIKit. SwiftUI uses
+  `.buttonStyle(.glassProminent)` (macOS 26.0); AppKit uses
+  `NSToolbarItem.Style.prominent`.
 
 Every symbol newer than the deployment target gets an `#available` guard with
 a decided fallback.
@@ -150,15 +153,17 @@ models.
 Two process rules from that reference carry more weight than any API detail:
 **adopt, then redesign** — recompiling gets the material, current system
 components get the usability gains, and a redesign is a separate later decision;
-and `Glass.identity` plus `.interactive()` gives a chart or scrubber a tactile
-response while remaining inert at rest, which is how a content-layer element can
-feel alive without holding a persistent material.
+and, in SwiftUI only, `Glass.identity` plus `.interactive()` gives a chart or
+scrubber a tactile response while remaining inert at rest. The API is macOS
+26.0, but pointer-tuned response is refined in macOS 27; verify behavior on the
+deployment target. AppKit 26 has no interactive glass.
 
 ## Audit
 
 Read [`anti-patterns.md`](references/anti-patterns.md) and check every custom
-glass surface against all ten entries. Each entry states the mechanism, so a
-finding must name the mechanism, not merely cite the rule.
+glass surface against every entry, including the performance framing that
+follows them. Each entry states the mechanism, so a finding must name the
+mechanism, not merely cite the rule.
 
 Then run the glass acceptance gate in
 [`verification.md`](references/verification.md). A glass surface that has not
@@ -167,10 +172,11 @@ appearance setting, and an inactive window has not been verified — system
 components substitute opaque treatments under those settings automatically and
 hand-rolled surfaces do not.
 
-**Complete when:** every custom glass surface has a recorded justification, a
-container, a concentric or explicitly-justified shape, an availability guard
-matching the deployment target, and a pass or a specific blocker on every row of
-the acceptance gate.
+**Complete when:** every custom glass surface has the per-surface record from
+[`verification.md`](references/verification.md): justification, container,
+shape, availability guard, variant choice (with a reason for `clear`), Reduce
+Transparency and Reduce Motion substitutions, and a pass or specific blocker on
+every acceptance-gate row.
 
 ## Final gate
 
@@ -178,5 +184,6 @@ Verify layer classification for every region, standard-component-first evidence
 for every custom surface, container batching, modifier order, corner
 concentricity, single prominent tint, deployment-target availability for every
 symbol used, accessibility substitution behavior, and the absence of custom
-backgrounds on bars, split views, sheets, and popovers. Report every skipped
-check and unresolved exception.
+backgrounds on bars, split views, sheets, and popovers. Apply every hard failure
+in [`verification.md`](references/verification.md). Report every skipped check
+and unresolved exception.

@@ -28,16 +28,16 @@ macOS 26 at all.
 | Latest shipping macOS | 26.6.1 "Tahoe" |
 | macOS 27 | Announced, named "Golden Gate", **not shipping** — beta, "coming this fall" |
 | Shipping toolchain | Xcode 26.6, Swift 6.3, macOS 26.5 SDK; requires host macOS 26.2+ |
-| Beta toolchain | Xcode 27 beta, Swift 6.4, macOS 27 SDK; requires host macOS 26.4+ |
+| Beta toolchain | Xcode 27 beta 5, Swift 6.4, macOS 27 SDK; requires host macOS 26.4+; checked 2026-08-11 |
 | Intel | Xcode 27 is Apple-silicon-only; `ARCHS_STANDARD` drops `x86_64` when the deployment target is 27.0 or later. Universal back-deploy to macOS 12 still supported. |
 
 Re-verify these before relying on them. Release notes:
 `developer.apple.com/documentation/macos-release-notes`,
 `developer.apple.com/documentation/xcode-release-notes`.
 
-## Every Liquid Glass symbol in the 26.x line is introduced at 26.0
+## Almost every 26.x glass symbol is 26.0 — three exceptions
 
-Nothing was added or deprecated between 26.1 and 26.6 except three items:
+Only three relevant items appear after 26.0 through 26.6:
 
 | Symbol | Availability |
 |---|---|
@@ -65,7 +65,7 @@ based on an assumed system read is wrong by construction.
 The practical consequence: a custom glass surface must be *visually verified*
 under both settings, because it cannot be programmatically adapted.
 
-## macOS 27 additions — guard these
+## macOS 27 new API — guard these
 
 Every symbol below is macOS 27 beta. Using any of them without an availability
 guard breaks a macOS 26 deployment target.
@@ -73,12 +73,26 @@ guard breaks a macOS 26 deployment target.
 | Symbol | Note |
 |---|---|
 | `NSGlassEffectView.effectIsInteractive` | **AppKit has no interactive glass at all on macOS 26** |
-| `NSView.cornerConfiguration`, `NSViewCornerConfiguration`, `NSViewCornerRadius` | `.containerConcentric`, `.fixed(_:)`; AppKit had no concentric-corner API before this |
+| `NSView.cornerConfiguration`, `NSViewCornerConfiguration`, `NSViewCornerRadius` | `.containerConcentric`, `.containerConcentric(_:)`, `.fixed(_:)`, and `.uniformCorners(radius:)`; macOS and Mac Catalyst 27 beta |
 | `NSView.effectiveCornerRadii`, `invalidateCornerConfiguration()`, `viewDidChangeEffectiveCornerRadii()` | companions to the above |
 | SwiftUI `GeometryProxy.concentricCornerRadii` / `concentricCornerRadii(in:)` | returns `RectangleCornerRadii?`, for custom drawing |
 | `NSToolbarItemGroup.role`, `NSToolbarItemGroupRole` | |
 | `NSSegmentedControl.role`, `NSSegmentedControlRole.tabs`, SwiftUI `TabsPickerStyle` | |
 | `toolbarMinimizationBehavior(_:for:)` | |
+| `toolbarMinimizationSafeAreaAdjustment(_:for:)` | |
+| `NSMenuItem.preferredImageVisibility` | controls menu-image visibility |
+
+## macOS 27 rebuild changes
+
+- A `TabView` in an inspector automatically uses the `.tabs` picker appearance
+  when built with the 27 SDK (170678002).
+- Apps linked with the 27 SDK hide symbol and non-symbol menu images by default;
+  use `NSMenuItem.preferredImageVisibility` where HIG guidance requires one.
+
+## macOS 27 deprecations
+
+- `TextInputBorderShape` and `textInputBorderShape(_:)` replace the
+  soft-deprecated `.squareBorder` / `.roundedBorder`; use `.bordered`.
 
 Two macOS 27 changes affect apps **linked against macOS 26**, so audit them even
 if the deployment target does not move:

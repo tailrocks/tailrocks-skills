@@ -65,7 +65,7 @@ The intended sequence:
 4. **During transition** — related surfaces morph rather than cut.
 5. **After completion** — attention returns to the content.
 
-Apple's own restraint note on the macOS 27 interactive-glass bounce is the
+Apple's restraint note on AppKit's macOS 27 `effectIsInteractive` arrival is the
 calibration for step 3: *"A little goes a long way!"*
 
 A resting state that draws the eye is a defect regardless of how good it looks in
@@ -84,7 +84,7 @@ styling question.
 | Window toolbar | FUNCTIONAL | `.toolbar` / `NSToolbar` | automatic |
 | Inspector | FUNCTIONAL | `.inspector` / `NSSplitViewItem(inspectorWithViewController:)` | automatic |
 | Record table | CONTENT | `Table` | none — standard material |
-| Detail form | CONTENT | `Form(.grouped)` | none |
+| Detail form | CONTENT | `Form` + `.formStyle(.grouped)` | none |
 | Floating canvas controls | FUNCTIONAL | custom, justified | `GlassEffectContainer` |
 
 `CONTENT` regions use standard materials: SwiftUI `Material`, AppKit

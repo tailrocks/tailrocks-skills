@@ -75,3 +75,7 @@ Any one of these fails the surface outright:
 - An icon-only control with no accessibility label.
 - A toolbar item with no corresponding menu-bar command.
 - No rendered evidence.
+
+Known platform blocker: macOS 27 Beta 5 records that `NSSegmentedCell` may draw
+at the wrong location under Liquid Glass (168066807). Identify this OS defect
+before attributing the displaced control to app layout.
