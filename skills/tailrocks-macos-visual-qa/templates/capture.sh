@@ -11,9 +11,13 @@ HERE=$(cd "$(dirname "$0")" && pwd -P)
 app_dir=$(cd "$(dirname "$APP")" 2>/dev/null && pwd -P) || { echo "app directory not found" >&2; exit 2; }
 APP="$app_dir/$(basename "$APP")"
 case "$APP" in
-  /tmp/*|/private/tmp/*|/var/folders/*) echo "refusing to launch app from temporary directory" >&2; exit 2 ;;
+  /tmp/*|/private/tmp/*|/var/folders/*|/private/var/folders/*)
+    echo "refusing to launch app from temporary directory" >&2; exit 2 ;;
 esac
-if [ -n "${TMPDIR:-}" ]; then case "$APP" in "$TMPDIR"*) echo "refusing to launch app from TMPDIR" >&2; exit 2 ;; esac; fi
+if [ -n "${TMPDIR:-}" ]; then
+  tmp_dir=$(cd "$TMPDIR" 2>/dev/null && pwd -P) || tmp_dir=$TMPDIR
+  case "$APP" in "$tmp_dir"|"$tmp_dir"/*) echo "refusing to launch app from TMPDIR" >&2; exit 2 ;; esac
+fi
 
 mkdir -p "$(dirname "$OUT")"
 TOOL=${WINDOW_ID_TOOL:-"${TMPDIR:-/tmp}/tailrocks-window-id"}
