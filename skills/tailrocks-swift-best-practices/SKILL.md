@@ -35,6 +35,11 @@ API, so the fallback derives the radius or hosts the surface in SwiftUI) —
 and **mark every fallback with its removal condition**, the minimum-target
 bump that deletes it.
 
+**Missing-source completion:** when the target file or new symbol's exact
+signature is absent, never invent either. Still provide the `#available`
+integration pattern, decided fallback, and removal condition, with the unknown
+call labeled for replacement from verified SDK documentation.
+
 ## Concurrency
 
 Read [`concurrency.md`](references/concurrency.md). Strict concurrency is on.
@@ -49,8 +54,8 @@ The rules that prevent the most damage:
 - Never silently suppress a data-race diagnostic. An unchecked conformance or a
   nonisolated escape hatch is a claim about invariants and needs a comment
   stating which invariant makes it safe.
-- Structured concurrency by default; an unstructured task needs an owner, a
-  cancellation path, and a lifetime tied to something.
+- **Unstructured-task contract:** name its owner, tie cancellation to that
+  owner's lifetime, and require a test that exercises the cancellation path.
 
 ## SwiftUI
 
@@ -81,10 +86,12 @@ The bridge rules, all mandatory:
   two-way binding across the bridge counts as one.
 - The update method is **idempotent**: compare before assigning so an
   assignment cannot trigger a change notification that re-enters the update.
-- **Coordinator lifetime:** it owns delegate conformance only — not row rendering
-  or business logic. `makeCoordinator()` creates it once per represented view;
-  it survives every representable-value re-creation while that view keeps its
-  identity, then tears down in `dismantleNSView(_:coordinator:)`.
+- **Coordinator scope:** it owns delegate conformance only — never row rendering
+  or business logic.
+- **Lifecycle record:** state explicitly in the output that `makeCoordinator()`
+  creates the coordinator once per represented view, it survives every
+  representable-value re-creation while view identity holds, and teardown runs
+  in `dismantleNSView(_:coordinator:)`.
 - Size through the sizing hooks, never a fixed frame.
 
 Reach for AppKit for mature table and outline behavior, advanced text editing,
@@ -106,6 +113,10 @@ custom actions, focus order, and identifiers are part of the implementation, not
 a later pass. An icon-only control without a label is a defect. An element
 without an accessibility identifier cannot be driven by any verification harness.
 
+**Accessibility audit output:** enumerate label, value, role, focus order, and
+identifier for every interactive element; mark each present, missing, or not
+applicable. Never omit a field because the native control supplies its default.
+
 ## Review checklist
 
 For any Swift change touching the interface:
@@ -118,8 +129,9 @@ For any Swift change touching the interface:
 - Availability guarded for every symbol newer than the minimum target, with a
   decided fallback.
 - Errors typed; user-facing failures carry recovery.
-- Accessibility label, value, role, and identifier on every interactive element.
-- Keyboard path and a menu-bar command for every action a pointer can reach.
+- **Accessibility semantics:** label, value, role, focus order, and identifier
+  on every interactive element.
+- **Input parity:** keyboard path and menu-bar command for every pointer action.
 - Tests cover the failure paths, not only the happy path.
 
 ## Final gate
