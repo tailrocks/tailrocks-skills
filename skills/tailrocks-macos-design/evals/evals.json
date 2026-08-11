@@ -10,7 +10,7 @@
     {
       "id": 2,
       "prompt": "Review this screenshot of our records workspace against our design standards.",
-      "expected_output": "Scores the eight rubric categories against the rendered evidence, checks the hard-failure list explicitly, orders findings by severity from broken workflow down to micro-polish, names what can be deleted, and flags any required state that has no screenshot as a finding.",
+      "expected_output": "Scores the eight rubric categories against the rendered evidence, checks the hard-failure list explicitly, orders findings by severity from broken workflow down to micro-polish, names what can be deleted, and flags any required state that has no screenshot as a finding, and the review includes a Preserve section and the score-caps table.",
       "files": ["evals/fixtures/2/DesignReview-input.md"]
     },
     {

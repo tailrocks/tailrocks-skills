@@ -24,7 +24,7 @@ the same apps. Jason Snell's structural diagnosis is the one to internalize:
 > The design was created with specific kinds of apps in mind: iPhone apps full of
 > scrolling content libraries… **the Mac is not the iPhone, and most Mac apps are
 > not media library browsers.**
-> — Six Colors, macOS 26 Tahoe review
+> — Six Colors, macOS 26 Tahoe review (source URL unverified)
 
 Every macOS 27 correction Apple shipped — uniform toolbars, edge-to-edge
 sidebars, a darkened glass edge, brighter specular highlights, the transparency
@@ -53,7 +53,7 @@ Pick the Apple app whose *shape* matches yours and study that one.
 Glass even shipped:
 
 > Like in Safari today, controls sit on top of a system material, not directly on
-> content. — WWDC25 356
+> content. — WWDC25 356 (source URL unverified)
 
 And the toolbar: "The new rounded tab design floats gracefully in the tab bar
 while web page content flows underneath the toolbar while you browse."
@@ -71,14 +71,14 @@ Even Apple's best-behaved app needed a density escape hatch.
 
 > Freeform's inline editing controls are a great example. They float above the
 > content rather than sitting alongside, and they work beautifully with the
-> Liquid Glass material. — WWDC25 310
+> Liquid Glass material. — WWDC25 310 (source URL unverified)
 
 **Maps** — the macOS 27 exemplar, twice:
 
 > There is an effect that can be added to glass. Where the glass subtly bounces
 > when clicked… **Maps uses this for a few of their custom controls.** … use this
 > effect with controls and buttons, or glass containers of interactive controls.
-> **A little goes a long way!** — WWDC26 289
+> **A little goes a long way!** — WWDC26 289 (source URL unverified)
 
 > For example, the local weather view in Maps is concentric with the window.
 > — WWDC26 289

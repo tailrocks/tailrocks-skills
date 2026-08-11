@@ -12,6 +12,14 @@ Who uses this, and with what expertise?
 
 The single most important thing a person needs to accomplish. One sentence.
 
+## Archetype
+
+Dominant archetype:
+Secondary archetypes, and which window or mode each owns:
+Primary object of this window:
+Why this archetype and not the adjacent one:
+The failure this archetype attracts, and how the design avoids it:
+
 ## Primary objects
 
 What people create, select, edit, inspect, organize, export.
@@ -44,6 +52,20 @@ Keyboard workflow:
 Trackpad:
 Drag and drop:
 Context menus:
+Services / system integrations in scope:
+
+## Continuity
+
+Restore per window — position, size, sidebar width, selection, and open documents:
+
+## Latency targets
+
+| Interaction | Target |
+|---|---|
+| Pointer or key acknowledgement | Immediate, same frame |
+| Selection change | Immediate |
+| Menu opening | Immediate |
+| Long work | Stable layout plus progress and cancellation |
 
 ## Recovery
 

@@ -103,12 +103,12 @@ API and placement.
 
 ## Stage 3 — Structural alternatives
 
-Produce six to ten alternatives that differ **structurally**: sidebar-led,
-table-led, inspector-led, compact professional, spacious editorial,
-keyboard-first, content-immersive, high-density, minimum-width adaptation.
+Produce six to ten alternatives that differ **structurally**: sidebar/table/
+inspector-led change hierarchy; keyboard-first changes action placement;
+content-immersive changes chrome; high-density and minimum-width change the map.
 
-Variations in color, corner radius, blur, or spacing are not alternatives. If two
-options would produce the same component map, they are one option.
+Variations in color, radius, blur, or spacing are not alternatives. Two seeds
+that yield the same component map count as one.
 
 Each alternative gets a named preview and realistic fixtures — zero items, one
 item, thousands of items, very long names, missing metadata, errors, permission
@@ -126,13 +126,10 @@ won and why each loser lost — the losers become the anti-reference corpus.
 
 Read [`rubric.md`](references/rubric.md). Score the candidate, check the hard
 failures, and write the review with
-[`DesignReview.md`](templates/DesignReview.md). Any one hard failure rejects
-the feature regardless of score — among them: glass content cards, nested
-glass, clipping at the declared minimum width, a keyboard-navigation dead
-end, **a custom control weaker than an available native component**, state
-communicated by color alone, missing empty/loading/error handling, a
-destructive action with no confirmation or recovery, a toolbar action with no
-menu-bar command, and no rendered evidence.
+[`DesignReview.md`](templates/DesignReview.md). Any hard failure rejects the
+feature: first, a path by which a person can lose work; window state not
+restored; or missing rendered evidence. The authoritative enumeration is the
+18-row table in `references/rubric.md`; the review template carries all 18.
 
 Correct findings in severity order: broken workflow, wrong information
 architecture, non-native interaction, accessibility failure, content hierarchy,
@@ -140,9 +137,10 @@ resize behavior, Liquid Glass misuse, typography and spacing, motion and polish.
 Do not spend three iterations on corner radii while the workflow is structurally
 wrong.
 
-**Complete when:** the rubric threshold is met, no hard failure remains, and
-rendered evidence is attached. Rendered evidence is mandatory — a design reviewed
-from source code has not been reviewed.
+Previews are built by an implementing agent and captured by
+`tailrocks-macos-visual-qa`. **Complete when:** the threshold is met, no hard
+failure remains, and rendered evidence is attached. Until captures exist, Stage
+5 is deferred, not waived; source review is not design review.
 
 ## The axes and the tests
 
@@ -186,7 +184,8 @@ Dynamic Type.
 
 The inversion to hold onto: Apple's first macOS best practice is *"more content
 in fewer nested levels"*; iPhone's is *"limit the number of onscreen controls."*
-Progressive disclosure that is correct on iPhone is wrong on a Mac.
+For primary content, use fewer nested levels; reserve progressive disclosure for
+advanced or rare controls, never primary work.
 
 ## Motion
 

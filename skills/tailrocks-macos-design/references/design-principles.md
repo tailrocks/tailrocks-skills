@@ -186,8 +186,8 @@ Mac quality checklist:**
 
 **The inversion versus iPhone is exact.** iPhone's first best practice is to
 *"limit the number of onscreen controls."* The Mac's is *more content in fewer
-nested levels.* An interface that hides functionality behind progressive
-disclosure is doing the right thing on iPhone and the wrong thing on a Mac.
+nested levels.* Keep primary content visible; reserve progressive disclosure for
+advanced or rare controls.
 
 Apple states the split in one line:
 

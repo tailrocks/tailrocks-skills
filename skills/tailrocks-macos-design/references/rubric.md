@@ -93,7 +93,10 @@ even.
 
 **Product clarity and information architecture.** Is the primary job obvious from
 the screen? Does the layout reflect the object model? Is progressive disclosure
-used where complexity warrants it? Is anything present that could be deleted?
+limited to advanced or rare controls, with nothing primary hidden? Is anything
+present that could be deleted?
+
+Full: primary job and object model are immediate. Partial: one secondary ambiguity. Failing: primary workflow or hierarchy is hidden.
 
 **macOS nativeness.** Native components where native components exist. Menu-bar
 commands, with every toolbar action present as one. Keyboard completeness and
@@ -105,33 +108,48 @@ dense ones. No iOS pattern enlarged to desktop scale. No command palette standin
 in for the menu bar.
 
 The full contract is in `native-behavior.md`; this category scores against it.
+Continuity belongs to this category.
+
+Full: native behavior and restoration are complete. Partial: one minor convention gap. Failing: non-native core behavior or lost window state.
 
 **Visual hierarchy and composition.** Does content dominate chrome? Alignment,
 rhythm, optical balance, negative space. Is the first thing perceived the correct
 thing?
 
+Full: content dominance and rhythm are clear. Partial: local imbalance. Failing: chrome dominates or hierarchy reverses.
+
 **Liquid Glass correctness and restraint.** Glass confined to the functional
 layer. No glass-on-glass. Containers for clusters. Concentric geometry. One
 prominent tint. Scroll edge effects structural rather than decorative.
+
+Full: every glass rule is verified. Partial: one bounded correction. Failing: content glass, overlap, or unreadability.
 
 **Typography, color, and iconography.** Semantic roles rather than literals.
 System font and system colors. SF Symbols first with labels where meaning is
 ambiguous. Consistent symbol rendering.
 
+Full: semantic type, color, and icons throughout. Partial: isolated literal. Failing: illegible or misleading visual language.
+
 **Interaction and motion.** Every animation explains causality. Interruption and
 reversal behave. Hover has keyboard and menu equivalents. Selection, focus,
-loading, and error states are all designed.
+loading, and error states are all designed. Interaction latency belongs here.
+
+Full: causal motion and immediate response. Partial: minor lag or motion gap. Failing: blocked input or decorative motion obscures state.
 
 **Accessibility, localization, and input.** VoiceOver semantics, keyboard-only
 operation, focus visibility, contrast, color independence, Reduce Motion and
 Reduce Transparency behavior, text expansion, right-to-left.
 
+Full: all modes and inputs verified. Partial: one recorded gap. Failing: inaccessible core task or color-only state.
+
 **Performance, edge cases, and finish.** Large datasets, long strings, missing
 values, offline, permission denied, destructive-pending. Glass effect count and
 container batching. Frame pacing during resize.
 
-Two axes that carry more weight here than their share suggests, because failing
-either makes every other score irrelevant to the person using the app:
+Full: adverse fixtures and resize stay sound. Partial: bounded edge defect. Failing: ideal-data-only review or unusable supported state.
+
+Two axes are explicitly owned above because failing either makes every other
+score irrelevant to the person using the app:
 
 - **Interaction latency**, distinct from frame rate. A control acknowledges input
   the moment it is used, even when the work behind it is asynchronous. Menus open
@@ -167,7 +185,8 @@ Any one of these rejects the feature regardless of score.
 
 ## Score caps
 
-Hard failures reject outright. Caps are the graded companion: they say *how far
+Hard failures void acceptance; the capped score is still computed and reported
+for planning. Caps are the graded companion: they say *how far
 from shippable* a feature is when the failure is real but the work is otherwise
 sound, which is more useful for planning than a bare rejection.
 

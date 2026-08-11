@@ -11,7 +11,7 @@ Every visible region carries exactly one classification.
 
 | Region | Class | Component / API | Placement | Allowed customization | Forbidden customization |
 |---|---|---|---|---|---|
-| | | | | | |
+| Example native region | NATIVE | | | semantic configuration only — no internal appearance values | |
 
 ## NATIVE regions — detail
 
