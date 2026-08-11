@@ -22,7 +22,7 @@ Re-verify before relying on these.
 
 Xcode 27 is **Apple-silicon-only**. Standard architectures drop the Intel
 architecture when the deployment target is 27.0 or later. Universal back-deploy
-to older macOS remains supported.
+to macOS 12 and later remains supported.
 
 ## Declare four values, not one
 
