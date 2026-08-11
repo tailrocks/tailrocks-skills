@@ -81,9 +81,10 @@ The bridge rules, all mandatory:
   two-way binding across the bridge counts as one.
 - The update method is **idempotent**: compare before assigning so an
   assignment cannot trigger a change notification that re-enters the update.
-- The coordinator owns delegate conformance only — not row rendering or
-  business logic. `makeCoordinator()` creates it once per represented view; it
-  survives representable re-creation and tears down in `dismantleNSView`.
+- **Coordinator lifetime:** it owns delegate conformance only — not row rendering
+  or business logic. `makeCoordinator()` creates it once per represented view;
+  it survives every representable-value re-creation while that view keeps its
+  identity, then tears down in `dismantleNSView(_:coordinator:)`.
 - Size through the sizing hooks, never a fixed frame.
 
 Reach for AppKit for mature table and outline behavior, advanced text editing,
