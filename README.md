@@ -23,7 +23,7 @@ Liquid Glass.
 | Grok Build | Reuse the Claude plugin, or run `grok plugin install tailrocks/tailrocks-skills --trust` |
 | Kimi Code | `/plugins install https://github.com/tailrocks/tailrocks-skills`, then `/plugins reload` |
 | Antigravity CLI | Clone the repository, then run `agy plugin install ./tailrocks-skills` |
-| Amp | `amp skill add tailrocks/tailrocks-skills --global` |
+| Amp | Reuse the installed Claude Code plugin; otherwise `amp skill add tailrocks/tailrocks-skills --global` |
 
 Use a release tag for reproducible installs. See [INSTALL.md](INSTALL.md) for
 pinning, upgrades, duplicate prevention, and the verified compatibility matrix.

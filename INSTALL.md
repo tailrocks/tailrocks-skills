@@ -246,6 +246,12 @@ Use the latest release tag in place of `v0.12.0` when upgrading.
 
 ### 7. Amp
 
+If Claude Code already has the plugin installed, **do nothing**: Amp reads
+`~/.claude/plugins/cache/` natively and exposes the same skills without a
+second copy. This is the preferred plugin-first channel.
+
+On machines without Claude Code:
+
 ```sh
 amp skill add tailrocks/tailrocks-skills --global
 ```
@@ -262,10 +268,9 @@ amp skill add tailrocks/tailrocks-skills --global
   `mode`, `isolatedContext`); `disable-model-invocation` is tolerated but
   **not enforced**, and `user-invocable` is unrecognized (log-level warning
   only).
-- Amp also ingests Claude plugin-cache skills (`~/.claude/plugins/cache/`).
-  Name-deduplication is first-wins, so the `~/.config/agents/skills/` copy
-  wins and each skill still lists once. Disable the Claude bridge entirely
-  with `amp.skills.disableClaudeCodeSkills` if preferred.
+- Do not combine the two channels. A `~/.config/agents/skills/` copy outranks
+  the Claude cache and hides which source is active. Keep
+  `amp.skills.disableClaudeCodeSkills` false for the plugin-first channel.
 - Verify with `amp skill list`.
 
 ## Compatibility matrix (verified July 2026)
@@ -278,7 +283,7 @@ amp skill add tailrocks/tailrocks-skills --global
 | Grok Build | Claude plugin auto-ingest, or `grok plugin install` | `.grok-plugin/` then `.claude-plugin/plugin.json` | `/<name>`, `/tailrocks-skills:<name>` | honored | name-dedupe by priority; plugins namespaced |
 | Kimi Code | `/plugins install <github-url>` | `.kimi-plugin/plugin.json` (or root `kimi.plugin.json`) | `/skill:<name>`, `/<name>` | honored (alias) | first-registration-wins by name |
 | Antigravity CLI | `agy plugin install <local-clone>` | root `plugin.json` (Antigravity schema) | `/<name>` | not read | undocumented — keep one location |
-| Amp | `amp skill add --global` | none (skills only) | palette skill list / name in prompt | tolerated, not enforced | first-wins by name across its path list |
+| Amp | Claude plugin auto-ingest; otherwise `amp skill add --global` | Claude plugin cache or skills only | palette skill list / name in prompt | tolerated, not enforced | first-wins by name; never dual-install |
 
 Portable baseline (Agent Skills specification, agentskills.io): required
 `name` (1–64 chars, lowercase-hyphen, must equal the directory name) and
