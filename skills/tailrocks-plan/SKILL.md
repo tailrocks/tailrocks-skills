@@ -93,7 +93,8 @@ together only on explicit request, recorded as the exception.
    later precondition may reference only tooling an earlier slice guarantees.
    For existing repos with working gates, note the proven commands instead.
    Write `plans/<slug>/README.md` first — manifest, item
-   briefs, dependency notes, executor protocol — per
+   briefs, dependency notes, executor protocol — and copy the per-package
+   `goal-check.sh` template per
    [`references/goal-handoff.md`](references/goal-handoff.md).
    **Complete when:** the dependency graph is acyclic, every requirement
    is assigned or explicitly deferred, and every slice is demoable or

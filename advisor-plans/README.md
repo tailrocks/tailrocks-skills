@@ -8,7 +8,7 @@ only active plans and the research/coverage needed to execute them.
 | Plan | Title | Depends on | Status |
 |---|---|---|---|
 | [000](000-goal-condition-hardening.md) | Gate-first goal condition; exhaustion is BLOCKED | — | DONE |
-| [002](002-package-goal-check.md) | Deterministic per-package goal check | 000 | TODO |
+| [002](002-package-goal-check.md) | Deterministic per-package goal check | 000 | DONE |
 | [003](003-client-wiring-and-reconcile.md) | Client wiring and reconcile integration | 002 | TODO |
 
 Start a plan only after every dependency is DONE. Read the complete plan first,

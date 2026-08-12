@@ -3,13 +3,17 @@
 Source: roadmap/goal-live-status/README.md · Plans:
 plans/goal-live-status/README.md · Generated 2026-07-23 at `example001`.
 
+## Gates
+
+```sh gates
+true
+```
+
 ## 1. Goal condition
 
 ```text
-After the last repository or status change, mise run test and mise run lint
-exit 0; a tailrocks-reconcile pass changes no row; and every row in
-plans/goal-live-status/README.md is DONE or REJECTED, with no row STALE,
-BLOCKED, or IN PROGRESS.
+`sh plans/goal-live-status/goal-check.sh` exits 0 and its final line starts
+with `TAILROCKS GOAL: PASS`.
 ```
 
 ## 2. Kickoff prompt

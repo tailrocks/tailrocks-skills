@@ -111,13 +111,18 @@ and 3 as manual prompts, with no persisted goal or stop enforcement.
 Source: roadmap/<slug>/README.md · Plans: plans/<slug>/README.md ·
 Generated <date> at commit `<short SHA>`.
 
+## Gates
+
+​```sh gates
+<primary gate command>
+<secondary gate command>
+​```
+
 ## 1. Goal condition (paste into /goal)
 
 ​```text
-Every named gate command exits 0 after the last repository or status change;
-a tailrocks-reconcile pass (or its manual steps) changes no row; and every row
-in plans/<slug>/README.md is DONE or REJECTED, with no row STALE, BLOCKED, or
-IN PROGRESS.
+`sh plans/<slug>/goal-check.sh` exits 0 and its final line starts with
+`TAILROCKS GOAL: PASS`.
 ​```
 
 ## 2. Kickoff prompt (paste as the first message)
@@ -183,6 +188,17 @@ only.
 UI. After an interruption, add `--resume <session id>` and send block 3
 as the first message. Condition and bounds stay identical to block 1.
 ```
+
+At generation, copy `templates/goal-check.sh` to
+`plans/<slug>/goal-check.sh`. After every frozen package file is final, compute
+the fingerprint by finding every regular file under `plans/<slug>/` except
+`README.md`, sorting paths with `LC_ALL=C`, emitting each file's
+`git hash-object` blob ID plus path, and hashing that manifest with
+`git hash-object --stdin`. Write the result as `Frozen package fingerprint:
+<hash>` in the hub README. Its `deterministic_local` verdict is a deterministic
+function of the committed tree for a cooperating user, not an adversary-resistant
+trust boundary; human PR review and repository CI remain the trust boundary for
+merged work.
 
 ## Writing the condition — rules
 
