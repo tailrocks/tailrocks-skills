@@ -117,6 +117,8 @@ client version at execution time.
 - `docs/pipeline-walkthrough.md` — only lines quoting the old condition
 - `examples/plan-package/plans/goal-live-status/GOAL.md` — only if block text
   changed here
+- `examples/plan-package/plans/goal-live-status/README.md` — only the frozen
+  package fingerprint when GOAL.md changes
 
 **Out of scope**: `goal-check.sh` itself, run-evals.ts, CI, manifests,
 versions, hooks, any new executable.
