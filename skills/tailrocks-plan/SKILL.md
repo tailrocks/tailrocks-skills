@@ -1,7 +1,7 @@
 ---
 name: tailrocks-plan
 description: >-
-  Use only when the user explicitly requests this skill. Convert a READY roadmap item into the full implementation package under plans/<slug>/: coverage ledger, gap-filling research, an OpenSpec-grammar spec, one zero-context plan per work item — each written by its own subagent and cold-reviewed — plus a copy-pasteable GOAL.md for the /goal command of Claude Code, Codex, or Grok. Do not use on unshaped items (brainstorm and finalize first) or for routine one-session changes.
+  Use only when the user explicitly requests this skill. Convert a READY roadmap item into the full implementation package under plans/<slug>/: coverage ledger, gap-filling research, an OpenSpec-grammar spec, one zero-context plan per work item — each written by its own subagent and cold-reviewed — plus a copy-pasteable GOAL.md for Claude Code and Codex goal execution or manual Grok prompting. Do not use on unshaped items (brainstorm and finalize first) or for routine one-session changes.
 argument-hint: "<roadmap-slug> [additional context] [--deep]"
 disable-model-invocation: true
 license: Apache-2.0
@@ -14,7 +14,8 @@ Turn one READY roadmap item into everything an autonomous executor needs:
 product intent traced statement-by-statement into requirements, requirements
 into self-contained plans, the package fronted by a GOAL.md the user pastes
 into `/goal` — down to file paths, code shapes, verification commands, and
-the loop protocol that survives fresh sessions.
+  the loop protocol that survives fresh sessions. Grok 1.0 uses the handoff as
+  manual prompts because it has no native `/goal`.
 
 One roadmap item, one plan folder — `plans/<slug>/`. Planning several items
 together only on explicit request, recorded as the exception.
@@ -92,7 +93,8 @@ together only on explicit request, recorded as the exception.
    later precondition may reference only tooling an earlier slice guarantees.
    For existing repos with working gates, note the proven commands instead.
    Write `plans/<slug>/README.md` first — manifest, item
-   briefs, dependency notes, executor protocol — per
+   briefs, dependency notes, executor protocol — and copy the per-package
+   `goal-check.sh` template per
    [`references/goal-handoff.md`](references/goal-handoff.md).
    **Complete when:** the dependency graph is acyclic, every requirement
    is assigned or explicitly deferred, and every slice is demoable or
@@ -120,15 +122,15 @@ together only on explicit request, recorded as the exception.
    passes.
 
 7. **Write GOAL.md and hand off.** Per the goal-handoff reference: the
-   `/goal` condition (machine-checkable, bounded), the kickoff prompt, and
+   goal condition (machine-checkable and gate-first), the kickoff prompt, and
    the resume prompt — all copy-pasteable. Apply the status change, Log
    entry, and index-row update per the roadmap item format (owned by
    tailrocks-idea's roadmap-item-format.md), setting `PLANNED` and the Plan
    link. Commit the package as the
    final action before reporting.
-   **Complete when:** a user can paste GOAL.md's blocks into Claude Code,
-   Codex, or Grok and the executor can run to completion without this
-   conversation.
+   **Complete when:** a user can paste GOAL.md's blocks into Claude Code or
+   Codex goal execution, or use them as manual Grok prompts, and the executor
+   can run to completion without this conversation.
 
 ## Re-runs
 
@@ -143,5 +145,5 @@ Finish only when source is untouched, the ledger shows every spec-bearing ID
 (`S#`/`F#`/`W#`/`N#`/`B#`) covered or deferred aloud and every other prefix
 resolved per the ledger's pipeline table, every plan passed cold review with
 machine-checkable done criteria and specific STOP conditions, new research
-is indexed and reusable, GOAL.md's condition is machine-checkable and bounded,
+is indexed and reusable, GOAL.md's condition is machine-checkable and gate-first,
 and the roadmap item is `PLANNED` with consistent links, Log, and index row.

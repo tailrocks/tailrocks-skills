@@ -104,7 +104,9 @@ Submit GOAL.md block 1 as the goal condition and block 2 as kickoff:
 
 ```text
 Every row is DONE or REJECTED; none is STALE, BLOCKED, or IN PROGRESS;
-both named repository gates exit 0. Or stop after the bounded turn count.
+the final line of `sh plans/goal-live-status/goal-check.sh` starts with
+`TAILROCKS GOAL: PASS`. At the bounded turn count, the active row becomes
+`BLOCKED (budget exhausted)` without a completion claim.
 ```
 
 ```text

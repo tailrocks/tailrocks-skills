@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Reconcile macos-application — the overnight /goal loop reports every plan DONE.",
-      "expected_output": "Every DONE row's done criteria re-run with actual command output; GOAL.md gates re-run; item set DONE only on a full pass; any failing row flipped back with the failing criterion named.",
+      "expected_output": "Run sh plans/macos-application/goal-check.sh first and retain its final verdict; route dirty-tree to stop/report, plan-drift to STALE and tailrocks-plan, malformed to repair, and nonterminal-rows or gate-failed to row verification; then re-run every DONE row's done criteria with actual command output and re-run GOAL.md gates; item set DONE only on a full pass; any failing row flipped back with the failing criterion named.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]

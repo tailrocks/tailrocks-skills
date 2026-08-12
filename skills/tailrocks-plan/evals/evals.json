@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Plan macos-application — the item is READY with four linked research topics.",
-      "expected_output": "plans/macos-application/ with coverage ledger, gap research landed as reusable research/ topics, OpenSpec-grammar spec, one cold-reviewed plan per manifest item each written by its own subagent, and GOAL.md with a machine-checkable bounded condition plus kickoff and resume prompts; item set PLANNED.",
+      "expected_output": "plans/macos-application/ with coverage ledger, gap research landed as reusable research/ topics, OpenSpec-grammar spec, one cold-reviewed plan per manifest item each written by its own subagent, and GOAL.md with a machine-checkable gate-first condition plus kickoff and resume prompts; kickoff invokes sh plans/macos-application/goal-check.sh before DONE work and after each status/work commit, and only a final TAILROCKS GOAL: PASS proves package completion; gate text precedes terminal-row text; no success predicate contains 'or stop after'; budget exhaustion marks the active row BLOCKED (budget exhausted); no provider hook or executable beyond the specified goal-check.sh is generated; client wiring labels deterministic_local verdict trust separately from model-judged or manual stop behavior; item set PLANNED.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]

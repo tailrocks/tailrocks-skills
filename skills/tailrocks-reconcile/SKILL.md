@@ -38,11 +38,17 @@ the repository moved on.
 
 ## Steps
 
-1. **Load.** Read `plans/<slug>/README.md` and `roadmap/<slug>/README.md`
-   fully; note GOAL.md's gate commands and each plan's planned-at SHA. If
+1. **Check, then load.** Run `sh plans/<slug>/goal-check.sh` first and retain
+   its final verdict line. dirty-tree → stop and report without mutation;
+   plan-drift → mark affected package rows `STALE` and route to
+   `tailrocks-plan`; malformed → stop and report package repair; nonterminal-rows
+   or gate-failed → continue the row-by-row verification below. A PASS still
+   requires the untrusted DONE claims to be re-earned below. Then read
+   `plans/<slug>/README.md` and `roadmap/<slug>/README.md` fully; note GOAL.md's
+   gate commands and each plan's planned-at SHA. If
    the package does not exist, stop and point at `tailrocks-plan`.
-   **Complete when:** every row is mapped to its claimed status and a
-   verification path.
+   **Complete when:** the package verdict is routed and every row is mapped to
+   its claimed status and a verification path.
 
 2. **Verify DONE.** Per DONE row, re-run its done criteria — cheapest
    first, all of them when anything looks off. Pass → confirmed. Fail →
@@ -87,5 +93,5 @@ the repository moved on.
 Finish only when every row's status is backed by a command run this
 session (or an unchanged, still-verified state), every change carries its
 reason, `STALE` rows name their re-plan route, the item's status, Log, and
-index agree with the hub, and nothing outside the hub, item, and index
-changed.
+index agree with the hub, the final `sh plans/<slug>/goal-check.sh` verdict is
+retained, and nothing outside the hub, item, and index changed.
