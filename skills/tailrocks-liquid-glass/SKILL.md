@@ -114,8 +114,7 @@ Non-negotiable mechanics:
   concentric derivation applies; a capsule remains system-derived, never numeric.
 - Tint at most one prominent action per bar, on the background rather than the
   glyph.
-- Never apply glass per row in a list or table: each unbatched surface is its own backdrop-sample, blur, and refraction render pass, so the cost is unbounded in the row count — and rows are content, which glass never
-  touches anyway.
+- **Per-row glass — reject:** **Rule:** rows are content, so use standard content materials and reserve glass for a functional-layer control. **Mechanism:** row glass occupies the wrong compositing layer, breaking the system scroll edge effect and content-derived light/dark adaptation. **Cost:** every unbatched row adds its own backdrop-sample, blur, and refraction pass, so cost is unbounded in row count.
 
 Cross-platform spellings that do **not** exist on macOS 26 — reject them on
 sight and name the correct form:

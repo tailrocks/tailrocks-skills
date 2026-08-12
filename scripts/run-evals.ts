@@ -7,7 +7,7 @@ export type RunVerdict = { run: number; workspace: string; verdict: { pass: bool
 
 const PER_FILE_CAP = 16 * 1024;
 const TOTAL_CAP = 64 * 1024;
-const CLAUDE_TIMEOUT_MS = 180_000;
+const CLAUDE_TIMEOUT_MS = 600_000;
 const CLAUDE_ATTEMPTS = 2;
 
 export function fixtureDestination(root: string, skillDir: string, fixture: string, workspace: string): string {
