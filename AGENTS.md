@@ -16,8 +16,9 @@ duplicate-avoidance rules live in `INSTALL.md`.
 
 The house stack is fixed: Rust 2024 with Axum/Tokio/Tower, TypeScript 7 with Bun,
 TanStack Start, React, shadcn/ui, Tailwind CSS v4, and Oxc, and native macOS with
-Swift, SwiftUI, AppKit where it earns its place, and Liquid Glass. Skills deepen
-this stack; they do not offer alternative frameworks, package managers, test
+Swift, SwiftUI-first app and UI architecture, narrow capability-only AppKit
+bridges, and Liquid Glass. Existing AppKit apps migrate toward that architecture.
+Skills deepen this stack; they do not offer alternative frameworks, package managers, test
 runners, or component systems. Every setup targets the latest stable release and
 latest stable major available at execution time; older majors are unsupported.
 

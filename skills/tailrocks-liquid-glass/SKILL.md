@@ -87,8 +87,8 @@ not an implementation question.
 
 ## Implementation
 
-For SwiftUI, read [`swiftui-api.md`](references/swiftui-api.md). For AppKit,
-read [`appkit-api.md`](references/appkit-api.md). Both carry exact signatures and
+Use SwiftUI for new surfaces and read [`swiftui-api.md`](references/swiftui-api.md).
+At a justified AppKit capability boundary, read [`appkit-api.md`](references/appkit-api.md). Both carry exact signatures and
 per-symbol availability. Apple ships no downloadable AppKit Liquid Glass sample
 and no AppKit listing in its adoption guide; WWDC26 session 289 does include an
 Apple-authored AppKit `cornerConfiguration` listing. Verify every symbol against
@@ -114,8 +114,7 @@ Non-negotiable mechanics:
   concentric derivation applies; a capsule remains system-derived, never numeric.
 - Tint at most one prominent action per bar, on the background rather than the
   glyph.
-- Never apply glass per row in a list or table: each unbatched surface is its own backdrop-sample, blur, and refraction render pass, so the cost is unbounded in the row count — and rows are content, which glass never
-  touches anyway.
+- **Per-row glass — reject:** **Rule:** rows are content, so use standard content materials and reserve glass for a functional-layer control. **Mechanism:** row glass occupies the wrong compositing layer, breaking the system scroll edge effect and content-derived light/dark adaptation. **Cost:** every unbatched row adds its own backdrop-sample, blur, and refraction pass, so cost is unbounded in row count.
 
 Cross-platform spellings that do **not** exist on macOS 26 — reject them on
 sight and name the correct form:

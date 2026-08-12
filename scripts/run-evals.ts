@@ -7,6 +7,8 @@ export type RunVerdict = { run: number; workspace: string; verdict: { pass: bool
 
 const PER_FILE_CAP = 16 * 1024;
 const TOTAL_CAP = 64 * 1024;
+const CLAUDE_TIMEOUT_MS = 600_000;
+const CLAUDE_ATTEMPTS = 2;
 
 export function fixtureDestination(root: string, skillDir: string, fixture: string, workspace: string): string {
   const source = fixture.startsWith("skills/") ? path.join(root, fixture) : path.join(skillDir, fixture);
@@ -68,12 +70,23 @@ export function aggregateVerdicts(skill: string, caseId: number, runs: number, v
 
 type ClaudeResult = { text: string; costUsd: number };
 
+export async function withRetries<T>(attempts: number, operation: (attempt: number) => Promise<T>): Promise<T> {
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try { return await operation(attempt); } catch (error) { lastError = error; }
+  }
+  throw lastError;
+}
+
 async function claude(prompt: string, cwd: string, schema?: object): Promise<ClaudeResult> {
   const command = ["claude", "-p", prompt, "--model", "sonnet", "--safe-mode", "--permission-mode", "acceptEdits", "--no-session-persistence", "--output-format", schema ? "json" : "text", "--max-budget-usd", "0.75"];
   if (schema) command.push("--json-schema", JSON.stringify(schema));
-  const proc = Bun.spawn(command, { cwd, stdout: "pipe", stderr: "pipe" });
-  const [stdout, stderr, code] = await Promise.all([new Response(proc.stdout).text(), new Response(proc.stderr).text(), proc.exited]);
-  if (code !== 0) throw new Error(stderr.trim() || `claude exited ${code}`);
+  const stdout = await withRetries(CLAUDE_ATTEMPTS, async (attempt) => {
+    const proc = Bun.spawn(command, { cwd, stdout: "pipe", stderr: "pipe", timeout: CLAUDE_TIMEOUT_MS, killSignal: "SIGKILL" });
+    const [output, stderr, code] = await Promise.all([new Response(proc.stdout).text(), new Response(proc.stderr).text(), proc.exited]);
+    if (code !== 0) throw new Error(stderr.trim() || `claude attempt ${attempt}/${CLAUDE_ATTEMPTS} exited ${code} (timeout ${CLAUDE_TIMEOUT_MS}ms)`);
+    return output;
+  });
   let envelope: any;
   try { envelope = JSON.parse(stdout); } catch {
     if (schema) throw new Error(`judge returned non-JSON output: ${stdout.slice(0, 200)}`);

@@ -1,8 +1,8 @@
 # AppKit interop
 
-A high-quality Mac app is SwiftUI-first and AppKit-fluent, not SwiftUI-only.
-Apple supports incremental integration rather than an all-or-nothing rewrite, and
-the incremental path produces a better app than either extreme.
+A modern Mac app is SwiftUI-native. Existing AppKit apps migrate incrementally
+toward SwiftUI app, scene, and UI ownership; AppKit remains only behind narrow,
+replaceable bridges for capabilities current stable SwiftUI does not express.
 
 ## When AppKit is the right answer
 
@@ -13,8 +13,6 @@ the incremental path produces a better app than either extreme.
 - Responder-chain integration and services.
 - Specialized drag and drop, including promised files.
 - Precise pointer behavior and tracking areas.
-- Incremental modernization of an existing Mac app, where a rewrite would be a
-  regression.
 
 ## When it is the wrong answer
 
@@ -79,6 +77,13 @@ and for getting SwiftUI-only capabilities into an existing Mac app. Two notes:
 - Environment values do not cross the boundary automatically. Anything the hosted
   hierarchy needs must be injected explicitly at the hosting point, and a missing
   injection surfaces as a subtly wrong appearance rather than a compile error.
+
+## Apple direction
+
+- [SwiftUI](https://developer.apple.com/swiftui/) — Apple's primary declarative UI framework, designed to coexist with AppKit during adoption.
+- [App organization](https://developer.apple.com/documentation/swiftui/app-organization) — `App` and `Scene` define modern app structure.
+- [AppKit integration](https://developer.apple.com/documentation/swiftui/appkit-integration) — hosting and representable APIs define the bridge boundary.
+- [Use SwiftUI with AppKit and UIKit (WWDC26)](https://developer.apple.com/videos/play/wwdc2026/272/) — Apple's current incremental migration path, including SwiftUI scenes in AppKit apps.
 
 ## Review questions
 
