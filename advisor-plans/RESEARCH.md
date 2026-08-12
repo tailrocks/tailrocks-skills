@@ -92,6 +92,12 @@ Re-verified and confirmed from the working tree this pass:
   trust is the client harness sandbox — the same boundary every dev command
   already crosses; a second boundary enforced nothing (label:
   `deterministic_local`, honestly non-adversarial).
+- **Baseline correction (2026-08-12)**: a generated file cannot contain the
+  SHA of the commit that contains it because Git hashes file contents into the
+  commit identity. The package therefore stores a fingerprint in mutable
+  `README.md`, computed from sorted path/blob-ID pairs for every other package
+  file. This removes the hash cycle while making changes to GOAL.md, plans, or
+  the checker itself deterministically visible.
 - **Confidence**: HIGH. **Attribution**: introduced `f2e079f`, maximal at
   `9af83c2`.
 
@@ -177,7 +183,7 @@ different move with new evidence:
 |---|---|---|
 | Plan files / lines | 46 / 14,263 | 4 / ~700 |
 | Hard dependency edges | 54 (self-reported 53) | 2 |
-| Canonical authorities | 6 | 4 (package @ generation SHA, git identities, gate exit codes, verdict line) |
+| Canonical authorities | 6 | 4 (frozen-package fingerprint, git identities, gate exit codes, verdict line) |
 | Trust labels | 6 labels + 3 tiers | 3 labels |
 | Placeholders requiring ritual | 36 files | 0 |
 | New runtimes/channels | Rust controller, OCI verifier, GHCR, protected workflows, Ed25519, OS principals | one sh template + one TS test file |

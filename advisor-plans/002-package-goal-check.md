@@ -54,11 +54,13 @@ free beyond `git` and standard utilities, copied into each generated package as
    `plans/<slug>/GOAL.md` exist.
 2. Require `git status --porcelain` empty, else verdict
    `TAILROCKS GOAL: BLOCKED dirty-tree`.
-3. Read the generation SHA from GOAL.md's `Generated <date> at commit
-   `<sha>`` line; require
-   `git diff --quiet <sha>..HEAD -- plans/<slug> ':(exclude)plans/<slug>/README.md'`
-   to pass, else `TAILROCKS GOAL: BLOCKED plan-drift`. (The hub README is the
-   mutable status surface; plan files and GOAL.md are frozen at generation.)
+3. Read `Frozen package fingerprint: \`<hash>\`` from the hub README. Recompute
+   it by listing every regular file under `plans/<slug>/` except `README.md`,
+   sorting paths with `LC_ALL=C`, emitting each file's `git hash-object` blob
+   ID plus path, and hashing that manifest with `git hash-object --stdin`.
+   Require equality, else `TAILROCKS GOAL: BLOCKED plan-drift`. The hub README
+   is the mutable status and fingerprint surface; every other package file,
+   including GOAL.md and goal-check.sh itself, is frozen at generation.
 4. Parse the hub README status table; if any row is TODO, STALE, BLOCKED, or
    IN PROGRESS, verdict `TAILROCKS GOAL: BLOCKED nonterminal-rows=<n>`;
    require at least one DONE row.
@@ -68,20 +70,20 @@ free beyond `git` and standard utilities, copied into each generated package as
 6. Otherwise print `TAILROCKS GOAL: PASS <head-sha>`.
 
 Exit code SHALL be 0 only for PASS. The verdict SHALL be the final stdout
-line. Any parse failure (missing SHA line, missing gates block, malformed
+line. Any parse failure (missing fingerprint line, missing gates block, malformed
 table) is `TAILROCKS GOAL: BLOCKED malformed=<what>`, never PASS.
 
 ### Requirement O4: oracle tampering is visible and blocking
 
-Because gate commands live in GOAL.md and GOAL.md is inside the drift-checked
-path set, weakening a gate after generation flips the check to
-`BLOCKED plan-drift`. Regenerating the package (tailrocks-plan) is the only
-sanctioned way to change gates, and it rewrites the generation SHA.
+Because gate commands live in GOAL.md and GOAL.md is inside the fingerprint,
+weakening a gate after generation flips the check to `BLOCKED plan-drift`.
+Regenerating the package (tailrocks-plan) is the only sanctioned way to change
+gates, and it rewrites the fingerprint after every frozen file is final.
 
 #### Scenario: executor weakens a gate
 
-- **WHEN** any byte of `plans/<slug>/GOAL.md` or a plan file changes after the
-  generation SHA without regeneration
+- **WHEN** any byte of `plans/<slug>/GOAL.md`, goal-check.sh, or a plan file
+  changes without regeneration
 - **THEN** the script reports `BLOCKED plan-drift` regardless of gate results.
 
 #### Scenario: uncommitted work claims success
@@ -161,7 +163,7 @@ check`, PR when complete.
 
 Create `scripts/goal-check.test.ts` building minimal git repos per scenario:
 happy path (all DONE, green gate), dirty tree, drifted plan file, drifted
-GOAL.md gate line, nonterminal row, failing gate, missing generation SHA,
+  GOAL.md gate line, changed checker, nonterminal row, failing gate, missing fingerprint,
 missing gates block. Then write `goal-check.sh` until all scenarios pass.
 Failing scenarios assert the exact `TAILROCKS GOAL: BLOCKED <reason>` line and
 exit 1; the happy path asserts `TAILROCKS GOAL: PASS <head-sha>` and exit 0.
@@ -182,9 +184,8 @@ matches in the condition and generation instructions.
 
 ### Step 3: True up the example package
 
-Add `goal-check.sh` and the gates block to
-`examples/plan-package/plans/goal-live-status/`, with a generation SHA line
-matching the example's convention. The example's gates may be trivial
+Add `goal-check.sh`, the frozen-package fingerprint, and the gates block to
+`examples/plan-package/plans/goal-live-status/`. The example's gates may be trivial
 (`true`) but must be real commands.
 
 **Verify**: Example check prints exactly one `TAILROCKS GOAL:` line; All
@@ -194,7 +195,8 @@ script tests pass.
 
 - [ ] All commands in "Commands you will need" produce expected results.
 - [ ] Every defined BLOCKED reason and the PASS path have a passing test.
-- [ ] Tampered-GOAL.md fixture yields `BLOCKED plan-drift`, not a gate run.
+- [ ] Tampered-GOAL.md and tampered-script fixtures yield `BLOCKED plan-drift`,
+      not a gate run.
 - [ ] The template is ≤150 lines of POSIX sh, `sh -n` clean.
 - [ ] The honest trust statement appears in goal-handoff.md.
 - [ ] `rtk git status --porcelain=v1` lists only in-scope paths before commit.
