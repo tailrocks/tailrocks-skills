@@ -359,6 +359,6 @@ footer in the body.
 5. Tag `vX.Y.Z` on the merge commit and push the tag.
 6. Re-verify the INSTALL.md matrix commands against current client versions
    and refresh its verified date.
-7. Re-verify macOS platform baselines using the W1/W2 DocC JSON availability
-   and `gdmf.apple.com/v2/pmv` procedure in
-   `plans/macos-skills-hardening/README.md`, then refresh verification stamps.
+7. Re-verify macOS platform baselines against Apple DocC availability data and
+   `gdmf.apple.com/v2/pmv`; rerun the macOS evals and refresh verification
+   stamps. Use `examples/macos-screen/` as the rendered regression corpus.

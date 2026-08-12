@@ -1,280 +1,158 @@
 # tailrocks-skills
 
-A cross-agent collection of Tailrocks engineering skills built on the portable
-`SKILL.md` Agent Skills standard and packaged natively for **Claude Code,
-Codex CLI, OpenCode, Grok Build, Kimi Code, the Antigravity CLI (Google
-Gemini), and Amp** — one shared `skills/` tree, one manifest per client, no
-duplicated listings.
+Reusable engineering skills for Claude Code, Codex CLI, OpenCode, Grok Build,
+Kimi Code, Antigravity CLI, and Amp. Every client receives the same 21 skills
+from one shared `skills/` tree.
 
-The skills are source-neutral and encode one Tailrocks house stack: Rust 2024
-with Axum/Tokio/Tower, TypeScript 7 with Bun, TanStack Start, React, shadcn/ui,
-Tailwind CSS v4, and Oxc, and native macOS with Swift, SwiftUI-first app and UI
-architecture, narrow capability-only AppKit bridges, and Liquid Glass. Existing
-AppKit apps migrate toward that architecture. Alternative frameworks, package
-managers, and component systems are outside scope.
+The collection is opinionated: Rust 2024, Axum/Tokio/Tower, TypeScript 7,
+Bun, TanStack Start, React, shadcn/ui, Tailwind CSS v4, Oxc, and native macOS
+with SwiftUI-first architecture, narrow capability-only AppKit bridges, and
+Liquid Glass.
 
-## Skills
+## Quick start
 
-| Skill | Description |
-|---|---|
-| `tailrocks-rust-best-practices` | Write, review, and refactor Rust code: ownership, API design, errors, tests, docs, and readability. |
-| `tailrocks-rust-project-setup` | Scaffold and enforce a strict, modern Rust project: workspace layout, `crates/` separation, workspace lint and Clippy tables, rustfmt, `rust-toolchain.toml`, mise, and cargo-deny/audit/shear/hack/nextest gates. |
-| `tailrocks-axum-best-practices` | Build and review production Axum services: typed HTTP boundaries, Tower middleware, security, tracing, graceful shutdown, and tests. |
-| `tailrocks-typescript-best-practices` | Write, review, and refactor strict Rust-inspired TypeScript 7 and React code using Bun-owned tooling. |
-| `tailrocks-tanstack-project-setup` | Scaffold, migrate, and audit Bun-only TanStack Start projects with TypeScript 7, Oxc, Router, Query, shadcn/ui, Tailwind CSS v4, tests, and CI. |
-| `tailrocks-swift-best-practices` | Write, review, and refactor Swift and SwiftUI for a native macOS app: actor isolation, state ownership and view identity, AppKit interop boundaries, typed failure, availability guards, and accessibility semantics. |
-| `tailrocks-swift-project-setup` | Scaffold and enforce a strict native macOS app baseline: declarative project generation, deployment target and two SDK lanes, ad-hoc local signing, strict `swift-format` and SwiftLint gates, test wiring, mise-pinned tooling, and Xcode agent integration. |
-| `tailrocks-liquid-glass` | Apply, audit, or remediate Liquid Glass on macOS: the `CONTENT`-versus-`FUNCTIONAL` layer split, `glassEffect` and `GlassEffectContainer`, `NSGlassEffectView`, scroll edge effects, concentric corners, tint policy, per-symbol availability, and the glass acceptance gate. |
-| `tailrocks-macos-design` | Design a macOS feature to Apple-ecosystem quality before any code: the experience brief, a native component map classifying every region NATIVE / NATIVE-COMPOSED / CUSTOM, structural alternatives, macOS density and typography, custom component contracts, and a scored rubric with hard failures. |
-| `tailrocks-macos-visual-qa` | Build, launch, capture, drive, and verify a native macOS app so an agent can see its own interface: the atomic loop, capture by window ID, accessibility-tree driving, appearance and accessibility toggles, `performAccessibilityAudit`, and pixel regression. |
-| `tailrocks-sketch-handoff` | Turn a Sketch design into a handoff an agent implements faithfully: Sketch MCP wiring, Apple's official macOS UI kit, token extraction into committed code, the symbol-to-SwiftUI design map, and approved-frame exports. |
-| `tailrocks-code-health` | Establish, audit, or tighten one measurable shrink-only debt ratchet using architecture, lint, dependency, flake, defect, documentation, or verification providers. |
-| `tailrocks-contribute` | Recon, prepare, submit with per-contribution approval, and shepherd a respectful contribution to an external open-source project. |
-| `tailrocks-remediate` | Derive the greenfield architecture that eliminates a proven defect class, then pursue the complete structural correction regardless of price, duration, effort, implementation size, or sunk cost. |
-| `tailrocks-idea` | Capture a raw idea as a DRAFT roadmap item: content-derived slug, item template, index row. Capture only — no interviewing, no invention. |
-| `tailrocks-brainstorm` | Shape a young roadmap item through a relentless interview: one question at a time with a recommended answer, decisions asked, facts looked up, every answer written into the item immediately. |
-| `tailrocks-research` | Deep-research a specific question or a roadmap item into a reusable multi-page topic under `research/` — vetted sourced chapters, candidate directions with trade-offs, many-to-many links with roadmap items. |
-| `tailrocks-record-decision` | Record one user decision on a roadmap item: validate against settled ground, date it with its reason, propagate through the item, reopen READY/PLANNED items and mark stale plans when intent changes. |
-| `tailrocks-finalize` | The closing interview that earns READY: collect every screen and flow, resolve or classify every open question, pass the readiness checklist — the only skill that grants READY. |
-| `tailrocks-plan` | Turn a READY roadmap item into `plans/<slug>/`: coverage ledger, gap research, OpenSpec-grammar spec, one cold-reviewed zero-context plan per work item (each written by its own subagent), and a copy-pasteable GOAL.md for the /goal command of Claude Code, Codex, or Grok. |
-| `tailrocks-reconcile` | True up an executing implementation package with reality: re-verify DONE rows by re-running their done criteria, reset dead-session rows, drift-check TODO plans against HEAD, mark stale rows, and reconcile the roadmap item's status. |
-
-More skills land in `skills/` over time; the layout and install flow below are
-built to grow.
-
-The Rust, Axum, TypeScript, TanStack, Swift, code-health, and remediation
-skills form the engineering-policy family. The macOS family —
-`tailrocks-swift-best-practices`, `tailrocks-swift-project-setup`,
-`tailrocks-liquid-glass`, `tailrocks-macos-design`,
-`tailrocks-macos-visual-qa`, and `tailrocks-sketch-handoff` — is a
-design-to-verified-pixels loop for native Apple-ecosystem apps:
-
-A filled loop that correctly rejects its screen is in [`examples/macos-screen/`](examples/macos-screen/).
-
-```text
-macos-design ──► sketch-handoff ──┬─► liquid-glass
- brief, map,       tokens, map,       └─► swift-best-practices
- alternatives,    approved frames             ▲
- rubric                             swift-project-setup
-                                   build and test gates
-                                             │
-                                             ▼
-                                  macos-visual-qa
-                                  render, drive, audit, diff
-```
-
-Exactly one skill owns each responsibility: visual direction and the acceptance
-rubric → `tailrocks-macos-design`; tokens → `tailrocks-sketch-handoff`;
-material policy → `tailrocks-liquid-glass`; framework correctness →
-`tailrocks-swift-best-practices`; project mechanics →
-`tailrocks-swift-project-setup`; rendering and verification →
-`tailrocks-macos-visual-qa`. Never
-run two skills that both encode aesthetic taste — they conflict, and the
-conflict surfaces as inconsistency across features rather than as an error.
-
-The delivery family —
-`tailrocks-idea`, `tailrocks-brainstorm`, `tailrocks-research`,
-`tailrocks-record-decision`, `tailrocks-finalize`, `tailrocks-plan`, and
-`tailrocks-reconcile` — is a roadmap-driven pipeline and does not define
-stack policy:
-
-```text
-idea ──► brainstorm ──► finalize ──► plan ──► /goal executor ──► reconcile
- DRAFT     SHAPING    ▲   READY   ▲  PLANNED   IN EXECUTION → DONE
-                      │           │
-        research ◄────┘           └── record-decision
-        (both usable at any stage; research/ topics are standing
-        assets, many-to-many with items)
-```
-
-Roadmap items live in `roadmap/<slug>/README.md` with a status machine
-(DRAFT → SHAPING → READY → PLANNED → IN EXECUTION → DONE, plus PARKED);
-research topics live in `research/<topic>/` independent of items; plans live
-in `plans/<slug>/` with a GOAL.md whose blocks paste directly into the
-`/goal` command of Claude Code, Codex, or Grok. After execution,
-`tailrocks-reconcile` re-earns every plan status with commands run now and
-trues up the item — run it whenever a loop finishes, stalls, or the
-repository moved on since planning.
-
-Worked format anchor: [`examples/plan-package/`](examples/plan-package/).
-Worked walkthrough: [`docs/pipeline-walkthrough.md`](docs/pipeline-walkthrough.md).
-
-## Installation
-
-One shared `skills/<name>/` source serves every agent; each agent gets exactly
-**one** install channel so no skill is ever listed twice. The full verified
-compatibility matrix, duplicate-avoidance rules, and the alternative
-`~/.agents/skills/`-based profile live in [INSTALL.md](INSTALL.md).
+1. Install the collection through exactly one channel for your agent.
+2. Explicitly name the skill in your request; skills are manual-only.
+3. Give the skill a concrete target, mode, and desired outcome.
 
 | Agent | Install |
 |---|---|
-| Claude Code | `/plugin marketplace add tailrocks/tailrocks-skills` then `/plugin install tailrocks-skills@tailrocks-skills` |
-| Codex CLI | `codex plugin marketplace add tailrocks/tailrocks-skills` then `codex plugin add tailrocks-skills` |
-| OpenCode | copy `skills/*` to `~/.config/opencode/skills/` |
-| Grok Build | nothing if Claude Code has the plugin (auto-ingested); else `grok plugin install tailrocks/tailrocks-skills --trust` |
-| Kimi Code | `/plugins install https://github.com/tailrocks/tailrocks-skills` then `/plugins reload` |
-| Antigravity CLI | `git clone … && agy plugin install ./tailrocks-skills` |
+| Claude Code | `/plugin marketplace add tailrocks/tailrocks-skills`, then `/plugin install tailrocks-skills@tailrocks-skills` |
+| Codex CLI | `codex plugin marketplace add tailrocks/tailrocks-skills`, then `codex plugin add tailrocks-skills` |
+| OpenCode | Copy `skills/*` into `~/.config/opencode/skills/` |
+| Grok Build | Reuse the Claude plugin, or run `grok plugin install tailrocks/tailrocks-skills --trust` |
+| Kimi Code | `/plugins install https://github.com/tailrocks/tailrocks-skills`, then `/plugins reload` |
+| Antigravity CLI | Clone the repository, then run `agy plugin install ./tailrocks-skills` |
 | Amp | `amp skill add tailrocks/tailrocks-skills --global` |
 
-Pin to a release tag (`@vX.Y.Z`, `/tree/vX.Y.Z`, or a tagged clone) in
-production.
+Use a release tag for reproducible installs. See [INSTALL.md](INSTALL.md) for
+pinning, upgrades, duplicate prevention, and the verified compatibility matrix.
 
-Invoke skills explicitly:
+## Invoke a skill
 
 ```text
 Claude Code   /tailrocks-skills:tailrocks-rust-best-practices review this crate
-Codex CLI     $tailrocks-rust-best-practices  (type $ to pick, or /skills)
+Codex CLI     $tailrocks-rust-best-practices review this crate
 Grok Build    /tailrocks-rust-best-practices review this crate
 Kimi Code     /skill:tailrocks-rust-best-practices review this crate
-Antigravity   /tailrocks-rust-best-practices
-OpenCode/Amp  ask for the skill by name ("use tailrocks-rust-best-practices …")
+Antigravity   /tailrocks-rust-best-practices review this crate
+OpenCode/Amp  Use tailrocks-rust-best-practices to review this crate
 ```
 
-### Manual-only invocation policy
-
-Claude Code, Grok Build, and Kimi Code honor `disable-model-invocation: true`;
-Codex honors `policy.allow_implicit_invocation: false` in each skill's
-`agents/openai.yaml`. OpenCode, Amp, and the Antigravity CLI do not read those
-fields — there the guard sentence at the start of every `description` tells
-the model to wait for an explicit request, and OpenCode users can hard-enforce
-with `"permission": { "skill": { "tailrocks-*": "ask" } }`. Unknown
-frontmatter fields are ignored by standards-based clients, so the shared
-`SKILL.md` files stay portable: the contract is `name`, `description`,
-relative bundled resources, and the agent-neutral Markdown body — never put
-`$name`, `/name`, or plugin namespaces in a skill body.
-
-### Local development
-
-```sh
-claude --plugin-dir .        # session-scoped Claude Code load
-grok plugin validate .       # manifest + component check
-bun run scripts/validate-skills.ts
-```
-
-## Repository layout
+A strong request names the skill, action, scope, and constraint:
 
 ```text
-tailrocks-skills/
-├── .claude-plugin/
-│   ├── plugin.json          # Claude Code plugin manifest
-│   └── marketplace.json     # self-listing marketplace (Claude Code, Codex, Grok)
-├── .codex-plugin/
-│   └── plugin.json          # Codex plugin manifest ("skills": "./skills/")
-├── .kimi-plugin/
-│   └── plugin.json          # Kimi Code plugin manifest
-├── plugin.json              # Antigravity CLI plugin manifest
-├── skills/
-│   ├── tailrocks-rust-best-practices/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   ├── evals/            # per-skill evals (all skills)
-│   │   └── agents/
-│   ├── tailrocks-rust-project-setup/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   ├── templates/       # copy-ready Cargo.toml, clippy.toml, mise.toml, …
-│   │   ├── scripts/
-│   │   └── agents/
-│   ├── tailrocks-axum-best-practices/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   └── agents/
-│   ├── tailrocks-typescript-best-practices/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   └── agents/
-│   ├── tailrocks-tanstack-project-setup/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   ├── templates/
-│   │   ├── scripts/
-│   │   └── agents/
-│   ├── tailrocks-swift-best-practices/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   └── agents/
-│   ├── tailrocks-swift-project-setup/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   ├── templates/
-│   │   └── agents/
-│   ├── tailrocks-liquid-glass/       # macOS material policy
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   └── agents/
-│   ├── tailrocks-macos-design/       # brief → component map → rubric
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   ├── templates/
-│   │   └── agents/
-│   ├── tailrocks-macos-visual-qa/    # render, drive, audit, diff
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   ├── templates/
-│   │   └── agents/
-│   ├── tailrocks-sketch-handoff/     # design file → implementable package
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   ├── templates/
-│   │   └── agents/
-│   ├── tailrocks-code-health/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   ├── templates/
-│   │   └── agents/
-│   ├── tailrocks-contribute/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   ├── scripts/
-│   │   └── agents/
-│   ├── tailrocks-remediate/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   └── agents/
-│   ├── tailrocks-idea/          # raw idea → DRAFT roadmap item
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   └── agents/
-│   ├── tailrocks-brainstorm/    # shaping interview on a young item
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   └── agents/
-│   ├── tailrocks-research/      # question or item → reusable research topic
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   └── agents/
-│   ├── tailrocks-record-decision/      # record + propagate one decision
-│   │   ├── SKILL.md
-│   │   └── agents/
-│   ├── tailrocks-finalize/ # closing interview → READY
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   └── agents/
-│   ├── tailrocks-plan/          # READY item → plans + spec + GOAL.md
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   └── agents/
-│   └── tailrocks-reconcile/     # execution truth-sync on plans + item
-│       ├── SKILL.md
-│       └── agents/
-├── scripts/
-│   └── validate-skills.ts   # Bun-native structure and policy validation
-├── AGENTS.md
-├── CLAUDE.md
-├── INSTALL.md               # verified cross-agent install + development guide
-├── LICENSE
-└── README.md
+Use tailrocks-typescript-best-practices in review mode on src/auth/.
+Focus on runtime validation, typed failure, and async ownership. Do not edit.
 ```
 
-## Validation
+## Choose the right skill
 
-Requires Bun, pinned in `mise.toml`; `mise install` provisions it.
+### Rust and services
+
+| Skill | Use it for | Example request |
+|---|---|---|
+| `tailrocks-rust-best-practices` | Writing, reviewing, or refactoring Rust ownership, APIs, errors, unsafe code, tests, performance, and readability | “Use tailrocks-rust-best-practices to review this crate. Do not edit.” |
+| `tailrocks-rust-project-setup` | Scaffolding, auditing, or fixing a strict Rust 2024 workspace, tooling, lints, dependencies, and CI gates | “Use tailrocks-rust-project-setup to scaffold a strict workspace under `crates/`.” |
+| `tailrocks-axum-best-practices` | Axum routers, handlers, extractors, typed HTTP boundaries, Tower middleware, lifecycle, tracing, and transport tests | “Use tailrocks-axum-best-practices to implement this authenticated endpoint.” |
+
+Use the project-setup skill for repository mechanics, Rust best practices for
+language-level policy, and Axum best practices only where an HTTP boundary
+exists.
+
+### TypeScript and TanStack
+
+| Skill | Use it for | Example request |
+|---|---|---|
+| `tailrocks-typescript-best-practices` | Strict TypeScript 7 or React code: state modeling, runtime validation, typed failure, readonly APIs, async ownership, and tests | “Use tailrocks-typescript-best-practices to refactor this state machine.” |
+| `tailrocks-tanstack-project-setup` | Scaffolding, migrating, auditing, or fixing a Bun-only TanStack Start app with Router, Query, shadcn/ui, Tailwind v4, Oxc, tests, and CI | “Use tailrocks-tanstack-project-setup to audit this app and remediate every baseline violation.” |
+
+### Native macOS
+
+| Skill | Use it for | Example request |
+|---|---|---|
+| `tailrocks-macos-design` | Designing a feature before code: brief, information architecture, native component map, alternatives, fixtures, and scored review | “Use tailrocks-macos-design to design a connection manager. Stop for my alternative selection.” |
+| `tailrocks-sketch-handoff` | Turning a Sketch file into tokens, a symbol-to-SwiftUI map, approved exports, and an implementable native handoff | “Use tailrocks-sketch-handoff on `Settings.sketch` and prepare the implementation package.” |
+| `tailrocks-liquid-glass` | Applying, auditing, or remediating macOS Liquid Glass layer discipline, APIs, availability, accessibility, and rendering | “Use tailrocks-liquid-glass in audit mode on the toolbar. Do not edit.” |
+| `tailrocks-swift-best-practices` | Swift and SwiftUI implementation or review: concurrency, state ownership, identity, AppKit bridges, failure, availability, accessibility, and tests | “Use tailrocks-swift-best-practices to refactor this AppKit screen toward SwiftUI-first architecture.” |
+| `tailrocks-swift-project-setup` | Scaffolding, auditing, or fixing the native macOS project baseline, generation, signing, formatting, linting, testing, mise, and Xcode integration | “Use tailrocks-swift-project-setup to create a strict macOS app baseline.” |
+| `tailrocks-macos-visual-qa` | Building, launching, driving, window-ID capturing, accessibility auditing, state-matrix verification, and pixel regression | “Use tailrocks-macos-visual-qa to verify this screen in light, dark, inactive, and accessibility states.” |
+
+Typical sequence:
+
+```text
+macos-design → sketch-handoff → swift-best-practices + liquid-glass
+             → swift-project-setup gates → macos-visual-qa
+```
+
+Each skill owns one responsibility. Do not ask multiple skills to make the
+same aesthetic decision. See the completed, deliberately rejected dogfood
+screen in [examples/macos-screen/](examples/macos-screen/).
+
+### Code quality and contribution
+
+| Skill | Use it for | Example request |
+|---|---|---|
+| `tailrocks-code-health` | Establishing or tightening measurable shrink-only architecture, lint, dependency, flake, defect, documentation, or verification ratchets | “Use tailrocks-code-health to make dependency debt monotonic and measurable.” |
+| `tailrocks-remediate` | Eliminating a proven defect class through structural redesign instead of a symptom patch | “Use tailrocks-remediate in fix mode for this cross-request state leak.” |
+| `tailrocks-contribute` | Reconnaissance, proposal, preparation, approved submission, and review response for an external open-source contribution | “Use tailrocks-contribute to prepare—but not submit—a fix for owner/repo#42.” |
+
+`tailrocks-remediate` requires a proven known-wrong state. Use ordinary best
+practices for routine implementation and `tailrocks-contribute` only for
+repositories the user does not own.
+
+### Roadmap and delivery
+
+| Skill | Use it for | Example request |
+|---|---|---|
+| `tailrocks-idea` | Capturing a raw idea as a DRAFT roadmap item without inventing missing detail | “Use tailrocks-idea: add offline editing with conflict recovery.” |
+| `tailrocks-brainstorm` | Shaping a DRAFT or SHAPING item through a live, one-question-at-a-time interview | “Use tailrocks-brainstorm on `offline-editing`.” |
+| `tailrocks-research` | Deep sourced research for a question or roadmap item, saved as reusable research topics | “Use tailrocks-research on `offline-editing` and investigate conflict-resolution models.” |
+| `tailrocks-record-decision` | Recording and propagating one user decision, including reopening stale READY or PLANNED work | “Use tailrocks-record-decision on `offline-editing`: conflicts use explicit user resolution because data loss must stay visible.” |
+| `tailrocks-finalize` | Closing the shaping interview, resolving every screen, flow, and open question, and granting READY | “Use tailrocks-finalize on `offline-editing`.” |
+| `tailrocks-plan` | Converting a READY item into specifications, coverage, zero-context implementation plans, and `GOAL.md` | “Use tailrocks-plan on `offline-editing` with `--deep`.” |
+| `tailrocks-reconcile` | Re-verifying execution status, blockers, drift, and DONE claims against the current repository | “Use tailrocks-reconcile on `offline-editing` after the goal loop finishes.” |
+
+The delivery pipeline is:
+
+```text
+idea → brainstorm → finalize → plan → goal execution → reconcile
+         ↕             ↕
+      research    record-decision
+```
+
+Artifacts live in `roadmap/<slug>/`, `research/<topic>/`, and
+`plans/<slug>/`. Research and decision recording may happen whenever needed;
+only finalize grants READY, and plan requires READY. See
+[examples/plan-package/](examples/plan-package/) and the
+[pipeline walkthrough](docs/pipeline-walkthrough.md).
+
+## Manual-only policy
+
+All skills require explicit invocation. Claude Code, Grok Build, and Kimi Code
+honor `disable-model-invocation: true`; Codex uses
+`policy.allow_implicit_invocation: false`. OpenCode users can enforce the same
+rule with:
+
+```json
+{ "permission": { "skill": { "tailrocks-*": "ask" } } }
+```
+
+## Develop this repository
+
+Each skill lives in `skills/<name>/` with one portable `SKILL.md`, eval cases,
+client policy, and optional references, templates, or scripts. Do not duplicate
+skill bodies per agent.
 
 ```sh
-bun run scripts/validate-skills.ts
-# or
+mise install
 mise run validate
+bun test scripts/
+claude --plugin-dir .
 ```
+
+Contribution and release rules live in [AGENTS.md](AGENTS.md). Installation
+internals and per-client verification live in [INSTALL.md](INSTALL.md).
 
 ## License
 
