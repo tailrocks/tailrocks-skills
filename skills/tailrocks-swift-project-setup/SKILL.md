@@ -131,9 +131,11 @@ stable pin and remove brackets; replace other marked project values literally.
 
 When the app keeps its behavior in a Rust core behind the SwiftUI shell,
 additionally read [`rust-core.md`](references/rust-core.md): the split
-workspace layout with one FFI-only bridge crate, exact bridge crate and
-CLI pins under mise, XCFramework packaging as a task ordered before
-`generate`, and two extra gates — binding-drift detection in CI and the
+workspace layout with bridge knowledge confined to the contracts and FFI
+crates, the one-way Swift package chain where only the handwritten bridge
+package imports the generated bindings, exact bridge crate and CLI pins
+under mise, static-library XCFramework packaging as a task ordered before
+`generate`, and the extra gates — binding-drift detection in CI and the
 Rust test lane running in the same pipeline as the Swift build.
 
 ## Existing project audit and remediation
