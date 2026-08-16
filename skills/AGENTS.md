@@ -12,8 +12,8 @@ placeholder owners. What the gate cannot judge, these rules do:
   point the reader at another project, above all another skill or
   plugin collection.
 - No provenance attribution inside a skill — no external author names,
-  artifact names, or "adapted from" stories. Lineage lives in the root
-  `AGENTS.md`, name-only.
+  artifact names, or "adapted from" stories. Extract, rephrase, localize;
+  provenance lives in git history, never in the tree.
 - Published articles, papers, and standards cited as evidence keep
   their canonical links; a project repository never qualifies as
   evidence.

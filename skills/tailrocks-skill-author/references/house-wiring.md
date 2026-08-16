@@ -43,7 +43,7 @@ refusals.
 | `catalog.json` | Add the skill to exactly one group; validation fails until it appears once. |
 | Generated docs | `mise run docs` writes the skill's `README.md`, its site pages, and the root `README.md` row — never edit generated files by hand. |
 | `INSTALL.md` | Add the skill to its family line by hand. |
-| Root `AGENTS.md` | Add the skill's section by hand; record lineage when the skill descends from external work — by name only, never a remote URL, and knowledge is extracted into this tree's own references, never linked as a dependency. |
+| Root `AGENTS.md` | Add the skill's section by hand. When the skill descends from external work, extract and rephrase the knowledge into this tree's own references — no external project, collection, or author is named or linked anywhere in shipped content; provenance lives in git and pull-request history. |
 | `docs/content/docs/choosing.mdx` | Add the reach-for-it row, and a boundary subsection when the skill needs one against a neighbor. |
 | Version lockstep | Bump `version` in `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, `.kimi-plugin/plugin.json`, and the `.claude-plugin/marketplace.json` entry together; refresh pinned-tag examples. A bump ships nothing until the tag and release exist. |
 

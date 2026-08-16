@@ -103,9 +103,10 @@ Run every draft against these before validation:
 - Two skills sharing one responsibility, or one skill carrying two.
 - Force-loading references (inline includes) instead of routing by
   when-to-read.
-- A remote URL pointing at an external project — a repository, a gist,
-  and above all another skill or plugin collection. Extract the knowledge
-  into the skill's own references; attribute lineage by name only, in the
-  tree's lineage records, never inside the skill. Official documentation
+- Any reference to an external project — a repository or gist URL, a
+  named skill or plugin collection, an author credited as the source.
+  Needing the reference means the information belongs here: extract it,
+  rephrase it, make it part of this project. Provenance lives in git and
+  pull-request history, never in shipped content. Official documentation
   and release pages of house-adopted tools, and placeholder URLs in
   templates, are the only URL classes a skill carries.
