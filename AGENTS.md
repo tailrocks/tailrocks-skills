@@ -213,7 +213,13 @@ roadmap items in `roadmap/<slug>/README.md` (status machine: DRAFT → SHAPING
 topics in `research/<topic>/` (independent of items, many-to-many links),
 implementation packages in `plans/<slug>/` (coverage ledger, OpenSpec-grammar
 spec, zero-context plans, GOAL.md for Claude Code and Codex goal execution or
-manual Grok prompting).
+manual Grok prompting). The family works in the PR lifecycle:
+`tailrocks-idea` opens the item's `roadmap/<slug>` branch and draft PR at
+capture, and every invocation of every family skill ends in one commit
+marked with the `Tailrocks-Skill: <name>` trailer and pushed — so an
+item's PR history attributes each commit to the skill that produced it
+(the contract lives in tailrocks-idea's `delivery-git-contract.md`
+reference).
 
 - **tailrocks-idea** — capture a raw idea as a DRAFT item with a
   content-derived slug and an index row. Capture only; gaps stay visibly
@@ -416,6 +422,17 @@ Skill definition: `skills/tailrocks-skill-author/SKILL.md`
 tailrocks-agents-md owns instruction files;
 tailrocks-skill-author owns skills — a rule that belongs in an `AGENTS.md`
 or a gate is routed there, not wrapped in a new skill.
+
+## Repo-local skills
+
+`.claude/skills/` holds skills that serve work **on this repository
+itself** and never ship: they are outside `skills/`, so the plugin
+manifests, catalog, validator, and docs pipeline ignore them.
+`self-improve` is the current one — point it at an external PR where the
+tailrocks skills were applied and it audits that PR commit by commit
+(attribution via the `Tailrocks-Skill` trailer), judges each skill's
+output against its own contract, and maps the verdicts to skill
+improvements here, writing its field report under `plans/field-reports/`.
 
 ## Adding a Skill
 
