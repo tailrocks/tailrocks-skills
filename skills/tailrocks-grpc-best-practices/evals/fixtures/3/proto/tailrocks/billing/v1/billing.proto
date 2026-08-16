@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package tailrocks.billing.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// An invoice issued to a customer.
+message Invoice {
+  reserved 3, 5;
+  reserved "legacy_total", "coupon_code";
+
+  string id = 1;
+  string customer_id = 2;
+  // Field 3 removed 2025-11: legacy_total moved into line_items.
+  repeated LineItem line_items = 4;
+  // Field 5 removed 2026-02: coupon_code replaced by the discounts service.
+  google.protobuf.Timestamp issued_at = 6;
+  // ISO 4217 alphabetic code, e.g. "USD".
+  string currency_code = 7;
+}
+
+// One billable line on an invoice.
+message LineItem {
+  string sku = 1;
+  int64 quantity = 2;
+  // Unit price in the invoice currency's minor units.
+  int64 unit_price_minor = 3;
+}

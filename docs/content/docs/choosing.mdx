@@ -13,9 +13,20 @@ the boundaries below decide it.
 | [`tailrocks-rust-project-setup`](/docs/skills/tailrocks-rust-project-setup) | The question is repository mechanics: workspace layout, lints, toolchain, dependency and CI gates. |
 | [`tailrocks-rust-best-practices`](/docs/skills/tailrocks-rust-best-practices) | The question is language-level policy: ownership, API design, error and panic policy, unsafe review, tests. |
 | [`tailrocks-axum-best-practices`](/docs/skills/tailrocks-axum-best-practices) | An HTTP boundary exists: routers, extractors, Tower middleware order, lifecycle, transport tests. |
+| [`tailrocks-graphql-best-practices`](/docs/skills/tailrocks-graphql-best-practices) | A public backend service exposes its public API: schema design, the committed SDL contract, breaking-change gates, the typed web client. |
+| [`tailrocks-grpc-best-practices`](/docs/skills/tailrocks-grpc-best-practices) | Rust services talk to each other: proto contracts under buf gates, tonic adapters, deadlines, status mapping. |
 
 Axum best practices apply only where there is an HTTP adapter. Domain logic
 behind it belongs to the Rust best-practices skill.
+
+### The protocol doctrine
+
+One rule decides between the two contract skills: **GraphQL is the public
+API of public backend services; gRPC is cross-service communication between
+Rust services.** A browser or third party never speaks gRPC, and services
+never call each other's GraphQL. UI layers — the TanStack web app and the
+SwiftUI shell — are thin: business logic always stays in Rust behind these
+contracts.
 
 ## TypeScript and TanStack
 

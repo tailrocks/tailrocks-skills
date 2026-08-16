@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package inventory;
+
+import "google/protobuf/empty.proto";
+
+service Inventory {
+  rpc GetItem(GetItemRequest) returns (Item);
+  rpc DeleteItem(GetItemRequest) returns (google.protobuf.Empty);
+  rpc ListItems(ListItemsRequest) returns (ListItemsResponse);
+}
+
+enum State {
+  ACTIVE = 0;
+  ARCHIVED = 1;
+}
+
+message Item {
+  string id = 1;
+  string name = 2;
+  State state = 3;
+  int64 updated_at = 4;
+}
+
+message GetItemRequest {
+  string id = 1;
+}
+
+message ListItemsRequest {
+  int32 limit = 1;
+}
+
+message ListItemsResponse {
+  repeated Item items = 1;
+}

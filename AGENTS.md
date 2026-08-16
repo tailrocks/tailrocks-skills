@@ -14,7 +14,9 @@ Keep skills source-neutral — no agent-specific instructions in `SKILL.md`
 bodies. Installation, the verified per-client compatibility matrix, and the
 duplicate-avoidance rules live in `INSTALL.md`.
 
-The house stack is fixed: Rust 2024 with Axum/Tokio/Tower, TypeScript 7 with Bun,
+The house stack is fixed: Rust 2024 with Axum/Tokio/Tower — tracing through
+OpenTelemetry, PostgreSQL as the storage layer (tokio-postgres pooled by
+deadpool-postgres, a decided choice) — TypeScript 7 with Bun,
 TanStack Start, React, shadcn/ui, Tailwind CSS v4, and Oxc, and native macOS with
 Swift, SwiftUI-first app and UI architecture, narrow capability-only AppKit
 bridges, and Liquid Glass. Existing AppKit apps migrate toward that architecture.
@@ -23,6 +25,16 @@ Apple-recommended one; GPUI and similar non-Apple UI frameworks are never
 used in a native Swift app, and high-performance custom regions are drawn
 with Apple's own rendering. An app that pairs Rust with a native interface
 uses a thin SwiftUI shell over a Rust-owned application runtime.
+
+**The language and protocol doctrine, in five rules.** (1) Rust for
+backends, terminal applications, and business logic — always. (2) Swift
+with Liquid Glass for the native macOS and iOS experience, as UI only; the
+business logic behind it stays in Rust. (3) Strict TypeScript with React
+and TanStack for the website experience, as UI only; the business logic
+stays in Rust on the backend. (4) GraphQL is the public API of public
+backend services. (5) gRPC is the protocol for cross-service communication
+between Rust services. UI layers are thin shells over Rust-owned behavior,
+and neither protocol crosses into the other's role.
 Skills deepen this stack; they do not offer alternative frameworks, package managers, test
 runners, or component systems. Every setup targets the latest stable release and
 latest stable major available at execution time; older majors are unsupported.
@@ -69,6 +81,28 @@ stable error responses, ordered Tower middleware, security limits, tracing,
 graceful shutdown, async task ownership, and contract tests.
 
 Skill definition: `skills/tailrocks-axum-best-practices/SKILL.md`
+
+### tailrocks-graphql-best-practices
+
+Design, build, and review the GraphQL public API of public backend services —
+the only public API surface in the doctrine. Contract-first: async-graphql on
+Axum serves it, the committed SDL snapshot is the contract, a breaking-change
+gate blocks silent breakage, evolution is additive with dated deprecations,
+and the TanStack web client consumes it through generated types. Never for
+cross-service communication — that is gRPC.
+
+Skill definition: `skills/tailrocks-graphql-best-practices/SKILL.md`
+
+### tailrocks-grpc-best-practices
+
+Design, build, and review gRPC contracts and services for cross-service
+communication between Rust services — the only cross-service protocol in the
+doctrine. Contract-first: `.proto` files under buf lint and breaking gates,
+tonic and prost adapters that keep generated types out of the domain, canonical
+status-code mapping, mandatory deadlines, health and reflection wiring, and
+wire-level contract tests. Never the public API surface — that is GraphQL.
+
+Skill definition: `skills/tailrocks-grpc-best-practices/SKILL.md`
 
 ### tailrocks-typescript-best-practices
 
