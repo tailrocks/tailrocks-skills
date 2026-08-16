@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "I fixed a typo in the getting-started guide. Open a PR for it.",
-      "expected_output": "Branch created off the default branch (docs/-style name suggested and confirmed), change committed with the repository's subject convention and sign-off practice discovered from history, body built from the repo's PR template via --body-file with no unfilled placeholder, render verified, PR URL and verify commands reported.",
+      "expected_output": "Branch created off the default branch (docs/-style name suggested and confirmed), change committed with the repository's subject convention and sign-off practice discovered from history, body built from the repo's .github/PULL_REQUEST_TEMPLATE.md read at runtime (the shipped generic skeleton when the repo has none) via --body-file with no unfilled placeholder, render verified, PR URL and verify commands reported.",
       "files": []
     },
     {

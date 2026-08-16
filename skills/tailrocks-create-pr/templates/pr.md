@@ -21,12 +21,14 @@ into history.
 
 ## Body
 
-Template: `.github/PULL_REQUEST_TEMPLATE.md`.
+Template: `.github/PULL_REQUEST_TEMPLATE.md` — the default the skills read
+in every repository even without this section.
 <!-- Or a generator; stdout is the body skeleton, stderr is a digest:
 Generator: `cargo xtask pr body --base origin/main`
 -->
-Required sections: Summary, What changed, How to verify.
-How to verify carries the exact commands a reviewer runs locally.
+Required sections: Summary, What ships, Verify locally.
+Verify locally carries the exact commands a reviewer runs, selected by what
+the diff touches.
 
 ## Checks
 

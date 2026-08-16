@@ -42,7 +42,9 @@ command whose stdout is the fresh skeleton for the current diff.
 2. **Gather the fresh shape.** `git fetch origin <base>`, then read
    `gh pr diff <PR>` and `git log origin/<base>..HEAD --oneline`. Build the
    fresh skeleton the current diff would get: run the conventions file's body
-   generator when one is named, else re-apply the repository's PR template.
+   generator when one is named, else re-read the repository's own
+   `.github/PULL_REQUEST_TEMPLATE.md` at runtime (with no template anywhere,
+   the generic skeleton shipped with `tailrocks-create-pr`).
    **Complete when:** you can say what the change *is* now and which
    template sections the current diff earns.
 
