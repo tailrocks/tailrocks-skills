@@ -339,6 +339,10 @@ permits urgent containment without calling it complete remediation.
 
 Skill definition: `skills/tailrocks-remediate/SKILL.md`
 
+tailrocks-remediate's operating principles descend from johnsoncodehk's
+published `CLAUDE.shareable.md`, paraphrased and recalibrated; the skill
+carries the ideas without the text, the name, or a link.
+
 ### tailrocks-simplify
 
 Review a pull request or working diff and remove code from it without changing

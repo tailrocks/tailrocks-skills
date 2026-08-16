@@ -2,16 +2,21 @@
 
 ## External references
 
-**A skill never references an external project by remote URL** — no
-repository links, no gists, and above all no links to other skill or
-plugin collections. Knowledge is extracted into the skill's own
-references; lineage is attributed by name only, and only in the root
-`AGENTS.md`, never inside a skill. Two narrow classes stay allowed inside
-skills: official release and documentation pages used as verification
-sources for house-adopted tools and libraries (the version-policy
-tables), and placeholder URLs in templates (`github.com/org/repo`).
-Published articles, papers, and standards cited as evidence keep their
-canonical links; project repositories do not.
+The validator forbids code-forge URLs (github.com, gitlab.com,
+bitbucket.org, codeberg.org, and all gists) in shipped skill content —
+`SKILL.md`, `references/`, `templates/` — allowing only release pages,
+the allowlisted canonical homes of house-adopted libraries, and
+placeholder owners. What the gate cannot judge, these rules do:
+
+- Extract external knowledge into the skill's own references; never
+  point the reader at another project, above all another skill or
+  plugin collection.
+- No provenance attribution inside a skill — no external author names,
+  artifact names, or "adapted from" stories. Lineage lives in the root
+  `AGENTS.md`, name-only.
+- Published articles, papers, and standards cited as evidence keep
+  their canonical links; a project repository never qualifies as
+  evidence.
 
 ## Router budget
 
