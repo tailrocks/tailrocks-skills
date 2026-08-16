@@ -177,6 +177,22 @@ surfaces, or intentionally build one merged capsule.
 mid-band makes the metaball seam permanent, as the shipped dogfood captures and
 ReviewDisposition row linked by the macOS design rubric record.
 
+## 12. Raw `glassEffect` on a standard button
+
+**Rule.** A standard button takes a glass *button style* —
+`.buttonStyle(.glass)` or `.buttonStyle(.glassProminent)` (macOS 26.0) —
+never a raw `glassEffect(_:in:)` applied to the button view. Toolbar and
+navigation controls already receive native glass treatment automatically.
+
+**Mechanism.** The raw modifier wraps the button's rendered content in a
+separate glass surface, producing an ordinary button sitting *on top of*
+glass instead of an integrated glass control: press feedback, tint
+handling, container grouping, and the accessibility substitutions all come
+from the button style, and the wrapped form receives none of them.
+
+**Fix.** Replace the modifier with the style; reserve `.glassProminent` for
+the single genuinely primary action per the tint rule.
+
 ## Performance framing
 
 Apple publishes **no numeric cost, no per-effect budget, and no Liquid-Glass

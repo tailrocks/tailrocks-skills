@@ -24,7 +24,11 @@ The renderer for a Swift macOS or iOS app is always Apple's modern,
 Apple-recommended one; GPUI and similar non-Apple UI frameworks are never
 used in a native Swift app, and high-performance custom regions are drawn
 with Apple's own rendering. An app that pairs Rust with a native interface
-uses a thin SwiftUI shell over a Rust-owned application runtime.
+uses a thin SwiftUI shell over a Rust-owned application runtime; that shell
+is an Apple *platform* shell, not only a UI layer — Apple-only capabilities
+(StoreKit, notifications, background tasks, Keychain, security-scoped
+files, widgets, intents) get narrow Swift adapters whose mechanism lives in
+Swift while every product decision around them stays in Rust.
 
 **The language and protocol doctrine, in five rules.** (1) Rust for
 backends, terminal applications, and business logic — always. (2) Swift

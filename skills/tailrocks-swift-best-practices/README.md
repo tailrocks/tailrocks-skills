@@ -21,6 +21,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`accessibility.md`](references/accessibility.md)
 - [`appkit-interop.md`](references/appkit-interop.md)
+- [`apple-platform-shell.md`](references/apple-platform-shell.md)
 - [`concurrency.md`](references/concurrency.md)
 - [`errors-and-api.md`](references/errors-and-api.md)
 - [`rust-core-boundary.md`](references/rust-core-boundary.md)

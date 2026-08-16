@@ -119,10 +119,16 @@ and drop — and stays replaceable. Existing AppKit is never reason by itself.
 
 When the application keeps its behavior in a Rust core behind the SwiftUI
 shell, read [`rust-core-boundary.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-swift-best-practices/references/rust-core-boundary.md)
-before writing either side of the boundary. The one rule carried here:
-**exactly one `@MainActor @Observable` store owns the generated core
-handle** — views receive immutable view-state plus a `send` closure, never
-the FFI, and behavior lives and is tested in Rust, not in the shell.
+before writing either side of the boundary, and
+[`apple-platform-shell.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-swift-best-practices/references/apple-platform-shell.md) when the
+feature touches an Apple-only capability (StoreKit, Keychain,
+notifications, background tasks, files, widgets, intents) or the iOS
+lifecycle. The rules carried here: **exactly one `@MainActor @Observable`
+store owns the generated core handle** — views receive immutable
+view-state plus a `send` closure, never the FFI, and behavior lives and is
+tested in Rust, not in the shell; and **platform adapters execute Apple
+mechanisms only** — every product decision stays in Rust, and effects stay
+pending in a durable Rust queue until acknowledged.
 
 ## Errors and API surface
 
