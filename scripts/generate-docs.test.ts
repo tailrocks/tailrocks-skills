@@ -10,6 +10,7 @@ import {
   readCatalog,
   replaceRootList,
   strayMarkdown,
+  textDiagrams,
   summarize,
 } from "./generate-docs";
 
@@ -73,6 +74,28 @@ test("the catalog groups every skill in the tree", async () => {
   const groups = await readCatalog(root);
   expect(groups.length).toBeGreaterThan(0);
   expect(groups.every((group) => group.title !== "" && group.summary !== "")).toBeTrue();
+});
+
+test("flow diagrams drawn as text are caught, trees and mermaid are not", () => {
+  const drawn = ["```text", "a → b", "  → c", "```"].join("\n");
+  expect(textDiagrams(drawn)).toEqual([1]);
+
+  const mermaid = ["```mermaid", "flowchart LR", "  a --> b", "```"].join("\n");
+  expect(textDiagrams(mermaid)).toEqual([]);
+
+  const tree = ["```text", "repo/", "├── a → generated", "└── b", "```"].join("\n");
+  expect(textDiagrams(tree)).toEqual([]);
+
+  const oneLiner = ["```text", "pkill → open → capture", "```"].join("\n");
+  expect(textDiagrams(oneLiner)).toEqual([]);
+});
+
+test("no documentation page draws a flow as text", async () => {
+  const root = path.resolve(import.meta.dir, "..");
+  const pages = await generate(root);
+  for (const page of pages.filter((entry) => entry.file.endsWith(".mdx"))) {
+    expect({ file: page.file, at: textDiagrams(page.content) }).toEqual({ file: page.file, at: [] });
+  }
 });
 
 test("no documentation page is plain markdown", async () => {

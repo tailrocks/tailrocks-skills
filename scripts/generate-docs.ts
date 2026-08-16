@@ -377,6 +377,38 @@ export async function generate(root: string): Promise<Generated[]> {
   return output;
 }
 
+/**
+ * Finds diagrams drawn as text instead of Mermaid. A fenced block qualifies when it
+ * spans more than one line and uses flow arrows. Directory trees are drawings of a
+ * filesystem, not of a flow, so box-drawing characters exempt a block.
+ */
+export function textDiagrams(source: string): number[] {
+  const lines = source.split("\n");
+  const found: number[] = [];
+  let opened: number | undefined;
+  let language = "";
+  let body: string[] = [];
+
+  for (const [index, line] of lines.entries()) {
+    const fence = line.match(/^\s*```(\w*)/);
+    if (!fence) {
+      if (opened !== undefined) body.push(line);
+      continue;
+    }
+    if (opened === undefined) {
+      opened = index;
+      language = fence[1] ?? "";
+      body = [];
+      continue;
+    }
+    const isTree = body.some((entry) => /[├└│]/.test(entry));
+    const hasArrows = body.some((entry) => /[→⇄↕⟶]|-->/.test(entry));
+    if (language !== "mermaid" && hasArrows && !isTree && body.length > 1) found.push(opened + 1);
+    opened = undefined;
+  }
+  return found;
+}
+
 /** Fumadocs content is MDX only; a plain .md page silently renders without component support. */
 export async function strayMarkdown(root: string): Promise<string[]> {
   const contentRoot = path.join(root, "docs", "content");
@@ -401,6 +433,19 @@ if (import.meta.main) {
   const stray = await strayMarkdown(root);
   if (stray.length > 0) {
     for (const file of stray) console.error(`error: documentation pages must be .mdx, not .md: ${file}`);
+    process.exit(1);
+  }
+
+  const drawn: string[] = [];
+  for (const page of await listFiles(path.join(root, "docs", "content"))) {
+    if (!page.endsWith(".mdx")) continue;
+    const file = path.join("docs", "content", page);
+    for (const line of textDiagrams(await readFile(path.join(root, file), "utf8"))) {
+      drawn.push(`${file}:${line}`);
+    }
+  }
+  if (drawn.length > 0) {
+    for (const at of drawn) console.error(`error: draw this as a \`\`\`mermaid diagram, not text: ${at}`);
     process.exit(1);
   }
   const generated = await generate(root);

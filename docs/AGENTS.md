@@ -25,10 +25,19 @@ persists across pages. The default renders server-side, so a prerendered page
 always shows a real command. Adding a client means editing `src/lib/agents.ts`
 and nothing else.
 
-Diagrams are ```mermaid fences. A remark plugin rewrites them into the Mermaid
-component, which renders in the browser after hydration — so the diagram is
-absent from the prerendered HTML. Never put meaning only in a diagram; the
-surrounding prose carries it.
+**Every diagram is a ```mermaid fence.** Never draw a flow with arrows and
+spaces in a `text` block: it wraps badly, reads as a puzzle, and cannot be
+restyled. `mise run docs:check` fails on a multi-line fenced block that uses
+flow arrows and is not Mermaid.
+
+Two things are not diagrams and stay literal: a directory tree, which draws a
+filesystem rather than a flow, and captured output. Both are exempt from the
+check — a tree by its box-drawing characters, output by having no arrows.
+
+A remark plugin rewrites Mermaid fences into the Mermaid component, which
+renders in the browser after hydration, so the diagram is absent from the
+prerendered HTML. Never put meaning only in a diagram; the surrounding prose
+carries it.
 
 `design/` holds repository design notes. Not published, not part of the site.
 

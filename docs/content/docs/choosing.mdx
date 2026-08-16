@@ -28,9 +28,14 @@ behind it belongs to the Rust best-practices skill.
 
 Six skills take a feature from an approved design to verified pixels.
 
-```text
-macos-design → sketch-handoff → swift-best-practices + liquid-glass
-             → swift-project-setup gates → macos-visual-qa
+```mermaid
+flowchart LR
+  design["macos-design"] --> handoff["sketch-handoff"]
+  handoff --> swift["swift-best-practices"]
+  handoff --> glass["liquid-glass"]
+  swift --> gates["swift-project-setup gates"]
+  glass --> gates
+  gates --> qa["macos-visual-qa"]
 ```
 
 | Skill | Owns |
