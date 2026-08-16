@@ -5,6 +5,12 @@ Rust UI framework such as GPUI, a raw Metal surface, a canvas or game view —
 or when the application is written in Rust and the question is where glass
 can come from at all.
 
+**Standing rule: the application's main renderer is always Apple's modern,
+Apple-recommended one.** For a Swift macOS or iOS app that is SwiftUI on the
+system rendering stack; at a justified capability boundary, AppKit. A custom
+renderer is never the application shell and never the default — at most one
+embedded workspace surface, admitted under the justification below.
+
 ## The authority fact
 
 Liquid Glass is a system-managed material, not a shader recipe. The

@@ -89,11 +89,13 @@ not an implementation question.
 
 When any region is drawn by a non-Apple renderer (GPUI, raw Metal, a
 canvas), or the app is Rust without Swift, read
-[`custom-renderers.md`](references/custom-renderers.md). The rule carried
-here: a custom-rendered surface is `CONTENT` by definition, glass chrome
-comes only from system components above it, and a hand-rolled glass
-imitation inside a custom renderer is a hard failure — the material's
-sampling, grouping, and per-release evolution belong to the OS.
+[`custom-renderers.md`](references/custom-renderers.md). The rules carried
+here: the main renderer is always Apple's modern one — a custom renderer
+is never the shell, at most one embedded workspace surface; that surface
+is `CONTENT` by definition, glass chrome comes only from system components
+above it; and a hand-rolled glass imitation inside a custom renderer is a
+hard failure — the material's sampling, grouping, and per-release
+evolution belong to the OS.
 
 ## Implementation
 

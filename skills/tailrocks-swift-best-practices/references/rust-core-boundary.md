@@ -7,8 +7,11 @@ owns what the application actually does. It does not replace the SwiftUI-first
 rule — the shell is still real SwiftUI describing every screen — it bounds
 what the Swift code is *for*.
 
-Do not reach for a custom Rust UI framework (GPUI or similar) as the shell;
-that trade is covered by `tailrocks-liquid-glass`'s custom-renderer boundary.
+The shell's renderer is not a choice: **the main renderer is always Apple's
+modern, Apple-recommended one — SwiftUI on the system rendering stack.**
+Never reach for a custom Rust UI framework (GPUI or similar) as the shell;
+at most it draws one embedded workspace surface, under
+`tailrocks-liquid-glass`'s custom-renderer boundary.
 A dynamic "Rust sends a UI schema, Swift renders it generically" design is
 rejected for the same reason: it rebuilds an inferior UI framework and loses
 SwiftUI's compile-time behavior, accessibility, previews, and design
