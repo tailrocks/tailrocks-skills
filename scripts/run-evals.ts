@@ -21,9 +21,18 @@ export function fixtureDestination(
   fixture: string,
   workspace: string,
 ): string {
-  const source = fixture.startsWith("skills/") ? path.join(root, fixture) : path.join(skillDir, fixture);
-  const relative = path.relative(skillDir, source);
-  if (relative.startsWith("..") || path.isAbsolute(relative))
+  const external = fixture.startsWith("skills/");
+  const source = external ? path.join(root, fixture) : path.join(skillDir, fixture);
+  let owner = skillDir;
+  if (external) {
+    const skillsRoot = path.join(root, "skills");
+    const inSkills = path.relative(skillsRoot, source);
+    if (inSkills.startsWith("..") || path.isAbsolute(inSkills))
+      throw new Error(`fixture escapes skill: ${fixture}`);
+    owner = path.join(skillsRoot, inSkills.split(path.sep)[0]!);
+  }
+  const relative = path.relative(owner, source);
+  if (relative === "" || relative.startsWith("..") || path.isAbsolute(relative))
     throw new Error(`fixture escapes skill: ${fixture}`);
   return path.join(workspace, relative);
 }

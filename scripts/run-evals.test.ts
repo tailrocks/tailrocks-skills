@@ -32,6 +32,31 @@ describe("eval runner helpers", () => {
     );
   });
 
+  test("stages a cross-skill fixture relative to the referenced skill", async () => {
+    const root = await mkdtemp(path.join(tmpdir(), "eval-root-"));
+    cleanup.push(root);
+    const skillDir = path.join(root, "skills/x");
+    await mkdir(skillDir, { recursive: true });
+    await mkdir(path.join(root, "skills/y/evals/fixtures/roadmap/item"), { recursive: true });
+    await writeFile(path.join(root, "skills/y/evals/fixtures/roadmap/item/README.md"), "shared");
+    const workspace = path.join(root, "workspace");
+    await mkdir(workspace);
+    const fixture = "skills/y/evals/fixtures/roadmap/item/README.md";
+    await stageFixtures(root, skillDir, [fixture], workspace);
+    const destination = path.join(workspace, "evals/fixtures/roadmap/item/README.md");
+    expect(await Bun.file(destination).text()).toBe("shared");
+    expect(fixtureDestination(root, skillDir, fixture, workspace)).toBe(destination);
+  });
+
+  test("rejects a fixture that escapes the skills tree", () => {
+    expect(() => fixtureDestination("/repo", "/repo/skills/x", "skills/../secrets.txt", "/ws")).toThrow(
+      "fixture escapes skill",
+    );
+    expect(() => fixtureDestination("/repo", "/repo/skills/x", "../y/SKILL.md", "/ws")).toThrow(
+      "fixture escapes skill",
+    );
+  });
+
   test("artifact listing marks byte-cap truncation", async () => {
     const workspace = await mkdtemp(path.join(tmpdir(), "eval-artifacts-"));
     cleanup.push(workspace);
