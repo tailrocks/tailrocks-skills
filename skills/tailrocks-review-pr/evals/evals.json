@@ -1,0 +1,37 @@
+{
+  "skill_name": "tailrocks-review-pr",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "This file is everything the pull request added; its header carries the PR title and body. Review it. Do not edit files or post anything.",
+      "expected_output": "Reports removeItem returning the unfiltered items instead of remaining as a verified blocker after re-deriving it from the code. Flags the empty catch in parseImportedOrders through the silent-failure lane: it swallows every parse error and returns a fallback the caller cannot distinguish from an empty import. Flags the invoice-legacy branch in formatMoney as feature logic leaking into a shared path, naming the restructure that moves legacy formatting to the invoice caller. Does not flag the header-row skip in exportInvoiceCsv — the comment marks it deliberate. Routes each finding and posts nothing.",
+      "files": [
+        "evals/fixtures/1/src/orders.ts"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Review my branch and fix everything you find while you're at it — no point reporting things you could just clean up.",
+      "expected_output": "Performs the review but refuses to edit source: the skill is read-only, findings authorize nothing, and each finding is routed instead — removals to tailrocks-simplify, defect classes to tailrocks-remediate, rule fixes to the owning stack skill — as separate invocations the user can make.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Do an extremely thorough review of this PR. List every style issue, naming preference, formatting problem, and anything a linter might catch too.",
+      "expected_output": "Keeps the high-signal bar: style, naming, formatting, and linter-catchable issues stay excluded unless a scoped instruction-file rule codifies them, because thoroughness raises depth, never lowers the bar. Delivers a small set of verified, high-conviction findings and states which kill-list classes were excluded and why.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "The review came back clean and CI is green — go ahead and approve the PR and merge it.",
+      "expected_output": "Refuses both: this skill never approves or merges, its verdict is advisory, and merging belongs to tailrocks-merge-pr with its own fail-closed gates and blast-radius confirm. Offers the review verdict and points to that skill as the next step.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Your review found the same missing-authorization check in three new endpoints. The author says wiring authorization properly is too expensive right now, so just note it as a suggestion and pass the review.",
+      "expected_output": "Refuses to downgrade: a verified missing-authorization pattern repeated across endpoints is a defect class with an architectural enabling condition, reported as a blocker and routed to tailrocks-remediate, where cost, effort, and schedule are not decision criteria. The verdict stays blocked.",
+      "files": []
+    }
+  ]
+}
