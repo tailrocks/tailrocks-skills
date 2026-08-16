@@ -30,7 +30,7 @@ one shared directory:
   `tailrocks-swift-best-practices`, `tailrocks-swift-project-setup`,
   `tailrocks-macos-visual-qa`, `tailrocks-sketch-handoff`
 - **Code quality:** `tailrocks-code-health`, `tailrocks-contribute`,
-  `tailrocks-remediate`
+  `tailrocks-remediate`, `tailrocks-rethink`
 - **Delivery pipeline:** `tailrocks-idea`, `tailrocks-brainstorm`,
   `tailrocks-research`, `tailrocks-record-decision`, `tailrocks-finalize`,
   `tailrocks-plan`, `tailrocks-reconcile`
@@ -84,7 +84,7 @@ claude plugin install tailrocks-skills@tailrocks-skills
 
 Production pin: client syntax can vary by release; verify against your client,
 then add the marketplace at the tag:
-`claude plugin marketplace add tailrocks/tailrocks-skills@v0.12.0`.
+`claude plugin marketplace add tailrocks/tailrocks-skills@v0.13.0`.
 
 - Manifest: `.claude-plugin/plugin.json` (`name` is the only required field);
   `skills/` at the plugin root is auto-discovered.
@@ -109,7 +109,7 @@ codex plugin add tailrocks-skills
 
 Production pin: client syntax can vary by release; verify against your client,
 then add the marketplace at the tag:
-`codex plugin marketplace add tailrocks/tailrocks-skills@v0.12.0`.
+`codex plugin marketplace add tailrocks/tailrocks-skills@v0.13.0`.
 
 - Manifest: `.codex-plugin/plugin.json` with `"skills": "./skills/"` (the
   official Codex plugin manifest location; only `plugin.json` belongs inside
@@ -136,12 +136,12 @@ OpenCode has no plugin channel for skills (its JS/TS plugins cannot register
 skills), so use its own global skills directory:
 
 ```sh
-git clone --depth 1 --branch v0.12.0 https://github.com/tailrocks/tailrocks-skills.git /tmp/tailrocks-skills
+git clone --depth 1 --branch v0.13.0 https://github.com/tailrocks/tailrocks-skills.git /tmp/tailrocks-skills
 mkdir -p ~/.config/opencode/skills
 cp -R /tmp/tailrocks-skills/skills/* ~/.config/opencode/skills/
 ```
 
-Use the latest release tag in place of `v0.12.0` when upgrading.
+Use the latest release tag in place of `v0.13.0` when upgrading.
 
 - Frontmatter: OpenCode recognizes only `name`, `description`, `license`,
   `compatibility`, `metadata`; unknown fields (including
@@ -172,7 +172,7 @@ grok plugin install tailrocks/tailrocks-skills --trust
 ```
 
 - Grok resolves `.grok-plugin/plugin.json` first, then falls back to
-  `.claude-plugin/plugin.json` — this repo installs as-is. `@v0.12.0` ref
+  `.claude-plugin/plugin.json` — this repo installs as-is. `@v0.13.0` ref
   pins and `#subdir` are supported.
 - Invocation: `/<skill-name>`, or qualified `/tailrocks-skills:<skill-name>`;
   `/skills` opens the extensions modal; `grok inspect --json` lists every
@@ -197,7 +197,7 @@ existed):
 /plugins reload
 ```
 
-Pin with a release URL (`.../releases/tag/v0.12.0`) or `/tree/<ref>`.
+Pin with a release URL (`.../releases/tag/v0.13.0`) or `/tree/<ref>`.
 
 - Plugins are copied to `~/.kimi-code/plugins/managed/<id>/` (user scope
   only).
@@ -222,11 +222,11 @@ or `brew install --cask antigravity-cli`), then install the plugin from a
 local clone (the CLI installs plugins from local paths):
 
 ```sh
-git clone --depth 1 --branch v0.12.0 https://github.com/tailrocks/tailrocks-skills.git
+git clone --depth 1 --branch v0.13.0 https://github.com/tailrocks/tailrocks-skills.git
 agy plugin install ./tailrocks-skills
 ```
 
-Use the latest release tag in place of `v0.12.0` when upgrading.
+Use the latest release tag in place of `v0.13.0` when upgrading.
 
 - Manifest: root `plugin.json` with the
   `https://antigravity.google/schemas/v1/plugin.json` schema; the `skills/`
