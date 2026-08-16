@@ -1,5 +1,18 @@
 # skills
 
+## External references
+
+**A skill never references an external project by remote URL** — no
+repository links, no gists, and above all no links to other skill or
+plugin collections. Knowledge is extracted into the skill's own
+references; lineage is attributed by name only, and only in the root
+`AGENTS.md`, never inside a skill. Two narrow classes stay allowed inside
+skills: official release and documentation pages used as verification
+sources for house-adopted tools and libraries (the version-policy
+tables), and placeholder URLs in templates (`github.com/org/repo`).
+Published articles, papers, and standards cited as evidence keep their
+canonical links; project repositories do not.
+
 ## Router budget
 
 **References are free. Descriptions and router lines are not.**

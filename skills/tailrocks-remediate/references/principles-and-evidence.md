@@ -2,11 +2,11 @@
 
 ## Provenance
 
-Paraphrased, calibrated adaptation of `johnsoncodehk`'s
-[`CLAUDE.shareable.md`](https://gist.github.com/johnsoncodehk/6f6b9892936f335e491e92b65646fbea),
-last inspected 2026-07-12. The gist has no license for verbatim
-redistribution, so this repository keeps the ideas and attribution without
-its text. Its two linked operating principles:
+Paraphrased, calibrated adaptation of `johnsoncodehk`'s published
+`CLAUDE.shareable.md` operating principles, last inspected 2026-07-12.
+That source has no license for verbatim redistribution, so this repository
+keeps the ideas and the name-only attribution — no text, no link. Its two
+linked operating principles:
 
 1. Judge whether a known state is correct before considering implementation
    difficulty; effort-based labels do not redefine known wrongness.

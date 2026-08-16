@@ -103,3 +103,9 @@ Run every draft against these before validation:
 - Two skills sharing one responsibility, or one skill carrying two.
 - Force-loading references (inline includes) instead of routing by
   when-to-read.
+- A remote URL pointing at an external project — a repository, a gist,
+  and above all another skill or plugin collection. Extract the knowledge
+  into the skill's own references; attribute lineage by name only, in the
+  tree's lineage records, never inside the skill. Official documentation
+  and release pages of house-adopted tools, and placeholder URLs in
+  templates, are the only URL classes a skill carries.

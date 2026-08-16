@@ -13,10 +13,10 @@ because it was skimmed is failure.
 6. **AI policy.** Search AI policy, contribution, governance, templates, and
    checkboxes. Classify BAN, DISCLOSURE-REQUIRED, CONDITIONAL, or SILENT.
    Policies range from bans (Gentoo, NetBSD, QEMU, Servo, Godot) to required
-   disclosure (Fedora, LLVM, Kubernetes, ASF, Linux). Silence triggers the
-   public policy registry at
-   <https://github.com/melissawm/open-source-ai-contribution-policies> and
-   voluntary disclosure, never an assumption of permission.
+   disclosure (Fedora, LLVM, Kubernetes, ASF, Linux). Silence triggers a
+   search of the community-maintained public registry of open-source
+   AI-contribution policies (search: `open-source-ai-contribution-policies`)
+   and voluntary disclosure, never an assumption of permission.
 7. **Legal.** Detect DCO via files and sign-off density; detect CLA bots and
    corporate CCLA. DCO/CLA action belongs to the human.
 8. **Security.** Read SECURITY.md. It is the only route for security-shaped
