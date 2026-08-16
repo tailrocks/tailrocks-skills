@@ -103,6 +103,10 @@ Run every draft against these before validation:
 - Two skills sharing one responsibility, or one skill carrying two.
 - Force-loading references (inline includes) instead of routing by
   when-to-read.
+- Changelog prose or a reference to the skill's own previous version —
+  "this replaces the earlier…", "formerly…", "we now…". A skill states
+  current doctrine only; an agent loading it has no earlier version to
+  compare against, so the contrast is pure noise. History lives in git.
 - Any reference to an external project — a repository or gist URL, a
   named skill or plugin collection, an author credited as the source.
   Needing the reference means the information belongs here: extract it,

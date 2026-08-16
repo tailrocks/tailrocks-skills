@@ -17,6 +17,10 @@ placeholder owners. What the gate cannot judge, these rules do:
 - Published articles, papers, and standards cited as evidence keep
   their canonical links; a project repository never qualifies as
   evidence.
+- A skill carries only its current rules. No changelog prose, no
+  reference to the skill's own previous version or an earlier framing,
+  no where-this-came-from asides — everything an agent loads into
+  context states present doctrine only; history lives in git.
 
 ## Router budget
 
