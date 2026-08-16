@@ -1,39 +1,51 @@
 //! GraphQL layer of the public billing API. Review target.
 
-use async_graphql::{ComplexObject, Context, Object, Result, SimpleObject};
 use deadpool_postgres::Pool;
+use juniper::{graphql_object, FieldResult, GraphQLObject};
 
-#[derive(SimpleObject)]
-#[graphql(complex)]
+pub struct Context {
+    pub pool: Pool,
+}
+
+impl juniper::Context for Context {}
+
 pub struct Invoice {
-    pub id: i64,
-    pub customer_id: i64,
-    pub total_cents: i64,
+    pub id: i32,
+    pub customer_id: i32,
+    pub total_cents: i32,
     pub status: String,
 }
 
-#[derive(SimpleObject)]
+#[derive(GraphQLObject)]
 pub struct Customer {
-    pub id: i64,
+    pub id: i32,
     pub name: String,
     pub email: String,
 }
 
-#[ComplexObject]
+#[graphql_object(context = Context)]
 impl Invoice {
-    async fn customer(&self, ctx: &Context<'_>) -> Result<Customer> {
-        let pool = ctx.data_unchecked::<Pool>();
-        let client = pool
-            .get()
-            .await
-            .map_err(|e| async_graphql::Error::new(e.to_string()))?;
+    fn id(&self) -> i32 {
+        self.id
+    }
+
+    fn total_cents(&self) -> i32 {
+        self.total_cents
+    }
+
+    fn status(&self) -> &str {
+        &self.status
+    }
+
+    async fn customer(&self, ctx: &Context) -> FieldResult<Customer> {
+        let client = ctx.pool.get().await.map_err(|e| e.to_string())?;
         let row = client
             .query_one(
                 "SELECT id, name, email FROM customers WHERE id = $1",
                 &[&self.customer_id],
             )
             .await
-            .map_err(|e| async_graphql::Error::new(e.to_string()))?;
+            .map_err(|e| e.to_string())?;
         Ok(Customer {
             id: row.get(0),
             name: row.get(1),
@@ -42,30 +54,21 @@ impl Invoice {
     }
 }
 
-pub struct QueryRoot;
+pub struct Query;
 
-#[Object]
-impl QueryRoot {
+#[graphql_object(context = Context)]
+impl Query {
     /// All invoices, newest first.
-    async fn invoices(
-        &self,
-        ctx: &Context<'_>,
-        limit: i64,
-        offset: i64,
-    ) -> Result<Vec<Invoice>> {
-        let pool = ctx.data_unchecked::<Pool>();
-        let client = pool
-            .get()
-            .await
-            .map_err(|e| async_graphql::Error::new(e.to_string()))?;
+    async fn invoices(ctx: &Context, limit: i32, offset: i32) -> FieldResult<Vec<Invoice>> {
+        let client = ctx.pool.get().await.map_err(|e| e.to_string())?;
         let rows = client
             .query(
                 "SELECT id, customer_id, total_cents, status FROM invoices \
                  ORDER BY created_at DESC LIMIT $1 OFFSET $2",
-                &[&limit, &offset],
+                &[&i64::from(limit), &i64::from(offset)],
             )
             .await
-            .map_err(|e| async_graphql::Error::new(e.to_string()))?;
+            .map_err(|e| e.to_string())?;
         Ok(rows
             .into_iter()
             .map(|row| Invoice {
@@ -78,21 +81,12 @@ impl QueryRoot {
     }
 }
 
-pub struct MutationRoot;
+pub struct Mutation;
 
-#[Object]
-impl MutationRoot {
-    async fn update_invoice(
-        &self,
-        ctx: &Context<'_>,
-        id: i64,
-        status: String,
-    ) -> Result<Invoice> {
-        let pool = ctx.data_unchecked::<Pool>();
-        let client = pool
-            .get()
-            .await
-            .map_err(|e| async_graphql::Error::new(e.to_string()))?;
+#[graphql_object(context = Context)]
+impl Mutation {
+    async fn update_invoice(ctx: &Context, id: i32, status: String) -> FieldResult<Invoice> {
+        let client = ctx.pool.get().await.map_err(|e| e.to_string())?;
         let row = client
             .query_one(
                 "UPDATE invoices SET status = $2 WHERE id = $1 \
@@ -100,7 +94,7 @@ impl MutationRoot {
                 &[&id, &status],
             )
             .await
-            .map_err(|e| async_graphql::Error::new(e.to_string()))?;
+            .map_err(|e| e.to_string())?;
         Ok(Invoice {
             id: row.get(0),
             customer_id: row.get(1),

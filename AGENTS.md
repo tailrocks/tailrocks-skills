@@ -85,11 +85,12 @@ Skill definition: `skills/tailrocks-axum-best-practices/SKILL.md`
 ### tailrocks-graphql-best-practices
 
 Design, build, and review the GraphQL public API of public backend services —
-the only public API surface in the doctrine. Contract-first: async-graphql on
-Axum serves it, the committed SDL snapshot is the contract, a breaking-change
-gate blocks silent breakage, evolution is additive with dated deprecations,
-and the TanStack web client consumes it through generated types. Never for
-cross-service communication — that is gRPC.
+the only public API surface in the doctrine. Contract-first: Juniper on Axum
+serves it (Juniper is the only sanctioned GraphQL library for Rust), the
+committed SDL snapshot is the contract, a breaking-change gate blocks silent
+breakage, evolution is additive with dated deprecations, and the TanStack web
+client consumes it through generated types. Never for cross-service
+communication — that is gRPC.
 
 Skill definition: `skills/tailrocks-graphql-best-practices/SKILL.md`
 

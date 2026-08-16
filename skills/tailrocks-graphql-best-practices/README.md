@@ -4,7 +4,7 @@
 
 `tailrocks-graphql-best-practices` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-graphql-best-practices)
 
-Design, build, review, or audit the public GraphQL API of a backend service: schema and pagination shape, async-graphql on Axum, generated TanStack clients, and committed-SDL contract gates. Not for service-to-service APIs — those are gRPC.
+Design, build, review, or audit the public GraphQL API of a backend service: schema and pagination shape, Juniper on Axum, generated TanStack clients, and committed-SDL contract gates. Not for service-to-service APIs — those are gRPC.
 
 ## Invocation
 

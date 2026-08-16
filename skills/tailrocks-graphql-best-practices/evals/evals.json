@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Review the GraphQL layer of our public billing API before we open it to customers. The module is in the fixture; findings only, no edits.",
-      "expected_output": "Read-only review with file:line findings: per-invoice customer resolver is an N+1 that must batch through a per-request DataLoader; limit/offset Vec list must become a Relay connection with capped page size; raw i64 database IDs and stringly-typed status must become opaque Node IDs and an enum; update_invoice is anemic CRUD that should be domain operations; map_err(e.to_string()) leaks internals and must map to typed user-error payloads plus an opaque logged internal error; resolvers check out deadpool-postgres connections and run SQL directly instead of calling the core; missing depth/complexity limits and persisted-operation posture named.",
+      "expected_output": "Read-only review with file:line findings: per-invoice customer resolver is an N+1 that must batch through a per-request loader held in the Juniper Context; limit/offset Vec list must become a Relay connection with capped page size; raw i64 database IDs and stringly-typed status must become opaque Node IDs and an enum; update_invoice is anemic CRUD that should be domain operations; map_err(e.to_string()) leaks internals and must map to typed user-error payloads plus an opaque logged internal error; resolvers check out deadpool-postgres connections and run SQL directly instead of calling the core; missing depth/complexity limits and persisted-operation posture named.",
       "files": [
         "evals/fixtures/review-service/billing_graphql.rs"
       ]
@@ -23,7 +23,7 @@
     },
     {
       "id": 4,
-      "prompt": "Design the mutation for submitting a draft invoice for approval in our public GraphQL API, served by async-graphql on Axum.",
+      "prompt": "Design the mutation for submitting a draft invoice for approval in our public GraphQL API, served by Juniper on Axum.",
       "expected_output": "A domain operation, not CRUD: submitInvoice(input: SubmitInvoiceInput!): SubmitInvoicePayload! with one input object, a payload owning a nullable invoice field plus non-null typed userErrors (code enum, field path, safe message) for expected failures; opaque ID input, non-null by default elsewhere; server maps core errors exhaustively and never leaks internals; notes that merging requires the regenerated SDL snapshot and a green breaking-change diff.",
       "files": []
     }

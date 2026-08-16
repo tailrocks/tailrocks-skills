@@ -16,7 +16,8 @@ A dedicated binary prints the schema with no environment — which is why
 use api::schema::build_schema;
 
 fn main() {
-    print!("{}", build_schema().sdl());
+    // Juniper's SDL export (schema-language feature, enabled by default).
+    print!("{}", build_schema().as_sdl());
 }
 ```
 
