@@ -66,7 +66,9 @@ later audit attribute each PR commit to the skill that produced it.
    [`references/grilling-method.md`](references/grilling-method.md). Build
    the decision tree from the item's empty sections, open questions, vague
    statements, and internal contradictions. Look up the facts the
-   environment can answer before asking anything.
+   environment can answer before asking anything — slow lookups go to
+   background read-only investigators per the method, and the interview
+   continues while they run.
    **Complete when:** every gap in the item is a tree node or a fact being
    looked up.
 
@@ -82,9 +84,13 @@ later audit attribute each PR commit to the skill that produced it.
    roadmap-item-format.md), summarizing what was settled and remains. Name the
    next step: more research (`tailrocks-research`), targeted decisions
    (`tailrocks-record-decision`), or finalization (`tailrocks-finalize`)
-   when Open questions looks thin.
+   when Open questions looks thin. **Prove the exit test with fresh
+   eyes:** run the method's close check — a clean-context reader of the
+   item file alone reports what is settled, open, and guessed; fix what
+   it misses before closing.
    **Complete when:** a reader of the item alone — without this
-   conversation — knows exactly what is settled and what is still open.
+   conversation — knows exactly what is settled and what is still open,
+   demonstrated by the close check, not assumed.
 
 ## Final gate
 

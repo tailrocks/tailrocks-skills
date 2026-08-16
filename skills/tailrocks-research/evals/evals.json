@@ -32,6 +32,22 @@
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "The investigators returned their chapters — vet them and write the summary.",
+      "expected_output": "One fresh-context, read-only citation-checker per chapter, blind to investigator reasoning, opens every cited source and returns per-citation SUPPORTS/PARTIAL/CONTRADICTS/UNREACHABLE verdicts; the orchestrator fixes misattributions, drops the unverifiable, opens load-bearing citations itself as a sample, resolves contradictions from the disputed sources, and stamps Vetted only after verdicts and sample agree; inline vetting only when parallel agents are unavailable, said aloud.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Research how signed macOS app updates should be shipped — this is standing knowledge, no roadmap item.",
+      "expected_output": "Standalone lane per the delivery git contract: branch research/<topic> off the base, chapters and summary committed with the Tailrocks-Skill trailer, a draft PR opened; the base branch is never pushed directly.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+      ]
     }
   ]
 }

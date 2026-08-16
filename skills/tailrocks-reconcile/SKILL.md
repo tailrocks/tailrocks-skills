@@ -47,11 +47,18 @@ committing the truth-sync status and log writes — repository commit convention
 push; update the draft PR body's status line when the item's status
 changed. One invocation, one marked commit: the trailer is what lets a
 later audit attribute each PR commit to the skill that produced it. After the item's PR merged, the delivery branch is gone —
-commit wherever the artifacts now live, same trailer rule.
+reopen the lane per the contract reference: recreate `roadmap/<slug>`
+off the current base, commit there, open the post-merge draft PR;
+never push the base branch directly.
 
 ## Steps
 
-1. **Check, then load.** Run `sh plans/<slug>/goal-check.sh` first and retain
+1. **Check, then load.** Read
+   [`references/row-verification.md`](references/row-verification.md):
+   steps 2–5 fan out to read-only verifier subagents per its brief and
+   output contract — verbose command output stays with the verifier,
+   only verdicts return; verify serially only when parallel agents are
+   unavailable, and say so. Run `sh plans/<slug>/goal-check.sh` first and retain
    its final verdict line. dirty-tree → stop and report without mutation;
    plan-drift → mark affected package rows `STALE` and route to
    `tailrocks-plan`; malformed → stop and report package repair; nonterminal-rows

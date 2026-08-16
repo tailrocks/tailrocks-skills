@@ -32,6 +32,14 @@
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "The writer subagents returned all nine plans for macos-application — take them through verification and review.",
+      "expected_output": "Per plan, a fresh-context read-only verifier blind to the writer's reasoning opens every cited source and reports excerpt mismatches; any mismatch makes the orchestrator re-open that plan's sources and re-verify all; cold reviewers get only the plan file and hub; the traceability gate runs as a fresh-context read-only checker over ledger, spec, and plans reporting uncovered IDs; the orchestrator alone fixes files and backfills the ledger.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+      ]
     }
   ]
 }

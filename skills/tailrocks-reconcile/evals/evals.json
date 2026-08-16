@@ -32,6 +32,22 @@
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Reconcile macos-application — nine rows to re-verify and the test suite prints thousands of lines per run.",
+      "expected_output": "Rows fan out to read-only verifier subagents, one per row or cheap cluster, each brief restating the exact commands and the verification-only no-mutation rules; only the row/claimed/verdict/decisive-line/reason contract returns — raw suite output is never replayed into the session; the orchestrator alone writes hub rows, item status, Log, and the marked commit; serial fallback only when parallel agents are unavailable, said aloud.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Reconcile macos-application — its roadmap PR merged last week and the delivery branch is deleted.",
+      "expected_output": "Lane reopened per the delivery git contract: roadmap/macos-application recreated off the current base, truth-sync writes committed there with the Tailrocks-Skill trailer, a post-merge draft PR opened; the base branch is never pushed directly.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+      ]
     }
   ]
 }

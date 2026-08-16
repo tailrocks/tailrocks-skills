@@ -19,3 +19,6 @@ Arguments: `<roadmap-slug>`
 The instructions this skill loads live in [`SKILL.md`](SKILL.md), beside this
 file. They are not copied here — one source, and no chance of the two drifting.
 
+## References
+
+- [`row-verification.md`](references/row-verification.md)

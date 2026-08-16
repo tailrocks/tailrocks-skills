@@ -32,6 +32,14 @@
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Close the brainstorm on macos-application — I think we covered everything in this chat.",
+      "expected_output": "Fresh-eyes close check before closing: a clean-context, read-only subagent reads only the item file and reports what is settled, open, and guessed; anything living only in the conversation gets written into the item and the check re-run; the exit is demonstrated, not self-certified. Without subagents, the self-run check is said aloud with a full re-read of the item against the session.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+      ]
     }
   ]
 }

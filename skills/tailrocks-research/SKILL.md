@@ -51,7 +51,9 @@ Two invocation shapes:
 Artifact writes land on the item's delivery branch — `roadmap/<slug>`,
 opened with its draft PR by `tailrocks-idea`. A missing branch (item
 predates the contract, or repo law forbids branches) is handled per that
-skill's contract reference, never silently. End every invocation by
+skill's contract reference, never silently. A question invocation with
+no linked item opens its own lane per that reference: branch
+`research/<topic>` off the base, draft PR, same rules. End every invocation by
 committing the topic's chapters and README — repository commit convention, subject like
 `docs(research): <topic> — chapters NN–NN` — with the trailer `Tailrocks-Skill: tailrocks-research`, then
 push; update the draft PR body's status line when the item's status
@@ -79,10 +81,15 @@ later audit attribute each PR commit to the skill that produced it.
    **Complete when:** every question has a chapter, a named assumption, or a
    recorded dead end.
 
-3. **Vet.** Open every citation yourself; confirm it says what the finding
-   claims; fix misattributions; drop the unverifiable; reconcile
-   contradictions by reading the sources, never by averaging. Mark each
-   chapter `Vetted: <date>`.
+3. **Vet.** Fan out one fresh-context, read-only citation-checker per
+   chapter, blind to the investigator's reasoning, per the playbook's
+   vetting contract: it opens every citation and returns per-citation
+   verdicts. Fix misattributions; drop the unverifiable; then open the
+   load-bearing citations yourself as a sample, and reconcile
+   contradictions by reading the disputed sources, never by averaging.
+   Mark each chapter `Vetted: <date>` only after its verdicts and your
+   sample agree; vet inline when parallel agents are unavailable, and
+   say so.
    **Complete when:** no unvetted claim remains in any chapter.
 
 4. **Synthesize.** Write `research/<topic>/README.md`: conclusions with

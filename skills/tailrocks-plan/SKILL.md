@@ -118,20 +118,26 @@ later audit attribute each PR commit to the skill that produced it.
    [`references/plan-template.md`](references/plan-template.md) including
    its writer brief. One subagent per manifest item, parallel where
    dependencies allow, each producing `plans/<slug>/NNN-<slug>.md`.
-   Spot-verify every returned plan's excerpts against the cited sources
-   (spot-verify = open every cited source for at least the load-bearing
-   excerpts; on any mismatch, re-verify all).
+   Verify each returned plan per the template's verifier brief: a
+   fresh-context, read-only verifier — blind to the writer's reasoning —
+   opens every cited source and reports excerpt mismatches; on any
+   reported mismatch the orchestrator re-opens that plan's sources and
+   re-verifies all of them. Verify inline when parallel agents are
+   unavailable, and say so.
    After accepting each plan, the orchestrator backfills the ledger's Plans
    columns and the must-not registry's "Enforced in plans" column — writer
    subagents never touch shared files.
    **Complete when:** every manifest row has a plan file passing the
    template's quality bar.
 
-6. **Cold review and gate.** Fresh-context reviewers read each plan with
-   only the plan file and the repository; fix every reported gap. Then the
-   traceability gate: every requirement covered, every must-not inlined in
-   each plan it could tempt, every dependency edge backed by a
-   precondition check.
+6. **Cold review and gate.** Fresh-context, read-only reviewers read
+   each plan with only the plan file and the repository; fix every
+   reported gap. Then the traceability gate, run by a fresh-context,
+   read-only checker over the ledger, spec, and plans: every requirement
+   covered, every must-not inlined in each plan it could tempt, every
+   dependency edge backed by a precondition check — it reports uncovered
+   IDs and missing edges; the orchestrator fixes and re-runs the gate.
+   Run the gate inline when parallel agents are unavailable.
    **Complete when:** no reviewer-reported ambiguity remains and the gate
    passes.
 
