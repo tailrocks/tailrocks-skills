@@ -15,7 +15,7 @@ concurrency:
 jobs:
   validate:
     if: github.event_name != 'schedule'
-    runs-on: ${{ 'ubuntu-26.04' }}
+    runs-on: ${{ fromJSON('["self-hosted","velnor-target-mvp"]') }}
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -31,7 +31,7 @@ jobs:
         run: find skills -path '*/templates/*.sh' -print0 | xargs -0 -n1 sh -n
 
   latest-stable:
-    runs-on: ${{ 'ubuntu-26.04' }}
+    runs-on: ${{ fromJSON('["self-hosted","velnor-target-mvp"]') }}
     timeout-minutes: 10
     permissions:
       contents: read
