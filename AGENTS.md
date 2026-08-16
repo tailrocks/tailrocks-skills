@@ -228,6 +228,24 @@ permits urgent containment without calling it complete remediation.
 
 Skill definition: `skills/tailrocks-remediate/SKILL.md`
 
+### tailrocks-simplify
+
+Review a pull request or working diff and remove code from it without changing
+behavior. Scope is the diff; untouched code stays untouched. Each added hunk
+walks a ladder — need to exist, repository already does it, language does it,
+platform does it, installed dependency does it, one expression — and every
+finding carries a counted delta and a preservation argument. Protected
+constructs (trust-boundary validation, authorization, failure paths, durability
+and concurrency handling, accessibility, security limits) are never removed as
+redundancy, and single-use extractions, two-occurrence abstractions, and
+renames for taste are rejected by name.
+
+Skill definition: `skills/tailrocks-simplify/SKILL.md`
+
+The ladder descends from `DietrichGebert`'s ponytail, which applies it before
+code is written; this skill applies it to code that already exists in a diff and
+adds the obligation that nothing observable may change.
+
 ### tailrocks-rethink
 
 Conceptually re-derive the design behind a reported bug, friction, or awkward
@@ -239,6 +257,13 @@ breaking changes are ordinary outcomes; internal compatibility is work, not a
 constraint.
 
 Skill definition: `skills/tailrocks-rethink/SKILL.md`
+
+Three skills change existing code, ordered by how much they are allowed to
+disturb. **tailrocks-simplify** changes nothing observable and stays inside the
+diff. **tailrocks-remediate** corrects a proven defect while the system keeps
+its promises. **tailrocks-rethink** treats the current shape as the subject and
+expects to break things. Pick by what the change may disturb, not by how large
+it feels.
 
 tailrocks-remediate and tailrocks-rethink both refuse to price the answer, and
 own different jobs. Remediate requires a proven defect, keeps compatibility as a

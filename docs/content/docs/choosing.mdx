@@ -54,9 +54,23 @@ glass chrome requires screen-capturing the running app.
 |---|---|
 | [`tailrocks-code-health`](/docs/skills/tailrocks-code-health) | A debt class must stop growing and become a measurable, shrink-only contract. |
 | [`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) | A rule must be recorded for coding agents, or the instruction files have grown, drifted, or landed in the wrong directory. |
+| [`tailrocks-simplify`](/docs/skills/tailrocks-simplify) | A pull request works and should carry less code, with behavior frozen. |
 | [`tailrocks-remediate`](/docs/skills/tailrocks-remediate) | A defect is proven and the system must keep its promises while being corrected. |
 | [`tailrocks-rethink`](/docs/skills/tailrocks-rethink) | The current shape itself is under review and breaking it is acceptable. |
 | [`tailrocks-contribute`](/docs/skills/tailrocks-contribute) | The repository belongs to someone else. |
+
+### simplify, remediate, or rethink
+
+Three skills change existing code. Pick by how much the change may disturb, not
+by how large it feels.
+
+`tailrocks-simplify` disturbs nothing observable. Scope is the diff, behavior is
+frozen, and the only accepted findings are removals with a counted delta.
+Reach for it on a pull request that works and should be smaller.
+
+`tailrocks-remediate` corrects a proven defect while the system keeps its
+promises. `tailrocks-rethink` treats the current shape as the subject and
+expects to break things.
 
 ### remediate or rethink
 
