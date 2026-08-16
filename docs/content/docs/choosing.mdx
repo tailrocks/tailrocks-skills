@@ -94,10 +94,11 @@ is a substitute for them.
 
 ## Roadmap and delivery
 
-```text
-idea → brainstorm → finalize → plan → goal execution → reconcile
-         ↕             ↕
-      research    record-decision
+```mermaid
+flowchart LR
+  idea --> brainstorm --> finalize --> plan --> exec["goal execution"] --> reconcile
+  brainstorm <--> research
+  finalize <--> decision["record-decision"]
 ```
 
 | Skill | Reach for it when |

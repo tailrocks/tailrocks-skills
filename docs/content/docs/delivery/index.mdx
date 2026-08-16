@@ -14,10 +14,11 @@ neighbours.
 
 ## The shape
 
-```text
-idea → brainstorm → finalize → plan → goal execution → reconcile
-         ↕             ↕
-      research    record-decision
+```mermaid
+flowchart LR
+  idea --> brainstorm --> finalize --> plan --> exec["goal execution"] --> reconcile
+  brainstorm <--> research
+  finalize <--> decision["record-decision"]
 ```
 
 Straight line for the stages. The two below hang off it: research answers
