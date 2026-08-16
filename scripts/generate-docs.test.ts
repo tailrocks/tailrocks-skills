@@ -98,6 +98,25 @@ test("no documentation page draws a flow as text", async () => {
   }
 });
 
+test("no skill overview repeats the description its title already shows", async () => {
+  const root = path.resolve(import.meta.dir, "..");
+  const overviews = (await generate(root)).filter((entry) =>
+    entry.file.endsWith(path.join("skills", path.basename(path.dirname(entry.file)), "index.mdx")),
+  );
+  expect(overviews.length).toBeGreaterThan(0);
+
+  for (const page of overviews) {
+    const described = page.content.match(/^description: (".*")$/m);
+    if (!described) continue;
+    const summary = JSON.parse(described[1]) as string;
+    const body = page.content.slice(page.content.indexOf("---", 4));
+    expect({ file: page.file, repeated: body.includes(summary) }).toEqual({
+      file: page.file,
+      repeated: false,
+    });
+  }
+});
+
 test("no documentation page is plain markdown", async () => {
   expect(await strayMarkdown(path.resolve(import.meta.dir, ".."))).toEqual([]);
 });
