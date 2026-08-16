@@ -220,8 +220,11 @@ trailers, body template or generator command, required checks, blast-radius
 classes, a pre-merge worklist, and the merge method. Precedence is fixed:
 user instruction, then `.tailrocks/pr.md`, then the repository's own
 conventions (CONTRIBUTING, PR template, agent instruction files, git
-history), then skill defaults. The format reference and a copy-ready
-template ship with tailrocks-create-pr.
+history), then skill defaults. The body default in every repository is its
+own `.github/PULL_REQUEST_TEMPLATE.md`, read at runtime; a generic fallback
+skeleton — distilled from the jackin PR template — ships with
+tailrocks-create-pr alongside the conventions-format reference and a
+copy-ready `.tailrocks/pr.md` template.
 
 - **tailrocks-create-pr** — branch off the base branch, commit in the
   repository's convention, build the body from its template or generator via

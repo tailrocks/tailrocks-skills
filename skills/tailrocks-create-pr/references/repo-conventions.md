@@ -48,6 +48,12 @@ listed here is still binding prose for the stage it names.
 
 `tailrocks-checkout-pr` needs nothing from this file.
 
+Body default when `## Body` is absent: the repository's own
+`.github/PULL_REQUEST_TEMPLATE.md` (or GitHub's alternate locations), read
+at runtime; with no template anywhere, the generic skeleton at
+`templates/PULL_REQUEST_TEMPLATE.md` beside this skill. Discovery order and
+prose rules: `references/pr-body.md`.
+
 ## Body generator contract
 
 When `## Body` names a generator command, the skill runs it verbatim and

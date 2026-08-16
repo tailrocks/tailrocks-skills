@@ -66,7 +66,9 @@ settings, and this skill's defaults govern.
 5. **Reconcile metadata.** Title and body must match the final diff — a
    squash writes the title verbatim into history. Stale → fix via
    `gh pr edit` (title in the repository's subject convention, body via
-   `--body-file`) and surface the change in your reply.
+   `--body-file`, shaped by the repository's
+   `.github/PULL_REQUEST_TEMPLATE.md` per the body rules shipped with
+   `tailrocks-create-pr`) and surface the change in your reply.
    **Complete when:** metadata describes what actually merges.
 
 6. **Merge.** Method from `## Merge`, else the repository's allowed methods

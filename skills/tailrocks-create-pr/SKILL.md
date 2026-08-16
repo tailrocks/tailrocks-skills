@@ -71,11 +71,15 @@ convention discovery, never an error.
    Then push with upstream set.
    **Complete when:** the branch is on the remote and the tree is clean.
 
-4. **Build the body.** If the conventions file names a body generator
-   command, run it and use its output as the skeleton. Else start from the
-   repository's PR template; no template → Summary, What changed, How to
-   verify. Write the prose from the actual diff; fill how-to-verify with the
-   real commands a reviewer would run.
+4. **Build the body.** Read
+   [`references/pr-body.md`](references/pr-body.md). If the conventions file
+   names a body generator command, run it and use its stdout as the
+   skeleton. Else read the repository's own
+   `.github/PULL_REQUEST_TEMPLATE.md` at runtime — never from memory; no
+   template anywhere → the generic skeleton shipped at
+   `templates/PULL_REQUEST_TEMPLATE.md`, offered for install. Write the
+   prose from the actual diff; select only the Verify-locally blocks the
+   diff earns and fill them with the real commands a reviewer would run.
    **Complete when:** every remaining section is filled and specific to this
    change.
 
