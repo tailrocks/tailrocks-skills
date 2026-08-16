@@ -1,26 +1,27 @@
-import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
-import { RootProvider } from 'fumadocs-ui/provider/tanstack'
-import appCss from '@/styles/app.css?url'
+import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
+import { RootProvider } from "fumadocs-ui/provider/tanstack";
+
+import appCss from "@/styles/app.css?url";
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'Manual-only engineering skills for Claude Code, Codex, OpenCode, Grok Build, Kimi Code, Antigravity, and Amp.',
+          "Manual-only engineering skills for Claude Code, Codex, OpenCode, Grok Build, Kimi Code, Antigravity, and Amp.",
       },
-      { title: 'tailrocks-skills' },
+      { title: "tailrocks-skills" },
     ],
     links: [
-      { rel: 'stylesheet', href: appCss },
-      { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
     ],
   }),
   component: RootComponent,
-})
+});
 
 function RootComponent() {
   return (
@@ -35,5 +36,5 @@ function RootComponent() {
         <Scripts />
       </body>
     </html>
-  )
+  );
 }

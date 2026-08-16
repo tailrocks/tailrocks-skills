@@ -78,7 +78,9 @@ async function scanLinks(
       errors.push(`${directory}: broken reference ${raw}`);
     }
   }
-  for (const match of proseWithoutFences(source).matchAll(/`((?:references|templates|scripts|evals)\/[^\s`]+)`/g)) {
+  for (const match of proseWithoutFences(source).matchAll(
+    /`((?:references|templates|scripts|evals)\/[^\s`]+)`/g,
+  )) {
     const raw = match[1].replace(/[),.;:]+$/, "").split("#", 1)[0];
     const target = path.resolve(skillDir, raw);
     if (outside(skillDir, target)) {
@@ -90,9 +92,7 @@ async function scanLinks(
 }
 
 function packageManagerCommands(source: string): string[] {
-  return source
-    .split("\n")
-    .filter((line) => /(?:^|[\s$(`])(?:npm|npx|pnpm|yarn)\s/.test(line));
+  return source.split("\n").filter((line) => /(?:^|[\s$(`])(?:npm|npx|pnpm|yarn)\s/.test(line));
 }
 
 export async function validate(root: string): Promise<string[]> {
@@ -143,12 +143,16 @@ export async function validate(root: string): Promise<string[]> {
       // invocable. Keep the trigger, drop the prose the router already carries.
       const body = description.slice(guard.length).trim().length;
       if (body > descriptionBudget) {
-        errors.push(`${directory}: description is ${body} characters after the guard, budget is ${descriptionBudget}`);
+        errors.push(
+          `${directory}: description is ${body} characters after the guard, budget is ${descriptionBudget}`,
+        );
       }
     }
     if (metadata.license !== "Apache-2.0") errors.push(`${directory}: Apache-2.0 license metadata missing`);
-    if (metadata["disable-model-invocation"] !== true) errors.push(`${directory}: Claude manual-only policy missing`);
-    if (metadata["user-invocable"] !== true) errors.push(`${directory}: explicit user invocation policy missing`);
+    if (metadata["disable-model-invocation"] !== true)
+      errors.push(`${directory}: Claude manual-only policy missing`);
+    if (metadata["user-invocable"] !== true)
+      errors.push(`${directory}: explicit user invocation policy missing`);
 
     const openaiFile = path.join(skillDir, "agents", "openai.yaml");
     if (!(await exists(openaiFile))) {
@@ -228,7 +232,10 @@ export async function validate(root: string): Promise<string[]> {
             }
             ids.add(item.id as number);
             for (const fixture of item.files as unknown[]) {
-              if (typeof fixture !== "string" || !(await exists(resolveEvalFixture(root, skillDir, fixture)))) {
+              if (
+                typeof fixture !== "string" ||
+                !(await exists(resolveEvalFixture(root, skillDir, fixture)))
+              ) {
                 errors.push(`${directory}: eval case ${item.id} fixture not found: ${String(fixture)}`);
               }
             }
@@ -332,7 +339,8 @@ export async function validate(root: string): Promise<string[]> {
       for (const [index, group] of catalog.groups.entries()) {
         const id = typeof group.id === "string" ? group.id : `#${index + 1}`;
         for (const key of ["id", "title", "summary"] as const) {
-          if (typeof group[key] !== "string" || group[key] === "") errors.push(`catalog.json: group ${id} needs ${key}`);
+          if (typeof group[key] !== "string" || group[key] === "")
+            errors.push(`catalog.json: group ${id} needs ${key}`);
         }
         if (!Array.isArray(group.skills) || group.skills.length === 0) {
           errors.push(`catalog.json: group ${id} must list at least one skill`);
@@ -361,7 +369,8 @@ export async function validate(root: string): Promise<string[]> {
     try {
       const source = await readFile(path.join(root, catalog), "utf8");
       for (const tag of source.matchAll(/\bv\d+\.\d+\.\d+\b/g)) {
-        if (tag[0] !== expectedTag) errors.push(`${catalog}: release pin ${tag[0]} must equal ${expectedTag}`);
+        if (tag[0] !== expectedTag)
+          errors.push(`${catalog}: release pin ${tag[0]} must equal ${expectedTag}`);
       }
     } catch {
       // Catalog presence is checked above.
@@ -383,8 +392,8 @@ if (import.meta.main) {
     const lines = (await readFile(file, "utf8")).split("\n").length;
     if (lines > 200) console.log(`notice: ${entry.name}: SKILL.md is ${lines} lines (router budget: ~200)`);
   }
-  const entries = (await readdir(path.join(root, "skills"), { withFileTypes: true })).filter(
-    (entry) => entry.isDirectory(),
+  const entries = (await readdir(path.join(root, "skills"), { withFileTypes: true })).filter((entry) =>
+    entry.isDirectory(),
   );
   console.log(`Validated ${entries.length} skills.`);
 }

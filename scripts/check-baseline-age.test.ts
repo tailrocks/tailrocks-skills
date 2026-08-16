@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test";
 import path from "node:path";
+
 import { baselineStamps } from "./check-baseline-age";
 
 test("finds the known platform baseline files and parses their dates", async () => {

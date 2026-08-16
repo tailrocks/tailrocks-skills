@@ -3,13 +3,22 @@ lockfile = true
 
 [tools]
 bun = "1.3.14"
+"npm:oxfmt" = "0.63.0"
 
-[tasks.validate]
+[tasks.lint]
 description = "Validate every skill, manifest, catalog group, and reverse catalog"
 run = "bun run scripts/validate-skills.ts"
 
+[tasks.fmt]
+description = "Check formatting of the TypeScript this repository owns"
+run = "oxfmt --check scripts docs/src docs/scripts docs/vite.config.ts docs/source.config.ts"
+
+[tasks."fmt:write"]
+description = "Format the TypeScript this repository owns"
+run = "oxfmt scripts docs/src docs/scripts docs/vite.config.ts docs/source.config.ts"
+
 [tasks.ci]
-description = "Everything CI runs: validate, generated-file drift check, script tests"
+description = "Everything CI runs: lint, generated-file drift check, script tests"
 run = "bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && bun test scripts/"
 
 [tasks.test]

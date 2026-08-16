@@ -143,7 +143,7 @@ skill bodies per agent.
 
 ```sh
 mise install
-mise run validate
+mise run lint
 mise run docs
 bun test scripts/
 claude --plugin-dir .

@@ -393,6 +393,21 @@ any other per-tool action, and do not install a tool a job needs by hand.
 that only re-runs another one makes `mise tasks` a worse map of the repository
 and leaves two names to keep in step. Name the real task well instead.
 
+**Four task names are a CI contract, not a preference.** The shared
+`velnor-actions` lane runs `mise install --locked`, `mise run ci`,
+`mise run test`, `mise run lint`, and `mise run fmt` in every repository. Those
+names must exist and must each do real work — `lint` validates the skill tree,
+`fmt` checks formatting with `oxfmt`, and `fmt:write` is the one that rewrites.
+Renaming or deleting one of them turns the lane red, and this repository's own
+workflows will not tell you, because the gate set lives in the reusable
+workflow.
+
+`oxfmt` formats only the TypeScript this repository owns: `scripts/` under the
+root `.oxfmtrc.json`, and `docs/src`, `docs/scripts`, and the docs config files
+under `docs/.oxfmtrc.json`, which sets that subtree's own style. It never
+touches Markdown, generated files, `examples/`, or the templates a skill ships
+for other projects.
+
 ## Validation
 
 Requires Bun, pinned in `mise.toml`; `mise install` provisions it. Before
@@ -401,7 +416,7 @@ publishing changes, run the Bun-native skill and manifest validator:
 ```sh
 bun run scripts/validate-skills.ts
 # or
-mise run validate
+mise run lint
 ```
 
 Load the plugin locally in Claude Code:
@@ -471,7 +486,7 @@ footer in the body.
 
 ## Releasing
 
-1. Run `mise run validate`; it must be green.
+1. Run `mise run lint`; it must be green.
 2. Bump `version` in `.claude-plugin/plugin.json`,
    `.codex-plugin/plugin.json`, `.kimi-plugin/plugin.json`, and the
    `.claude-plugin/marketplace.json` entry in one commit.

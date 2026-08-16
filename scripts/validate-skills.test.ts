@@ -2,11 +2,11 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
+
 import { validate } from "./validate-skills";
 
 const skill = "sample-skill";
-const description =
-  "Use only when the user explicitly requests this skill. Validate a minimal fixture.";
+const description = "Use only when the user explicitly requests this skill. Validate a minimal fixture.";
 let root = "";
 
 async function write(relative: string, contents: string): Promise<void> {
@@ -93,7 +93,10 @@ describe("validate", () => {
   });
 
   test("rejects a skill that no catalog group contains", async () => {
-    await write("catalog.json", JSON.stringify({ groups: [{ id: "sample", title: "S", summary: "s", skills: [] }] }));
+    await write(
+      "catalog.json",
+      JSON.stringify({ groups: [{ id: "sample", title: "S", summary: "s", skills: [] }] }),
+    );
     const errors = await validate(root);
     expect(errors).toContain("catalog.json: group sample must list at least one skill");
     expect(errors).toContain(`catalog.json: no group contains ${skill}`);
@@ -101,9 +104,7 @@ describe("validate", () => {
 
   test("rejects a description without the guard", async () => {
     await writeSkill("Validate a minimal fixture.");
-    expect(await validate(root)).toContain(
-      `${skill}: description must start with explicit-request guard`,
-    );
+    expect(await validate(root)).toContain(`${skill}: description must start with explicit-request guard`);
   });
 
   test("rejects a description over the budget after the guard", async () => {
@@ -115,9 +116,7 @@ describe("validate", () => {
 
   test("rejects an overlong description", async () => {
     await writeSkill(`${description}${"x".repeat(1100)}`);
-    expect(await validate(root)).toContain(
-      `${skill}: description must contain 1-1024 characters`,
-    );
+    expect(await validate(root)).toContain(`${skill}: description must contain 1-1024 characters`);
   });
 
   test("rejects a parent-directory link", async () => {
@@ -125,9 +124,7 @@ describe("validate", () => {
       `skills/${skill}/SKILL.md`,
       `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[escape](../outside.md)\n`,
     );
-    expect(await validate(root)).toContain(
-      `${skill}: reference escapes skill directory: ../outside.md`,
-    );
+    expect(await validate(root)).toContain(`${skill}: reference escapes skill directory: ../outside.md`);
   });
 
   test("rejects fewer than three eval cases", async () => {
@@ -167,7 +164,9 @@ describe("validate", () => {
     const evaluation = await Bun.file(path.join(root, `skills/${skill}/evals/evals.json`)).json();
     evaluation.evals[0].files = ["evals/fixtures/missing.txt"];
     await write(`skills/${skill}/evals/evals.json`, JSON.stringify(evaluation));
-    expect(await validate(root)).toContain(`${skill}: eval case 1 fixture not found: evals/fixtures/missing.txt`);
+    expect(await validate(root)).toContain(
+      `${skill}: eval case 1 fixture not found: evals/fixtures/missing.txt`,
+    );
   });
 
   test("rejects a duplicate eval id", async () => {

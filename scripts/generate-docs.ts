@@ -107,7 +107,9 @@ export function escapeMdx(source: string): string {
 
 /** Strips the explicit-request guard and returns the first remaining sentence. */
 export function summarize(description: string): string {
-  const remainder = description.startsWith(guard) ? description.slice(guard.length).trim() : description.trim();
+  const remainder = description.startsWith(guard)
+    ? description.slice(guard.length).trim()
+    : description.trim();
   const stop = remainder.search(/\.\s/);
   return stop === -1 ? remainder : remainder.slice(0, stop + 1);
 }
@@ -298,7 +300,8 @@ ${listEnd}`;
 export function replaceRootList(readme: string, list: string): string {
   const start = readme.indexOf(listStart);
   const end = readme.indexOf(listEnd);
-  if (start === -1 || end === -1) throw new Error(`README.md is missing the ${listStart} / ${listEnd} markers`);
+  if (start === -1 || end === -1)
+    throw new Error(`README.md is missing the ${listStart} / ${listEnd} markers`);
   return `${readme.slice(0, start)}${list}${readme.slice(end + listEnd.length)}`;
 }
 
@@ -391,5 +394,9 @@ if (import.meta.main) {
     for (const file of stale) console.error(`error: out of date, run 'mise run docs': ${file}`);
     process.exit(1);
   }
-  console.log(check ? `Checked ${generated.length} generated files.` : `Wrote ${stale.length}/${generated.length} files.`);
+  console.log(
+    check
+      ? `Checked ${generated.length} generated files.`
+      : `Wrote ${stale.length}/${generated.length} files.`,
+  );
 }

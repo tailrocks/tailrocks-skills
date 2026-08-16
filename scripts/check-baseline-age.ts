@@ -1,7 +1,11 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
-export interface Stamp { file: string; date: string; ageDays: number }
+export interface Stamp {
+  file: string;
+  date: string;
+  ageDays: number;
+}
 
 async function filesUnder(directory: string): Promise<string[]> {
   const output: string[] = [];
@@ -17,7 +21,11 @@ export async function baselineStamps(root: string, now = new Date()): Promise<St
   const stamps: Stamp[] = [];
   for (const file of await filesUnder(path.join(root, "skills"))) {
     let source: string;
-    try { source = await readFile(file, "utf8"); } catch { continue; }
+    try {
+      source = await readFile(file, "utf8");
+    } catch {
+      continue;
+    }
     const dates = source.split("\n").flatMap((line) => {
       if (!/(?:verified|surveyed|compiled)/i.test(line)) return [];
       return [...line.matchAll(/\b(\d{4}-\d{2}-\d{2})\b/g)].map((match) => match[1]);

@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test";
 import path from "node:path";
+
 import {
   absoluteLinks,
   escapeMdx,
@@ -38,7 +39,9 @@ test("escapes the characters MDX reads as syntax, and keeps autolinks clickable"
 });
 
 test("rewrites repository-relative links and leaves absolute ones alone", () => {
-  expect(absoluteLinks("[a](references/x.md)", "https://host/base")).toBe("[a](https://host/base/references/x.md)");
+  expect(absoluteLinks("[a](references/x.md)", "https://host/base")).toBe(
+    "[a](https://host/base/references/x.md)",
+  );
   expect(absoluteLinks("[a](https://x.test)", "https://host/base")).toBe("[a](https://x.test)");
   expect(absoluteLinks("[a](#anchor)", "https://host/base")).toBe("[a](#anchor)");
 });
