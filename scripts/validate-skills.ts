@@ -91,7 +91,8 @@ async function scanLinks(
   }
 }
 
-const forgeUrlPattern = /https?:\/\/(gist\.github\.com|github\.com|gitlab\.com|bitbucket\.org|codeberg\.org)\/[^\s)>`"'\]]*/g;
+const forgeUrlPattern =
+  /https?:\/\/(gist\.github\.com|github\.com|gitlab\.com|bitbucket\.org|codeberg\.org)\/[^\s)>`"'\]]*/g;
 // Canonical homes of house-adopted libraries and tools, used as version and
 // documentation sources. Everything else on a code forge is an external
 // project reference, which shipped skill content must not carry.
