@@ -469,7 +469,11 @@ footer in the body.
    `.claude-plugin/marketplace.json` entry in one commit.
 3. Re-run the validator; it enforces version lockstep.
 4. Update pinned-tag examples in INSTALL.md and README.md to the new tag.
-5. Tag `vX.Y.Z` on the merge commit and push the tag.
+5. Tag `vX.Y.Z` on the merge commit, push the tag, and publish the GitHub
+   release (`gh release create vX.Y.Z --generate-notes --latest`). **A version
+   bump without a tag and release breaks every pinned install and gives the
+   auto-updating clients nothing to find** — the tag is the release, not the
+   manifest edit.
 6. Re-verify the INSTALL.md matrix commands against current client versions
    and refresh its verified date.
 7. Re-verify macOS platform baselines against Apple DocC availability data and
