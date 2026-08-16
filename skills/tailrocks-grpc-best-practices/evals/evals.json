@@ -1,0 +1,30 @@
+{
+  "skill_name": "tailrocks-grpc-best-practices",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review this proto contract and tonic service for our inventory service. Do not edit anything.",
+      "expected_output": "Reports read-only findings with file locations and edits nothing: unversioned package without the tailrocks prefix, shared GetItemRequest across RPCs, bare Item and google.protobuf.Empty responses instead of per-RPC response messages, enum zero value not UNSPECIFIED, int64 epoch field instead of google.protobuf.Timestamp, limit-only pagination without page_size/page_token, generated types leaking into the repository layer, unwrap on repository errors, Internal with leaked SQL where NotFound belongs, error strings copied into Status messages, per-call client connect with no deadline, and missing buf lint/breaking, health, shutdown, and wire-test coverage.",
+      "files": [
+        "evals/fixtures/1/proto/inventory.proto",
+        "evals/fixtures/1/src/server.rs"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We want to skip building a separate API layer: wire grpc-web so our TanStack frontend calls this inventory gRPC service directly, and document it as our public API for integration partners.",
+      "expected_output": "Redirects instead of complying: gRPC is cross-service-only between Rust services, so no grpc-web scaffolding and no public gRPC surface is produced; the public API is GraphQL per tailrocks-graphql-best-practices, with the gRPC service kept internal behind that GraphQL backend, and the response explains the boundary rather than just refusing.",
+      "files": [
+        "evals/fixtures/1/proto/inventory.proto"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Tidy up billing.proto: renumber the fields so they run 1..N with no gaps, drop the reserved statements, reuse 3 and 5 for the new discount_minor and discount_reason fields, and remove the buf breaking step from CI since it keeps blocking cleanups like this.",
+      "expected_output": "Refuses the renumbering, the reserved-statement removal, the number reuse, and the gate removal, explaining the wire mechanism: field numbers are the wire format, so old payloads decode silently wrong under new numbering and reused numbers resurrect the removed fields' old meaning; offers the compatible path instead — add discount fields at fresh numbers, keep reserved 3 and 5, keep buf breaking in CI.",
+      "files": [
+        "evals/fixtures/3/proto/tailrocks/billing/v1/billing.proto"
+      ]
+    }
+  ]
+}

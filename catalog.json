@@ -4,11 +4,13 @@
     {
       "id": "rust",
       "title": "Rust and services",
-      "summary": "Repository mechanics, language-level policy, and the HTTP boundary.",
+      "summary": "Repository mechanics, language-level policy, the HTTP boundary, and the two service contracts.",
       "skills": [
         "tailrocks-rust-project-setup",
         "tailrocks-rust-best-practices",
-        "tailrocks-axum-best-practices"
+        "tailrocks-axum-best-practices",
+        "tailrocks-graphql-best-practices",
+        "tailrocks-grpc-best-practices"
       ]
     },
     {

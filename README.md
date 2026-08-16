@@ -65,13 +65,15 @@ roadmap skills have their own guide with two features taken end to end:
 
 ### Rust and services
 
-Repository mechanics, language-level policy, and the HTTP boundary.
+Repository mechanics, language-level policy, the HTTP boundary, and the two service contracts.
 
 | Skill | What it does |
 |---|---|
 | [`tailrocks-rust-project-setup`](skills/tailrocks-rust-project-setup/README.md) | Scaffold, audit, or remediate a latest-compatible strict Rust workspace baseline. |
 | [`tailrocks-rust-best-practices`](skills/tailrocks-rust-best-practices/README.md) | Apply strict idiomatic Rust contracts when writing, reviewing, or refactoring Rust code. |
 | [`tailrocks-axum-best-practices`](skills/tailrocks-axum-best-practices/README.md) | Apply production Axum HTTP-adapter practices when building, reviewing, or refactoring routers, handlers, extractors, Tower middleware, lifecycle, and transport tests. |
+| [`tailrocks-graphql-best-practices`](skills/tailrocks-graphql-best-practices/README.md) | Design, build, review, or audit the public GraphQL API of a backend service: schema and pagination shape, Juniper on Axum, generated TanStack clients, and committed-SDL contract gates. |
+| [`tailrocks-grpc-best-practices`](skills/tailrocks-grpc-best-practices/README.md) | Apply cross-service gRPC practices for Rust services: buf-governed proto contracts, tonic servers and clients, status mapping, deadlines, streaming, health, and wire contract tests. |
 
 ### TypeScript and TanStack
 
