@@ -1,0 +1,9 @@
+{
+  "name": "example-docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite dev"
+  }
+}

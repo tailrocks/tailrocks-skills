@@ -96,6 +96,7 @@ Debt that shrinks, defects that stop recurring, and work on repositories you do 
 | Skill | What it does |
 |---|---|
 | [`tailrocks-code-health`](skills/tailrocks-code-health/README.md) | Establish, audit, or tighten measurable shrink-only code-health ratchets. |
+| [`tailrocks-agents-md`](skills/tailrocks-agents-md/README.md) | Add, place, audit, or repair agent instruction files — AGENTS.md as the single source of truth and CLAUDE.md, GEMINI.md, and every other client name as symlinks to it. |
 | [`tailrocks-remediate`](skills/tailrocks-remediate/README.md) | Analyze or remediate a proven defect, inconsistency, violated invariant, or known-wrong state through correctness-first architectural redesign. |
 | [`tailrocks-rethink`](skills/tailrocks-rethink/README.md) | Conceptually re-derive the design behind a reported bug, friction, or awkward implementation instead of patching it. |
 | [`tailrocks-contribute`](skills/tailrocks-contribute/README.md) | Contribute to an external open-source project as a good citizen: discover its actual contribution contract, select the accepted venue, prepare a minimal evidenced change, submit only after explicit per-contribution human approval, and stay engaged through review. |
