@@ -25,6 +25,47 @@ export interface Generated {
   readonly content: string;
 }
 
+export interface Group {
+  readonly id: string;
+  readonly title: string;
+  readonly summary: string;
+  readonly skills: readonly string[];
+}
+
+export interface GroupedSkills {
+  readonly group: Group;
+  readonly skills: readonly Skill[];
+}
+
+export async function readCatalog(root: string): Promise<Group[]> {
+  const parsed = JSON.parse(await readFile(path.join(root, "catalog.json"), "utf8")) as { groups?: unknown };
+  if (!Array.isArray(parsed.groups)) throw new Error("catalog.json: groups must be an array");
+  return parsed.groups as Group[];
+}
+
+/** Orders skills by catalog group, and refuses a catalog that does not cover the tree exactly once. */
+export function groupSkills(groups: readonly Group[], skills: readonly Skill[]): GroupedSkills[] {
+  const byName = new Map(skills.map((skill) => [skill.name, skill]));
+  const placed = new Set<string>();
+  const grouped: GroupedSkills[] = [];
+
+  for (const group of groups) {
+    const members: Skill[] = [];
+    for (const name of group.skills) {
+      const skill = byName.get(name);
+      if (!skill) throw new Error(`catalog.json: group ${group.id} lists unknown skill ${name}`);
+      if (placed.has(name)) throw new Error(`catalog.json: ${name} appears in more than one group`);
+      placed.add(name);
+      members.push(skill);
+    }
+    grouped.push({ group, skills: members });
+  }
+
+  const ungrouped = skills.filter((skill) => !placed.has(skill.name)).map((skill) => skill.name);
+  if (ungrouped.length > 0) throw new Error(`catalog.json: no group contains ${ungrouped.join(", ")}`);
+  return grouped;
+}
+
 /** Applies `transform` to prose only, leaving fenced blocks and inline code spans untouched. */
 export function mapProse(source: string, transform: (text: string) => string): string {
   let fenced = false;
@@ -202,36 +243,54 @@ ${escapeMdx(assetSection(skill, (file) => `${base}/${file}`))}
 `;
 }
 
-export function renderSkillIndex(skills: readonly Skill[]): string {
-  const rows = escapeMdx(
-    skills.map((skill) => `| [\`${skill.name}\`](/docs/skills/${skill.name}) | ${skill.summary} |`).join("\n"),
+function groupTable(grouped: GroupedSkills, link: (skill: Skill) => string): string {
+  const rows = grouped.skills.map((skill) => `| [\`${skill.name}\`](${link(skill)}) | ${skill.summary} |`);
+  return [
+    `### ${grouped.group.title}`,
+    "",
+    grouped.group.summary,
+    "",
+    "| Skill | What it does |",
+    "|---|---|",
+    ...rows,
+  ].join("\n");
+}
+
+export function renderSkillIndex(grouped: readonly GroupedSkills[]): string {
+  const sections = escapeMdx(
+    grouped.map((entry) => groupTable(entry, (skill) => `/docs/skills/${skill.name}`)).join("\n\n"),
   );
   return `---
 title: Skills
-description: "Every skill in the collection, with what it is for."
+description: "Every skill in the collection, grouped by the work it belongs to."
 ---
 
 {/* ${banner.replace(/^<!--\s*|\s*-->$/g, "")} */}
 
-Every skill is manual-only: it runs when you name it, never on its own.
+Every skill is manual-only: it runs when you name it, never on its own. When
+more than one could apply, [choosing a skill](/docs/choosing) has the ownership
+boundaries.
 
-| Skill | What it does |
-|---|---|
-${rows}
+${sections}
 `;
 }
 
-export function renderSkillMeta(skills: readonly Skill[]): string {
-  return `${JSON.stringify({ title: "Skills", pages: ["index", ...skills.map((skill) => skill.name)] }, null, 2)}\n`;
+export function renderSkillMeta(grouped: readonly GroupedSkills[]): string {
+  const pages = ["index"];
+  for (const entry of grouped) {
+    pages.push(`---${entry.group.title}---`);
+    for (const skill of entry.skills) pages.push(skill.name);
+  }
+  return `${JSON.stringify({ title: "Skills", pages }, null, 2)}\n`;
 }
 
-export function renderRootList(skills: readonly Skill[]): string {
-  const rows = skills.map((skill) => `| [\`${skill.name}\`](skills/${skill.name}/README.md) | ${skill.summary} |`);
+export function renderRootList(grouped: readonly GroupedSkills[]): string {
+  const sections = grouped
+    .map((entry) => groupTable(entry, (skill) => `skills/${skill.name}/README.md`))
+    .join("\n\n");
   return `${listStart}
 
-| Skill | What it does |
-|---|---|
-${rows.join("\n")}
+${sections}
 
 ${listEnd}`;
 }
@@ -263,6 +322,7 @@ export async function generate(root: string): Promise<Generated[]> {
     .sort();
   const skills: Skill[] = [];
   for (const name of names) skills.push(await readSkill(root, name));
+  const grouped = groupSkills(await readCatalog(root), skills);
 
   const output: Generated[] = [];
   for (const skill of skills) {
@@ -274,11 +334,11 @@ export async function generate(root: string): Promise<Generated[]> {
   }
   output.push({
     file: path.join("docs", "content", "docs", "skills", "index.mdx"),
-    content: renderSkillIndex(skills),
+    content: renderSkillIndex(grouped),
   });
   output.push({
     file: path.join("docs", "content", "docs", "skills", "meta.json"),
-    content: renderSkillMeta(skills),
+    content: renderSkillMeta(grouped),
   });
   output.push({
     file: path.join("docs", "content", "docs", "install.mdx"),
@@ -286,9 +346,19 @@ export async function generate(root: string): Promise<Generated[]> {
   });
   output.push({
     file: "README.md",
-    content: replaceRootList(await readFile(path.join(root, "README.md"), "utf8"), renderRootList(skills)),
+    content: replaceRootList(await readFile(path.join(root, "README.md"), "utf8"), renderRootList(grouped)),
   });
   return output;
+}
+
+/** Fumadocs content is MDX only; a plain .md page silently renders without component support. */
+export async function strayMarkdown(root: string): Promise<string[]> {
+  const contentRoot = path.join(root, "docs", "content");
+  const stray: string[] = [];
+  for (const file of await listFiles(contentRoot)) {
+    if (file.endsWith(".md")) stray.push(path.join("docs", "content", file));
+  }
+  return stray.sort();
 }
 
 async function currentContent(file: string): Promise<string | undefined> {
@@ -302,6 +372,11 @@ async function currentContent(file: string): Promise<string | undefined> {
 if (import.meta.main) {
   const root = path.resolve(import.meta.dir, "..");
   const check = process.argv.includes("--check");
+  const stray = await strayMarkdown(root);
+  if (stray.length > 0) {
+    for (const file of stray) console.error(`error: documentation pages must be .mdx, not .md: ${file}`);
+    process.exit(1);
+  }
   const generated = await generate(root);
   const stale: string[] = [];
   for (const { file, content } of generated) {

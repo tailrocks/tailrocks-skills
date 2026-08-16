@@ -17,13 +17,16 @@ Most pages under `content/docs/` are **generated** and must not be edited:
 | Path | Source |
 |---|---|
 | `content/docs/skills/<name>.mdx` | `skills/<name>/SKILL.md` |
-| `content/docs/skills/index.mdx` | every skill's frontmatter description |
-| `content/docs/skills/meta.json` | the `skills/` directory listing |
+| `content/docs/skills/index.mdx` | every skill's frontmatter description, grouped by `catalog.json` |
+| `content/docs/skills/meta.json` | `catalog.json` group order, as sidebar separators |
 | `content/docs/install.mdx` | `INSTALL.md` |
 
 Regenerate from the repository root with `mise run docs`. CI runs
 `bun run scripts/generate-docs.ts --check` and fails when a generated file is
 out of date, so edit the source and regenerate rather than the page.
+
+Every page under `content/` is `.mdx`, never `.md` — the generator's `--check`
+mode fails on a plain-markdown page.
 
 Hand-written pages: `content/docs/index.mdx` and `content/docs/choosing.mdx`.
 Repository design notes live in [`design/`](design/) and are not published.

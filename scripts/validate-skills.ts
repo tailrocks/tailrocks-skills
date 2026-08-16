@@ -312,6 +312,41 @@ export async function validate(root: string): Promise<string[]> {
       errors.push(`${catalog}: missing catalog`);
     }
   }
+  try {
+    const catalog = JSON.parse(await readFile(path.join(root, "catalog.json"), "utf8")) as {
+      groups?: { id?: unknown; title?: unknown; summary?: unknown; skills?: unknown }[];
+    };
+    if (!Array.isArray(catalog.groups) || catalog.groups.length === 0) {
+      errors.push("catalog.json: groups must be a non-empty array");
+    } else {
+      const placed = new Map<string, string>();
+      for (const [index, group] of catalog.groups.entries()) {
+        const id = typeof group.id === "string" ? group.id : `#${index + 1}`;
+        for (const key of ["id", "title", "summary"] as const) {
+          if (typeof group[key] !== "string" || group[key] === "") errors.push(`catalog.json: group ${id} needs ${key}`);
+        }
+        if (!Array.isArray(group.skills) || group.skills.length === 0) {
+          errors.push(`catalog.json: group ${id} must list at least one skill`);
+          continue;
+        }
+        for (const skill of group.skills) {
+          if (typeof skill !== "string" || !entries.includes(skill)) {
+            errors.push(`catalog.json: group ${id} lists unknown skill ${String(skill)}`);
+            continue;
+          }
+          const owner = placed.get(skill);
+          if (owner !== undefined) errors.push(`catalog.json: ${skill} is in both ${owner} and ${id}`);
+          else placed.set(skill, id);
+        }
+      }
+      for (const skill of entries) {
+        if (!placed.has(skill)) errors.push(`catalog.json: no group contains ${skill}`);
+      }
+    }
+  } catch {
+    errors.push("catalog.json: missing or invalid JSON");
+  }
+
   const expectedTag = `v${claude?.version}`;
   for (const catalog of ["README.md", "INSTALL.md"]) {
     try {

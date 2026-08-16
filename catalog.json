@@ -1,0 +1,62 @@
+{
+  "$comment": "Skill grouping and order for README.md and the documentation site. scripts/validate-skills.ts requires every skills/ directory to appear exactly once here.",
+  "groups": [
+    {
+      "id": "rust",
+      "title": "Rust and services",
+      "summary": "Repository mechanics, language-level policy, and the HTTP boundary.",
+      "skills": [
+        "tailrocks-rust-project-setup",
+        "tailrocks-rust-best-practices",
+        "tailrocks-axum-best-practices"
+      ]
+    },
+    {
+      "id": "typescript",
+      "title": "TypeScript and TanStack",
+      "summary": "The Bun-only application baseline and strict TypeScript policy.",
+      "skills": [
+        "tailrocks-tanstack-project-setup",
+        "tailrocks-typescript-best-practices"
+      ]
+    },
+    {
+      "id": "macos",
+      "title": "Native macOS",
+      "summary": "Design to verified pixels; exactly one skill owns each responsibility.",
+      "skills": [
+        "tailrocks-macos-design",
+        "tailrocks-sketch-handoff",
+        "tailrocks-liquid-glass",
+        "tailrocks-swift-best-practices",
+        "tailrocks-swift-project-setup",
+        "tailrocks-macos-visual-qa"
+      ]
+    },
+    {
+      "id": "quality",
+      "title": "Code quality and contribution",
+      "summary": "Debt that shrinks, defects that stop recurring, and work on repositories you do not own.",
+      "skills": [
+        "tailrocks-code-health",
+        "tailrocks-remediate",
+        "tailrocks-rethink",
+        "tailrocks-contribute"
+      ]
+    },
+    {
+      "id": "delivery",
+      "title": "Roadmap and delivery",
+      "summary": "An idea through shaping, planning, autonomous execution, and back to verified truth.",
+      "skills": [
+        "tailrocks-idea",
+        "tailrocks-brainstorm",
+        "tailrocks-research",
+        "tailrocks-record-decision",
+        "tailrocks-finalize",
+        "tailrocks-plan",
+        "tailrocks-reconcile"
+      ]
+    }
+  ]
+}
