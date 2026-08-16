@@ -1,19 +1,20 @@
 "use client";
 
+import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
+
 import { useAgent } from "@/components/AgentContext";
 
 /**
- * One skill invocation, written in the syntax of the client the reader picked.
- * `skill` is the skill name; `args` is whatever that skill takes after it.
+ * One skill invocation, written in the syntax of the client selected in the
+ * sidebar. Rendered through Fumadocs' own code block so it looks like every
+ * other command on the site and carries the same copy button.
  */
 export function Invoke({ skill, args = "" }: { skill: string; args?: string }) {
   const { agent } = useAgent();
 
   return (
-    <figure className="not-prose border-fd-border bg-fd-secondary/40 my-4 rounded-lg border">
-      <pre className="overflow-x-auto px-4 py-3 text-sm">
-        <code>{agent.invoke(skill, args)}</code>
-      </pre>
-    </figure>
+    <CodeBlock title={agent.label} allowCopy>
+      <Pre>{agent.invoke(skill, args)}</Pre>
+    </CodeBlock>
   );
 }
