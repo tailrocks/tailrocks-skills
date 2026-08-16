@@ -39,6 +39,7 @@
       "summary": "Debt that shrinks, defects that stop recurring, and work on repositories you do not own.",
       "skills": [
         "tailrocks-code-health",
+        "tailrocks-agents-md",
         "tailrocks-remediate",
         "tailrocks-rethink",
         "tailrocks-contribute"

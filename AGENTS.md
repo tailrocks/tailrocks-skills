@@ -250,6 +250,24 @@ request with no failed guarantee behind it, and it rejects a target design that
 adds capability instead of subtracting a structural measure. Design notes, the
 research basis, and the extension model: `docs/design/rethink-design.md`.
 
+### tailrocks-agents-md
+
+Add, place, audit, or repair agent instruction files. `AGENTS.md` is the only
+file with content; `CLAUDE.md` and every other client name is a symlink to the
+`AGENTS.md` beside it. Every rule goes to the directory that owns it — crate,
+package, service, app, documentation site, infrastructure module, test suite,
+any unit with conventions of its own — creating that `AGENTS.md` and its symlink
+when the directory has none, because ancestor
+files load on every request while nested files load only in their subtree. Keeps
+a rule only when a competent agent would get it wrong without one, routes
+anything enforceable to a gate, and proposes deletions on every pass.
+
+Skill definition: `skills/tailrocks-agents-md/SKILL.md`
+
+This repository is its own first customer: root `CLAUDE.md` is a symlink to
+root `AGENTS.md`, and the documentation site's rules live in `docs/AGENTS.md`
+with `docs/CLAUDE.md` symlinked beside them.
+
 ## Adding a Skill
 
 1. Create `skills/<name>/SKILL.md` with `name`, `license: Apache-2.0`, a
@@ -366,15 +384,9 @@ skill index, `docs/content/docs/install.mdx`, and the root `README.md` table
 from it. Never edit a generated file — edit the skill and run `mise run docs`.
 CI runs `mise run docs:check` and fails when a generated file is stale.
 
-**Every page under `docs/content/` is `.mdx`, never `.md`** — generated or
-hand-written. `mise run docs:check` refuses a plain-markdown page, because it
-renders without component support and the difference is invisible until a page
-needs one.
-
-Hand-written pages are `docs/content/docs/index.mdx` and
-`docs/content/docs/choosing.mdx`; repository design notes live in `docs/design/`
-and are not published. The site build asserts that every skill has a
-prerendered page, so a new skill cannot silently miss the documentation.
+Rules that belong to the site itself — which pages are generated, the MDX-only
+requirement, what `design/` is — live in `docs/AGENTS.md`, next to the code they
+govern.
 
 ## Contributing workflow
 
