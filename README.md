@@ -97,6 +97,7 @@ Debt that shrinks, defects that stop recurring, and work on repositories you do 
 |---|---|
 | [`tailrocks-code-health`](skills/tailrocks-code-health/README.md) | Establish, audit, or tighten measurable shrink-only code-health ratchets for architecture, lint, dependency, flake, defect, documentation, or verification debt. |
 | [`tailrocks-agents-md`](skills/tailrocks-agents-md/README.md) | Add, place, audit, or repair agent instruction files. |
+| [`tailrocks-simplify`](skills/tailrocks-simplify/README.md) | Review a pull request or diff and remove code without changing behavior: dead paths, hand-rolled utilities the platform provides, indirection, needless branching. |
 | [`tailrocks-remediate`](skills/tailrocks-remediate/README.md) | Analyze or remediate a proven defect through correctness-first architectural redesign. |
 | [`tailrocks-rethink`](skills/tailrocks-rethink/README.md) | Re-derive the design behind a reported bug or friction instead of patching it; restructuring and breaking changes are expected and cost is excluded from the decision. |
 | [`tailrocks-contribute`](skills/tailrocks-contribute/README.md) | Contribute to an external open-source project: discover its contribution contract, prepare a minimal evidenced change, and submit only after explicit human approval. |
