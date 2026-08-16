@@ -239,6 +239,16 @@ ${assetSection(skill, (file) => file)}
 `;
 }
 
+/**
+ * The part of the description the page has not already shown. Fumadocs renders the
+ * frontmatter description under the title, so repeating it in the body is duplication —
+ * but the sentences after the summary, usually the do-not-use clause, still have to land.
+ */
+function beyondSummary(skill: Skill): string {
+  const rest = skill.description.slice(skill.summary.length).trim();
+  return rest === "" ? "" : `\n${escapeMdx(rest)}\n`;
+}
+
 export function renderSkillOverview(skill: Skill): string {
   const base = `${repoBlob}/skills/${skill.name}`;
   return `---
@@ -249,9 +259,7 @@ description: ${JSON.stringify(skill.summary)}
 {/* ${banner.replace(/^<!--\s*|\s*-->$/g, "")} */}
 
 \`${skill.name}\` · [source](${base}/SKILL.md) · [README](${base}/README.md)
-
-${escapeMdx(skill.description)}
-
+${beyondSummary(skill)}
 ${invocationPage(skill)}
 
 ## What it loads
