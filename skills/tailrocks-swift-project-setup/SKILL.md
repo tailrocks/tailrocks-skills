@@ -1,7 +1,7 @@
 ---
 name: tailrocks-swift-project-setup
 description: >-
-  Use only when the user explicitly requests this skill. Scaffold, audit, or remediate a strict native macOS Swift app baseline. Use for project generation, deployment targets and the two-lane SDK strategy, ad-hoc local signing, swift-format and SwiftLint policy, Swift Testing and UI test wiring, command-line build and test gates, mise-pinned tooling, and Xcode agent integration; audits are read-only unless remediation is explicitly requested.
+  Use only when the user explicitly requests this skill. Scaffold, audit, or remediate a strict native macOS Swift baseline: project generation, deployment targets and SDK lanes, local signing, format and lint gates, test wiring, mise tooling, Xcode agent integration. Audits are read-only.
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true

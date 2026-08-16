@@ -1,7 +1,7 @@
 ---
 name: tailrocks-typescript-best-practices
 description: >-
-  Use only when the user explicitly requests this skill. Apply strict Rust-inspired TypeScript 7 contracts when writing, reviewing, refactoring, or migrating TypeScript. Use for state, typed failure, runtime validation, readonly APIs, async ownership, and tests; use Bun and Oxc only, and keep review mode read-only.
+  Use only when the user explicitly requests this skill. Apply strict Rust-inspired TypeScript 7 contracts when writing, reviewing, refactoring, or migrating TypeScript: state, typed failure, runtime validation, readonly APIs, async ownership, tests. Bun and Oxc only; review is read-only.
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true

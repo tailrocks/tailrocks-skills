@@ -4,7 +4,7 @@
 
 `tailrocks-record-decision` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-record-decision)
 
-Record one user decision on a roadmap item: validate it against settled ground, date it with its reason, propagate it through the item's sections, and flag everything it invalidates — including reopening READY/PLANNED items and marking stale plans. Do not use to make decisions for the user or for open-ended shaping (tailrocks-brainstorm).
+Record one user decision on a roadmap item: validate it against settled ground, date it with its reason, propagate it, and flag what it invalidates, including reopening READY or PLANNED work. Do not use to decide for the user.
 
 ## Invocation
 

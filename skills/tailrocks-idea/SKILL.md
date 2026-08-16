@@ -1,7 +1,7 @@
 ---
 name: tailrocks-idea
 description: >-
-  Use only when the user explicitly requests this skill. Capture a raw product or feature idea as a new roadmap item: derive a slug from the content, create roadmap/<slug>/README.md in DRAFT status from the item template, and register it in the roadmap index. Capture only — no interviewing, no research, no planning; do not use to modify an existing roadmap item.
+  Use only when the user explicitly requests this skill. Capture a raw product or feature idea as a new DRAFT roadmap item under roadmap/<slug>/ and register it in the index. Capture only: no interviewing, research, or planning. Do not use to modify an existing item.
 argument-hint: "<idea text>"
 disable-model-invocation: true
 license: Apache-2.0

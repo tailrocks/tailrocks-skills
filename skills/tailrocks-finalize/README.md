@@ -4,7 +4,7 @@
 
 `tailrocks-finalize` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-finalize)
 
-Finalize a SHAPING roadmap item through a closing interview: collect every screen and flow, resolve or classify every open question, verify the readiness checklist, and set the item READY for planning. The only skill that grants READY. Do not use on a raw DRAFT (tailrocks-brainstorm first) or without a live human.
+Close the shaping interview on a SHAPING roadmap item: resolve every screen, flow, and open question, then grant READY. The only source of READY. Do not use on a raw DRAFT (tailrocks-brainstorm first) or without a live human.
 
 ## Invocation
 

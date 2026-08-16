@@ -1,7 +1,7 @@
 ---
 name: tailrocks-finalize
 description: >-
-  Use only when the user explicitly requests this skill. Finalize a SHAPING roadmap item through a closing interview: collect every screen and flow, resolve or classify every open question, verify the readiness checklist, and set the item READY for planning. The only skill that grants READY. Do not use on a raw DRAFT (tailrocks-brainstorm first) or without a live human.
+  Use only when the user explicitly requests this skill. Close the shaping interview on a SHAPING roadmap item: resolve every screen, flow, and open question, then grant READY. The only source of READY. Do not use on a raw DRAFT (tailrocks-brainstorm first) or without a live human.
 argument-hint: "<roadmap-slug> [--batch]"
 disable-model-invocation: true
 license: Apache-2.0

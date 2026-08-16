@@ -4,7 +4,7 @@
 
 `tailrocks-brainstorm` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-brainstorm)
 
-Shape a DRAFT or SHAPING roadmap item through a relentless interview: one question at a time with a recommended answer, decisions asked while facts are looked up, every resolved answer written into the item immediately. Use early, to expand and sharpen a rough item; do not use for final readiness (tailrocks-finalize) or without a live human.
+Shape a DRAFT or SHAPING roadmap item through a one-question-at-a-time interview, writing every answer into the item as it resolves. Do not use for final readiness (tailrocks-finalize) or without a live human.
 
 ## Invocation
 

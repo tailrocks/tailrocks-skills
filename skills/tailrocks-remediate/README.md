@@ -4,7 +4,7 @@
 
 `tailrocks-remediate` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-remediate)
 
-Analyze or remediate a proven defect, inconsistency, violated invariant, or known-wrong state through correctness-first architectural redesign. Use for substantial structural refactoring when price, duration, effort, implementation size, or sunk cost are being used to defend a symptom patch; derive the greenfield design that prevents the entire defect class and pursue that result regardless of investment. Do not use for speculative cleanup or unproven product preferences.
+Analyze or remediate a proven defect through correctness-first architectural redesign. Use when cost, effort, or sunk investment is being used to defend a symptom patch; derive the design that prevents the whole class. Needs proven wrongness.
 
 ## Invocation
 

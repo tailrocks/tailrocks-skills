@@ -26,7 +26,7 @@ The Bun-only application baseline and strict TypeScript policy.
 | Skill | What it does |
 |---|---|
 | [`tailrocks-tanstack-project-setup`](/docs/skills/tailrocks-tanstack-project-setup) | Scaffold, migrate, audit, or remediate the Tailrocks Bun/TanStack Start application baseline. |
-| [`tailrocks-typescript-best-practices`](/docs/skills/tailrocks-typescript-best-practices) | Apply strict Rust-inspired TypeScript 7 contracts when writing, reviewing, refactoring, or migrating TypeScript. |
+| [`tailrocks-typescript-best-practices`](/docs/skills/tailrocks-typescript-best-practices) | Apply strict Rust-inspired TypeScript 7 contracts when writing, reviewing, refactoring, or migrating TypeScript: state, typed failure, runtime validation, readonly APIs, async ownership, tests. |
 
 ### Native macOS
 
@@ -34,12 +34,12 @@ Design to verified pixels; exactly one skill owns each responsibility.
 
 | Skill | What it does |
 |---|---|
-| [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | Design a macOS feature to Apple-ecosystem quality before any production code is written. |
-| [`tailrocks-sketch-handoff`](/docs/skills/tailrocks-sketch-handoff) | Turn a Sketch design into a handoff an agent can implement faithfully as a native macOS app. |
-| [`tailrocks-liquid-glass`](/docs/skills/tailrocks-liquid-glass) | Apply, audit, or remediate Apple's Liquid Glass material in a native macOS app written in SwiftUI or AppKit. |
-| [`tailrocks-swift-best-practices`](/docs/skills/tailrocks-swift-best-practices) | Write, review, or refactor Swift and SwiftUI code for a native macOS app. |
-| [`tailrocks-swift-project-setup`](/docs/skills/tailrocks-swift-project-setup) | Scaffold, audit, or remediate a strict native macOS Swift app baseline. |
-| [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa) | Build, launch, capture, drive, and verify a native macOS app so an agent can see and critique its own interface. |
+| [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | Design a macOS feature to Apple quality before any production code: experience brief, information architecture, native component map, alternatives, density and typography, and a scored rubric. |
+| [`tailrocks-sketch-handoff`](/docs/skills/tailrocks-sketch-handoff) | Turn a Sketch design into an implementable native macOS handoff: Sketch MCP wiring, Apple's macOS UI kit, token extraction, the symbol-to-SwiftUI design map, and approved frame exports. |
+| [`tailrocks-liquid-glass`](/docs/skills/tailrocks-liquid-glass) | Apply, audit, or remediate Apple's Liquid Glass material in a native macOS SwiftUI or AppKit app: layer split, glass APIs and availability, scroll edge effects, tint policy, and the accessibility gate. |
+| [`tailrocks-swift-best-practices`](/docs/skills/tailrocks-swift-best-practices) | Write, review, or refactor Swift and SwiftUI for macOS: strict concurrency and actor isolation, state ownership and view identity, AppKit interop boundaries, typed failure, availability guards, accessibility, and tests. |
+| [`tailrocks-swift-project-setup`](/docs/skills/tailrocks-swift-project-setup) | Scaffold, audit, or remediate a strict native macOS Swift baseline: project generation, deployment targets and SDK lanes, local signing, format and lint gates, test wiring, mise tooling, Xcode agent integration. |
+| [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa) | Build, launch, capture, drive, and verify a native macOS app so an agent can see its own interface: window-ID capture, accessibility-tree driving, appearance and accessibility state matrix, audits, and pixel regression. |
 
 ### Code quality and contribution
 
@@ -47,11 +47,11 @@ Debt that shrinks, defects that stop recurring, and work on repositories you do 
 
 | Skill | What it does |
 |---|---|
-| [`tailrocks-code-health`](/docs/skills/tailrocks-code-health) | Establish, audit, or tighten measurable shrink-only code-health ratchets. |
-| [`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) | Add, place, audit, or repair agent instruction files — AGENTS.md as the single source of truth and CLAUDE.md, GEMINI.md, and every other client name as symlinks to it. |
-| [`tailrocks-remediate`](/docs/skills/tailrocks-remediate) | Analyze or remediate a proven defect, inconsistency, violated invariant, or known-wrong state through correctness-first architectural redesign. |
-| [`tailrocks-rethink`](/docs/skills/tailrocks-rethink) | Conceptually re-derive the design behind a reported bug, friction, or awkward implementation instead of patching it. |
-| [`tailrocks-contribute`](/docs/skills/tailrocks-contribute) | Contribute to an external open-source project as a good citizen: discover its actual contribution contract, select the accepted venue, prepare a minimal evidenced change, submit only after explicit per-contribution human approval, and stay engaged through review. |
+| [`tailrocks-code-health`](/docs/skills/tailrocks-code-health) | Establish, audit, or tighten measurable shrink-only code-health ratchets for architecture, lint, dependency, flake, defect, documentation, or verification debt. |
+| [`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) | Add, place, audit, or repair agent instruction files. |
+| [`tailrocks-remediate`](/docs/skills/tailrocks-remediate) | Analyze or remediate a proven defect through correctness-first architectural redesign. |
+| [`tailrocks-rethink`](/docs/skills/tailrocks-rethink) | Re-derive the design behind a reported bug or friction instead of patching it; restructuring and breaking changes are expected and cost is excluded from the decision. |
+| [`tailrocks-contribute`](/docs/skills/tailrocks-contribute) | Contribute to an external open-source project: discover its contribution contract, prepare a minimal evidenced change, and submit only after explicit human approval. |
 
 ### Roadmap and delivery
 
@@ -59,10 +59,10 @@ An idea through shaping, planning, autonomous execution, and back to verified tr
 
 | Skill | What it does |
 |---|---|
-| [`tailrocks-idea`](/docs/skills/tailrocks-idea) | Capture a raw product or feature idea as a new roadmap item: derive a slug from the content, create roadmap/&lt;slug>/README.md in DRAFT status from the item template, and register it in the roadmap index. |
-| [`tailrocks-brainstorm`](/docs/skills/tailrocks-brainstorm) | Shape a DRAFT or SHAPING roadmap item through a relentless interview: one question at a time with a recommended answer, decisions asked while facts are looked up, every resolved answer written into the item immediately. |
-| [`tailrocks-research`](/docs/skills/tailrocks-research) | Run deep, sourced research into a reusable topic folder under research/: either a specific question ("pure-Rust macOS app without Swift") or a roadmap item to extend — surfacing missed angles, directions, and evidence. |
-| [`tailrocks-record-decision`](/docs/skills/tailrocks-record-decision) | Record one user decision on a roadmap item: validate it against settled ground, date it with its reason, propagate it through the item's sections, and flag everything it invalidates — including reopening READY/PLANNED items and marking stale plans. |
-| [`tailrocks-finalize`](/docs/skills/tailrocks-finalize) | Finalize a SHAPING roadmap item through a closing interview: collect every screen and flow, resolve or classify every open question, verify the readiness checklist, and set the item READY for planning. |
-| [`tailrocks-plan`](/docs/skills/tailrocks-plan) | Convert a READY roadmap item into the full implementation package under plans/&lt;slug>/: coverage ledger, gap-filling research, an OpenSpec-grammar spec, one zero-context plan per work item — each written by its own subagent and cold-reviewed — plus a copy-pasteable GOAL.md for Claude Code and Codex goal execution or manual Grok prompting. |
-| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | True up an implementation package under plans/&lt;slug>/ with execution reality: re-verify DONE rows by re-running their done criteria, reset or salvage IN PROGRESS rows left by dead sessions, investigate BLOCKED rows, drift-check TODO plans against HEAD, mark stale rows with reasons, and reconcile the roadmap item's status. |
+| [`tailrocks-idea`](/docs/skills/tailrocks-idea) | Capture a raw product or feature idea as a new DRAFT roadmap item under roadmap/&lt;slug>/ and register it in the index. |
+| [`tailrocks-brainstorm`](/docs/skills/tailrocks-brainstorm) | Shape a DRAFT or SHAPING roadmap item through a one-question-at-a-time interview, writing every answer into the item as it resolves. |
+| [`tailrocks-research`](/docs/skills/tailrocks-research) | Run deep, sourced research into a reusable topic under research/, for a question or to extend a roadmap item, using parallel investigators. |
+| [`tailrocks-record-decision`](/docs/skills/tailrocks-record-decision) | Record one user decision on a roadmap item: validate it against settled ground, date it with its reason, propagate it, and flag what it invalidates, including reopening READY or PLANNED work. |
+| [`tailrocks-finalize`](/docs/skills/tailrocks-finalize) | Close the shaping interview on a SHAPING roadmap item: resolve every screen, flow, and open question, then grant READY. |
+| [`tailrocks-plan`](/docs/skills/tailrocks-plan) | Convert a READY roadmap item into plans/&lt;slug>/: coverage ledger, gap research, an OpenSpec-grammar spec, one zero-context plan per work item, and GOAL.md for goal execution. |
+| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | True up plans/&lt;slug>/ with execution reality: re-verify DONE rows by re-running their criteria, reset dead IN PROGRESS rows, retest BLOCKED, drift-check TODO plans, and fix the item's status. |

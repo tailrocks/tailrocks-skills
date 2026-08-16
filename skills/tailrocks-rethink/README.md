@@ -4,7 +4,7 @@
 
 `tailrocks-rethink` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-rethink)
 
-Conceptually re-derive the design behind a reported bug, friction, or awkward implementation instead of patching it. Use when the right answer may be heavy refactoring, restructuring, reimplementation, or a breaking change, and when price, effort, duration, diff size, migration work, or compatibility convenience must be excluded from the decision. Derives the ideal design before inspecting the existing one, names the established engineering concept it applies, and requires the reported failure to become unrepresentable rather than guarded. Do not use for routine implementation, for cleanup with no reported symptom, or when the user wants the smallest safe patch.
+Re-derive the design behind a reported bug or friction instead of patching it; restructuring and breaking changes are expected and cost is excluded from the decision. Do not use without a reported symptom or when a minimal patch is wanted.
 
 ## Invocation
 

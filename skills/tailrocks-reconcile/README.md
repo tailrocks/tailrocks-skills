@@ -4,7 +4,7 @@
 
 `tailrocks-reconcile` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-reconcile)
 
-True up an implementation package under plans/<slug>/ with execution reality: re-verify DONE rows by re-running their done criteria, reset or salvage IN PROGRESS rows left by dead sessions, investigate BLOCKED rows, drift-check TODO plans against HEAD, mark stale rows with reasons, and reconcile the roadmap item's status. Verification only — do not use to write or refresh plans (tailrocks-plan) or to record product decisions (tailrocks-record-decision).
+True up plans/<slug>/ with execution reality: re-verify DONE rows by re-running their criteria, reset dead IN PROGRESS rows, retest BLOCKED, drift-check TODO plans, and fix the item's status. Verification only; never writes plans.
 
 ## Invocation
 

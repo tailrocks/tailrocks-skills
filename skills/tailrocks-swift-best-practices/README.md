@@ -4,7 +4,7 @@
 
 `tailrocks-swift-best-practices` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-swift-best-practices)
 
-Write, review, or refactor Swift and SwiftUI code for a native macOS app. Use for strict concurrency and actor isolation, state ownership and view identity, layout and performance, AppKit interop boundaries, error and failure policy, availability guards for mixed deployment targets, accessibility as a code obligation, and test design.
+Write, review, or refactor Swift and SwiftUI for macOS: strict concurrency and actor isolation, state ownership and view identity, AppKit interop boundaries, typed failure, availability guards, accessibility, and tests.
 
 ## Invocation
 

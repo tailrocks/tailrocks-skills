@@ -1,7 +1,7 @@
 ---
 name: tailrocks-plan
 description: >-
-  Use only when the user explicitly requests this skill. Convert a READY roadmap item into the full implementation package under plans/<slug>/: coverage ledger, gap-filling research, an OpenSpec-grammar spec, one zero-context plan per work item — each written by its own subagent and cold-reviewed — plus a copy-pasteable GOAL.md for Claude Code and Codex goal execution or manual Grok prompting. Do not use on unshaped items (brainstorm and finalize first) or for routine one-session changes.
+  Use only when the user explicitly requests this skill. Convert a READY roadmap item into plans/<slug>/: coverage ledger, gap research, an OpenSpec-grammar spec, one zero-context plan per work item, and GOAL.md for goal execution. Do not use on unshaped items or one-session changes.
 argument-hint: "<roadmap-slug> [additional context] [--deep]"
 disable-model-invocation: true
 license: Apache-2.0

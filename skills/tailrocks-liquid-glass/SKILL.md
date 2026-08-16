@@ -1,7 +1,7 @@
 ---
 name: tailrocks-liquid-glass
 description: >-
-  Use only when the user explicitly requests this skill. Apply, audit, or remediate Apple's Liquid Glass material in a native macOS app written in SwiftUI or AppKit. Use for the CONTENT-versus-FUNCTIONAL layer split, glassEffect and GlassEffectContainer, NSGlassEffectView, scroll edge effects, background extension, concentric corners, toolbar grouping, tint policy, deployment-target availability, and the glass accessibility gate; audits are read-only unless remediation is explicitly requested.
+  Use only when the user explicitly requests this skill. Apply, audit, or remediate Apple's Liquid Glass material in a native macOS SwiftUI or AppKit app: layer split, glass APIs and availability, scroll edge effects, tint policy, and the accessibility gate. Audits are read-only.
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
