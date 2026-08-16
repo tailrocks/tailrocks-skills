@@ -148,7 +148,14 @@ test("generates a README and a documentation page for every skill", async () => 
   // The site writes invocations in the reader's own client syntax; the README cannot.
   expect(page?.content).toContain('<Invoke skill="tailrocks-rethink"');
   expect(page?.content).not.toContain("<AgentPicker");
-  expect(readme?.content).not.toContain("<Invoke");
+  const skillReadme = generated.find(
+    (entry) => entry.file === path.join("skills", "tailrocks-rethink", "README.md"),
+  );
+  expect(skillReadme?.content).not.toContain("<Invoke");
+  // The skill README sits beside SKILL.md, so it links to the body instead of copying it.
+  expect(skillReadme?.content).toContain("[`SKILL.md`](SKILL.md)");
+  expect(skillReadme?.content).not.toContain("Cost is never a criterion.");
+  expect(skillReadme!.content.length).toBeLessThan(definition!.content.length);
   // Skill bodies link to their own references; the site cannot serve those paths.
   expect(page?.content).not.toContain("](references/");
 });

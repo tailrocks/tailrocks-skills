@@ -229,12 +229,8 @@ ${invocation(skill)}
 
 ## Skill definition
 
-The text below is the skill body loaded by the agent, verbatim from
-[\`SKILL.md\`](SKILL.md).
-
----
-
-${skill.body}
+The instructions this skill loads live in [\`SKILL.md\`](SKILL.md), beside this
+file. They are not copied here — one source, and no chance of the two drifting.
 ${assetSection(skill, (file) => file)}
 `;
 }

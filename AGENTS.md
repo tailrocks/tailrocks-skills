@@ -446,8 +446,9 @@ inside each — used by the root `README.md` table, the documentation skill
 index, and the site sidebar. `scripts/validate-skills.ts` requires every
 `skills/` directory to appear in exactly one group.
 
-**Skill prose has one source: `SKILL.md`.** `scripts/generate-docs.ts` derives
-each `skills/<name>/README.md`, each `docs/content/docs/skills/<name>.mdx`, the
+**Skill prose has one source: `SKILL.md`.** No file copies it — the README
+beside it links to it, and the site renders it on its own page.
+`scripts/generate-docs.ts` derives each `skills/<name>/README.md`, each `docs/content/docs/skills/<name>.mdx`, the
 skill index, `docs/content/docs/install.mdx`, and the root `README.md` table
 from it. Never edit a generated file — edit the skill and run `mise run docs`.
 CI runs `mise run docs:check` and fails when a generated file is stale.
