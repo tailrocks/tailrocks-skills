@@ -226,6 +226,28 @@ permits urgent containment without calling it complete remediation.
 
 Skill definition: `skills/tailrocks-remediate/SKILL.md`
 
+### tailrocks-rethink
+
+Conceptually re-derive the design behind a reported bug, friction, or awkward
+implementation. Derives two independent ideal designs before reading the
+existing one, matches the problem shape to an established, externally sourced
+engineering concept, and requires the reported failure to become
+unrepresentable rather than guarded. Heavy restructuring, reimplementation, and
+breaking changes are ordinary outcomes; internal compatibility is work, not a
+constraint.
+
+Skill definition: `skills/tailrocks-rethink/SKILL.md`
+
+tailrocks-remediate and tailrocks-rethink both refuse to price the answer, and
+own different jobs. Remediate requires a proven defect, keeps compatibility as a
+correctness constraint, and reaches the target through never-broken migration
+slices. Rethink accepts a reported symptom or friction, treats internal
+compatibility as work to be scheduled, and expects the destination to break
+things. Two guards keep rethink from becoming licensed churn: it refuses a
+request with no failed guarantee behind it, and it rejects a target design that
+adds capability instead of subtracting a structural measure. Design notes, the
+research basis, and the extension model: `docs/rethink-design.md`.
+
 ## Adding a Skill
 
 1. Create `skills/<name>/SKILL.md` with `name`, `license: Apache-2.0`, a

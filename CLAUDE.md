@@ -12,7 +12,7 @@ directory. Cross-agent install and compatibility rules: `INSTALL.md`.
 Current skills: `tailrocks-rust-best-practices`, `tailrocks-rust-project-setup`,
 `tailrocks-axum-best-practices`, `tailrocks-typescript-best-practices`,
 `tailrocks-tanstack-project-setup`, `tailrocks-code-health`,
-`tailrocks-contribute`, `tailrocks-remediate`, the macOS family
+`tailrocks-contribute`, `tailrocks-remediate`, `tailrocks-rethink`, the macOS family
 `tailrocks-macos-design`, `tailrocks-liquid-glass`,
 `tailrocks-swift-best-practices`, `tailrocks-swift-project-setup`,
 `tailrocks-macos-visual-qa`, and `tailrocks-sketch-handoff`, and the delivery

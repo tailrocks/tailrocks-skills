@@ -95,11 +95,21 @@ screen in [examples/macos-screen/](examples/macos-screen/).
 |---|---|---|
 | `tailrocks-code-health` | Establishing or tightening measurable shrink-only architecture, lint, dependency, flake, defect, documentation, or verification ratchets | “Use tailrocks-code-health to make dependency debt monotonic and measurable.” |
 | `tailrocks-remediate` | Eliminating a proven defect class through structural redesign instead of a symptom patch | “Use tailrocks-remediate in fix mode for this cross-request state leak.” |
+| `tailrocks-rethink` | Re-deriving the ideal design behind a bug or friction, with heavy restructuring and breaking changes as ordinary outcomes | “Use tailrocks-rethink on this ordering bug and make the failure unrepresentable.” |
 | `tailrocks-contribute` | Reconnaissance, proposal, preparation, approved submission, and review response for an external open-source contribution | “Use tailrocks-contribute to prepare—but not submit—a fix for owner/repo#42.” |
 
 `tailrocks-remediate` requires a proven known-wrong state. Use ordinary best
 practices for routine implementation and `tailrocks-contribute` only for
 repositories the user does not own.
+
+`tailrocks-remediate` and `tailrocks-rethink` share a refusal to price the
+answer, and differ in posture. Remediate needs a proven defect, preserves
+compatibility as a constraint, and migrates without ever breaking the system.
+Rethink needs only a reported symptom or friction, treats internal
+compatibility as work rather than a constraint, derives the ideal design before
+reading the existing one, and expects breaking changes. Reach for remediate
+when the system must keep its promises while it is corrected, and for rethink
+when the current shape itself is the thing under review.
 
 ### Roadmap and delivery
 
