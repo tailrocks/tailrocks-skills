@@ -1,0 +1,272 @@
+---
+title: "Worked example: a TanStack feature on a Rust backend"
+description: "Offline inspection capture with a live supervisor board — the same pipeline on a brownfield product, where research carries most of the weight."
+---
+
+The product: compliance software for fire-safety inspection contractors. The
+form renderer, scheduling, and report generator already exist.
+
+The feature: **offline inspection capture with a live site board.** An inspector
+works a whole job on a tablet with no connectivity — verdict per asset, defect
+severity, notes, photos, signature. On large sites two inspectors split zones
+and work the *same* inspection concurrently. Work syncs when the network
+returns, and an office supervisor watches progress stream in and adjudicates
+anything that diverged before the certificate is signed.
+
+TypeScript in the browser, Axum behind it. This example is worth walking for a
+different reason than [the macOS one](/docs/delivery/macos-app): almost every
+hard question here has a factual answer somebody has to go and find, which is
+what `tailrocks-research` exists for — and the two questions that *don't* are
+the ones that decide the product.
+
+## 1. Capture — `tailrocks-idea`
+
+```text
+Use tailrocks-idea: inspectors need to complete inspections with no signal in
+basements and plant rooms, and the office needs to see progress as it happens.
+```
+
+Slug `offline-inspection`, status DRAFT. Note what the sentence does not say:
+nothing about two inspectors on one job, nothing about photos, nothing about
+what "as it happens" means when a device has been in a basement for two hours.
+Those gaps are the next two stages.
+
+## 2. Shape — `tailrocks-brainstorm`
+
+```text
+Use tailrocks-brainstorm on offline-inspection.
+```
+
+The interview goes after the tensions, not the features. On this item it lands
+on five questions that no amount of research can settle, because each is a
+product position:
+
+1. Two inspectors record **different verdicts** for the same fire door while
+   offline. Does the later write win, or is divergence a hard conflict that
+   blocks the certificate until a supervisor adjudicates?
+2. Is an inspection legally submitted at the moment of **offline signature**, or
+   at server ingest? This one answer decides which timestamp is printed on a
+   compliance certificate.
+3. What is the maximum supported **offline window** — one shift, 24 hours, a
+   week, unbounded?
+4. Does the supervisor board show **unsynced draft verdicts**, or only committed
+   ones? Drafts are more useful and create real liability when a supervisor acts
+   on a "fail" the inspector then revises.
+5. Under storage pressure mid-inspection, does the app **degrade** — drop photo
+   resolution, force a sync-or-stop — or hard-block new capture?
+
+Brainstorm does not answer these. It writes them into the item, recommends a
+position on each, and asks. Meanwhile it looks up anything lookup-able itself
+rather than spending your attention on it.
+
+## 3. Establish facts — `tailrocks-research`
+
+Three topics, each genuinely unanswerable from the armchair, each reusable by
+the next feature that touches the same ground.
+
+```text
+Use tailrocks-research on offline-inspection: which CRDT gives us a Rust
+server-side replica and a browser client sharing one wire format, and can it
+surface that two updates disagreed rather than silently merging them?
+```
+
+That last clause is the whole point, and it is the kind of thing a shaping
+interview only surfaces if someone is looking for it. **A CRDT is designed to
+eliminate conflicts.** Feed it two contradictory pass/fail verdicts and it
+returns one deterministic answer — the math is right and the artifact is wrong,
+because nobody signed the merged document. The feature needs conflict
+*detection* layered on top of a library built to make conflicts impossible.
+Candidates the topic weighs: Loro, Yjs with its Rust counterpart Yrs, and
+Automerge, whose change history maps well onto "who claimed what, when".
+
+```text
+Use tailrocks-research on offline-inspection: what durability can we actually
+promise for offline data in a browser on iOS, and what does requesting
+persistent storage genuinely grant?
+```
+
+This one returns bad news, which is exactly why it runs before planning rather
+than during it: Safari evicts origin storage after a week without interaction,
+quota is opaque, and iOS supports neither Background Sync nor Periodic
+Background Sync — so there is no way to flush a queue after the tab closes.
+Losing three hours of capture is a product-killing failure, and the fallback
+(foreground-only flush, an explicit "safe to close" affordance) is a *design*
+consequence of a *platform* fact.
+
+```text
+Use tailrocks-research on offline-inspection: which resumable upload protocol
+for the photo pipeline, and what is the real server-side story in Rust?
+```
+
+Photos are 30–80 files at several megabytes each. They cannot ride the document
+channel, which means the document will reference blobs that have not uploaded
+yet — a dangling-reference window that can last hours and that the supervisor's
+live view will see. The topic compares the established tus protocol against the
+IETF resumable-upload draft, and finds the Rust server-side ecosystem thin
+enough that implementing the upload resource directly in Axum is the likely
+answer.
+
+```text
++ research/offline-crdt-selection/
++ research/browser-offline-durability/
++ research/resumable-evidence-upload/
+~ roadmap/offline-inspection/README.md   Research links
+```
+
+Every claim carries a primary source. The orchestrator opens each citation and
+confirms it supports the claim — misattributions get fixed, unverifiable claims
+get dropped. Topics stay in `research/`, not buried in a plan folder, because
+the next offline feature in this product will need all three.
+
+## 4. Decide — `tailrocks-record-decision`
+
+Now the five questions are answerable, because the research changed what is
+possible.
+
+```text
+Use tailrocks-record-decision on offline-inspection: divergent verdicts on the
+same asset are a hard conflict that blocks certificate generation until a
+supervisor adjudicates, because a merged verdict is one nobody signed.
+```
+
+```text
+Use tailrocks-record-decision on offline-inspection: every event carries both
+device time and server time in separate columns, never coalesced, because an
+offline tablet's clock is untrusted and inspection times are legally material.
+```
+
+One decision per invocation. Each is dated with its reason, propagated through
+the item, and turned into Must-not entries where it forbids something. The
+second one above is the sort of constraint that is invisible in a schema review
+six months later and obvious in the item's Decisions section forever.
+
+## 5. Earn READY — `tailrocks-finalize`
+
+```text
+Use tailrocks-finalize on offline-inspection.
+```
+
+Five screens have to be confirmed as schematic mockups, not adjectives: the
+inspection runner with a per-item sync-state chip, the sync-center drawer with
+its "safe to close" indicator, the live site board with a per-device staleness
+badge, the conflict review with side-by-side verdicts and both timestamps, and
+sign-off blocked on unresolved conflicts or unuploaded evidence.
+
+Then the flow is walked end to end, including the ugly path: two inspectors,
+one asset, contradictory verdicts, one device still in a basement when the
+supervisor opens the board.
+
+Anything still open at the end is resolved, deferred with a reason, or
+reclassified as researchable. READY is granted only when the whole checklist
+passes.
+
+## 6. Package — `tailrocks-plan`
+
+```text
+Use tailrocks-plan on offline-inspection with --deep.
+```
+
+**This is a brownfield item, and the plan reflects it.** There is no
+verification-baseline slice, because the gates already exist — the plan records
+the proven build, test, and lint commands instead of standing up new ones. Where
+the existing baseline is doubtful, the audit belongs to the setup skills before
+planning, not inside it:
+
+```text
+Use tailrocks-tanstack-project-setup to audit this app and remediate every
+baseline violation.
+```
+
+The spec carries the contract between the two languages as requirements rather
+than folklore:
+
+| Concern | Decided shape |
+|---|---|
+| Document sync | WebSocket, binary frames, an opaque CRDT update inside a thin envelope carrying inspection, device, operation id, device time, and schema version |
+| Reconnect | Client sends a state vector and receives a delta, never a full document |
+| Supervisor stream | Server-sent events with a monotonic id per event, heartbeats, and resume by last event id — plus an explicit "gap, resubscribe from snapshot" event, because the spec does not define what happens when that id is no longer available |
+| Evidence | A separate resumable HTTP channel; the document holds a content hash and a blob handle, and the reference stays `pending` until bytes land |
+| Types | One Rust source of truth, TypeScript generated from it |
+| Errors | `application/problem+json` over HTTP and a typed error frame over the socket sharing one vocabulary, each error classed retryable, terminal, or needs-human |
+
+That last row is not bureaucracy: the offline queue's entire retry behavior is a
+function of the error class, so leaving it unspecified means the queue's most
+important behavior gets invented by whoever writes it first.
+
+The slices, in dependency order:
+
+| Slice | Ships | Executed under |
+|---|---|---|
+| 001 | Document model, wire types, validation core in Rust with a conformance vector suite the TypeScript validator must also pass | `tailrocks-rust-best-practices`, `tailrocks-typescript-best-practices` |
+| 002 | Offline runner, local only: local replica, persistence, storage telemetry, capture UI, photo staging | `tailrocks-typescript-best-practices` |
+| 003 | Sync channel: WebSocket endpoint, server replica, state-vector backfill, dual-timestamp acks | `tailrocks-axum-best-practices`, `tailrocks-rust-best-practices` |
+| 004 | Resumable evidence pipeline and reconciliation of pending references | `tailrocks-axum-best-practices` |
+| 005 | Live site board: event fan-out, resume, gap event, staleness model | both stacks |
+| 006 | Conflict detection, supervisor adjudication, sign-off gating, certificate | both stacks |
+
+Two details in that ordering are deliberate.
+
+**Slice 001 puts the validation rules in one place with a shared test suite.**
+The rules run twice — in TypeScript for immediate offline feedback, in Rust
+authoritatively at ingest — and two implementations of the same rules drift. The
+drift surfaces as rejected inspections after the inspector has left the site, so
+the conformance vectors are the fix, and they exist before either implementation
+does.
+
+**Slice 002 ships value alone**, with no server work at all, and proves the
+durability findings on real devices before anything depends on them. If the
+storage assumptions are wrong, that is the cheapest possible moment to learn it.
+
+Each plan is written by its own subagent and read by a fresh-context reviewer
+holding only that plan and the repository.
+
+```text
++ plans/offline-inspection/coverage.md
++ plans/offline-inspection/spec/
++ plans/offline-inspection/README.md
++ plans/offline-inspection/001-*.md … 006-*.md
++ plans/offline-inspection/GOAL.md
+~ roadmap/offline-inspection/README.md   Status: PLANNED
+```
+
+## 7. Execute and reconcile
+
+Paste the goal condition and kickoff prompt from `GOAL.md`. One plan per
+iteration, every verification run, status writes committed with the work.
+
+Then the part this feature makes vivid. The research recorded two facts that are
+true today and load-bearing tomorrow, and the ledger carries them as `A#`
+assumptions rather than as settled truth:
+
+- the upload client library the evidence pipeline leans on is maintained;
+- no cross-browser API exists for prioritising which stored data survives
+  eviction, so the storage-pressure behavior has to be a product decision.
+
+```text
+Use tailrocks-reconcile on offline-inspection.
+```
+
+Reconcile retests those assumptions along with everything else. If the upload
+library went unmaintained between planning and slice 004, the row goes `STALE`
+with a reason instead of an executor discovering it mid-implementation and
+improvising a replacement. If a browser shipped the missing storage API, that is
+a decision to revisit, not a silent improvement.
+
+That is the whole argument for the pipeline in one paragraph: the facts that
+justified a design are written down with their sources, so when the world moves,
+you find out from a status row rather than from production.
+
+## The contrast worth noticing
+
+The [macOS example](/docs/delivery/macos-app) is greenfield, and its risk lives
+in a boundary between two languages that has to be proven early — so the plan
+opens with a verification baseline and a tracer bullet.
+
+This one is brownfield, and its risk lives in the outside world: platform
+storage rules, protocol maturity, library maintenance. So the weight moves to
+`tailrocks-research`, and the plan's job is to keep those findings attached to
+the work as assumptions that get retested rather than facts that quietly expire.
+
+Same seven skills, same order, completely different centre of gravity. Choosing
+where the effort goes is the judgement; the pipeline is what makes either choice
+survive contact with an agent.

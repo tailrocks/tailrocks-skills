@@ -94,10 +94,11 @@ is a substitute for them.
 
 ## Roadmap and delivery
 
-```text
-idea → brainstorm → finalize → plan → goal execution → reconcile
-         ↕             ↕
-      research    record-decision
+```mermaid
+flowchart LR
+  idea --> brainstorm --> finalize --> plan --> exec["goal execution"] --> reconcile
+  brainstorm <--> research
+  finalize <--> decision["record-decision"]
 ```
 
 | Skill | Reach for it when |
@@ -113,6 +114,10 @@ idea → brainstorm → finalize → plan → goal execution → reconcile
 Artifacts live in `roadmap/<slug>/`, `research/<topic>/`, and `plans/<slug>/`.
 Research and decision recording happen whenever they are needed; only finalize
 grants READY, and plan requires READY.
+
+Why each stage exists, what it refuses, and two features taken end to end —
+a native macOS app and a TanStack feature on a Rust backend — are covered in
+[the delivery pipeline guide](/docs/delivery).
 
 Worked examples live in the repository:
 [`examples/plan-package/`](https://github.com/tailrocks/tailrocks-skills/tree/main/examples/plan-package),

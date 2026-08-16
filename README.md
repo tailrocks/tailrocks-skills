@@ -57,7 +57,9 @@ Focus on runtime validation, typed failure, and async ownership. Do not edit.
 Each row links to that skill's own README. Which skill to reach for when several
 could apply — family sequences, ownership boundaries, and the delivery
 pipeline — is covered in
-[choosing a skill](https://skills.tailrocks.com/docs/choosing).
+[choosing a skill](https://skills.tailrocks.com/docs/choosing). The seven
+roadmap skills have their own guide with two features taken end to end:
+[the delivery pipeline](https://skills.tailrocks.com/docs/delivery).
 
 <!-- skills:start -->
 

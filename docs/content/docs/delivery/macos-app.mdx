@@ -1,0 +1,279 @@
+---
+title: "Worked example: a native macOS app"
+description: "A log explorer with a Rust core and a Liquid Glass SwiftUI interface, from one sentence to a reconciled goal loop."
+---
+
+The feature: **Sift**, a macOS app that opens multi-gigabyte log files, indexes
+them locally, and lets you scrub a timeline while streaming matches. Parsing,
+indexing, and query live in Rust. The window, the chrome, and every pixel live
+in SwiftUI with Liquid Glass.
+
+This example is worth walking because the interesting decisions are not in
+either language — they are on the boundary between them, and that is exactly
+what an agent guesses wrong when you hand it one sentence.
+
+Twelve skills appear. Seven are the delivery pipeline; the rest are the stack
+skills it hands work to.
+
+## 1. Capture — `tailrocks-idea`
+
+```text
+Use tailrocks-idea: a macOS app that opens huge log files fast and lets you
+scrub a timeline of matches.
+```
+
+It derives the slug `log-explorer`, writes the item in DRAFT, and leaves
+Screens, Flows, Decisions, Must-not, and Quality bar visibly empty.
+
+```text
++ roadmap/log-explorer/README.md   Status: DRAFT
+~ roadmap/README.md                index row
+```
+
+Resist the urge to fill those sections yourself. Their emptiness is the agenda
+for the next step, and anything you write here bypasses the interview that
+would have tested it.
+
+## 2. Shape — `tailrocks-brainstorm`
+
+```text
+Use tailrocks-brainstorm on log-explorer.
+```
+
+One question at a time, each with a recommendation. The ones that matter for a
+two-language app surface early:
+
+- What is "fast"? A number, or the requirement is untestable.
+- Does the app ever write to the log file it opened?
+- Is an index persisted between launches, or rebuilt each time?
+- What happens when the file grows while open — tail it, or freeze the view?
+- Does a query run while the index is still building, or wait?
+
+Each answer lands in the item as it resolves. Two categories fall out of this
+conversation, and the pipeline routes them differently.
+
+**The split that makes the rest work.** "Should the app tail a growing file?" is
+a **decision** — nothing in the world answers it. "Can Swift observe a Rust
+stream without blocking the main actor?" is **research** — it has an answer, and
+guessing it wrongly costs a rewrite.
+
+## 3. Establish facts — `tailrocks-research`
+
+```text
+Use tailrocks-research on log-explorer: what are the current options for
+calling Rust from Swift, and how does each one handle streaming and
+cancellation?
+```
+
+Parallel investigators write vetted chapters into `research/rust-swift-ffi/`,
+each claim carrying a primary source or a `file:line`. The topic is registered
+in the research index and linked back to the item — and it stays reusable, so
+the next macOS app that needs the same answer extends the topic rather than
+re-deriving it.
+
+A second topic is worth its own run before any design work:
+
+```text
+Use tailrocks-research on log-explorer: what does Liquid Glass require of a
+document-style macOS window, and what is the deployment-target floor for the
+APIs we would use?
+```
+
+```text
++ research/rust-swift-ffi/README.md, 01-*.md …
++ research/liquid-glass-window-chrome/…
+~ roadmap/log-explorer/README.md   Research links
+```
+
+Status stays SHAPING throughout. Research never advances an item — it only
+removes reasons it cannot advance.
+
+## 4. Decide the boundary — `tailrocks-record-decision`
+
+With the FFI research in hand, the shape of the app is now a choice rather than
+a guess:
+
+```text
+Use tailrocks-record-decision on log-explorer: Rust owns parsing, indexing,
+and query; Swift owns rendering and input only. The interface is a typed
+snapshot the UI polls, never a callback into Swift, because a callback across
+the boundary would put Rust threads on the main actor.
+```
+
+The skill validates it against settled ground, dates it with its reason,
+propagates it through the item, and writes the corresponding entries into
+Must-not. That reason field matters more than it looks: six weeks later it is
+the difference between a constraint and a mystery.
+
+A second one belongs here too, and it is the kind an agent will otherwise decide
+for you:
+
+```text
+Use tailrocks-record-decision on log-explorer: the app opens log files
+read-only and never writes to them, because a corrupted log is unrecoverable
+evidence.
+```
+
+## 5. Design the interface — `tailrocks-macos-design`
+
+Before finalize can confirm screens, the screens have to exist as something
+better than a sentence.
+
+```text
+Use tailrocks-macos-design to design the log explorer. Stop for my
+alternative selection.
+```
+
+It produces the experience brief, the information architecture, and the native
+component map that classifies every region `NATIVE`, `NATIVE-COMPOSED`, or
+`CUSTOM` — then offers structurally different alternatives and stops. The scored
+rubric with its hard failures is what keeps "looks fine" from being the
+acceptance standard.
+
+The design artifacts live outside the roadmap item; the item's Screens section
+points at them. One source per fact.
+
+**One taste authority.** Never run a second skill that also encodes aesthetic
+judgement over the same screens. Two owners produce inconsistency between
+features rather than an error you can see.
+
+Optional, when the design starts in a design file rather than in prose:
+
+```text
+Use tailrocks-sketch-handoff on LogExplorer.sketch and prepare the
+implementation package.
+```
+
+## 6. Earn READY — `tailrocks-finalize`
+
+```text
+Use tailrocks-finalize on log-explorer.
+```
+
+The closing interview walks the primary flow — open a file, watch the index
+build, run a query mid-build, scrub the timeline — and confirms each screen as a
+schematic mockup. Every remaining open question is resolved, deferred with a
+reason, or reclassified as researchable.
+
+Expect it to refuse the first time. Typical blockers on this item: no stated
+number for "fast", no decided behavior for a query issued against a half-built
+index, no answer for what the window shows when the file is unreadable. Those
+are three bugs you did not write.
+
+```text
+~ roadmap/log-explorer/README.md   Status: READY
+```
+
+## 7. Package — `tailrocks-plan`
+
+```text
+Use tailrocks-plan on log-explorer with --deep.
+```
+
+This is where the two-language shape stops being a risk. The plan step:
+
+- builds `coverage.md`, giving every screen, capability, flow, must-not,
+  assumption, and open question an ID, so nothing in the item goes missing;
+- closes gaps with more research — including the exact build, test, and lint
+  commands for **both** toolchains, proven rather than assumed;
+- writes the spec with screen contracts per mockup and a must-not registry that
+  carries the read-only rule and the main-actor rule as enforceable entries;
+- slices the work vertically.
+
+The slice list is the part worth studying:
+
+| Slice | What it stands up | Executed under |
+|---|---|---|
+| 001 | Verification baseline: workspace, empty Rust crate, empty app target, one task runner, all gates green | `tailrocks-rust-project-setup`, `tailrocks-swift-project-setup` |
+| 002 | Tracer bullet: Rust returns a hardcoded snapshot, Swift renders it, gates still green | `tailrocks-rust-best-practices`, `tailrocks-swift-best-practices` |
+| 003 | Real parser and index behind the same snapshot type | `tailrocks-rust-best-practices` |
+| 004 | Timeline and results surface with real Liquid Glass chrome | `tailrocks-liquid-glass`, `tailrocks-swift-best-practices` |
+| 005 | Query during index build, cancellation, error states | both language skills |
+| 006 | Rendered verification across appearance and accessibility states | `tailrocks-macos-visual-qa` |
+
+Two things in that table are not decoration.
+
+**Slice 001 exists because gates cannot be assumed.** A greenfield chain stands
+up the task runner, build, test, and lint on an empty skeleton before any
+feature work, so every later slice — and `GOAL.md` itself — can reference
+commands that already pass. In a two-language repository this is the slice that
+decides one task runner drives both toolchains, which is why the goal condition
+can be a single script.
+
+**Slice 002 is a tracer bullet, not a layer.** It cuts a complete path through
+Rust, the boundary, and SwiftUI while doing almost nothing, so the riskiest
+thing in the project — the FFI seam — is proven in the first hour rather than
+the last week.
+
+Each plan is written by its own subagent, then read by a fresh-context reviewer
+holding only that plan and the repository. Anything the reviewer has to ask
+about is a gap in the plan, not a gap in the reviewer.
+
+```text
++ plans/log-explorer/coverage.md
++ plans/log-explorer/spec/
++ plans/log-explorer/README.md          manifest + executor protocol
++ plans/log-explorer/001-*.md … 006-*.md
++ plans/log-explorer/GOAL.md
++ plans/log-explorer/goal-check.sh
+~ roadmap/log-explorer/README.md        Status: PLANNED
+```
+
+## 8. Execute
+
+Paste `GOAL.md`'s goal condition and kickoff prompt into your agent's goal
+execution. The executor works one plan per iteration, runs every verification,
+and commits status writes with the work.
+
+The stack skills are invoked *inside* execution, named by the slice: the
+executor reaches for `tailrocks-swift-best-practices` while writing the view
+model, `tailrocks-liquid-glass` while building the chrome, and
+`tailrocks-macos-visual-qa` to prove the result — capturing the running app by
+window ID, driving the accessibility tree, and running the appearance and
+accessibility state matrix. Glass surfaces snapshot fully transparent from a
+detached view, so this is the only verification that means anything for the
+chrome.
+
+## 9. Reconcile — `tailrocks-reconcile`
+
+```text
+Use tailrocks-reconcile on log-explorer.
+```
+
+Run it when the loop finishes, when it stalls, and before any resume. It
+re-runs each DONE row's own criteria instead of trusting the row, resets rows
+abandoned by dead sessions, retests BLOCKED reasons and `A#` assumptions, and
+drift-checks TODO plans against HEAD.
+
+On this item the assumption most likely to fall over is a platform one — an
+availability floor that the research topic recorded and a later toolchain update
+moved. Reconcile is what turns that from a silent wrong build into a `STALE` row
+with a reason.
+
+## 10. When the intent changes
+
+Halfway through, you decide the app should tail growing files after all. Do not
+edit the plan.
+
+```text
+Use tailrocks-record-decision on log-explorer: the app tails a growing file
+and appends to the index incrementally, because operators watch live
+deployments.
+```
+
+That reopens the item to SHAPING, marks the affected plan rows `STALE`, and
+leaves everything else intact. Finalize again, then re-run `tailrocks-plan`: it
+refreshes the stale rows against the updated item, keeps numbering monotonic,
+records the spec delta, and regenerates `GOAL.md` last.
+
+The same route handles a falsified assumption. The executor names the failed
+`A#`, record-decision propagates it, the plans that leaned on it go `STALE`, and
+plan refreshes them. No hand-editing, no drift between ledger, spec, and plan.
+
+## What the pipeline bought
+
+Look at what was decided before a line of code existed: the FFI shape, the
+main-actor rule, the read-only guarantee, the index persistence model, a number
+for "fast", and the behavior of a query against a half-built index. Every one of
+them is something an agent would otherwise have picked silently — and four of
+them are expensive to change once the seam is built.

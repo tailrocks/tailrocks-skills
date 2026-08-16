@@ -16,6 +16,11 @@ Every page under `content/` is `.mdx`, never `.md`. A `.md` page renders
 without component support, and the difference stays invisible until a page
 needs one. `mise run docs:check` rejects it.
 
+Diagrams are ```mermaid fences. A remark plugin rewrites them into the Mermaid
+component, which renders in the browser after hydration — so the diagram is
+absent from the prerendered HTML. Never put meaning only in a diagram; the
+surrounding prose carries it.
+
 `design/` holds repository design notes. Not published, not part of the site.
 
 The build asserts a prerendered page for every directory in `skills/`. A new

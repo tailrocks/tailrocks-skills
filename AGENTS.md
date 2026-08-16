@@ -204,7 +204,11 @@ Grilling mechanics descend from Matt Pocock's `grilling` family; the plan
 template and the reconcile stage descend from the shadcn `improve` skill.
 All seven write only their own artifacts (`roadmap/`, `research/`,
 `plans/`) and never touch source.
-Worked walkthrough: `docs/design/pipeline-walkthrough.md`.
+Mechanical walkthrough: `docs/design/pipeline-walkthrough.md`. The published
+guide — why each stage exists, what it refuses, and two features taken end to
+end (a native macOS app with a Rust core, and a TanStack feature on an Axum
+backend) — lives in `docs/content/docs/delivery/` and explains how the delivery
+skills hand work to the stack skills.
 
 ### tailrocks-contribute
 
