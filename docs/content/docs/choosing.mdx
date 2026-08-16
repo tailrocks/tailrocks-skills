@@ -97,6 +97,29 @@ structural measure.
 Use ordinary best-practice skills for routine implementation. Neither of these
 is a substitute for them.
 
+## Pull request lifecycle
+
+Four skills run the PR lifecycle in any repository. Repo-specific behavior —
+branch scheme, commit trailers, body generator, blast-radius classes, the
+pre-merge worklist, merge method — comes from one optional file at the
+target repository's root, `.tailrocks/pr.md`; without it the skills discover
+the repository's own conventions and fall back to their defaults.
+
+| Skill | Reach for it when |
+|---|---|
+| [`tailrocks-create-pr`](/docs/skills/tailrocks-create-pr) | A self-contained change needs a branch, a commit in the repo's convention, and an opened PR. |
+| [`tailrocks-refresh-pr`](/docs/skills/tailrocks-refresh-pr) | An open PR's title or body no longer describes what the branch ships. |
+| [`tailrocks-checkout-pr`](/docs/skills/tailrocks-checkout-pr) | The working repository must land on a PR's branch, with the tree guarded. |
+| [`tailrocks-merge-pr`](/docs/skills/tailrocks-merge-pr) | A PR is merge-ready and the gates must run fail-closed before it lands. |
+
+### create-pr or contribute
+
+Both end in `gh pr create`. [`tailrocks-contribute`](/docs/skills/tailrocks-contribute)
+is for repositories that belong to someone else: it adds contract recon,
+hard stops, and per-contribution human approval before anything outward.
+`tailrocks-create-pr` is for repositories the user works in as their own —
+invoking it authorizes the push and the PR.
+
 ## Roadmap and delivery
 
 ```mermaid

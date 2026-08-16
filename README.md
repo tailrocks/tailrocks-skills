@@ -108,6 +108,17 @@ Debt that shrinks, defects that stop recurring, and work on repositories you do 
 | [`tailrocks-rethink`](skills/tailrocks-rethink/README.md) | Re-derive the design behind a reported bug or friction instead of patching it; restructuring and breaking changes are expected and cost is excluded from the decision. |
 | [`tailrocks-contribute`](skills/tailrocks-contribute/README.md) | Contribute to an external open-source project: discover its contribution contract, prepare a minimal evidenced change, and submit only after explicit human approval. |
 
+### Pull request lifecycle
+
+Open, refresh, check out, and merge pull requests in any repository, extended by its .tailrocks/pr.md.
+
+| Skill | What it does |
+|---|---|
+| [`tailrocks-create-pr`](skills/tailrocks-create-pr/README.md) | Open a pull request for the current change in any repository: branch, commit in the repo's convention, body from its template, render check. |
+| [`tailrocks-refresh-pr`](skills/tailrocks-refresh-pr/README.md) | Reconcile an open pull request's title and body against the current diff: drifted prose rewritten, accurate prose kept verbatim, template sections re-selected. |
+| [`tailrocks-checkout-pr`](skills/tailrocks-checkout-pr/README.md) | Switch the working repository onto a pull request's branch via gh pr checkout, guarding a dirty working tree first. |
+| [`tailrocks-merge-pr`](skills/tailrocks-merge-pr/README.md) | Merge a pull request fail-closed in any repository: CI gate, blast-radius confirm, metadata reconcile, repo-selected merge method, the repo's pre-merge worklist from .tailrocks/pr.md. |
+
 ### Roadmap and delivery
 
 An idea through shaping, planning, autonomous execution, and back to verified truth.

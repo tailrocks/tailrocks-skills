@@ -47,6 +47,17 @@
       ]
     },
     {
+      "id": "pull-requests",
+      "title": "Pull request lifecycle",
+      "summary": "Open, refresh, check out, and merge pull requests in any repository, extended by its .tailrocks/pr.md.",
+      "skills": [
+        "tailrocks-create-pr",
+        "tailrocks-refresh-pr",
+        "tailrocks-checkout-pr",
+        "tailrocks-merge-pr"
+      ]
+    },
+    {
       "id": "delivery",
       "title": "Roadmap and delivery",
       "summary": "An idea through shaping, planning, autonomous execution, and back to verified truth.",

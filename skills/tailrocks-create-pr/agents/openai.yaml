@@ -1,0 +1,6 @@
+interface:
+  display_name: "Create PR"
+  short_description: "Open a pull request in the repository's own convention"
+  default_prompt: "Use $tailrocks-create-pr to branch, commit, and open a pull request for the current change."
+policy:
+  allow_implicit_invocation: false
