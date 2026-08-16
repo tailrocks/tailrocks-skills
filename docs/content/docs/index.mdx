@@ -1,0 +1,52 @@
+---
+title: tailrocks-skills
+description: "Manual-only engineering skills shared by seven coding agents from one skills/ tree."
+---
+
+Reusable engineering skills for Claude Code, Codex CLI, OpenCode, Grok Build,
+Kimi Code, Antigravity CLI, and Amp. Every client reads the same `skills/` tree,
+so a skill behaves the same wherever you invoke it.
+
+## Three things to know
+
+**Skills are manual-only.** Nothing here activates on its own. Every description
+begins with an explicit-request guard, and the clients that support per-skill
+policy are configured to refuse implicit invocation. You name the skill or it
+stays out of the way.
+
+**The stack is fixed.** Rust 2024 with Axum, Tokio, and Tower. TypeScript 7 with
+Bun, TanStack Start, React, shadcn/ui, Tailwind CSS v4, and Oxc. Native macOS
+with Swift, a SwiftUI-first architecture, narrow capability-only AppKit bridges,
+and Liquid Glass. Skills deepen that stack rather than offering alternatives to
+it, and every setup targets the latest stable release available when it runs.
+
+**One skill owns each responsibility.** Two skills that both decide the same
+thing conflict, and the conflict shows up as inconsistency between features
+rather than as an error. [Choosing a skill](/docs/choosing) covers the
+boundaries and the order to run them in.
+
+## Start here
+
+- [Installing](/docs/install) — one channel per agent, pinning, and the verified
+  compatibility matrix.
+- [Skills](/docs/skills) — every skill and what it is for.
+- [Choosing a skill](/docs/choosing) — which one to reach for when several could
+  apply.
+
+## Invoking a skill
+
+```text
+Claude Code   /tailrocks-skills:tailrocks-rust-best-practices review this crate
+Codex CLI     $tailrocks-rust-best-practices review this crate
+Grok Build    /tailrocks-rust-best-practices review this crate
+Kimi Code     /skill:tailrocks-rust-best-practices review this crate
+Antigravity   /tailrocks-rust-best-practices review this crate
+OpenCode/Amp  Use tailrocks-rust-best-practices to review this crate
+```
+
+A strong request names the skill, the action, the scope, and the constraint:
+
+```text
+Use tailrocks-typescript-best-practices in review mode on src/auth/.
+Focus on runtime validation, typed failure, and async ownership. Do not edit.
+```
