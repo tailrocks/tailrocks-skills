@@ -389,6 +389,10 @@ Rules for changing a `SKILL.md`:
 workflow is drift waiting to happen. Do not add `setup-bun`, `setup-node`, or
 any other per-tool action, and do not install a tool a job needs by hand.
 
+**No alias tasks.** Every `mise` task does something no other task does. A task
+that only re-runs another one makes `mise tasks` a worse map of the repository
+and leaves two names to keep in step. Name the real task well instead.
+
 ## Validation
 
 Requires Bun, pinned in `mise.toml`; `mise install` provisions it. Before
