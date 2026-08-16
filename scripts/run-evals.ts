@@ -14,6 +14,11 @@ const PER_FILE_CAP = 16 * 1024;
 const TOTAL_CAP = 64 * 1024;
 const CLAUDE_TIMEOUT_MS = 600_000;
 const CLAUDE_ATTEMPTS = 2;
+// Alternate backends (proxy gateways serving non-Anthropic models) price
+// differently and may not be recognized by the CLI's cost table; both knobs
+// must be tunable per run or the budget cap kills subjects mid-flight.
+const CLAUDE_MODEL = process.env.EVAL_CLAUDE_MODEL ?? "sonnet";
+const CLAUDE_MAX_BUDGET_USD = process.env.EVAL_MAX_BUDGET_USD ?? "0.75";
 
 export function fixtureDestination(
   root: string,
@@ -123,7 +128,7 @@ async function claude(prompt: string, cwd: string, schema?: object): Promise<Cla
     "-p",
     prompt,
     "--model",
-    "sonnet",
+    CLAUDE_MODEL,
     "--safe-mode",
     "--permission-mode",
     "acceptEdits",
@@ -131,7 +136,7 @@ async function claude(prompt: string, cwd: string, schema?: object): Promise<Cla
     "--output-format",
     schema ? "json" : "text",
     "--max-budget-usd",
-    "0.75",
+    CLAUDE_MAX_BUDGET_USD,
   ];
   if (schema) command.push("--json-schema", JSON.stringify(schema));
   const stdout = await withRetries(CLAUDE_ATTEMPTS, async (attempt) => {
