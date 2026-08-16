@@ -1,0 +1,23 @@
+{
+  "skill_name": "tailrocks-checkout-pr",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Check out https://github.com/acme/widgets/pull/312 so I can review it locally.",
+      "expected_output": "Working tree checked clean first, PR state checked open, gh pr checkout 312 run, resulting branch verified against headRefName, report names the previous branch and the way back (git switch <old>).",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Switch to PR 45. (The working tree has uncommitted changes.)",
+      "expected_output": "STOP on the dirty tree: ask the operator to commit, stash, or discard first; never auto-stash; no checkout performed.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Check out the feature-login branch's PR.",
+      "expected_output": "Branch resolved via gh pr list --head; when no PR matches, STOP and say so instead of falling back to raw git checkout of a similarly named branch.",
+      "files": []
+    }
+  ]
+}

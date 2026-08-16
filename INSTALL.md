@@ -32,6 +32,8 @@ one shared directory:
 - **Code quality:** `tailrocks-code-health`, `tailrocks-agents-md`,
   `tailrocks-simplify`, `tailrocks-contribute`, `tailrocks-remediate`,
   `tailrocks-rethink`
+- **Pull requests:** `tailrocks-create-pr`, `tailrocks-refresh-pr`,
+  `tailrocks-checkout-pr`, `tailrocks-merge-pr`
 - **Delivery pipeline:** `tailrocks-idea`, `tailrocks-brainstorm`,
   `tailrocks-research`, `tailrocks-record-decision`, `tailrocks-finalize`,
   `tailrocks-plan`, `tailrocks-reconcile`
@@ -76,19 +78,19 @@ machines, or a team that upgrades on its own schedule. A pinned install never
 updates itself; you move the pin.
 
 Releases are tagged `vX.Y.Z`, and the current release is
-[v0.15.1](https://github.com/tailrocks/tailrocks-skills/releases/latest).
+[v0.16.0](https://github.com/tailrocks/tailrocks-skills/releases/latest).
 The `version` field is identical across all four manifests, so a bump is what
 tells a client an update exists.
 
 | Client | Updates itself | Upgrade command | Pin syntax |
 |---|---|---|---|
-| Claude Code | **Yes**, per marketplace — off by default for third-party marketplaces, turn it on once | `/plugin marketplace update tailrocks-skills` | `#v0.15.1` on the Git URL |
-| Codex CLI | No | `codex plugin marketplace upgrade tailrocks-skills`, then `codex plugin add tailrocks-skills` | `@v0.15.1` or `--ref v0.15.1` |
-| Grok Build | No | `grok plugin update tailrocks-skills` | `@v0.15.1` |
+| Claude Code | **Yes**, per marketplace — off by default for third-party marketplaces, turn it on once | `/plugin marketplace update tailrocks-skills` | `#v0.16.0` on the Git URL |
+| Codex CLI | No | `codex plugin marketplace upgrade tailrocks-skills`, then `codex plugin add tailrocks-skills` | `@v0.16.0` or `--ref v0.16.0` |
+| Grok Build | No | `grok plugin update tailrocks-skills` | `@v0.16.0` |
 | Kimi Code | No | re-run `/plugins install`, then `/plugins reload` | release or `/tree/<ref>` URL |
 | Amp | Inherits Claude Code's copy when installed plugin-first | `amp skill add tailrocks/tailrocks-skills --global --overwrite` | clone a tag, add the local path |
-| OpenCode | No — it is a file copy | re-copy the tree | `git clone --branch v0.15.1` |
-| Antigravity CLI | No — it installs from a local path | re-clone, reinstall | `git clone --branch v0.15.1` |
+| OpenCode | No — it is a file copy | re-copy the tree | `git clone --branch v0.16.0` |
+| Antigravity CLI | No — it installs from a local path | re-clone, reinstall | `git clone --branch v0.16.0` |
 
 Claude Code is the only client here that keeps itself current unattended. Turn
 its auto-update on once (below) and the rest of the collection follows every
@@ -131,7 +133,7 @@ Pin a version by adding the marketplace from the Git URL with a ref — the
 `owner/repo` shorthand takes no ref:
 
 ```sh
-claude plugin marketplace add https://github.com/tailrocks/tailrocks-skills.git#v0.15.1
+claude plugin marketplace add https://github.com/tailrocks/tailrocks-skills.git#v0.16.0
 ```
 
 Auto-update does not move a pin. Upgrading one means removing the marketplace
@@ -169,7 +171,7 @@ codex plugin add tailrocks-skills
 Pin a version with the `@ref` suffix on the source, or the equivalent `--ref`:
 
 ```sh
-codex plugin marketplace add tailrocks/tailrocks-skills@v0.15.1
+codex plugin marketplace add tailrocks/tailrocks-skills@v0.16.0
 ```
 
 - Manifest: `.codex-plugin/plugin.json` with `"skills": "./skills/"` (the
@@ -197,7 +199,7 @@ OpenCode has no plugin channel for skills (its JS/TS plugins cannot register
 skills), so use its own global skills directory:
 
 ```sh
-git clone --depth 1 --branch v0.15.1 https://github.com/tailrocks/tailrocks-skills.git /tmp/tailrocks-skills
+git clone --depth 1 --branch v0.16.0 https://github.com/tailrocks/tailrocks-skills.git /tmp/tailrocks-skills
 mkdir -p ~/.config/opencode/skills
 cp -R /tmp/tailrocks-skills/skills/* ~/.config/opencode/skills/
 ```
@@ -238,10 +240,10 @@ grok plugin install tailrocks/tailrocks-skills --trust
 Grok does not update on its own. Upgrade with `grok plugin update
 tailrocks-skills`, or omit the name to update every installed plugin. Pin a
 version with the `@ref` suffix: `grok plugin install
-tailrocks/tailrocks-skills@v0.15.1 --trust`.
+tailrocks/tailrocks-skills@v0.16.0 --trust`.
 
 - Grok resolves `.grok-plugin/plugin.json` first, then falls back to
-  `.claude-plugin/plugin.json` — this repo installs as-is. `@v0.15.1` ref
+  `.claude-plugin/plugin.json` — this repo installs as-is. `@v0.16.0` ref
   pins and `#subdir` are supported.
 - Invocation: `/<skill-name>`, or qualified `/tailrocks-skills:<skill-name>`;
   `/skills` opens the extensions modal; `grok inspect --json` lists every
@@ -268,7 +270,7 @@ existed):
 
 The bare repository URL tracks the default branch, so re-running the install
 picks up whatever has landed. To follow releases instead, install from the
-release URL (`.../releases/tag/v0.15.1`) or a `/tree/<ref>` URL, and repeat the
+release URL (`.../releases/tag/v0.16.0`) or a `/tree/<ref>` URL, and repeat the
 pair of commands against the newer tag to upgrade. Kimi does not update
 plugins on its own in either mode.
 
@@ -295,7 +297,7 @@ or `brew install --cask antigravity-cli`), then install the plugin from a
 local clone (the CLI installs plugins from local paths):
 
 ```sh
-git clone --depth 1 --branch v0.15.1 https://github.com/tailrocks/tailrocks-skills.git
+git clone --depth 1 --branch v0.16.0 https://github.com/tailrocks/tailrocks-skills.git
 agy plugin install ./tailrocks-skills
 ```
 

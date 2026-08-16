@@ -210,6 +210,42 @@ end (a native macOS app with a Rust core, and a TanStack feature on an Axum
 backend) — lives in `docs/content/docs/delivery/` and explains how the delivery
 skills hand work to the stack skills.
 
+### The pull-request family — lifecycle on any repository
+
+Four skills run the pull-request lifecycle in whatever repository the session
+works in — not this one specifically. They are generic by construction:
+everything repo-specific lives in one optional markdown file at the target
+repository's root, `.tailrocks/pr.md` — base branch, branch naming, commit
+trailers, body template or generator command, required checks, blast-radius
+classes, a pre-merge worklist, and the merge method. Precedence is fixed:
+user instruction, then `.tailrocks/pr.md`, then the repository's own
+conventions (CONTRIBUTING, PR template, agent instruction files, git
+history), then skill defaults. The format reference and a copy-ready
+template ship with tailrocks-create-pr.
+
+- **tailrocks-create-pr** — branch off the base branch, commit in the
+  repository's convention, build the body from its template or generator via
+  `--body-file`, verify the render.
+  Definition: `skills/tailrocks-create-pr/SKILL.md`
+- **tailrocks-refresh-pr** — reconcile an open PR's title and body against
+  the current diff: re-select template sections, rewrite drifted prose, keep
+  accurate authored prose verbatim. Operator-triggered, never
+  commit-triggered. Definition: `skills/tailrocks-refresh-pr/SKILL.md`
+- **tailrocks-checkout-pr** — switch onto a PR's branch via
+  `gh pr checkout`, guarding a dirty working tree (never auto-stash) and
+  refusing raw `git checkout` fallbacks.
+  Definition: `skills/tailrocks-checkout-pr/SKILL.md`
+- **tailrocks-merge-pr** — merge fail-closed: CI gate with named-check-only
+  admin bypass, blast-radius confirm, the repository's pre-merge worklist,
+  metadata reconcile before the squash title enters history, repo-selected
+  merge method. Authorization never carries forward between sessions.
+  Definition: `skills/tailrocks-merge-pr/SKILL.md`
+
+The family descends from the jackin-dev `create-pr` / `refresh-pr` /
+`checkout-pr` / `merge-pr` skills, with the jackin-specific machinery (the
+`cargo xtask pr body` generator, roadmap retirement) generalized into the
+`.tailrocks/pr.md` sections.
+
 ### tailrocks-contribute
 
 Contribute to external open-source projects through project-contract recon,
