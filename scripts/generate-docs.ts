@@ -239,9 +239,8 @@ ${assetSection(skill, (file) => file)}
 `;
 }
 
-export function renderSkillPage(skill: Skill): string {
+export function renderSkillOverview(skill: Skill): string {
   const base = `${repoBlob}/skills/${skill.name}`;
-  const body = escapeMdx(absoluteLinks(skill.body, base));
   return `---
 title: ${skill.title}
 description: ${JSON.stringify(skill.summary)}
@@ -255,14 +254,32 @@ ${escapeMdx(skill.description)}
 
 ${invocationPage(skill)}
 
-## Skill definition
+## What it loads
 
-The text below is the skill body loaded by the agent, verbatim from its source.
+The instructions the agent reads when you invoke this skill are on their own
+page: [skill definition](/docs/skills/${skill.name}/definition). Read it when
+you want to know exactly what the skill will do; you do not need it to use the
+skill.
+${escapeMdx(assetSection(skill, (file) => `${base}/${file}`))}
+`;
+}
+
+export function renderSkillDefinition(skill: Skill): string {
+  const base = `${repoBlob}/skills/${skill.name}`;
+  const body = escapeMdx(absoluteLinks(skill.body, base));
+  return `---
+title: Skill definition
+description: ${JSON.stringify(`The instructions ${skill.name} loads, verbatim.`)}
+---
+
+{/* ${banner.replace(/^<!--\s*|\s*-->$/g, "")} */}
+
+Verbatim body of [\`${skill.name}\`](/docs/skills/${skill.name}), exactly as the
+agent loads it. Source: [SKILL.md](${base}/SKILL.md).
 
 ---
 
 ${body}
-${escapeMdx(assetSection(skill, (file) => `${base}/${file}`))}
 `;
 }
 
@@ -352,8 +369,12 @@ export async function generate(root: string): Promise<Generated[]> {
   for (const skill of skills) {
     output.push({ file: path.join("skills", skill.name, "README.md"), content: renderReadme(skill) });
     output.push({
-      file: path.join("docs", "content", "docs", "skills", `${skill.name}.mdx`),
-      content: renderSkillPage(skill),
+      file: path.join("docs", "content", "docs", "skills", skill.name, "index.mdx"),
+      content: renderSkillOverview(skill),
+    });
+    output.push({
+      file: path.join("docs", "content", "docs", "skills", skill.name, "definition.mdx"),
+      content: renderSkillDefinition(skill),
     });
   }
   output.push({

@@ -4,7 +4,7 @@ Fumadocs on TanStack Start, built by Vite into a static bundle, published to
 <https://skills.tailrocks.com> from GitHub Pages. Commands and the deployment
 contract: `README.md`.
 
-Never edit a generated page. `content/docs/skills/*.mdx`,
+Never edit a generated page. `content/docs/skills/<name>/`,
 `content/docs/skills/index.mdx`, `content/docs/skills/meta.json`, and
 `content/docs/install.mdx` come from `SKILL.md`, `catalog.json`, and
 `INSTALL.md` through `mise run docs` at the repository root. Edit the source,
@@ -42,6 +42,11 @@ A remark plugin rewrites Mermaid fences into the Mermaid component, which
 renders in the browser after hydration, so the diagram is absent from the
 prerendered HTML. Never put meaning only in a diagram; the surrounding prose
 carries it.
+
+A skill gets two pages: the overview at `/docs/skills/<name>` carries what it
+is, when to reach for it, and how to invoke it; the verbatim body lives one
+level deeper at `/definition`. Nobody reads a 200-line router to decide whether
+a skill applies, and the overview is what that decision needs.
 
 `design/` holds repository design notes. Not published, not part of the site.
 
