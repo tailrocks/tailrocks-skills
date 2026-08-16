@@ -11,9 +11,12 @@ Close the shaping interview on a SHAPING roadmap item: resolve every screen, flo
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This skill never activates on its own. Name it in your request, in the
+syntax of the client you use:
 
-> Use `tailrocks-finalize` …
+<AgentPicker />
+
+<Invoke skill="tailrocks-finalize" args="<roadmap-slug> [--batch]" />
 
 Arguments: `<roadmap-slug> [--batch]`
 

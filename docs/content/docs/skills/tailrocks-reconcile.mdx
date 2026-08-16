@@ -11,9 +11,12 @@ True up plans/&lt;slug>/ with execution reality: re-verify DONE rows by re-runni
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This skill never activates on its own. Name it in your request, in the
+syntax of the client you use:
 
-> Use `tailrocks-reconcile` …
+<AgentPicker />
+
+<Invoke skill="tailrocks-reconcile" args="<roadmap-slug>" />
 
 Arguments: `<roadmap-slug>`
 

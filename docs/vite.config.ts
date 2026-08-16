@@ -1,11 +1,11 @@
-import tailwindcss from '@tailwindcss/vite'
-import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-import react from '@vitejs/plugin-react'
-import mdx from 'fumadocs-mdx/vite'
-import { defineConfig } from 'vite'
+import tailwindcss from "@tailwindcss/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import react from "@vitejs/plugin-react";
+import mdx from "fumadocs-mdx/vite";
+import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: '/',
+  base: "/",
   plugins: [
     mdx(),
     tailwindcss(),
@@ -14,11 +14,11 @@ export default defineConfig({
         enabled: true,
         prerender: { enabled: true, crawlLinks: true },
       },
-      pages: [{ path: '/' }, { path: '/docs' }, { path: '/docs/skills' }],
+      pages: [{ path: "/" }, { path: "/docs" }, { path: "/docs/skills" }],
     }),
     react(),
   ],
   resolve: {
     tsconfigPaths: true,
   },
-})
+});

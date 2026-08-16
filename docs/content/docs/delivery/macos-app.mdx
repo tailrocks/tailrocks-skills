@@ -15,12 +15,11 @@ what an agent guesses wrong when you hand it one sentence.
 Twelve skills appear. Seven are the delivery pipeline; the rest are the stack
 skills it hands work to.
 
+<AgentPicker />
+
 ## 1. Capture — `tailrocks-idea`
 
-```text
-Use tailrocks-idea: a macOS app that opens huge log files fast and lets you
-scrub a timeline of matches.
-```
+<Invoke skill="tailrocks-idea" args="a macOS app that opens huge log files fast and lets you scrub a timeline of matches" />
 
 It derives the slug `log-explorer`, writes the item in DRAFT, and leaves
 Screens, Flows, Decisions, Must-not, and Quality bar visibly empty.
@@ -36,9 +35,7 @@ would have tested it.
 
 ## 2. Shape — `tailrocks-brainstorm`
 
-```text
-Use tailrocks-brainstorm on log-explorer.
-```
+<Invoke skill="tailrocks-brainstorm" args="log-explorer" />
 
 One question at a time, each with a recommendation. The ones that matter for a
 two-language app surface early:
@@ -59,11 +56,7 @@ guessing it wrongly costs a rewrite.
 
 ## 3. Establish facts — `tailrocks-research`
 
-```text
-Use tailrocks-research on log-explorer: what are the current options for
-calling Rust from Swift, and how does each one handle streaming and
-cancellation?
-```
+<Invoke skill="tailrocks-research" args="log-explorer: what are the current options for calling Rust from Swift, and how does each one handle streaming and cancellation?" />
 
 Parallel investigators write vetted chapters into `research/rust-swift-ffi/`,
 each claim carrying a primary source or a `file:line`. The topic is registered
@@ -73,11 +66,7 @@ re-deriving it.
 
 A second topic is worth its own run before any design work:
 
-```text
-Use tailrocks-research on log-explorer: what does Liquid Glass require of a
-document-style macOS window, and what is the deployment-target floor for the
-APIs we would use?
-```
+<Invoke skill="tailrocks-research" args="log-explorer: what does Liquid Glass require of a document-style macOS window, and what is the deployment-target floor for the APIs we would use?" />
 
 ```text
 + research/rust-swift-ffi/README.md, 01-*.md …
@@ -93,12 +82,7 @@ removes reasons it cannot advance.
 With the FFI research in hand, the shape of the app is now a choice rather than
 a guess:
 
-```text
-Use tailrocks-record-decision on log-explorer: Rust owns parsing, indexing,
-and query; Swift owns rendering and input only. The interface is a typed
-snapshot the UI polls, never a callback into Swift, because a callback across
-the boundary would put Rust threads on the main actor.
-```
+<Invoke skill="tailrocks-record-decision" args="log-explorer: Rust owns parsing, indexing, and query; Swift owns rendering and input only. The interface is a typed snapshot the UI polls, never a callback into Swift, because a callback across the boundary would put Rust threads on the main actor." />
 
 The skill validates it against settled ground, dates it with its reason,
 propagates it through the item, and writes the corresponding entries into
@@ -108,21 +92,14 @@ the difference between a constraint and a mystery.
 A second one belongs here too, and it is the kind an agent will otherwise decide
 for you:
 
-```text
-Use tailrocks-record-decision on log-explorer: the app opens log files
-read-only and never writes to them, because a corrupted log is unrecoverable
-evidence.
-```
+<Invoke skill="tailrocks-record-decision" args="log-explorer: the app opens log files read-only and never writes to them, because a corrupted log is unrecoverable evidence" />
 
 ## 5. Design the interface — `tailrocks-macos-design`
 
 Before finalize can confirm screens, the screens have to exist as something
 better than a sentence.
 
-```text
-Use tailrocks-macos-design to design the log explorer. Stop for my
-alternative selection.
-```
+<Invoke skill="tailrocks-macos-design" args="design the log explorer. Stop for my alternative selection." />
 
 It produces the experience brief, the information architecture, and the native
 component map that classifies every region `NATIVE`, `NATIVE-COMPOSED`, or
@@ -139,16 +116,11 @@ features rather than an error you can see.
 
 Optional, when the design starts in a design file rather than in prose:
 
-```text
-Use tailrocks-sketch-handoff on LogExplorer.sketch and prepare the
-implementation package.
-```
+<Invoke skill="tailrocks-sketch-handoff" args="LogExplorer.sketch and prepare the implementation package." />
 
 ## 6. Earn READY — `tailrocks-finalize`
 
-```text
-Use tailrocks-finalize on log-explorer.
-```
+<Invoke skill="tailrocks-finalize" args="log-explorer" />
 
 The closing interview walks the primary flow — open a file, watch the index
 build, run a query mid-build, scrub the timeline — and confirms each screen as a
@@ -166,9 +138,7 @@ are three bugs you did not write.
 
 ## 7. Package — `tailrocks-plan`
 
-```text
-Use tailrocks-plan on log-explorer with --deep.
-```
+<Invoke skill="tailrocks-plan" args="log-explorer with --deep" />
 
 This is where the two-language shape stops being a risk. The plan step:
 
@@ -225,20 +195,29 @@ Paste `GOAL.md`'s goal condition and kickoff prompt into your agent's goal
 execution. The executor works one plan per iteration, runs every verification,
 and commits status writes with the work.
 
-The stack skills are invoked *inside* execution, named by the slice: the
-executor reaches for `tailrocks-swift-best-practices` while writing the view
-model, `tailrocks-liquid-glass` while building the chrome, and
-`tailrocks-macos-visual-qa` to prove the result — capturing the running app by
-window ID, driving the accessibility tree, and running the appearance and
-accessibility state matrix. Glass surfaces snapshot fully transparent from a
-detached view, so this is the only verification that means anything for the
-chrome.
+The stack skills are invoked *inside* execution, named by the slice. Slice 003
+is Rust, so the executor works under the Rust skills:
+
+<Invoke skill="tailrocks-rust-best-practices" args="review crates/sift-core: ownership across the index, error and panic policy, and the unsafe boundary. Do not edit." />
+
+Slice 004 is the interface, and two skills own different halves of it — code
+policy and the material:
+
+<Invoke skill="tailrocks-swift-best-practices" args="implement the timeline view model: actor isolation for the snapshot poller, state ownership, and work kept out of body" />
+
+<Invoke skill="tailrocks-liquid-glass" args="audit the toolbar and sidebar chrome for layer split and availability. Do not edit." />
+
+Slice 006 proves it:
+
+<Invoke skill="tailrocks-macos-visual-qa" args="verify the timeline screen in light, dark, inactive, and increased-contrast states" />
+
+That last one is not optional decoration. Glass surfaces snapshot fully
+transparent from a detached view, so capturing the running app by window ID is
+the only verification that means anything for the chrome.
 
 ## 9. Reconcile — `tailrocks-reconcile`
 
-```text
-Use tailrocks-reconcile on log-explorer.
-```
+<Invoke skill="tailrocks-reconcile" args="log-explorer" />
 
 Run it when the loop finishes, when it stalls, and before any resume. It
 re-runs each DONE row's own criteria instead of trusting the row, resets rows
@@ -255,11 +234,7 @@ with a reason.
 Halfway through, you decide the app should tail growing files after all. Do not
 edit the plan.
 
-```text
-Use tailrocks-record-decision on log-explorer: the app tails a growing file
-and appends to the index incrementally, because operators watch live
-deployments.
-```
+<Invoke skill="tailrocks-record-decision" args="log-explorer: the app tails a growing file and appends to the index incrementally, because operators watch live deployments" />
 
 That reopens the item to SHAPING, marks the affected plan rows `STALE`, and
 leaves everything else intact. Finalize again, then re-run `tailrocks-plan`: it

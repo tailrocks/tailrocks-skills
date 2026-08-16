@@ -19,12 +19,11 @@ hard question here has a factual answer somebody has to go and find, which is
 what `tailrocks-research` exists for — and the two questions that *don't* are
 the ones that decide the product.
 
+<AgentPicker />
+
 ## 1. Capture — `tailrocks-idea`
 
-```text
-Use tailrocks-idea: inspectors need to complete inspections with no signal in
-basements and plant rooms, and the office needs to see progress as it happens.
-```
+<Invoke skill="tailrocks-idea" args="inspectors need to complete inspections with no signal in basements and plant rooms, and the office needs to see progress as it happens" />
 
 Slug `offline-inspection`, status DRAFT. Note what the sentence does not say:
 nothing about two inspectors on one job, nothing about photos, nothing about
@@ -33,9 +32,7 @@ Those gaps are the next two stages.
 
 ## 2. Shape — `tailrocks-brainstorm`
 
-```text
-Use tailrocks-brainstorm on offline-inspection.
-```
+<Invoke skill="tailrocks-brainstorm" args="offline-inspection" />
 
 The interview goes after the tensions, not the features. On this item it lands
 on five questions that no amount of research can settle, because each is a
@@ -64,11 +61,7 @@ rather than spending your attention on it.
 Three topics, each genuinely unanswerable from the armchair, each reusable by
 the next feature that touches the same ground.
 
-```text
-Use tailrocks-research on offline-inspection: which CRDT gives us a Rust
-server-side replica and a browser client sharing one wire format, and can it
-surface that two updates disagreed rather than silently merging them?
-```
+<Invoke skill="tailrocks-research" args="offline-inspection: which CRDT gives us a Rust server-side replica and a browser client sharing one wire format, and can it surface that two updates disagreed rather than silently merging them?" />
 
 That last clause is the whole point, and it is the kind of thing a shaping
 interview only surfaces if someone is looking for it. **A CRDT is designed to
@@ -79,11 +72,7 @@ because nobody signed the merged document. The feature needs conflict
 Candidates the topic weighs: Loro, Yjs with its Rust counterpart Yrs, and
 Automerge, whose change history maps well onto "who claimed what, when".
 
-```text
-Use tailrocks-research on offline-inspection: what durability can we actually
-promise for offline data in a browser on iOS, and what does requesting
-persistent storage genuinely grant?
-```
+<Invoke skill="tailrocks-research" args="offline-inspection: what durability can we actually promise for offline data in a browser on iOS, and what does requesting persistent storage genuinely grant?" />
 
 This one returns bad news, which is exactly why it runs before planning rather
 than during it: Safari evicts origin storage after a week without interaction,
@@ -93,10 +82,7 @@ Losing three hours of capture is a product-killing failure, and the fallback
 (foreground-only flush, an explicit "safe to close" affordance) is a *design*
 consequence of a *platform* fact.
 
-```text
-Use tailrocks-research on offline-inspection: which resumable upload protocol
-for the photo pipeline, and what is the real server-side story in Rust?
-```
+<Invoke skill="tailrocks-research" args="offline-inspection: which resumable upload protocol for the photo pipeline, and what is the real server-side story in Rust?" />
 
 Photos are 30–80 files at several megabytes each. They cannot ride the document
 channel, which means the document will reference blobs that have not uploaded
@@ -123,17 +109,9 @@ the next offline feature in this product will need all three.
 Now the five questions are answerable, because the research changed what is
 possible.
 
-```text
-Use tailrocks-record-decision on offline-inspection: divergent verdicts on the
-same asset are a hard conflict that blocks certificate generation until a
-supervisor adjudicates, because a merged verdict is one nobody signed.
-```
+<Invoke skill="tailrocks-record-decision" args="offline-inspection: divergent verdicts on the same asset are a hard conflict that blocks certificate generation until a supervisor adjudicates, because a merged verdict is one nobody signed" />
 
-```text
-Use tailrocks-record-decision on offline-inspection: every event carries both
-device time and server time in separate columns, never coalesced, because an
-offline tablet's clock is untrusted and inspection times are legally material.
-```
+<Invoke skill="tailrocks-record-decision" args="offline-inspection: every event carries both device time and server time in separate columns, never coalesced, because an offline tablet's clock is untrusted and inspection times are legally material" />
 
 One decision per invocation. Each is dated with its reason, propagated through
 the item, and turned into Must-not entries where it forbids something. The
@@ -142,9 +120,7 @@ six months later and obvious in the item's Decisions section forever.
 
 ## 5. Earn READY — `tailrocks-finalize`
 
-```text
-Use tailrocks-finalize on offline-inspection.
-```
+<Invoke skill="tailrocks-finalize" args="offline-inspection" />
 
 Five screens have to be confirmed as schematic mockups, not adjectives: the
 inspection runner with a per-item sync-state chip, the sync-center drawer with
@@ -162,9 +138,7 @@ passes.
 
 ## 6. Package — `tailrocks-plan`
 
-```text
-Use tailrocks-plan on offline-inspection with --deep.
-```
+<Invoke skill="tailrocks-plan" args="offline-inspection with --deep" />
 
 **This is a brownfield item, and the plan reflects it.** There is no
 verification-baseline slice, because the gates already exist — the plan records
@@ -172,10 +146,7 @@ the proven build, test, and lint commands instead of standing up new ones. Where
 the existing baseline is doubtful, the audit belongs to the setup skills before
 planning, not inside it:
 
-```text
-Use tailrocks-tanstack-project-setup to audit this app and remediate every
-baseline violation.
-```
+<Invoke skill="tailrocks-tanstack-project-setup" args="audit this app and remediate every baseline violation" />
 
 The spec carries the contract between the two languages as requirements rather
 than folklore:
@@ -234,6 +205,20 @@ holding only that plan and the repository.
 Paste the goal condition and kickoff prompt from `GOAL.md`. One plan per
 iteration, every verification run, status writes committed with the work.
 
+Each slice names the stack skill it runs under, and here that alternates
+language by language. Slice 001 writes the shared model on both sides at once:
+
+<Invoke skill="tailrocks-rust-best-practices" args="implement the inspection document and ops envelope: typed failure, no panics on untrusted input" />
+
+<Invoke skill="tailrocks-typescript-best-practices" args="implement the TypeScript validator against the Rust conformance vectors: exhaustive state, runtime validation at the boundary, typed failure" />
+
+Slice 002 is browser-only, and slices 003 to 005 put the HTTP and socket surface
+behind Axum:
+
+<Invoke skill="tailrocks-typescript-best-practices" args="review the offline queue and local replica in src/inspection: async ownership, readonly boundaries, rollback on failure. Do not edit." />
+
+<Invoke skill="tailrocks-axum-best-practices" args="implement the sync WebSocket and the resumable upload resource: typed state, ordered middleware, body limits, graceful shutdown" />
+
 Then the part this feature makes vivid. The research recorded two facts that are
 true today and load-bearing tomorrow, and the ledger carries them as `A#`
 assumptions rather than as settled truth:
@@ -242,9 +227,7 @@ assumptions rather than as settled truth:
 - no cross-browser API exists for prioritising which stored data survives
   eviction, so the storage-pressure behavior has to be a product decision.
 
-```text
-Use tailrocks-reconcile on offline-inspection.
-```
+<Invoke skill="tailrocks-reconcile" args="offline-inspection" />
 
 Reconcile retests those assumptions along with everything else. If the upload
 library went unmaintained between planning and slice 004, the row goes `STALE`

@@ -10,6 +10,7 @@ import {
   readCatalog,
   replaceRootList,
   strayMarkdown,
+  textDiagrams,
   summarize,
 } from "./generate-docs";
 
@@ -75,6 +76,28 @@ test("the catalog groups every skill in the tree", async () => {
   expect(groups.every((group) => group.title !== "" && group.summary !== "")).toBeTrue();
 });
 
+test("flow diagrams drawn as text are caught, trees and mermaid are not", () => {
+  const drawn = ["```text", "a → b", "  → c", "```"].join("\n");
+  expect(textDiagrams(drawn)).toEqual([1]);
+
+  const mermaid = ["```mermaid", "flowchart LR", "  a --> b", "```"].join("\n");
+  expect(textDiagrams(mermaid)).toEqual([]);
+
+  const tree = ["```text", "repo/", "├── a → generated", "└── b", "```"].join("\n");
+  expect(textDiagrams(tree)).toEqual([]);
+
+  const oneLiner = ["```text", "pkill → open → capture", "```"].join("\n");
+  expect(textDiagrams(oneLiner)).toEqual([]);
+});
+
+test("no documentation page draws a flow as text", async () => {
+  const root = path.resolve(import.meta.dir, "..");
+  const pages = await generate(root);
+  for (const page of pages.filter((entry) => entry.file.endsWith(".mdx"))) {
+    expect({ file: page.file, at: textDiagrams(page.content) }).toEqual({ file: page.file, at: [] });
+  }
+});
+
 test("no documentation page is plain markdown", async () => {
   expect(await strayMarkdown(path.resolve(import.meta.dir, ".."))).toEqual([]);
 });
@@ -93,6 +116,10 @@ test("generates a README and a documentation page for every skill", async () => 
 
   const page = generated.find((entry) => entry.file.endsWith("tailrocks-rethink.mdx"));
   expect(page?.content).toStartWith("---\ntitle: Rethink\n");
+  // The site writes invocations in the reader's own client syntax; the README cannot.
+  expect(page?.content).toContain('<Invoke skill="tailrocks-rethink"');
+  expect(page?.content).toContain("<AgentPicker />");
+  expect(readme?.content).not.toContain("<Invoke");
   // Skill bodies link to their own references; the site cannot serve those paths.
   expect(page?.content).not.toContain("](references/");
 });

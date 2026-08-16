@@ -389,6 +389,14 @@ Rules for changing a `SKILL.md`:
 workflow is drift waiting to happen. Do not add `setup-bun`, `setup-node`, or
 any other per-tool action, and do not install a tool a job needs by hand.
 
+**Diagrams are Mermaid.** Anywhere a flow, sequence, or relationship is drawn —
+documentation pages, this file, `README.md`, design notes — it is a ```mermaid
+fence, which GitHub and the site both render. Arrows drawn with spaces in a
+`text` block are not a diagram, they are a picture of one. Directory trees and
+captured command output stay literal. Skill routers are the exception: a
+one-line arrow sequence there is prose, and spending six lines of router budget
+to draw two boxes is a worse trade than the ugliness it fixes.
+
 **No alias tasks.** Every `mise` task does something no other task does. A task
 that only re-runs another one makes `mise tasks` a worse map of the repository
 and leaves two names to keep in step. Name the real task well instead.

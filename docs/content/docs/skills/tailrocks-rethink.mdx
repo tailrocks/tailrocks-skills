@@ -11,9 +11,12 @@ Re-derive the design behind a reported bug or friction instead of patching it; r
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This skill never activates on its own. Name it in your request, in the
+syntax of the client you use:
 
-> Use `tailrocks-rethink` …
+<AgentPicker />
+
+<Invoke skill="tailrocks-rethink" args="[audit|rebuild] <bug, friction, or implementation to re-derive>" />
 
 Arguments: `[audit|rebuild] <bug, friction, or implementation to re-derive>`
 
