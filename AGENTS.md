@@ -256,7 +256,7 @@ skills hand work to the stack skills.
 
 ### The pull-request family — lifecycle on any repository
 
-Five skills run the pull-request lifecycle in whatever repository the session
+Six skills run the pull-request lifecycle in whatever repository the session
 works in — not this one specifically. They are generic by construction:
 everything repo-specific lives in one optional markdown file at the target
 repository's root, `.tailrocks/pr.md` — base branch, branch naming, commit
@@ -282,6 +282,16 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
   `gh pr checkout`, guarding a dirty working tree (never auto-stash) and
   refusing raw `git checkout` fallbacks.
   Definition: `skills/tailrocks-checkout-pr/SKILL.md`
+- **tailrocks-review-pr** — review a PR, branch, or diff with verified,
+  high-signal findings: every correctness finding adversarially re-derived
+  from the code before it may be reported, a structural pass where each
+  finding names its restructure and the measure that disappears,
+  content-triggered specialist lanes (test coverage, silent failures, type
+  design, comment accuracy), stack-lane dispatch to the house
+  best-practices skills per changed file, and per-finding routing —
+  behavior-frozen removals to tailrocks-simplify, proven defect classes to
+  tailrocks-remediate. Read-only; posts comments only under `--comment`;
+  never approves or merges. Definition: `skills/tailrocks-review-pr/SKILL.md`
 - **tailrocks-merge-pr** — merge fail-closed: CI gate with named-check-only
   admin bypass, blast-radius confirm, the repository's pre-merge worklist,
   metadata reconcile before the squash title enters history, repo-selected
@@ -298,7 +308,14 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
 The family descends from the jackin-dev `create-pr` / `refresh-pr` /
 `checkout-pr` / `merge-pr` skills, with the jackin-specific machinery (the
 `cargo xtask pr body` generator, roadmap retirement) generalized into the
-`.tailrocks/pr.md` sections.
+`.tailrocks/pr.md` sections. tailrocks-review-pr distills three upstream
+review systems — Anthropic's `code-review` plugin (parallel finders, the
+high-signal bar, adversarial validation, the false-positive kill list,
+comment mechanics), Anthropic's `pr-review-toolkit` (the content-triggered
+specialist lanes), and Cursor's `thermo-nuclear-code-quality-review` (the
+ambitious structural pass, presumptive blockers, the file-size ratchet) —
+rebuilt on the house doctrine so findings route into tailrocks-simplify,
+tailrocks-remediate, and the stack best-practices skills.
 
 ### tailrocks-contribute
 
