@@ -1,5 +1,27 @@
 # skills
 
+## External references
+
+The validator forbids code-forge URLs (github.com, gitlab.com,
+bitbucket.org, codeberg.org, and all gists) in shipped skill content —
+`SKILL.md`, `references/`, `templates/` — allowing only release pages,
+the allowlisted canonical homes of house-adopted libraries, and
+placeholder owners. What the gate cannot judge, these rules do:
+
+- Extract external knowledge into the skill's own references; never
+  point the reader at another project, above all another skill or
+  plugin collection.
+- No provenance attribution inside a skill — no external author names,
+  artifact names, or "adapted from" stories. Extract, rephrase, localize;
+  provenance lives in git history, never in the tree.
+- Published articles, papers, and standards cited as evidence keep
+  their canonical links; a project repository never qualifies as
+  evidence.
+- A skill carries only its current rules. No changelog prose, no
+  reference to the skill's own previous version or an earlier framing,
+  no where-this-came-from asides — everything an agent loads into
+  context states present doctrine only; history lives in git.
+
 ## Router budget
 
 **References are free. Descriptions and router lines are not.**

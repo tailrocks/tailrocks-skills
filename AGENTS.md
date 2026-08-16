@@ -58,6 +58,14 @@ it with `permission.skill` config.
 depth) to the task, prefer pointers (`file:line`/URL) over copied blocks, skip
 stages that add no value, and never produce an artifact that will not be read.
 
+**External work is extracted, never referenced.** Shipped content — skills,
+instruction files, documentation — never names an external project, skill
+collection, or author as a source, and never links one. Distill the
+knowledge, rephrase it, make it part of this project; surveys stay internal
+under `plans/`. Provenance lives in git and pull-request history. The
+validator gates forge URLs in skill content; this rule carries what no gate
+can judge.
+
 ## Available Skills
 
 ### tailrocks-rust-best-practices
@@ -244,8 +252,6 @@ manual Grok prompting).
   stalls, or the repository moved on.
   Definition: `skills/tailrocks-reconcile/SKILL.md`
 
-Grilling mechanics descend from Matt Pocock's `grilling` family; the plan
-template and the reconcile stage descend from the shadcn `improve` skill.
 All seven write only their own artifacts (`roadmap/`, `research/`,
 `plans/`) and never touch source.
 Mechanical walkthrough: `docs/design/pipeline-walkthrough.md`. The published
@@ -299,23 +305,11 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
   Definition: `skills/tailrocks-merge-pr/SKILL.md`
 - **tailrocks-pr-template** — generate the repository's own
   `.github/PULL_REQUEST_TEMPLATE.md` by tailoring the base template
-  (distilled from the jackin PR template, shipped as the skill's
-  reference) to evidence: the repository's structure and real gates, and
+  (shipped as the skill's reference) to evidence: the repository's
+  structure and real gates, and
   its merged-PR history. Every section and verify command must be earned;
   writes the file only, never commits.
   Definition: `skills/tailrocks-pr-template/SKILL.md`
-
-The family descends from the jackin-dev `create-pr` / `refresh-pr` /
-`checkout-pr` / `merge-pr` skills, with the jackin-specific machinery (the
-`cargo xtask pr body` generator, roadmap retirement) generalized into the
-`.tailrocks/pr.md` sections. tailrocks-review-pr distills three upstream
-review systems — Anthropic's `code-review` plugin (parallel finders, the
-high-signal bar, adversarial validation, the false-positive kill list,
-comment mechanics), Anthropic's `pr-review-toolkit` (the content-triggered
-specialist lanes), and Cursor's `thermo-nuclear-code-quality-review` (the
-ambitious structural pass, presumptive blockers, the file-size ratchet) —
-rebuilt on the house doctrine so findings route into tailrocks-simplify,
-tailrocks-remediate, and the stack best-practices skills.
 
 ### tailrocks-contribute
 
@@ -324,10 +318,6 @@ hard-stop-aware proposal, gated preparation, explicit per-contribution
 submission approval, and human-approved review response.
 
 Skill definition: `skills/tailrocks-contribute/SKILL.md`
-
-tailrocks-contribute descends from the tesslio `good-oss-citizen` plugin's
-recon/propose/preflight structure, extended with submission approval,
-review-response, and pacing.
 
 ### tailrocks-remediate
 
@@ -353,9 +343,9 @@ renames for taste are rejected by name.
 
 Skill definition: `skills/tailrocks-simplify/SKILL.md`
 
-The ladder descends from `DietrichGebert`'s ponytail, which applies it before
-code is written; this skill applies it to code that already exists in a diff and
-adds the obligation that nothing observable may change.
+The ladder also works as a discipline applied before code is written; this
+skill applies it to code that already exists in a diff and adds the
+obligation that nothing observable may change.
 
 ### tailrocks-rethink
 
@@ -403,6 +393,29 @@ Skill definition: `skills/tailrocks-agents-md/SKILL.md`
 This repository is its own first customer: every instruction file is an
 `AGENTS.md` with `CLAUDE.md` symlinked beside it — at the root and in `docs/`,
 `.github/`, and `skills/`.
+
+### tailrocks-skill-author
+
+Create, update, or audit agent skills under two laws: no new skill and no
+behavioral edit without the failure observed first (the baseline run is the
+red bar, and a skill whose evals pass without it is dead weight), and the
+context window is a public good (trigger-only descriptions that never
+summarize workflow, lean routers, depth in references routed by
+when-to-read). Guidance form is matched to the failure type — prohibitions
+plus rationalization counters for discipline violations, positive recipes
+for wrong-shaped output, required slots for omissions, predicate-keyed
+conditionals for context-dependent behavior — because the wrong form
+measurably backfires. Placement is decided before writing: gates beat
+prose, the owning `AGENTS.md` beats a skill, extending a neighbor beats
+forking a rival. Update mode protects what already works: load-bearing
+lines checked against the eval set, strengthen over append, replace past
+the router budget, full eval re-run after any router change.
+
+Skill definition: `skills/tailrocks-skill-author/SKILL.md`
+
+tailrocks-agents-md owns instruction files;
+tailrocks-skill-author owns skills — a rule that belongs in an `AGENTS.md`
+or a gate is routed there, not wrapped in a new skill.
 
 ## Adding a Skill
 

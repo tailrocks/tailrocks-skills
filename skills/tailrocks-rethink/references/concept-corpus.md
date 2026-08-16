@@ -80,7 +80,6 @@ Sources inspected 2026-08-16.
   Any argument of the form "this way is easier" is out of scope by construction.
 - **Test:** does the argument for the design mention effort, familiarity, or
   convenience? Then it is an ease argument and carries no weight here.
-- <https://github.com/matthiasn/talk-transcripts/blob/master/Hickey_Rich/SimpleMadeEasy-mostly-text.md>
 
 ## Order, timing, and stale-value bugs around shared mutable state
 

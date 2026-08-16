@@ -32,6 +32,3 @@ Adoption sequence:
 
 Never import another repository's counts or thresholds. Borrow the shrink-only
 mechanism; derive bounds from the current project.
-
-Prior art: Jackin code-health branch
-<https://github.com/jackin-project/jackin/tree/chore/rust-code-health-roadmap>.

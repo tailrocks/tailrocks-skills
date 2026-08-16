@@ -23,7 +23,8 @@
 3. Do not send unreviewed generated output.
    <https://llvm.org/docs/AIToolPolicy.html>
 4. Do not open drive-by PRs where issue-first is expected.
-   <https://github.com/ghostty-org/ghostty/blob/main/CONTRIBUTING.md>
+   (Many projects state this in their contributing file; read the target
+   project's own before opening anything.)
 5. Do not farm newcomer-labelled issues.
    <https://llvm.org/docs/AIToolPolicy.html>
 6. Do not generate human communication without user review.

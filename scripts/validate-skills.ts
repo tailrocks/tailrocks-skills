@@ -91,6 +91,34 @@ async function scanLinks(
   }
 }
 
+const forgeUrlPattern =
+  /https?:\/\/(gist\.github\.com|github\.com|gitlab\.com|bitbucket\.org|codeberg\.org)\/[^\s)>`"'\]]*/g;
+// Canonical homes of house-adopted libraries and tools, used as version and
+// documentation sources. Everything else on a code forge is an external
+// project reference, which shipped skill content must not carry.
+const allowedForgeRepos = new Set([
+  "trailofbits/dylint",
+  "graphql-rust/juniper",
+  "rust-lang/crates.io-index", // cargo registry endpoint in deny.toml, not a project reference
+]);
+const placeholderOwners = new Set(["org", "owner", "your-org", "acme"]);
+
+function scanForgeUrls(source: string, directory: string, label: string, errors: string[]): void {
+  for (const match of source.matchAll(forgeUrlPattern)) {
+    const [url, host] = match;
+    if (host === "gist.github.com") {
+      errors.push(`${directory}:${label}: gist URL forbidden in skill content: ${url}`);
+      continue;
+    }
+    const segments = url.split("/").slice(3);
+    const owner = segments[0] ?? "";
+    if (placeholderOwners.has(owner)) continue;
+    if (segments.includes("releases")) continue;
+    if (allowedForgeRepos.has(`${owner}/${segments[1] ?? ""}`)) continue;
+    errors.push(`${directory}:${label}: external project URL forbidden in skill content: ${url}`);
+  }
+}
+
 function packageManagerCommands(source: string): string[] {
   return source.split("\n").filter((line) => /(?:^|[\s$(`])(?:npm|npx|pnpm|yarn)\s/.test(line));
 }
@@ -183,11 +211,18 @@ export async function validate(root: string): Promise<string[]> {
     }
 
     await scanLinks(source, skillFile, skillDir, directory, errors);
+    scanForgeUrls(source, directory, "SKILL.md", errors);
     const referencesDir = path.join(skillDir, "references");
     for (const referenceFile of await filesUnder(referencesDir)) {
       if (!referenceFile.endsWith(".md")) continue;
       const reference = await readFile(referenceFile, "utf8");
       await scanLinks(reference, referenceFile, skillDir, directory, errors);
+      scanForgeUrls(
+        reference,
+        directory,
+        path.relative(skillDir, referenceFile).split(path.sep).join("/"),
+        errors,
+      );
       const relative = path.relative(skillDir, referenceFile).split(path.sep).join("/");
       if (!source.includes(relative)) {
         errors.push(`${directory}: reference must be linked directly from SKILL.md: ${relative}`);
@@ -253,6 +288,7 @@ export async function validate(root: string): Promise<string[]> {
       try {
         const text = await readFile(template, "utf8");
         if (template.endsWith(".md")) await scanLinks(text, template, skillDir, directory, errors);
+        scanForgeUrls(text, directory, path.relative(skillDir, template), errors);
         for (const line of packageManagerCommands(text)) {
           errors.push(
             `${directory}:${path.relative(skillDir, template)}: forbidden package-manager command: ${line.trim()}`,
