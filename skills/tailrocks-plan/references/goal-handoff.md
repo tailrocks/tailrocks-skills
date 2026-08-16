@@ -28,12 +28,14 @@ pending)
 
 ## Item briefs
 
-### 001 — <title>
-- **Goal**: <one sentence>
-- **Covers**: <requirement headings + ledger IDs>
-- **Scope**: in — <areas>; out — <areas, incl. owning plans>
-- **Guardrails**: <N# IDs>
-- **Research**: <research/<topic>/ chapters>
+- **001 — <title>**: <one goal sentence>.
+
+One sentence per plan, nothing more. Covers is already a table column,
+and scope, guardrails, and research citations live in each plan's Status
+block — repeating them here creates a third copy that drifts. The full
+manifest entries (goal, covers, scope, guardrail IDs, research chapters)
+go into the plan-writer subagent briefs, which are prompts, not persisted
+files.
 
 ## Dependency notes
 
@@ -42,6 +44,18 @@ pending)
 ## Deferrals carried from the spec
 
 - <ID>: <why safe to defer, and the revisit trigger>.
+
+## Repo law binding every plan
+
+The package-invariant rules every plan executes under, stated once here —
+plans never restate them (two-file context model: the protocol re-reads
+this hub every iteration, so this section is guaranteed context):
+
+- Branch, commit, and push law from the repository's own conventions
+  (branching scheme or direct-to-main, trailer requirements such as DCO,
+  when a push is permitted).
+- Cross-cutting change law (for example: breaking public changes require
+  the repository's migration artifact in the same commit).
 
 ## Executor protocol
 
@@ -147,6 +161,10 @@ defect; report it. If the first eligible plan or any TODO dependency is
 STALE, stop and report "package reopened — run tailrocks-plan <slug> to
 refresh, then resume". Never build on a STALE or BLOCKED row.
 
+<If any plans pause on user input by design, name them: "Plans NNN/MMM
+pause on user input by design (<what each awaits>); those BLOCKED states
+are correct outcomes, not failures.">
+
 Done means: after the last repository or status change, <primary gate command>
 and <secondary gate command> exit 0; a tailrocks-reconcile pass (or its manual
 steps) changes no row; and every status row is DONE or REJECTED, with no row
@@ -197,7 +215,8 @@ only.
   added. At the bound, mark the active row `BLOCKED (budget exhausted)`,
   preserve the evidence, and stop without a completion claim.
 - Default estimate: 10 turns per S plan, 20 per M, 35 per L; N = sum ×
-  1.5, rounded up.
+  1.5, rounded up. The budget counts working turns; a by-design BLOCKED
+  pause on user input does not consume the package.
 - Suggested permission mode: <acceptEdits or the repo's convention> — a
   permission prompt mid-loop stalls the goal.
 
