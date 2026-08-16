@@ -404,6 +404,35 @@ This repository is its own first customer: every instruction file is an
 `AGENTS.md` with `CLAUDE.md` symlinked beside it — at the root and in `docs/`,
 `.github/`, and `skills/`.
 
+### tailrocks-skill-author
+
+Create, update, or audit agent skills under two laws: no new skill and no
+behavioral edit without the failure observed first (the baseline run is the
+red bar, and a skill whose evals pass without it is dead weight), and the
+context window is a public good (trigger-only descriptions that never
+summarize workflow, lean routers, depth in references routed by
+when-to-read). Guidance form is matched to the failure type — prohibitions
+plus rationalization counters for discipline violations, positive recipes
+for wrong-shaped output, required slots for omissions, predicate-keyed
+conditionals for context-dependent behavior — because the wrong form
+measurably backfires. Placement is decided before writing: gates beat
+prose, the owning `AGENTS.md` beats a skill, extending a neighbor beats
+forking a rival. Update mode protects what already works: load-bearing
+lines checked against the eval set, strengthen over append, replace past
+the router budget, full eval re-run after any router change.
+
+Skill definition: `skills/tailrocks-skill-author/SKILL.md`
+
+tailrocks-skill-author distills obra's superpowers `writing-skills` family
+(test-driven development for documentation, pressure-scenario baselining,
+match-the-form-to-the-failure, rationalization tables) and Anthropic's
+`skill-creator` (the draft–test–review–improve loop, baseline-versus-with-skill
+runs, realistic and near-miss trigger evals, generalize-don't-overfit),
+fused with this repository's own router-budget doctrine from
+`skills/AGENTS.md`. tailrocks-agents-md owns instruction files;
+tailrocks-skill-author owns skills — a rule that belongs in an `AGENTS.md`
+or a gate is routed there, not wrapped in a new skill.
+
 ## Adding a Skill
 
 1. Create `skills/<name>/SKILL.md` with `name`, `license: Apache-2.0`, a

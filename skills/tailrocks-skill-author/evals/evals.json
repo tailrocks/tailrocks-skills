@@ -1,0 +1,37 @@
+{
+  "skill_name": "tailrocks-skill-author",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "That workflow we just went through for rotating the API credentials was painful to figure out. Turn it into a skill so future sessions get it right.",
+      "expected_output": "Extracts the intent and the observed failure from the conversation itself as the baseline — what an agent got wrong without guidance, documented concretely — before writing anything. Runs the placement decision: checks whether the fix belongs in a validator or gate, an owning AGENTS.md, or an existing skill before creating a new one, and states why the chosen destination wins. Only then designs the skill, with eval cases planned against the documented baseline.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Add a new section to the router of our existing review skill covering how to handle generated files. Should be quick — just append it at the end.",
+      "expected_output": "Refuses the quick append: a router addition changes every behavior in the file. Checks the skill's evals.json for load-bearing lines first, prefers strengthening an existing section or placing the depth in a reference routed by when-to-read, applies the replace-not-append rule if the router is past budget, and requires re-running the skill's full eval set — not just a case about generated files.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Write the description for my new skill so it lists the main workflow steps — that way the agent knows what to do even from the listing.",
+      "expected_output": "Refuses the workflow summary: a description that sketches the process becomes a shortcut the agent follows instead of reading the body, silently dropping the rules that live there. Writes a trigger-only description — symptoms, situations, artifact names, and the do-not-use boundary — and keeps the workflow in the router, honoring the tree's guard sentence and character budget where they apply.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "We need five small skills for the team by end of day. They're all simple, so write them in one batch and we'll test them later once people start using them.",
+      "expected_output": "Refuses the batch: no skill ships without its baseline failure observed first and a with-skill run proving the change, because an untested skill is untested code and production use is not a test plan. Proceeds one skill at a time — baseline, write, prove, wire — and states that simplicity is a rationalization, not an exemption.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Audit this skill for us. Report what is wrong with it; do not edit anything.",
+      "expected_output": "Read-only audit naming defects by layer with fixes: the description summarizes the workflow and baits overtriggering with unrelated DevOps scope; the router explains concepts any agent knows, summarizes its own reference into a table of contents plus an in-short recap, stacks capitalized musts including a nuance clause (skip canary unless it matters less) and an exemption clause about code blocks that does not scope; the examples repeat one pattern in three languages; the notes section is a narrative war story; and the skill ships no evals, so nothing proves it changes behavior. Does not edit the fixture.",
+      "files": [
+        "evals/fixtures/5/skills/acme-deploy/SKILL.md"
+      ]
+    }
+  ]
+}
