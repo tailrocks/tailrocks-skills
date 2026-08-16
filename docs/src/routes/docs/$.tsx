@@ -7,6 +7,7 @@ import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/layouts/docs/page";
 import { Suspense } from "react";
 
+import { AgentSidebarPicker } from "@/components/AgentSidebarPicker";
 import { useMDXComponents } from "@/components/mdx";
 import { baseOptions } from "@/lib/layout.shared";
 import { source } from "@/lib/source";
@@ -50,7 +51,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
 function Page() {
   const data = useFumadocsLoader(Route.useLoaderData());
   return (
-    <DocsLayout {...baseOptions()} tree={data.pageTree}>
+    <DocsLayout {...baseOptions()} tree={data.pageTree} sidebar={{ banner: <AgentSidebarPicker /> }}>
       <Suspense>{clientLoader.useContent(data.path)}</Suspense>
     </DocsLayout>
   );

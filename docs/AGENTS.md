@@ -18,12 +18,16 @@ needs one. `mise run docs:check` rejects it.
 
 Invocation examples are `<Invoke skill="…" args="…" />`, never a hand-written
 slash command. The component writes the syntax of whichever client the reader
-picked with `<AgentPicker />` — Claude Code takes
-`/tailrocks-skills:name`, Codex takes `$name`, Kimi takes `/skill:name`,
-OpenCode and Amp take prose. One page carries one picker, and the choice
-persists across pages. The default renders server-side, so a prerendered page
-always shows a real command. Adding a client means editing `src/lib/agents.ts`
-and nothing else.
+selected — Claude Code takes `/tailrocks-skills:name`, Codex takes `$name`,
+Kimi takes `/skill:name`, OpenCode and Amp take prose — and renders it through
+Fumadocs' own `CodeBlock`, so it carries the same copy button as every other
+command on the site.
+
+The selector lives once in the sidebar banner, not in the page body: the choice
+is made once and applies everywhere, and pages stay free of a control that
+would repeat on all of them. The default renders server-side, so a prerendered
+page always shows a real command. Adding a client means editing
+`src/lib/agents.ts` and nothing else.
 
 **Every diagram is a ```mermaid fence.** Never draw a flow with arrows and
 spaces in a `text` block: it wraps badly, reads as a puzzle, and cannot be

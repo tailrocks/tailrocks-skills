@@ -201,10 +201,8 @@ function invocationPage(skill: Skill): string {
   const lines = [
     "## Invocation",
     "",
-    "This skill never activates on its own. Name it in your request, in the",
-    "syntax of the client you use:",
-    "",
-    "<AgentPicker />",
+    "This skill never activates on its own. Name it in your request, written",
+    "here for the agent selected in the sidebar:",
     "",
     `<Invoke skill="${skill.name}"${args === "" ? "" : ` args="${escapeAttribute(args)}"`} />`,
   ];
