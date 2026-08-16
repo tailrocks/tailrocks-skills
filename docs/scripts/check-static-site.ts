@@ -29,6 +29,12 @@ for (const relative of required) {
 
 // Every skill must reach the site; a page that fails to prerender is a silent gap.
 for (const skill of skills) {
+  for (const leaf of ["index.html", "definition/index.html"]) {
+    const nested = path.join(output, "docs/skills", skill, leaf);
+    if (!(await Bun.file(nested).exists())) {
+      throw new Error(`static docs output missing docs/skills/${skill}/${leaf} — prerender did not reach it`);
+    }
+  }
   const page = path.join(output, "docs/skills", skill, "index.html");
   if (!(await Bun.file(page).exists())) {
     throw new Error(

@@ -27,7 +27,8 @@ Most pages under `content/docs/` are **generated** and must not be edited:
 
 | Path | Source |
 |---|---|
-| `content/docs/skills/<name>.mdx` | `skills/<name>/SKILL.md` |
+| `content/docs/skills/<name>/index.mdx` | `skills/<name>/SKILL.md` frontmatter |
+| `content/docs/skills/<name>/definition.mdx` | that skill's body, verbatim |
 | `content/docs/skills/index.mdx` | every skill's frontmatter description, grouped by `catalog.json` |
 | `content/docs/skills/meta.json` | `catalog.json` group order, as sidebar separators |
 | `content/docs/install.mdx` | `INSTALL.md` |

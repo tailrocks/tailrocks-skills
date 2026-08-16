@@ -108,13 +108,23 @@ test("generates a README and a documentation page for every skill", async () => 
   const files = generated.map((entry) => entry.file);
 
   expect(files).toContain(path.join("skills", "tailrocks-rethink", "README.md"));
-  expect(files).toContain(path.join("docs", "content", "docs", "skills", "tailrocks-rethink.mdx"));
+  expect(files).toContain(path.join("docs", "content", "docs", "skills", "tailrocks-rethink", "index.mdx"));
+  expect(files).toContain(
+    path.join("docs", "content", "docs", "skills", "tailrocks-rethink", "definition.mdx"),
+  );
   expect(files).toContain("README.md");
 
   const readme = generated.find((entry) => entry.file === "README.md");
   expect(readme?.content).toContain("skills/tailrocks-rethink/README.md");
 
-  const page = generated.find((entry) => entry.file.endsWith("tailrocks-rethink.mdx"));
+  const page = generated.find((entry) => entry.file.endsWith(path.join("tailrocks-rethink", "index.mdx")));
+  const definition = generated.find((entry) =>
+    entry.file.endsWith(path.join("tailrocks-rethink", "definition.mdx")),
+  );
+  // The overview stays short: the body it would otherwise inline lives one page deeper.
+  expect(page?.content.length).toBeLessThan(definition?.content.length ?? 0);
+  expect(page?.content).toContain("/docs/skills/tailrocks-rethink/definition");
+  expect(definition?.content).toContain("Cost is never a criterion.");
   expect(page?.content).toStartWith("---\ntitle: Rethink\n");
   // The site writes invocations in the reader's own client syntax; the README cannot.
   expect(page?.content).toContain('<Invoke skill="tailrocks-rethink"');
