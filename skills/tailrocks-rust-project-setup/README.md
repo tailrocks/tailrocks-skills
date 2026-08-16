@@ -69,8 +69,10 @@ ratchet thresholds from the repository's measured baseline.
    **Complete when:** every member is under the workspace, inherits root policy,
    and no legacy `mod.rs` or inline test module remains in the created surface.
 
-2. **Install policy files.** Copy the templates and fill repository, license,
-   MSRV, exact toolchain, targets, and tool versions. Read
+2. **Install policy files.** Copy the templates and fill repository, MSRV,
+   exact toolchain, targets, and tool versions. The `license` key ships
+   commented out — set it only when the project is open source, and never
+   assume one. Read
    [`lints-clippy-rustfmt.md`](references/lints-clippy-rustfmt.md) before changing
    lint groups, thresholds, formatter policy, or suppression rules.
    **Complete when:** each policy has one source of truth and each member opts

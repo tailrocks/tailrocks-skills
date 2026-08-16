@@ -64,7 +64,8 @@ Root `Cargo.toml`:
 [workspace.package]
 edition = "2024"
 rust-version = "1.97.0"
-license = "Apache-2.0"
+# Open source? Uncomment and set your SPDX identifier.
+# license = "Apache-2.0"
 repository = "https://github.com/your-org/your-repo"
 
 [workspace.dependencies]
@@ -79,7 +80,8 @@ name = "your-core"
 version = "0.1.0"
 edition.workspace = true
 rust-version.workspace = true
-license.workspace = true
+# Uncomment together with the root `license` key.
+# license.workspace = true
 repository.workspace = true
 
 [lints]
