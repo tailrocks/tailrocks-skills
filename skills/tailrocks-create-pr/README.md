@@ -26,5 +26,4 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 ## Templates
 
-- [`PULL_REQUEST_TEMPLATE.md`](templates/PULL_REQUEST_TEMPLATE.md)
 - [`pr.md`](templates/pr.md)

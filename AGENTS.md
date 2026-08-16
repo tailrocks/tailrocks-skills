@@ -212,7 +212,7 @@ skills hand work to the stack skills.
 
 ### The pull-request family — lifecycle on any repository
 
-Four skills run the pull-request lifecycle in whatever repository the session
+Five skills run the pull-request lifecycle in whatever repository the session
 works in — not this one specifically. They are generic by construction:
 everything repo-specific lives in one optional markdown file at the target
 repository's root, `.tailrocks/pr.md` — base branch, branch naming, commit
@@ -221,10 +221,10 @@ classes, a pre-merge worklist, and the merge method. Precedence is fixed:
 user instruction, then `.tailrocks/pr.md`, then the repository's own
 conventions (CONTRIBUTING, PR template, agent instruction files, git
 history), then skill defaults. The body default in every repository is its
-own `.github/PULL_REQUEST_TEMPLATE.md`, read at runtime; a generic fallback
-skeleton — distilled from the jackin PR template — ships with
-tailrocks-create-pr alongside the conventions-format reference and a
-copy-ready `.tailrocks/pr.md` template.
+own `.github/PULL_REQUEST_TEMPLATE.md`, read at runtime; a repository
+without one gets a minimal fallback body, and tailrocks-pr-template
+generates it a real template. The conventions-format reference and a
+copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
 
 - **tailrocks-create-pr** — branch off the base branch, commit in the
   repository's convention, build the body from its template or generator via
@@ -243,6 +243,13 @@ copy-ready `.tailrocks/pr.md` template.
   metadata reconcile before the squash title enters history, repo-selected
   merge method. Authorization never carries forward between sessions.
   Definition: `skills/tailrocks-merge-pr/SKILL.md`
+- **tailrocks-pr-template** — generate the repository's own
+  `.github/PULL_REQUEST_TEMPLATE.md` by tailoring the base template
+  (distilled from the jackin PR template, shipped as the skill's
+  reference) to evidence: the repository's structure and real gates, and
+  its merged-PR history. Every section and verify command must be earned;
+  writes the file only, never commits.
+  Definition: `skills/tailrocks-pr-template/SKILL.md`
 
 The family descends from the jackin-dev `create-pr` / `refresh-pr` /
 `checkout-pr` / `merge-pr` skills, with the jackin-specific machinery (the
