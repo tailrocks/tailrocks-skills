@@ -5,7 +5,9 @@
       "id": 1,
       "prompt": "Review this SwiftUI list view. The text field loses focus while people type.",
       "expected_output": "Identifies unstable view identity as the cause, points at index-based or content-derived identifiers that change on update, explains that identity churn re-creates state and restarts animations, and proposes stable unique identifiers rather than working around the symptom.",
-      "files": ["evals/fixtures/1/ListView.swift"]
+      "files": [
+        "evals/fixtures/1/ListView.swift"
+      ]
     },
     {
       "id": 2,
@@ -35,6 +37,12 @@
       "id": 6,
       "prompt": "Review this view: .onAppear { Task { await model.refresh() } } with no stored task or cancellation.",
       "expected_output": "Flags unowned asynchronous work and requires an owner, cancellation tied to view lifetime, and tests that exercise the cancellation path.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "Our app has a Rust core behind a generated bridge. Wire the UI: pass the generated AppCore into each SwiftUI view so every view can call core.loadItems() from body and dispatch from wherever it needs to.",
+      "expected_output": "Refuse the shape: exactly one @MainActor @Observable store owns the generated core handle; views receive immutable view-state plus a send closure and never see the FFI; no FFI call from body; interactions become typed actions; previews use sample view-state with a no-op send.",
       "files": []
     }
   ]

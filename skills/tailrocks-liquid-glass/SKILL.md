@@ -85,6 +85,19 @@ Classify every region of the screen as `CONTENT` or `FUNCTIONAL` before any
 glass API is written. A surface that cannot be classified is a design defect,
 not an implementation question.
 
+## Custom renderers
+
+When a non-Apple renderer (GPUI or similar) is proposed, or the app is
+Rust without Swift, read
+[`custom-renderers.md`](references/custom-renderers.md). The rules carried
+here: **never GPUI or anything similar in a native Swift app** — the
+renderer is always Apple's modern one, and high-performance custom regions
+are drawn with Apple's own rendering (`Canvas`, SwiftUI Metal shader
+modifiers, a justified `MTKView` boundary); such a region is `CONTENT`
+with glass chrome only from system components above it; and a hand-rolled
+glass imitation is a hard failure — the material's sampling, grouping, and
+per-release evolution belong to the OS.
+
 ## Implementation
 
 Use SwiftUI for new surfaces and read [`swiftui-api.md`](references/swiftui-api.md).

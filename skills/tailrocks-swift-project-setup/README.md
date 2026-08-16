@@ -22,6 +22,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`agent-integration.md`](references/agent-integration.md)
 - [`lint-and-format.md`](references/lint-and-format.md)
 - [`project-generation.md`](references/project-generation.md)
+- [`rust-core.md`](references/rust-core.md)
 - [`testing.md`](references/testing.md)
 - [`toolchain.md`](references/toolchain.md)
 

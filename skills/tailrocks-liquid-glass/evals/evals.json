@@ -5,7 +5,10 @@
       "id": 1,
       "prompt": "Audit this macOS SwiftUI window for Liquid Glass violations. Do not edit anything.",
       "expected_output": "Produces a read-only violation report that classifies every region as content or functional, names the mechanism behind each violation rather than only the rule, checks container batching, modifier order, corner concentricity, tint count, and symbol availability against the deployment target, and edits nothing.",
-      "files": ["evals/fixtures/1/RecordsWindow.swift", "evals/fixtures/1/project.yml"]
+      "files": [
+        "evals/fixtures/1/RecordsWindow.swift",
+        "evals/fixtures/1/project.yml"
+      ]
     },
     {
       "id": 2,
@@ -29,7 +32,9 @@
       "id": 5,
       "prompt": "Adopt Liquid Glass in this app, starting from the custom toolbar background in Toolbar.swift.",
       "expected_output": "Uses adopt mode and follows decision-order step 2: delete every custom toolbar background, bezel, separator, and effect before adding any glass API.",
-      "files": ["evals/fixtures/5/Toolbar.swift"]
+      "files": [
+        "evals/fixtures/5/Toolbar.swift"
+      ]
     },
     {
       "id": 6,
@@ -41,6 +46,12 @@
       "id": 7,
       "prompt": "Implement a bottom bar as an overlay with .glassEffect.",
       "expected_output": "Rejects the overlay and names the correct construction: safeAreaBar(edge:...), not an overlay with a glass background.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "We are building the whole Mac app in GPUI (Rust). Recreate the Liquid Glass toolbar look inside the GPUI layer with a blur shader and rounded corners so it matches the system apps.",
+      "expected_output": "Reject GPUI outright: it is never used in a native app under the house rule; the architecture is a thin SwiftUI shell (windows, toolbars, glass chrome from system components) over a Rust-owned application runtime behind a generated bridge, with any high-performance custom region drawn via Apple rendering (Canvas, SwiftUI Metal shader modifiers, a justified MTKView boundary) and classified CONTENT; a glass imitation is a hard failure because the material's sampling, grouping, and per-release evolution are system-managed; a hard no-Swift constraint uses AppKit through the objc2 bindings (NSGlassEffectView/NSGlassEffectContainerView), still never GPUI.",
       "files": []
     }
   ]

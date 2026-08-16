@@ -18,6 +18,11 @@ The house stack is fixed: Rust 2024 with Axum/Tokio/Tower, TypeScript 7 with Bun
 TanStack Start, React, shadcn/ui, Tailwind CSS v4, and Oxc, and native macOS with
 Swift, SwiftUI-first app and UI architecture, narrow capability-only AppKit
 bridges, and Liquid Glass. Existing AppKit apps migrate toward that architecture.
+The renderer for a Swift macOS or iOS app is always Apple's modern,
+Apple-recommended one; GPUI and similar non-Apple UI frameworks are never
+used in a native Swift app, and high-performance custom regions are drawn
+with Apple's own rendering. An app that pairs Rust with a native interface
+uses a thin SwiftUI shell over a Rust-owned application runtime.
 Skills deepen this stack; they do not offer alternative frameworks, package managers, test
 runners, or component systems. Every setup targets the latest stable release and
 latest stable major available at execution time; older majors are unsupported.

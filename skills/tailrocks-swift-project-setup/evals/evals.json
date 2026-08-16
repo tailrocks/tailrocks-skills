@@ -11,7 +11,10 @@
       "id": 2,
       "prompt": "Audit this macOS project against our baseline. Do not change anything.",
       "expected_output": "Produces a read-only gap report covering project generation, the four recorded target values, signing, formatter and linter strictness, test filter safety, derived data location, and pinned external agent skills; explicitly flags a non-strict format gate and any test selector that could report zero tests and still succeed; edits nothing.",
-      "files": ["evals/fixtures/2/project.yml", "evals/fixtures/2/mise.toml"]
+      "files": [
+        "evals/fixtures/2/project.yml",
+        "evals/fixtures/2/mise.toml"
+      ]
     },
     {
       "id": 3,
@@ -35,6 +38,12 @@
       "id": 6,
       "prompt": "Pin tools in mise, but let CI use separate raw xcodebuild commands.",
       "expected_output": "Rejects the split because local and continuous integration must invoke the same mise task names; the parity artifact is the task set itself.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "Add a Rust core to this macOS app: install the bridge CLI globally at latest, put the bridge annotations right on the domain structs, and have everyone regenerate the Swift bindings by hand when they remember.",
+      "expected_output": "Refuse each: bridge CLI and crate are pinned exactly under mise (pre-1.0 generators drift), annotations live only in a dedicated FFI crate so domain crates never know Swift exists, packaging is a mise task ordered before generate, and CI carries a binding-drift gate plus the Rust test lane in the same pipeline as the Swift build.",
       "files": []
     }
   ]
