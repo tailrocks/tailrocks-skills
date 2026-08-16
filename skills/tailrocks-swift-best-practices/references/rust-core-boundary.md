@@ -1,0 +1,161 @@
+# The Rust core boundary
+
+Applies when the application keeps its behavior in a Rust core behind a thin
+SwiftUI shell. This is the house architecture for a macOS app with substantial
+non-UI logic: SwiftUI owns the pixels and native interaction semantics; Rust
+owns what the application actually does. It does not replace the SwiftUI-first
+rule — the shell is still real SwiftUI describing every screen — it bounds
+what the Swift code is *for*.
+
+Do not reach for a custom Rust UI framework (GPUI or similar) as the shell;
+that trade is covered by `tailrocks-liquid-glass`'s custom-renderer boundary.
+A dynamic "Rust sends a UI schema, Swift renders it generically" design is
+rejected for the same reason: it rebuilds an inferior UI framework and loses
+SwiftUI's compile-time behavior, accessibility, previews, and design
+adaptation.
+
+## Responsibility split
+
+| Concern | Owner |
+|---|---|
+| `App`, scenes, windows, commands, settings scene | SwiftUI |
+| Navigation containers, toolbars, sidebars, inspectors | SwiftUI |
+| Liquid Glass, animations, focus, keyboard shortcuts, accessibility | SwiftUI |
+| Sheets, alerts, popovers; hover, scroll position, animation phase | SwiftUI |
+| Raw text buffer while a person is actively typing | SwiftUI |
+| Localized wording, plurals, locale-aware date/number/currency display | SwiftUI (`FormatStyle`, String Catalogs) |
+| Domain entities, invariants, validation, permissions | Rust |
+| Application state machine and transitions | Rust |
+| Networking, retry, authentication, synchronization | Rust |
+| Persistence, migrations, cache, search, indexing | Rust |
+| Background work and concurrency; undo semantics | Rust |
+| Error codes and recoverability | Rust |
+| FFI conversion code | generated, never handwritten |
+
+Swift never contains database queries, network calls, business validation, or
+a duplicated domain model. Rust never composes user-facing English strings —
+it sends semantic codes and values; the shell localizes and formats.
+
+## The message boundary
+
+Do not expose the Rust object graph. The boundary is four message concepts:
+
+- `AppAction` — Swift → Rust; every user interaction becomes one typed value.
+- `AppViewState` — Rust → Swift; immutable, UI-ready snapshot.
+- `AppUpdate` — Rust → Swift as an async stream of state changes.
+- `CoreError` — Rust → Swift as a typed error with a semantic code.
+
+Flow: view sends `AppAction` → Rust actor validates, performs I/O, mutates →
+Rust emits a new view state → the store updates on the main actor → SwiftUI
+re-renders. The UI never blocks on dispatch; work happens on Rust-managed
+threads.
+
+Snapshot granularity: whole immutable screen snapshots by default — easiest
+to reason about and test. Move to feature-scoped snapshots, stable item IDs,
+pagination, and incremental update enums only when a surface is large or
+high-frequency, and coalesce high-frequency updates before they cross to the
+main-actor model; the UI does not need every intermediate value. Strings and
+collections are encoded at the boundary, so repeatedly shipping a giant app
+tree is real allocation cost, not a style question.
+
+## The store rule
+
+Exactly one `@MainActor @Observable` store owns the generated core handle.
+Views receive immutable view-state plus a `send` closure and never see the
+FFI.
+
+```swift
+@MainActor @Observable
+final class AppStore {
+    private let core: AppCore                 // the only reference anywhere
+    private(set) var state: AppViewState
+
+    init() {
+        core = AppCore(config: .production)
+        state = core.snapshot()
+        Task { [weak self] in
+            guard let self else { return }
+            for await next in core.updates() { self.state = next }
+        }
+        send(.started)
+    }
+
+    func send(_ action: AppAction) { try? core.dispatch(action: action) }
+}
+
+struct ItemListView: View {
+    let state: ItemListViewState
+    let send: (AppAction) -> Void
+    // body reads state and calls send; it cannot reach the core
+}
+```
+
+Prohibitions, each a review finding:
+
+- No view holds or calls the core; no FFI call from `body`.
+- Never capture the core in `Task.detached` or pass it between arbitrary
+  actors; dispatch is synchronous enqueue from the main actor.
+- Never mark a generated type `@unchecked Sendable` without auditing the
+  generated implementation — bridge generators have known `Sendable` gaps.
+- No `ObservableObject`/`@Published`/Combine for new state; the model is
+  `@Observable` + `@State` + environment.
+- Previews and view tests construct sample view-state values with a no-op
+  `send`; only `AppStore` ever touches the real core.
+
+## State placement
+
+Transient presentation mechanics stay in the shell (`@State`,
+`@FocusState`): open popover, hover target, focused field, drag preview,
+scroll position, animation phase, window geometry, a sheet's form before
+submission, the live text buffer. Durable and semantic state lives in Rust:
+loaded records, semantic selection, validated filters, preferences, auth and
+sync state, pending operations, undoable operations, persistent workspace
+state, error and retry state.
+
+Text editing: never one FFI round-trip per keystroke unless the feature
+needs it. Keep the buffer in SwiftUI; send a debounced query, a committed
+value on Enter, and a semantic save action.
+
+## Runtime shape
+
+One application runtime, created once — never a runtime per FFI call: one
+async runtime (Tokio when infrastructure needs it), one application actor
+fed by a command channel that serializes state transitions, services free to
+run concurrently underneath, and a shutdown call that cancels work and
+flushes durable state. Multi-window: one shared Rust runtime (database,
+networking, cache), one Rust window-session per window (selection,
+navigation), one Swift store per window scene — never a single global store
+across `WindowGroup` windows. Document-based apps add a small Swift document
+wrapper; the document model and persistence stay Rust-owned.
+
+## Bridge selection
+
+Verified 2026-08-16; bridge generators move fast — re-verify at execution
+time and pin exactly (toolchain, bridge crate, bridge CLI; see
+`tailrocks-swift-project-setup`'s Rust-core lane for the pins and the
+binding-drift gate).
+
+- **BoltFFI** — first choice: attribute-driven exports, Swift
+  `async`/`throws`, `AsyncStream` for Rust streams with cancellation
+  propagation, automatic XCFramework + local Swift package. Fast-moving;
+  known open issues around generated `Sendable`.
+- **UniFFI** — conservative fallback: production-quality Swift generation,
+  more established; Swift 6 strict-concurrency support still partial. Choose
+  it when bridge stability outweighs packaging convenience or BoltFFI hits a
+  blocking issue.
+- **swift-bridge** — not the default: efficient but low-level, with an
+  incomplete type surface and more manual integration.
+- **Crux** — borrow the event/state/view-model shape, do not adopt: its
+  side-effect-free core pushes I/O into Swift, the opposite of this split.
+
+Keep bridge annotations out of domain crates: a dedicated FFI crate defines
+the boundary records and enums, so replacing the bridge is a contained
+change.
+
+## Testing split
+
+Nearly all behavior tests run in Rust without Xcode: domain units, state
+transitions (`dispatch(action) … assert state`), property tests, database
+and network contract tests. The Swift side keeps a store↔bridge smoke test,
+state-to-view rendering tests, accessibility checks, and a few critical
+end-to-end UI tests. A new domain rule without a Rust test is unfinished.

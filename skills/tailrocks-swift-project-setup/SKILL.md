@@ -127,6 +127,15 @@ stable pin and remove brackets; replace other marked project values literally.
    **Complete when:** every applicable gate has a recorded pass, failure,
    unavailability, or explicit reason it was not run.
 
+## Rust-core lane
+
+When the app keeps its behavior in a Rust core behind the SwiftUI shell,
+additionally read [`rust-core.md`](references/rust-core.md): the split
+workspace layout with one FFI-only bridge crate, exact bridge crate and
+CLI pins under mise, XCFramework packaging as a task ordered before
+`generate`, and two extra gates — binding-drift detection in CI and the
+Rust test lane running in the same pipeline as the Swift build.
+
 ## Existing project audit and remediation
 
 Inspect the same five references in order: project generation, toolchain,

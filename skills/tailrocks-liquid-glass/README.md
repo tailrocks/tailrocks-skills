@@ -22,6 +22,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`anti-patterns.md`](references/anti-patterns.md)
 - [`appkit-api.md`](references/appkit-api.md)
 - [`apple-patterns.md`](references/apple-patterns.md)
+- [`custom-renderers.md`](references/custom-renderers.md)
 - [`layer-model.md`](references/layer-model.md)
 - [`platform-baseline.md`](references/platform-baseline.md)
 - [`swiftui-api.md`](references/swiftui-api.md)
