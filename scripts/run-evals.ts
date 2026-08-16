@@ -14,6 +14,11 @@ const PER_FILE_CAP = 16 * 1024;
 const TOTAL_CAP = 64 * 1024;
 const CLAUDE_TIMEOUT_MS = 600_000;
 const CLAUDE_ATTEMPTS = 2;
+// Alternate backends (proxy gateways serving non-Anthropic models) price
+// differently and may not be recognized by the CLI's cost table; both knobs
+// must be tunable per run or the budget cap kills subjects mid-flight.
+const CLAUDE_MODEL = process.env.EVAL_CLAUDE_MODEL ?? "sonnet";
+const CLAUDE_MAX_BUDGET_USD = process.env.EVAL_MAX_BUDGET_USD ?? "0.75";
 
 export function fixtureDestination(
   root: string,
@@ -21,9 +26,18 @@ export function fixtureDestination(
   fixture: string,
   workspace: string,
 ): string {
-  const source = fixture.startsWith("skills/") ? path.join(root, fixture) : path.join(skillDir, fixture);
-  const relative = path.relative(skillDir, source);
-  if (relative.startsWith("..") || path.isAbsolute(relative))
+  const external = fixture.startsWith("skills/");
+  const source = external ? path.join(root, fixture) : path.join(skillDir, fixture);
+  let owner = skillDir;
+  if (external) {
+    const skillsRoot = path.join(root, "skills");
+    const inSkills = path.relative(skillsRoot, source);
+    if (inSkills.startsWith("..") || path.isAbsolute(inSkills))
+      throw new Error(`fixture escapes skill: ${fixture}`);
+    owner = path.join(skillsRoot, inSkills.split(path.sep)[0]!);
+  }
+  const relative = path.relative(owner, source);
+  if (relative === "" || relative.startsWith("..") || path.isAbsolute(relative))
     throw new Error(`fixture escapes skill: ${fixture}`);
   return path.join(workspace, relative);
 }
@@ -114,7 +128,7 @@ async function claude(prompt: string, cwd: string, schema?: object): Promise<Cla
     "-p",
     prompt,
     "--model",
-    "sonnet",
+    CLAUDE_MODEL,
     "--safe-mode",
     "--permission-mode",
     "acceptEdits",
@@ -122,7 +136,7 @@ async function claude(prompt: string, cwd: string, schema?: object): Promise<Cla
     "--output-format",
     schema ? "json" : "text",
     "--max-budget-usd",
-    "0.75",
+    CLAUDE_MAX_BUDGET_USD,
   ];
   if (schema) command.push("--json-schema", JSON.stringify(schema));
   const stdout = await withRetries(CLAUDE_ATTEMPTS, async (attempt) => {

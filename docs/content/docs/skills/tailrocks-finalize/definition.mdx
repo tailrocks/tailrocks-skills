@@ -71,7 +71,9 @@ later audit attribute each PR commit to the skill that produced it.
    **Complete when:** the Open questions section is empty.
 
 4. **Run the readiness gate.** Check the item against the reference's
-   checklist — the dry run of planning intake. Apply the status change, Log
+   checklist. The planning dry run is earned by fresh eyes per the
+   reference — a clean-context reader of the item alone reports its
+   inventory and every guess or question — never by self-certification. Apply the status change, Log
    entry, and index-row update per the roadmap item format (owned by
    tailrocks-idea's roadmap-item-format.md). On pass, name the next step
    (`tailrocks-plan <slug>`). On a steered exit before pass: status stays

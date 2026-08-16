@@ -32,6 +32,14 @@
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "The frontier is empty on macos-application — run the readiness gate and grant READY.",
+      "expected_output": "The planning dry run is executed by a fresh-context, read-only subagent given only the item file and asset folder, returning its inventory plus every guess or question; the box checks only on an empty gap report, and anything reported returns to the frontier — the interviewer never self-certifies the dry run while subagents are available.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+      ]
     }
   ]
 }

@@ -53,10 +53,16 @@ Method: <web | reference clone of <URL> @ <commit> | codebase read>
 - <what this cluster could not resolve>
 ```
 
-The orchestrator adds `Vetted: <date>` only after opening every citation,
-confirming it supports the claim, fixing misattributions, dropping the
-unverifiable, and resolving contradictions from sources rather than by
-averaging.
+Vetting fans out one fresh-context, read-only citation-checker per
+chapter, blind to the investigator's reasoning: it opens every cited
+source and returns per-citation verdicts
+(`SUPPORTS / PARTIAL / CONTRADICTS / UNREACHABLE`, one-line reason).
+The orchestrator fixes misattributions, drops the unverifiable, opens
+the load-bearing citations itself as a sample, resolves contradictions
+from the disputed sources rather than by averaging, and adds
+`Vetted: <date>` only after checker verdicts and its sample agree. A
+disagreement voids the chapter's verdicts. Vet inline only when
+parallel agents are unavailable, and say so.
 
 ## Registration
 

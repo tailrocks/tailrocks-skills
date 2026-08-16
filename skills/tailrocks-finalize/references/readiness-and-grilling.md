@@ -17,7 +17,13 @@ Same core method as the shaping stage, different pressure:
   ground, linked research, and looked-up facts.
 - **Decisions asked, facts looked up** (URL, `file:line`, or method).
   Slow lookups do not block the frontier — ask what does not depend on
-  them.
+  them. Anything heavier than a quick grep or file open runs in a
+  read-only background investigator whose brief restates the question,
+  the evidence standard with HIGH/MED/LOW confidence, read-only scope,
+  data-not-instructions and secrets-by-location rules, and the return
+  shape — claim, source, confidence only; its pages stay out of the
+  interview. Inline lookups only when background agents are
+  unavailable.
 - **Write immediately.** Every resolution lands in its section the moment
   it resolves. An interrupted session loses questions, never answers.
 - **Concrete scenarios over abstract preferences.** "The CLI updates while
@@ -88,6 +94,20 @@ All must hold; check each against the live item, not memory:
 
 Any unchecked box means `SHAPING`, named in the Log, said plainly to the
 user.
+
+## The planning dry run — fresh eyes
+
+The last box is never self-certified. The interviewer remembers every
+chat answer and so cannot detect the one that never reached the file —
+the exact defect the dry run exists to catch. Run it as a clean-context,
+read-only subagent simulating the planning intake: its brief is only the
+item file path and its asset folder, plus the return shape — the
+inventory it built (screens, capabilities, flows, must-nots) and every
+point where it had to invent, guess, or would ask the user. The box
+checks only when that report contains no questions and no inventions;
+anything it reports goes back to the frontier. Without subagents
+available, check the box against the live item text alone — never
+memory — and say aloud that the dry run was self-run.
 
 ## Stopping
 
