@@ -293,9 +293,9 @@ anything enforceable to a gate, and proposes deletions on every pass.
 
 Skill definition: `skills/tailrocks-agents-md/SKILL.md`
 
-This repository is its own first customer: root `CLAUDE.md` is a symlink to
-root `AGENTS.md`, and the documentation site's rules live in `docs/AGENTS.md`
-with `docs/CLAUDE.md` symlinked beside them.
+This repository is its own first customer: every instruction file is an
+`AGENTS.md` with `CLAUDE.md` symlinked beside it — at the root and in `docs/`,
+`.github/`, and `skills/`.
 
 ## Adding a Skill
 
@@ -308,68 +308,6 @@ with `docs/CLAUDE.md` symlinked beside them.
 3. Add `evals/evals.json` with realistic normal, boundary, and safety cases. Audit/review-shaped cases should reference fixtures under `evals/fixtures/<case>/`; refusal cases may stay fixture-free.
 4. Put deep material under `skills/<name>/references/` and copy-ready assets under
    `skills/<name>/templates/`; keep `SKILL.md` a concise router.
-
-## Router budget
-
-**References are free. Descriptions and router lines are not.**
-
-Three layers, three costs. A `description` loads on every request in any client
-that ignores manual-only policy, and competes for a listing budget of 1% of the
-context window that truncates on overflow. A `SKILL.md` body loads on invocation
-and then stays in context for the rest of the session. Everything under
-`references/` and `templates/` costs nothing until read.
-
-**Descriptions are capped at 250 characters after the guard sentence**, enforced
-by the validator. Carry the trigger and the do-not-use clause; leave the rest to
-the router. The guard sentence itself is load-bearing and measured — the short
-form fired on 7 of 8 tempting prompts where the full sentence fired on 0 of 8.
-Evidence and method: `docs/design/skill-context-budget.md`.
-
-A `SKILL.md` is loaded whole, every invocation, and every behavior it carries
-competes for the model's attention with every other behavior in the same file.
-Adding a section does not just add its own instruction — it dilutes the ones
-already there. Reference files carry no such cost: they are read on demand and
-their length is nearly free.
-
-This is not a theory. Every substantive eval failure during the macOS family's
-hardening was a router-dilution failure or a gate misread as permission to
-produce nothing. None was a references problem.
-
-Rules for changing a `SKILL.md`:
-
-- New material defaults to `references/`. The router gets **when to read it** and
-  at most one rule worth carrying at router level — not a summary of its
-  contents. A router section that reads like a table of contents is dilution with
-  no benefit; the reference already says all of it, better.
-- Adding a section to a router is a change to **every** behavior in that file.
-  Re-run that skill's eval cases, not only a case related to the new section.
-  Run `mise run evals -- --skill <name> --case <id> --runs 2`. This needs the
-  `claude` CLI and spends budget, so run it locally before tagging, not in PR CI.
-- Prefer strengthening an existing section over adding one. Two sections that
-  both gesture at the same obligation are weaker than one that states it.
-- When a router grows past roughly 200 lines, the next addition should replace
-  something rather than append.
-- Load-bearing router lines — ones an eval case depends on — are not edited
-  casually. Check `evals/evals.json` before rewording a gate, a rejection rule,
-  or a "complete when" clause.
-- **A load-bearing requirement gets a structural cue, not a mid-paragraph
-  clause.** A requirement an eval depends on needs a named bullet, a heading, or
-  its own sentence with a label. Buried as the third idea in a four-idea
-  paragraph it competes with better-signposted ideas elsewhere in the file and
-  surfaces only sometimes — which reads as a flaky eval rather than as the
-  prose defect it is.
-
-  The case: the content-layer *mechanism* argument sat mid-paragraph in
-  `tailrocks-liquid-glass`, while layer classification and render-pass cost each
-  had dedicated bullets. Subjects reliably produced the well-signposted two and
-  intermittently omitted the third, even though its eval case demanded it
-  specifically. Promoting rule / mechanism / exception to named bullets — with
-  the wording unchanged — made it pass consecutively.
-
-  Corollary for debugging: an eval that fails on one missing element while
-  everything else is correct is usually a signposting defect, not a knowledge
-  gap. Look at where the requirement sits in the file before rewriting what it
-  says.
 5. Every plugin manifest auto-discovers the new skill from `skills/` — no
    manifest edit needed. Place the skill in a `catalog.json` group; validation
    fails until exactly one group contains it. Run `mise run docs` to generate the skill's
@@ -381,13 +319,15 @@ Rules for changing a `SKILL.md`:
    `.claude-plugin/marketplace.json` entry, and tag the release so installs
    can pin.
 
+The router budget — the three layer costs, the 250-character description cap,
+and the rules for changing a `SKILL.md` — lives in `skills/AGENTS.md`.
+
 ## Toolchain
 
 **Every tool comes from mise, everywhere — locally and in GitHub Actions.**
-`mise.toml` is the only place a tool version is written. Workflows install with
-`jdx/mise-action` and never carry their own version input; a second pin in a
-workflow is drift waiting to happen. Do not add `setup-bun`, `setup-node`, or
-any other per-tool action, and do not install a tool a job needs by hand.
+`mise.toml` is the only place a tool version is written; a second pin anywhere
+is drift waiting to happen. Workflow-side tooling rules live in
+`.github/AGENTS.md`.
 
 **Diagrams are Mermaid.** Anywhere a flow, sequence, or relationship is drawn —
 documentation pages, this file, `README.md`, design notes — it is a ```mermaid

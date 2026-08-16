@@ -29,14 +29,10 @@ would repeat on all of them. The default renders server-side, so a prerendered
 page always shows a real command. Adding a client means editing
 `src/lib/agents.ts` and nothing else.
 
-**Every diagram is a ```mermaid fence.** Never draw a flow with arrows and
-spaces in a `text` block: it wraps badly, reads as a puzzle, and cannot be
-restyled. `mise run docs:check` fails on a multi-line fenced block that uses
-flow arrows and is not Mermaid.
-
-Two things are not diagrams and stay literal: a directory tree, which draws a
-filesystem rather than a flow, and captured output. Both are exempt from the
-check — a tree by its box-drawing characters, output by having no arrows.
+`mise run docs:check` enforces the root Mermaid rule: it fails a multi-line
+fenced block that uses flow arrows and is not Mermaid. The literal exemptions
+are detected mechanically — a directory tree by its box-drawing characters,
+captured output by having no arrows.
 
 A remark plugin rewrites Mermaid fences into the Mermaid component, which
 renders in the browser after hydration, so the diagram is absent from the

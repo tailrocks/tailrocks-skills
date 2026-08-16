@@ -6,5 +6,6 @@
   floating runner labels.
 - Pin every third-party action to a full commit SHA. Use least privilege,
   bounded concurrency, measured timeouts, and credential-free checkout.
-- Install all project tooling through mise. Never use Homebrew in this
-  repository.
+- Install tooling only with `jdx/mise-action`; a workflow never carries its own
+  version input beside the `mise.toml` pin. No per-tool actions (`setup-bun`,
+  `setup-node`), no hand-installed tools, never Homebrew.
