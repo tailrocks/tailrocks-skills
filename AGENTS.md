@@ -21,6 +21,8 @@ bridges, and Liquid Glass. Existing AppKit apps migrate toward that architecture
 Skills deepen this stack; they do not offer alternative frameworks, package managers, test
 runners, or component systems. Every setup targets the latest stable release and
 latest stable major available at execution time; older majors are unsupported.
+Documentation sites are Fumadocs on TanStack Start with Bun — no other
+documentation framework, runtime, or package manager.
 
 Skills are manual-only where the client supports per-skill policy. Claude
 Code, Grok Build, and Kimi Code honor `disable-model-invocation: true`
@@ -202,7 +204,7 @@ Grilling mechanics descend from Matt Pocock's `grilling` family; the plan
 template and the reconcile stage descend from the shadcn `improve` skill.
 All seven write only their own artifacts (`roadmap/`, `research/`,
 `plans/`) and never touch source.
-Worked walkthrough: `docs/pipeline-walkthrough.md`.
+Worked walkthrough: `docs/design/pipeline-walkthrough.md`.
 
 ### tailrocks-contribute
 
@@ -246,7 +248,7 @@ compatibility as work to be scheduled, and expects the destination to break
 things. Two guards keep rethink from becoming licensed churn: it refuses a
 request with no failed guarantee behind it, and it rejects a target design that
 adds capability instead of subtracting a structural measure. Design notes, the
-research basis, and the extension model: `docs/rethink-design.md`.
+research basis, and the extension model: `docs/design/rethink-design.md`.
 
 ## Adding a Skill
 
@@ -310,8 +312,10 @@ Rules for changing a `SKILL.md`:
   gap. Look at where the requirement sits in the file before rewriting what it
   says.
 5. Every plugin manifest auto-discovers the new skill from `skills/` — no
-   manifest edit needed. Add the skill to the tables in `README.md`,
-   `INSTALL.md`, and this file.
+   manifest edit needed. Run `mise run docs` to generate the skill's
+   `README.md`, its documentation page, and the root `README.md` row; then add
+   it by hand to `INSTALL.md`, this file, and — when it needs a boundary
+   against a neighbouring skill — `docs/content/docs/choosing.mdx`.
 6. Bump `version` in lockstep across `.claude-plugin/plugin.json`,
    `.codex-plugin/plugin.json`, `.kimi-plugin/plugin.json`, and the
    `.claude-plugin/marketplace.json` entry, and tag the release so installs
@@ -333,6 +337,24 @@ Load the plugin locally in Claude Code:
 ```sh
 claude --plugin-dir .
 ```
+
+## Documentation
+
+<https://skills.tailrocks.com> is published from `docs/` — Fumadocs on TanStack
+Start, built by Vite into a static bundle and deployed to GitHub Pages by
+`.github/workflows/docs.yml`. Development commands and the deployment contract
+live in `docs/README.md`.
+
+**Skill prose has one source: `SKILL.md`.** `scripts/generate-docs.ts` derives
+each `skills/<name>/README.md`, each `docs/content/docs/skills/<name>.mdx`, the
+skill index, `docs/content/docs/install.mdx`, and the root `README.md` table
+from it. Never edit a generated file — edit the skill and run `mise run docs`.
+CI runs `mise run docs:check` and fails when a generated file is stale.
+
+Hand-written pages are `docs/content/docs/index.mdx` and
+`docs/content/docs/choosing.mdx`; repository design notes live in `docs/design/`
+and are not published. The site build asserts that every skill has a
+prerendered page, so a new skill cannot silently miss the documentation.
 
 ## Contributing workflow
 

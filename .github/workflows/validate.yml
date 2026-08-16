@@ -25,6 +25,7 @@ jobs:
         with:
           bun-version: "1.3.14"
       - run: bun run scripts/validate-skills.ts
+      - run: bun run scripts/generate-docs.ts --check
       - run: bun test scripts/
       - name: Parse shell templates
         run: find skills -path '*/templates/*.sh' -print0 | xargs -0 -n1 sh -n
