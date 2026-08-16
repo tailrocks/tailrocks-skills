@@ -27,8 +27,12 @@ Documentation: **<https://skills.tailrocks.com>**
 | Antigravity CLI | Clone the repository, then run `agy plugin install ./tailrocks-skills` |
 | Amp | Reuse the installed Claude Code plugin; otherwise `amp skill add tailrocks/tailrocks-skills --global` |
 
-Use a release tag for reproducible installs. See [INSTALL.md](INSTALL.md) for
-pinning, upgrades, duplicate prevention, and the verified compatibility matrix.
+These install the latest release. In Claude Code, turn on auto-update for the
+marketplace once (`/plugin` → **Marketplaces** → **Enable auto-update**) and it
+stays current on its own; the other clients upgrade with one command. Pin a tag
+instead when a build must be reproducible. See [INSTALL.md](INSTALL.md) for
+per-client upgrade and pinning commands, duplicate prevention, and the verified
+compatibility matrix.
 
 ## Invoke a skill
 
