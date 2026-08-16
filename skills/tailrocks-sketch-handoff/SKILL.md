@@ -1,7 +1,7 @@
 ---
 name: tailrocks-sketch-handoff
 description: >-
-  Use only when the user explicitly requests this skill. Turn a Sketch design into a handoff an agent can implement faithfully as a native macOS app. Use for wiring the Sketch MCP server, grounding work in Apple's official macOS UI kit, extracting colour, type, and layer-style tokens from the .sketch file, writing the symbol-to-SwiftUI design map that replaces Code Connect, specifying screenshot exports, and enforcing that the design file never specifies system-component internals.
+  Use only when the user explicitly requests this skill. Turn a Sketch design into an implementable native macOS handoff: Sketch MCP wiring, Apple's macOS UI kit, token extraction, the symbol-to-SwiftUI design map, and approved frame exports.
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true

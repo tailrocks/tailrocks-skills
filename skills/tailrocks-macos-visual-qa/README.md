@@ -4,7 +4,7 @@
 
 `tailrocks-macos-visual-qa` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-macos-visual-qa)
 
-Build, launch, capture, drive, and verify a native macOS app so an agent can see and critique its own interface. Use for the atomic build-launch-capture loop, capturing by window ID rather than screen rectangle, driving the accessibility tree, flipping appearance and accessibility settings, the rendered state matrix, performAccessibilityAudit, and pixel regression; restores every system setting it changes.
+Build, launch, capture, drive, and verify a native macOS app so an agent can see its own interface: window-ID capture, accessibility-tree driving, appearance and accessibility state matrix, audits, and pixel regression.
 
 ## Invocation
 

@@ -4,7 +4,7 @@
 
 `tailrocks-contribute` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-contribute)
 
-Contribute to an external open-source project as a good citizen: discover its actual contribution contract, select the accepted venue, prepare a minimal evidenced change, submit only after explicit per-contribution human approval, and stay engaged through review. Do not use for repositories the user owns or security vulnerabilities, which route through SECURITY.md.
+Contribute to an external open-source project: discover its contribution contract, prepare a minimal evidenced change, and submit only after explicit human approval. Do not use for repositories the user owns or for security vulnerabilities.
 
 ## Invocation
 

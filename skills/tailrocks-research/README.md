@@ -4,7 +4,7 @@
 
 `tailrocks-research` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-research)
 
-Run deep, sourced research into a reusable topic folder under research/: either a specific question ("pure-Rust macOS app without Swift") or a roadmap item to extend — surfacing missed angles, directions, and evidence. Parallel investigators write vetted multi-page chapters; topics link many-to-many with roadmap items. Do not use for decisions only the user can make, or for questions one lookup answers.
+Run deep, sourced research into a reusable topic under research/, for a question or to extend a roadmap item, using parallel investigators. Do not use for decisions only the user can make, or questions one lookup answers.
 
 ## Invocation
 

@@ -282,7 +282,19 @@ with `docs/CLAUDE.md` symlinked beside them.
 
 ## Router budget
 
-**References are free. Router lines are not.**
+**References are free. Descriptions and router lines are not.**
+
+Three layers, three costs. A `description` loads on every request in any client
+that ignores manual-only policy, and competes for a listing budget of 1% of the
+context window that truncates on overflow. A `SKILL.md` body loads on invocation
+and then stays in context for the rest of the session. Everything under
+`references/` and `templates/` costs nothing until read.
+
+**Descriptions are capped at 250 characters after the guard sentence**, enforced
+by the validator. Carry the trigger and the do-not-use clause; leave the rest to
+the router. The guard sentence itself is load-bearing and measured — the short
+form fired on 7 of 8 tempting prompts where the full sentence fired on 0 of 8.
+Evidence and method: `docs/design/skill-context-budget.md`.
 
 A `SKILL.md` is loaded whole, every invocation, and every behavior it carries
 competes for the model's attention with every other behavior in the same file.

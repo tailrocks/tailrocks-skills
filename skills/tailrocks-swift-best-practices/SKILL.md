@@ -1,7 +1,7 @@
 ---
 name: tailrocks-swift-best-practices
 description: >-
-  Use only when the user explicitly requests this skill. Write, review, or refactor Swift and SwiftUI code for a native macOS app. Use for strict concurrency and actor isolation, state ownership and view identity, layout and performance, AppKit interop boundaries, error and failure policy, availability guards for mixed deployment targets, accessibility as a code obligation, and test design.
+  Use only when the user explicitly requests this skill. Write, review, or refactor Swift and SwiftUI for macOS: strict concurrency and actor isolation, state ownership and view identity, AppKit interop boundaries, typed failure, availability guards, accessibility, and tests.
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true

@@ -4,7 +4,7 @@
 
 `tailrocks-macos-design` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-macos-design)
 
-Design a macOS feature to Apple-ecosystem quality before any production code is written. Use for the experience brief, information architecture, the window and navigation model, the native component map that classifies every region as NATIVE, NATIVE-COMPOSED, or CUSTOM, structurally different design alternatives, macOS density and typography discipline, the custom component contract, motion criteria, the acceptance rubric with hard failures, Apple's design principles and the Mac citizenship tests, and the annotated exemplar corpus of which Apple and third-party apps to model and which to avoid; produces design artifacts only and never edits source.
+Design a macOS feature to Apple quality before any production code: experience brief, information architecture, native component map, alternatives, density and typography, and a scored rubric. Writes design artifacts, never source.
 
 ## Invocation
 

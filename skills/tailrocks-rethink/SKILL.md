@@ -1,7 +1,7 @@
 ---
 name: tailrocks-rethink
 description: >-
-  Use only when the user explicitly requests this skill. Conceptually re-derive the design behind a reported bug, friction, or awkward implementation instead of patching it. Use when the right answer may be heavy refactoring, restructuring, reimplementation, or a breaking change, and when price, effort, duration, diff size, migration work, or compatibility convenience must be excluded from the decision. Derives the ideal design before inspecting the existing one, names the established engineering concept it applies, and requires the reported failure to become unrepresentable rather than guarded. Do not use for routine implementation, for cleanup with no reported symptom, or when the user wants the smallest safe patch.
+  Use only when the user explicitly requests this skill. Re-derive the design behind a reported bug or friction instead of patching it; restructuring and breaking changes are expected and cost is excluded from the decision. Do not use without a reported symptom or when a minimal patch is wanted.
 argument-hint: "[audit|rebuild] <bug, friction, or implementation to re-derive>"
 disable-model-invocation: true
 license: Apache-2.0

@@ -1,7 +1,7 @@
 ---
 name: tailrocks-reconcile
 description: >-
-  Use only when the user explicitly requests this skill. True up an implementation package under plans/<slug>/ with execution reality: re-verify DONE rows by re-running their done criteria, reset or salvage IN PROGRESS rows left by dead sessions, investigate BLOCKED rows, drift-check TODO plans against HEAD, mark stale rows with reasons, and reconcile the roadmap item's status. Verification only — do not use to write or refresh plans (tailrocks-plan) or to record product decisions (tailrocks-record-decision).
+  Use only when the user explicitly requests this skill. True up plans/<slug>/ with execution reality: re-verify DONE rows by re-running their criteria, reset dead IN PROGRESS rows, retest BLOCKED, drift-check TODO plans, and fix the item's status. Verification only; never writes plans.
 argument-hint: "<roadmap-slug>"
 disable-model-invocation: true
 license: Apache-2.0

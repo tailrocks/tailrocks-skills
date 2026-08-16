@@ -1,7 +1,7 @@
 ---
 name: tailrocks-research
 description: >-
-  Use only when the user explicitly requests this skill. Run deep, sourced research into a reusable topic folder under research/: either a specific question ("pure-Rust macOS app without Swift") or a roadmap item to extend — surfacing missed angles, directions, and evidence. Parallel investigators write vetted multi-page chapters; topics link many-to-many with roadmap items. Do not use for decisions only the user can make, or for questions one lookup answers.
+  Use only when the user explicitly requests this skill. Run deep, sourced research into a reusable topic under research/, for a question or to extend a roadmap item, using parallel investigators. Do not use for decisions only the user can make, or questions one lookup answers.
 argument-hint: "<question | roadmap-slug> [--slug <topic-name>] [--for <roadmap-slug>] [--deep]"
 disable-model-invocation: true
 license: Apache-2.0

@@ -2,6 +2,7 @@ import { access, readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
 const guard = "Use only when the user explicitly requests this skill.";
+const descriptionBudget = 250;
 
 async function exists(file: string): Promise<boolean> {
   try {
@@ -136,6 +137,14 @@ export async function validate(root: string): Promise<string[]> {
       errors.push(`${directory}: description must contain 1-1024 characters`);
     } else if (!description.startsWith(guard)) {
       errors.push(`${directory}: description must start with explicit-request guard`);
+    } else {
+      // Descriptions load on every request in clients that ignore manual-only
+      // policy, and overflow the skill listing's budget once a skill is model
+      // invocable. Keep the trigger, drop the prose the router already carries.
+      const body = description.slice(guard.length).trim().length;
+      if (body > descriptionBudget) {
+        errors.push(`${directory}: description is ${body} characters after the guard, budget is ${descriptionBudget}`);
+      }
     }
     if (metadata.license !== "Apache-2.0") errors.push(`${directory}: Apache-2.0 license metadata missing`);
     if (metadata["disable-model-invocation"] !== true) errors.push(`${directory}: Claude manual-only policy missing`);

@@ -1,7 +1,7 @@
 ---
 name: tailrocks-brainstorm
 description: >-
-  Use only when the user explicitly requests this skill. Shape a DRAFT or SHAPING roadmap item through a relentless interview: one question at a time with a recommended answer, decisions asked while facts are looked up, every resolved answer written into the item immediately. Use early, to expand and sharpen a rough item; do not use for final readiness (tailrocks-finalize) or without a live human.
+  Use only when the user explicitly requests this skill. Shape a DRAFT or SHAPING roadmap item through a one-question-at-a-time interview, writing every answer into the item as it resolves. Do not use for final readiness (tailrocks-finalize) or without a live human.
 argument-hint: "<roadmap-slug> [--batch]"
 disable-model-invocation: true
 license: Apache-2.0

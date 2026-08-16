@@ -106,6 +106,13 @@ describe("validate", () => {
     );
   });
 
+  test("rejects a description over the budget after the guard", async () => {
+    await writeSkill(`${description} ${"word ".repeat(60)}`.trim());
+    expect(await validate(root)).toContain(
+      `${skill}: description is 327 characters after the guard, budget is 250`,
+    );
+  });
+
   test("rejects an overlong description", async () => {
     await writeSkill(`${description}${"x".repeat(1100)}`);
     expect(await validate(root)).toContain(
