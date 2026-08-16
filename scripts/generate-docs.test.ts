@@ -1,6 +1,28 @@
 import { expect, test } from "bun:test";
 import path from "node:path";
-import { absoluteLinks, escapeMdx, generate, mapProse, replaceRootList, summarize } from "./generate-docs";
+import {
+  absoluteLinks,
+  escapeMdx,
+  generate,
+  groupSkills,
+  mapProse,
+  readCatalog,
+  replaceRootList,
+  strayMarkdown,
+  summarize,
+} from "./generate-docs";
+
+const skill = (name: string) => ({
+  name,
+  title: name,
+  summary: "",
+  description: "",
+  argumentHint: undefined,
+  defaultPrompt: undefined,
+  body: "",
+  references: [],
+  templates: [],
+});
 
 test("prose transforms skip fenced blocks and inline code", () => {
   const source = ["text <here>", "```sh", "cmd <raw>", "```", "`code <span>` and <tail>"].join("\n");
@@ -29,6 +51,29 @@ test("summaries drop the explicit-request guard and keep one sentence", () => {
 test("root list replacement requires both markers", () => {
   expect(replaceRootList("a\n<!-- skills:start -->old<!-- skills:end -->\nb", "NEW")).toBe("a\nNEW\nb");
   expect(() => replaceRootList("no markers", "NEW")).toThrow();
+});
+
+test("grouping preserves catalog order and rejects an incomplete catalog", () => {
+  const groups = [{ id: "g", title: "G", summary: "s", skills: ["b", "a"] }];
+  const grouped = groupSkills(groups, [skill("a"), skill("b")]);
+  expect(grouped[0]?.skills.map((entry) => entry.name)).toEqual(["b", "a"]);
+
+  expect(() => groupSkills(groups, [skill("a"), skill("b"), skill("c")])).toThrow(/no group contains c/);
+  expect(() => groupSkills(groups, [skill("a")])).toThrow(/unknown skill b/);
+  expect(() =>
+    groupSkills([...groups, { id: "h", title: "H", summary: "s", skills: ["a"] }], [skill("a"), skill("b")]),
+  ).toThrow(/more than one group/);
+});
+
+test("the catalog groups every skill in the tree", async () => {
+  const root = path.resolve(import.meta.dir, "..");
+  const groups = await readCatalog(root);
+  expect(groups.length).toBeGreaterThan(0);
+  expect(groups.every((group) => group.title !== "" && group.summary !== "")).toBeTrue();
+});
+
+test("no documentation page is plain markdown", async () => {
+  expect(await strayMarkdown(path.resolve(import.meta.dir, ".."))).toEqual([]);
 });
 
 test("generates a README and a documentation page for every skill", async () => {

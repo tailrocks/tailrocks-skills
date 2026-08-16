@@ -69,6 +69,12 @@ async function writeManifests(customDescription = "same"): Promise<void> {
   for (const catalog of ["README.md", "INSTALL.md", "AGENTS.md", "CLAUDE.md"]) {
     await write(catalog, skill);
   }
+  await write(
+    "catalog.json",
+    JSON.stringify({
+      groups: [{ id: "sample", title: "Sample", summary: "Fixture group.", skills: [skill] }],
+    }),
+  );
 }
 
 beforeEach(async () => {
@@ -84,6 +90,13 @@ afterEach(async () => {
 describe("validate", () => {
   test("accepts a valid minimal repository", async () => {
     expect(await validate(root)).toEqual([]);
+  });
+
+  test("rejects a skill that no catalog group contains", async () => {
+    await write("catalog.json", JSON.stringify({ groups: [{ id: "sample", title: "S", summary: "s", skills: [] }] }));
+    const errors = await validate(root);
+    expect(errors).toContain("catalog.json: group sample must list at least one skill");
+    expect(errors).toContain(`catalog.json: no group contains ${skill}`);
   });
 
   test("rejects a description without the guard", async () => {

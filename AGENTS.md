@@ -312,7 +312,8 @@ Rules for changing a `SKILL.md`:
   gap. Look at where the requirement sits in the file before rewriting what it
   says.
 5. Every plugin manifest auto-discovers the new skill from `skills/` — no
-   manifest edit needed. Run `mise run docs` to generate the skill's
+   manifest edit needed. Place the skill in a `catalog.json` group; validation
+   fails until exactly one group contains it. Run `mise run docs` to generate the skill's
    `README.md`, its documentation page, and the root `README.md` row; then add
    it by hand to `INSTALL.md`, this file, and — when it needs a boundary
    against a neighbouring skill — `docs/content/docs/choosing.mdx`.
@@ -320,6 +321,14 @@ Rules for changing a `SKILL.md`:
    `.codex-plugin/plugin.json`, `.kimi-plugin/plugin.json`, and the
    `.claude-plugin/marketplace.json` entry, and tag the release so installs
    can pin.
+
+## Toolchain
+
+**Every tool comes from mise, everywhere — locally and in GitHub Actions.**
+`mise.toml` is the only place a tool version is written. Workflows install with
+`jdx/mise-action` and never carry their own version input; a second pin in a
+workflow is drift waiting to happen. Do not add `setup-bun`, `setup-node`, or
+any other per-tool action, and do not install a tool a job needs by hand.
 
 ## Validation
 
@@ -345,11 +354,22 @@ Start, built by Vite into a static bundle and deployed to GitHub Pages by
 `.github/workflows/docs.yml`. Development commands and the deployment contract
 live in `docs/README.md`.
 
+**Skill grouping has one source: `catalog.json`.** It sets the group titles,
+their one-line summaries, the order of the groups, and the order of skills
+inside each — used by the root `README.md` table, the documentation skill
+index, and the site sidebar. `scripts/validate-skills.ts` requires every
+`skills/` directory to appear in exactly one group.
+
 **Skill prose has one source: `SKILL.md`.** `scripts/generate-docs.ts` derives
 each `skills/<name>/README.md`, each `docs/content/docs/skills/<name>.mdx`, the
 skill index, `docs/content/docs/install.mdx`, and the root `README.md` table
 from it. Never edit a generated file — edit the skill and run `mise run docs`.
 CI runs `mise run docs:check` and fails when a generated file is stale.
+
+**Every page under `docs/content/` is `.mdx`, never `.md`** — generated or
+hand-written. `mise run docs:check` refuses a plain-markdown page, because it
+renders without component support and the difference is invisible until a page
+needs one.
 
 Hand-written pages are `docs/content/docs/index.mdx` and
 `docs/content/docs/choosing.mdx`; repository design notes live in `docs/design/`
