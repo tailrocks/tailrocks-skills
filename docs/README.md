@@ -1,0 +1,37 @@
+# Documentation site
+
+The published site at <https://skills.tailrocks.com>. Fumadocs on TanStack Start,
+built by Vite into a static bundle and served by GitHub Pages.
+
+```sh
+bun install          # in this directory
+bun run dev          # local development
+bun run types:check  # MDX collections + tsc
+bun run build        # static build, shell promotion, and the output smoke check
+```
+
+## What is generated and what is written
+
+Most pages under `content/docs/` are **generated** and must not be edited:
+
+| Path | Source |
+|---|---|
+| `content/docs/skills/<name>.mdx` | `skills/<name>/SKILL.md` |
+| `content/docs/skills/index.mdx` | every skill's frontmatter description |
+| `content/docs/skills/meta.json` | the `skills/` directory listing |
+| `content/docs/install.mdx` | `INSTALL.md` |
+
+Regenerate from the repository root with `mise run docs`. CI runs
+`bun run scripts/generate-docs.ts --check` and fails when a generated file is
+out of date, so edit the source and regenerate rather than the page.
+
+Hand-written pages: `content/docs/index.mdx` and `content/docs/choosing.mdx`.
+Repository design notes live in [`design/`](design/) and are not published.
+
+## Deployment
+
+`.github/workflows/docs.yml` builds on every pull request and deploys `main` to
+GitHub Pages. `public/CNAME` holds the custom domain; the workflow then fetches
+the live site and fails if the deployed HTML does not contain the expected
+content. The build asserts that every skill has a prerendered page, so a new
+skill cannot silently miss the site.

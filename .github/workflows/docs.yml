@@ -1,0 +1,92 @@
+name: docs
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  merge_group:
+  workflow_dispatch:
+  schedule:
+    - cron: "37 4 * * *"
+
+permissions:
+  contents: read
+
+env:
+  DOCS_SITE_URL: https://skills.tailrocks.com
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    if: github.event_name != 'schedule'
+    runs-on: ${{ 'ubuntu-26.04' }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: "1.3.14"
+      - working-directory: docs
+        run: bun install --frozen-lockfile
+      - working-directory: docs
+        run: bun run types:check
+      - working-directory: docs
+        run: bun run build
+      - name: Configure GitHub Pages
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      - name: Upload GitHub Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: docs/dist/client
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: build
+    runs-on: ${{ 'ubuntu-26.04' }}
+    timeout-minutes: 20
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
+
+  verify-deployed:
+    name: Verify deployed documentation
+    if: >-
+      always() &&
+      (github.event_name == 'schedule' ||
+       (github.ref == 'refs/heads/main' &&
+        github.event_name == 'push' &&
+        needs.deploy.result == 'success'))
+    needs: deploy
+    runs-on: ${{ 'ubuntu-26.04' }}
+    timeout-minutes: 10
+    steps:
+      - name: Verify custom-domain site
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in {1..20}; do
+            home=$(curl --compressed --fail --silent --show-error --location "${DOCS_SITE_URL}/" | tr -d '\000') || true
+            skills=$(curl --compressed --fail --silent --show-error --location "${DOCS_SITE_URL}/docs/skills" | tr -d '\000') || true
+            if grep -q '<title>tailrocks-skills</title>' <<< "$home" &&
+               grep -q 'tailrocks-rust-best-practices' <<< "$skills" &&
+               ! grep -q '/tailrocks-skills/' <<< "$home"; then
+              exit 0
+            fi
+            echo "Documentation not ready (attempt ${attempt}/20)"
+            sleep 15
+          done
+          echo "Documentation failed content verification: ${DOCS_SITE_URL}/" >&2
+          exit 1

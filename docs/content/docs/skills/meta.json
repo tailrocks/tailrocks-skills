@@ -1,0 +1,28 @@
+{
+  "title": "Skills",
+  "pages": [
+    "index",
+    "tailrocks-axum-best-practices",
+    "tailrocks-brainstorm",
+    "tailrocks-code-health",
+    "tailrocks-contribute",
+    "tailrocks-finalize",
+    "tailrocks-idea",
+    "tailrocks-liquid-glass",
+    "tailrocks-macos-design",
+    "tailrocks-macos-visual-qa",
+    "tailrocks-plan",
+    "tailrocks-reconcile",
+    "tailrocks-record-decision",
+    "tailrocks-remediate",
+    "tailrocks-research",
+    "tailrocks-rethink",
+    "tailrocks-rust-best-practices",
+    "tailrocks-rust-project-setup",
+    "tailrocks-sketch-handoff",
+    "tailrocks-swift-best-practices",
+    "tailrocks-swift-project-setup",
+    "tailrocks-tanstack-project-setup",
+    "tailrocks-typescript-best-practices"
+  ]
+}
