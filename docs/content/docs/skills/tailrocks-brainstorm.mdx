@@ -11,9 +11,12 @@ Shape a DRAFT or SHAPING roadmap item through a one-question-at-a-time interview
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This skill never activates on its own. Name it in your request, in the
+syntax of the client you use:
 
-> Use `tailrocks-brainstorm` …
+<AgentPicker />
+
+<Invoke skill="tailrocks-brainstorm" args="<roadmap-slug> [--batch]" />
 
 Arguments: `<roadmap-slug> [--batch]`
 

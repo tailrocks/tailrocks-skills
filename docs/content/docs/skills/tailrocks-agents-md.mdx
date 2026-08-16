@@ -11,9 +11,12 @@ Add, place, audit, or repair agent instruction files. AGENTS.md is the source; C
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This skill never activates on its own. Name it in your request, in the
+syntax of the client you use:
 
-> Use `tailrocks-agents-md` …
+<AgentPicker />
+
+<Invoke skill="tailrocks-agents-md" args="[add|audit|sync] <rule, path, or repository>" />
 
 Arguments: `[add|audit|sync] <rule, path, or repository>`
 

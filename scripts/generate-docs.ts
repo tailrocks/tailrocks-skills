@@ -195,6 +195,29 @@ function invocation(skill: Skill): string {
   return lines.join("\n");
 }
 
+/** The documentation-site variant: the invocation is written for the reader's own client. */
+function invocationPage(skill: Skill): string {
+  const args = skill.argumentHint ?? "";
+  const lines = [
+    "## Invocation",
+    "",
+    "This skill never activates on its own. Name it in your request, in the",
+    "syntax of the client you use:",
+    "",
+    "<AgentPicker />",
+    "",
+    `<Invoke skill="${skill.name}"${args === "" ? "" : ` args="${escapeAttribute(args)}"`} />`,
+  ];
+  if (skill.argumentHint !== undefined) {
+    lines.push("", `Arguments: \`${skill.argumentHint}\``);
+  }
+  return lines.join("\n");
+}
+
+function escapeAttribute(value: string): string {
+  return value.replaceAll('"', "'");
+}
+
 export function renderReadme(skill: Skill): string {
   return `${banner}
 
@@ -232,7 +255,7 @@ description: ${JSON.stringify(skill.summary)}
 
 ${escapeMdx(skill.description)}
 
-${escapeMdx(invocation(skill))}
+${invocationPage(skill)}
 
 ## Skill definition
 

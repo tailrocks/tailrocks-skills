@@ -11,9 +11,12 @@ Convert a READY roadmap item into plans/&lt;slug>/: coverage ledger, gap researc
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This skill never activates on its own. Name it in your request, in the
+syntax of the client you use:
 
-> Use `tailrocks-plan` …
+<AgentPicker />
+
+<Invoke skill="tailrocks-plan" args="<roadmap-slug> [additional context] [--deep]" />
 
 Arguments: `<roadmap-slug> [additional context] [--deep]`
 

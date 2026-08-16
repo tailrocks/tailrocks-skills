@@ -93,6 +93,10 @@ test("generates a README and a documentation page for every skill", async () => 
 
   const page = generated.find((entry) => entry.file.endsWith("tailrocks-rethink.mdx"));
   expect(page?.content).toStartWith("---\ntitle: Rethink\n");
+  // The site writes invocations in the reader's own client syntax; the README cannot.
+  expect(page?.content).toContain('<Invoke skill="tailrocks-rethink"');
+  expect(page?.content).toContain("<AgentPicker />");
+  expect(readme?.content).not.toContain("<Invoke");
   // Skill bodies link to their own references; the site cannot serve those paths.
   expect(page?.content).not.toContain("](references/");
 });

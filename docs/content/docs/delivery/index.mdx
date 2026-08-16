@@ -12,6 +12,11 @@ can read and correct while correcting is cheap. Each skill owns one transition,
 writes one kind of artifact, and refuses the work that belongs to its
 neighbours.
 
+Every invocation on this page is written for the client you pick here, and the
+choice follows you across the documentation.
+
+<AgentPicker />
+
 ## The shape
 
 ```mermaid
@@ -62,9 +67,7 @@ implementing a feature whose behavior nobody has decided yet.
 visibly empty. That emptiness is the point: it is the list of everything nobody
 has decided, and it is what the next two skills work through.
 
-```text
-Use tailrocks-idea: let people replay a recorded session frame by frame.
-```
+<Invoke skill="tailrocks-idea" args="let people replay a recorded session frame by frame" />
 
 ### Shape by interrogation
 
@@ -73,9 +76,7 @@ answer, and writes each answer into the item the moment it resolves. It looks
 up anything lookup-able itself rather than asking you. Add `--batch` for
 numbered rounds when you would rather answer five at once.
 
-```text
-Use tailrocks-brainstorm on session-replay.
-```
+<Invoke skill="tailrocks-brainstorm" args="session-replay" />
 
 ### Separate facts from choices
 
@@ -93,14 +94,9 @@ Confusing the two is the most common way a shaping session stalls. An agent
 that "decides" a product question has invented a requirement; an agent that
 asks you what a specification already says is wasting your attention.
 
-```text
-Use tailrocks-research on session-replay: how do browsers throttle timers in
-background tabs, and what does that mean for playback accuracy?
+<Invoke skill="tailrocks-research" args="session-replay: how do browsers throttle timers in background tabs, and what does that mean for playback accuracy?" />
 
-Use tailrocks-record-decision on session-replay: replay is read-only and can
-never mutate the recorded session, because a corrupted recording is
-unrecoverable evidence.
-```
+<Invoke skill="tailrocks-record-decision" args="session-replay: replay is read-only and can never mutate the recorded session, because a corrupted recording is unrecoverable evidence" />
 
 Record-decision earns its place at the far end of the pipeline too. Change your
 mind about a PLANNED or DONE item and it does not merely edit a paragraph: it
@@ -116,9 +112,7 @@ resolved, deferred with a reason, or reclassified as researchable. READY is
 granted only when the whole readiness checklist passes — and it is the only
 skill that can grant it.
 
-```text
-Use tailrocks-finalize on session-replay.
-```
+<Invoke skill="tailrocks-finalize" args="session-replay" />
 
 ### Package for an executor who was not there
 
@@ -141,9 +135,7 @@ predictable. It produces:
 - **`GOAL.md`** — a machine-checkable goal condition, a kickoff prompt, and a
   resume prompt, all copy-pasteable.
 
-```text
-Use tailrocks-plan on session-replay with --deep.
-```
+<Invoke skill="tailrocks-plan" args="session-replay with --deep" />
 
 `--deep` adds a completeness critic that reslices until a round surfaces
 nothing load-bearing. Worth it for anything you will not be watching.
@@ -156,9 +148,7 @@ believing the status, resets rows abandoned by dead sessions, retests BLOCKED
 reasons and `A#` assumptions, and drift-checks TODO plans against HEAD. It
 writes statuses and nothing else.
 
-```text
-Use tailrocks-reconcile on session-replay.
-```
+<Invoke skill="tailrocks-reconcile" args="session-replay" />
 
 ## Where the stack skills plug in
 

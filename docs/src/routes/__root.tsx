@@ -1,6 +1,8 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { RootProvider } from "fumadocs-ui/provider/tanstack";
 
+import { AgentProvider } from "@/components/AgentContext";
+
 import appCss from "@/styles/app.css?url";
 
 export const Route = createRootRoute({
@@ -31,7 +33,9 @@ function RootComponent() {
       </head>
       <body className="flex min-h-screen flex-col">
         <RootProvider search={{ enabled: false }}>
-          <Outlet />
+          <AgentProvider>
+            <Outlet />
+          </AgentProvider>
         </RootProvider>
         <Scripts />
       </body>

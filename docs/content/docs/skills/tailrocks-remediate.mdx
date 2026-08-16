@@ -11,9 +11,12 @@ Analyze or remediate a proven defect through correctness-first architectural red
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This skill never activates on its own. Name it in your request, in the
+syntax of the client you use:
 
-> Use `tailrocks-remediate` …
+<AgentPicker />
+
+<Invoke skill="tailrocks-remediate" args="[analyze|fix] <known defect or inconsistency>" />
 
 Arguments: `[analyze|fix] <known defect or inconsistency>`
 

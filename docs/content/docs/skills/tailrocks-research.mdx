@@ -11,9 +11,12 @@ Run deep, sourced research into a reusable topic under research/, for a question
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This skill never activates on its own. Name it in your request, in the
+syntax of the client you use:
 
-> Use `tailrocks-research` …
+<AgentPicker />
+
+<Invoke skill="tailrocks-research" args="<question | roadmap-slug> [--slug <topic-name>] [--for <roadmap-slug>] [--deep]" />
 
 Arguments: `<question | roadmap-slug> [--slug <topic-name>] [--for <roadmap-slug>] [--deep]`
 
