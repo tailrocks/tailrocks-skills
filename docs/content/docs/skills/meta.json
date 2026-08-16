@@ -28,6 +28,7 @@
     "tailrocks-refresh-pr",
     "tailrocks-checkout-pr",
     "tailrocks-merge-pr",
+    "tailrocks-pr-template",
     "---Roadmap and delivery---",
     "tailrocks-idea",
     "tailrocks-brainstorm",

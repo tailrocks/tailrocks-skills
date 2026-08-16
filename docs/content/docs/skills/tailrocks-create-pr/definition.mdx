@@ -76,10 +76,11 @@ convention discovery, never an error.
    names a body generator command, run it and use its stdout as the
    skeleton. Else read the repository's own
    `.github/PULL_REQUEST_TEMPLATE.md` at runtime — never from memory; no
-   template anywhere → the generic skeleton shipped at
-   `templates/PULL_REQUEST_TEMPLATE.md`, offered for install. Write the
-   prose from the actual diff; select only the Verify-locally blocks the
-   diff earns and fill them with the real commands a reviewer would run.
+   template anywhere → the minimal fallback skeleton in the reference, and
+   recommend `tailrocks-pr-template` to generate the repository its own.
+   Write the prose from the actual diff; select only the Verify-locally
+   blocks the diff earns and fill them with the real commands a reviewer
+   would run.
    **Complete when:** every remaining section is filled and specific to this
    change.
 

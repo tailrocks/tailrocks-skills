@@ -54,7 +54,8 @@
         "tailrocks-create-pr",
         "tailrocks-refresh-pr",
         "tailrocks-checkout-pr",
-        "tailrocks-merge-pr"
+        "tailrocks-merge-pr",
+        "tailrocks-pr-template"
       ]
     },
     {

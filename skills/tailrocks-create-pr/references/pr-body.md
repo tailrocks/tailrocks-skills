@@ -17,10 +17,19 @@ looked up the way GitHub itself does:
    alternate locations (any of the three, case-insensitive).
 3. `.github/PULL_REQUEST_TEMPLATE/` — a multi-template directory; ask which
    one applies when more than one fits the change.
-4. None of the above → use the generic skeleton shipped beside this skill at
-   `templates/PULL_REQUEST_TEMPLATE.md`, and offer to install it as the
-   repository's `.github/PULL_REQUEST_TEMPLATE.md` so future PRs — from
-   humans and agents alike — start from the same shape.
+4. None of the above → use the minimal fallback skeleton below for this
+   PR's body only, and recommend `tailrocks-pr-template`, which generates
+   the repository its own `.github/PULL_REQUEST_TEMPLATE.md` from its
+   structure and merged-PR history. Never install a canned template into a
+   repository as a side effect of opening one PR.
+
+```markdown
+## Summary
+
+## What ships
+
+## Verify locally
+```
 
 Read the template at runtime, every time. Never reconstruct it from memory:
 repositories edit their templates, and a from-memory copy ships yesterday's

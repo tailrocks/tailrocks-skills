@@ -1,8 +1,9 @@
 <!--
-Generic PR body template — the fallback the tailrocks PR skills use when the
-repository ships no .github/PULL_REQUEST_TEMPLATE.md of its own. Copy it to
-.github/PULL_REQUEST_TEMPLATE.md to make it the repository's template and
-adapt the Verify-locally blocks to the repository's real gates.
+Base PR body template — the starting shape tailrocks-pr-template tailors
+into a repository's own .github/PULL_REQUEST_TEMPLATE.md. Never lands in a
+repository verbatim: every section survives only when the repository's
+structure and merged-PR history earn it, and every <placeholder> command is
+replaced with the repository's real gate.
 
 Rules in one line each:
 - One paragraph per section, no hard-wrap (GitHub flows the text).
