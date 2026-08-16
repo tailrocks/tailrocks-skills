@@ -9,7 +9,17 @@ const skills = (await readdir(path.join(root, 'skills'), { withFileTypes: true }
   .map((entry) => entry.name)
   .sort()
 
-const required = ['index.html', '404.html', '.nojekyll', 'CNAME', 'docs/index.html', 'docs/skills/index.html']
+const required = [
+  'index.html',
+  '404.html',
+  '.nojekyll',
+  'CNAME',
+  'docs/index.html',
+  'docs/skills/index.html',
+  'docs/delivery/index.html',
+  'docs/delivery/macos-app/index.html',
+  'docs/delivery/tanstack-feature/index.html',
+]
 
 for (const relative of required) {
   if (!(await Bun.file(path.join(output, relative)).exists())) {
