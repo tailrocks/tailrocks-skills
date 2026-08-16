@@ -1,13 +1,5 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import {
-  appendFileSync,
-  chmodSync,
-  cpSync,
-  mkdirSync,
-  mkdtempSync,
-  rmSync,
-  writeFileSync,
-} from "node:fs";
+import { appendFileSync, chmodSync, cpSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -25,18 +17,21 @@ function git(cwd: string, ...args: string[]) {
 }
 
 function fingerprint(root: string) {
-  const script = "find plans/demo -type f ! -path plans/demo/README.md -print | LC_ALL=C sort | while IFS= read -r f; do printf '%s %s\\n' \"$(git hash-object -- \"$f\")\" \"$f\"; done | git hash-object --stdin";
+  const script =
+    'find plans/demo -type f ! -path plans/demo/README.md -print | LC_ALL=C sort | while IFS= read -r f; do printf \'%s %s\\n\' "$(git hash-object -- "$f")" "$f"; done | git hash-object --stdin';
   const result = run(root, ["sh", "-c", script]);
   if (result.exitCode !== 0) throw new Error(result.stderr.toString());
   return result.stdout.toString().trim();
 }
 
-function fixture(options: {
-  gate?: string;
-  status?: string;
-  omitGates?: boolean;
-  omitFingerprint?: boolean;
-} = {}) {
+function fixture(
+  options: {
+    gate?: string;
+    status?: string;
+    omitGates?: boolean;
+    omitFingerprint?: boolean;
+  } = {},
+) {
   const root = mkdtempSync(join(tmpdir(), "tailrocks-goal-check-"));
   roots.push(root);
   const pkg = join(root, "plans/demo");
@@ -45,16 +40,12 @@ function fixture(options: {
   git(root, "config", "user.email", "test@example.com");
   git(root, "config", "user.name", "Test");
   writeFileSync(join(pkg, "plan.md"), "frozen\n");
-  const gates = options.omitGates
-    ? ""
-    : `\n\`\`\`sh gates\n${options.gate ?? "true"}\n\`\`\`\n`;
+  const gates = options.omitGates ? "" : `\n\`\`\`sh gates\n${options.gate ?? "true"}\n\`\`\`\n`;
   writeFileSync(join(pkg, "GOAL.md"), `Generated fixture.\n${gates}`);
   cpSync(template, join(pkg, "goal-check.sh"));
   chmodSync(join(pkg, "goal-check.sh"), 0o755);
   const frozen = fingerprint(root);
-  const fingerprintLine = options.omitFingerprint
-    ? ""
-    : `Frozen package fingerprint: \`${frozen}\`\n\n`;
+  const fingerprintLine = options.omitFingerprint ? "" : `Frozen package fingerprint: \`${frozen}\`\n\n`;
   writeFileSync(
     join(pkg, "README.md"),
     `${fingerprintLine}| Plan | Status |\n|---|---|\n| 000 | ${options.status ?? "DONE"} |\n`,

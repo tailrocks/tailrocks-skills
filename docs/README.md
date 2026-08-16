@@ -3,11 +3,22 @@
 The published site at <https://skills.tailrocks.com>. Fumadocs on TanStack Start,
 built by Vite into a static bundle and served by GitHub Pages.
 
+From the repository root, through mise:
+
 ```sh
-bun install          # in this directory
-bun run dev          # local development
-bun run types:check  # MDX collections + tsc
-bun run build        # static build, shell promotion, and the output smoke check
+mise run docs:dev      # run the site locally on http://localhost:5173
+mise run docs:build    # static build, shell promotion, output smoke check
+mise run docs:preview  # serve the built output
+mise run docs          # regenerate the pages derived from SKILL.md
+```
+
+Directly, from this directory:
+
+```sh
+bun install
+bun run dev
+bun run types:check    # MDX collections + tsc
+bun run build
 ```
 
 ## What is generated and what is written

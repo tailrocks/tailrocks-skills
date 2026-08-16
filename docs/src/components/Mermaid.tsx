@@ -1,16 +1,16 @@
-'use client'
+"use client";
 
-import { use, useEffect, useId, useState } from 'react'
-import { useTheme } from 'next-themes'
+import { useTheme } from "next-themes";
+import { use, useEffect, useId, useState } from "react";
 
-const cache = new Map<string, Promise<unknown>>()
+const cache = new Map<string, Promise<unknown>>();
 
 function cachePromise<T>(key: string, create: () => Promise<T>): Promise<T> {
-  const cached = cache.get(key)
-  if (cached) return cached as Promise<T>
-  const promise = create()
-  cache.set(key, promise)
-  return promise
+  const cached = cache.get(key);
+  if (cached) return cached as Promise<T>;
+  const promise = create();
+  cache.set(key, promise);
+  return promise;
 }
 
 /**
@@ -20,41 +20,41 @@ function cachePromise<T>(key: string, create: () => Promise<T>): Promise<T> {
  * prose has to carry the meaning on its own.
  */
 export function Mermaid({ chart }: { chart: string }) {
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  if (!mounted) return null
-  return <MermaidContent chart={chart} />
+  if (!mounted) return null;
+  return <MermaidContent chart={chart} />;
 }
 
 function MermaidContent({ chart }: { chart: string }) {
-  const id = useId()
-  const { resolvedTheme } = useTheme()
-  const { default: mermaid } = use(cachePromise('mermaid', () => import('mermaid')))
+  const id = useId();
+  const { resolvedTheme } = useTheme();
+  const { default: mermaid } = use(cachePromise("mermaid", () => import("mermaid")));
 
   mermaid.initialize({
     startOnLoad: false,
-    securityLevel: 'strict',
-    fontFamily: 'inherit',
-    theme: resolvedTheme === 'dark' ? 'dark' : 'default',
-  })
+    securityLevel: "strict",
+    fontFamily: "inherit",
+    theme: resolvedTheme === "dark" ? "dark" : "default",
+  });
 
   const { svg, bindFunctions } = use(
     cachePromise(`${chart}-${resolvedTheme}`, () =>
-      mermaid.render(id.replaceAll(':', ''), chart.replaceAll('\\n', '\n')),
+      mermaid.render(id.replaceAll(":", ""), chart.replaceAll("\\n", "\n")),
     ),
-  )
+  );
 
   return (
     <div
       className="my-6 overflow-x-auto"
       ref={(container) => {
-        if (container) bindFunctions?.(container)
+        if (container) bindFunctions?.(container);
       }}
       dangerouslySetInnerHTML={{ __html: svg }}
     />
-  )
+  );
 }
