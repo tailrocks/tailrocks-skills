@@ -87,15 +87,16 @@ not an implementation question.
 
 ## Custom renderers
 
-When any region is drawn by a non-Apple renderer (GPUI, raw Metal, a
-canvas), or the app is Rust without Swift, read
+When a non-Apple renderer (GPUI or similar) is proposed, or the app is
+Rust without Swift, read
 [`custom-renderers.md`](references/custom-renderers.md). The rules carried
-here: the main renderer is always Apple's modern one — a custom renderer
-is never the shell, at most one embedded workspace surface; that surface
-is `CONTENT` by definition, glass chrome comes only from system components
-above it; and a hand-rolled glass imitation inside a custom renderer is a
-hard failure — the material's sampling, grouping, and per-release
-evolution belong to the OS.
+here: **never GPUI or anything similar in a native Swift app** — the
+renderer is always Apple's modern one, and high-performance custom regions
+are drawn with Apple's own rendering (`Canvas`, SwiftUI Metal shader
+modifiers, a justified `MTKView` boundary); such a region is `CONTENT`
+with glass chrome only from system components above it; and a hand-rolled
+glass imitation is a hard failure — the material's sampling, grouping, and
+per-release evolution belong to the OS.
 
 ## Implementation
 

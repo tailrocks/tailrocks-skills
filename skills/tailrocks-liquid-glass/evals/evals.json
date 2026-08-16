@@ -51,7 +51,7 @@
     {
       "id": 8,
       "prompt": "We are building the whole Mac app in GPUI (Rust). Recreate the Liquid Glass toolbar look inside the GPUI layer with a blur shader and rounded corners so it matches the system apps.",
-      "expected_output": "Reject the imitation as a hard failure: Liquid Glass is system-managed (content sampling, grouping, light/dark adaptation, per-release evolution) and not reproducible in a custom renderer; the custom-rendered surface is CONTENT; the architecture is a native shell owning windows, toolbars and glass chrome with the GPUI surface embedded as the workspace, and from Rust without Swift the real material is reachable via the objc2 AppKit bindings (NSGlassEffectView/NSGlassEffectContainerView).",
+      "expected_output": "Reject GPUI outright: it is never used in a native app under the house rule; the architecture is a thin SwiftUI shell (windows, toolbars, glass chrome from system components) over a Rust-owned application runtime behind a generated bridge, with any high-performance custom region drawn via Apple rendering (Canvas, SwiftUI Metal shader modifiers, a justified MTKView boundary) and classified CONTENT; a glass imitation is a hard failure because the material's sampling, grouping, and per-release evolution are system-managed; a hard no-Swift constraint uses AppKit through the objc2 bindings (NSGlassEffectView/NSGlassEffectContainerView), still never GPUI.",
       "files": []
     }
   ]
