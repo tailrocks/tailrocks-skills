@@ -49,7 +49,14 @@ The heaviest user input:
   what they see in their head. Image files they provide land in the item's
   folder and are referenced from the screen section.
 - Mockups are layout intent — structure, regions, states. Refuse pixel
-  detail.
+  detail in the item itself: pixel truth lives in a design reference when
+  one exists.
+- When a design-reference skill (tailrocks-tui-design, tailrocks-web-design,
+  tailrocks-macos-prototype) has produced a rendered reference for a
+  screen, confirm the screen against that rendered reference rather than
+  re-drawing ASCII, and record its pointer in the screen's `Design:` line.
+  A reference that is still unblessed is a draft: name it as remaining
+  SHAPING ground, never confirm a screen against a draft.
 
 ## Classifying the remainder
 
@@ -76,6 +83,9 @@ All must hold; check each against the live item, not memory:
       a screen, a flow, or an explicit headless declaration.
 - [ ] Every screen has purpose, schematic mockup, states, interactions,
       and navigation.
+- [ ] Every screen with a design reference points at it via its `Design:`
+      line and the reference is blessed — an unblessed reference is
+      SHAPING ground, named as such.
 - [ ] Every flow names its steps, screens, and failure points.
 - [ ] Data & integrations names every external touchpoint and what is
       settled about it.
