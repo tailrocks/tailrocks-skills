@@ -160,7 +160,12 @@ They meet in two places:
 1. **During shaping**, a design skill produces the artifacts the item points at.
    `tailrocks-macos-design` writes the experience brief and native component
    map; the roadmap item's Screens section references them rather than
-   re-describing them.
+   re-describing them. The design-reference skills go one step further and
+   produce the rendered target itself — `tailrocks-tui-design` golden
+   frames, `tailrocks-web-design` design routes with screenshot baselines,
+   `tailrocks-macos-prototype` a runnable prototype with blessed captures —
+   which each screen's `Design:` line points at, finalize confirms against,
+   and the plan's done criteria enforce mechanically.
 2. **During planning**, `tailrocks-plan` names the stack skill each slice must
    be executed under, and its verification research produces the exact gate
    commands. The executor then invokes that skill while implementing the slice.
