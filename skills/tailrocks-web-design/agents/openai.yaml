@@ -1,0 +1,6 @@
+interface:
+  display_name: "Web Design"
+  short_description: "Design TanStack screens as blessed design routes with screenshot baselines"
+  default_prompt: "Use $tailrocks-web-design to design this feature's screens: build guarded design routes from the installed shadcn/ui components with fixtures, iterate in the browser to a user blessing, and freeze the Playwright screenshot baselines and manifest."
+policy:
+  allow_implicit_invocation: false

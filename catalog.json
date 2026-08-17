@@ -28,11 +28,22 @@
       "summary": "Design to verified pixels; exactly one skill owns each responsibility.",
       "skills": [
         "tailrocks-macos-design",
+        "tailrocks-macos-prototype",
         "tailrocks-sketch-handoff",
         "tailrocks-liquid-glass",
         "tailrocks-swift-best-practices",
         "tailrocks-swift-project-setup",
         "tailrocks-macos-visual-qa"
+      ]
+    },
+    {
+      "id": "design",
+      "title": "Design references",
+      "summary": "Renderable screen targets the implementation must match: fixture-rendered, user-blessed, mechanically compared.",
+      "skills": [
+        "tailrocks-tui-design",
+        "tailrocks-web-design",
+        "tailrocks-web-visual-qa"
       ]
     },
     {

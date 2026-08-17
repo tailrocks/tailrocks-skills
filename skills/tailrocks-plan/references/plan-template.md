@@ -94,7 +94,10 @@ Done means these scenarios hold; the test plan below exercises them.
 
 (Only for plans implementing a screen; omit otherwise.) The load-bearing
 mockup excerpt from the roadmap item, the states table, and navigation
-edges — inlined; the executor does not read the item.
+edges — inlined; the executor does not read the item. When the screen has
+a blessed design reference, its `Reference:` path from the spec is
+restated here with the check that enforces it (the golden test or visual
+suite) — the reference files themselves are never copied.
 
 ## Must NOT
 
@@ -221,6 +224,9 @@ Machine-checkable. ALL must hold:
 - [ ] `<build cmd>` exits 0
 - [ ] `<test cmd>` exits 0; tests for every spec scenario exist and pass
 - [ ] <one observable check per requirement covered>
+- [ ] <when the plan's screen has a blessed design reference: the check
+      that enforces it — golden test or visual suite — passes; omit the
+      row otherwise>
 - [ ] No files outside the in-scope list modified (`git status`) —
       excluding the protocol writes: `plans/<slug>/README.md` status rows
       and the roadmap item + index

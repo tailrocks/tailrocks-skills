@@ -77,6 +77,9 @@ image file in this folder, or Mermaid).
 - **Purpose**: <one line>
 - **States**: <default / empty / loading / error — what each shows>
 - **Key interactions**: <element — behavior>
+- **Design**: <pointer to the blessed design reference — a gallery
+  manifest section, visual-test manifest section, or prototype sign-off —
+  once a design-reference skill produced one; — until then>
 
 ## Flows
 

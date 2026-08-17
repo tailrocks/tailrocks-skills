@@ -91,11 +91,22 @@ Design to verified pixels; exactly one skill owns each responsibility.
 | Skill | What it does |
 |---|---|
 | [`tailrocks-macos-design`](skills/tailrocks-macos-design/README.md) | Design a macOS feature to Apple quality before any production code: experience brief, information architecture, native component map, alternatives, density and typography, and a scored rubric. |
+| [`tailrocks-macos-prototype`](skills/tailrocks-macos-prototype/README.md) | Build the runnable Liquid Glass prototype proving an approved macOS design before implementation: standard launch contract, fixture scenarios, live sign-off, region match policy. |
 | [`tailrocks-sketch-handoff`](skills/tailrocks-sketch-handoff/README.md) | Turn a Sketch design into an implementable native macOS handoff: Sketch MCP wiring, Apple's macOS UI kit, token extraction, the symbol-to-SwiftUI design map, and approved frame exports. |
 | [`tailrocks-liquid-glass`](skills/tailrocks-liquid-glass/README.md) | Apply, audit, or remediate Apple's Liquid Glass material in a native macOS SwiftUI or AppKit app: layer split, glass APIs and availability, scroll edge effects, tint policy, and the accessibility gate. |
 | [`tailrocks-swift-best-practices`](skills/tailrocks-swift-best-practices/README.md) | Write, review, or refactor Swift and SwiftUI for macOS: strict concurrency and actor isolation, state ownership and view identity, AppKit interop boundaries, typed failure, availability guards, accessibility, and tests. |
 | [`tailrocks-swift-project-setup`](skills/tailrocks-swift-project-setup/README.md) | Scaffold, audit, or remediate a strict native macOS Swift baseline: project generation, deployment targets and SDK lanes, local signing, format and lint gates, test wiring, mise tooling, Xcode agent integration. |
 | [`tailrocks-macos-visual-qa`](skills/tailrocks-macos-visual-qa/README.md) | Build, launch, capture, drive, and verify a native macOS app so an agent can see its own interface: window-ID capture, accessibility-tree driving, appearance and accessibility state matrix, audits, and pixel regression. |
+
+### Design references
+
+Renderable screen targets the implementation must match: fixture-rendered, user-blessed, mechanically compared.
+
+| Skill | What it does |
+|---|---|
+| [`tailrocks-tui-design`](skills/tailrocks-tui-design/README.md) | Design terminal UI screens for Rust ratatui apps as blessed golden frames: fixture-rendered gallery crate, byte-exact frame contract, screen states, TUI craft. |
+| [`tailrocks-web-design`](skills/tailrocks-web-design/README.md) | Design TanStack screens as blessed in-app design routes: installed shadcn/ui components with fixtures, states and themes, iterated live. |
+| [`tailrocks-web-visual-qa`](skills/tailrocks-web-visual-qa/README.md) | Freeze and regress Playwright screenshot baselines for TanStack design routes and pages: the capture matrix per state, theme, and viewport — only from a finalized, blessed design. |
 
 ### Code quality and contribution
 

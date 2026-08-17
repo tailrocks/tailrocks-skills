@@ -75,6 +75,9 @@ For every `S#` the capability owns, after the requirements:
 
 Mockup: roadmap item §Screens/"Session list" — layout intent, not pixel
 truth.
+Reference: <the screen's blessed design reference by path — gallery
+manifest section, visual-test manifest section, or prototype sign-off —
+pixel truth when present; omit the line when the item has none>.
 
 - **Regions**: <structural areas, top to bottom>
 - **States**: default | empty | loading | error — what each shows; which

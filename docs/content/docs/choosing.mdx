@@ -37,11 +37,12 @@ contracts.
 
 ## Native macOS
 
-Six skills take a feature from an approved design to verified pixels.
+Seven skills take a feature from an approved design to verified pixels.
 
 ```mermaid
 flowchart LR
-  design["macos-design"] --> handoff["sketch-handoff"]
+  design["macos-design"] --> proto["macos-prototype"]
+  proto --> handoff["sketch-handoff"]
   handoff --> swift["swift-best-practices"]
   handoff --> glass["liquid-glass"]
   swift --> gates["swift-project-setup gates"]
@@ -52,6 +53,7 @@ flowchart LR
 | Skill | Owns |
 |---|---|
 | [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | Taste. Experience brief, information architecture, native component map, alternatives, scored review. Writes design artifacts, never source. |
+| [`tailrocks-macos-prototype`](/docs/skills/tailrocks-macos-prototype) | The runnable proof. Builds the Liquid Glass prototype from the approved design: fixed launch contract, fixture scenarios, live sign-off, region-scoped match policy. Captures nothing; visual-qa freezes the baseline after finalization. Zero taste. |
 | [`tailrocks-sketch-handoff`](/docs/skills/tailrocks-sketch-handoff) | The design file. Sketch wiring, token extraction, the symbol-to-SwiftUI map, approved exports. |
 | [`tailrocks-liquid-glass`](/docs/skills/tailrocks-liquid-glass) | The material. Content-versus-functional layer split, API surface and availability, the glass acceptance gate. |
 | [`tailrocks-swift-best-practices`](/docs/skills/tailrocks-swift-best-practices) | Code policy. Actor isolation, state ownership, view identity, AppKit interop boundaries, accessibility. |
@@ -63,6 +65,32 @@ whole family: Apple's own UI kit ships **zero enabled blur effects**, so no
 design file is authoritative for Liquid Glass — the operating system is. And
 glass surfaces snapshot **fully transparent** from a detached view, so verifying
 glass chrome requires screen-capturing the running app.
+
+## Design references
+
+| Skill | Reach for it when |
+|---|---|
+| [`tailrocks-tui-design`](/docs/skills/tailrocks-tui-design) | A terminal screen needs a pinned, verifiable design before implementation: ratatui golden frames rendered from fixtures, blessed by the user, enforced by a golden test. |
+| [`tailrocks-web-design`](/docs/skills/tailrocks-web-design) | A TanStack screen needs its look agreed before implementation: guarded design routes over the installed shadcn/ui components, blessed live in the browser. Captures nothing. |
+| [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa) | A finalized web design needs its baselines frozen, or an existing visual suite needs a regress run: Playwright screenshot matrix, determinism rules, the baseline record — refused for unblessed screens. |
+
+### One design owner per medium
+
+Each skill rules its own medium and never another's: terminal screens are
+`tailrocks-tui-design`, web screens are `tailrocks-web-design`, and macOS
+windows keep their taste owner
+([`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design)) with
+[`tailrocks-macos-prototype`](/docs/skills/tailrocks-macos-prototype) as
+their runnable-reference producer — an HTML prototype is never a design
+source for native macOS. Design skills iterate live and capture nothing:
+screenshots are frozen only after finalization, by
+[`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa) for web
+screens and
+[`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa) for
+macOS windows. The shared shape is
+the same everywhere: the reference is rendered by the real UI substrate
+from fixtures, the user blesses it, and a mechanical comparison holds the
+implementation to it afterward.
 
 ## Code quality
 

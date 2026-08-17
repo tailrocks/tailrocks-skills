@@ -138,8 +138,9 @@ Skill definition: `skills/tailrocks-tanstack-project-setup/SKILL.md`
 
 ### The macOS family — design to verified pixels
 
-Six skills take a native macOS feature from an approved design through a
-design-file handoff to implementation and rendered, audited evidence. They exist
+Seven skills take a native macOS feature from an approved design through a
+runnable prototype and a design-file handoff to implementation and
+rendered, audited evidence. They exist
 because the ecosystem gap is real:
 Apple's own exported agent skills contain no Liquid Glass skill and no macOS
 skill, and the highest-traction design-taste skills are built for the web, where
@@ -160,6 +161,15 @@ visual QA's capture-producing `verify`.
   iconography; the custom component contract; a weighted rubric with hard
   failures and a correction order. Writes design artifacts only, never source.
   Definition: `skills/tailrocks-macos-design/SKILL.md`
+- **tailrocks-macos-prototype** — the runnable proof. Builds the Liquid
+  Glass prototype from an approved design before implementation: the fixed
+  `--tr-*` launch contract, fixture scenarios, a live sign-off on the
+  running app, and the region-scoped match policy (custom regions
+  pixel-budgeted, native regions structural). Captures nothing during
+  design — after finalization, tailrocks-macos-visual-qa drives the
+  prototype through the contract and freezes the baseline. Encodes zero
+  taste; a design gap routes back to tailrocks-macos-design.
+  Definition: `skills/tailrocks-macos-prototype/SKILL.md`
 - **tailrocks-liquid-glass** — the material authority. `CONTENT`-versus-`FUNCTIONAL`
   layer split, the standard-component-first decision order, exact SwiftUI and
   AppKit API surface with per-symbol availability, ten anti-patterns each stating
@@ -194,6 +204,37 @@ static fill, blend-mode, and shadow recipes — so no design file is authoritati
 for the material; the operating system is. And Liquid Glass surfaces snapshot
 **fully transparent** from a detached view, so any verification of glass chrome
 must screen-capture the running app.
+
+### The design-reference family — blessed targets before implementation
+
+Skills that turn screen intent into renderable references the implementation
+must match. The reference is authored on the real UI substrate with fixture
+data, iterated with the user, and blessed; from then on "matches the design"
+is a mechanical check, not a review. One skill per medium, and taste never
+has two owners.
+
+- **tailrocks-tui-design** — terminal screens for Rust ratatui applications
+  as golden frames: a gallery crate renders the application's own view
+  functions through a test backend, the user blesses each frame, and a
+  golden test holds the implementation byte-exact from then on. Decides
+  ratatui as the house terminal UI library.
+  Definition: `skills/tailrocks-tui-design/SKILL.md`
+- **tailrocks-web-design** — TanStack Start screens as blessed in-app design
+  routes: guarded `/design/<screen>/<state>` routes render pure screen
+  components from typed fixtures through the real Vite, Tailwind, and
+  shadcn/ui pipeline; the user blesses live in the browser, and the real
+  page ships the same component. Captures nothing.
+  Definition: `skills/tailrocks-web-design/SKILL.md`
+- **tailrocks-web-visual-qa** — the freeze that follows finalization:
+  Playwright screenshot baselines per state, theme, and viewport, captured
+  from a blessed design's routes only — a missing blessing blocks the
+  freeze — with the determinism rules, the baseline record, and re-freeze
+  only under a recorded re-blessing.
+  Definition: `skills/tailrocks-web-visual-qa/SKILL.md`
+
+macOS windows get their runnable reference from
+**tailrocks-macos-prototype**, documented with the macOS family below —
+same shape, native substrate.
 
 ### tailrocks-code-health
 
