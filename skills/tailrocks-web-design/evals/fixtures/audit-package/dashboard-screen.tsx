@@ -29,9 +29,12 @@ export function DashboardScreen({ activityFeedEnabled, state }: DashboardScreenP
               />
             </div>
           </div>
-          <p data-mask="last-synced" className="mt-4 text-xs text-muted-foreground">
-            Last synced just now
-          </p>
+          {/* Custom region: inline 24-point trend sparkline. Evaluated
+              Badge, Progress, and the chart primitives — none renders an
+              inline trend at text height; drawn with a plain SVG path. */}
+          <svg className="mt-4 h-4 w-24" viewBox="0 0 96 16" aria-label="Activity trend">
+            <path d="M0 12 L16 9 L32 11 L48 5 L64 7 L80 3 L96 4" fill="none" stroke="currentColor" />
+          </svg>
           {state === "empty" ? <p className="mt-6 text-sm">No activity yet.</p> : null}
         </CardContent>
       </Card>

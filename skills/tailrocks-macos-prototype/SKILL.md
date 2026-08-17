@@ -1,7 +1,7 @@
 ---
 name: tailrocks-macos-prototype
 description: >-
-  Use only when the user explicitly requests this skill. Build the runnable Liquid Glass prototype that proves an approved macOS design before implementation: standard launch contract, fixture scenarios, captures as the blessed baseline, region-scoped match policy. Taste belongs to tailrocks-macos-design.
+  Use only when the user explicitly requests this skill. Build the runnable Liquid Glass prototype proving an approved macOS design before implementation: standard launch contract, fixture scenarios, live sign-off, region match policy. Taste: tailrocks-macos-design; capture: tailrocks-macos-visual-qa.
 argument-hint: "[prototype|audit] <feature>"
 disable-model-invocation: true
 license: Apache-2.0
@@ -12,11 +12,11 @@ user-invocable: true
 
 No design file is authoritative for Liquid Glass — the operating system is —
 so the only honest proof of an approved design is the design running: a
-small native app rendering the real material from fixture data, captured on
-screen, and signed off before the real implementation starts. This skill
-builds that prototype. Its captures become the approved baseline the
-implementation is later held to, and its view layer is written to lift
-verbatim into the real app.
+small native app rendering the real material from fixture data, reviewed
+live on screen, and signed off before the real implementation starts. This
+skill builds that prototype. Its view layer is written to lift verbatim
+into the real app, and after finalization it becomes the source
+`tailrocks-macos-visual-qa` captures the baseline from.
 
 **This skill encodes zero taste.** It consumes the approved artifacts of
 `tailrocks-macos-design` — brief, component map, custom-component
@@ -33,18 +33,28 @@ without copying values.
 ## Modes
 
 - `prototype`: build the runnable prototype from an approved design and
-  carry it to a signed-off capture baseline.
+  carry it to a recorded live sign-off.
 - `audit`: inspect an existing prototype package and report defects.
   Read-only; do not infer mutation permission from findings.
 
+## No screenshots during design
+
+The prototype is reviewed **running**, not as images: the user launches it
+— or the agent drives its scenarios in front of them — and judges the real
+material live. Screenshots are frozen only after the design is finalized,
+and producing them is `tailrocks-macos-visual-qa`'s job, driving this
+prototype through its launch contract. Captures taken mid-iteration are
+churn re-shot on every tweak; asked for them, decline and name the
+boundary.
+
 ## The standard-harness law
 
-**Never rebuild verification machinery the house already ships.** Capture
-runs through `tailrocks-macos-visual-qa`'s harness — window-ID resolution,
-the atomic kill-launch-capture loop, its diff protocol and state matrix —
-copied from that skill's templates, not reimplemented. The prototype adds
-exactly two things the harness lacks: the launch contract and the package.
-A second capture loop, a bespoke pixel-diff tool, or a private manifest
+**Never rebuild verification machinery the house already ships.** When
+capture happens — after finalization — it runs through
+`tailrocks-macos-visual-qa`'s harness: window-ID resolution, the atomic
+kill-launch-capture loop, its diff protocol and state matrix. The
+prototype's contribution is being drivable: the launch contract and the
+package. A bespoke capture loop, pixel-diff tool, or private manifest
 shape splits the repository into two verification stacks that cannot read
 each other's baselines.
 
@@ -58,11 +68,11 @@ nothing downstream can drive the app.
 
 ## The blessing gate
 
-**The user signs off captures; the agent never does.** The user reviews the
-capture set — every scenario, both appearances, the declared sizes — and
-the sign-off is recorded in `SIGNOFF.md` with its date and the design
-artifacts' revision. Until then the prototype is a draft and its captures
-bind nobody.
+**The user signs off the running prototype; the agent never does.** The
+user walks every scenario, both appearances, the declared sizes — live —
+and the sign-off is recorded in `SIGNOFF.md` with its date and the design
+artifacts' revision. Until then the prototype is a draft that binds
+nobody.
 
 ## Steps
 
@@ -83,34 +93,36 @@ bind nobody.
    **Complete when:** the package builds and every fixture scenario renders
    through the launch contract.
 
-3. **Capture.** Drive the scenario matrix with the visual-qa harness —
-   every scenario, light and dark, the declared sizes, the deterministic
-   backdrop. Real system-settings states (the accessibility matrix) belong
-   to a visual-qa run, not to per-process flags; say which lane covered
-   what.
-   **Complete when:** every matrix cell has a capture with manifest
-   metadata, or a recorded reason.
+3. **Review live and iterate.** Launch the prototype per scenario for the
+   user — every scenario, both appearances, the declared sizes — and
+   adjust within the approved design until it matches. The blessing gate
+   above governs the stop.
+   **Complete when:** `SIGNOFF.md` carries the user's recorded approval —
+   or the run ends stating it is a draft awaiting one.
 
 4. **Bind the regions.** Read
    [`match-policy.md`](references/match-policy.md). Derive `Regions.md`
    from the component map: every region names its class, match mode, and
-   budget. Native regions are never pixel-gated; content and custom regions
-   are never left unbudgeted.
+   budget for the post-finalization baseline. Native regions are never
+   pixel-gated; content and custom regions are never left unbudgeted.
    **Complete when:** every visible region appears in `Regions.md` with a
    mode a machine can execute.
 
-5. **Sign off.** Present the captures for blessing; record the sign-off,
-   the design revisions, and the environment in `SIGNOFF.md`. From then on
-   the captures are the implementation's baseline under the region policy.
-   **Complete when:** `SIGNOFF.md` carries the user's recorded approval —
-   or the run ends stating it is a draft awaiting one.
+5. **Hand off to capture.** After finalization, `tailrocks-macos-visual-qa`
+   drives this prototype through the launch contract and freezes the
+   baseline the implementation is held to under the region policy. State
+   plainly what remains for that lane — the capture matrix and the
+   real-settings states.
+   **Complete when:** the sign-off names the pending capture lane and what
+   it will cover.
 
 ## Final gate
 
-Never capture with anything but the visual-qa harness, and never ship a
-second diff tool or manifest shape. Never rename or extend the launch
-contract per feature. Never resolve a design gap in the prototype instead
-of routing it to the design. Never pixel-gate a native region or a
-cross-binary whole window. Never record a sign-off the user did not give.
-Never discard the prototype source after capture. Report every skipped
-check.
+Never capture screenshots during design — capture is
+`tailrocks-macos-visual-qa`'s job, after finalization, through its harness.
+Never ship a bespoke capture loop, diff tool, or manifest shape. Never
+rename or extend the launch contract per feature. Never resolve a design
+gap in the prototype instead of routing it to the design. Never pixel-gate
+a native region or a cross-binary whole window. Never record a sign-off
+the user did not give. Never discard the prototype source. Report every
+skipped check.

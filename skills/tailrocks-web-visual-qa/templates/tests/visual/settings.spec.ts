@@ -3,8 +3,8 @@ import { expect, test } from "@playwright/test";
 import { registry } from "../../src/design/registry";
 
 // One capture per state × theme; the project matrix supplies viewports.
-// Baselines hold the code: --update-snapshots only during design
-// iteration or after a recorded re-blessing.
+// Baselines hold the code: --update-snapshots only after a recorded
+// re-blessing, never to silence a red suite.
 for (const state of registry.settings.states) {
   for (const theme of ["light", "dark"] as const) {
     test(`settings ${state} ${theme}`, async ({ page }) => {

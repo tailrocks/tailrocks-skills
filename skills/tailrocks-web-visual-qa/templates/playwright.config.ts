@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 // Visual baselines for the design routes. Runs as `test:visual`, separate
 // from the unit gate. Captures bind to the pinned browser and one OS
-// family — record both in tests/visual/MANIFEST.md.
+// family — record both in tests/visual/BASELINES.md.
 export default defineConfig({
   testDir: "tests/visual",
   fullyParallel: true,

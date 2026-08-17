@@ -162,10 +162,12 @@ They meet in two places:
    map; the roadmap item's Screens section references them rather than
    re-describing them. The design-reference skills go one step further and
    produce the rendered target itself — `tailrocks-tui-design` golden
-   frames, `tailrocks-web-design` design routes with screenshot baselines,
-   `tailrocks-macos-prototype` a runnable prototype with blessed captures —
-   which each screen's `Design:` line points at, finalize confirms against,
-   and the plan's done criteria enforce mechanically.
+   frames, `tailrocks-web-design` design routes, `tailrocks-macos-prototype`
+   a runnable prototype — which each screen's `Design:` line points at and
+   finalize confirms against, live. Screenshot baselines are frozen only
+   after finalization (`tailrocks-web-visual-qa` for web,
+   `tailrocks-macos-visual-qa` for macOS), and the plan's done criteria
+   enforce the resulting check mechanically.
 2. **During planning**, `tailrocks-plan` names the stack skill each slice must
    be executed under, and its verification research produces the exact gate
    commands. The executor then invokes that skill while implementing the slice.

@@ -2,7 +2,9 @@
 
 The frozen half of the contract: Playwright screenshots of the design
 routes, committed and compared with `toHaveScreenshot`. A baseline exists
-per screen × state × viewport × theme.
+per screen × state × viewport × theme — and only for screens whose design
+manifest carries a recorded blessing; freezing a draft is the timing
+violation the router forbids.
 
 ## The suite
 
@@ -61,14 +63,29 @@ nothing more; any layout shift blows through it. A screen that needs a
 larger budget gets it declared in the manifest with the reason, never
 silently in the spec.
 
+## The baseline record — `tests/visual/BASELINES.md`
+
+Every freeze writes its record; a baseline set without one cannot be
+reproduced or trusted:
+
+```markdown
+## <Screen name>
+
+- **Frozen from**: src/design/MANIFEST.md §<Screen> — blessed <date>
+- **Environment**: <Playwright + browser versions, OS family>
+- **Cells**: <screen × state × viewport × theme captured; any registry
+  cell excused, with its reason>
+- **Masks**: <region — reason; None when clean>
+- **Budgets**: <any above the default, with reason; default otherwise>
+```
+
 ## Direction of authority
 
-Baselines hold the code. `--update-snapshots` is legitimate exactly twice:
-
-1. During design, before blessing — iteration.
-2. After the user re-blesses a deliberate change — the baseline diff is
-   reviewed as a design decision, in its own commit, before any dependent
-   implementation change.
+Baselines hold the code. `--update-snapshots` is legitimate exactly once:
+after the user re-blesses a deliberate design change — the baseline diff
+is reviewed as a design decision, in its own commit, before any dependent
+implementation change, and the record's `Frozen from` line moves to the
+new blessing.
 
 Updating baselines because the suite went red after a code change is the
 inversion that turns the contract into `x == x`. Red has two exits: fix

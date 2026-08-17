@@ -53,7 +53,7 @@ flowchart LR
 | Skill | Owns |
 |---|---|
 | [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | Taste. Experience brief, information architecture, native component map, alternatives, scored review. Writes design artifacts, never source. |
-| [`tailrocks-macos-prototype`](/docs/skills/tailrocks-macos-prototype) | The runnable proof. Builds the Liquid Glass prototype from the approved design: fixed launch contract, fixture scenarios, visual-qa captures as the blessed baseline, region-scoped match policy. Zero taste. |
+| [`tailrocks-macos-prototype`](/docs/skills/tailrocks-macos-prototype) | The runnable proof. Builds the Liquid Glass prototype from the approved design: fixed launch contract, fixture scenarios, live sign-off, region-scoped match policy. Captures nothing; visual-qa freezes the baseline after finalization. Zero taste. |
 | [`tailrocks-sketch-handoff`](/docs/skills/tailrocks-sketch-handoff) | The design file. Sketch wiring, token extraction, the symbol-to-SwiftUI map, approved exports. |
 | [`tailrocks-liquid-glass`](/docs/skills/tailrocks-liquid-glass) | The material. Content-versus-functional layer split, API surface and availability, the glass acceptance gate. |
 | [`tailrocks-swift-best-practices`](/docs/skills/tailrocks-swift-best-practices) | Code policy. Actor isolation, state ownership, view identity, AppKit interop boundaries, accessibility. |
@@ -71,7 +71,8 @@ glass chrome requires screen-capturing the running app.
 | Skill | Reach for it when |
 |---|---|
 | [`tailrocks-tui-design`](/docs/skills/tailrocks-tui-design) | A terminal screen needs a pinned, verifiable design before implementation: ratatui golden frames rendered from fixtures, blessed by the user, enforced by a golden test. |
-| [`tailrocks-web-design`](/docs/skills/tailrocks-web-design) | A TanStack screen needs its look agreed before implementation: guarded design routes over the installed shadcn/ui components, blessed in the browser, frozen as Playwright screenshot baselines. |
+| [`tailrocks-web-design`](/docs/skills/tailrocks-web-design) | A TanStack screen needs its look agreed before implementation: guarded design routes over the installed shadcn/ui components, blessed live in the browser. Captures nothing. |
+| [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa) | A finalized web design needs its baselines frozen, or an existing visual suite needs a regress run: Playwright screenshot matrix, determinism rules, the baseline record — refused for unblessed screens. |
 
 ### One design owner per medium
 
@@ -81,7 +82,12 @@ windows keep their taste owner
 ([`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design)) with
 [`tailrocks-macos-prototype`](/docs/skills/tailrocks-macos-prototype) as
 their runnable-reference producer — an HTML prototype is never a design
-source for native macOS. The shared shape is
+source for native macOS. Design skills iterate live and capture nothing:
+screenshots are frozen only after finalization, by
+[`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa) for web
+screens and
+[`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa) for
+macOS windows. The shared shape is
 the same everywhere: the reference is rendered by the real UI substrate
 from fixtures, the user blesses it, and a mechanical comparison holds the
 implementation to it afterward.

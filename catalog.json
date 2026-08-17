@@ -42,7 +42,8 @@
       "summary": "Renderable screen targets the implementation must match: fixture-rendered, user-blessed, mechanically compared.",
       "skills": [
         "tailrocks-tui-design",
-        "tailrocks-web-design"
+        "tailrocks-web-design",
+        "tailrocks-web-visual-qa"
       ]
     },
     {

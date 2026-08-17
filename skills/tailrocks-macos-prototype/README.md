@@ -4,7 +4,7 @@
 
 `tailrocks-macos-prototype` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-macos-prototype)
 
-Build the runnable Liquid Glass prototype that proves an approved macOS design before implementation: standard launch contract, fixture scenarios, captures as the blessed baseline, region-scoped match policy. Taste belongs to tailrocks-macos-design.
+Build the runnable Liquid Glass prototype proving an approved macOS design before implementation: standard launch contract, fixture scenarios, live sign-off, region match policy. Taste: tailrocks-macos-design; capture: tailrocks-macos-visual-qa.
 
 ## Invocation
 

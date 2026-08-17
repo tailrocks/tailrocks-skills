@@ -163,10 +163,12 @@ visual QA's capture-producing `verify`.
   Definition: `skills/tailrocks-macos-design/SKILL.md`
 - **tailrocks-macos-prototype** — the runnable proof. Builds the Liquid
   Glass prototype from an approved design before implementation: the fixed
-  `--tr-*` launch contract, fixture scenarios, captures through the
-  visual-qa harness as the blessed baseline, and the region-scoped match
-  policy (custom regions pixel-budgeted, native regions structural).
-  Encodes zero taste; a design gap routes back to tailrocks-macos-design.
+  `--tr-*` launch contract, fixture scenarios, a live sign-off on the
+  running app, and the region-scoped match policy (custom regions
+  pixel-budgeted, native regions structural). Captures nothing during
+  design — after finalization, tailrocks-macos-visual-qa drives the
+  prototype through the contract and freezes the baseline. Encodes zero
+  taste; a design gap routes back to tailrocks-macos-design.
   Definition: `skills/tailrocks-macos-prototype/SKILL.md`
 - **tailrocks-liquid-glass** — the material authority. `CONTENT`-versus-`FUNCTIONAL`
   layer split, the standard-component-first decision order, exact SwiftUI and
@@ -220,10 +222,15 @@ has two owners.
 - **tailrocks-web-design** — TanStack Start screens as blessed in-app design
   routes: guarded `/design/<screen>/<state>` routes render pure screen
   components from typed fixtures through the real Vite, Tailwind, and
-  shadcn/ui pipeline; the user blesses in the browser, Playwright freezes
-  screenshot baselines per state, theme, and viewport, and the real page
-  ships the same component. Definition:
-  `skills/tailrocks-web-design/SKILL.md`
+  shadcn/ui pipeline; the user blesses live in the browser, and the real
+  page ships the same component. Captures nothing.
+  Definition: `skills/tailrocks-web-design/SKILL.md`
+- **tailrocks-web-visual-qa** — the freeze that follows finalization:
+  Playwright screenshot baselines per state, theme, and viewport, captured
+  from a blessed design's routes only — a missing blessing blocks the
+  freeze — with the determinism rules, the baseline record, and re-freeze
+  only under a recorded re-blessing.
+  Definition: `skills/tailrocks-web-visual-qa/SKILL.md`
 
 macOS windows get their runnable reference from
 **tailrocks-macos-prototype**, documented with the macOS family below —

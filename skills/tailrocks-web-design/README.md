@@ -4,7 +4,7 @@
 
 `tailrocks-web-design` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-web-design)
 
-Design TanStack Start screens as blessed in-app design routes: installed shadcn/ui components with fixtures, Playwright screenshot baselines, states and themes. Terminal screens belong to tailrocks-tui-design; macOS windows to tailrocks-macos-design.
+Design TanStack screens as blessed in-app design routes: installed shadcn/ui components with fixtures, states and themes, iterated live. Baselines belong to tailrocks-web-visual-qa; terminal screens to tailrocks-tui-design.
 
 ## Invocation
 
@@ -23,14 +23,11 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`design-routes.md`](references/design-routes.md)
 - [`screen-package.md`](references/screen-package.md)
-- [`screenshot-baselines.md`](references/screenshot-baselines.md)
 - [`web-screen-craft.md`](references/web-screen-craft.md)
 
 ## Templates
 
-- [`playwright.config.ts`](templates/playwright.config.ts)
 - [`src/design/fixtures/settings.ts`](templates/src/design/fixtures/settings.ts)
 - [`src/design/registry.tsx`](templates/src/design/registry.tsx)
 - [`src/routes/design/$screen.$state.tsx`](templates/src/routes/design/$screen.$state.tsx)
 - [`src/routes/design/route.tsx`](templates/src/routes/design/route.tsx)
-- [`tests/visual/settings.spec.ts`](templates/tests/visual/settings.spec.ts)

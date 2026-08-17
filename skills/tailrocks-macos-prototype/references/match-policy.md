@@ -1,6 +1,8 @@
 # The match policy
 
-How the real implementation is held to the prototype's blessed captures.
+How the real implementation is held to the baseline
+`tailrocks-macos-visual-qa` freezes from the signed-off prototype after
+finalization.
 The policy is region-scoped because "1:1" means different things for
 different region classes — and a single whole-window zero-diff across two
 binaries is guaranteed false failure dressed as rigor.

@@ -4,13 +4,13 @@
     {
       "id": 1,
       "prompt": "The Connections Board design is approved — brief, component map, custom-component contract, fixtures are all in Design/. Before we implement it in the real app, I want proof of how it will actually look on screen that we can sign off and then hold the implementation to.",
-      "expected_output": "Builds the Design/Prototypes/<Feature>/ package with the standard --tr-scenario/--tr-appearance/--tr-window/--tr-reduce/--tr-backdrop launch contract; captures the scenario matrix with the visual-qa harness rather than a bespoke capture loop; derives Regions.md with native regions structural and custom regions pixel-budgeted; stops at the sign-off with the Blessed row pending rather than approving its own captures.",
+      "expected_output": "Builds the Design/Prototypes/<Feature>/ package with the standard --tr-scenario/--tr-appearance/--tr-window/--tr-reduce/--tr-backdrop launch contract; reviews it running — scenarios, both appearances, declared sizes — rather than producing screenshots; derives Regions.md with native regions structural and custom regions pixel-budgeted; stops at the sign-off with the Blessed row pending, naming tailrocks-macos-visual-qa as the post-finalization capture lane.",
       "files": ["skills/tailrocks-macos-prototype/evals/fixtures/approved-design/NativeComponentMap.md"]
     },
     {
       "id": 2,
       "prompt": "Write a quick standalone capture script and a little pixel-diff tool for the prototype — the visual-qa harness looks like overkill for a proof of concept.",
-      "expected_output": "Refuses: capture runs through the visual-qa harness and diff protocol copied from its templates; a second capture loop and private diff tool split the repository into two verification stacks whose baselines cannot read each other.",
+      "expected_output": "Refuses: capture — when it happens, after finalization — runs through the visual-qa harness and diff protocol; a second capture loop and private diff tool split the repository into two verification stacks whose baselines cannot read each other.",
       "files": []
     },
     {
@@ -21,20 +21,20 @@
     },
     {
       "id": 4,
-      "prompt": "The design's fixtures don't cover the offline state and the component map never classified the status strip. Just pick something sensible in the prototype so we can keep moving.",
-      "expected_output": "Refuses to improvise: a gap in the approved design routes back to tailrocks-macos-design as a finding; the prototype encodes zero taste and follows the corrected design.",
+      "prompt": "While we iterate on the prototype, screenshot every revision so we can compare them side by side and pick the best one.",
+      "expected_output": "Declines to capture during design: the prototype is reviewed running, and screenshots are frozen only after finalization by tailrocks-macos-visual-qa driving the launch contract; alternative selection is the design skill's stage, not a screenshot comparison here.",
       "files": []
     },
     {
       "id": 5,
-      "prompt": "Set the acceptance gate to a zero-pixel whole-window diff between the prototype and the real app — we measured the prototype renders deterministically, so exact equality is achievable.",
+      "prompt": "Set the acceptance gate to a zero-pixel whole-window diff between the prototype and the real app — the prototype renders deterministically, so exact equality is achievable.",
       "expected_output": "Rejects the whole-window zero-diff across binaries: same-binary determinism does not transfer; the match policy is region-scoped — custom and content regions pixel-budgeted, native regions checked structurally through the accessibility tree, glass compared only under the identical backdrop.",
       "files": []
     },
     {
       "id": 6,
       "prompt": "Audit the prototype package for the sessions feature and tell me what's wrong with it.",
-      "expected_output": "Read-only audit; finds the bespoke capture script bypassing the visual-qa harness, the Regions.md row pixel-gating a NATIVE table, and the sign-off citing captures as blessed with no user or date; does not flag the per-process reduce-transparency preview, which is legitimate alongside the visual-qa real-settings lane; does not edit anything.",
+      "expected_output": "Read-only audit; finds the bespoke capture script bypassing the visual-qa harness, the Regions.md row pixel-gating a NATIVE table, and the sign-off claiming a blessing with no user or date; does not flag the per-process reduce-transparency preview, which is legitimate alongside the visual-qa real-settings lane; does not edit anything.",
       "files": [
         "skills/tailrocks-macos-prototype/evals/fixtures/audit-package/SIGNOFF.md",
         "skills/tailrocks-macos-prototype/evals/fixtures/audit-package/Regions.md",

@@ -7,26 +7,26 @@
   - `Design/Alternatives.md` — decision A (sidebar-led), consumed 2026-08-17
 - **Scenarios**:
   - `default` — normal state: mixed healthy/slow/blocked/idle sessions,
-    blocked session selected, inspector open. Captured: light and dark at
-    1100×700 (`captures/default-light-1100x700.png`,
-    `captures/default-dark-1100x700.png`).
+    blocked session selected, inspector open. Walked live in light and
+    dark at 1100×700 through the launch contract.
   - `paused` — same fixture with the feed paused (cluster shows Resume).
-    Captured: light at 1100×700 (`captures/paused-light-1100x700.png`).
+    Walked live in light at 1100×700.
   - `empty` — no connection selected, guidance text. Render-verified
-    through the launch contract; not a blessed matrix cell in this run.
+    through the launch contract.
   - `error` — connection unreachable, non-modal retry, cluster hidden.
-    Render-verified through the launch contract; not a blessed cell.
+    Render-verified through the launch contract.
 - **Environment**: macOS 26.5.2 (25F84), Xcode 26.6 (17F113), Swift 6.3.3,
   SDK macosx26.5, display scale 2x, backdrop `standard` (neutral gray
   0.42/0.45/0.50 sRGB), binary ConnectionsBoardProto 0.1.0 staged at
   `~/Library/Caches/tailrocks-prototype/` (non-temporary, launch-safe).
-  Per-cell metadata in `captures/*.png.json`.
-- **Covered by visual-qa lane**: none yet — the real-settings state matrix
-  (Reduce Transparency, Reduce Motion, Increase Contrast, Differentiate
-  Without Color, real dark-mode setting) has not been run; this run used
-  only per-process `--tr-appearance` overrides, which preview but do not
-  verify real settings.
-- **Not proven by captures**: hover and pressed states (macOS 26 glass
+- **Pending capture lane**: everything — screenshots are frozen only after
+  finalization by `tailrocks-macos-visual-qa` driving this package through
+  the launch contract: the scenario matrix per `Regions.md`, plus the
+  real-settings state matrix (Reduce Transparency, Reduce Motion,
+  Increase Contrast, Differentiate Without Color, real dark-mode setting);
+  this run used only per-process `--tr-appearance` overrides, which
+  preview but do not verify real settings.
+- **Not proven live**: hover and pressed states (macOS 26 glass
   hover defect noted in the contract), pause/resume motion and its Reduce
   Motion crossfade, VoiceOver announcements and traversal, keyboard focus
   order (cluster after table) and focus rings, `--tr-reduce` substitution
@@ -35,8 +35,8 @@
   states (not yet fixtures), localization and RTL mirroring — routed to
   the visual-qa verify lane and the future UI-test target
   (accessibility-audit wiring included).
-- **Blessed**: — *(draft — awaiting user review; the captures bind nobody
-  until this row is filled by the user)*
+- **Blessed**: — *(draft — awaiting user review; the prototype binds
+  nobody until this row is filled by the user)*
 
 ## Findings routed out of the prototype
 

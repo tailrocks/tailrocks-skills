@@ -20,17 +20,17 @@ The historical run built its scratch app by hand and discarded the source —
 the loss that `tailrocks-macos-prototype` now prevents. `prototype/` is the
 standardized replacement, kept as the repository's runnable Liquid Glass
 reference: a committed SwiftPM package rendering the approved design's
-fixture scenarios under the fixed `--tr-*` launch contract, captured through
-the visual-qa harness (`prototype/captures/` with metadata sidecars), with
+fixture scenarios under the fixed `--tr-*` launch contract, with
 `Regions.md` binding every mapped region to its match mode and `SIGNOFF.md`
 left honestly unblessed — the state a prototype is in before its user
-sign-off.
+sign-off. It carries no screenshots: the design is reviewed running, and
+baselines are frozen only after finalization by `tailrocks-macos-visual-qa`
+driving this package (its harness copies live in `prototype/harness/`).
 
 ```sh
 cd prototype
 swift build
 ./Scripts/bundle.sh                      # stages a signed .app outside /tmp
-./harness/capture.sh <staged.app> ConnectionsBoardProto out.png \
-  ConnectionsBoard -- --tr-scenario default --tr-appearance light \
-  --tr-window 1100x700 --tr-backdrop standard
+swift run ConnectionsBoardProto --tr-scenario default \
+  --tr-appearance light --tr-window 1100x700 --tr-backdrop standard
 ```
