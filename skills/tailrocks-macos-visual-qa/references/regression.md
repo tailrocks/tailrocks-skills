@@ -73,8 +73,10 @@ approval.
   metrics, and material rendering all changed between macOS releases and will
   change again; a suite that was not re-baselined reports noise and gets muted.
 - Record the macOS version, SDK, backing scale, color profile, and appearance
-  alongside each baseline set. A baseline without that metadata cannot be
-  reproduced.
+  alongside each baseline set — and the producing binary with its version,
+  because a prototype baseline and a real-app candidate are otherwise
+  indistinguishable in a cross-binary compare. A baseline without that
+  metadata cannot be reproduced.
 
 ## Performance evidence
 

@@ -37,11 +37,12 @@ contracts.
 
 ## Native macOS
 
-Six skills take a feature from an approved design to verified pixels.
+Seven skills take a feature from an approved design to verified pixels.
 
 ```mermaid
 flowchart LR
-  design["macos-design"] --> handoff["sketch-handoff"]
+  design["macos-design"] --> proto["macos-prototype"]
+  proto --> handoff["sketch-handoff"]
   handoff --> swift["swift-best-practices"]
   handoff --> glass["liquid-glass"]
   swift --> gates["swift-project-setup gates"]
@@ -52,6 +53,7 @@ flowchart LR
 | Skill | Owns |
 |---|---|
 | [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | Taste. Experience brief, information architecture, native component map, alternatives, scored review. Writes design artifacts, never source. |
+| [`tailrocks-macos-prototype`](/docs/skills/tailrocks-macos-prototype) | The runnable proof. Builds the Liquid Glass prototype from the approved design: fixed launch contract, fixture scenarios, visual-qa captures as the blessed baseline, region-scoped match policy. Zero taste. |
 | [`tailrocks-sketch-handoff`](/docs/skills/tailrocks-sketch-handoff) | The design file. Sketch wiring, token extraction, the symbol-to-SwiftUI map, approved exports. |
 | [`tailrocks-liquid-glass`](/docs/skills/tailrocks-liquid-glass) | The material. Content-versus-functional layer split, API surface and availability, the glass acceptance gate. |
 | [`tailrocks-swift-best-practices`](/docs/skills/tailrocks-swift-best-practices) | Code policy. Actor isolation, state ownership, view identity, AppKit interop boundaries, accessibility. |
@@ -76,8 +78,10 @@ glass chrome requires screen-capturing the running app.
 Each skill rules its own medium and never another's: terminal screens are
 `tailrocks-tui-design`, web screens are `tailrocks-web-design`, and macOS
 windows keep their taste owner
-([`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design)) — an HTML
-prototype is never a design source for native macOS. The shared shape is
+([`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design)) with
+[`tailrocks-macos-prototype`](/docs/skills/tailrocks-macos-prototype) as
+their runnable-reference producer — an HTML prototype is never a design
+source for native macOS. The shared shape is
 the same everywhere: the reference is rendered by the real UI substrate
 from fixtures, the user blesses it, and a mechanical comparison holds the
 implementation to it afterward.

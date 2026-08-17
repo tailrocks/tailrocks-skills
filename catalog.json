@@ -28,6 +28,7 @@
       "summary": "Design to verified pixels; exactly one skill owns each responsibility.",
       "skills": [
         "tailrocks-macos-design",
+        "tailrocks-macos-prototype",
         "tailrocks-sketch-handoff",
         "tailrocks-liquid-glass",
         "tailrocks-swift-best-practices",

@@ -138,8 +138,9 @@ Skill definition: `skills/tailrocks-tanstack-project-setup/SKILL.md`
 
 ### The macOS family — design to verified pixels
 
-Six skills take a native macOS feature from an approved design through a
-design-file handoff to implementation and rendered, audited evidence. They exist
+Seven skills take a native macOS feature from an approved design through a
+runnable prototype and a design-file handoff to implementation and
+rendered, audited evidence. They exist
 because the ecosystem gap is real:
 Apple's own exported agent skills contain no Liquid Glass skill and no macOS
 skill, and the highest-traction design-taste skills are built for the web, where
@@ -160,6 +161,13 @@ visual QA's capture-producing `verify`.
   iconography; the custom component contract; a weighted rubric with hard
   failures and a correction order. Writes design artifacts only, never source.
   Definition: `skills/tailrocks-macos-design/SKILL.md`
+- **tailrocks-macos-prototype** — the runnable proof. Builds the Liquid
+  Glass prototype from an approved design before implementation: the fixed
+  `--tr-*` launch contract, fixture scenarios, captures through the
+  visual-qa harness as the blessed baseline, and the region-scoped match
+  policy (custom regions pixel-budgeted, native regions structural).
+  Encodes zero taste; a design gap routes back to tailrocks-macos-design.
+  Definition: `skills/tailrocks-macos-prototype/SKILL.md`
 - **tailrocks-liquid-glass** — the material authority. `CONTENT`-versus-`FUNCTIONAL`
   layer split, the standard-component-first decision order, exact SwiftUI and
   AppKit API surface with per-symbol availability, ten anti-patterns each stating
@@ -216,6 +224,10 @@ has two owners.
   screenshot baselines per state, theme, and viewport, and the real page
   ships the same component. Definition:
   `skills/tailrocks-web-design/SKILL.md`
+
+macOS windows get their runnable reference from
+**tailrocks-macos-prototype**, documented with the macOS family below —
+same shape, native substrate.
 
 ### tailrocks-code-health
 
