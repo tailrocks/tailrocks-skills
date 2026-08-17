@@ -21,14 +21,14 @@ An availability guard is not optional decoration. Several glass symbols an agent
 will reach for by analogy with iOS or with a newer SDK do not exist on
 macOS 26 at all.
 
-## State of the platform as verified 2026-08-11
+## State of the platform as verified 2026-08-17
 
 | Fact | Value |
 |---|---|
 | Latest shipping macOS | 26.6.1 "Tahoe" |
 | macOS 27 | Announced, named "Golden Gate", **not shipping** — beta, "coming this fall" |
-| Shipping toolchain | Xcode 26.6, Swift 6.3, macOS 26.5 SDK as reported by `xcrun --show-sdk-version` on 2026-08-11; requires host macOS 26.2+ |
-| Beta toolchain | Xcode 27 beta 5, Swift 6.4, macOS 27 SDK; requires host macOS 26.4+; checked 2026-08-11 |
+| Shipping toolchain | Xcode 26.6, Swift 6.3, macOS 26.5 SDK as reported by `xcrun --show-sdk-version` on 2026-08-17; requires host macOS 26.2+ |
+| Beta toolchain | Xcode 27 beta 5, Swift 6.4, macOS 27 SDK; requires host macOS 26.4+; checked 2026-08-17 |
 | Intel | Xcode 27 is Apple-silicon-only; `ARCHS_STANDARD` drops `x86_64` when the deployment target is 27.0 or later. Universal back-deploy to macOS 12 still supported. |
 
 Re-verify these before relying on them. Release notes:
@@ -86,9 +86,13 @@ guard breaks a macOS 26 deployment target.
 | `toolbarMinimizationBehavior(_:for:)` | |
 | `toolbarMinimizationSafeAreaAdjustment(_:for:)` | |
 | `NSMenuItem.preferredImageVisibility` | controls menu-image visibility |
-| SwiftUI `windowResizeAnchor(_:)` | anchors content-driven window resizing; use `.topLeading` to avoid pixel cracking during animated macOS resizes |
 
-`tabViewBottomAccessory(content:)` was rechecked in DocC on 2026-08-11. Its
+SwiftUI `windowResizeAnchor(_:)` anchors content-driven window resizing and is
+**macOS 26.0, not 27** — DocC declares 26.0 and it compiles against the 26.5
+SDK (rechecked 2026-08-17). Use `.topLeading` to avoid pixel cracking during
+animated macOS resizes. It appears in the 27 column only in older notes.
+
+`tabViewBottomAccessory(content:)` was rechecked in DocC on 2026-08-17. Its
 documented behavior is iPhone tab-bar placement, so it is not a macOS bar
 construction and remains blocklisted in the router.
 
