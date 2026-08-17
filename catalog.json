@@ -36,6 +36,14 @@
       ]
     },
     {
+      "id": "design",
+      "title": "Design references",
+      "summary": "Renderable screen targets the implementation must match: fixture-rendered, user-blessed, mechanically compared.",
+      "skills": [
+        "tailrocks-tui-design"
+      ]
+    },
+    {
       "id": "quality",
       "title": "Code quality and contribution",
       "summary": "Debt that shrinks, defects that stop recurring, and work on repositories you do not own.",

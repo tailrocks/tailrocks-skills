@@ -64,6 +64,18 @@ design file is authoritative for Liquid Glass — the operating system is. And
 glass surfaces snapshot **fully transparent** from a detached view, so verifying
 glass chrome requires screen-capturing the running app.
 
+## Design references
+
+| Skill | Reach for it when |
+|---|---|
+| [`tailrocks-tui-design`](/docs/skills/tailrocks-tui-design) | A terminal screen needs a pinned, verifiable design before implementation: ratatui golden frames rendered from fixtures, blessed by the user, enforced by a golden test. |
+
+### tui-design and the other design owners
+
+`tailrocks-tui-design` owns terminal screens only. macOS windows keep their
+taste owner ([`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design));
+a design skill for one medium never rules on another.
+
 ## Code quality
 
 | Skill | Reach for it when |

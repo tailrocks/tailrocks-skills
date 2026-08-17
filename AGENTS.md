@@ -195,6 +195,21 @@ for the material; the operating system is. And Liquid Glass surfaces snapshot
 **fully transparent** from a detached view, so any verification of glass chrome
 must screen-capture the running app.
 
+### The design-reference family — blessed targets before implementation
+
+Skills that turn screen intent into renderable references the implementation
+must match. The reference is authored on the real UI substrate with fixture
+data, iterated with the user, and blessed; from then on "matches the design"
+is a mechanical check, not a review. One skill per medium, and taste never
+has two owners.
+
+- **tailrocks-tui-design** — terminal screens for Rust ratatui applications
+  as golden frames: a gallery crate renders the application's own view
+  functions through a test backend, the user blesses each frame, and a
+  golden test holds the implementation byte-exact from then on. Decides
+  ratatui as the house terminal UI library.
+  Definition: `skills/tailrocks-tui-design/SKILL.md`
+
 ### tailrocks-code-health
 
 Turn code quality into executable, monotonic contracts across the house stack:

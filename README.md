@@ -97,6 +97,14 @@ Design to verified pixels; exactly one skill owns each responsibility.
 | [`tailrocks-swift-project-setup`](skills/tailrocks-swift-project-setup/README.md) | Scaffold, audit, or remediate a strict native macOS Swift baseline: project generation, deployment targets and SDK lanes, local signing, format and lint gates, test wiring, mise tooling, Xcode agent integration. |
 | [`tailrocks-macos-visual-qa`](skills/tailrocks-macos-visual-qa/README.md) | Build, launch, capture, drive, and verify a native macOS app so an agent can see its own interface: window-ID capture, accessibility-tree driving, appearance and accessibility state matrix, audits, and pixel regression. |
 
+### Design references
+
+Renderable screen targets the implementation must match: fixture-rendered, user-blessed, mechanically compared.
+
+| Skill | What it does |
+|---|---|
+| [`tailrocks-tui-design`](skills/tailrocks-tui-design/README.md) | Design terminal UI screens for Rust ratatui apps as blessed golden frames: fixture-rendered gallery crate, byte-exact frame contract, screen states, TUI craft. |
+
 ### Code quality and contribution
 
 Debt that shrinks, defects that stop recurring, and work on repositories you do not own.
