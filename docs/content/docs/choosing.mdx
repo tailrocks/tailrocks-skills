@@ -69,12 +69,18 @@ glass chrome requires screen-capturing the running app.
 | Skill | Reach for it when |
 |---|---|
 | [`tailrocks-tui-design`](/docs/skills/tailrocks-tui-design) | A terminal screen needs a pinned, verifiable design before implementation: ratatui golden frames rendered from fixtures, blessed by the user, enforced by a golden test. |
+| [`tailrocks-web-design`](/docs/skills/tailrocks-web-design) | A TanStack screen needs its look agreed before implementation: guarded design routes over the installed shadcn/ui components, blessed in the browser, frozen as Playwright screenshot baselines. |
 
-### tui-design and the other design owners
+### One design owner per medium
 
-`tailrocks-tui-design` owns terminal screens only. macOS windows keep their
-taste owner ([`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design));
-a design skill for one medium never rules on another.
+Each skill rules its own medium and never another's: terminal screens are
+`tailrocks-tui-design`, web screens are `tailrocks-web-design`, and macOS
+windows keep their taste owner
+([`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design)) — an HTML
+prototype is never a design source for native macOS. The shared shape is
+the same everywhere: the reference is rendered by the real UI substrate
+from fixtures, the user blesses it, and a mechanical comparison holds the
+implementation to it afterward.
 
 ## Code quality
 

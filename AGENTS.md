@@ -209,6 +209,13 @@ has two owners.
   golden test holds the implementation byte-exact from then on. Decides
   ratatui as the house terminal UI library.
   Definition: `skills/tailrocks-tui-design/SKILL.md`
+- **tailrocks-web-design** — TanStack Start screens as blessed in-app design
+  routes: guarded `/design/<screen>/<state>` routes render pure screen
+  components from typed fixtures through the real Vite, Tailwind, and
+  shadcn/ui pipeline; the user blesses in the browser, Playwright freezes
+  screenshot baselines per state, theme, and viewport, and the real page
+  ships the same component. Definition:
+  `skills/tailrocks-web-design/SKILL.md`
 
 ### tailrocks-code-health
 

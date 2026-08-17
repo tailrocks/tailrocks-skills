@@ -40,7 +40,8 @@
       "title": "Design references",
       "summary": "Renderable screen targets the implementation must match: fixture-rendered, user-blessed, mechanically compared.",
       "skills": [
-        "tailrocks-tui-design"
+        "tailrocks-tui-design",
+        "tailrocks-web-design"
       ]
     },
     {

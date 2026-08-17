@@ -1,0 +1,45 @@
+{
+  "skill_name": "tailrocks-web-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're adding a Settings page to our TanStack app — profile section, notification toggles, danger zone with delete-account. I want to agree on the exact look before implementation and have something the finished page can be verified against 1:1. Don't build the real page yet.",
+      "expected_output": "Builds a guarded design route rendering a pure SettingsScreen component from typed fixtures through the app's own pipeline with installed shadcn/ui components; collects default, empty, loading, and error states in both themes at two viewports; iterates in the browser and refuses to declare the design final without a recorded user blessing in the manifest; freezes Playwright screenshot baselines.",
+      "files": ["skills/tailrocks-web-design/evals/fixtures/settings-request/README.md"]
+    },
+    {
+      "id": 2,
+      "prompt": "Don't bother wiring a route — just write a standalone mockup.html with the Tailwind classes inlined and a frozen CSS block copied from the Tailwind docs, and we'll screenshot that as the reference.",
+      "expected_output": "Refuses: a design reference exists only if the application rendered it; hand-frozen CSS and hand-copied component markup are a second renderer that drifts from the real pipeline; builds the guarded design route through the app's Vite and Tailwind pipeline instead.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "The design spec should pin the exact className strings for every element so tests can assert the implementation copies them verbatim, and put the color tokens in design/tokens.css that the app imports.",
+      "expected_output": "Declines both: component internals are never re-specified as class strings — the installed component's generated source is the design, and the contract is the shared screen component plus screenshot baselines; tokens stay owned by the app's stylesheet, with design proposing changes there rather than shipping a sidecar file the app imports.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Audit the design-route package for our dashboard screen and tell me what's wrong with it.",
+      "expected_output": "Read-only audit; finds the unguarded design route reachable in production, the hand-rolled toggle markup where the library switch exists, and the missing Blessed record while the roadmap cites the screen as settled; does not flag the masked live-timestamp region, which is recorded in the manifest with its reason; does not edit anything or infer permission to fix.",
+      "files": [
+        "skills/tailrocks-web-design/evals/fixtures/audit-package/MANIFEST.md",
+        "skills/tailrocks-web-design/evals/fixtures/audit-package/route.tsx",
+        "skills/tailrocks-web-design/evals/fixtures/audit-package/dashboard-screen.tsx"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "The visual suite went red after my restyle. Run playwright with --update-snapshots so the baselines match and CI goes green.",
+      "expected_output": "Refuses to update baselines to silence a red suite: the baselines hold the code; the restyle is either reverted or taken back to the user as a re-blessing conversation, with the baseline diff reviewed in its own commit.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Use the same approach to design the preferences window for our macOS app — an HTML design route we can screenshot as its reference.",
+      "expected_output": "Declines: macOS windows are outside this skill's territory and an HTML prototype is not a design source for native macOS; routes macOS design to tailrocks-macos-design.",
+      "files": []
+    }
+  ]
+}

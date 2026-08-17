@@ -30,7 +30,7 @@ one shared directory:
 - **macOS (native):** `tailrocks-macos-design`, `tailrocks-liquid-glass`,
   `tailrocks-swift-best-practices`, `tailrocks-swift-project-setup`,
   `tailrocks-macos-visual-qa`, `tailrocks-sketch-handoff`
-- **Design references:** `tailrocks-tui-design`
+- **Design references:** `tailrocks-tui-design`, `tailrocks-web-design`
 - **Code quality:** `tailrocks-code-health`, `tailrocks-agents-md`,
   `tailrocks-skill-author`, `tailrocks-simplify`, `tailrocks-contribute`,
   `tailrocks-remediate`, `tailrocks-rethink`

@@ -104,6 +104,7 @@ Renderable screen targets the implementation must match: fixture-rendered, user-
 | Skill | What it does |
 |---|---|
 | [`tailrocks-tui-design`](skills/tailrocks-tui-design/README.md) | Design terminal UI screens for Rust ratatui apps as blessed golden frames: fixture-rendered gallery crate, byte-exact frame contract, screen states, TUI craft. |
+| [`tailrocks-web-design`](skills/tailrocks-web-design/README.md) | Design TanStack Start screens as blessed in-app design routes: installed shadcn/ui components with fixtures, Playwright screenshot baselines, states and themes. |
 
 ### Code quality and contribution
 
