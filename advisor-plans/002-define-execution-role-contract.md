@@ -46,7 +46,7 @@
 > for this plan.
 >
 > **Drift check (run first)**:
-> `rtk git diff --stat 13a5ee5..HEAD -- skills/tailrocks-plan/SKILL.md skills/tailrocks-plan/references/plan-template.md skills/tailrocks-plan/references/goal-handoff.md skills/tailrocks-plan/references/execution-roles.md skills/tailrocks-plan/evals/evals.json examples/plan-package/plans/goal-live-status/GOAL.md examples/plan-package/plans/goal-live-status/README.md scripts/goal-check.test.ts scripts/plan-source-neutrality.test.ts scripts/run-evals.ts scripts/run-evals.test.ts`
+> `rtk git diff --stat 13a5ee5..HEAD -- skills/tailrocks-plan/SKILL.md skills/tailrocks-plan/references/plan-template.md skills/tailrocks-plan/references/goal-handoff.md skills/tailrocks-plan/references/execution-roles.md skills/tailrocks-plan/evals/evals.json skills/tailrocks-plan/evals/fixtures scripts/goal-check.test.ts scripts/plan-source-neutrality.test.ts scripts/run-evals.ts scripts/run-evals.test.ts scripts/validate-skills.ts scripts/validate-skills.test.ts examples/plan-package/plans/goal-live-status/GOAL.md examples/plan-package/plans/goal-live-status/README.md`
 > If any in-scope file changed, compare the current-state excerpts below with
 > live code before proceeding. A load-bearing mismatch is a STOP condition.
 
@@ -510,10 +510,13 @@ rtk git diff --check
   architecture as bounded. The non-discriminating normal case is removed.
 - `scripts/run-evals.test.ts` proves every direct linked skill reference enters
   eval context under deterministic path, ordering, and byte-cap rules.
-- The runner maps `evals/fixtures/` to workspace-root paths, rejects
-  collisions and `.git` injection, initializes a clean commit, permits the
-  subject only exact fixture inspection/gate commands, gives the judge no
-  tools, and never launches a single subject for a workflow-only case.
+- The runner maps `evals/fixtures/` to workspace-root paths; preflights
+  symlinks, case-folded/ancestor collisions, and nested `.git` injection;
+  initializes a deterministic clean commit without inherited Git routing,
+  hooks, signing, identity, or config; excludes Git metadata from judge
+  artifacts; permits the subject only exact fixture inspection/gate commands;
+  gives the judge no tools; and never launches a single subject for a
+  workflow-only case.
 - Validator tests prove the optional execution-mode grammar is finite and
   reject unknown modes before runtime.
 - Existing eval 5 and its expected output remain unchanged, preserving citation
