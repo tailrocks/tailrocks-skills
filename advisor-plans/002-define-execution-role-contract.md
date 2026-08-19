@@ -42,7 +42,7 @@
 > fail-closed result, not a contract failure. Keep case 1's prompt and expected
 > output unchanged, mark it `workflow`, and make the single-subject runner
 > reject it before launching a model. Plan 004 owns the fresh multi-context
-> workflow proof. Cases 2-5, 7, and 8 remain the complete single-subject suite
+> workflow proof. Cases 2, 3, 7, and 8 remain the complete single-subject suite
 > for this plan.
 >
 > The first frozen direct-suite run then exposed a second setup defect: case 4
@@ -73,6 +73,18 @@
 > default `sonnet` route because the separately overridden Fable route reported
 > its monthly quota exhausted; do not silently relabel that provider limit as a
 > behavioral failure.
+>
+> The corrected case 4 corpus then produced a truthful 0/2: both subjects
+> consumed the explicit replacement decision and old spec, but stopped before
+> replacement plans and final GOAL regeneration because one subject cannot
+> provide the plan writers, fresh independent verifier, and cold reviewer the
+> skill now requires. Case 5 explicitly requests that same fresh verification
+> workflow. Classify cases 4 and 5 as `workflow` alongside case 1; keep their
+> prompts, expected outputs, and authoritative fixtures unchanged for Plan 004.
+> A direct pass would only prove that one subject can describe or impersonate
+> multiple contexts. Plan 002's live direct suite is therefore cases 2, 3, 7,
+> and 8; cases 1, 4, and 5 must return `workflow_required` before workspace or
+> model launch.
 >
 > **Drift check (run first)**:
 > `rtk git diff --stat 13a5ee5..HEAD -- skills/tailrocks-plan/SKILL.md skills/tailrocks-plan/references/plan-template.md skills/tailrocks-plan/references/goal-handoff.md skills/tailrocks-plan/references/execution-roles.md skills/tailrocks-plan/evals/evals.json skills/tailrocks-plan/evals/fixtures scripts/goal-check.test.ts scripts/plan-source-neutrality.test.ts scripts/run-evals.ts scripts/run-evals.test.ts scripts/validate-skills.ts scripts/validate-skills.test.ts examples/plan-package/plans/goal-live-status/GOAL.md examples/plan-package/plans/goal-live-status/README.md`
@@ -139,7 +151,7 @@ bounded delegation and the already-required independence visible in artifacts.
 | Script tests | `rtk mise run test` | all pass |
 | Format check | `rtk mise run fmt` | exit 0 |
 | Full CI contract | `rtk mise run ci` | exit 0 |
-| Live plan eval | `rtk mise run evals -- --skill tailrocks-plan --case <id> --runs 2` | both repetitions match for single-subject cases; workflow case 1 is rejected before model launch |
+| Live plan eval | `rtk mise run evals -- --skill tailrocks-plan --case <id> --runs 2` | both repetitions match for single-subject cases; workflow cases 1, 4, and 5 are rejected before model launch |
 
 ## Suggested executor toolkit
 
@@ -479,18 +491,19 @@ no-op-gate regression.
 ### Step 7: Re-run convergence and the complete single-subject eval set
 
 First run the two new variants five times each; both must converge at 5/5.
-Then run cases 2-5, 7, and 8 after the edit with the repository-required two
+Then run cases 2, 3, 7, and 8 after the edit with the repository-required two
 repetitions. Use a frontier-judgment route for the skill subject until plan 004
 introduces formal route selection. Each single-subject case must pass; preserve
 only redacted summaries.
 
-Case 1 keeps its existing prompt and expected output byte-for-byte but declares
-`execution_mode: "workflow"`. Prove the single-subject runner returns a
+Cases 1, 4, and 5 keep their existing prompts and expected outputs byte-for-byte
+but declare `execution_mode: "workflow"`. Prove the single-subject runner returns a
 machine-readable `workflow_required` result and exit 3 before creating a
-workspace or launching a model. The three retained corrected attempts are the
-red bar showing why treating this as a single subject would either time out or
-fake fresh independence. Plan 004 must turn this case green through distinct
-fresh contexts; this plan must not weaken its expected output.
+workspace or launching a model. The retained case-1 attempts and case-4 0/2 are
+the red bars showing why treating these workflows as one subject would stop or
+fake fresh independence; case 5 names the independent verification work in its
+prompt. Plan 004 must turn all three cases green through distinct fresh
+contexts; this plan must not weaken their expected outputs.
 
 Extend the eval validator with the finite optional grammar
 `execution_mode: "single_subject" | "workflow"`; omission means
@@ -503,13 +516,15 @@ an unknown value.
 ```sh
 rtk mise run evals -- --skill tailrocks-plan --case 7 --runs 5
 rtk mise run evals -- --skill tailrocks-plan --case 8 --runs 5
-rtk mise run evals -- --skill tailrocks-plan --case 1 --runs 2 && exit 1 || test $? -eq 3
-for case_id in 2 3 4 5 7 8; do
+for case_id in 1 4 5; do
+  rtk mise run evals -- --skill tailrocks-plan --case "$case_id" --runs 2 && exit 1 || test $? -eq 3
+done
+for case_id in 2 3 7 8; do
   rtk mise run evals -- --skill tailrocks-plan --case "$case_id" --runs 2 || exit 1
 done
 ```
 
-→ cases 7/8 are 5/5, case 1 exits 3 without a workspace/model call, and both
+→ cases 7/8 are 5/5, cases 1/4/5 exit 3 without a workspace/model call, and both
 repetitions of every single-subject case pass. If variability produces a
 failure, inspect the retained workspace, correct the contract rather than the
 expected output, then rerun the single-subject set.
@@ -547,20 +562,21 @@ rtk git diff --check
   gives the judge no tools; and never launches a single subject for a
   workflow-only case.
 - Cases 2-5 stage isolated fixtures whose status and named artifacts match
-  their prompts; deterministic tests reject a shared or incomplete corpus
-  before a live model can turn setup ambiguity into evaluator variance.
+  their prompts; deterministic tests reject a shared or incomplete corpus.
+  Cases 4/5 retain those authoritative inputs for Plan 004 without launching a
+  single subject here.
 - Validator tests prove the optional execution-mode grammar is finite and
   reject unknown modes before runtime.
-- Existing eval 5 and its expected output remain unchanged, preserving citation
-  verification and fresh cold-review behavior. Only cases 7/8 own the new
-  auditable role/assurance expectations.
+- Existing eval 5 and its expected output remain unchanged and workflow-bound,
+  preserving citation verification and fresh cold-review behavior. Only cases
+  7/8 own the new auditable role/assurance expectations.
 - `scripts/goal-check.test.ts` rejects no-op fenced gates in checked-in example
   packages and asserts the two real example gates.
 - `scripts/plan-source-neutrality.test.ts` prevents product names and client
   commands from returning to the changed plan skill/reference surface.
 - All eligible `tailrocks-plan` single-subject evals run after the
-  router/reference change. The unchanged case-1 contract is bound to Plan
-  004's fresh-context workflow rather than misreported as a single call.
+  router/reference change. The unchanged cases 1/4/5 contracts are bound to
+  Plan 004's fresh-context workflows rather than misreported as single calls.
 
 ## Done criteria
 
@@ -581,9 +597,10 @@ rtk git diff --check
 - [ ] Missing fresh context prevents `PLANNED` certification.
 - [ ] The example goal runs `mise run test` and `mise run lint`; no no-op gate
       can pass its regression test.
-- [ ] Cases 2-5, 7, and 8 pass twice after recorded controls; the two new
-      variants converge at 5/5; case 1 is unchanged, classified `workflow`,
-      and rejected before single-subject model launch for Plan 004 to qualify.
+- [ ] Cases 2, 3, 7, and 8 pass twice after recorded controls; the two new
+      variants converge at 5/5; cases 1, 4, and 5 are unchanged, classified
+      `workflow`, and rejected before single-subject model launch for Plan 004
+      to qualify.
 - [ ] `rtk mise run lint`, `test`, `fmt`, and `ci` exit 0.
 - [ ] No file outside Scope changed, excluding generated files and the status
       row.
