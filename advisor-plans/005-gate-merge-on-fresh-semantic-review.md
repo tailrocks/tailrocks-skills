@@ -2,11 +2,14 @@
 
 > **Executor instructions**: Follow this plan step by step. Run every
 > verification command and confirm the expected result before moving on. If a
-> STOP condition occurs, stop and report; do not improvise. When done, update
-> the status row for this plan in `advisor-plans/README.md`.
+> STOP condition occurs, stop and report; do not improvise. The detached source
+> executor leaves advisor status unchanged; only the publisher marks this plan
+> `DONE` after fresh-context acceptance.
 >
-> **Drift check (run first)**:
-> `rtk git diff --stat 13a5ee5..HEAD -- skills/tailrocks-review-pr/SKILL.md skills/tailrocks-review-pr/references/reporting.md skills/tailrocks-review-pr/evals skills/tailrocks-merge-pr/SKILL.md skills/tailrocks-merge-pr/evals skills/tailrocks-create-pr/references/repo-conventions.md skills/tailrocks-create-pr/templates/pr.md`
+> **Drift check (run first)**: after all previously accepted commits are
+> published onto the shared branch, capture `rtk proxy git rev-parse HEAD` as
+> one literal `<execution-base>` SHA. Run
+> `rtk git diff --stat 13a5ee5..<execution-base> -- skills/tailrocks-review-pr/SKILL.md skills/tailrocks-review-pr/references/reporting.md skills/tailrocks-review-pr/evals skills/tailrocks-merge-pr/SKILL.md skills/tailrocks-merge-pr/evals skills/tailrocks-create-pr/references/repo-conventions.md skills/tailrocks-create-pr/templates/pr.md`.
 > If any in-scope file changed, compare the current-state excerpts below with
 > live code before proceeding. A load-bearing mismatch is a STOP condition.
 
@@ -118,12 +121,16 @@ claim to block direct UI/API merges outside `tailrocks-merge-pr`.
 
 ## Git workflow
 
-- Branch: `advisor/005-current-head-review-gate` when executed separately.
+- Branch: remain on the operator's existing shared execution branch. Implement
+  in a detached worktree and publish only the accepted commit onto that branch;
+  never create another branch or PR.
 - Commit message: `feat(pr): gate merge on review assurance`.
 - Commit with `git commit -s`, add
   `Co-authored-by: Codex <codex@openai.com>`, and include the required
   `Tailrocks-Skill` trailer when executing through `tailrocks-skill-author`.
-- Do not push or open a PR unless the operator requests it.
+- The operator already requested every completed change be committed and
+  pushed. After fresh-context acceptance, the publisher lands this commit,
+  updates the plan status, and pushes the same shared branch/draft PR.
 
 ## Steps
 
@@ -473,9 +480,11 @@ rtk mise run test
 rtk mise run fmt
 rtk mise run ci
 rtk git diff --check
+rtk bun -e 'const exact=new Set(["advisor-plans/README.md","skills/tailrocks-create-pr/references/repo-conventions.md","skills/tailrocks-create-pr/templates/pr.md","skills/tailrocks-review-pr/SKILL.md","skills/tailrocks-review-pr/references/reporting.md","skills/tailrocks-review-pr/evals/evals.json","skills/tailrocks-review-pr/README.md","docs/content/docs/skills/tailrocks-review-pr/index.mdx","docs/content/docs/skills/tailrocks-review-pr/definition.mdx","skills/tailrocks-merge-pr/SKILL.md","skills/tailrocks-merge-pr/evals/evals.json","skills/tailrocks-merge-pr/README.md","docs/content/docs/skills/tailrocks-merge-pr/index.mdx","docs/content/docs/skills/tailrocks-merge-pr/definition.mdx"]); const allowed=(path)=>exact.has(path)||/^skills\/tailrocks-review-pr\/evals\/fixtures\/(?:6|7|8|9|10)\//.test(path)||/^skills\/tailrocks-merge-pr\/evals\/fixtures\/(?:1|3|4|5|6|7|8|9|10|11|12|13)\//.test(path); const run=(cmd)=>{const p=Bun.spawnSync({cmd,stdout:"pipe"});if(p.exitCode!==0)process.exit(p.exitCode);return new TextDecoder().decode(p.stdout).trim().split("\n").filter(Boolean)}; const changed=[...new Set([...run(["git","diff","--name-only",process.argv[1]]),...run(["git","ls-files","--others","--exclude-standard"])])]; const extra=changed.filter((path)=>!allowed(path)); if(extra.length){console.error(extra.join("\n"));process.exit(1)}' <literal-execution-base-SHA>
 ```
 
-→ all exit 0.
+→ all exit 0. Replace the placeholder with the literal SHA captured before
+Step 1; the last command checks tracked and untracked paths and prints nothing.
 
 ## Test plan
 
