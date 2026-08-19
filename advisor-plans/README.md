@@ -72,10 +72,20 @@ Status values: `TODO` | `IN PROGRESS` | `DONE` | `BLOCKED (<reason>)` |
   auditable roles only 4/5. The plan now targets only those earned assurance
   and convergence defects. Temporary source/test edits remain uncommitted in
   the detached executor worktree until the revised plan is accepted.
+- 002's final execution audit exposed a separate harness truth: artifact-heavy
+  case 1 requires fresh subsidiary contexts and cannot be completed by one
+  noninteractive subject. Three corrected attempts exhausted two bounded calls
+  each and retained an explicit `DEGRADED`/not-`PLANNED` package after the
+  sandbox denied subsidiary execution. Plan 002 now classifies that unchanged
+  case as `workflow`, rejects it before single-subject launch, and keeps Plan
+  004 responsible for its multi-context green proof. The remaining six direct
+  cases still run twice on final bytes.
 - 003 consumes the canonical role vocabulary from 002 and exposes the brand
   convention from 001.
 - 004 consumes the roles and verified client/model mappings; it must not invent
-  a second routing vocabulary.
+  a second routing vocabulary. Before execution, refresh its stale direct
+  case-1 commands into a genuine fresh-context workflow that consumes case 1's
+  unchanged prompt and expected output.
 - 005 is independent. It authenticates an allowed GitHub reviewer and exact
   head, not a self-reported model capability; trusted model attestation would
   require a separate server-side integration.

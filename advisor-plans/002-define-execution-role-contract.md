@@ -32,6 +32,19 @@
 > controls, then continue there. Matching state must be preserved and extended,
 > not recreated.
 >
+> **2026-08-20 execution finding**: three corrected, final-byte attempts proved
+> that case 1 is not a single-subject eval. After repairing fixture-root
+> staging, supplying a committed runnable Rust fixture, permitting only the
+> fixture's exact read-only git probes and gates, and isolating the judge from
+> tools, each attempt exhausted two 600-second subject calls. The retained
+> package explicitly records `DEGRADED`, refuses `PLANNED`, and says fresh
+> subsidiary execution was sandbox-denied. That is the skill's required
+> fail-closed result, not a contract failure. Keep case 1's prompt and expected
+> output unchanged, mark it `workflow`, and make the single-subject runner
+> reject it before launching a model. Plan 004 owns the fresh multi-context
+> workflow proof. Cases 2-5, 7, and 8 remain the complete single-subject suite
+> for this plan.
+>
 > **Drift check (run first)**:
 > `rtk git diff --stat 13a5ee5..HEAD -- skills/tailrocks-plan/SKILL.md skills/tailrocks-plan/references/plan-template.md skills/tailrocks-plan/references/goal-handoff.md skills/tailrocks-plan/references/execution-roles.md skills/tailrocks-plan/evals/evals.json examples/plan-package/plans/goal-live-status/GOAL.md examples/plan-package/plans/goal-live-status/README.md scripts/goal-check.test.ts scripts/plan-source-neutrality.test.ts scripts/run-evals.ts scripts/run-evals.test.ts`
 > If any in-scope file changed, compare the current-state excerpts below with
@@ -97,7 +110,7 @@ bounded delegation and the already-required independence visible in artifacts.
 | Script tests | `rtk mise run test` | all pass |
 | Format check | `rtk mise run fmt` | exit 0 |
 | Full CI contract | `rtk mise run ci` | exit 0 |
-| Live plan eval | `rtk mise run evals -- --skill tailrocks-plan --case <id> --runs 2` | both repetitions match expected baseline/green phase |
+| Live plan eval | `rtk mise run evals -- --skill tailrocks-plan --case <id> --runs 2` | both repetitions match for single-subject cases; workflow case 1 is rejected before model launch |
 
 ## Suggested executor toolkit
 
@@ -113,6 +126,7 @@ bounded delegation and the already-required independence visible in artifacts.
 - `skills/tailrocks-plan/references/goal-handoff.md`
 - `skills/tailrocks-plan/references/execution-roles.md` (create)
 - `skills/tailrocks-plan/evals/evals.json`
+- `skills/tailrocks-plan/evals/fixtures/**` (repair and make case 1 self-contained)
 - `examples/plan-package/plans/goal-live-status/GOAL.md`
 - `examples/plan-package/plans/goal-live-status/README.md`
 - `scripts/goal-check.test.ts`
@@ -131,9 +145,11 @@ bounded delegation and the already-required independence visible in artifacts.
 - Automatic model invocation, route selection, adapter separation, judge
   hardening, or workflow-phase orchestration. Plan 004 owns those mechanics.
   This plan narrowly owns loading direct linked Markdown references into the
-  existing generic eval subject because its new role contract otherwise cannot
-  be exercised; that helper changes context construction for every skill and
-  must therefore be verified across the full current skill tree.
+  existing generic eval subject, mapping packaged eval fixtures to the
+  workspace root, creating a committed temporary repository, isolating the
+  judge from tools, and rejecting workflow-only cases before model launch.
+  Those harness repairs are required to produce truthful controls for the new
+  role contract and are verified across the full current skill tree.
 - Changing the roadmap status vocabulary globally. A plan package records
   assurance separately and withholds `PLANNED` when the required gate cannot
   be established.
@@ -429,28 +445,37 @@ that a live model ran it.
 **Verify**: `rtk bun test scripts/goal-check.test.ts` → all pass, including the
 no-op-gate regression.
 
-### Step 7: Re-run convergence and the complete skill eval set
+### Step 7: Re-run convergence and the complete single-subject eval set
 
 First run the two new variants five times each; both must converge at 5/5.
-Then run all seven `tailrocks-plan` eval cases after the edit with the
-repository-required two repetitions. Use a
-frontier-judgment route for the skill subject until plan 004 introduces formal
-route selection. Each case must pass; preserve only redacted summaries.
+Then run cases 2-5, 7, and 8 after the edit with the repository-required two
+repetitions. Use a frontier-judgment route for the skill subject until plan 004
+introduces formal route selection. Each single-subject case must pass; preserve
+only redacted summaries.
+
+Case 1 keeps its existing prompt and expected output byte-for-byte but declares
+`execution_mode: "workflow"`. Prove the single-subject runner returns a
+machine-readable `workflow_required` result and exit 3 before creating a
+workspace or launching a model. The three retained corrected attempts are the
+red bar showing why treating this as a single subject would either time out or
+fake fresh independence. Plan 004 must turn this case green through distinct
+fresh contexts; this plan must not weaken its expected output.
 
 **Verify**:
 
 ```sh
 rtk mise run evals -- --skill tailrocks-plan --case 7 --runs 5
 rtk mise run evals -- --skill tailrocks-plan --case 8 --runs 5
-for case_id in 1 2 3 4 5 7 8; do
+rtk mise run evals -- --skill tailrocks-plan --case 1 --runs 2 && exit 1 || test $? -eq 3
+for case_id in 2 3 4 5 7 8; do
   rtk mise run evals -- --skill tailrocks-plan --case "$case_id" --runs 2 || exit 1
 done
 ```
 
-→ cases 7/8 are 5/5 and both repetitions of every case pass. If variability
-produces a failure, inspect the retained
-workspace, correct the contract rather than the expected output, then rerun the
-full set.
+→ cases 7/8 are 5/5, case 1 exits 3 without a workspace/model call, and both
+repetitions of every single-subject case pass. If variability produces a
+failure, inspect the retained workspace, correct the contract rather than the
+expected output, then rerun the single-subject set.
 
 ### Step 8: Regenerate and run repository gates
 
@@ -477,6 +502,10 @@ rtk git diff --check
   architecture as bounded. The non-discriminating normal case is removed.
 - `scripts/run-evals.test.ts` proves every direct linked skill reference enters
   eval context under deterministic path, ordering, and byte-cap rules.
+- The runner maps `evals/fixtures/` to workspace-root paths, rejects
+  collisions and `.git` injection, initializes a clean commit, permits the
+  subject only exact fixture inspection/gate commands, gives the judge no
+  tools, and never launches a single subject for a workflow-only case.
 - Existing eval 5 and its expected output remain unchanged, preserving citation
   verification and fresh cold-review behavior. Only cases 7/8 own the new
   auditable role/assurance expectations.
@@ -484,8 +513,9 @@ rtk git diff --check
   packages and asserts the two real example gates.
 - `scripts/plan-source-neutrality.test.ts` prevents product names and client
   commands from returning to the changed plan skill/reference surface.
-- Full `tailrocks-plan` eval set runs after any router/reference change, as
-  required by `tailrocks-skill-author`.
+- All eligible `tailrocks-plan` single-subject evals run after the
+  router/reference change. The unchanged case-1 contract is bound to Plan
+  004's fresh-context workflow rather than misreported as a single call.
 
 ## Done criteria
 
@@ -506,8 +536,9 @@ rtk git diff --check
 - [ ] Missing fresh context prevents `PLANNED` certification.
 - [ ] The example goal runs `mise run test` and `mise run lint`; no no-op gate
       can pass its regression test.
-- [ ] All seven live skill eval cases pass twice after recorded controls, and
-      the two new variants converge at 5/5.
+- [ ] Cases 2-5, 7, and 8 pass twice after recorded controls; the two new
+      variants converge at 5/5; case 1 is unchanged, classified `workflow`,
+      and rejected before single-subject model launch for Plan 004 to qualify.
 - [ ] `rtk mise run lint`, `test`, `fmt`, and `ci` exit 0.
 - [ ] No file outside Scope changed, excluding generated files and the status
       row.
@@ -526,7 +557,9 @@ rtk git diff --check
   budget; strengthen/replace existing prose instead of appending.
 - Correcting the example requires changing application source outside the
   example package or the goal-check test.
-- Any verification fails twice after a reasonable correction.
+- Any eligible single-subject verification fails twice after a reasonable
+  correction. A case explicitly classified `workflow` is routed to its owning
+  workflow plan instead of repeatedly forcing an incapable runner.
 
 ## Maintenance notes
 
