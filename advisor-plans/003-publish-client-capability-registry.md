@@ -680,13 +680,13 @@ rtk mise run fmt
 rtk mise run ci
 rtk mise run docs:build
 rtk git diff --check
-rtk bun -e 'const allowed=new Set(["INSTALL.md","advisor-plans/README.md","clients.json","docs/AGENTS.md","docs/content/docs/delivery/index.mdx","docs/content/docs/delivery/meta.json","docs/content/docs/delivery/model-routing.mdx","docs/content/docs/install.mdx","docs/src/components/client-routing-matrix.tsx","docs/src/generated/clients.ts","docs/src/lib/agents.ts","scripts/generate-docs.test.ts","scripts/generate-docs.ts","scripts/validate-skills.test.ts","scripts/validate-skills.ts","scripts/verify-clients.test.ts","scripts/verify-clients.ts"]); const p=Bun.spawnSync({cmd:["git","diff","--name-only",process.argv[1]],stdout:"pipe"}); if(p.exitCode!==0) process.exit(p.exitCode); const changed=new TextDecoder().decode(p.stdout).trim().split("\n").filter(Boolean); const extra=changed.filter((x)=>!allowed.has(x)); if(extra.length){console.error(extra.join("\n"));process.exit(1)}' <literal-execution-base-SHA>
+rtk bun -e 'const allowed=new Set(["INSTALL.md","advisor-plans/README.md","clients.json","docs/AGENTS.md","docs/content/docs/delivery/index.mdx","docs/content/docs/delivery/meta.json","docs/content/docs/delivery/model-routing.mdx","docs/content/docs/install.mdx","docs/src/components/client-routing-matrix.tsx","docs/src/generated/clients.ts","docs/src/lib/agents.ts","scripts/generate-docs.test.ts","scripts/generate-docs.ts","scripts/validate-skills.test.ts","scripts/validate-skills.ts","scripts/verify-clients.test.ts","scripts/verify-clients.ts"]); const run=(cmd)=>{const p=Bun.spawnSync({cmd,stdout:"pipe"});if(p.exitCode!==0)process.exit(p.exitCode);return new TextDecoder().decode(p.stdout).trim().split("\n").filter(Boolean)}; const changed=[...new Set([...run(["git","diff","--name-only",process.argv[1]]),...run(["git","ls-files","--others","--exclude-standard"])])]; const extra=changed.filter((x)=>!allowed.has(x)); if(extra.length){console.error(extra.join("\n"));process.exit(1)}' <literal-execution-base-SHA>
 ```
 
 → every command exits 0. Replace both execution-base placeholders with the
 same literal 40-character SHA captured before Step 1; never use mutable
-`HEAD`. The last command prints nothing and proves every changed path is in the
-exact scope allowlist.
+`HEAD`. The last command unions tracked and untracked paths, prints nothing,
+and proves every changed path is in the exact scope allowlist.
 
 ## Test plan
 
