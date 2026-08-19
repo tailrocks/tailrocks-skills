@@ -1,5 +1,14 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { appendFileSync, chmodSync, cpSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  appendFileSync,
+  chmodSync,
+  cpSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -66,6 +75,31 @@ afterEach(() => {
 });
 
 describe("goal-check.sh", () => {
+  test("checked-in example gates are non-noop and live-status runs its real checks", async () => {
+    const root = join(import.meta.dir, "..");
+    const goals = await Array.fromAsync(new Bun.Glob("examples/**/GOAL.md").scan({ cwd: root }));
+    expect(goals.length).toBeGreaterThan(0);
+
+    for (const goal of goals) {
+      const text = readFileSync(join(root, goal), "utf8");
+      const gate = text.match(/^```sh gates\s*$([\s\S]*?)^```\s*$/m)?.[1] ?? "";
+      const commands = gate
+        .split("\n")
+        .map((command) => command.trim())
+        .filter(Boolean);
+      expect(commands.length).toBeGreaterThan(0);
+      expect(commands.every((command) => ["true", ":", "noop"].includes(command))).toBeFalse();
+    }
+
+    const liveStatus = readFileSync(
+      join(root, "examples/plan-package/plans/goal-live-status/GOAL.md"),
+      "utf8",
+    );
+    const liveGate = liveStatus.match(/^```sh gates\s*$([\s\S]*?)^```\s*$/m)?.[1] ?? "";
+    expect(liveGate).toContain("mise run test");
+    expect(liveGate).toContain("mise run lint");
+  });
+
   test("passes a clean terminal package", () => {
     const { root } = fixture();
     const head = git(root, "rev-parse", "--short", "HEAD");

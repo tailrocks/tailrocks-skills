@@ -1,0 +1,3 @@
+[workspace]
+members = ["crates/session-cli"]
+resolver = "3"

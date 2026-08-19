@@ -1,0 +1,5 @@
+[tasks.test]
+run = "cargo test --workspace"
+
+[tasks.lint]
+run = "cargo clippy --workspace -- -D warnings"

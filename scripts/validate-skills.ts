@@ -343,6 +343,15 @@ export async function validate(root: string): Promise<string[]> {
               errors.push(`${directory}: duplicate eval case id ${item.id}`);
             }
             ids.add(item.id as number);
+            if (
+              item.execution_mode !== undefined &&
+              item.execution_mode !== "single_subject" &&
+              item.execution_mode !== "workflow"
+            ) {
+              errors.push(
+                `${directory}: eval case ${item.id} has invalid execution_mode: ${item.execution_mode}`,
+              );
+            }
             for (const fixture of item.files as unknown[]) {
               if (
                 typeof fixture !== "string" ||

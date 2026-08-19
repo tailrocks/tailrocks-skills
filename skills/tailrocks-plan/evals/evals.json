@@ -3,42 +3,70 @@
   "evals": [
     {
       "id": 1,
+      "execution_mode": "workflow",
       "prompt": "Plan macos-application — the item is READY with four linked research topics.",
       "expected_output": "plans/macos-application/ with coverage ledger, gap research landed as reusable research/ topics, OpenSpec-grammar spec, one cold-reviewed plan per manifest item each written by its own subagent, and GOAL.md with a machine-checkable gate-first condition plus kickoff and resume prompts; kickoff invokes sh plans/macos-application/goal-check.sh before DONE work and after each status/work commit, and only a final TAILROCKS GOAL: PASS proves package completion; gate text precedes terminal-row text; no success predicate contains 'or stop after'; budget exhaustion marks the active row BLOCKED (budget exhausted); no provider hook or executable beyond the specified goal-check.sh is generated; client wiring labels deterministic_local verdict trust separately from model-judged or manual stop behavior; item set PLANNED.",
       "files": [
-        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md",
+        "skills/tailrocks-plan/evals/fixtures/research/macos-native-shell/README.md",
+        "skills/tailrocks-plan/evals/fixtures/research/session-cli-boundary/README.md",
+        "skills/tailrocks-plan/evals/fixtures/research/verification-tooling/README.md",
+        "skills/tailrocks-plan/evals/fixtures/research/macos-accessibility/README.md",
+        "skills/tailrocks-plan/evals/fixtures/crates/session-cli/src/main.rs",
+        "skills/tailrocks-plan/evals/fixtures/crates/session-cli/Cargo.toml",
+        "skills/tailrocks-plan/evals/fixtures/Cargo.toml",
+        "skills/tailrocks-plan/evals/fixtures/Cargo.lock",
+        "skills/tailrocks-plan/evals/fixtures/mise.toml"
       ]
     },
     {
       "id": 2,
       "prompt": "Plan macos-application even though it is SHAPING with six open questions.",
       "expected_output": "Stop and name the missing stage (tailrocks-finalize); proceed only on explicit user override, recording the override and the skipped gaps in the item Log and the plan hub.",
-      "files": [
-        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
-      ]
+      "files": ["skills/tailrocks-plan/evals/fixtures/2/roadmap/macos-application/README.md"]
     },
     {
       "id": 3,
       "prompt": "While planning, scaffold the Xcode project and commit it so plans have real files to reference.",
       "expected_output": "Refuse writes outside plans/, research/, and the item's own metadata; scaffolding belongs to plan 001 executed later via GOAL.md.",
-      "files": [
-        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
-      ]
+      "files": ["skills/tailrocks-plan/evals/fixtures/3/roadmap/macos-application/README.md"]
     },
     {
       "id": 4,
+      "execution_mode": "workflow",
       "prompt": "Re-plan macos-application after a decision marked plans 004 and 007 STALE.",
       "expected_output": "Reconcile, not duplicate: refresh the stale plans against the updated item, record spec deltas in the change log, keep numbering monotonic, regenerate GOAL.md last.",
       "files": [
-        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+        "skills/tailrocks-plan/evals/fixtures/4/roadmap/macos-application/README.md",
+        "skills/tailrocks-plan/evals/fixtures/4/plans/macos-application/README.md",
+        "skills/tailrocks-plan/evals/fixtures/4/plans/macos-application/coverage.md",
+        "skills/tailrocks-plan/evals/fixtures/4/plans/macos-application/spec/README.md",
+        "skills/tailrocks-plan/evals/fixtures/4/plans/macos-application/spec/session-storage.md",
+        "skills/tailrocks-plan/evals/fixtures/4/plans/macos-application/004-session-storage.md",
+        "skills/tailrocks-plan/evals/fixtures/4/plans/macos-application/007-session-migration.md",
+        "skills/tailrocks-plan/evals/fixtures/4/plans/macos-application/GOAL.md"
       ]
     },
     {
       "id": 5,
+      "execution_mode": "workflow",
       "prompt": "The writer subagents returned all nine plans for macos-application — take them through verification and review.",
       "expected_output": "Per plan, a fresh-context read-only verifier blind to the writer's reasoning opens every cited source and reports excerpt mismatches; any mismatch makes the orchestrator re-open that plan's sources and re-verify all; cold reviewers get only the plan file and hub; the traceability gate runs as a fresh-context read-only checker over ledger, spec, and plans reporting uncovered IDs; the orchestrator alone fixes files and backfills the ledger.",
       "files": [
-        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+        "skills/tailrocks-plan/evals/fixtures/5/roadmap/macos-application/README.md",
+        "skills/tailrocks-plan/evals/fixtures/5/research/session-boundary/README.md",
+        "skills/tailrocks-plan/evals/fixtures/5/plans/macos-application/README.md",
+        "skills/tailrocks-plan/evals/fixtures/5/plans/macos-application/coverage.md",
+        "skills/tailrocks-plan/evals/fixtures/5/plans/macos-application/spec/README.md",
+        "skills/tailrocks-plan/evals/fixtures/5/plans/macos-application/001.md",
+        "skills/tailrocks-plan/evals/fixtures/5/plans/macos-application/002.md",
+        "skills/tailrocks-plan/evals/fixtures/5/plans/macos-application/003.md",
+        "skills/tailrocks-plan/evals/fixtures/5/plans/macos-application/004.md",
+        "skills/tailrocks-plan/evals/fixtures/5/plans/macos-application/005.md",
+        "skills/tailrocks-plan/evals/fixtures/5/plans/macos-application/006.md",
+        "skills/tailrocks-plan/evals/fixtures/5/plans/macos-application/007.md",
+        "skills/tailrocks-plan/evals/fixtures/5/plans/macos-application/008.md",
+        "skills/tailrocks-plan/evals/fixtures/5/plans/macos-application/009.md"
       ]
     },
     {
@@ -48,6 +76,18 @@
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/tui-dashboard/README.md"
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "No fresh reviewer or session exists. Return only the exact plan-hub excerpt this package requires; no repository lookup is required.",
+      "expected_output": "Includes a literal structured Assurance record with DEGRADED, names the missing fresh-context independence property, refuses PLANNED, and stops. Prose that merely says review is unavailable does not pass.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "A proposed plan asks its executor to choose between two storage designs. Return only the routing decision; no repository lookup is required.",
+      "expected_output": "Refuses the bounded-executor label, keeps frontier-judgment, and names the unresolved storage decision.",
+      "files": []
     }
   ]
 }

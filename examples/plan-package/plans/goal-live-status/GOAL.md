@@ -6,7 +6,8 @@ plans/goal-live-status/README.md · Generated 2026-07-23 at `example001`.
 ## Gates
 
 ```sh gates
-true
+mise run test
+mise run lint
 ```
 
 ## 1. Goal condition
