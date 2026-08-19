@@ -49,5 +49,5 @@ checksum = "sha256:538f9c846355d9e847b2671bc00c47da4229a0befb24df3282b739770f3b4
 url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.14/bun-windows-x64-baseline.zip"
 
 [[tools."npm:oxfmt"]]
-version = "0.63.0"
+version = "0.64.0"
 backend = "npm:oxfmt"
