@@ -65,6 +65,13 @@ Status values: `TODO` | `IN PROGRESS` | `DONE` | `BLOCKED (<reason>)` |
   guarantee and tests the actually missing role vocabulary, assurance record,
   provider-neutral handoff, linked-reference context, and real goal gates. No
   source file or commit was produced by the stopped attempt.
+- 002's second control at `e7cba7a` repaired the eval harness but stopped before
+  skill guidance changed. The normal role/profile case passed 2/2 and was
+  removed as non-discriminating; missing structured degraded assurance failed
+  5/5; unresolved-architecture routing was behaviorally correct but named the
+  auditable roles only 4/5. The plan now targets only those earned assurance
+  and convergence defects. Temporary source/test edits remain uncommitted in
+  the detached executor worktree until the revised plan is accepted.
 - 003 consumes the canonical role vocabulary from 002 and exposes the brand
   convention from 001.
 - 004 consumes the roles and verified client/model mappings; it must not invent

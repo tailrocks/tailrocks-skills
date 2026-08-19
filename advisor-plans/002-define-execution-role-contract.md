@@ -5,6 +5,33 @@
 > STOP condition occurs, stop and report; do not improvise. When done, update
 > the status row for this plan in `advisor-plans/README.md`.
 >
+> **2026-08-20 continuation capsule**: the reusable control state is the
+> detached worktree `/tmp/tailrocks-improve-exec.QAVFF2` at exact base
+> `e7cba7a564d0e66d0a6a93c13f59f3733ca01bbb`. Before editing, run
+> `rtk proxy git rev-parse HEAD`, `rtk proxy git status --short`, and
+> `rtk proxy shasum -a 256 scripts/run-evals.ts scripts/run-evals.test.ts scripts/goal-check.test.ts scripts/plan-source-neutrality.test.ts skills/tailrocks-plan/evals/evals.json` there. The status must contain exactly four modified files plus the one
+> untracked file named below, and the hashes must match the recorded values:
+>
+> ```text
+>  M scripts/goal-check.test.ts
+>  M scripts/run-evals.test.ts
+>  M scripts/run-evals.ts
+>  M skills/tailrocks-plan/evals/evals.json
+> ?? scripts/plan-source-neutrality.test.ts
+> f9a82ce2a521885c5103e2b03d41a08711bc5b5cd5c54d8cdc16c010e6b0ec26  scripts/run-evals.ts
+> ccc4226d53540ec832266bb51b91a34c5b551f83ebd7f21d906575ddb2c837ab  scripts/run-evals.test.ts
+> 55be1e1cb0dfc2bd7e125c7d84c092f67d985d50df9a9fbd631e01de73085882  scripts/goal-check.test.ts
+> 1ee766bc532a7b39407fed77290b6358fb12509b52406743375877896c7cfab6  scripts/plan-source-neutrality.test.ts
+> ed3517cde546961454535c7f0342aa186d37e5629d1949609d6daeef7e6e3c96  skills/tailrocks-plan/evals/evals.json
+> ```
+>
+> These bytes produced the recorded case-7/case-8 controls. If the worktree,
+> base, inventory, `scripts/run-evals.ts`, or eval prompts/expected outputs do
+> not match, do not reset or overwrite it and do not reuse the counts. Create a
+> fresh detached worktree at the exact base, repeat Steps 1-2 and all five
+> controls, then continue there. Matching state must be preserved and extended,
+> not recreated.
+>
 > **Drift check (run first)**:
 > `rtk git diff --stat 13a5ee5..HEAD -- skills/tailrocks-plan/SKILL.md skills/tailrocks-plan/references/plan-template.md skills/tailrocks-plan/references/goal-handoff.md skills/tailrocks-plan/references/execution-roles.md skills/tailrocks-plan/evals/evals.json examples/plan-package/plans/goal-live-status/GOAL.md examples/plan-package/plans/goal-live-status/README.md scripts/goal-check.test.ts scripts/plan-source-neutrality.test.ts scripts/run-evals.ts scripts/run-evals.test.ts`
 > If any in-scope file changed, compare the current-state excerpts below with
@@ -116,7 +143,9 @@ bounded delegation and the already-required independence visible in artifacts.
 
 ## Git workflow
 
-- Branch: `advisor/002-execution-role-contract` when executed separately.
+- Branch: remain on the operator's existing shared execution branch. The
+  implementation worktree stays detached until its accepted commit is
+  published onto that branch. Do not create another branch or PR.
 - Commit message: `feat(plan): define execution capability roles`.
 - Commit with `git commit -s`, add
   `Co-authored-by: Codex <codex@openai.com>`, and include
@@ -133,11 +162,21 @@ or proposed reference guidance until that harness defect is repaired. This is
 test infrastructure, not the behavioral skill edit. Complete it before adding
 the new role guidance so control and guided variants use the same runner.
 
-First add deterministic `scripts/run-evals.test.ts` regressions requiring
+The continuation currently replaced, rather than extended, the seven existing
+`eval runner helpers` regressions. Before any skill/reference edit, restore
+those seven baseline tests verbatim from
+`e7cba7a564d0e66d0a6a93c13f59f3733ca01bbb:scripts/run-evals.test.ts` and keep
+the four linked-material tests. No existing fixture-staging, escape,
+artifact-truncation, aggregate-retention, or retry assertion may disappear.
+
+The linked-material tests require
 direct Markdown references linked by `SKILL.md` to be collected, bounded, and
 included in subject context without permitting an absolute path or `..`
-escape. Confirm they fail against the unchanged runner. Then add a narrow
-exported helper to `scripts/run-evals.ts` that:
+escape. On a fresh fallback worktree, confirm they fail against the unchanged
+runner and then add the helper. On the exact matching continuation capsule, the
+red and helper already exist: reuse that observed harness red/green, do not
+overwrite `scripts/run-evals.ts`, and proceed directly to restoring/extending
+the tests. The helper must:
 
 - extracts direct relative Markdown links from the selected `SKILL.md`;
 - resolves them inside that skill directory only;
@@ -149,21 +188,27 @@ exported helper to `scripts/run-evals.ts` that:
   binding skill material, not as workspace data;
 - never follows links recursively.
 
-Because this is shared eval infrastructure, add a deterministic corpus test
-that enumerates every current `skills/*/SKILL.md`, collects its direct linked
-Markdown references, and proves collection succeeds, ordering is stable,
-every resolved path stays inside its owning skill, and the per-file/total caps
-hold. The test does not call a model. Live convergence remains scoped to
-`tailrocks-plan` because it is the only shipped skill behavior changed here;
-plan 004 owns later cross-route/model matrices.
+Because this is shared eval infrastructure, replace the self-referential corpus
+assertion with an independent oracle: check in an
+`EXPECTED_DIRECT_MARKDOWN_LINKS` map that lists every current skill and its
+exact direct relative Markdown targets, including empty arrays. Assert the
+globbed skill-name set exactly equals the map's keys; compare the collector's
+paths exactly with each independently recorded sorted list. Then render each
+skill's materials through the actual subject-context renderer and assert every
+expected path has one binding-material block containing its collected content.
+Also prove every resolved path stays inside its owner and both caps hold.
+Returning `[]` for every skill, omitting a target, or collecting but not
+rendering it must fail. The test does not call a model. Live convergence remains
+scoped to `tailrocks-plan`; plan 004 owns later cross-route/model matrices.
 
 This is the minimum needed for existing live evals to exercise load-bearing
 references. Plan 004 owns adapter separation, route selection, workflow phases,
 and judge hardening.
 
-**Verify**: `rtk bun test scripts/run-evals.test.ts` → the new assertions are
-red before the runner edit, then linked-reference, full-tree corpus, ordering,
-cap, and escape tests all pass after it.
+**Verify**: `rtk bun test scripts/run-evals.test.ts` → all seven preserved
+baseline tests plus linked-reference, independent full-tree oracle/rendering,
+ordering, cap, and escape tests pass. The output must report at least eleven
+passing tests and zero failures; fewer means prior coverage was dropped.
 
 ### Step 2: Add and run the behavioral red bars
 
@@ -176,24 +221,27 @@ repository. Each prompt says to return only the requested manifest/plan-hub
 excerpt or routing decision and that no repository lookup is required. A stop
 caused by an absent fixture is setup failure, not a red bar.
 
-1. **Bounded delegation and assurance**: a READY item has exact decisions,
-   paths, and gates. Ask for the manifest/profile/assurance portion of its
-   completed package. Expected output records `frontier-judgment` for
-   decomposition, `bounded-executor` for each self-contained plan,
-   `frontier-judgment + independent-verifier` for semantic acceptance, STOP
-   escalation back to the frontier owner, and one explicit Assurance record
-   containing planned-at SHA, producing role, verification role, observed or
-   `unknown` provider/model/version, eval evidence identifier, and `VERIFIED`.
-2. **Unavailable fresh context**: ask for the exact plan-hub excerpt produced
+1. **Unavailable fresh context** (case 7): ask for the exact plan-hub excerpt produced
    when no fresh reviewer/session exists. Expected output includes a literal
    structured Assurance record with `DEGRADED`, names the missing independence
    property, refuses `PLANNED`, and stops. The judge must not accept a prose
    synonym for the required record.
-3. **Unresolved architecture**: a proposed plan still asks its executor to pick
+2. **Unresolved architecture** (case 8): a proposed plan still asks its executor to pick
    between two storage designs. Expected output refuses the
    `bounded-executor` label, keeps `frontier-judgment`, and names the unresolved
    decision. This proves that “bounded” is a predicate, not a synonym for
    small.
+
+The stopped 2026-08-20 control run also tested a normal bounded package as
+temporary case 6. It passed unchanged guidance in both repetitions, so that
+case is non-discriminating and must be removed rather than kept as evidence for
+new guidance. Keep IDs 7 and 8 for the two earned cases; eval IDs need only be
+unique, not contiguous. Add a deterministic assertion in
+`scripts/run-evals.test.ts` that the ordered `tailrocks-plan` eval ID list is
+exactly `[1, 2, 3, 4, 5, 7, 8]`. Run that single test first and observe it fail
+with actual IDs `[1, 2, 3, 4, 5, 6, 7, 8]`; then delete only case 6 and rerun
+the full runner suite green. Do not edit cases 7/8 before deciding whether the
+recorded controls remain reusable.
 
 Add a unit regression in `scripts/goal-check.test.ts` that reads every checked
 in example GOAL file, rejects a fenced gate consisting only of `true`, `:`, or
@@ -209,30 +257,37 @@ to `tailrocks-plan`: an unrelated shared skill currently contains a
 client-specific setup command, and repairing the repository-wide invariant
 requires its own red-barred plan rather than a hidden scope expansion.
 
-Run the new live eval cases against the unchanged skill with the repaired
-runner. Preserve reports outside the repository or in the implementation PR
-description; do not add credential-bearing logs. All three cases must fail in
-both repetitions on the missing role/profile/assurance contract, not unavailable
-repository fixtures. Do not add a case that tests only refusal of inline cold
-review: the unchanged skill already passes that behavior. Case 7 is red only
-when its literal structured assurance record is absent; the already-correct
-refusal is a preservation condition, not evidence for the edit. If the
-CLI/model needed for the baseline is unavailable, STOP.
+Run five independent control repetitions per case against the unchanged skill
+with the repaired runner; preserve only redacted summaries. The current
+execution already recorded case 7 at 0/5 and case 8 at 4/5. Case 7 proves the
+missing structured degraded-assurance behavior. Case 8 proves a convergence
+defect: core rejection is already correct, but one control omitted the exact
+auditable role assignment. Guidance must move both variants to 5/5 without
+weakening the core STOP behavior. Reuse is permitted only after the continuation
+capsule proves the exact base and byte identity. Restoring the seven deleted
+unit tests does not affect the live corpus; any edit to `scripts/run-evals.ts`
+or either case's prompt/expected output invalidates reuse and requires all five
+controls again. If the CLI/model is unavailable, STOP.
 
 **Verify**:
 
 ```sh
-rtk mise run evals -- --skill tailrocks-plan --case 6 --runs 2
-rtk mise run evals -- --skill tailrocks-plan --case 7 --runs 2
-rtk mise run evals -- --skill tailrocks-plan --case 8 --runs 2
+# Run the two live commands only when the continuation capsule did not match;
+# a matching capsule reuses the recorded 0/5 and 4/5 controls.
+rtk mise run evals -- --skill tailrocks-plan --case 7 --runs 5
+rtk mise run evals -- --skill tailrocks-plan --case 8 --runs 5
+rtk bun test scripts/run-evals.test.ts -t "keeps exactly the earned tailrocks-plan eval cases"
+rtk bun test scripts/run-evals.test.ts
 rtk bun test scripts/goal-check.test.ts
 rtk bun test scripts/plan-source-neutrality.test.ts
 ```
 
-→ all live repetitions fail only on the missing role/profile/assurance
-contract; the goal regression fails only on the no-op fenced gate; and the
-neutrality regression fails only on the named current product/CLI matches. A
-split live result is variance to inspect, not a valid red bar.
+→ case 7 is 0/5, case 8 records its exact pass/fail distribution, the runner
+suite fails only because temporary case 6 is still present (then turns green
+when case 6 is deleted), the goal
+regression fails only on the no-op fenced gate, and the neutrality regression
+fails only on named current product/CLI matches. The case-8 split is retained
+as measured convergence evidence, not misreported as a universal failure.
 
 ### Step 3: Define the capability vocabulary once
 
@@ -295,15 +350,21 @@ the router. Update only load-bearing lines:
 Remove client names from the introduction and completion text. Say “a
 supported goal host” and “manual protocol consumer” instead. Keep the existing
 manual-only policy and description within the 250-character post-guard budget.
+Because this step adds one direct router link, update only the
+`tailrocks-plan` entry in `EXPECTED_DIRECT_MARKDOWN_LINKS` with the sorted
+`references/execution-roles.md` target and rerun the corpus/rendering test here.
 
 **Verify**:
 
 ```sh
 rtk mise run lint
+rtk bun test scripts/run-evals.test.ts
 rtk rg -n 'Claude|Codex|Grok|Kimi|Amp|OpenCode|Antigravity|Anthropic|OpenAI|Gemini|Fable|Sonnet|Haiku|GPT|Terra|Luna' skills/tailrocks-plan/SKILL.md
 ```
 
-→ lint exits 0 and the router has no client/model matches. The scoped
+→ lint and all runner tests pass, the independent oracle proves the newly
+linked reference reaches rendered subject context, and the router has no
+client/model matches. The scoped
 neutrality test remains red only on `goal-handoff.md` until Step 5 removes its
 client-specific protocol. A broader
 source-neutrality gate is outside this plan because existing unrelated skill
@@ -368,22 +429,26 @@ that a live model ran it.
 **Verify**: `rtk bun test scripts/goal-check.test.ts` → all pass, including the
 no-op-gate regression.
 
-### Step 7: Re-run the complete skill eval set
+### Step 7: Re-run convergence and the complete skill eval set
 
-Run all eight `tailrocks-plan` eval cases after the edit. Use a
+First run the two new variants five times each; both must converge at 5/5.
+Then run all seven `tailrocks-plan` eval cases after the edit with the
+repository-required two repetitions. Use a
 frontier-judgment route for the skill subject until plan 004 introduces formal
 route selection. Each case must pass; preserve only redacted summaries.
 
 **Verify**:
 
 ```sh
-for case_id in 1 2 3 4 5 6 7 8; do
+rtk mise run evals -- --skill tailrocks-plan --case 7 --runs 5
+rtk mise run evals -- --skill tailrocks-plan --case 8 --runs 5
+for case_id in 1 2 3 4 5 7 8; do
   rtk mise run evals -- --skill tailrocks-plan --case "$case_id" --runs 2 || exit 1
 done
 ```
 
-→ both repetitions of every case pass. If variability produces a failure,
-inspect the retained
+→ cases 7/8 are 5/5 and both repetitions of every case pass. If variability
+produces a failure, inspect the retained
 workspace, correct the contract rather than the expected output, then rerun the
 full set.
 
@@ -407,13 +472,14 @@ rtk git diff --check
 
 ## Test plan
 
-- Three new live eval cases prove bounded role selection, a literal degraded
-  assurance record when independence is unavailable, and refusal to mislabel
-  unresolved architecture as bounded.
+- Two earned live eval cases prove a literal degraded assurance record when
+  independence is unavailable and converge on refusal to mislabel unresolved
+  architecture as bounded. The non-discriminating normal case is removed.
 - `scripts/run-evals.test.ts` proves every direct linked skill reference enters
   eval context under deterministic path, ordering, and byte-cap rules.
-- Existing eval 5 continues proving citation verification and cold review; its
-  expected output now names the role requirements and rejects inline fallback.
+- Existing eval 5 and its expected output remain unchanged, preserving citation
+  verification and fresh cold-review behavior. Only cases 7/8 own the new
+  auditable role/assurance expectations.
 - `scripts/goal-check.test.ts` rejects no-op fenced gates in checked-in example
   packages and asserts the two real example gates.
 - `scripts/plan-source-neutrality.test.ts` prevents product names and client
@@ -440,7 +506,8 @@ rtk git diff --check
 - [ ] Missing fresh context prevents `PLANNED` certification.
 - [ ] The example goal runs `mise run test` and `mise run lint`; no no-op gate
       can pass its regression test.
-- [ ] All eight live skill eval cases pass after a recorded red baseline.
+- [ ] All seven live skill eval cases pass twice after recorded controls, and
+      the two new variants converge at 5/5.
 - [ ] `rtk mise run lint`, `test`, `fmt`, and `ci` exit 0.
 - [ ] No file outside Scope changed, excluding generated files and the status
       row.
