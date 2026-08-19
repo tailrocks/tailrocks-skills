@@ -49,8 +49,8 @@ the same checked-in plan artifact across separate sessions.
 |---|---|---:|---:|---|---|
 | [001](001-brand-every-skill-surface.md) | Brand every skill surface | P1 | M | — | DONE |
 | [002](002-define-execution-role-contract.md) | Define the provider-neutral execution role contract | P1 | L | — | TODO |
-| [003](003-publish-client-capability-registry.md) | Publish the seven-client capability registry and model-routing guide | P1 | L | 001, 002 | TODO |
-| [004](004-prove-model-routes-with-evals.md) | Prove frontier planning and bounded execution with role-separated evals | P1 | L | 002, 003 | TODO |
+| [003](003-publish-client-capability-registry.md) | Publish the seven-client capability registry and model-routing guide | P1 | L | 001, 002 | BLOCKED (002 red-bar law) |
+| [004](004-prove-model-routes-with-evals.md) | Prove frontier planning and bounded execution with role-separated evals | P1 | L | 002, 003 | BLOCKED (002/003 dependencies) |
 | [005](005-gate-merge-on-fresh-semantic-review.md) | Gate the Tailrocks merge workflow on current-head review | P2 | M | — | TODO |
 
 Status values: `TODO` | `IN PROGRESS` | `DONE` | `BLOCKED (<reason>)` |
@@ -59,6 +59,12 @@ Status values: `TODO` | `IN PROGRESS` | `DONE` | `BLOCKED (<reason>)` |
 ## Dependency notes
 
 - 001 is independent and can land first.
+- 002's first execution against `7a630a8` exposed a planning error: the
+  unchanged skill already refuses to replace cold review with inline review,
+  so the proposed case 7 was not a red bar. The plan now preserves that
+  guarantee and tests the actually missing role vocabulary, assurance record,
+  provider-neutral handoff, linked-reference context, and real goal gates. No
+  source file or commit was produced by the stopped attempt.
 - 003 consumes the canonical role vocabulary from 002 and exposes the brand
   convention from 001.
 - 004 consumes the roles and verified client/model mappings; it must not invent
@@ -66,6 +72,10 @@ Status values: `TODO` | `IN PROGRESS` | `DONE` | `BLOCKED (<reason>)` |
 - 005 is independent. It authenticates an allowed GitHub reviewer and exact
   head, not a self-reported model capability; trusted model attestation would
   require a separate server-side integration.
+- 005's first execution found that its proposed live cases lacked staged
+  repository/policy evidence and stopped at fixture setup. The revised plan
+  requires self-contained offline GitHub-query snapshots before rerunning the
+  unchanged-skill red bars.
 
 ## Current research basis
 
