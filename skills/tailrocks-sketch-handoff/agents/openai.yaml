@@ -1,5 +1,5 @@
 interface:
-  display_name: "Sketch Handoff"
+  display_name: "Tailrocks: Sketch Handoff"
   short_description: "Turn a Sketch design into a faithful native macOS handoff"
   default_prompt: "Use $tailrocks-sketch-handoff to wire the Sketch MCP server, ground the design in Apple's official macOS UI kit, extract tokens into committed code, write the symbol-to-SwiftUI design map, and assemble the approved-frame handoff package."
 policy:

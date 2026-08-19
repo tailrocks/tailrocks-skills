@@ -158,6 +158,9 @@ export async function validate(root: string): Promise<string[]> {
     const name = metadata.name;
     const description = metadata.description;
     if (name !== directory) errors.push(`${directory}: name must match directory`);
+    if (typeof name === "string" && !name.startsWith("tailrocks-")) {
+      errors.push(`${directory}: name must start with tailrocks-`);
+    }
     if (typeof name !== "string" || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(name)) {
       errors.push(`${directory}: invalid skill name`);
     }
@@ -198,6 +201,12 @@ export async function validate(root: string): Promise<string[]> {
           if (typeof openai.interface?.[key] !== "string" || openai.interface[key] === "") {
             errors.push(`${directory}: agents/openai.yaml missing interface.${key}`);
           }
+        }
+        if (
+          typeof openai.interface?.display_name === "string" &&
+          !/^Tailrocks: \S/.test(openai.interface.display_name)
+        ) {
+          errors.push(`${directory}: interface.display_name must start with Tailrocks: `);
         }
         if (
           typeof openai.interface?.default_prompt === "string" &&

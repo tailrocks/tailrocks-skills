@@ -1,5 +1,5 @@
 interface:
-  display_name: "macOS Prototype"
+  display_name: "Tailrocks: macOS Prototype"
   short_description: "Build the runnable Liquid Glass prototype that proves an approved design"
   default_prompt: "Use $tailrocks-macos-prototype to build this feature's runnable prototype from its approved design artifacts: standard launch contract, fixture scenarios, visual-qa captures, region match policy, and a recorded sign-off."
 policy:

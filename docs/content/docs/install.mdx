@@ -191,6 +191,9 @@ codex plugin marketplace add tailrocks/tailrocks-skills@v0.21.0
   `interface.display_name`, `interface.short_description`,
   `interface.default_prompt`, and `policy.allow_implicit_invocation: false`
   (defaults to `true`; `false` makes the skill explicit-only).
+- Canonical skill IDs and invocations remain `tailrocks-*`; Codex display
+  labels use `Tailrocks: <label>`. Validation rejects unbranded names and
+  labels.
 - Invocation: type `$` and pick `$<skill-name>`, or run `/skills`. Because
   every tailrocks skill ships `policy.allow_implicit_invocation: false`, the
   skills do not appear in the model-visible implicit skill list (verified via

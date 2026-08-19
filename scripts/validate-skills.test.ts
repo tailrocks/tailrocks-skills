@@ -5,7 +5,7 @@ import path from "node:path";
 
 import { validate } from "./validate-skills";
 
-const skill = "sample-skill";
+const skill = "tailrocks-sample-skill";
 const description = "Use only when the user explicitly requests this skill. Validate a minimal fixture.";
 let root = "";
 
@@ -15,11 +15,18 @@ async function write(relative: string, contents: string): Promise<void> {
   await writeFile(file, contents);
 }
 
-async function writeSkill(customDescription = description): Promise<void> {
+async function writeSkill(
+  customDescription = description,
+  {
+    name = skill,
+    directory = skill,
+    displayName = "Tailrocks: Sample",
+  }: { name?: string; directory?: string; displayName?: string } = {},
+): Promise<void> {
   await write(
-    `skills/${skill}/SKILL.md`,
+    `skills/${directory}/SKILL.md`,
     `---
-name: ${skill}
+name: ${name}
 description: >-
   ${customDescription}
 disable-model-invocation: true
@@ -31,19 +38,19 @@ user-invocable: true
 `,
   );
   await write(
-    `skills/${skill}/agents/openai.yaml`,
+    `skills/${directory}/agents/openai.yaml`,
     `interface:
-  display_name: Sample
+  display_name: ${JSON.stringify(displayName)}
   short_description: Sample fixture
-  default_prompt: Use $${skill} for this fixture.
+  default_prompt: Use $${name} for this fixture.
 policy:
   allow_implicit_invocation: false
 `,
   );
   await write(
-    `skills/${skill}/evals/evals.json`,
+    `skills/${directory}/evals/evals.json`,
     JSON.stringify({
-      skill_name: skill,
+      skill_name: name,
       evals: [1, 2, 3].map((id) => ({
         id,
         prompt: `Prompt ${id}`,
@@ -90,6 +97,35 @@ afterEach(async () => {
 describe("validate", () => {
   test("accepts a valid minimal repository", async () => {
     expect(await validate(root)).toEqual([]);
+  });
+
+  test("rejects a skill name without the tailrocks prefix", async () => {
+    const unbranded = "sample-skill";
+    await writeSkill(description, {
+      name: unbranded,
+      directory: unbranded,
+      displayName: "Tailrocks: Sample",
+    });
+    await write(
+      "catalog.json",
+      JSON.stringify({
+        groups: [{ id: "sample", title: "Sample", summary: "Fixture group.", skills: [skill, unbranded] }],
+      }),
+    );
+    for (const catalog of ["README.md", "INSTALL.md", "AGENTS.md", "CLAUDE.md"]) {
+      await write(catalog, `${skill}\n${unbranded}`);
+    }
+    expect(await validate(root)).toEqual([`${unbranded}: name must start with tailrocks-`]);
+  });
+
+  test("rejects an unbranded Codex display name", async () => {
+    await writeSkill(description, { displayName: "Sample" });
+    expect(await validate(root)).toContain(`${skill}: interface.display_name must start with Tailrocks: `);
+  });
+
+  test("rejects a Codex display name with an empty suffix", async () => {
+    await writeSkill(description, { displayName: "Tailrocks: " });
+    expect(await validate(root)).toContain(`${skill}: interface.display_name must start with Tailrocks: `);
   });
 
   test("rejects a skill that no catalog group contains", async () => {

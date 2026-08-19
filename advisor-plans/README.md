@@ -47,7 +47,7 @@ the same checked-in plan artifact across separate sessions.
 
 | Plan | Title | Priority | Effort | Depends on | Status |
 |---|---|---:|---:|---|---|
-| [001](001-brand-every-skill-surface.md) | Brand every skill surface | P1 | M | — | TODO |
+| [001](001-brand-every-skill-surface.md) | Brand every skill surface | P1 | M | — | DONE |
 | [002](002-define-execution-role-contract.md) | Define the provider-neutral execution role contract | P1 | L | — | TODO |
 | [003](003-publish-client-capability-registry.md) | Publish the seven-client capability registry and model-routing guide | P1 | L | 001, 002 | TODO |
 | [004](004-prove-model-routes-with-evals.md) | Prove frontier planning and bounded execution with role-separated evals | P1 | L | 002, 003 | TODO |
