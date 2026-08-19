@@ -45,6 +45,17 @@
 > workflow proof. Cases 2-5, 7, and 8 remain the complete single-subject suite
 > for this plan.
 >
+> The first frozen direct-suite run then exposed a second setup defect: case 4
+> said plans 004 and 007 were `STALE`, but the shared fixture contained no plan
+> package. Both subjects correctly refused to fabricate missing evidence and
+> the judge split 1/2. Replace the contradictory shared input with isolated,
+> authoritative per-case fixtures: case 2 is `SHAPING` with six open questions;
+> case 3 is a `READY` scope-refusal item; case 4 includes the updated decision,
+> hub, and stale plans 004/007; case 5 includes the returned nine-plan package
+> and its cited ledger/spec sources. Prompts and expected outputs stay
+> unchanged. Fixture inputs remain evidence for the subject, not generated
+> output evidence for the judge.
+>
 > **Drift check (run first)**:
 > `rtk git diff --stat 13a5ee5..HEAD -- skills/tailrocks-plan/SKILL.md skills/tailrocks-plan/references/plan-template.md skills/tailrocks-plan/references/goal-handoff.md skills/tailrocks-plan/references/execution-roles.md skills/tailrocks-plan/evals/evals.json skills/tailrocks-plan/evals/fixtures scripts/goal-check.test.ts scripts/plan-source-neutrality.test.ts scripts/run-evals.ts scripts/run-evals.test.ts scripts/validate-skills.ts scripts/validate-skills.test.ts examples/plan-package/plans/goal-live-status/GOAL.md examples/plan-package/plans/goal-live-status/README.md`
 > If any in-scope file changed, compare the current-state excerpts below with
@@ -517,6 +528,9 @@ rtk git diff --check
   artifacts; permits the subject only exact fixture inspection/gate commands;
   gives the judge no tools; and never launches a single subject for a
   workflow-only case.
+- Cases 2-5 stage isolated fixtures whose status and named artifacts match
+  their prompts; deterministic tests reject a shared or incomplete corpus
+  before a live model can turn setup ambiguity into evaluator variance.
 - Validator tests prove the optional execution-mode grammar is finite and
   reject unknown modes before runtime.
 - Existing eval 5 and its expected output remain unchanged, preserving citation
