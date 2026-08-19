@@ -53,8 +53,14 @@
 > case 3 is a `READY` scope-refusal item; case 4 includes the updated decision,
 > hub, and stale plans 004/007; case 5 includes the returned nine-plan package
 > and its cited ledger/spec sources. Prompts and expected outputs stay
-> unchanged. Fixture inputs remain evidence for the subject, not generated
-> output evidence for the judge.
+> unchanged. Case 4's updated decision must state the replacement storage
+> contract, not merely say that a decision changed: the Rust runtime owns an
+> append-only session event log, the Swift shell never reads storage directly,
+> and legacy JSON snapshots import atomically with their backup retained until
+> the new log verifies. Its staged pre-change spec and stale plans must state
+> the superseded JSON-snapshot contract so refresh work is evidence-derived.
+> Fixture inputs remain evidence for the subject, not generated output evidence
+> for the judge.
 >
 > **Drift check (run first)**:
 > `rtk git diff --stat 13a5ee5..HEAD -- skills/tailrocks-plan/SKILL.md skills/tailrocks-plan/references/plan-template.md skills/tailrocks-plan/references/goal-handoff.md skills/tailrocks-plan/references/execution-roles.md skills/tailrocks-plan/evals/evals.json skills/tailrocks-plan/evals/fixtures scripts/goal-check.test.ts scripts/plan-source-neutrality.test.ts scripts/run-evals.ts scripts/run-evals.test.ts scripts/validate-skills.ts scripts/validate-skills.test.ts examples/plan-package/plans/goal-live-status/GOAL.md examples/plan-package/plans/goal-live-status/README.md`
