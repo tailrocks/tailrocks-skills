@@ -84,8 +84,8 @@ and CLI facts are intentionally treated as release-dated data.
   <https://learn.chatgpt.com/docs/agent-configuration/subagents>.
 - OpenCode agents support per-agent provider/model selection:
   <https://opencode.ai/docs/agents>.
-- Kimi subagents support an optional model override; primary/secondary routing
-  is experimental and must be labeled as such:
+- Kimi subagents support a documented optional per-invocation model override;
+  no separate primary/secondary tier contract is established by that page:
   <https://moonshotai.github.io/kimi-cli/en/customization/agents.html>.
 - Antigravity custom subagents select `inherit`, `flash`, or `pro` tiers:
   <https://antigravity.google/docs/subagents>.

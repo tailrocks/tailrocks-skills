@@ -64,8 +64,8 @@ features.
     <https://learn.chatgpt.com/docs/agent-configuration/subagents>.
   - OpenCode: per-agent `model` and primary/subagent modes:
     <https://opencode.ai/docs/agents>.
-  - Kimi: optional subagent model override; primary/secondary selection is
-    experimental:
+  - Kimi: optional per-invocation subagent model override; the current page
+    does not establish a separate primary/secondary tier contract:
     <https://moonshotai.github.io/kimi-cli/en/customization/agents.html>.
   - Antigravity: `inherit`, `flash`, and `pro` subagent tiers:
     <https://antigravity.google/docs/subagents>.
@@ -247,7 +247,7 @@ commands. Populate the registry conservatively:
 | Codex CLI | GPT-5.6 Sol | GPT-5.6 Terra after eval | GPT-5.6 Luna for narrow repeatable work after eval | fresh Sol/frontier-qualified context | configurable subagent model/reasoning |
 | OpenCode | strongest configured provider/model (Fable or Sol are candidates) | explicitly configured balanced agent after eval | explicitly configured fast agent after eval | fresh strongest configured route | per-agent provider/model |
 | Grok Build | selected top-level frontier model | separate session consuming the checked plan | separate narrow session when verified | separate fresh frontier session | `artifact-handoff` until public per-subagent override is proven |
-| Kimi Code | configured primary model | configured secondary model after eval | secondary only for proven narrow work | fresh primary/frontier-qualified context | `experimental` primary/secondary override |
+| Kimi Code | strongest configured model | explicit per-subagent override after eval | explicit fast-model override only for proven narrow work | fresh strongest configured route | documented optional per-subagent model override |
 | Antigravity | `pro` tier | `flash` only after representative eval, otherwise `pro` | `flash` for proven mechanical tasks | fresh `pro` context | per-subagent tier |
 | Amp | `ultra`/`high` capability mode; exact backend is managed | `medium` for bounded work after eval | `low` for small well-defined work after eval | fresh `ultra`/`high` frontier route | managed routing; do not promise one backend |
 
@@ -331,7 +331,9 @@ delivery index/sidebar. Use the role names from plan 002. Include:
 5. exact client syntax only when verified against the current official docs and
    installed version;
 6. an explicit warning that Amp managed routes and model aliases can change;
-7. an explicit warning that Kimi secondary routing is experimental;
+7. an explicit warning that Kimi documents an optional per-subagent model
+   override but no named primary/secondary tier contract; selectors remain
+   configuration-dependent and behaviorally unqualified until eval evidence;
 8. an explicit statement that Grok per-subagent heterogeneous routing remains
    unverified, so the safe path is separate sessions consuming the same plan;
 9. release re-verification steps and commands, with secrets redacted.
@@ -409,8 +411,9 @@ rtk git diff --check
 - [ ] Fable 5 is mapped to frontier judgment for Claude; Sonnet/Haiku are
       bounded/mechanical candidates gated by eval evidence.
 - [ ] Sol/Terra/Luna provide the equivalent Codex role ladder.
-- [ ] Managed, experimental, and unverified capabilities are labeled exactly;
-      no optimistic fallback exists.
+- [ ] Managed and unverified capabilities are labeled exactly; `experimental`
+      is used only when current official documentation establishes it, and no
+      optimistic fallback exists.
 - [ ] Shared skill bodies contain no provider/client mapping.
 - [ ] `rtk mise run lint`, `test`, `fmt`, `ci`, and `docs:build` exit 0.
 - [ ] No file outside Scope changed, excluding generated docs/status row.
