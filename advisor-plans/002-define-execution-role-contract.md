@@ -133,6 +133,8 @@ bounded delegation and the already-required independence visible in artifacts.
 - `scripts/plan-source-neutrality.test.ts` (create)
 - `scripts/run-evals.ts`
 - `scripts/run-evals.test.ts`
+- `scripts/validate-skills.ts`
+- `scripts/validate-skills.test.ts`
 - `skills/tailrocks-plan/README.md` (generated)
 - `docs/content/docs/skills/tailrocks-plan/index.mdx` (generated)
 - `docs/content/docs/skills/tailrocks-plan/definition.mdx` (generated)
@@ -461,6 +463,12 @@ red bar showing why treating this as a single subject would either time out or
 fake fresh independence. Plan 004 must turn this case green through distinct
 fresh contexts; this plan must not weaken its expected output.
 
+Extend the eval validator with the finite optional grammar
+`execution_mode: "single_subject" | "workflow"`; omission means
+`single_subject`. Reject every other value so a typo cannot silently launch an
+incapable route. Add validator fixtures for default, both explicit values, and
+an unknown value.
+
 **Verify**:
 
 ```sh
@@ -506,6 +514,8 @@ rtk git diff --check
   collisions and `.git` injection, initializes a clean commit, permits the
   subject only exact fixture inspection/gate commands, gives the judge no
   tools, and never launches a single subject for a workflow-only case.
+- Validator tests prove the optional execution-mode grammar is finite and
+  reject unknown modes before runtime.
 - Existing eval 5 and its expected output remain unchanged, preserving citation
   verification and fresh cold-review behavior. Only cases 7/8 own the new
   auditable role/assurance expectations.
