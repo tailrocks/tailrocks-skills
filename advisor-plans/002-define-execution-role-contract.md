@@ -62,6 +62,18 @@
 > Fixture inputs remain evidence for the subject, not generated output evidence
 > for the judge.
 >
+> A later case 4 retry exposed an eval-runner observability defect: the model
+> CLI returned a nonzero exit with the provider quota explanation on stdout,
+> but `scripts/run-evals.ts` discarded stdout and emitted a fallback containing
+> only the configured timeout value. Preserve a bounded nonzero diagnostic with
+> stderr precedence, then stdout, and describe the configured value as a
+> timeout cap rather than claiming a timeout occurred. Add pure unit coverage
+> for stdout-only diagnostics, stderr precedence, and the empty-output
+> fallback. The final complete single-subject suite uses the runner's declared
+> default `sonnet` route because the separately overridden Fable route reported
+> its monthly quota exhausted; do not silently relabel that provider limit as a
+> behavioral failure.
+>
 > **Drift check (run first)**:
 > `rtk git diff --stat 13a5ee5..HEAD -- skills/tailrocks-plan/SKILL.md skills/tailrocks-plan/references/plan-template.md skills/tailrocks-plan/references/goal-handoff.md skills/tailrocks-plan/references/execution-roles.md skills/tailrocks-plan/evals/evals.json skills/tailrocks-plan/evals/fixtures scripts/goal-check.test.ts scripts/plan-source-neutrality.test.ts scripts/run-evals.ts scripts/run-evals.test.ts scripts/validate-skills.ts scripts/validate-skills.test.ts examples/plan-package/plans/goal-live-status/GOAL.md examples/plan-package/plans/goal-live-status/README.md`
 > If any in-scope file changed, compare the current-state excerpts below with
