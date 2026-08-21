@@ -5,7 +5,7 @@ import path from "node:path";
 
 import { validate } from "./validate-skills";
 
-const skill = "sample-skill";
+const skill = "tailrocks-sample-skill";
 const description = "Use only when the user explicitly requests this skill. Validate a minimal fixture.";
 let root = "";
 
@@ -15,11 +15,18 @@ async function write(relative: string, contents: string): Promise<void> {
   await writeFile(file, contents);
 }
 
-async function writeSkill(customDescription = description): Promise<void> {
+async function writeSkill(
+  customDescription = description,
+  {
+    name = skill,
+    directory = skill,
+    displayName = "Tailrocks: Sample",
+  }: { name?: string; directory?: string; displayName?: string } = {},
+): Promise<void> {
   await write(
-    `skills/${skill}/SKILL.md`,
+    `skills/${directory}/SKILL.md`,
     `---
-name: ${skill}
+name: ${name}
 description: >-
   ${customDescription}
 disable-model-invocation: true
@@ -31,19 +38,19 @@ user-invocable: true
 `,
   );
   await write(
-    `skills/${skill}/agents/openai.yaml`,
+    `skills/${directory}/agents/openai.yaml`,
     `interface:
-  display_name: Sample
+  display_name: ${JSON.stringify(displayName)}
   short_description: Sample fixture
-  default_prompt: Use $${skill} for this fixture.
+  default_prompt: Use $${name} for this fixture.
 policy:
   allow_implicit_invocation: false
 `,
   );
   await write(
-    `skills/${skill}/evals/evals.json`,
+    `skills/${directory}/evals/evals.json`,
     JSON.stringify({
-      skill_name: skill,
+      skill_name: name,
       evals: [1, 2, 3].map((id) => ({
         id,
         prompt: `Prompt ${id}`,
@@ -90,6 +97,35 @@ afterEach(async () => {
 describe("validate", () => {
   test("accepts a valid minimal repository", async () => {
     expect(await validate(root)).toEqual([]);
+  });
+
+  test("rejects a skill name without the tailrocks prefix", async () => {
+    const unbranded = "sample-skill";
+    await writeSkill(description, {
+      name: unbranded,
+      directory: unbranded,
+      displayName: "Tailrocks: Sample",
+    });
+    await write(
+      "catalog.json",
+      JSON.stringify({
+        groups: [{ id: "sample", title: "Sample", summary: "Fixture group.", skills: [skill, unbranded] }],
+      }),
+    );
+    for (const catalog of ["README.md", "INSTALL.md", "AGENTS.md", "CLAUDE.md"]) {
+      await write(catalog, `${skill}\n${unbranded}`);
+    }
+    expect(await validate(root)).toEqual([`${unbranded}: name must start with tailrocks-`]);
+  });
+
+  test("rejects an unbranded Codex display name", async () => {
+    await writeSkill(description, { displayName: "Sample" });
+    expect(await validate(root)).toContain(`${skill}: interface.display_name must start with Tailrocks: `);
+  });
+
+  test("rejects a Codex display name with an empty suffix", async () => {
+    await writeSkill(description, { displayName: "Tailrocks: " });
+    expect(await validate(root)).toContain(`${skill}: interface.display_name must start with Tailrocks: `);
   });
 
   test("rejects a skill that no catalog group contains", async () => {
@@ -201,6 +237,81 @@ describe("validate", () => {
   test("rejects stale release pins", async () => {
     await write("INSTALL.md", `${skill}\nv0.9.0\n`);
     expect(await validate(root)).toContain("INSTALL.md: release pin v0.9.0 must equal v1.0.0");
+  });
+
+  test("rejects a design-file tool named in skill content", async () => {
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\nExport the artboard from Figma and match it.\n`,
+    );
+    expect(await validate(root)).toContain(
+      `${skill}:SKILL.md: design-file tool forbidden in skill content: Export the artboard from Figma and match it.`,
+    );
+  });
+
+  test("allows a design-file tool named in order to forbid it", async () => {
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\nA Figma file is never the design reference.\n`,
+    );
+    expect(await validate(root)).toEqual([]);
+  });
+
+  test("does not match sketch used as an ordinary verb", async () => {
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\nA description that sketches the workflow becomes a shortcut.\n`,
+    );
+    expect(await validate(root)).toEqual([]);
+  });
+
+  test("rejects a model route pinned in skill content", async () => {
+    await write(`skills/${skill}/references/routing.md`, "Dispatch Haiku 4.5 as the executor.\n");
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[Routing](references/routing.md)\n`,
+    );
+    expect(await validate(root)).toContain(
+      `${skill}:references/routing.md: model brand name forbidden in skill content: Dispatch Haiku 4.5 as the executor.`,
+    );
+  });
+
+  test("allows a client name that is not a model route", async () => {
+    await write(
+      `skills/${skill}/references/routing.md`,
+      "`CLAUDE.md` and `GEMINI.md` are symlinks to the AGENTS.md beside them.\n",
+    );
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[Routing](references/routing.md)\n`,
+    );
+    expect(await validate(root)).toEqual([]);
+  });
+
+  test("rejects a fenced eval harness invocation in skill content", async () => {
+    await write(
+      `skills/${skill}/references/wiring.md`,
+      "Verify the change:\n\n```sh\nmise run evals -- --skill sample --case 1\n```\n",
+    );
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[Wiring](references/wiring.md)\n`,
+    );
+    expect(await validate(root)).toContain(
+      `${skill}:references/wiring.md: eval harness invocation forbidden in skill content: mise run evals -- --skill sample --case 1`,
+    );
+  });
+
+  test("allows prose that names the eval harness to defer it", async () => {
+    await write(
+      `skills/${skill}/references/wiring.md`,
+      "Eval execution is a CI/CD concern: never run `mise run evals` locally.\n",
+    );
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[Wiring](references/wiring.md)\n`,
+    );
+    expect(await validate(root)).toEqual([]);
   });
 
   test("requires Kimi keywords to include Claude keywords", async () => {

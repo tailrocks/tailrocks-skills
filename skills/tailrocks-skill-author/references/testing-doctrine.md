@@ -24,6 +24,18 @@ the author is not clear to a fresh agent), "it's just a reference"
 (problems are agents failing in production), "no time" (a bad skill
 costs more than its test).
 
+## Two different things wear the word *run*
+
+**The baseline observation is manual and stays here. The eval harness
+defers to CI.** Watching a fresh agent attempt the task without the skill
+is an ordinary session, costs a few minutes, and is what the iron law
+demands — deferring the harness never excuses skipping it, and a skill
+whose failure was never seen does not ship. `mise run evals`, the graded
+suite over `evals/evals.json`, is the other thing: authored here,
+executed in CI — a lane this repository has not wired yet — and never
+invoked locally. Every "run", "re-test", and "repetition" below that is
+not `mise run evals` is the manual kind.
+
 ## Test to the skill's type
 
 - **Discipline skills** (rules an agent is tempted to skip): pressure
@@ -73,17 +85,20 @@ across five runs means the form is wrong, not the word count.
 
 ## The improvement loop
 
-Run baseline and with-skill for every case; grade; then generalize from
-failures rather than patching them. The evals are a handful of examples
-standing in for thousands of future invocations — a fix that only fits
-the eval is overfitting, and stacking rigid MUSTs to pass one case is
-the documentation version of hard-coding the test's answer. Read the
-transcripts, not only outcomes: if the skill makes the agent do
-unproductive work, cut the section causing it and re-run. When every
-test run independently rebuilds the same helper, ship the helper with
-the skill instead of the instructions to rebuild it. Stop when the
-behavior the baseline documented no longer occurs and re-runs converge —
-then stop adding.
+The eval cases are authored here and executed in CI — a lane this
+repository has not wired yet — so `mise run evals` is never run locally.
+Author cases so that grading generalizes from failures rather than
+patching them: the evals
+are a handful of examples standing in for thousands of future
+invocations, a fix that only fits the eval is overfitting, and stacking
+rigid MUSTs to pass one case is the documentation version of
+hard-coding the test's answer. Read transcripts, not only outcomes: if
+the skill makes the agent do unproductive work, cut the section causing
+it. When every test run independently
+rebuilds the same helper, ship the helper with the skill instead of the
+instructions to rebuild it. The behavior the baseline documented should
+no longer occur and re-runs should converge — that is when to stop
+adding.
 
 One skill at a time: written, proven, wired, before the next begins.
 Batching skills defers every test to a future that will not run them.

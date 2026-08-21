@@ -136,4 +136,6 @@ calls. Size alone would suggest deep, but suggestion remains non-binding.
 - Can light's same-pass fix verification remain fresh-context? Recommend the
   reviewer continue with only its original inputs; structural rewrites trigger
   a new reviewer even in light.
-- Use the eval runner to A/B the example package before shipping these diffs.
+- A/B the example package across tiers before shipping these diffs? The eval
+  runner is the natural instrument, but its execution is deferred to CI and
+  not wired yet — until it is, compare authored plan packages by hand.

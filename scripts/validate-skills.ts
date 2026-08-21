@@ -123,6 +123,61 @@ function packageManagerCommands(source: string): string[] {
   return source.split("\n").filter((line) => /(?:^|[\s$(`])(?:npm|npx|pnpm|yarn)\s/.test(line));
 }
 
+// A line may name a banned term in order to forbid it — a prohibition has to
+// say what it prohibits. Anything without a negation is treated as an
+// instruction to use the thing.
+const negationPattern =
+  /\b(?:never|not|no|non|without|forbidden|forbids?|prohibits?|refuses?|rejects?|rejected|avoid|instead\s+of|rather\s+than)\b/i;
+
+// Design-file tools. A design reference in this house is real code on the real
+// substrate — a design route the application rendered, a running prototype, a
+// ratatui golden frame. A design file is never the reference, so shipped skill
+// content must not send an agent to one. Bare "sketch" is an ordinary English
+// verb and is deliberately not matched; only the tool and its artifacts are.
+const designToolPattern =
+  /\b(?:figma|penpot|zeplin|invision|lunacy|framer|adobe\s*xd)\b|\.sketch\b|\bartboards?\b|\bsketch\s+(?:file|files|document|documents|app|symbol|symbols)\b/i;
+
+// Model route names. Provider mappings are volatile and the shared skill tree
+// is source-neutral: a skill states the capability role it needs, never the
+// vendor route that fills it today. Design notes under docs/design/ and the
+// client capability registry are the sanctioned homes for the mapping.
+//
+// Only version-qualified model identifiers match. Bare client and product
+// names are deliberately excluded: tailrocks-agents-md's whole subject is
+// per-client instruction files, so `CLAUDE.md` and `GEMINI.md` must stay
+// writable, and naming a client is not the same as pinning a model route.
+const modelBrandPattern =
+  /\b(?:fable\s*\d|mythos\s*\d|opus\s*\d|sonnet\s*\d|haiku\s*\d|claude-(?:opus|sonnet|haiku|fable|mythos)|gpt-\d|gemini-\d|llama\s*\d|mistral-\w)\b/i;
+
+// The eval harness. Authoring `evals/evals.json` is part of every skill
+// change; running the harness is a CI/CD concern that nothing in this
+// repository has wired yet. Prose *about* the policy has to be able to name
+// the command, so only a fenced block matches — a fenced command is a
+// copy-paste invocation, which is the failure this gate exists to stop.
+const evalRunnerPattern = /\bmise\s+run\s+evals\b|\brun-evals\.ts\b/;
+
+function evalRunnerInvocations(source: string): string[] {
+  return fencedCode(source)
+    .split("\n")
+    .filter((line) => evalRunnerPattern.test(line));
+}
+
+function bannedTermLines(source: string, pattern: RegExp): string[] {
+  return source.split("\n").filter((line) => pattern.test(line) && !negationPattern.test(line));
+}
+
+function scanBannedTerms(source: string, directory: string, label: string, errors: string[]): void {
+  for (const line of bannedTermLines(source, designToolPattern)) {
+    errors.push(`${directory}:${label}: design-file tool forbidden in skill content: ${line.trim()}`);
+  }
+  for (const line of bannedTermLines(source, modelBrandPattern)) {
+    errors.push(`${directory}:${label}: model brand name forbidden in skill content: ${line.trim()}`);
+  }
+  for (const line of evalRunnerInvocations(source)) {
+    errors.push(`${directory}:${label}: eval harness invocation forbidden in skill content: ${line.trim()}`);
+  }
+}
+
 export async function validate(root: string): Promise<string[]> {
   const errors: string[] = [];
   const skillsRoot = path.join(root, "skills");
@@ -158,6 +213,9 @@ export async function validate(root: string): Promise<string[]> {
     const name = metadata.name;
     const description = metadata.description;
     if (name !== directory) errors.push(`${directory}: name must match directory`);
+    if (typeof name === "string" && !name.startsWith("tailrocks-")) {
+      errors.push(`${directory}: name must start with tailrocks-`);
+    }
     if (typeof name !== "string" || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(name)) {
       errors.push(`${directory}: invalid skill name`);
     }
@@ -200,6 +258,12 @@ export async function validate(root: string): Promise<string[]> {
           }
         }
         if (
+          typeof openai.interface?.display_name === "string" &&
+          !/^Tailrocks: \S/.test(openai.interface.display_name)
+        ) {
+          errors.push(`${directory}: interface.display_name must start with Tailrocks: `);
+        }
+        if (
           typeof openai.interface?.default_prompt === "string" &&
           !openai.interface.default_prompt.includes(`$${directory}`)
         ) {
@@ -230,6 +294,7 @@ export async function validate(root: string): Promise<string[]> {
       for (const line of packageManagerCommands(fencedCode(reference))) {
         errors.push(`${directory}:${relative}: forbidden package-manager command: ${line.trim()}`);
       }
+      scanBannedTerms(reference, directory, relative, errors);
     }
 
     const evalFile = path.join(skillDir, "evals", "evals.json");
@@ -284,6 +349,7 @@ export async function validate(root: string): Promise<string[]> {
     for (const line of packageManagerCommands(fencedCode(source))) {
       errors.push(`${directory}:SKILL.md: forbidden package-manager command: ${line.trim()}`);
     }
+    scanBannedTerms(source, directory, "SKILL.md", errors);
     for (const template of await filesUnder(path.join(skillDir, "templates"))) {
       try {
         const text = await readFile(template, "utf8");
@@ -294,6 +360,7 @@ export async function validate(root: string): Promise<string[]> {
             `${directory}:${path.relative(skillDir, template)}: forbidden package-manager command: ${line.trim()}`,
           );
         }
+        scanBannedTerms(text, directory, path.relative(skillDir, template), errors);
       } catch {
         // Binary templates contain no commands this text gate can inspect.
       }

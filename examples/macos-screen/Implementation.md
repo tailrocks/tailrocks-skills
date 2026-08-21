@@ -29,9 +29,10 @@ Every stall in the dogfood run was treated as a skill defect:
 | 2 | Unscoped `performAccessibilityAudit` fails on system menu-bar/screen elements | first audit run | scoped issue-handler in `testing.md` + `interaction.md` (a7574db) |
 | 3 | App foreground with zero AX windows when the user works on another Space | repeated UI-test failures | `.canJoinAllSpaces` mitigation documented in `interaction.md` (a7574db); applied here via `.onAppear` — note the AppDelegate's `applicationDidFinishLaunching` is too early, windows do not exist yet |
 | 4 | Audit finding: container elements (Table, sidebar List) carried identifiers but no labels | ConnectionsBoard audit run | real accessibility fix in the app; the identifier-vs-label distinction was already documented in `accessibility.md` — no prose change needed |
-| 5 | Brief predicted the inspector "auto-collapses" at minimum width; the platform presents it as a system overlay instead | minimum-width capture | brief corrected (native behavior wins, exactly per the handoff source-of-truth order); no skill defect — the skills' own rule resolved the conflict |
+| 5 | Brief predicted the inspector "auto-collapses" at minimum width; the platform presents it as a system overlay instead | minimum-width capture | brief corrected (native behavior wins over a written prediction); no skill defect — the skills' own rule resolved the conflict |
 
 Defect 5 is the interesting one: the dogfood exercised the source-of-truth
 order end-to-end — implementation surfaced platform behavior that overrode a
-design assumption, and the correction flowed back into the design artifact,
-which is precisely the loop `handoff-package.md` prescribes.
+design assumption, and the correction flowed back into the design artifact.
+That is the loop the family is built around: the running app outranks any
+written or drawn prediction of it, and the artifact is what gets corrected.

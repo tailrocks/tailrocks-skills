@@ -8,6 +8,15 @@ Score against **rendered evidence**. A design scored from source code has not
 been scored — the model will otherwise write flattering prose about work it
 cannot see.
 
+Rendered evidence is the design *running*: the `tailrocks-macos-prototype` app
+judged live, or captures `tailrocks-macos-visual-qa` froze from it after
+finalization, or the shipped screen itself. A design file, an exported image,
+and a mockup are none of these — they are a picture of the screen, and a
+picture cannot show a material the operating system renders. A first-pass
+design direction has no prototype yet and therefore no rendered evidence: score
+it, mark the unassessable categories zero, and let the missing-evidence hard
+failure bind only once a prototype or an implementation exists to render.
+
 **Evidence integrity:** a named capture matches its declared window size exactly
 (pixels = backing scale × logical size, with chrome height noted); verify
 dimensions, not filenames. Every non-inactive capture shows colored traffic

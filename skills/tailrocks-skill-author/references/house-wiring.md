@@ -57,8 +57,8 @@ mise run docs:check  # generated files not stale
 
 Eval runs use the tree's runner:
 `mise run evals -- --skill <name> --case <id> --runs 2`. It needs the
-`claude` CLI and spends budget — run locally before tagging, not in PR
-CI.
+`claude` CLI and spends budget — this repository does not run it locally
+or in gates; eval verification is a CI/CD concern, not yet wired.
 
 ## Update-mode obligations
 
@@ -71,9 +71,10 @@ Editing an existing skill adds constraints beyond the create path:
   the new obligation to adding a sibling section that gestures at it.
 - **Past the router budget (~200 lines), replace.** The next addition
   removes something.
-- **Re-run the skill's full eval set** after any router change — a new
-  section changes every behavior in the file, so the case nearest the
-  edit is not the only one at risk.
+- **Update the skill's full eval set** after any router change, for CI to
+  run — a new section changes every behavior in the file, so the case
+  nearest the edit is not the only one at risk. Updating the cases is the
+  local obligation; running them is not.
 - An eval that fails on one missing element while everything else is
   correct is usually a signposting defect — look at where the
   requirement sits in the file before rewriting what it says.

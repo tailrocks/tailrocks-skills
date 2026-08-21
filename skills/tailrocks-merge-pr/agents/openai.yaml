@@ -1,5 +1,5 @@
 interface:
-  display_name: "Merge PR"
+  display_name: "Tailrocks: Merge PR"
   short_description: "Merge a pull request fail-closed through the repo's gates"
   default_prompt: "Use $tailrocks-merge-pr to run the pre-merge gates and merge this pull request."
 policy:

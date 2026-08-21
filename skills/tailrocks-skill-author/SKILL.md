@@ -1,7 +1,7 @@
 ---
 name: tailrocks-skill-author
 description: >-
-  Use only when the user explicitly requests this skill. Create, update, or audit agent skills: baseline the failure first, match the guidance form to the failure type, keep routers lean and references deep, write trigger-only descriptions, prove the skill with baselined evals. Audits are read-only.
+  Use only when the user explicitly requests this skill. Create, update, or audit agent skills: baseline the failure first, match the guidance form to the failure type, keep routers lean and references deep, write trigger-only descriptions, write baselined eval cases. Audits are read-only.
 argument-hint: "[create|update|audit] <skill name or capability>"
 disable-model-invocation: true
 license: Apache-2.0
@@ -42,7 +42,9 @@ Do not infer mutation permission from the presence of defects.
 
 1. **Capture the failure, not the wish.** State what an agent does wrong
    *without* the skill — from the current conversation when the request is
-   "turn this into a skill", from a reproduced baseline run otherwise. A
+   "turn this into a skill", otherwise by watching a fresh agent attempt
+   the task without it. That observation is made by hand, here, and is
+   never the eval harness: the harness defers to CI, the red bar does not. A
    skill request with no observable failure behind it is refused: record
    what was asked and why no skill is warranted. Document the baseline
    verbatim — the exact wrong choice or rationalization is what the skill
@@ -85,12 +87,14 @@ Do not infer mutation permission from the presence of defects.
    [`testing-doctrine.md`](references/testing-doctrine.md). Write
    realistic eval cases — normal, boundary, and safety/refusal, with
    fixtures for audit-shaped cases and near-miss should-not-trigger
-   prompts for the description. Run baseline and with-skill; the skill
-   must change the behavior the baseline documented. Capture surviving
-   rationalizations as explicit counters and re-run. Never batch: one
-   skill is written and proven before the next is started.
-   **Complete when:** with-skill runs pass on the behaviors the baseline
-   failed, and every new rationalization has a counter.
+   prompts for the description. Eval execution
+   (baseline vs. with-skill, `mise run evals`) is a CI/CD concern in this
+   repository, not a local step — write the cases so they are ready to
+   run when it is wired; do not invoke the runner locally. Capture surviving
+   rationalizations from prior transcripts as explicit counters. Never
+   batch: one skill is written and proven before the next is started.
+   **Complete when:** the eval cases exist, cover the baseline failure,
+   and every known rationalization has a counter.
 
 6. **Wire the repository.** Read
    [`house-wiring.md`](references/house-wiring.md) for the full artifact
@@ -103,9 +107,10 @@ Do not infer mutation permission from the presence of defects.
    change to every behavior in the file: check the skill's eval cases for
    load-bearing lines before rewording gates or rejection rules, prefer
    strengthening an existing section over adding one, replace rather than
-   append past the tree's router budget, and re-run the skill's full eval
-   set — not only the case nearest the edit.
-   **Complete when:** the full eval set passes on the edited skill.
+   append past the tree's router budget, and update the skill's full eval
+   set — not only the case nearest the edit — for CI to run once wired.
+   **Complete when:** the full eval set covers the edit and validation is
+   green; eval execution is deferred to CI and never run here.
 
 ## Audit output
 
@@ -126,7 +131,7 @@ neighboring skill. Every defect names its fix and the layer it lives in.
 - "Put the workflow in the description so it triggers better" — agents
   follow the description and skip the body; triggers only.
 - "Just add a section" to a router — additions dilute every existing
-  behavior; strengthen or replace, then re-run the whole eval set.
+  behavior; strengthen or replace, then update the whole eval set for CI.
 - A skill whose evals pass without it — the skill is dead weight or the
   evals are theater; fix one.
 
@@ -134,6 +139,11 @@ neighboring skill. Every defect names its fix and the layer it lives in.
 
 Never ship a skill or a behavioral edit whose failure was not observed
 first. Never summarize a workflow in a description or a reference in a
-router. Never add a router section without re-running that skill's evals.
-Never leave a new skill unwired or a validator red. Never author two
-skills owning one responsibility. Report every check skipped.
+router. Never add a router section without updating that skill's eval
+cases for CI to run once wired. Never leave a new skill unwired or a validator red.
+Never author two skills owning one responsibility. Never run
+`mise run evals` locally in this repository — its execution is deferred
+to CI and not yet wired; only the eval *cases* are written here. That
+deferral never excuses the red bar: the observed failure is watched by
+hand, and a skill whose failure was never seen does not ship. Report
+every check skipped.

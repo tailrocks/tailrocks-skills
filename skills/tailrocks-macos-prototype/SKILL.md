@@ -10,8 +10,8 @@ user-invocable: true
 
 # macOS Prototype
 
-No design file is authoritative for Liquid Glass — the operating system is —
-so the only honest proof of an approved design is the design running: a
+**No design file is authoritative for Liquid Glass — the operating system
+is.** The only honest proof of an approved design is the design running: a
 small native app rendering the real material from fixture data, reviewed
 live on screen, and signed off before the real implementation starts. This
 skill builds that prototype. Its view layer is written to lift verbatim
@@ -116,17 +116,20 @@ nobody.
    **Complete when:** the sign-off names the pending capture lane and what
    it will cover.
 
-6. **Retire the prototype package from the feature branch.** The prototype
+6. **Move the prototype package out of the shipping diff.** The prototype
    is committed for review and capture, not for permanent coexistence with
    production. Once `tailrocks-macos-visual-qa` has frozen its baseline from
-   this package, the feature PR that ships the real implementation must
-   either delete the prototype package or move it to a location outside the
-   PR's diff (a separate reference branch, or a standing fixtures/prototypes
-   home the repo already excludes from production builds) before that PR is
-   proposed for merge. A prototype package still present in the same diff as
-   the shipped feature is a defect to report, not a detail to note.
-   **Complete when:** the feature PR's diff contains either zero prototype
-   files, or an explicit, named exception the user approved for keeping it.
+   this package, the feature PR that ships the real implementation relocates
+   it out of that PR's diff — a reference branch, or a standing prototypes
+   home the repository already excludes from production builds. **Relocate,
+   never delete:** a re-blessing re-captures the frozen baseline from this
+   package, so deleting it forfeits the only source that baseline can be
+   regenerated from and makes the next design change rebuild the prototype
+   from nothing. A prototype package still inside the shipped feature's diff
+   is a defect to report, not a detail to note.
+   **Complete when:** the feature PR's diff carries no prototype files and
+   the package's new home is named — or a named user exception records why
+   it stays.
 
 ## Final gate
 
@@ -136,7 +139,7 @@ Never ship a bespoke capture loop, diff tool, or manifest shape. Never
 rename or extend the launch contract per feature. Never resolve a design
 gap in the prototype instead of routing it to the design. Never pixel-gate
 a native region or a cross-binary whole window. Never record a sign-off
-the user did not give. Never discard the prototype source before capture is
-frozen; never leave it permanently coexisting with the shipped feature in
-the same PR once capture is frozen, absent a named user exception. Report
-every skipped check.
+the user did not give. Never delete the prototype source — the visual-qa
+lane re-captures from it on a re-blessing; relocate it instead, and never
+leave it coexisting with the shipped feature in the same PR once capture is
+frozen, absent a named user exception. Report every skipped check.

@@ -1,0 +1,16 @@
+{
+  "name": "reporting-service",
+  "packageManager": "yarn@4.1.0",
+  "scripts": {
+    "test": "jest",
+    "build": "webpack --mode production"
+  },
+  "dependencies": {
+    "axios": "1.7.2",
+    "express": "4.19.2"
+  },
+  "devDependencies": {
+    "jest": "29.7.0",
+    "webpack": "5.92.1"
+  }
+}

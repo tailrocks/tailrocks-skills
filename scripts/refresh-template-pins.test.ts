@@ -76,6 +76,14 @@ test("consistency check reports a policy row that disagrees with the template", 
   expect(mismatches[0]).toMatchObject({ label: "Bun", policy: "1.3.14", template: "1.4.0" });
 });
 
+test("consistency check is silent when the policy documents sources, not versions", () => {
+  const template = `{ "packageManager": "bun@1.4.0", "devDependencies": { "vite": "8.2.2" } }`;
+  // The policy's own rule is that templates/package.json is the only exact pin
+  // source, so its table lists primary release sources under the same labels.
+  const policy = `## Primary release sources\n\n| Component | Primary source |\n|---|---|\n| Bun | <https://bun.sh/blog> |\n| Vite | <https://vite.dev/releases> |\n`;
+  expect(consistencyMismatches(template, policy)).toEqual([]);
+});
+
 test("consistency check is silent when the policy carries no version table", () => {
   const template = `{ "packageManager": "bun@1.4.0", "devDependencies": { "vite": "8.2.2" } }`;
   const policy = `# Version policy\n\nSources of truth only, no numbers.\n`;

@@ -1,5 +1,5 @@
 interface:
-  display_name: "PR template"
+  display_name: "Tailrocks: PR template"
   short_description: "Generate a repo's .github/PULL_REQUEST_TEMPLATE.md from evidence"
   default_prompt: "Use $tailrocks-pr-template to generate this repository's .github/PULL_REQUEST_TEMPLATE.md from its structure and merged-PR history."
 policy:

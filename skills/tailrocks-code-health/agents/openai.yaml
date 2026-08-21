@@ -1,5 +1,5 @@
 interface:
-  display_name: "Code Health"
+  display_name: "Tailrocks: Code Health"
   short_description: "Build measurable monotonic code-health gates"
   default_prompt: "Use $tailrocks-code-health to audit or establish one shrink-only ratchet for a named debt class without installing unrelated quality programs."
 policy:

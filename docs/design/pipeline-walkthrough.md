@@ -3,6 +3,24 @@
 One feature, `goal-live-status`, from raw thought to reconciled execution.
 Invocations below are agent-neutral: explicitly invoke the named skill.
 
+## 0. Cold start with tailrocks-audit (only when there is no thought yet)
+
+This walkthrough begins with a raw thought, so it skips step 0. Start here
+instead when the input is a repository rather than an idea: invoke
+tailrocks-audit — bare, or scoped to one lane (`security`, `perf`, `ux`,
+`liquid-glass`, `agent-legibility`), or as `branch` before a pull request, with
+`deep` composing over any of them. It fans out category subagents, re-derives
+every candidate from its cited `file:line`, and prioritizes the survivors.
+Selected findings that still carry an open product question enter at step 1 as
+pre-filled DRAFT items; findings that carry none skip to step 6 as
+`plans/<slug>/` packages written directly.
+
+```text
++ roadmap/<slug>/README.md   Status: DRAFT, pre-filled with audit evidence
++ plans/<slug>/              for findings with no open question
+~ roadmap/README.md          index rows, plus a Log entry per dropped finding
+```
+
 ## 1. Capture with tailrocks-idea
 
 Invoke tailrocks-idea with: “Show live status for running goal loops.”

@@ -41,7 +41,7 @@ Never infer `apply` from findings.
 - Verdicts come from artifacts you opened yourself. A commit's diff, not
   its message; a plan's text, not its title. Summaries are leads.
 - Improvements obey this repository's own law: `skills/AGENTS.md`
-  (router budget, external-reference rules, eval re-run obligation) and
+  (router budget, external-reference rules, eval-execution policy) and
   `AGENTS.md` (wiring). Route whole-skill redesigns to
   `tailrocks-skill-author`; this skill lands targeted fixes.
 
@@ -108,9 +108,11 @@ Never infer `apply` from findings.
 
 6. **Apply (only in `apply` mode).** For each approved improvement:
    references-first, strengthen-over-append, load-bearing lines checked
-   against the skill's `evals/evals.json` before rewording, generated
-   docs regenerated, validators green, and the affected skills' eval
-   re-run obligation stated in the hand-off. Work on a feature branch,
+   against the skill's `evals/evals.json` before rewording, cases updated
+   in the same change when the wording they pin moves, generated docs
+   regenerated, and validators green. Never run the eval harness here —
+   `skills/AGENTS.md` defers execution; name the affected cases in the
+   hand-off instead. Work on a feature branch,
    conventional commits with DCO, PR per repository law.
    **Complete when:** `mise run lint` and `mise run docs:check` pass and
    every change traces to a report finding.
@@ -120,8 +122,8 @@ Never infer `apply` from findings.
 Report: the PR, its outcome, and the attribution table; per skill —
 commits, verdicts, evidence; classified findings each naming its target
 file and layer; the improvement map in leverage order; rejected
-candidates with reasons; in `apply` — the diff summary and which skills
-need their evals re-run.
+candidates with reasons; in `apply` — the diff summary and which eval
+cases the change moved.
 
 ## Final gate
 
