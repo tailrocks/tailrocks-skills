@@ -29,18 +29,20 @@ Log entry: <list>. Log actors that are not skills: <list>.
 
 | Detector | Result |
 |---|---|
-| D1 evidence after lock-in | <n findings \| none \| not applicable — <what this lane has none of> \| unrunnable over <n> commits> |
-| D2 rework loop | <n findings \| none \| not applicable — <what this lane has none of> \| unrunnable over <n> commits> |
-| D3 untraceable shipped scope | <n findings \| none \| not applicable — <what this lane has none of> \| unrunnable over <n> commits> |
-| D4 unconsumed or stale-consumed output | <n findings \| none \| not applicable — <what this lane has none of> \| unrunnable over <n> commits> |
-| D5 lifecycle inversion | <n findings \| none \| not applicable — <what this lane has none of> \| unrunnable over <n> commits> |
-| D6 write-scope breach | <n findings \| none \| not applicable — <what this lane has none of> \| unrunnable over <n> commits> |
+| D1 evidence after lock-in | <n findings \| none \| not applicable — <what this lane has none of> \| unrunnable over <n> commits \| not attributable — <lane>> |
+| D2 rework loop | <n findings \| none \| not applicable — <what this lane has none of> \| unrunnable over <n> commits \| not attributable — <lane>> |
+| D3 untraceable shipped scope | <n findings \| none \| not applicable — <what this lane has none of> \| unrunnable over <n> commits \| not attributable — <lane>> |
+| D4 unconsumed or stale-consumed output | <n findings \| none \| not applicable — <what this lane has none of> \| unrunnable over <n> commits \| not attributable — <lane>> |
+| D5 lifecycle inversion | <n findings \| none \| not applicable — <what this lane has none of> \| unrunnable over <n> commits \| not attributable — <lane>> |
+| D6 write-scope breach | <n findings \| none \| not applicable — <what this lane has none of> \| unrunnable over <n> commits \| not attributable — <lane>> |
 
 `none` means the check ran and found nothing. `not applicable` means the lane
 carries no artifact of the kind the detector reads, and it names which.
 `unrunnable` means the artifacts exist but the table could not show them —
 commits the detector groups by skill were unattributed, or the fetch
-truncated — and it names how many. The three are different evidence, and a
+truncated — and it names how many. `not attributable` means no skill in this
+lane is required to mark its commits at all, so a skill-grouped detector had
+nothing to group; it names the lane. The four are different evidence, and a
 record that writes `none` for any of the others cannot be re-audited.
 
 ## Findings

@@ -134,6 +134,16 @@ Rules for the table:
 - **The Log is a claim.** The item's Log is the narrative the pipeline told
   about itself; the trailers are what it did. Both belong in the table, in
   separate columns, so the diff between them is visible.
+- **Attribution has a floor, and the floor is lane-shaped.** Before running
+  the detectors that group by skill — D2, D4, D6 — state which skills in this
+  item's lane could have been attributed at all. Only the delivery family and
+  the design-reference skills are required to mark their commits; no project
+  setup, best practices, or visual QA skill stamps the trailer today. Where
+  none of a lane's stack skills could be marked, those detectors report
+  `not attributable` and name the gap, never `none` — `none` claims a check
+  that the marking rule never permitted. A trailer naming a skill the contract
+  does not bind is the inverse: it is evidence about the contract, recorded as
+  a finding, not quietly accepted as attribution.
 
 ## D1 — Evidence after lock-in
 

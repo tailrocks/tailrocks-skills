@@ -5,7 +5,7 @@ c3a9820	2026-05-04T11:02:00+02:00	docs(roadmap): record process isolation decisi
 c4b1173	2026-05-04T11:04:00+02:00	docs(roadmap): record queue backing decision	tailrocks-record-decision	roadmap/loom-sync/
 c5c7d05	2026-05-04T11:06:00+02:00	docs(roadmap): record retry backoff decision	tailrocks-record-decision	roadmap/loom-sync/
 d6e2244	2026-05-05T14:20:00+02:00	feat(api): add workspace index cache table	-	crates/api/, migrations/
-d7f8391	2026-05-05T16:55:00+02:00	ci(build): split the workspace test job by crate	tailrocks-rust-project-setup	.github/workflows/, Cargo.toml
+d7f8391	2026-05-05T16:55:00+02:00	ci(build): split the workspace test job by crate	-	.github/workflows/, Cargo.toml
 d8a4460	2026-05-06T09:30:00+02:00	refactor(api)!: move error types into a shared crate	tailrocks-rust-project-setup	crates/, Cargo.toml
 e9b6612	2026-05-09T10:15:00+02:00	docs(research): postgres queueing — chapters 01-03	tailrocks-research	research/postgres-queueing/
 f0c3378	2026-05-09T10:48:00+02:00	docs(research): correct the advisory-lock contention chapter	tailrocks-research	research/postgres-queueing/
