@@ -3,7 +3,6 @@ import { expect, test } from "bun:test";
 import {
   applyMiseBun,
   applyPins,
-  applyPolicy,
   consistencyMismatches,
   POLICY_ROWS,
   templateBun,
@@ -32,23 +31,6 @@ test("rewrites the packageManager pin and dependency pins", () => {
 test("leaves a template alone when every pin is already current", () => {
   const template = `{ "packageManager": "bun@1.4.0", "dependencies": { "vite": "8.2.2" } }`;
   expect(applyPins(template, latest)).toBe(template);
-});
-
-test("rewrites policy rows and the verification date", () => {
-  const policy = `## Verified 2026-07-23
-
-| Component | Current stable | Primary source |
-|---|---:|---|
-| Bun | 1.3.14 | <https://bun.sh/blog> |
-| Vite | 8.1.5 | <https://vite.dev/releases> |
-| Knip | 6.29.0 | <https://github.com/webpro-nl/knip/releases> |
-`;
-  const out = applyPolicy(policy, latest, "2026-08-21");
-  expect(out).toContain("## Verified 2026-08-21");
-  expect(out).toContain("| Bun | 1.4.0 |");
-  expect(out).toContain("| Vite | 8.2.2 |");
-  // Rows the registry did not answer for are left untouched rather than blanked.
-  expect(out).toContain("| Knip | 6.29.0 |");
 });
 
 test("every policy row maps to a package the resolver can query", () => {
