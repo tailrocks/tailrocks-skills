@@ -185,6 +185,94 @@ Use tailrocks-typescript-best-practices in review mode on src/auth/.
 Focus on runtime validation, typed failure, and async ownership. Do not edit.
 ```
 
+## Real-world workflows
+
+Skills chain. Three lanes show the whole collection working on one product —
+each step is an explicit invocation, each skill owns exactly one job.
+
+**A Rust backend with gRPC and GraphQL.** gRPC between services, GraphQL as
+the one public API:
+
+```text
+/tailrocks-rust-project-setup scaffold a workspace: domain, http, grpc crates, all gates
+/tailrocks-rust-best-practices write the order domain crate: typed failure, no panics on untrusted input
+/tailrocks-grpc-best-practices write the inventory v1 proto package and tonic server with buf gates
+/tailrocks-axum-best-practices build the HTTP crate: typed state, ordered Tower stack, graceful shutdown
+/tailrocks-graphql-best-practices write the public schema on Juniper, commit the SDL snapshot, wire the diff gate
+```
+
+Full walkthrough: [a Rust service end to end](https://skills.tailrocks.com/docs/delivery/rust-backend).
+
+**A web interface.** The TanStack app is a thin shell over that backend:
+
+```text
+/tailrocks-tanstack-project-setup scaffold the app: Bun, TanStack Start, shadcn/ui, Tailwind v4
+/tailrocks-web-design design the settings screens: fixtures, every state, user blesses live
+/tailrocks-web-visual-qa freeze the blessed screens into Playwright baselines
+/tailrocks-typescript-best-practices write the feature against the blessed design routes
+```
+
+Full walkthrough: [a TanStack feature on an Axum backend](https://skills.tailrocks.com/docs/delivery/tanstack-feature).
+
+**A macOS app.** SwiftUI shell over a Rust core, designed before it is built:
+
+```text
+/tailrocks-swift-project-setup scaffold the app with the Rust core lane
+/tailrocks-macos-design design the feature: brief, component map, rubric
+/tailrocks-macos-prototype prototype it — the user signs off on the running app
+/tailrocks-macos-visual-qa harness, then freeze the baseline
+/tailrocks-swift-best-practices implement from the blessed prototype
+/tailrocks-macos-visual-qa verify the implementation against the baseline
+```
+
+Full walkthrough: [a native macOS app](https://skills.tailrocks.com/docs/delivery/macos-app).
+
+## Prove it works, repeatably
+
+Nothing here is done because an agent says so. The delivery pipeline
+(`tailrocks-idea` through `tailrocks-reconcile`) carries every feature through
+the same loop, and the loop is what you re-run to validate the work:
+
+1. `tailrocks-plan` freezes the contract and fingerprints it; `check.sh`
+   answers `BLOCKED plan-drift` if any frozen file moves.
+2. `/goal` executes; every gate line is `<command> ||| <proof>` where the proof
+   prints how many units ran — a gate that executed nothing is
+   `BLOCKED gate-vacuous`, not a pass.
+3. `TAILROCKS GOAL: PASS` means the contract ran unedited — never that the
+   product works. `tailrocks-record-feedback` captures what you hit,
+   `tailrocks-prove` re-executes every claimed surface through subagents and
+   returns a verdict per statement, and `tailrocks-reconcile` rewrites the
+   remaining work from that evidence.
+4. Repeat 3 until nothing blocking remains. Only then does reconcile write
+   `DONE` — and retire the item's folder in the same breath.
+
+The collection validates itself the same way: `mise run lint` gates every
+skill, `mise run docs:check` fails on stale generated files, evals run in CI,
+and `examples/` holds a rendered regression corpus. Details:
+[validating the pipeline](https://skills.tailrocks.com/docs/validating).
+
+## Improve these skills from field evidence
+
+The collection's self-improvement loop runs on what actually shipped, not on
+what anyone imagined:
+
+```text
+/tailrocks-retrospect <slug> --repo owner/name --pr 412
+/tailrocks-skill-author update <skill>
+```
+
+`tailrocks-retrospect` rebuilds which skills ran from the commit trailers of
+one delivered item — in this repository or, through `--repo`/`--pr`, in any
+repository that ran the delivery pipeline. It fans the evidence reads out to
+parallel read-only subagents (commit tables, diffs, artifacts at the
+retirement commit's parent) while the six divergence detectors and every
+verdict stay in the main context. Its output is one record under
+`retrospectives/` with proposed patches; `tailrocks-skill-author` applies
+them under the observed-failure law and updates the eval set, which CI
+re-runs. A pull request whose commits carry no `Tailrocks-Skill` trailer is
+declined, not guessed at — that precondition and the whole loop:
+[self-improvement](https://skills.tailrocks.com/docs/self-improve).
+
 ## Skills
 
 Each row links to that skill's own README. Which skill to reach for when several

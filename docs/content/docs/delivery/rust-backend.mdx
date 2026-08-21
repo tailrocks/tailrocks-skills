@@ -1,0 +1,126 @@
+---
+title: A Rust service end to end
+description: "One backend service from idea to retirement: gRPC between services, GraphQL as the public API, and no screens to design."
+---
+
+A backend service with no user interface is the pipeline's simplest shape: no
+design stage, because no screen has a visual surface — and that skip is
+decided by a rule, not by anyone remembering. This walkthrough takes one such
+service end to end.
+
+The product: **usage metering**. Customers query their own usage through a
+public GraphQL API; the billing service pulls rated totals over gRPC. Two
+protocols, two audiences, and the doctrine decides which is which before any
+code exists — GraphQL is the public API of public services, gRPC is the
+protocol between Rust services, and neither crosses into the other's role.
+
+## 1. Capture — `tailrocks-idea`
+
+<Invoke skill="tailrocks-idea" args="customers need to query their own usage, and billing needs rated totals per account per period" />
+
+The item lands as DRAFT at `roadmap/usage-metering/`, its branch and draft
+pull request open. Every later skill commits into that one lane.
+
+## 2. Shape — `tailrocks-brainstorm`
+
+<Invoke skill="tailrocks-brainstorm" args="usage-metering" />
+
+The interview settles what only the product owner can: aggregation windows,
+late-event policy, what "rated" means before pricing exists. Each answer is
+written into the item as it resolves.
+
+## 3. Establish facts — `tailrocks-research`
+
+<Invoke skill="tailrocks-research" args="usage-metering: what idempotency and replay semantics do we need for usage events, and what does exactly-once actually cost in Postgres?" />
+
+Facts go to reusable `research/` topics, linked to the item. Choices come back
+through `tailrocks-record-decision`:
+
+<Invoke skill="tailrocks-record-decision" args="usage-metering: late events are accepted for 72 hours and re-rate the period, because a customer's invoice question must have one answer that the API can reproduce" />
+
+## 4. Earn READY — `tailrocks-finalize`
+
+<Invoke skill="tailrocks-finalize" args="usage-metering" />
+
+The readiness checklist passes with an empty Screens section. That is not a
+missing step — it is the correct one. The design stage exists for screens
+with a visual surface; a service has none, so nothing stands between READY
+and planning. The companion service the web app talks to would stop here
+until `tailrocks-web-design` produced a blessed reference; this one walks
+straight through.
+
+## 5. Package — `tailrocks-plan`
+
+<Invoke skill="tailrocks-plan" args="usage-metering" />
+
+The plan names the stack skill each slice is executed under. Slice 001 stands
+up the verification baseline on an empty skeleton; the feature slices follow:
+
+| Slice | Executed under |
+|---|---|
+| 001 — workspace, gates, CI parity | `tailrocks-rust-project-setup` |
+| 002 — metering domain crate | `tailrocks-rust-best-practices` |
+| 003 — metering v1 proto package, tonic server | `tailrocks-grpc-best-practices` |
+| 004 — HTTP crate, Tower stack, lifecycle | `tailrocks-axum-best-practices` |
+| 005 — public GraphQL schema, SDL gate | `tailrocks-graphql-best-practices` |
+
+## 6. Execute
+
+```text
+/goal Follow roadmap/usage-metering/goal/START.md
+```
+
+Inside the loop, the stack skills do the building:
+
+<Invoke skill="tailrocks-rust-project-setup" args="scaffold the workspace: domain, grpc, and http crates, every gate wired" />
+
+<Invoke skill="tailrocks-rust-best-practices" args="write the metering domain crate: typed failure, no panics on untrusted input, no protocol types below the adapter seam" />
+
+<Invoke skill="tailrocks-grpc-best-practices" args="write the metering v1 proto package and tonic server: buf lint and breaking gates, canonical status mapping, deadlines on every call, wire contract tests" />
+
+The domain crate compiles without tonic or prost — generated types never
+cross the adapter seam. The billing service is a client of this contract, and
+`buf breaking` in CI is what promises it the wire never silently moves.
+
+<Invoke skill="tailrocks-axum-best-practices" args="build the HTTP crate: typed state, ordered Tower middleware, health, graceful shutdown" />
+
+<Invoke skill="tailrocks-graphql-best-practices" args="write the public schema on Juniper: Relay connections, typed user errors, commit the SDL snapshot and wire the breaking-change gate" />
+
+The seam between the last two is the doctrine in miniature: the GraphQL
+schema is the only surface a customer ever sees, the gRPC service is the only
+surface another service ever sees, and a request to expose one over the other
+is refused and redirected by both skills.
+
+## 7. Prove what shipped
+
+`TAILROCKS GOAL: PASS` says the frozen contract ran unedited. It says nothing
+about whether a customer can actually query their usage, so the round runs:
+
+<Invoke skill="tailrocks-record-feedback" args="usage-metering" />
+
+<Invoke skill="tailrocks-prove" args="usage-metering" />
+
+Prove's subagents execute the surfaces the item claims: the GraphQL endpoint
+answers a real query, the gRPC server serves a real client call with a
+deadline, the SDL gate rejects a breaking change, late events re-rate the
+period the decision said they would. Each verdict cites the command that ran
+and the output line that decided it.
+
+## 8. Close the round — `tailrocks-reconcile`
+
+<Invoke skill="tailrocks-reconcile" args="usage-metering" />
+
+A blocking defect sends the item back to execution with that defect as the
+remaining work, and the loop repeats. A clean round writes `DONE` and retires
+`roadmap/usage-metering/` in the same invocation — and the delivery history
+it leaves behind is exactly what [self-improvement](/docs/self-improve)
+reads.
+
+## What this walkthrough did not need
+
+No design skill, no visual QA, no blessing — because no screen exists. The
+pipeline's stages are obligations with preconditions, not a checklist to
+perform. The moment this service grows a status page, `tailrocks-plan`
+refuses to plan that screen without a blessed reference, and the
+[web walkthrough](/docs/delivery/tanstack-feature) is where that story
+continues.
