@@ -54,7 +54,7 @@ the user's call.
   instead of one, exhaust every package that could bear on it, and report
   contradicting evidence rather than the first answer that holds.
 - `plan <description>`: skip the audit, spec one named thing directly.
-- `execute <slug>`: dispatch a `bounded-executor` against a `PLANNED`
+- `execute <slug>`: dispatch a `bounded-executor` against a seeded
   package, review its diff, report a verdict.
 - `sweep`: reconcile the backlog this skill seeded — verify, unblock,
   retire.
@@ -167,8 +167,9 @@ the user's call.
    **Complete when:** a verdict is reported and, if blocked, the plan
    defect is named.
 
-7. **`sweep` mode: reconcile the seeded backlog.** For `PLANNED` packages,
-   run `tailrocks-reconcile`. For still-`DRAFT` audit-sourced items,
+7. **`sweep` mode: reconcile the seeded backlog.** For a package with an
+   item, run `tailrocks-reconcile`; a parentless one has no item, so
+   re-verify its manifest row directly. For still-`DRAFT` audit-sourced items,
    re-check the original evidence: fixed independently → retire with the
    commit that fixed it; still live → leave as-is; evidence stale → mark
    the item's Log and point at `tailrocks-brainstorm` to re-shape.
