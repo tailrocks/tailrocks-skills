@@ -133,6 +133,19 @@ instead of from a baseline run.
 Use retrospect when the question is *what went wrong across a delivery*. Use
 skill-author when the question is *what should this skill say*.
 
+### retrospect or audit
+
+Both end in prioritized findings, and their subjects do not overlap.
+[`tailrocks-audit`](/docs/skills/tailrocks-audit) reads a repository or a
+branch and finds what is wrong with **the code**, seeding the result as
+roadmap items or plans — it is the cold-start skill for a codebase with no
+backlog yet. [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) reads
+one shipped item's delivery history and finds what is wrong with **the
+skills** that produced it, proposing patches against their definitions.
+
+Audit needs no roadmap item and produces them; retrospect needs exactly one
+and produces none. If there is no item to point at, the answer is audit.
+
 ### retrospect or reconcile
 
 Both look backwards at an item, at different subjects.
