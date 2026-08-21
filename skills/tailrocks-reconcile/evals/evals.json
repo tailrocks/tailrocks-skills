@@ -141,6 +141,28 @@
         "evals/fixtures/parked-complete/roadmap/session-sync/plan/README.md",
         "evals/fixtures/parked-complete/roadmap/session-sync/verification/05-report.md"
       ]
+    },
+    {
+      "prompt": "Reconcile session-sync — sh roadmap/session-sync/goal/check.sh prints BLOCKED decisions-drift.",
+      "expected_output": "The item's Decisions moved under the frozen snapshot in plan/spec/decisions.md. Find the commit that changed the section: one carrying the Tailrocks-Skill: tailrocks-record-decision trailer is a legitimate decision, so route to tailrocks-plan for the re-run that re-stamps the snapshot and un-marks what the decision did not stale. Any other editing commit is an unreviewed edit: report it with its commit and stop — the change is reverted or recorded through tailrocks-record-decision, the only door. Reconcile never writes the Decisions section itself, never edits the snapshot, and never re-stamps it.",
+      "id": 16,
+      "files": []
+    },
+    {
+      "prompt": "Reconcile goal-live-status — every row terminal, check.sh passed this session, the newest round is clean, Remaining is empty. Retire it.",
+      "expected_output": "Two trailered commits on the item's own branch and PR. Commit 1 writes DONE in the item header and index row with REPORT.md final (Status DONE, Not proven empty). Commit 2 moves REPORT.md to delivery/<slug>.md — creating delivery/, which never leaves the tree — then git rm -r roadmap/<slug>/ with its index row, taking roadmap/README.md and roadmap/ too when it was the last item. The report is the one artifact that stays in the tree; a retirement without it is blocked by tailrocks-merge-pr as retired-without-report.",
+      "files": [
+        "evals/fixtures/clean-retirement/roadmap/session-sync/README.md",
+        "evals/fixtures/clean-retirement/roadmap/session-sync/plan/README.md",
+        "evals/fixtures/clean-retirement/roadmap/session-sync/verification/04-report.md"
+      ],
+      "id": 17
+    },
+    {
+      "prompt": "Reconcile session-sync — this pass re-tested round 3's blocking defect B2 and it no longer reproduces.",
+      "expected_output": "The statement leaves the item's ## Remaining and moves into REPORT.md as an observable statement with its evidence — the SHA it was re-tested at and the round it came from — per the delivery-report format. Remaining holds only what this pass can still evidence; REPORT.md is restated current, never appended as a log.",
+      "id": 18,
+      "files": []
     }
   ]
 }
