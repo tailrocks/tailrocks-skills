@@ -58,7 +58,7 @@ the interim reading.
    The brief marks Refresh as a constant toolbar action; the prototype
    keeps the toolbar present in empty/error states (inspector toggle
    disabled outside normal). Ratify.
-4. **To the tailrocks-macos-prototype template (ProtoMain.swift).** Two
+4. **To the tailrocks-macos-design prototype template (ProtoMain.swift).** Two
    defects verified on macOS 26.5 and fixed in this copy, deltas
    documented in the file header: (a) the readiness poll matched the
    backdrop window (visible at level normal − 1), clamping it and

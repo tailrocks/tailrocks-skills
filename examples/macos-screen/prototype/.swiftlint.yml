@@ -10,7 +10,7 @@ included:
 excluded:
   - .build
   # ProtoMain.swift is the launch-contract harness copied from the
-  # tailrocks-macos-prototype template. It is template-owned, never lifts
+  # tailrocks-macos-design template. It is template-owned, never lifts
   # into the real app, and stays as shipped rather than being reworked to
   # satisfy lint (parse complexity, NSScreen.main force unwrap).
   - Sources/ConnectionsBoardProto/ProtoMain.swift

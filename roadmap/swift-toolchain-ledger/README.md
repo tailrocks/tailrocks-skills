@@ -15,10 +15,10 @@ undated, ungated version ledger in the tree, and it is already wrong:
 | Document | Says latest shipping macOS is |
 |---|---|
 | `tailrocks-swift-project-setup/references/toolchain.md` | 26.6.1 "Tahoe" |
-| `tailrocks-liquid-glass/references/platform-baseline.md` | 26.6.2 "Tahoe", `gdmf.apple.com/v2/pmv`, verified 2026-08-21 |
+| `tailrocks-macos-design/references/platform-baseline.md` | 26.6.2 "Tahoe", `gdmf.apple.com/v2/pmv`, verified 2026-08-21 |
 
 Two skills in one repository disagree about the current macOS version
-today. The liquid-glass baseline was refreshed and the Swift toolchain
+today. The macOS design baseline was refreshed and the Swift toolchain
 document was not, which is the same split-refresh failure the Rust
 policy had: the half with a reader stayed current, the half without one
 drifted and kept reading as fact.
@@ -39,7 +39,7 @@ drifted and kept reading as fact.
 - Decide, per row, which of the two honest forms it takes: a **pin** in
   an artifact a gate reads, or a **baseline stamp** carrying its source
   and verification date.
-- macOS already has an owner — `tailrocks-liquid-glass`'s
+- macOS already has an owner — `tailrocks-macos-design`'s
   `platform-baseline.md`, sourced from `gdmf.apple.com/v2/pmv` and aged
   by `scripts/check-baseline-age.ts`. The Swift document should cite it
   rather than restate it.
@@ -55,7 +55,7 @@ drifted and kept reading as fact.
 
 - `skills/tailrocks-swift-project-setup/references/toolchain.md:17-19` —
   the ledger.
-- `skills/tailrocks-liquid-glass/references/platform-baseline.md:28` —
+- `skills/tailrocks-macos-design/references/platform-baseline.md:28` —
   the gated macOS baseline it contradicts.
 - `scripts/check-baseline-age.ts` — the existing age gate, already run by
   `validate.yml`.
@@ -66,7 +66,7 @@ drifted and kept reading as fact.
 - Checked and **not** this defect:
   `tailrocks-plan/references/goal-handoff.md` records client versions with
   verification dates as evidence of what was tested, and
-  `tailrocks-liquid-glass/references/platform-baseline.md` carries its source
+  `tailrocks-macos-design/references/platform-baseline.md` carries its source
   and date and is aged by a gate. Both are stamps, not ledgers.
 
 ## References

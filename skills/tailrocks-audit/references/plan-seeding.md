@@ -193,8 +193,8 @@ back as another one-session plan:
 - **The finding is redundancy inside a diff** with no behavior to change →
   `tailrocks-simplify`, scoped to that diff.
 - **A blessed screen or a glass surface is the subject** → back to
-  `tailrocks-web-design`, `tailrocks-macos-design`, or
-  `tailrocks-liquid-glass`; this skill never re-blesses taste.
+  `tailrocks-web-design` or `tailrocks-macos-design`; this skill never
+  re-blesses taste.
 
 Routing names the next command; it never invokes the fixer or writes its
 artifacts here.

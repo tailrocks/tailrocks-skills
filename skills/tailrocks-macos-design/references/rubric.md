@@ -8,7 +8,7 @@ Score against **rendered evidence**. A design scored from source code has not
 been scored — the model will otherwise write flattering prose about work it
 cannot see.
 
-Rendered evidence is the design *running*: the `tailrocks-macos-prototype` app
+Rendered evidence is the design *running*: the prototype app
 judged live, or captures `tailrocks-macos-visual-qa` froze from it after
 finalization, or the shipped screen itself. A design file, an exported image,
 and a mockup are none of these — they are a picture of the screen, and a
@@ -135,7 +135,7 @@ thing?
 Full: content dominance and rhythm are clear. Partial: local imbalance. Failing: chrome dominates or hierarchy reverses.
 
 **Liquid Glass correctness and restraint.** Score glass violations against
-`tailrocks-liquid-glass`'s layer model and anti-patterns; hard failures there are
+the layer model and anti-patterns (`layer-model.md`, `anti-patterns.md`); hard failures there are
 hard failures here. Keep this category's weight unchanged.
 
 Full: every glass rule is verified. Partial: one bounded correction. Failing: content glass, overlap, or unreadability.
@@ -178,7 +178,7 @@ score irrelevant to the person using the app:
 
 Any one of these rejects the feature regardless of score.
 
-- Glass violations that `tailrocks-liquid-glass` classifies as hard failures.
+- Glass violations that `verification.md` classifies as hard failures.
 - Unreadable content over complex or bright backgrounds.
 - Clipping or unusable behavior at the declared minimum window width.
 - A keyboard-navigation dead end.

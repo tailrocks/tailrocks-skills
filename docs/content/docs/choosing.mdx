@@ -37,23 +37,18 @@ contracts.
 
 ## Native macOS
 
-Six skills take a feature from an approved design to verified pixels.
+Four skills take a feature from an approved design to verified pixels.
 
 ```mermaid
 flowchart LR
-  design["macos-design"] --> proto["macos-prototype"]
-  proto --> swift["swift-best-practices"]
-  proto --> glass["liquid-glass"]
+  design["macos-design"] --> swift["swift-best-practices"]
   swift --> gates["swift-project-setup gates"]
-  glass --> gates
   gates --> qa["macos-visual-qa"]
 ```
 
 | Skill | Owns |
 |---|---|
-| [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | Taste. Experience brief, information architecture, native component map, alternatives, scored review. Writes design artifacts, never source. |
-| [`tailrocks-macos-prototype`](/docs/skills/tailrocks-macos-prototype) | The runnable proof. Builds the Liquid Glass prototype from the approved design: fixed launch contract, fixture scenarios, live sign-off, region-scoped match policy. Captures nothing; visual-qa freezes the baseline after finalization. Zero taste. |
-| [`tailrocks-liquid-glass`](/docs/skills/tailrocks-liquid-glass) | The material. Content-versus-functional layer split, API surface and availability, the glass acceptance gate. |
+| [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | Taste, the runnable proof, and the material. Experience brief, information architecture, native component map, alternatives, scored review; then the signed-off Liquid Glass prototype under the fixed launch contract; and the Liquid Glass rules — content-versus-functional layer split, API surface and availability, the glass acceptance gate. Writes design artifacts and the prototype package, never production source. |
 | [`tailrocks-swift-best-practices`](/docs/skills/tailrocks-swift-best-practices) | Code policy. Actor isolation, state ownership, view identity, AppKit interop boundaries, accessibility. |
 | [`tailrocks-swift-project-setup`](/docs/skills/tailrocks-swift-project-setup) | The baseline. Project generation, signing, format and lint gates, test wiring, Xcode agent integration. |
 | [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa) | Verification. Kill-launch-capture, window-ID capture, accessibility audits, state matrix, pixel regression. |
@@ -66,9 +61,10 @@ running app, never an exported artifact. And glass surfaces snapshot **fully
 transparent** from a detached view, so verifying glass chrome requires
 screen-capturing that running app.
 
-## Design references
+## Design and prototypes
 
-Three platforms, one process. Whichever medium a screen lives in, the stage
+Three platforms, one process, one design skill per medium. Whichever medium a
+screen lives in, the stage
 runs between READY and planning, uses the same four words, and ends with a
 reference the implementation is mechanically held to — `tailrocks-plan`
 refuses a screen contract that cites none.
@@ -84,12 +80,13 @@ refuses a screen contract that cites none.
 |---|---|---|---|---|
 | Terminal | Rust, ratatui, crossterm | [`tailrocks-tui-design`](/docs/skills/tailrocks-tui-design) | same | same — the golden test |
 | Web | TanStack Start, React, shadcn/ui | [`tailrocks-web-design`](/docs/skills/tailrocks-web-design) | same | [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa) |
-| macOS | Swift, SwiftUI, Liquid Glass | [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | [`tailrocks-macos-prototype`](/docs/skills/tailrocks-macos-prototype) | [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa) |
+| macOS | Swift, SwiftUI, Liquid Glass | [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | same — on the running prototype | [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa) |
 
-macOS splits design from bless because the material only exists at runtime:
-taste is decided in the design skill, and the sign-off happens on a running
-Liquid Glass prototype. [`tailrocks-liquid-glass`](/docs/skills/tailrocks-liquid-glass)
-owns no stage — it is the material authority the macOS skills consult.
+macOS keeps design and bless in one skill because the material only exists at
+runtime: taste is decided in the design stages, and the sign-off happens on
+the running Liquid Glass prototype the same skill builds. The Liquid Glass
+material authority owns no separate stage — it is the rulebook the design and
+prototype stages consult.
 
 | Skill | Reach for it when |
 |---|---|
@@ -101,11 +98,11 @@ owns no stage — it is the material authority the macOS skills consult.
 
 Each skill rules its own medium and never another's: terminal screens are
 `tailrocks-tui-design`, web screens are `tailrocks-web-design`, and macOS
-windows keep their taste owner
-([`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design)) with
-[`tailrocks-macos-prototype`](/docs/skills/tailrocks-macos-prototype) as
-their runnable-reference producer — an HTML prototype is never a design
-source for native macOS. Design skills iterate live and capture nothing:
+windows are
+[`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design), whose
+prototype stage is their runnable-reference producer — an HTML prototype is
+never a design source for native macOS. Design skills iterate live and
+capture nothing:
 screenshots are frozen only after finalization, by
 [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa) for web
 screens and

@@ -52,7 +52,7 @@ Two lanes touch aesthetics, and neither may own it.
 | Lane | Judgment source | What the lane may not do |
 |---|---|---|
 | UX | patterns `tailrocks-web-design` already blessed | propose a new screen design, or override a blessed pattern |
-| Liquid Glass | `tailrocks-macos-design`'s `review` rubric and `tailrocks-liquid-glass`'s acceptance gate | make a fresh material or chrome call |
+| Liquid Glass | `tailrocks-macos-design`'s `review` rubric and glass acceptance gate | make a fresh material or chrome call |
 
 Both lanes invoke the owning skill's rubric rather than re-deriving one, and
 both skip cleanly when the repository has no blessed screens or no native

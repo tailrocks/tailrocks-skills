@@ -12,8 +12,8 @@ user-invocable: true
 Code-level policy for a native macOS application: correctness first, then
 clarity, then performance. Project structure and tooling belong to
 `tailrocks-swift-project-setup`. Material and layout policy belong to
-`tailrocks-liquid-glass` and `tailrocks-macos-design`.
-When an approved `tailrocks-macos-prototype` build exists, it is the input of
+`tailrocks-macos-design`.
+When an approved `tailrocks-macos-design` prototype build exists, it is the input of
 record: implement from its running screens and fixture data, not a design file.
 
 SwiftUI-native app and UI architecture on the latest stable platform is the
@@ -46,7 +46,7 @@ in this skill family —
 and **mark every fallback with its removal condition**, the minimum-target
 bump that deletes it.
 
-- **macOS 26 concentric fallback:** AppKit has no API; host the surface in SwiftUI (preferred), or derive the radius only at a required AppKit boundary; see `tailrocks-liquid-glass`'s platform baseline.
+- **macOS 26 concentric fallback:** AppKit has no API; host the surface in SwiftUI (preferred), or derive the radius only at a required AppKit boundary; see `tailrocks-macos-design`'s platform baseline.
 
 **Missing-source completion:** when the target file or new symbol's exact
 signature is absent, never invent either. Still provide the `#available`

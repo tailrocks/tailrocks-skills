@@ -128,7 +128,7 @@ Their geometry belongs to the system, and it changed in macOS 26 and changes
 again in 27.
 
 For custom surfaces adjacent to a system container, derive the radius
-concentrically rather than choosing one. See `tailrocks-liquid-glass` for the
+concentrically rather than choosing one. See `swiftui-api.md` for the
 mechanism and the correct API spellings.
 
 ### Capsule or rounded rectangle

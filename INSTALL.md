@@ -27,11 +27,10 @@ one shared directory:
   `tailrocks-grpc-best-practices`
 - **TypeScript:** `tailrocks-typescript-best-practices`,
   `tailrocks-tanstack-project-setup`
-- **macOS (native):** `tailrocks-macos-design`, `tailrocks-macos-prototype`,
-  `tailrocks-liquid-glass`,
-  `tailrocks-swift-best-practices`, `tailrocks-swift-project-setup`,
-  `tailrocks-macos-visual-qa`
-- **Design references:** `tailrocks-tui-design`, `tailrocks-web-design`,
+- **macOS (native):** `tailrocks-swift-best-practices`,
+  `tailrocks-swift-project-setup`
+- **Design and prototypes:** `tailrocks-macos-design`, `tailrocks-web-design`,
+  `tailrocks-tui-design`, `tailrocks-macos-visual-qa`,
   `tailrocks-web-visual-qa`
 - **Code quality:** `tailrocks-code-health`, `tailrocks-improve`,
   `tailrocks-agents-md`,
