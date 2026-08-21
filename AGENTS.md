@@ -629,11 +629,15 @@ it has no evidence at all.
 `.claude/skills/` holds skills that serve work **on this repository
 itself** and never ship: they are outside `skills/`, so the plugin
 manifests, catalog, validator, and docs pipeline ignore them. None is
-defined today. The field-audit job that used to live here ships as
-`tailrocks-retrospect` instead — every repository that installs this
-collection has the same need to turn its own delivery history into skill
-improvements, and a repo-local copy would have been a second owner of one
-responsibility.
+defined today. The field-audit job ships as `tailrocks-retrospect`
+instead — every repository that installs this collection has the same
+need to turn its own delivery history into skill improvements, and a
+repo-local copy would have been a second owner of one responsibility.
+What remains repo-local is the invocation, not the behavior:
+`prompts/improve-from-pr.md` is a saved prompt that drives
+`tailrocks-retrospect` against an external pull request with its
+subagent fan-out, then hands approved patches to
+`tailrocks-skill-author`.
 
 ## Adding a Skill
 

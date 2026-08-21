@@ -50,6 +50,13 @@ The same loop ingests work that shipped anywhere the collection is installed:
 
 <Invoke skill="tailrocks-retrospect" args="usage-metering --repo owner/name --pr 412" />
 
+The repository also ships the invocation as a saved prompt —
+`prompts/improve-from-pr.md` — which pins the context-hygiene rule (all
+analysis through subagents, only assembled tables and verdicts in the main
+context) and the branch-and-record discipline around the same two skills.
+Paste it into a session at the repository root with a pull-request URL in
+place of `<PR>`.
+
 The external repository is read-only evidence, reached through the API —
 never cloned into this tree, never edited, never commented on. Investigators
 build the commit table from the pull request's commits, open the item's
