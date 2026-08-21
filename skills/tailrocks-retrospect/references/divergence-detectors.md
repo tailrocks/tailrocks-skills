@@ -17,15 +17,16 @@ Every detector reads the same table, built once.
 # reads only the last contiguous trailer block, so a repository that separates
 # the skill trailer from its sign-off block loses the attribution silently and
 # the detector reports a marking failure that never happened.
-TZ=UTC git log --reverse --author-date-order --date=iso-strict-local \
-  --format='%x1e%H%x09%ad%x09%s%x1f%B' <base>..<head>
+TZ=<item-authoring-offset> git log --reverse --author-date-order \
+  --date=iso-strict-local \
+  --format='%x1e%H%x09%at%x09%ad%x09%s%x1f%B' <base>..<head>
 # Split records on \x1e, fields on \x09 and \x1f, then take every line of the
 # message matching ^Tailrocks-Skill:[[:space:]]*(.+)$.
 
 # Pass 2 — changed paths per commit. A plain --name-only prints nothing at all
 # for a merge commit, so a lane that took a merge-sync hands the path-keyed
 # detectors an empty set and they report clean.
-TZ=UTC git log --reverse --author-date-order -m --first-parent --name-only \
+git log --reverse --author-date-order -m --first-parent --name-only \
   --format='%x1e%H' <base>..<head>
 
 # The same table for a pull request. Its commits endpoint carries neither the
@@ -42,16 +43,28 @@ gh api --paginate repos/<owner>/<name>/pulls/<number>/commits --jq '.[].sha' \
 
 Rules for the table:
 
-- **Author date, one timezone, stated in the record.** Commit dates and the
-  item's date-only Log entries disagree across a UTC boundary constantly; an
-  ordering claim built on the wrong one is not evidence. Plain `--reverse`
-  orders by *commit* date, which the pre-commit rebase the delivery contract
-  mandates rewrites, and `--date=iso-strict` prints each commit's own recorded
-  offset — the flags above are what make the ordering claim evidence.
+- **Order on the instant; render dates in the item's own frame.** `%at` is a
+  Unix instant and is identical in every timezone, so every ordering claim D1
+  and D5 make needs no frame at all. Calendar dates are a different question:
+  the item's Log is written **date-only by an agent running in the author's
+  offset**, so its granularity was minted in that frame and comparing it
+  against any other frame is a category error — normalizing a lane to UTC can
+  move a whole day of commits onto a date the Log never mentions and report a
+  disagreement the pipeline never had. Render dates in the item's authoring
+  offset, convert the pull-request lane's `Z` timestamps into that same frame
+  before comparing, and name the frame in the record. Plain `--reverse` orders
+  by *commit* date, which the pre-commit rebase the delivery contract mandates
+  rewrites; `--author-date-order` is what makes the ordering claim evidence.
 - **Changed paths per commit** (`-m --first-parent --name-only`, or one
   `commits/<sha>` fetch per pull-request commit) — five of the six detectors
   key on paths, not subjects, and a plain `--name-only` prints nothing at all
   for a merge commit.
+- **Prove the table is complete before running a detector.** The pull-request
+  commits endpoint caps its result however you paginate, and the file list
+  caps too — both silently, both exit zero. Compare the fetched row count
+  against the pull request's own declared commit total; if it is short, the
+  record names the lane that truncated and stops. Six clean results over a
+  partial table are worse than no record at all.
 - **Name the lane's shape before trusting the table.** A merged item has no
   `roadmap/<slug>` branch left: resolve `<head>` from its pull request's merge
   commit and `<base>` from that commit's first parent. A squash-merged lane is
