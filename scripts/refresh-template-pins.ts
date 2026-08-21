@@ -120,6 +120,13 @@ export function consistencyMismatches(template: string, policy: string): Mismatc
     // A document that carries no version table is not disagreeing with one.
     if (row === null) continue;
     const documented = row[1].trim();
+    // Nor is a document whose table carries something other than a version.
+    // The policy's own rule is that `templates/package.json` is the only exact
+    // pin source and versions are never copied into prose, so its table lists
+    // primary release *sources* under the same component labels. A source URL
+    // is not a competing pin, and reading one as a version reports every row
+    // as a mismatch.
+    if (!/^\d+(?:\.\d+)*(?:-[\w.]+)?$/.test(documented)) continue;
     if (documented !== pinned) {
       mismatches.push({ label, package: name, policy: documented, template: pinned });
     }
