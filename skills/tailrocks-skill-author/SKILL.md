@@ -49,7 +49,15 @@ Do not infer mutation permission from the presence of defects.
    what was asked and why no skill is warranted. Document the baseline
    verbatim — the exact wrong choice or rationalization is what the skill
    must counter.
-   **Complete when:** the baseline failure is written down, or the request
+   **Field evidence is the third form, and the strongest.** A retrospective
+   record over a real delivery — the commits and quoted artifact lines
+   showing what a skill let through — is an observed failure that already
+   happened, and it is admissible here in place of a baseline run. A
+   baseline reproduces a failure someone imagined; a field record carries
+   one that production produced. A record with no commit-level evidence
+   behind it is not a baseline and is refused like any other wish.
+   **Complete when:** the baseline failure is written down — from the
+   conversation, a hand-run baseline, or a field record — or the request
    is declined with the reason.
 
 2. **Decide placement before writing.** Not every failure earns a skill:
