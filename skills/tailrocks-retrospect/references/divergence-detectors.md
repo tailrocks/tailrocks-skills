@@ -24,8 +24,8 @@ TZ=<item-authoring-offset> git log --reverse --author-date-order \
 # message matching ^Tailrocks-Skill:[[:space:]]*(.+)$.
 
 # Pass 2 — changed paths per commit. A plain --name-only prints nothing at all
-# for a merge commit, and so does `-m --first-parent`; --diff-merges is the
-# spelling that actually emits them.
+# for a merge commit; --diff-merges=first-parent (equivalently -m
+# --first-parent) is what emits them.
 git log --reverse --author-date-order --diff-merges=first-parent --name-only \
   --format='%x1e%H' <base>..<head>
 
@@ -58,8 +58,8 @@ Rules for the table:
 - **Changed paths per commit** (`--diff-merges=first-parent --name-only`, or
   one `commits/<sha>` fetch per pull-request commit) — five of the six
   detectors key on paths, not subjects. A plain `--name-only` prints nothing
-  at all for a merge commit, and neither does `-m --first-parent`; only the
-  `--diff-merges` spelling emits them.
+  at all for a merge commit — `--diff-merges=first-parent`, equivalently
+  `-m --first-parent`, is what emits them.
 - **A merge authored no lane work.** A merge-sync's first-parent paths are
   what the base branch brought *in*, not what this item shipped, so handing
   them to the path-keyed detectors turns every file the base happened to touch
