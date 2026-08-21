@@ -82,21 +82,24 @@ finding is allowed onto the table. Subagents over-report; the re-derivation is
 what makes the output worth reading, and every dropped candidate is reported
 with its reason so it does not resurface next run.
 
-Its lanes are addressable one at a time — `security`, `perf`, `ux`,
-`liquid-glass`, `agent-legibility` — and `deep` is a modifier rather than a
+Its lanes are addressable one at a time — `security`, `perf`, `ux`, `tui`,
+`liquid-glass`, `agent-legibility` — and `--deep` is a modifier rather than a
 mode, so it composes with any of them. The taste lanes carry no taste of their
-own: `ux` judges against `tailrocks-web-design`'s blessed screens and
-`liquid-glass` against `tailrocks-liquid-glass`'s acceptance gate, and both skip
-cleanly in a repository that has neither.
+own: `ux` judges against `tailrocks-web-design`'s blessed screens, `tui`
+against `tailrocks-tui-design`'s golden frames, and `liquid-glass` against
+`tailrocks-liquid-glass`'s acceptance gate. Blessing-dependent checks skip
+where nothing is blessed; objective defects still run wherever that interface
+ships.
 
-<Invoke skill="tailrocks-audit" args="deep security" />
+<Invoke skill="tailrocks-audit" args="security --deep" />
 
 Two modes sit outside the fan-out. `ask <question>` runs recon plus one targeted
 investigation under the same citation discipline, and answers rather than
-forcing an artifact. `execute <slug>` hands a `PLANNED` package to the cheapest
-tier that can follow it, in a throwaway worktree, and reviews the resulting diff
-on the capable tier against the plan's own done criteria — the plan is the
-product, the diff is a proposal, and merging stays your call.
+forcing an artifact. `execute <slug>` hands a `plans/<slug>/` package — from a
+PLANNED item, or seeded directly with no parent item — to a `bounded-executor`
+in a throwaway worktree, then reviews the diff on the `frontier-judgment` route
+against the plan's own done criteria. The plan is the product, the diff is a
+proposal, and merging stays your call.
 
 ### Capture without inventing
 
