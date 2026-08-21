@@ -12,8 +12,9 @@ This example is worth walking because the interesting decisions are not in
 either language — they are on the boundary between them, and that is exactly
 what an agent guesses wrong when you hand it one sentence.
 
-Thirteen skills appear. Seven are the delivery pipeline; the rest are the
-stack skills it hands work to.
+Eighteen skills appear. Nine are the delivery pipeline, eight are the stack
+skills it hands work to, and one — `tailrocks-retrospect` — is where the last
+round's findings go.
 
 ## 1. Capture — `tailrocks-idea`
 
@@ -26,6 +27,12 @@ Screens, Flows, Decisions, Must-not, and Quality bar visibly empty.
 + roadmap/log-explorer/README.md   Status: DRAFT
 ~ roadmap/README.md                index row
 ```
+
+It also opens the item's lane: the branch `roadmap/log-explorer` and a draft
+pull request. Every later delivery skill commits into that same branch and that
+same pull request, each commit carrying a `Tailrocks-Skill` trailer naming the
+skill that wrote it — which is why no artifact on this page keeps a history
+section of its own. The commits are the history.
 
 Resist the urge to fill those sections yourself. Their emptiness is the agenda
 for the next step, and anything you write here bypasses the interview that
@@ -217,10 +224,25 @@ Two things in that table are not decoration.
 
 **Slice 001 exists because gates cannot be assumed.** A greenfield chain stands
 up the task runner, build, test, and lint on an empty skeleton before any
-feature work, so every later slice — and `GOAL.md` itself — can reference
-commands that already pass. In a two-language repository this is the slice that
-decides one task runner drives both toolchains, which is why the goal condition
-can be a single script.
+feature work, so every later slice — and every gate in `goal/START.md` — can
+reference commands that already pass. In a two-language repository this is the
+slice that decides one task runner drives both toolchains, which is why the goal
+condition can be a single script.
+
+Passing is not enough on its own. Every gate line is written
+`<command> ||| <proof>`, where the proof prints how many units the command
+executed:
+
+```text
+mise run test  ||| mise run test 2>&1 | grep -Eo '[0-9]+ tests? (run|passed)'
+mise run build ||| ls -1 target/release/libsift_core.a .build/release/Sift | wc -l
+```
+
+`goal/check.sh` runs the command, then runs the proof and reads the number out
+of it: zero is `BLOCKED gate-vacuous`, and a line with no `|||` at all is
+`BLOCKED gate-unproven`. One runner fronting two toolchains is exactly where a
+test gate exits 0 because it resolved no target on one side, so the gate has to
+say how many tests it ran, not only that nothing failed.
 
 **Slice 002 is a tracer bullet, not a layer.** It cuts a complete path through
 Rust, the boundary, and SwiftUI while doing almost nothing, so the riskiest
@@ -231,21 +253,49 @@ Each plan is written by its own subagent, then read by a fresh-context reviewer
 holding only that plan and the repository. Anything the reviewer has to ask
 about is a gap in the plan, not a gap in the reviewer.
 
+One item, one folder: the package lands inside `roadmap/log-explorer/` beside
+the item, not in a parallel tree. Everything under `plan/` except the manifest
+hub, and everything under `goal/`, is frozen — `check.sh` hashes the plans, the
+spec, the ledger, and the goal package into the fingerprint the hub carries, and
+answers `BLOCKED plan-drift` when one of them changes. What the loop has to move
+— the item, the manifest's status rows, each verification round — sits outside
+that hash by design.
+
 ```text
-+ plans/log-explorer/coverage.md
-+ plans/log-explorer/spec/
-+ plans/log-explorer/README.md          manifest + executor protocol
-+ plans/log-explorer/001-*.md … 006-*.md
-+ plans/log-explorer/GOAL.md
-+ plans/log-explorer/goal-check.sh
-~ roadmap/log-explorer/README.md        Status: PLANNED
++ roadmap/log-explorer/plan/coverage.md
++ roadmap/log-explorer/plan/spec/
++ roadmap/log-explorer/plan/README.md      manifest + executor protocol
++ roadmap/log-explorer/plan/001-*.md … 006-*.md
++ roadmap/log-explorer/goal/START.md       gates, goal condition, kickoff prompt
++ roadmap/log-explorer/goal/RESUME.md      resume prompt
++ roadmap/log-explorer/goal/check.sh       the machine gate
+~ roadmap/log-explorer/README.md           Status: PLANNED
 ```
 
 ## 9. Execute
 
-Paste `GOAL.md`'s goal condition and kickoff prompt into your agent's goal
-execution. The executor works one plan per iteration, runs every verification,
-and commits status writes with the work.
+The handoff is a file, not a paste. Point your agent's goal execution at it:
+
+```text
+/goal Follow roadmap/log-explorer/goal/START.md
+```
+
+`START.md` carries the gates, the machine-checkable goal condition, and the
+kickoff prompt, so the executor works one plan per iteration, runs every
+verification, and commits status writes with the work. After any interruption —
+a dead session, a context reset, a week away — the resume prompt has the same
+shape:
+
+```text
+/goal Follow roadmap/log-explorer/goal/RESUME.md
+```
+
+The machine gate is `sh roadmap/log-explorer/goal/check.sh`, run on a clean tree
+before any DONE flip and again as the iteration's last act. It answers in one
+line: `PASS` with the SHA, or `BLOCKED` naming what stopped it — a dirty tree, a
+row that never reached a terminal status, a gate that failed, a gate that proved
+nothing, or `plan-drift`, which means the contract the executor was handed no
+longer hashes to the fingerprint in the hub.
 
 The stack skills are invoked *inside* execution, named by the slice. Slice 003
 is Rust, so the executor works under the Rust skills:
@@ -271,31 +321,128 @@ the baseline frozen from the prototype, region by region as `Regions.md`
 declared: custom regions to a pixel budget, native regions through the
 accessibility tree instead.
 
-## 10. Reconcile — `tailrocks-reconcile`
+## 10. Report what shipped — `tailrocks-record-feedback`
+
+The loop finishes green. Then you open a real 9 GB nginx access log on your own
+machine, and two things are wrong that no gate noticed.
+
+<Invoke skill="tailrocks-record-feedback" args="log-explorer" />
+
+It writes down what you said — your words, one statement per defect — and asks
+only for the mechanics a verifier needs to stand where you stood: which file,
+which window, which build.
+
+```text
++ roadmap/log-explorer/verification/01-feedback.md
+
+  U1  "I typed a query while the index bar was still moving and got an
+       empty list back. Nothing said it was still building."
+  U2  "The timeline toolbar goes flat grey the moment the window loses
+       focus, and the tick marks go with it."
+```
+
+Nothing here investigates, judges, or fixes. A statement that later turns out to
+be wrong is recorded anyway, because the fact that you believed it is evidence
+about the work — and a defect the agent has already talked itself out of is one
+nothing ever executes against. U1 aims straight at a behavior finalize decided
+in section 7; U2 is glass chrome, which slice 006 was supposed to have covered.
+
+## 11. Prove it — `tailrocks-prove`
+
+<Invoke skill="tailrocks-prove" args="log-explorer" />
+
+A green suite is a claim about the code paths somebody thought to test. It is
+not a claim that the app runs. This skill builds from the bound SHA with the
+repository's own commands, then fans out one subagent per surface and starts the
+binary: open a file, index it, query mid-build, scrub the timeline, resize the
+window, switch appearance. Every verdict cites a command that ran in this
+session and the output line that decided it, and a surface that could not be
+executed is reported `NOT EXECUTED` with its reason rather than as passing.
+
+The window is judged against the baseline `tailrocks-macos-visual-qa` froze from
+the signed-off prototype, captured by window ID from the running app, region by
+region as `Regions.md` declared. Then the round audits the item's own proofs,
+judging each done criterion and each `goal/START.md` gate by what it executed
+rather than by what it exited.
+
+That audit is where U2 stops being a mystery:
+
+- **U1 — CONFIRMED.** A query issued against a half-built index returns an empty
+  result set with no partial-state affordance, against the screen contract in
+  the spec. Blocking.
+- **U2 — WIDER.** Real, and larger than reported: the toolbar and the sidebar
+  both fall back to opaque fill in every inactive window, not only on the
+  timeline screen. Blocking.
+- **Slice 006's inactive-window check — VACUOUS.** It exited 0 having compared
+  nothing: the capture matched no window ID, so the comparison ran over an empty
+  set. A check that cannot tell "every region matched" from "nothing was
+  captured" is how U2 shipped.
+
+```text
++ roadmap/log-explorer/verification/01-report.md   Verdict: BLOCKED
+```
+
+Every finding survives one pass that tries to break it before it is written
+down, and every surface reported clean gets one attempt to fail the way you
+described it. Then the round hands off in two directions and writes no status of
+its own: `tailrocks-reconcile` turns it into status and remaining work, and
+`tailrocks-retrospect` turns the vacuous check into a proposed patch against the
+skill that wrote it — a gate that proves nothing is a skill's fault, not this
+item's.
+
+## 12. Reconcile — `tailrocks-reconcile`
 
 <Invoke skill="tailrocks-reconcile" args="log-explorer" />
 
-Run it when the loop finishes, when it stalls, and before any resume. It
-re-runs each DONE row's own criteria instead of trusting the row, resets rows
-abandoned by dead sessions, retests BLOCKED reasons and `A#` assumptions, and
-drift-checks TODO plans against HEAD.
+Run it when the loop finishes, when it stalls, before any resume, and after
+every verification round. It re-runs each DONE row's own criteria instead of
+trusting the row, resets rows abandoned by dead sessions, retests BLOCKED
+reasons and `A#` assumptions, and drift-checks TODO plans against HEAD. A row
+whose criteria exit 0 having executed nothing goes back to TODO with its plan
+marked `STALE`: the done criterion is the defect, and only `tailrocks-plan` may
+rewrite one.
 
 On this item the assumption most likely to fall over is a platform one — an
 availability floor that the research topic recorded and a later toolchain update
 moved. Reconcile is what turns that from a silent wrong build into a `STALE` row
 with a reason.
 
-## 11. When the intent changes
+Then it folds round 01 into the item. The two confirmed defects become the
+item's `## Remaining` as observable statements — a query against a building
+index says it is building; an inactive window keeps its glass — the item returns
+to IN EXECUTION, and the roadmap index's Remaining column carries the count. The
+plan rows the round proved are pruned; the rows it broke are reopened. DONE is
+reachable only from a round that found no blocking defect, and reconcile is the
+only skill that may write it.
+
+So execution is not a line that ends at reconcile. It is a loop that closes:
+execute, report what shipped, prove it, reconcile, and back into execution until
+Remaining is empty.
+
+```mermaid
+flowchart LR
+  exec["/goal execution"] --> feedback["record-feedback"] --> prove --> reconcile
+  reconcile -->|"Remaining not empty"| exec
+  reconcile -->|"round with no blocking defect"| done["DONE"]
+```
+
+The next pass resumes with `/goal Follow roadmap/log-explorer/goal/RESUME.md`,
+works the reopened rows, and comes back through feedback and prove again.
+
+## 13. When the intent changes
 
 Halfway through, you decide the app should tail growing files after all. Do not
-edit the plan.
+edit the plan: it is fingerprinted, so a hand-edit reads as `plan-drift` at the
+next gate rather than as a change of mind.
 
 <Invoke skill="tailrocks-record-decision" args="log-explorer: the app tails a growing file and appends to the index incrementally, because operators watch live deployments" />
 
 That reopens the item to SHAPING, marks the affected plan rows `STALE`, and
 leaves everything else intact. Finalize again, then re-run `tailrocks-plan`: it
 refreshes the stale rows against the updated item, keeps numbering monotonic,
-records the spec delta, and regenerates `GOAL.md` last.
+records the spec delta, and regenerates `goal/` last — re-stamping the frozen
+contract fingerprint in the hub so `check.sh` measures the refreshed contract
+instead of the one it replaced.
 
 The same route handles a falsified assumption. The executor names the failed
 `A#`, record-decision propagates it, the plans that leaned on it go `STALE`, and

@@ -81,7 +81,7 @@ Tailrocks-Skill: tailrocks-finalize
 Signed-off-by: A Maintainer <maintainer@example.invalid>
 ---
 a3f9903
-docs(plans): loom-sync package
+docs(roadmap): loom-sync plan package
 
 Tailrocks-Skill: tailrocks-plan
 Signed-off-by: A Maintainer <maintainer@example.invalid>
@@ -104,4 +104,18 @@ Signed-off-by: A Maintainer <maintainer@example.invalid>
 b7d7781
 feat(api): add a per-request workspace content cache
 
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+c8d1102
+docs(roadmap): loom-sync feedback round 01
+
+Tailrocks-Skill: tailrocks-record-feedback
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+c9e3324
+docs(roadmap): loom-sync verification round 01
+
+Round 01 verdict BLOCKED; V1 stands.
+
+Tailrocks-Skill: tailrocks-prove
 Signed-off-by: A Maintainer <maintainer@example.invalid>

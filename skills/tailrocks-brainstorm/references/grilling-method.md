@@ -69,6 +69,10 @@ unavailable, and prefer the cheapest sufficient lookup then.
   moment it resolves: choices to Decisions (dated, with the reason), scope
   to Capabilities/Must not, screen answers into Screens. The item is always
   current; an interrupted session loses questions, never answers.
+- **No session narration in the item.** The item has no Log: a decision is
+  recorded by its dated entry under Decisions, and that this session happened
+  is the invocation's commit and its `Tailrocks-Skill` trailer. A hand-written
+  history line beside a commit that already says the same thing drifts.
 
 ## `--batch` mode
 
@@ -94,8 +98,9 @@ The session's exit test — "a reader of the item alone knows what is
 settled and what is open" — cannot be self-administered: the interviewer
 remembers every chat answer and so cannot see the one that never
 reached the file. Before closing, hand the item to a clean-context,
-read-only subagent whose brief is only the item file path (and its
-asset folder) plus the return shape: list what this item says is
+read-only subagent whose brief is only the item file path and the
+mockup assets beside it — never the folder's `plan/`, `verification/`,
+or `goal/` siblings — plus the return shape: list what this item says is
 settled, what it leaves open, and every point where the reader must
 guess. Anything the reader misreports or must guess is an answer still
 living only in the conversation — write it into the item and re-run the

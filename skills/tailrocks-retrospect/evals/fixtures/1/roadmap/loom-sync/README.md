@@ -2,8 +2,8 @@
 
 - **Status**: SHIPPED
 - **Slug**: loom-sync
-- **Created**: 2026-05-04 · **Updated**: 2026-05-11
-- **Plan**: plans/loom-sync/
+- **Created**: 2026-05-04
+- **Plan**: plan/ · **Verified**: verification/01-report.md
 
 ## Intent
 
@@ -79,12 +79,4 @@ workspace contains.
 - Per-workspace sync scheduling policy — revisit when a workspace exceeds
   ten thousand indexed items.
 
-## Log
-
-- 2026-05-04 — tailrocks-idea — created (DRAFT).
-- 2026-05-04 — tailrocks-brainstorm — shaped; moved to SHAPING.
-- 2026-05-09 — tailrocks-research — linked the advisory-lock and backoff
-  chapters.
-- 2026-05-09 — tailrocks-finalize — moved to READY.
-- 2026-05-10 — tailrocks-plan — package written; moved to PLANNED.
-- 2026-05-11 — execution — all plans DONE.
+## Remaining

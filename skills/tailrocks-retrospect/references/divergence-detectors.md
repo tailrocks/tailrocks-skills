@@ -53,13 +53,14 @@ Rules for the table:
 - **Order on the instant; render dates in the item's own frame.** `%at` is a
   Unix instant and is identical in every timezone, so every ordering claim D1
   and D5 make needs no frame at all. Calendar dates are a different question:
-  the item's Log is written **date-only by an agent running in the author's
-  offset**, so its granularity was minted in that frame and comparing it
-  against any other frame is a category error — normalizing a lane to UTC can
-  move a whole day of commits onto a date the Log never mentions and report a
-  disagreement the pipeline never had. Render dates in the item's authoring
-  offset, convert the pull-request lane's `Z` timestamps into that same frame
-  before comparing, and name the frame in the record. Plain `--reverse` orders
+  the dated lines inside an item — a Decisions entry's `<YYYY-MM-DD>`, a
+  verification round's run date — are written **date-only by an agent running
+  in the author's offset**, so their granularity was minted in that frame and
+  comparing them against any other frame is a category error — normalizing a
+  lane to UTC can move a whole day of commits onto a date no artifact
+  mentions and report a disagreement the pipeline never had. Render dates in
+  the item's authoring offset, convert the pull-request lane's `Z` timestamps
+  into that same frame before comparing, and name the frame in the record. Plain `--reverse` orders
   by *commit* date, which the pre-commit rebase the delivery contract mandates
   rewrites; `--author-date-order` is what makes the ordering claim evidence.
 - **Changed paths per commit** (`--diff-merges=first-parent --name-only`, or
@@ -101,16 +102,18 @@ Rules for the table:
   '.commits'` and fall back to the git form over `<base>..<head>` when the
   declared count is higher. And never take paths from `gh pr view --json
   files`: it caps at 100 with no marker, and because a lane's source usually
-  outnumbers its artifacts the surviving window can contain no `roadmap/`,
-  `plans/`, or `research/` path at all — handing the path-keyed detectors an
+  outnumbers its artifacts the surviving window can contain no `roadmap/`
+  or `research/` path at all — handing the path-keyed detectors an
   item that appears to have touched none of its own documents. Use
   `gh api --paginate repos/<owner>/<name>/pulls/<number>/files` for the union
   and the per-`commits/<sha>` fetch for attribution. A truncated table is an
   unrun detector, never a clean one.
 - **Trailer first, inference second.** `Tailrocks-Skill` is the primary key.
   A commit without one that touches any artifact the item's own documents
-  point at — `roadmap/`, `research/`, `plans/`, and the design package each
-  `Design:` line resolves to — is recorded `unattributed`; a per-commit
+  point at — everything under `roadmap/<slug>/` (the item, its `plan/`
+  package, its `verification/` rounds, its `goal/` prompts), `research/`, and
+  the design package each `Design:` line resolves to — is recorded
+  `unattributed`; a per-commit
   inference from paths and content is permitted only when marked `inferred`
   and never aggregated into counts of what a skill did. Two trailer values are
   not skill names: `recovered`, which the crash-recovery rule writes when the
@@ -119,8 +122,8 @@ Rules for the table:
   grouped with the skill they resemble; a value naming no skill is
   mechanically decidable, so it is filed as a validator check, not as prose.
 - **Artifact paths are the ones a skill's own delivery contract lets it
-  stage** — `roadmap/`, `research/`, `plans/`, and the design or prototype
-  directories that contract names. Everything else is source. Where an
+  stage** — `roadmap/` in all its depth, `research/`, and the design or
+  prototype directories that contract names. Everything else is source. Where an
   artifact directory holds runnable or compiled code, classify by conventional
   type instead: `docs` is artifact; `feat`, `fix`, `refactor`, `build`, `ci`,
   `style`, `test`, and `perf` are source wherever they sit. State the
@@ -131,14 +134,24 @@ Rules for the table:
   git's trailer key and once by scanning the full message — and record both.
   The full-message count is authoritative; the difference is not a tie to
   break but a measurement of how many attributions a naive audit drops.
-- **The Log is a claim.** The item's Log is the narrative the pipeline told
-  about itself; the trailers are what it did. Both belong in the table, in
-  separate columns, so the diff between them is visible.
+- **The trailers are the only history.** No artifact carries a log of what
+  happened to it: an item's Status is a current value, a plan row's status is
+  a current value, a verification round is a current verdict. What ran, when,
+  and in what order comes from the commit series and its trailers alone —
+  there is no second narrative to diff against, and an unmarked commit is a
+  hole in the record rather than something a subject line can patch. Dated
+  lines *inside* artifacts are claims about facts, not attributions: a
+  Decisions entry's date is checked against the commit that wrote the entry
+  (D1), never accepted as when the decision happened.
 - **Attribution has a floor, and the floor is lane-shaped.** Before running
   the detectors that group by skill — D2, D4, D6 — state which skills in this
   item's lane could have been attributed at all. Only the delivery family and
   the design-reference skills are required to mark their commits; no project
-  setup, best practices, or visual QA skill stamps the trailer today. Where
+  setup, best practices, or visual QA skill stamps the trailer today. The
+  family covers the verification loop too: `tailrocks-record-feedback` marks
+  the reported half of a round and `tailrocks-prove` the executed half, so a
+  `verification/` round with no attributed commit behind it is a marking
+  failure, not an unattributable lane. Where
   none of a lane's stack skills could be marked, those detectors report
   `not attributable` and name the gap, never `none` — `none` claims a check
   that the marking rule never permitted. A trailer naming a skill the contract
@@ -154,7 +167,8 @@ inform it existed.
 commit that wrote it. Compare against the first commit of the skills that owe
 its fact class — research topics for platform, integration, and library facts;
 design artifacts for structure and component classification; prototype or
-visual evidence for interaction claims. A Decisions entry whose supporting
+visual evidence for interaction claims; a verification round's report for a
+claim about how the shipped thing behaves. A Decisions entry whose supporting
 class has no earlier commit **on this decision's own fact**, and no linked
 evidence in the item's Research or Screens sections, is a hit. The join is on
 the fact, not the skill: the topic the item's Research section or the ledger's
@@ -265,6 +279,7 @@ re-derives them each time derives them differently.
 | Rust, terminal | golden frames in the gallery crate | manifest blessing row | the frames themselves — design and freeze are one artifact |
 | TanStack web | design routes and screen components | design manifest blessing row | screenshot baselines |
 | macOS | the runnable prototype package | its sign-off record | window-ID captures under the region policy |
+| Any lane, after execution | `verification/NN-report.md` | the round's verdict | the item's Remaining and Status — the completion case is D5's, filed there once |
 
 A dash is a real result. On a headless item the design-reference class has no
 member, and the detector records that rather than reporting a clean pair set
@@ -289,10 +304,15 @@ Then run the third arm, which is the only one that can see a producer that
 never ran: take every `S#` in the ledger and read the item's `Design:` line
 for that screen. A screen with an empty `Design:` line, in a lane whose row
 above names a producer, whose implementation paths shipped anyway, is a hit —
-the freeze that should have held the code was never earned. Finally, check the
-Log's consumption claims against the artifact: an entry asserting a producer's
-output was linked or ingested, where the named section is empty, is the same
-defect read from the item's side — consumption reported, not performed.
+the freeze that should have held the code was never earned. Finally, check
+the item's own pointers against the artifacts they name: a header
+`Plan:` or `Verified:`
+line, a Research link, or a ledger row marking a question closed against a
+topic, where the section it points into is empty or the file it names does
+not exist, is the same defect read from the item's side — consumption
+recorded, not performed. A verification round whose blocking defects reached
+neither Remaining nor the Status is the completion case of that, and it is
+filed under D5 as the lifecycle hit rather than twice.
 
 **Evidence:** both timestamps, the artifact, and the downstream file that
 should have cited it.
@@ -318,21 +338,50 @@ drifts. Quote the set you checked against. Plan-row statuses are a different,
 smaller vocabulary and never license an item status; an item wearing a
 plan-row value is itself the hit.
 Then check the commit types: source-touching commits earlier than the commit
-that granted `READY`, or earlier than the plan package, are inversions. Also
-read the item's status field itself: a value outside the machine's set is a
-hit on its own.
+that granted `READY`, or earlier than the plan package under
+`roadmap/<slug>/plan/`, are inversions. Also read the item's status field
+itself: a value outside the machine's set is a hit on its own.
+
+**Verification rounds decide completion, and this is where they are read.**
+Take `roadmap/<slug>/verification/` in round order, and the latest round's
+verdict with the blocking defects it names. Three hits live here:
+
+- **The item stands at `DONE` while its latest round names a blocking
+  defect.** `DONE` requires every plan row done, the goal condition met, *and*
+  the last round clean; the third conjunct is the one that gets dropped, and
+  an off-machine value like `SHIPPED` is the same claim wearing a word the
+  machine does not contain.
+- **A blocking defect the latest round proved appears in no Remaining
+  statement.** Remaining is where verification evidence lands. A defect
+  proved and never carried into the item leaves the item asserting a
+  completeness its own round contradicts — and an empty Remaining under a
+  completion-claiming status is exactly that assertion.
+- **A round exists with no attributed commit behind it.** Both halves are
+  marked — `tailrocks-record-feedback` for the reported defects,
+  `tailrocks-prove` for what execution proved — so a round nobody marked is
+  the marking rule failing on the newest artifact in the folder.
+
+One body of evidence, one finding: the same round read as a producer nothing
+consumed belongs here, not additionally under D4.
 
 **Evidence:** the status-setting commits, the earliest source-touching commit
-before them, and the status string when it is off-machine.
+before them, the status string when it is off-machine, and — for a completion
+claim — the round file, its verdict line, the blocking defect quoted, and the
+item's Remaining as it stands.
 
 **Defect class:** the skill that owns a status had no precondition refusing
-to grant it after the work it gates already shipped; or the skill that wrote
-the value never read the vocabulary its owner defines.
+to grant it after the work it gates already shipped; the skill that wrote the
+value never read the vocabulary its owner defines; or the skill that owns the
+`DONE` transition proved completion from plan rows alone and never made the
+latest round's verdict a precondition of it.
 
 **False positives:** repository work that is not this item's implementation —
 unrelated maintenance sharing the branch — is out of the item's scope; check
 the paths against the item before counting it. An explicitly recorded user
-override is a logged exception, not an inversion.
+override is a logged exception, not an inversion. Only the **latest** round
+decides: a blocking defect an earlier round raised and a later one cleared is
+the loop working, and so is an item back at `IN EXECUTION` carrying that
+round's defects as its Remaining.
 
 ## D6 — Write-scope breach
 
@@ -347,7 +396,13 @@ for two lanes out of three. A skill that states its scope nowhere is itself
 the finding, and a patch adding a Boundaries bullet has to create the section
 first. Compare the declared scope against the commit's changed paths and its
 conventional-commit type. An artifact-only skill carrying `feat`, `refactor`,
-`ci`, or `build` commits, or touching source, is a hit. So is a scoped skill
+`ci`, or `build` commits, or touching source, is a hit. So is a commit that
+edits a frozen file after the package that froze it — the numbered plans, the
+spec, the coverage ledger, and the goal prompts under `roadmap/<slug>/plan/`
+and `roadmap/<slug>/goal/` — unless the same commit rewrote the package as a
+whole under a re-plan: a contract edited to match what shipped is the
+executor's own gate being moved, and the fingerprint gate exists because that
+edit is otherwise invisible. So is a scoped skill
 whose commits reach a neighbouring skill's artifacts **without that area
 appearing in its own declared scope** — several delivery skills legitimately
 write one another's areas, and the declared scope, not the directory name,

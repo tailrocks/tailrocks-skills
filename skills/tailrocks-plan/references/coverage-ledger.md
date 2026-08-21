@@ -15,6 +15,7 @@ directly:
 | `F#` | Capabilities (+ Intent) | One per specifiable behavior |
 | `W#` | Flows | One per cross-screen journey |
 | `N#` | Must not | One per non-goal / forbidden approach, with its reason |
+| `E#` | Capabilities, Screens, Flows (created here) | One per surface a user or another system can invoke — binary, subcommand, window, route, RPC method, scheduled job |
 | `R#` | References + Data & integrations | External repo, API, product, design source, integration |
 | `D#` | Decisions | Settled choices — constraints, not questions |
 | `A#` | (created here) | Assumption made where the item is silent and research cannot close it; each names its falsifying signal |
@@ -33,12 +34,12 @@ Rules:
 - Additional invocation context ("focus on the read-only path first") is
   folded in as ledger annotations, not as invented item content.
 
-## The ledger file — `plans/<slug>/coverage.md`
+## The ledger file — `roadmap/<slug>/plan/coverage.md`
 
 ```markdown
 # Coverage Ledger — <slug>
 
-Item: roadmap/<slug>/README.md at commit `<short SHA>`, ingested <date>.
+Item: ../README.md at commit `<short SHA>`, ingested <date>.
 Override: <none | READY skipped by user — gaps: ...>
 
 ## Screens
@@ -51,6 +52,14 @@ Override: <none | READY skipped by user — gaps: ...>
 
 ## Flows
 | ID | Flow | Screens touched | Spec | Plans | Status |
+
+## Entry points
+| ID | Entry point | Kind | Item anchor | Registry |
+|----|-------------|------|-------------|----------|
+| E1 | `app run` | CLI subcommand | §Capabilities | spec/README.md |
+
+The sole entry-point registry lives in `spec/README.md`, which carries the
+owning plan and the end-to-end test; this ledger keeps the item anchors only.
 
 ## Must-not anchors
 | ID | Statement | Reason | Registry |
@@ -89,12 +98,13 @@ Assumption status values are `holds` or `falsified (date, routed)`.
   `Q#`/`R#` row links the research topic that answers it (topics key on
   items, not ledger IDs); `Q#` rows close with a topic link or become
   `A#` assumptions.
-- **Spec gate**: every `S#`, `F#`, `W#`, `N#`, and `B#` resolves to a spec
-  location or a logged deferral before slicing. Every `B#` resolves to a
+- **Spec gate**: every `S#`, `F#`, `W#`, `N#`, `E#`, and `B#` resolves to a
+  spec location or a logged deferral before slicing. Every `B#` resolves to a
   `#### Scenario:` or a logged deferral.
 - **Plan gate**: every requirement's IDs resolve to plan numbers; every
-  `N#` lists the plans that inline it as a guardrail; every `A#` appears
-  in the STOP conditions of the plans that lean on it.
+  `N#` lists the plans that inline it as a guardrail; every `E#` names the
+  plan that creates the surface and the test that invokes it end to end;
+  every `A#` appears in the STOP conditions of the plans that lean on it.
 - **Vocabulary** gets no IDs — it constrains naming in spec and plans; the
   spec gate checks terms are used per the item's Vocabulary section.
 - **Re-runs**: diff the updated item against the ledger — new statements

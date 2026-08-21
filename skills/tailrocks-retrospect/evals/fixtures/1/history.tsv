@@ -11,8 +11,10 @@ e9b6612	2026-05-09T10:15:00+02:00	docs(research): postgres queueing — chapters
 f0c3378	2026-05-09T10:48:00+02:00	docs(research): correct the advisory-lock contention chapter	tailrocks-research	research/postgres-queueing/
 f1d5529	2026-05-09T15:02:00+02:00	docs(roadmap): record subscription transport decision	tailrocks-record-decision	roadmap/loom-sync/
 f2e7741	2026-05-09T17:40:00+02:00	docs(roadmap): finalize loom sync — READY	tailrocks-finalize	roadmap/loom-sync/
-a3f9903	2026-05-10T09:05:00+02:00	docs(plans): loom-sync package	tailrocks-plan	plans/loom-sync/, roadmap/loom-sync/
+a3f9903	2026-05-10T09:05:00+02:00	docs(roadmap): loom-sync plan package	tailrocks-plan	roadmap/loom-sync/plan/, roadmap/loom-sync/goal/, roadmap/loom-sync/README.md
 b4a1125	2026-05-10T13:22:00+02:00	feat(loom): sync process, queue, backoff	-	crates/loom/
 b5b3347	2026-05-10T18:01:00+02:00	feat(loom): publish sync state over the subscription	-	crates/loom/, crates/api/
 b6c5569	2026-05-11T09:44:00+02:00	feat(web): workspace header sync badge	-	web/src/
 b7d7781	2026-05-11T11:10:00+02:00	feat(api): add a per-request workspace content cache	-	crates/api/
+c8d1102	2026-05-11T15:20:00+02:00	docs(roadmap): loom-sync feedback round 01	tailrocks-record-feedback	roadmap/loom-sync/verification/
+c9e3324	2026-05-11T18:05:00+02:00	docs(roadmap): loom-sync verification round 01	tailrocks-prove	roadmap/loom-sync/verification/

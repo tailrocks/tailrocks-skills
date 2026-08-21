@@ -2,8 +2,8 @@
 
 - **Status**: DRAFT
 - **Slug**: eval-execution-wiring
-- **Created**: 2026-08-21 · **Updated**: 2026-08-21
-- **Plan**: — (plans/eval-execution-wiring/ once planned)
+- **Created**: 2026-08-21
+- **Plan**: — (`plan/` once planned) · **Verified**: — (`verification/` once run)
 
 ## Intent
 
@@ -121,11 +121,4 @@ backs it.
 
 ## Deferred
 
-## Log
-
-- 2026-08-21 — created (DRAFT), by hand rather than through `tailrocks-idea`.
-  Captured from the gap surfaced while landing #63: eval execution was
-  deferred from local runs to CI, and nothing in CI runs it. Evidence for the
-  engine was gathered by running `claude plugin eval --help` on 2.1.233 and
-  confirmed by a second session; the shaping gaps above are genuinely empty
-  rather than assumed.
+## Remaining

@@ -12,7 +12,7 @@
     {
       "id": 2,
       "prompt": "Mark macos-application READY now — I do not have time for more questions.",
-      "expected_output": "Decline READY without the checklist: item stays SHAPING, remaining gaps recorded under Open questions with recommendations, Log lists exactly what is missing.",
+      "expected_output": "Decline READY without the checklist: item stays SHAPING, remaining gaps recorded under Open questions with recommendations, and the close-out lists exactly what is missing — recorded there and in the invocation's commit, never as a Log entry in the item.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]

@@ -7,7 +7,7 @@ plan. Assume it follows explicit instructions well and is weak at filling
 gaps, recovering from ambiguity, or knowing when to stop.
 
 **The executor's context is exactly two files: the hub and the plan.** The
-executor protocol re-reads `plans/<slug>/README.md` at the start of every
+executor protocol re-reads `roadmap/<slug>/plan/README.md` at the start of every
 iteration, so the hub is guaranteed context — package-invariant material
 lives there once and is never restated per plan: the repository's commit,
 branch, and push law; the protocol writes and status machinery; the
@@ -31,8 +31,9 @@ Five properties make a plan executable:
 5. **Hard boundaries and escape hatches** — inlined guardrails,
    out-of-scope list, STOP conditions instead of improvisation.
 
-File naming: `plans/<slug>/NNN-short-slug.md`, numbered in recommended
-execution order, matching the manifest.
+File naming: `roadmap/<slug>/plan/NNN-short-slug.md`, numbered in recommended
+execution order, matching the manifest. Everything about the item lives under
+`roadmap/<slug>/`; there is no parallel plans tree.
 
 ---
 
@@ -52,7 +53,7 @@ execution order, matching the manifest.
 - **Priority**: P1 | P2 | P3
 - **Effort**: S | M | L
 - **Risk**: LOW | MED | HIGH
-- **Depends on**: plans/NNN-*.md (or "none")
+- **Depends on**: NNN-*.md in this folder (or "none")
 - **Covers**: <requirement headings + ledger IDs>
 - **Guardrails**: <N# IDs inlined below>
 - **Research basis**: <research/<topic>/NN-*.md paths>
@@ -179,8 +180,10 @@ against the repository before listing. Omit the section otherwise.)
 **Out of scope** (do NOT touch, even though related): <files/areas + why —
 including territory owned by other plans, named by number>
 
-The hub `plans/<slug>/README.md` and the roadmap item are protocol-writable
-and never listed in scope.
+The hub `roadmap/<slug>/plan/README.md` and the roadmap item are
+protocol-writable and never listed in scope. Everything else under
+`roadmap/<slug>/` is frozen — a plan that edits its own spec, ledger, or goal
+file is drift, and the gate reports it.
 
 ## Git workflow
 
@@ -217,20 +220,57 @@ broken between steps — add the new path, switch callers, remove the old.)
   chapter's reference example for greenfield>.
 - **Verify**: `<test command>` → all pass, including the N new tests.
 
+## Documentation
+
+Every user-facing surface this plan adds or changes — a command, flag,
+subcommand, screen, route, endpoint, config key, error message a user reads —
+names the **canonical page that already documents that surface**, by path,
+plus what changes there:
+
+| Surface | Canonical page | Change |
+|---------|----------------|--------|
+| `<cmd> --<flag>` | `<path to the page that owns this surface>` | <the row, section, or example that changes> |
+
+- **New prose in a new file never discharges this row.** A page that describes
+  the architecture this plan replaces is wrong the moment the plan lands, and
+  twenty fresh lines somewhere else leave it wrong.
+- A surface whose canonical page is not named is **undocumented by decision**:
+  state that here with the reason, so the gap is a recorded choice and not an
+  oversight a reader discovers.
+- If the plan genuinely changes no user-facing surface, say exactly that —
+  "None: this plan changes no user-facing surface" — and the done criteria
+  carry no documentation row.
+
 ## Done criteria
 
-Machine-checkable. ALL must hold:
+Machine-checkable, and each row asserts **executed work** — a count, a named
+target, a file list. Exit 0 is not evidence of work: a test command aimed at a
+package that no longer exists exits 0 having run nothing, and a suite that
+matched no test file reports success. ALL must hold:
 
-- [ ] `<build cmd>` exits 0
-- [ ] `<test cmd>` exits 0; tests for every spec scenario exist and pass
-- [ ] <one observable check per requirement covered>
+- [ ] `<build cmd>` builds <N> targets: <the exact target or crate names>
+- [ ] `<test cmd>` runs at least <N> tests with none failing, including the
+      <M> new tests named in the test plan — cite the run's own count line
+- [ ] Every spec scenario above has a test that exercises it:
+      `<command listing test names>` prints <N> lines, one per scenario
+- [ ] <one observable check per requirement covered, phrased as what now
+      exists or what just ran — never "the command succeeded">
 - [ ] <when the plan's screen has a blessed design reference: the check
-      that enforces it — golden test or visual suite — passes; omit the
-      row otherwise>
+      that enforces it — golden test or visual suite — passes over <N>
+      frames; omit the row otherwise>
+- [ ] Documentation: <canonical page path> now describes <surface>, verified
+      by `git diff --stat <planned-at SHA>..HEAD -- <page path>` showing it
+      changed (omit only when the Documentation section says None)
 - [ ] No files outside the in-scope list modified (`git status`) —
-      excluding the protocol writes: `plans/<slug>/README.md` status rows
-      and the roadmap item + index
-- [ ] `plans/<slug>/README.md` status row updated
+      excluding the protocol writes: `roadmap/<slug>/plan/README.md` status
+      rows and the roadmap item + index
+- [ ] `roadmap/<slug>/plan/README.md` status row updated
+
+Every command in this section was run once during planning and the row records
+what it did then. Those numbers are planning-time snapshots under the
+re-derivation rule — the executor's fresh count is the authority — but a fresh
+count of **zero**, or a command whose package, target, or path fails to
+resolve, is a defect to report, never a drift to accept.
 
 ## STOP conditions
 
@@ -260,7 +300,7 @@ brief contains:
   dependencies, guardrail IDs;
 - absolute paths to: this template, the roadmap item, the capability spec
   file(s), the named vetted research chapters, the coverage ledger, and
-  the output path `plans/<slug>/NNN-<slug>.md`;
+  the output path `roadmap/<slug>/plan/NNN-<slug>.md`;
 - the verification-tooling research chapter (or the resolved gate
   commands) — mandatory in every brief regardless of plan topic;
 - the planned-at commit SHA to stamp;
@@ -294,9 +334,9 @@ source — and says so.
 
 Reviewers are read-only — they report findings and change nothing.
 They simulate the zero-context executor: ONLY the plan file path, the
-hub `plans/<slug>/README.md`, and repository access — the executor's exact
-context. Do not open `roadmap/`, `plans/<slug>/spec/`,
-`plans/<slug>/coverage.md`, or `research/` — you simulate the executor,
+hub `roadmap/<slug>/plan/README.md`, and repository access — the executor's
+exact context. Do not open the roadmap item, `roadmap/<slug>/plan/spec/`,
+`roadmap/<slug>/plan/coverage.md`, or `research/` — you simulate the executor,
 who has none of them. A plan restating the hub's package-invariant law is
 a finding (drift pair), and so is a plan silently depending on anything
 the hub does not guarantee. They report:
@@ -316,7 +356,8 @@ type only.
 - Preconditions prove every dependency observably; spec contract and
   guardrails inlined, not referenced.
 - Every verification a command with an expected result; every step names
-  exact files and symbols.
+  exact files and symbols; every done criterion asserts executed work rather
+  than an exit code.
 - Scope explicit both ways; neighboring plans' territory named.
 - STOP conditions reflect this plan's actual risks.
 - No secret values; planned-at SHA filled.
@@ -324,4 +365,14 @@ type only.
 Orchestrator checks (not the reviewer's):
 
 - Commands are cited to the verification-tooling research.
+- **Every command the plan names — preconditions, step verifications, test
+  plan, done criteria — was executed once during planning**, and the done
+  criterion records what it did: the count it printed, the targets it built,
+  the files it listed. A package, target, or path that fails to resolve is a
+  planning defect caught here, not an executor's surprise at the end of a
+  loop. A command that cannot run yet (it depends on an earlier slice) is
+  recorded as such, with the slice that makes it runnable.
+- Every user-facing surface in the plan's scope appears in the Documentation
+  table with a canonical page, or is recorded there as undocumented by
+  decision with its reason.
 - The manifest row exists.

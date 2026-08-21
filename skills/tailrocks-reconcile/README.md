@@ -4,7 +4,7 @@
 
 `tailrocks-reconcile` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-reconcile)
 
-True up plans/<slug>/ with execution reality: re-verify DONE rows by re-running their criteria, reset dead IN PROGRESS rows, retest BLOCKED, drift-check TODO plans, and fix the item's status. Verification only; never writes plans.
+True up roadmap/<slug>/ with execution reality: re-run each plan row's done criteria, reject criteria that executed nothing, fold the newest verification round into the item's Remaining, and set the status reality supports.
 
 ## Invocation
 
@@ -21,4 +21,5 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 ## References
 
+- [`remaining.md`](references/remaining.md)
 - [`row-verification.md`](references/row-verification.md)

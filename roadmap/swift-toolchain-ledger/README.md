@@ -2,8 +2,8 @@
 
 - **Status**: DRAFT
 - **Slug**: swift-toolchain-ledger
-- **Created**: 2026-08-21 · **Updated**: 2026-08-21
-- **Plan**: — (plans/swift-toolchain-ledger/ once planned)
+- **Created**: 2026-08-21
+- **Plan**: — (`plan/` once planned) · **Verified**: — (`verification/` once run)
 
 ## Intent
 
@@ -63,6 +63,11 @@ drifted and kept reading as fact.
   version in a policy table for the Rust and TanStack skills; the same
   check has no Swift equivalent because there is no artifact to compare
   against yet.
+- Checked and **not** this defect:
+  `tailrocks-plan/references/goal-handoff.md` records client versions with
+  verification dates as evidence of what was tested, and
+  `tailrocks-liquid-glass/references/platform-baseline.md` carries its source
+  and date and is aged by a gate. Both are stamps, not ledgers.
 
 ## References
 
@@ -101,12 +106,4 @@ drifted and kept reading as fact.
 
 ## Deferred
 
-## Log
-
-- 2026-08-21 — captured while gating the Rust and TanStack policy
-  documents; found by scanning every skill for version-shaped table rows.
-  Two other tables were checked and are **not** this defect:
-  `tailrocks-plan/references/goal-handoff.md` records client versions
-  with verification dates as evidence of what was tested, and
-  `tailrocks-liquid-glass/references/platform-baseline.md` carries its
-  source and date and is aged by a gate. Both are stamps, not ledgers.
+## Remaining

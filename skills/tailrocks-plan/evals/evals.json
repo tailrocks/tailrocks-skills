@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Plan macos-application — the item is READY with four linked research topics.",
-      "expected_output": "plans/macos-application/ with coverage ledger, gap research landed as reusable research/ topics, OpenSpec-grammar spec, one cold-reviewed plan per manifest item each written by its own subagent, and GOAL.md with a machine-checkable gate-first condition plus kickoff and resume prompts; kickoff invokes sh plans/macos-application/goal-check.sh before DONE work and after each status/work commit, and only a final TAILROCKS GOAL: PASS proves package completion; gate text precedes terminal-row text; no success predicate contains 'or stop after'; budget exhaustion marks the active row BLOCKED (budget exhausted); no provider hook or executable beyond the specified goal-check.sh is generated; client wiring labels deterministic_local verdict trust separately from model-judged or manual stop behavior; item set PLANNED.",
+      "expected_output": "roadmap/macos-application/plan/ with coverage ledger, gap research landed as reusable research/ topics, OpenSpec-grammar spec, one cold-reviewed plan per manifest item each written by its own subagent, and roadmap/macos-application/goal/ carrying START.md (machine-checkable gate-first condition, gates block, kickoff), RESUME.md, and check.sh copied from the template; the hub records the frozen contract fingerprint over plan/** and goal/** except the hub itself; kickoff invokes sh roadmap/macos-application/goal/check.sh before DONE work and after each status/work commit, and only a final TAILROCKS GOAL: PASS proves the package complete; gate text precedes terminal-row text; no success predicate contains 'or stop after'; budget exhaustion marks the active row BLOCKED (budget exhausted); package-complete leaves the item IN EXECUTION because DONE needs a verification round and belongs to tailrocks-reconcile; no provider hook or executable beyond the copied check.sh is generated; client wiring labels deterministic_local verdict trust separately from model-judged or manual stop behavior; item set PLANNED.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
@@ -12,7 +12,7 @@
     {
       "id": 2,
       "prompt": "Plan macos-application even though it is SHAPING with six open questions.",
-      "expected_output": "Stop and name the missing stage (tailrocks-finalize); proceed only on explicit user override, recording the override and the skipped gaps in the item Log and the plan hub.",
+      "expected_output": "Stop and name the missing stage (tailrocks-finalize); proceed only on explicit user override, recording the override and the skipped gaps in the handoff commit message and the plan hub — no item Log exists to write to.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
@@ -20,7 +20,7 @@
     {
       "id": 3,
       "prompt": "While planning, scaffold the Xcode project and commit it so plans have real files to reference.",
-      "expected_output": "Refuse writes outside plans/, research/, and the item's own metadata; scaffolding belongs to plan 001 executed later via GOAL.md.",
+      "expected_output": "Refuse writes outside roadmap/macos-application/plan/, roadmap/macos-application/goal/, research/, and the item's own status and Plan link; roadmap/macos-application/verification/ is not this skill's either; scaffolding belongs to plan 001, executed later from goal/START.md.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
@@ -28,7 +28,7 @@
     {
       "id": 4,
       "prompt": "Re-plan macos-application after a decision marked plans 004 and 007 STALE.",
-      "expected_output": "Reconcile, not duplicate: refresh the stale plans against the updated item, record spec deltas in the change log, keep numbering monotonic, regenerate GOAL.md last.",
+      "expected_output": "Reconcile, not duplicate: refresh the stale plans against the updated item, record spec deltas in the change log, keep numbering monotonic, regenerate goal/ last and re-stamp the hub's frozen contract fingerprint so the refreshed contract is what check.sh hashes.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
@@ -36,7 +36,7 @@
     {
       "id": 5,
       "prompt": "The writer subagents returned all nine plans for macos-application — take them through verification and review.",
-      "expected_output": "Per plan, a fresh-context read-only verifier blind to the writer's reasoning opens every cited source and reports excerpt mismatches; any mismatch makes the orchestrator re-open that plan's sources and re-verify all; cold reviewers get only the plan file and hub; the traceability gate runs as a fresh-context read-only checker over ledger, spec, and plans reporting uncovered IDs; the orchestrator alone fixes files and backfills the ledger.",
+      "expected_output": "Per plan, a fresh-context read-only verifier blind to the writer's reasoning opens every cited source and reports excerpt mismatches; any mismatch makes the orchestrator re-open that plan's sources and re-verify all; cold reviewers get only the plan file and the hub roadmap/macos-application/plan/README.md; the traceability gate runs as a fresh-context read-only checker over ledger, spec, and plans reporting uncovered IDs and entry points with no owning plan or end-to-end test; the orchestrator alone fixes files and backfills the ledger and the must-not and entry-point registries.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
@@ -44,9 +44,25 @@
     {
       "id": 6,
       "prompt": "Plan tui-dashboard — the item is READY and both screens have an empty Design line.",
-      "expected_output": "Planning stops at the spec step instead of writing screen contracts: the response names Run overview and Lane detail as screens with a visual surface and no blessed design reference, names tailrocks-tui-design as the medium's design skill (ratatui is the item's decided stack), and offers the user the choice of running the design stage or recording a deferral. No plans/tui-dashboard/spec screen contract invents regions, states, or pixel detail from the schematic mockup; the item is not set PLANNED.",
+      "expected_output": "Planning stops at the spec step instead of writing screen contracts: the response names Run overview and Lane detail as screens with a visual surface and no blessed design reference, names tailrocks-tui-design as the medium's design skill (ratatui is the item's decided stack), and offers the user the choice of running the design stage or recording a deferral. No roadmap/tui-dashboard/plan/spec screen contract invents regions, states, or pixel detail from the schematic mockup; the item is not set PLANNED.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/tui-dashboard/README.md"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Write the goal handoff for macos-application. The repository's proven gates are `mise run test` and `mise run lint`.",
+      "expected_output": "roadmap/macos-application/goal/START.md carries a single ```sh gates fence with at most two lines, each shaped `<command> ||| <proof>`, where the proof prints in digits how many units the command executed (test count read from the run's own report, packages checked) — not a bare re-run and not a second exit-0 check; a line without ||| is refused because check.sh reports BLOCKED gate-unproven, and a proof printing 0 is BLOCKED gate-vacuous. Both halves are executed once during planning against the real repository and the counts land in the hub's gate baseline; a proof that prints zero at planning time is a broken gate fixed now. The goal condition stays `sh roadmap/macos-application/goal/check.sh` exits 0 with a final line starting TAILROCKS GOAL: PASS. RESUME.md is written from the template and check.sh is copied verbatim, then the frozen contract fingerprint is stamped last.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "For macos-application, write the spec's entry-point registry and plan 004's done criteria — plan 004 ships the session-list window and a --project launch flag.",
+      "expected_output": "The entry-point registry in spec/README.md gives each invocable surface an E# — app launch to the session list window, the --project launch flag — with its kind, the plan that creates it (004), and a test that starts the app or passes the flag and asserts it reaches first useful output; unit coverage of the view model never fills that column, since a suite can pass while an entry point panics at startup. The ledger carries the matching E# anchors. Plan 004's done criteria assert executed work rather than exit 0: a build row naming the targets built, a test row naming a minimum count including the new tests and citing the run's own count line, a row per spec scenario proving a test exercises it, and the visual check's frame count; every command was run once during planning and the row records what it did, with an unresolvable package or target treated as a planning defect. The plan carries a Documentation section naming, by path, the canonical page that already documents the launch surface and what changes there — new prose in a new file does not discharge it — with a matching done-criteria row; a surface whose page is not named is recorded as undocumented by decision with its reason.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
     }
   ]

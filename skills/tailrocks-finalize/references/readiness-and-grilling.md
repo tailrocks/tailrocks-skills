@@ -100,14 +100,15 @@ All must hold; check each against the live item, not memory:
 - [ ] Every Open research question is genuinely researchable (passes the
       convergence test).
 - [ ] Every Deferred entry has a reason and revisit trigger.
-- [ ] Decisions log is consistent — no section contradicts a dated
+- [ ] Decisions are internally consistent — no section contradicts a dated
       decision.
 - [ ] The planning dry run passes: a planning agent reading only this item
       could inventory it into screens, capabilities, flows, and must-nots
       without inventing or asking anything.
 
-Any unchecked box means `SHAPING`, named in the Log, said plainly to the
-user.
+Any unchecked box means `SHAPING`: the gap stands under Open questions and is
+said plainly to the user in the close-out. The item carries no Log — that the
+gate did not pass is the invocation's commit subject.
 
 ## The planning dry run — fresh eyes
 
@@ -115,7 +116,8 @@ The last box is never self-certified. The interviewer remembers every
 chat answer and so cannot detect the one that never reached the file —
 the exact defect the dry run exists to catch. Run it as a clean-context,
 read-only subagent simulating the planning intake: its brief is only the
-item file path and its asset folder, plus the return shape — the
+item file path and the mockup assets beside it — never a `plan/`,
+`verification/`, or `goal/` sibling in that folder — plus the return shape: the
 inventory it built (screens, capabilities, flows, must-nots) and every
 point where it had to invent, guess, or would ask the user. The box
 checks only when that report contains no questions and no inventions;
@@ -125,8 +127,10 @@ memory — and say aloud that the dry run was self-run.
 
 ## Stopping
 
-- **Gate passes** → READY, Log, index, close-out pointing at
-  `tailrocks-plan <slug>`.
+- **Gate passes** → READY, index row, and a close-out that names the design
+  stage for every screen with a visual surface and no blessed reference, then
+  `tailrocks-plan <slug>` — which writes the package into the item's own
+  `roadmap/<slug>/plan/`.
 - **User steers out early** → honor immediately; remaining gaps go to Open
   questions with recommendations, status stays `SHAPING`, close-out lists
   exactly what a future session must still collect.
