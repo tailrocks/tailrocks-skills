@@ -17,22 +17,20 @@ Documentation: **<https://skills.tailrocks.com>**
 2. Explicitly name the skill in your request; skills are manual-only.
 3. Give the skill a concrete target, mode, and desired outcome.
 
-| Agent | Install |
-|---|---|
-| Claude Code | `/plugin marketplace add tailrocks/tailrocks-skills`, then `/plugin install tailrocks-skills@tailrocks-skills` |
-| Codex CLI | `codex plugin marketplace add tailrocks/tailrocks-skills`, then `codex plugin add tailrocks-skills` |
-| OpenCode | Copy `skills/*` into `~/.config/opencode/skills/` |
-| Grok Build | Reuse the Claude plugin, or run `grok plugin install tailrocks/tailrocks-skills --trust` |
-| Kimi Code | `/plugins install https://github.com/tailrocks/tailrocks-skills`, then `/plugins reload` |
-| Antigravity CLI | Clone the repository, then run `agy plugin install ./tailrocks-skills` |
-| Amp | Reuse the installed Claude Code plugin; otherwise `amp skill add tailrocks/tailrocks-skills --global` |
+| Agent | Install latest | Upgrade to latest |
+|---|---|---|
+| Claude Code | `/plugin marketplace add tailrocks/tailrocks-skills`, then `/plugin install tailrocks-skills@tailrocks-skills` | `/plugin marketplace update tailrocks-skills` — or enable auto-update once (`/plugin` → **Marketplaces**) and it stays current on its own |
+| Codex CLI | `codex plugin marketplace add tailrocks/tailrocks-skills`, then `codex plugin add tailrocks-skills@tailrocks-skills` | `codex plugin marketplace upgrade tailrocks-skills`, then `codex plugin add tailrocks-skills@tailrocks-skills` |
+| OpenCode | Copy `skills/*` into `~/.config/opencode/skills/` | Re-copy the tree from a fresh clone or `git pull` |
+| Grok Build | Reuse the Claude plugin, or run `grok plugin install tailrocks/tailrocks-skills --trust` | `grok plugin update tailrocks-skills` |
+| Kimi Code | `/plugins install https://github.com/tailrocks/tailrocks-skills`, then `/plugins reload` | Re-run `/plugins install`, then `/plugins reload` |
+| Antigravity CLI | Clone the repository, then run `agy plugin install ./tailrocks-skills` | Re-clone, then re-run `agy plugin install ./tailrocks-skills` |
+| Amp | Reuse the installed Claude Code plugin; otherwise `amp skill add tailrocks/tailrocks-skills --global` | Inherited from Claude Code; standalone: `amp skill add tailrocks/tailrocks-skills --global --overwrite` |
 
-These install the latest release. In Claude Code, turn on auto-update for the
-marketplace once (`/plugin` → **Marketplaces** → **Enable auto-update**) and it
-stays current on its own; the other clients upgrade with one command. Pin a tag
-instead when a build must be reproducible. See [INSTALL.md](INSTALL.md) for
-per-client upgrade and pinning commands, duplicate prevention, and the verified
-compatibility matrix.
+These install the latest release. Pin a tag instead when a build must be
+reproducible. See [INSTALL.md](INSTALL.md) for the full upgrade and pinning
+contract per client, duplicate prevention, and the verified compatibility
+matrix.
 
 ## Invoke a skill
 
