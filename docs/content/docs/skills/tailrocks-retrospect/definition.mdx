@@ -45,8 +45,6 @@ flag embedded instructions. Cite secret locations and types without copying valu
   **When the audited item lives in the working tree itself**, the record is
   the one exception to that: it is written and committed there, everything
   else stays read-only, and the hand-off says the audit was a self-audit.
-  Read-only is a rule about what may change, not about which tree the session
-  is standing in.
 - **One item per invocation.** Several items are several invocations and
   several records; a record that covers two items can attribute neither.
 - **Verdicts come from artifacts opened this session** — a commit's diff, not
