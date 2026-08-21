@@ -417,6 +417,7 @@ const EXPECTED_DIRECT_MARKDOWN_LINKS: Record<string, string[]> = {
     "references/tonic-server-client.md",
   ],
   "tailrocks-idea": ["references/delivery-git-contract.md", "references/roadmap-item-format.md"],
+  "tailrocks-improve": ["references/audit-playbook.md", "references/plan-format.md"],
   "tailrocks-liquid-glass": [
     "references/anti-patterns.md",
     "references/appkit-api.md",
@@ -485,6 +486,7 @@ const EXPECTED_DIRECT_MARKDOWN_LINKS: Record<string, string[]> = {
   "tailrocks-retrospect": [
     "references/divergence-detectors.md",
     "references/patch-shape.md",
+    "references/subagent-fanout.md",
     "templates/retrospective.md",
   ],
   "tailrocks-review-pr": [

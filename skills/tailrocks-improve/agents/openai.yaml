@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Improve"
+  short_description: "Audit any repository and write standalone executor-ready plans under plans/"
+  default_prompt: "Use $tailrocks-improve on this repository: recon the verified commands, fan the audit lanes out to read-only investigators, vet every finding against your own reads, and write the selected findings as standalone plans under plans/."
+policy:
+  allow_implicit_invocation: false

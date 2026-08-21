@@ -10,7 +10,9 @@ Never edit a generated page. `content/docs/skills/<name>/`,
 `INSTALL.md` through `mise run docs` at the repository root. Edit the source,
 regenerate.
 
-Hand-written pages: `content/docs/index.mdx` and `content/docs/choosing.mdx`.
+Hand-written pages: `content/docs/index.mdx`, `content/docs/choosing.mdx`,
+`content/docs/validating.mdx`, `content/docs/self-improve.mdx`, and
+`content/docs/delivery/` (its `meta.json` sidebar included).
 
 Every page under `content/` is `.mdx`, never `.md`. A `.md` page renders
 without component support, and the difference stays invisible until a page

@@ -1,0 +1,9 @@
+{
+  "name": "fixture-ledger",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/",
+    "lint": "node --check src/ledger.js && node --check src/db.js"
+  }
+}

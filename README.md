@@ -13,188 +13,37 @@ Documentation: **<https://skills.tailrocks.com>**
 
 ## Quick start
 
-1. Install the collection through exactly one channel for your agent.
-2. Explicitly name the skill in your request; skills are manual-only.
-3. Give the skill a concrete target, mode, and desired outcome.
-
-Every command below installs the latest release and can be pasted as-is.
-
-### Claude Code
-
-Install (in the Claude Code session):
-
-```text
-/plugin marketplace add tailrocks/tailrocks-skills
-```
-
-```text
-/plugin install tailrocks-skills@tailrocks-skills
-```
-
-Upgrade:
-
-```text
-/plugin marketplace update tailrocks-skills
-```
-
-Or enable auto-update once (`/plugin` → **Marketplaces** → **Enable
-auto-update**) and Claude Code stays current on its own.
-
-### Codex CLI
-
-Install:
-
-```sh
-codex plugin marketplace add tailrocks/tailrocks-skills
-```
-
-```sh
-codex plugin add tailrocks-skills@tailrocks-skills
-```
-
-Upgrade:
-
-```sh
-codex plugin marketplace upgrade tailrocks-skills
-```
-
-```sh
-codex plugin add tailrocks-skills@tailrocks-skills
-```
-
-### OpenCode
-
-OpenCode has no plugin channel for skills — install by copying the tree:
-
-```sh
-git clone --depth 1 https://github.com/tailrocks/tailrocks-skills.git /tmp/tailrocks-skills
-```
-
-```sh
-mkdir -p ~/.config/opencode/skills
-```
-
-```sh
-cp -R /tmp/tailrocks-skills/skills/* ~/.config/opencode/skills/
-```
-
-Upgrade: re-run the same three commands.
-
-### Grok Build
-
-Install (skip when Claude Code already has the plugin — Grok ingests it):
-
-```sh
-grok plugin install tailrocks/tailrocks-skills --trust
-```
-
-Upgrade:
-
-```sh
-grok plugin update tailrocks-skills
-```
-
-### Kimi Code
-
-Install (in the Kimi TUI):
-
-```text
-/plugins install https://github.com/tailrocks/tailrocks-skills
-```
-
-```text
-/plugins reload
-```
-
-Upgrade: re-run the same pair.
-
-### Antigravity CLI
-
-Install (from a local clone — the CLI installs plugins from local paths):
-
-```sh
-git clone --depth 1 https://github.com/tailrocks/tailrocks-skills.git
-```
-
-```sh
-agy plugin install ./tailrocks-skills
-```
-
-Upgrade: re-clone, then re-run `agy plugin install ./tailrocks-skills`.
-
-### Amp
-
-Install (skip when Claude Code already has the plugin — Amp reads its cache):
-
-```sh
-amp skill add tailrocks/tailrocks-skills --global
-```
-
-Upgrade:
-
-```sh
-amp skill add tailrocks/tailrocks-skills --global --overwrite
-```
-
-Pin a tag instead when a build must be reproducible. See
-[INSTALL.md](INSTALL.md) for the full upgrade and pinning contract per
-client, duplicate prevention, and the verified compatibility matrix.
-
-## Invoke a skill
-
-Claude Code:
-
-```text
-/tailrocks-skills:tailrocks-rust-best-practices review this crate
-```
-
-Codex CLI:
-
-```text
-$tailrocks-rust-best-practices review this crate
-```
-
-Grok Build:
-
-```text
-/tailrocks-rust-best-practices review this crate
-```
-
-Kimi Code:
-
-```text
-/skill:tailrocks-rust-best-practices review this crate
-```
-
-Antigravity CLI:
-
-```text
-/tailrocks-rust-best-practices review this crate
-```
-
-OpenCode and Amp:
-
-```text
-Use tailrocks-rust-best-practices to review this crate
-```
-
-A strong request names the skill, action, scope, and constraint:
+1. Install through your agent's channel: [INSTALL.md](INSTALL.md), or the
+   [install guide](https://skills.tailrocks.com/docs/install) with per-client
+   upgrade and pinning commands.
+2. Name the skill explicitly — every skill is manual-only — with an action,
+   a scope, and a constraint:
 
 ```text
 Use tailrocks-typescript-best-practices in review mode on src/auth/.
 Focus on runtime validation, typed failure, and async ownership. Do not edit.
 ```
 
+Everything else lives in the documentation, once:
+
+- [Choosing a skill](https://skills.tailrocks.com/docs/choosing) — which
+  skill owns which job when several could apply.
+- [The delivery pipeline](https://skills.tailrocks.com/docs/delivery) — an
+  idea to verified truth, walked end to end for
+  [a native macOS app](https://skills.tailrocks.com/docs/delivery/macos-app),
+  [a TanStack feature on an Axum backend](https://skills.tailrocks.com/docs/delivery/tanstack-feature),
+  and [a Rust service with gRPC and GraphQL](https://skills.tailrocks.com/docs/delivery/rust-backend).
+- [Validating, repeatedly](https://skills.tailrocks.com/docs/validating) —
+  the verification loop that proves shipped work, and the gates that prove
+  this collection.
+- [Self-improvement](https://skills.tailrocks.com/docs/self-improve) — how a
+  shipped pull request, in this repository or any other, becomes skill
+  patches through subagent analysis.
+
 ## Skills
 
-Each row links to that skill's own README. Which skill to reach for when several
-could apply — family sequences, ownership boundaries, and the delivery
-pipeline — is covered in
-[choosing a skill](https://skills.tailrocks.com/docs/choosing). The ten
-delivery skills — capture, shaping, planning, `/goal` execution, and the
-verification round that decides whether it is really done — have their own
-guide with two features taken end to end:
-[the delivery pipeline](https://skills.tailrocks.com/docs/delivery).
+Each row links to that skill's own README. The table is generated from the
+skills themselves — edit a skill, never the table.
 
 <!-- skills:start -->
 
@@ -249,6 +98,7 @@ Debt that shrinks, defects that stop recurring, skills that improve from field e
 | Skill | What it does |
 |---|---|
 | [`tailrocks-code-health`](skills/tailrocks-code-health/README.md) | Establish, audit, or tighten measurable shrink-only code-health ratchets for architecture, lint, dependency, flake, defect, documentation, or verification debt. |
+| [`tailrocks-improve`](skills/tailrocks-improve/README.md) | Audit any repository through parallel read-only investigators and turn verified findings into standalone, executor-ready implementation plans under plans/ — no roadmap required. |
 | [`tailrocks-agents-md`](skills/tailrocks-agents-md/README.md) | Add, place, audit, or repair agent instruction files. |
 | [`tailrocks-skill-author`](skills/tailrocks-skill-author/README.md) | Create, update, or audit agent skills: baseline the failure first, match the guidance form to the failure type, keep routers lean and references deep, write trigger-only descriptions, write baselined eval cases. |
 | [`tailrocks-retrospect`](skills/tailrocks-retrospect/README.md) | After a roadmap item ships, rebuild which skills ran from commit trailers, diff that against its Decisions, Must not, spec IDs, and verification rounds, and propose patches to the skills at fault. |
@@ -289,22 +139,7 @@ An idea through shaping, planning, autonomous execution, and back to verified tr
 
 <!-- skills:end -->
 
-## Manual-only policy
-
-All skills require explicit invocation. Claude Code, Grok Build, and Kimi Code
-honor `disable-model-invocation: true`; Codex uses
-`policy.allow_implicit_invocation: false`. OpenCode users can enforce the same
-rule with:
-
-```json
-{ "permission": { "skill": { "tailrocks-*": "ask" } } }
-```
-
 ## Develop this repository
-
-Each skill lives in `skills/<name>/` with one portable `SKILL.md`, eval cases,
-client policy, and optional references, templates, or scripts. Do not duplicate
-skill bodies per agent.
 
 ```sh
 mise install
@@ -316,10 +151,11 @@ claude --plugin-dir .
 
 Skill READMEs, the documentation pages, and the table above are generated from
 `SKILL.md` by `scripts/generate-docs.ts`; edit the skill, then run
-`mise run docs`. The documentation site lives in [docs/](docs/README.md).
-
-Contribution and release rules live in [AGENTS.md](AGENTS.md). Installation
-internals and per-client verification live in [INSTALL.md](INSTALL.md).
+`mise run docs`. Contribution and release rules live in
+[AGENTS.md](AGENTS.md); installation internals in [INSTALL.md](INSTALL.md);
+the documentation site in [docs/](docs/README.md). A saved prompt for
+improving these skills from an external pull request lives in
+[prompts/improve-from-pr.md](prompts/improve-from-pr.md).
 
 ## License
 

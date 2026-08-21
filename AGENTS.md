@@ -280,6 +280,23 @@ automated latest-version enforcement.
 
 Skill definition: `skills/tailrocks-code-health/SKILL.md`
 
+### tailrocks-improve
+
+Audit any repository — no roadmap or pipeline required — and turn verified
+findings into standalone, executor-ready implementation plans under
+`plans/`. Parallel read-only investigator subagents run the audit lanes;
+every finding's evidence is re-read by the planner before it may be
+reported; ranking is leverage discounted by confidence and fix-risk; each
+plan is self-contained for a zero-context executor, stamped with the
+commit it was planned at, drift-checked against that SHA, and gated on
+verification commands that were run during recon rather than guessed. It
+never implements, never writes outside `plans/`, and reconciles its
+backlog on reruns instead of duplicating plans. When the repository runs
+the delivery pipeline and the findings should become roadmap items, that
+is tailrocks-audit's job — improve owns the pipeline-free lane.
+
+Skill definition: `skills/tailrocks-improve/SKILL.md`
+
 ### The delivery family — roadmap-driven pipeline
 
 Ten skills drive work from a cold repository or a captured idea through
@@ -608,7 +625,13 @@ changed, the status machine run out of order, and a skill writing outside the
 scope its Boundaries declare. Every finding names the skill and the layer
 whose missing check allowed it — the executor is never the unit of fault —
 and every lane-shaped patch is held against its siblings in the other lanes
-before it is proposed. The skill writes one file, its record under
+before it is proposed. The evidence reads fan out to parallel read-only
+subagent investigators — commit tables, diffs, artifacts at their pinned SHAs
+— while the detectors and every verdict stay in the main context; mandatory
+on an external lane, where `--repo owner/name --pr N` audits an item that
+shipped in another repository (read-only through `gh`, and only when that
+lane ran this pipeline: a lane with no trailers is declined, not
+reconstructed). The skill writes one file, its record under
 `retrospectives/`, and edits nothing under `skills/`.
 
 Skill definition: `skills/tailrocks-retrospect/SKILL.md`
@@ -623,11 +646,15 @@ it has no evidence at all.
 `.claude/skills/` holds skills that serve work **on this repository
 itself** and never ship: they are outside `skills/`, so the plugin
 manifests, catalog, validator, and docs pipeline ignore them. None is
-defined today. The field-audit job that used to live here ships as
-`tailrocks-retrospect` instead — every repository that installs this
-collection has the same need to turn its own delivery history into skill
-improvements, and a repo-local copy would have been a second owner of one
-responsibility.
+defined today. The field-audit job ships as `tailrocks-retrospect`
+instead — every repository that installs this collection has the same
+need to turn its own delivery history into skill improvements, and a
+repo-local copy would have been a second owner of one responsibility.
+What remains repo-local is the invocation, not the behavior:
+`prompts/improve-from-pr.md` is a saved prompt that drives
+`tailrocks-retrospect` against an external pull request with its
+subagent fan-out, then hands approved patches to
+`tailrocks-skill-author`.
 
 ## Adding a Skill
 
