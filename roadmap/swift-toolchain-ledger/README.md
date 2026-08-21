@@ -71,10 +71,13 @@ drifted and kept reading as fact.
 
 ## References
 
-- `roadmap/template-pin-drift-gate/README.md` — the same class for npm
-  pins, DONE. Its three decisions apply here and should be inherited
-  rather than re-derived: weekly cadence, human-reviewed bump, and the
-  refresh never writes into a policy document.
+- `template-pin-drift-gate` — the same class for npm pins. Shipped and
+  retired, so it is read from history:
+  `git log --diff-filter=D -- roadmap/template-pin-drift-gate/`, then
+  `git show <retirement>^:roadmap/template-pin-drift-gate/README.md`. Its
+  three decisions apply here and should be inherited rather than
+  re-derived: weekly cadence, human-reviewed bump, and the refresh never
+  writes into a policy document.
 
 ## Research
 

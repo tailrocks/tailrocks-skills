@@ -1,6 +1,6 @@
 ---
 title: "Worked example: a native macOS app"
-description: "A log explorer with a Rust core and a Liquid Glass SwiftUI interface, from one sentence to a reconciled goal loop."
+description: "A log explorer with a Rust core and a Liquid Glass SwiftUI interface, from one sentence to a retired roadmap folder."
 ---
 
 The feature: **Sift**, a macOS app that opens multi-gigabyte log files, indexes
@@ -423,17 +423,66 @@ Remaining is empty.
 flowchart LR
   exec["/goal execution"] --> feedback["record-feedback"] --> prove --> reconcile
   reconcile -->|"Remaining not empty"| exec
-  reconcile -->|"round with no blocking defect"| done["DONE"]
+  reconcile -->|"round with no blocking defect"| done["DONE"] --> retire["retired — folder deleted"]
 ```
 
 The next pass resumes with `/goal Follow roadmap/log-explorer/goal/RESUME.md`,
 works the reopened rows, and comes back through feedback and prove again.
 
-## 13. When the intent changes
+## 13. Retire the item — `tailrocks-reconcile`
 
-Halfway through, you decide the app should tail growing files after all. Do not
-edit the plan: it is fingerprinted, so a hand-edit reads as `plan-drift` at the
-next gate rather than as a change of mind.
+Round 02 goes the other way. The index-building state now says so in the
+window instead of reporting an empty result, the inactive window keeps its
+glass, `tailrocks-prove` walks both surfaces against the blessed prototype
+sign-off and the frozen captures and finds nothing blocking, and every hub
+row is terminal with `goal/check.sh` green in the session.
+
+<Invoke skill="tailrocks-reconcile" args="log-explorer" />
+
+That invocation does two things, and commits them separately. First it writes
+the status the evidence earned — `DONE`, with `## Remaining` empty. Then it
+retires the item: `roadmap/log-explorer/` is deleted whole, and the index row
+goes with it.
+
+```text
+commit 1  ~ roadmap/log-explorer/README.md   Status: DONE, Remaining empty
+          ~ roadmap/README.md                DONE
+commit 2  - roadmap/log-explorer/            README.md, plan/, verification/, goal/
+          ~ roadmap/README.md                row removed
+```
+
+Everything goes: the item, the coverage ledger, the spec, six zero-context
+plans, both verification rounds, and the goal package whose fingerprint kept
+them honest. If `log-explorer` was the board's last row, `roadmap/README.md`
+and `roadmap/` go with it — an index of nothing is a leftover, not a board.
+
+That deletion is not a loss of the record, because the record was never the
+folder — it was the commit series that built it, each commit carrying the
+`Tailrocks-Skill` trailer of the skill that wrote it:
+
+```sh
+git log --format='%h %ad %s' --date=short -- roadmap/log-explorer/
+git show <commit>^:roadmap/log-explorer/README.md
+git show <commit>^:roadmap/log-explorer/verification/02-report.md
+```
+
+The `git show` lines are how you read any artifact exactly as it stood at any
+point in the item's life, including the moment it was retired.
+`tailrocks-retrospect` reads that same history to ask which skills let the two
+round-01 defects through.
+
+The rule behind it: a folder under `roadmap/` is work that is **not
+finished**. Sift is finished, so it has no folder.
+[`tailrocks-merge-pr`](/docs/skills/tailrocks-merge-pr) enforces both halves
+of that at the merge — a `DONE` item whose folder is still present is
+refused, and so is a folder deleted while its latest round still names a
+blocking defect.
+
+## 14. When the intent changes
+
+Rewind to the middle of execution. You decide the app should tail growing files
+after all. Do not edit the plan: it is fingerprinted, so a hand-edit reads as
+`plan-drift` at the next gate rather than as a change of mind.
 
 <Invoke skill="tailrocks-record-decision" args="log-explorer: the app tails a growing file and appends to the index incrementally, because operators watch live deployments" />
 
@@ -455,3 +504,9 @@ main-actor rule, the read-only guarantee, the index persistence model, a number
 for "fast", and the behavior of a query against a half-built index. Every one of
 them is something an agent would otherwise have picked silently — and four of
 them are expensive to change once the seam is built.
+
+And look at what the repository carries afterwards: a shipped app, and no
+roadmap folder. Every decision, every plan, and both verification rounds are
+still recoverable by SHA — they simply stopped being a document that has to be
+kept true. That is the trade the pipeline makes at both ends. It pays for the
+decisions up front, and it refuses to pay rent on them after they ship.

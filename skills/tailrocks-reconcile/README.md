@@ -22,4 +22,5 @@ file. They are not copied here — one source, and no chance of the two drifting
 ## References
 
 - [`remaining.md`](references/remaining.md)
+- [`retirement.md`](references/retirement.md)
 - [`row-verification.md`](references/row-verification.md)

@@ -19,3 +19,6 @@ Arguments: `[PR] [--no-poll] [--admin <check>]`
 The instructions this skill loads live in [`SKILL.md`](SKILL.md), beside this
 file. They are not copied here — one source, and no chance of the two drifting.
 
+## References
+
+- [`delivery-artifacts.md`](references/delivery-artifacts.md)

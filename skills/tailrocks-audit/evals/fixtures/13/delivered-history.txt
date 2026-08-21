@@ -1,0 +1,61 @@
+Captured git output for this sandbox, which has no .git directory. The
+commands and their output are transcribed verbatim.
+
+$ ls
+mise.toml  package.json  src  docs
+
+$ ls roadmap/
+ls: roadmap/: No such file or directory
+
+$ git log --diff-filter=D --format='%h %ad %s' --date=short -- roadmap/
+b8e0f21 2026-07-09 docs(roadmap): retire report-export-csv
+a4c7b03 2026-08-03 docs(roadmap): retire report-column-picker
+
+$ git show --stat --format='%h%n%B' a4c7b03
+a4c7b03
+docs(roadmap): retire report-column-picker
+
+Plan rows DONE, goal condition passing, verification round 01 clean,
+Remaining empty. Folder and index row deleted; it was the last row, so
+roadmap/README.md and roadmap/ go with it.
+
+Tailrocks-Skill: tailrocks-reconcile
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+
+ roadmap/README.md                                       |  6 -----
+ roadmap/report-column-picker/README.md                  | 64 ------------
+ roadmap/report-column-picker/goal/START.md              | 27 ------
+ roadmap/report-column-picker/goal/RESUME.md             | 16 -----
+ roadmap/report-column-picker/goal/check.sh              | 35 -------
+ roadmap/report-column-picker/plan/001-column-picker.md  | 58 ------------
+ roadmap/report-column-picker/plan/README.md             | 17 -----
+ roadmap/report-column-picker/verification/01-report.md  | 29 ------
+ 8 files changed, 252 deletions(-)
+
+$ git show b8e0f21^:roadmap/report-export-csv/README.md
+# Export the reporting table as CSV
+
+- **Status**: DONE
+- **Slug**: report-export-csv
+- **Created**: 2026-05-28
+- **Plan**: plan/ · **Verified**: verification/02-report.md
+
+## Intent
+
+An analyst downloads the reporting table as CSV instead of copying rows out
+of the browser. Observably true when this ships: every column visible in the
+table appears in the download, in the table's current sort order.
+
+## Deferred
+
+- Delivering an export on a schedule instead of on demand. Reason: the
+  cadence and recipient model was undecided. Revisit trigger: a user asks
+  for recurring delivery.
+
+## Remaining
+
+(empty)
+
+$ git log --format='%h %ad %s' --date=short -- src/reports.ts
+c1d2e30 2026-03-11 feat(reports): store report schedules from the settings form
+d9f3a12 2026-07-07 feat(reports): export the current report as CSV

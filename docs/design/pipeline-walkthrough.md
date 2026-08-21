@@ -1,19 +1,21 @@
 # Delivery Pipeline Walkthrough
 
 One feature, `goal-live-status`, from raw thought through execution to a
-verification round that sends work back. Invocations below are agent-neutral:
-explicitly invoke the named skill.
+verification round that sends work back — and, once a round comes back clean,
+off the board entirely. Invocations below are agent-neutral: explicitly invoke
+the named skill.
 
 Everything the item produces lives in one folder, `roadmap/<slug>/`, and the
 whole life of the item is one branch and one pull request. No delivery skill
-opens a second one.
+opens a second one. That folder is work in progress by definition: when the
+work is finished, the folder is deleted and git carries the record.
 
 ```mermaid
 flowchart LR
   audit --> idea --> brainstorm --> finalize --> design["design stage"] --> plan --> exec["/goal execution"]
   exec --> feedback["record-feedback"] --> prove --> reconcile
   reconcile -->|Remaining not empty| exec
-  reconcile -->|Remaining empty| done["DONE"]
+  reconcile -->|Remaining empty| done["DONE"] --> retire["retired — folder deleted"]
   audit -.-> plan
   brainstorm <--> research
   brainstorm <--> decision["record-decision"]
@@ -231,7 +233,57 @@ to IN EXECUTION with that defect standing as the remaining work; `DONE` is
 written only here, and only after a round found none. Resume from step 8 and
 iterate until Remaining is empty.
 
-## 12. Re-plan after changed intent
+## 12. Retire the item with tailrocks-reconcile
+
+The round that finds nothing blocking does not stop at a status. Four
+conditions have to hold, each evidenced in that same session: every hub row
+terminal, `goal/check.sh` passing, the newest verification round naming no
+blocking defect, and `## Remaining` empty. Then the same invocation that wrote
+`DONE` retires the item.
+
+Two commits, one invocation:
+
+```text
+commit 1  ~ roadmap/goal-live-status/README.md  Status: DONE, Remaining empty
+          ~ roadmap/README.md                   DONE
+          Tailrocks-Skill: tailrocks-reconcile
+
+commit 2  - roadmap/goal-live-status/           README.md, plan/, verification/, goal/
+          ~ roadmap/README.md                   row removed
+          Tailrocks-Skill: tailrocks-reconcile
+```
+
+The split is the point. One squashed commit would show only an absence, which
+is indistinguishable from a mistaken deletion; two show the item earning `DONE`
+on evidence and then being retired, both in the pull request the item has had
+since capture. The deletion is whole — no file is kept back, and a folder half
+emptied is the drift the rule exists to prevent. If `goal-live-status` was the
+last row, `roadmap/README.md` and `roadmap/` go with it. `research/` is
+untouched: topics are standing artifacts, not item artifacts.
+
+Nothing is lost, because nothing was ever stored only in the tree:
+
+```sh
+git log --format='%h %ad %s' --date=short -- roadmap/goal-live-status/
+git log --diff-filter=D -- roadmap/goal-live-status/     # the retiring commit
+git ls-tree -r --name-only <retirement>^ -- roadmap/goal-live-status/
+git show <retirement>^:roadmap/goal-live-status/README.md
+```
+
+Those last three are how tailrocks-retrospect reads a retired item: find the
+retiring commit, enumerate what it removed, and read each artifact from its
+parent.
+
+`tailrocks-merge-pr` is the checkpoint, and it writes nothing. When a pull
+request's diff touches `roadmap/`, its delivery-artifact check reads the diff
+and blocks on a contradiction rather than fixing one — an item saying `DONE`
+while `roadmap/<slug>/` still exists in the merge result, a folder deleted
+while its newest round still carried a blocking defect, a manifest that
+disagrees with its round, a `DONE` with no round at all, or an index and a tree
+that disagree. Each finding names the files and routes to the skill that
+resolves it, in the same pull request.
+
+## 13. Re-plan after changed intent
 
 Invoke tailrocks-record-decision on the PLANNED or IN EXECUTION item. A
 material intent change returns it to SHAPING and marks affected rows STALE.
@@ -255,3 +307,10 @@ A falsified assumption follows the same owned route: executor names failed
 - Trusting an interrupted loop: reconcile before resume.
 - Treating PARKED as terminal: explicit resume restores its recorded `was:`
   state through tailrocks-record-decision.
+- Leaving a `DONE` folder on the board: `DONE` is a transition, not a resting
+  place, and merge-pr blocks the merge that would ship it.
+- Deleting a folder to declare the work done: retirement is what a clean round
+  earns, and deletion is the one edit that destroys the evidence which would
+  have contradicted it.
+- Retiring by hand: reconcile owns the deletion and the index row together, in
+  two commits; merge-pr only reports.

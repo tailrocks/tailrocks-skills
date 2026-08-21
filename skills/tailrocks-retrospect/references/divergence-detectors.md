@@ -95,6 +95,32 @@ Rules for the table:
   six clean results over a table that was never built. A repository whose
   every item squash-merges is the common case, not the exception — a skill
   that stopped there would be inert on every item it will ever audit.
+- **A delivered item has no folder, and every artifact read below resolves at
+  the retirement commit's parent.** `roadmap/<slug>/` is deleted whole in the
+  pull request that set `DONE`, so on a shipped item — the normal subject of
+  this skill — the working tree holds nothing to open, and that absence is
+  evidence of delivery rather than a missing input. Pathspec history keeps all
+  of it:
+
+  ```sh
+  # the retirement commit, and the snapshot to read everything from
+  git log --diff-filter=D --format='%H %at %s' -- roadmap/<slug>/
+  git ls-tree -r --name-only <retirement>^ -- roadmap/<slug>/
+  git show <retirement>^:roadmap/<slug>/README.md
+  ```
+
+  That snapshot holds the item, the plan manifest and its numbered plans,
+  `spec/`, `coverage.md`, every `verification/NN-*.md`, and the `goal/`
+  prompts. Wherever a detector says "read the item", "open the ledger", or
+  "take the latest round", this is the read. Over `gh` with no clone, resolve
+  the parent first — `gh api repos/<owner>/<name>/commits/<retirement> --jq
+  '.parents[0].sha'` — and pass it as the `ref` to the contents endpoint;
+  a `^` suffix is not a ref the API accepts. Record the retirement SHA in the
+  record beside the bind SHA: it is delivery's own claim that the item was
+  finished, and D5 checks that claim. The retirement commit is an **artifact**
+  commit whose changed paths are deletions of the item's own documents — never
+  shipped scope, so D3 does not count them, and it is the one commit for which
+  path-keyed detectors read the parent's tree rather than the diff.
 - **Reconcile every fetched count against its declared one.** Two pull-request
   reads truncate silently, with a success exit and no warning on either. The
   commits endpoint stops at 250 however far `--paginate` is pushed, so compare
@@ -344,7 +370,7 @@ itself: a value outside the machine's set is a hit on its own.
 
 **Verification rounds decide completion, and this is where they are read.**
 Take `roadmap/<slug>/verification/` in round order, and the latest round's
-verdict with the blocking defects it names. Three hits live here:
+verdict with the blocking defects it names. Five hits live here:
 
 - **The item stands at `DONE` while its latest round names a blocking
   defect.** `DONE` requires every plan row done, the goal condition met, *and*
@@ -360,6 +386,21 @@ verdict with the blocking defects it names. Three hits live here:
   marked — `tailrocks-record-feedback` for the reported defects,
   `tailrocks-prove` for what execution proved — so a round nobody marked is
   the marking rule failing on the newest artifact in the folder.
+- **The folder was retired with no clean round behind it.** Retirement is the
+  strongest completion claim the pipeline can make, and it destroys its own
+  evidence in the same commit — so it is judged at `<retirement>^`, never
+  against the tree. Four shapes, all hits: the latest
+  `verification/NN-report.md` at that parent names a blocking defect; the
+  folder holds no round at all; the item's Status there is anything other than
+  `DONE`; or its Remaining still carries an open statement. A retirement
+  commit with no `Tailrocks-Skill` trailer, or one naming a skill that does
+  not own the `DONE` transition, is the same defect from the other side — the
+  pipeline's most destructive step taken by nobody accountable for it.
+- **An item stands at `DONE` with its folder still in the tree.** `DONE` is a
+  transition, not a resting place: the invocation that sets it retires the
+  item in the next commit of the same pull request. A `DONE` item still on
+  disk at the end of the lane means the retiring half never ran, and the merge
+  gate that refuses exactly that let the lane through.
 
 One body of evidence, one finding: the same round read as a producer nothing
 consumed belongs here, not additionally under D4.
@@ -367,13 +408,16 @@ consumed belongs here, not additionally under D4.
 **Evidence:** the status-setting commits, the earliest source-touching commit
 before them, the status string when it is off-machine, and — for a completion
 claim — the round file, its verdict line, the blocking defect quoted, and the
-item's Remaining as it stands.
+item's Remaining as it stands. For a retirement: the deletion commit with its
+trailer, and the item, Status, Remaining, and latest round quoted from
+`<retirement>^`, which is the only place they still exist.
 
 **Defect class:** the skill that owns a status had no precondition refusing
 to grant it after the work it gates already shipped; the skill that wrote the
 value never read the vocabulary its owner defines; or the skill that owns the
 `DONE` transition proved completion from plan rows alone and never made the
-latest round's verdict a precondition of it.
+latest round's verdict a precondition of it — the same missing precondition
+that lets a folder be deleted before its evidence is read.
 
 **False positives:** repository work that is not this item's implementation —
 unrelated maintenance sharing the branch — is out of the item's scope; check
@@ -381,7 +425,12 @@ the paths against the item before counting it. An explicitly recorded user
 override is a logged exception, not an inversion. Only the **latest** round
 decides: a blocking defect an earlier round raised and a later one cleared is
 the loop working, and so is an item back at `IN EXECUTION` carrying that
-round's defects as its Remaining.
+round's defects as its Remaining. **A cleanly retired item is not a hit** —
+absence is what delivery looks like, and the check is the round at
+`<retirement>^`, never the empty tree. A folder deleted under an explicitly
+recorded user instruction to abandon the item is a logged exception too; the
+instruction has to be in the commit or the item, not inferred from the
+deletion.
 
 ## D6 — Write-scope breach
 

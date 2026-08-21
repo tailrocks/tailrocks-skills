@@ -22,7 +22,7 @@ flowchart LR
   audit --> idea --> brainstorm --> finalize --> design["design stage"] --> plan --> exec["/goal execution"]
   exec --> feedback["record-feedback"] --> prove --> reconcile
   reconcile -->|Remaining not empty| exec
-  reconcile -->|Remaining empty| done["DONE"]
+  reconcile -->|Remaining empty| done["DONE"] --> retire["retired — folder deleted"]
   audit -.-> plan
   brainstorm <--> research
   finalize <--> decision["record-decision"]
@@ -38,6 +38,11 @@ plan rows has proven it did the work, not that the work behaves — so what
 shipped gets used, what the user hit gets captured verbatim, an agent executes
 the thing and judges it, and whatever is still wrong comes back as remaining
 work. `DONE` is on the far side of a round that found nothing blocking.
+
+And it is the far side of the board too. `DONE` is a transition, not a
+resting place: the same reconcile invocation that writes it deletes the
+item's folder and its index row. The healthy steady state of `roadmap/` is
+empty — [delivered work leaves the tree](#delivered-work-leaves-the-tree).
 
 Audit sits before the line rather than on it. You reach for it when there is no
 idea to capture yet — a repository you inherited, a branch about to become a
@@ -80,6 +85,38 @@ not.
 into that same lane under a `Tailrocks-Skill` trailer naming it. No artifact
 carries a history section: the commit series is the history.
 
+## Delivered work leaves the tree
+
+A folder under `roadmap/` is work that is **not finished**. When an item is
+genuinely complete — every plan row terminal, the goal condition passing, the
+latest verification round carrying no blocking defect, and `## Remaining`
+empty — `tailrocks-reconcile` writes `DONE` and then retires the item:
+`roadmap/<slug>/` is deleted whole, item, `plan/`, `verification/`, `goal/`,
+and assets alike, and its index row goes with it. Two commits in one
+invocation, so a reviewer sees the item reach `DONE` and then be retired in
+the same pull request. When the last item goes, `roadmap/README.md` and
+`roadmap/` go too — an index of nothing is a leftover, not a board.
+
+Nothing is lost, because nothing was ever stored only in the tree:
+
+```sh
+git log --format='%h %ad %s' --date=short -- roadmap/<slug>/   # what happened
+git show <commit>^:roadmap/<slug>/README.md                    # the item as it stood
+```
+
+The reason is the one that removed the item's Log section. An item that stays
+after its work shipped is a document nobody updates and everybody
+half-trusts — the state that let one real delivery read
+`BLOCKED — only release remains` while four of its capabilities were pending
+and its pull request headlined them as delivered.
+
+[`tailrocks-merge-pr`](/docs/skills/tailrocks-merge-pr) holds the line at the
+merge: it refuses a pull request whose item says `DONE` while the folder is
+still present, and refuses one whose folder was deleted while its latest
+verification round still carried a blocking defect. The gate is read-only —
+merge-pr never writes a delivery artifact; it reports which one is wrong and
+sends you back to reconcile.
+
 ## Status is the contract
 
 An item's status is not a label. It is a claim about what is safe to do next,
@@ -92,7 +129,7 @@ and exactly one skill may set each value.
 | `READY` | No open decision-type questions; fit for planning | `tailrocks-finalize`, and nothing else |
 | `PLANNED` | `roadmap/<slug>/plan/` and `goal/` exist | `tailrocks-plan` |
 | `IN EXECUTION` | An executor started the plans | the executor protocol, and `tailrocks-reconcile` when truing up |
-| `DONE` | Every plan row terminal, the goal condition met, **and the last verification round found no blocking defect** | `tailrocks-reconcile`, and nothing else |
+| `DONE` | Every plan row terminal, the goal condition met, **and the last verification round found no blocking defect**. Terminal and short-lived: the same invocation retires the item | `tailrocks-reconcile`, and nothing else |
 | `PARKED (reason; was: STATUS)` | Deliberately paused | you, through `tailrocks-record-decision` |
 
 The single most useful rule in the whole pipeline: **only finalize grants
@@ -102,7 +139,8 @@ implementing a feature whose behavior nobody has decided yet.
 The rule at the other end is its mirror: **`DONE` is never claimed from plan
 rows.** An executor that finished every row reports a `TAILROCKS GOAL: PASS`
 and stops; it is `tailrocks-reconcile`, reading a verification round that found
-no blocking defect, that writes the status.
+no blocking defect, that writes the status — and then deletes the folder it
+just certified.
 
 Its companion covers the interface: **plan requires a blessed design
 reference for every screen with a visual surface**, produced in the
@@ -122,7 +160,7 @@ decided, pixels undecided is the other way an implementer ends up guessing.
 | [`tailrocks-plan`](/docs/skills/tailrocks-plan) | Packaging | Implementing; planning an unshaped item | `roadmap/<slug>/plan/` and `goal/` — ledger, spec, slices, START/RESUME, `check.sh` |
 | [`tailrocks-record-feedback`](/docs/skills/tailrocks-record-feedback) | Capture of what shipped wrong | Judging, investigating, or fixing a report | `verification/NN-feedback.md` — the user's words, one statement per defect |
 | [`tailrocks-prove`](/docs/skills/tailrocks-prove) | Execution as evidence | Writing status; fixing what it finds | `verification/NN-report.md` — a verdict per statement and per plan row |
-| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | Truth | Writing or refreshing plans | Evidence-backed statuses, the item's Remaining, nothing else |
+| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | Truth, and retirement | Writing or refreshing plans | Evidence-backed statuses, the item's Remaining — and, on `DONE`, the deletion of `roadmap/<slug>/` and its index row |
 
 ### Find the work before there is a backlog
 
@@ -295,12 +333,36 @@ confirmed, rewrites the item's **Remaining** — what is not done yet, as
 observable statements — from the blocking defects, and writes the status a
 round earned. A round with a blocking defect sends the item back to
 `IN EXECUTION` with that defect as the remaining work; a round with none is the
-only way to `DONE`. It writes statuses and Remaining, and nothing else.
+only way to `DONE`. Inside the item's own tree it writes statuses and
+Remaining, and nothing else.
 
 <Invoke skill="tailrocks-reconcile" args="session-replay" />
 
 Then back to execution with `goal/RESUME.md`, and around again until Remaining
 is empty.
+
+### Retire the item in the same breath
+
+The one round that ends differently is the last one. When reconcile writes
+`DONE`, it commits that status and then, in a second commit in the same
+invocation, deletes `roadmap/session-replay/` whole and removes its index
+row:
+
+```text
+commit 1  ~ roadmap/session-replay/README.md   Status: DONE, Remaining empty
+          ~ roadmap/README.md                  DONE
+commit 2  - roadmap/session-replay/            item, plan/, verification/, goal/
+          ~ roadmap/README.md                  row removed
+```
+
+Two commits rather than one because the pull request has to show both: that
+the item earned `DONE` on evidence, and that the folder then went. One
+squashed commit would show only an absence, and an absence is what a
+mistaken deletion looks like too.
+
+If that was the board's last row, `roadmap/README.md` and `roadmap/` go with
+it. An empty `roadmap/` is not a pipeline that stalled — it is a pipeline
+with nothing outstanding, which is the state you are aiming at.
 
 ## Where the stack skills plug in
 
@@ -367,7 +429,7 @@ Two worked examples follow the whole route:
 | READY, and no intention of babysitting the build | `tailrocks-plan` |
 | Something wrong with what shipped, in your own words | `tailrocks-record-feedback` |
 | A need to know whether it actually works, not whether it built | `tailrocks-prove` |
-| A loop that stopped, a repository that moved, or a round to close | `tailrocks-reconcile` |
+| A loop that stopped, a repository that moved, a round to close, or an item that is finally finished | `tailrocks-reconcile` |
 
 ## Common mistakes
 
@@ -387,6 +449,14 @@ Two worked examples follow the whole route:
   explanation instead of after the defect.
 - **Resuming an interrupted loop on trust.** Reconcile first. A row that says
   DONE after a dead session is a claim, not evidence.
+- **Keeping a DONE folder "for reference".** It has no reader and no writer,
+  so it decays into a document everybody half-trusts. Retire it and read
+  `git log -- roadmap/<slug>/` when you need it; `tailrocks-merge-pr` refuses
+  the merge that would leave it behind.
+- **Deleting a folder to make the board look finished.** Retirement is what
+  `DONE` earns, not how it is claimed. A folder deleted while its latest
+  verification round still names a blocking defect is the same lie in the
+  other direction, and the merge gate refuses that one too.
 - **Treating PARKED as terminal.** It records what it was paused from
   (`was: STATUS`) and resumes explicitly through record-decision.
 - **Asking one skill to do its neighbour's job.** Brainstorm cannot grant READY,

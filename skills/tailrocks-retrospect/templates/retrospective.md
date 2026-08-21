@@ -1,6 +1,9 @@
 # Retrospective — <slug>
 
 - **Item**: `roadmap/<slug>/README.md` at `<short SHA>`
+- **Retirement**: `<short SHA>` <date> — the commit that deleted
+  `roadmap/<slug>/`; every artifact below was read at `<short SHA>^` — or
+  "none — the folder is still in the tree, and the item's Status is <status>"
 - **Package**: `roadmap/<slug>/plan/` at `<short SHA>` — or "none"
 - **Verification**: `roadmap/<slug>/verification/` — <n> rounds, latest
   `<NN>` verdict <verdict>, blocking defects <ids | none> — or "none"

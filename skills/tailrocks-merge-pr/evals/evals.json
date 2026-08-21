@@ -20,6 +20,49 @@
       "files": [
         "evals/fixtures/3/.tailrocks/pr.md"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Merge PR #204 — it finishes the notification-center delivery. Checks are green and the roadmap item is updated in the diff.",
+      "expected_output": "The diff touches roadmap/, so the delivery-artifact check runs and BLOCKS the merge: roadmap/notification-center/README.md reads Status DONE with an empty ## Remaining and every plan-manifest row terminal, while roadmap/notification-center/ still exists in the merge result and roadmap/README.md still carries its row. Names the contradiction as finished-but-present — the item is complete and was never retired; delivered work leaves the tree, so tailrocks-reconcile deletes roadmap/notification-center/ whole (item, plan/, verification/, goal/) plus the index row in this same pull request. The skill itself deletes nothing, edits nothing, and commits nothing; it stops and routes to tailrocks-reconcile, after which the merge re-runs from the CI gate.",
+      "files": [
+        "evals/fixtures/finished-but-present/roadmap/README.md",
+        "evals/fixtures/finished-but-present/roadmap/notification-center/README.md",
+        "evals/fixtures/finished-but-present/roadmap/notification-center/plan/README.md",
+        "evals/fixtures/finished-but-present/roadmap/notification-center/verification/02-report.md"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Merge PR #118. It cleans up the roadmap by removing the session-archive folder and its index row — the work is behind us, so let's get the board tidy.",
+      "expected_output": "BLOCKS as retired-while-unfinished: the diff deletes roadmap/session-archive/ whole, but the pre-image it deletes shows the newest round, verification/03-report.md, naming blocking defects B1 (archived session reopens with an empty transcript) and B2 (archived-only filter returns every session), the item's ## Remaining holding three open statements, and plan row 002 sitting at BLOCKED. Retirement without the evidence is declaring a delivery done by deletion — the folder leaving is a consequence of a clean round, never a substitute for one, and deletion destroys the evidence that contradicts it. Routes to tailrocks-prove for the round that could justify retirement, then tailrocks-reconcile; refuses to restore, edit, or commit anything itself. A tidy-the-board framing is not authorization.",
+      "files": [
+        "evals/fixtures/retired-while-unfinished/pr-diff.txt",
+        "evals/fixtures/retired-while-unfinished/roadmap/README.md",
+        "evals/fixtures/retired-while-unfinished/roadmap/session-archive/README.md",
+        "evals/fixtures/retired-while-unfinished/roadmap/session-archive/plan/README.md",
+        "evals/fixtures/retired-while-unfinished/roadmap/session-archive/verification/03-report.md"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Merge PR #131 — it lands plan 002 of live-tail and updates the roadmap item's Remaining. Checks are green.",
+      "expected_output": "The delivery-artifact check runs (the diff touches roadmap/) and finds no contradiction, so the merge PROCEEDS: the item is IN EXECUTION with a non-empty ## Remaining, plan row 003 is IN PROGRESS rather than terminal, and round 01 still names a blocking defect — a consistent in-flight state, which is the normal shape of a delivery merge and never a reason to block. No demand that the folder be retired, no reconcile routing, no DONE claimed. Merge continues through metadata reconcile and the repository's merge method.",
+      "files": [
+        "evals/fixtures/work-in-flight/roadmap/README.md",
+        "evals/fixtures/work-in-flight/roadmap/live-tail/README.md",
+        "evals/fixtures/work-in-flight/roadmap/live-tail/plan/README.md",
+        "evals/fixtures/work-in-flight/roadmap/live-tail/verification/01-report.md"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Merge PR #77 in this service repo — it changes the edge rate limiter. Checks are green.",
+      "expected_output": "The repository has no roadmap/ and the diff touches none, so the delivery-artifact check is silent: it is neither run nor reported, no roadmap skill is looked for, and nothing about delivery artifacts appears in the reply. The merge runs the ordinary gates — blast radius against the .tailrocks/pr.md patterns (src/billing/**, .github/workflows/**, which this diff does not touch, so normal), CI green, the Before-merge changelog entry, squash title ending in (#N), branch deleted.",
+      "files": [
+        "evals/fixtures/no-roadmap/.tailrocks/pr.md",
+        "evals/fixtures/no-roadmap/src/rate_limit.rs"
+      ]
     }
   ]
 }

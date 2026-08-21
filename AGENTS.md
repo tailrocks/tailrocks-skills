@@ -297,6 +297,21 @@ stay in `research/<topic>/`, independent of items, with many-to-many links.
 No delivery artifact lives outside the item's folder — there is no parallel
 `plans/` tree to keep in step.
 
+**Delivered work leaves the tree.** A folder under `roadmap/` is work that is
+**not finished**. `DONE` is a transition, not a resting place: when every plan
+row is terminal, the goal condition passes, the newest verification round names
+no blocking defect, and `## Remaining` is empty, `tailrocks-reconcile` writes
+`DONE` and then retires the item — `roadmap/<slug>/` deleted whole (README,
+`plan/`, `verification/`, `goal/`, assets) and its index row removed. Two
+commits inside one invocation, so the pull request shows the item reach `DONE`
+and then be retired. When the last item goes, `roadmap/README.md` and
+`roadmap/` go too; an index of nothing is a leftover, not a board. Standing
+research topics never go — `research/<topic>/` is independent of items.
+Nothing is lost: `git log -- roadmap/<slug>/` says what happened and
+`git show <commit>^:roadmap/<slug>/README.md` reads the item as it stood. The
+reason is the one that removed the item Log — an item that stays after its work
+shipped is a document nobody updates and everybody half-trusts.
+
 **Frozen means fingerprinted.** The plan files, the spec, the ledger, and the
 whole `goal/` package are FROZEN: `goal/check.sh` hashes them into the hub's
 `Frozen contract fingerprint` line and returns `BLOCKED plan-drift` when one
@@ -381,18 +396,20 @@ series is the item's history (the contract lives in tailrocks-idea's
   rows, re-test BLOCKED reasons, drift-check TODO plans against HEAD, mark
   stale rows, then prune the rows a verification round confirmed, rewrite the
   item's `Remaining` from its blocking defects, and true up the status. It is
-  the only writer of `DONE`, and only after a round that found none. Run it
+  the only writer of `DONE`, and only after a round that found none — and the
+  invocation that writes it retires the item in a second commit. Run it
   when a /goal loop finishes, stalls, the repository moved on, or a round
   needs closing. Definition: `skills/tailrocks-reconcile/SKILL.md`
 
-The loop closes, and iterates until `Remaining` is empty:
+The loop closes, iterates until `Remaining` is empty, and then the item leaves
+the board:
 
 ```mermaid
 flowchart LR
   plan --> exec["/goal execution"] --> feedback["record-feedback"]
   feedback --> prove --> reconcile
   reconcile -->|Remaining not empty| exec
-  reconcile -->|Remaining empty| done["DONE"]
+  reconcile -->|Remaining empty| done["DONE"] --> retire["retired — folder deleted"]
 ```
 
 A `TAILROCKS GOAL: PASS` proves the work ran and the contract is unedited; it
@@ -453,6 +470,13 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
   admin bypass, blast-radius confirm, the repository's pre-merge worklist,
   metadata reconcile before the squash title enters history, repo-selected
   merge method. Authorization never carries forward between sessions.
+  Its **delivery-artifact check** fires only when the pull request's diff
+  touches `roadmap/`, and is read-only about every artifact it reads: it
+  blocks on an item saying `DONE` while its folder is still present, on a
+  folder deleted while its newest verification round still carried a blocking
+  defect, and on three further contradictions — naming the files that disagree
+  and routing to `tailrocks-reconcile` (or `tailrocks-prove` when what is
+  missing is a clean round). It never writes a delivery artifact.
   Definition: `skills/tailrocks-merge-pr/SKILL.md`
 - **tailrocks-pr-template** — generate the repository's own
   `.github/PULL_REQUEST_TEMPLATE.md` by tailoring the base template
@@ -573,8 +597,10 @@ or a gate is routed there, not wrapped in a new skill.
 
 The loop that closes back onto the collection. Point it at one shipped or
 in-flight roadmap item and it rebuilds which skills actually ran — commit
-trailers first, per-commit inference marked as inference, the item's Log
-beside it as the claim to be checked — then runs six lane-agnostic detectors
+trailers first, per-commit inference marked as inference. A shipped item has
+usually been retired, so its artifacts come out of history rather than the
+tree: find the retiring commit (`git log --diff-filter=D -- roadmap/<slug>/`)
+and read each file from its parent. Then it runs six lane-agnostic detectors
 over that sequence: evidence recorded after lock-in, a skill's own output
 reworked by its own follow-up, shipped scope that no coverage ID or Must-not
 claims, output nothing downstream consumed or that a consumer froze before it
