@@ -65,7 +65,9 @@ Rules:
 
 - **`DONE`** — Remaining is empty, and that emptiness is the claim that
   nothing is left: every row terminal, the goal condition met this session,
-  and the newest round finding no blocking defect. Only this skill sets it.
+  and the newest round finding no blocking defect. Only this skill sets it,
+  and the same invocation retires the item out of the tree — the conditions,
+  the refusals, and the two commits are in [`retirement.md`](retirement.md).
 - **`IN EXECUTION`** — Remaining is the work order for the next round.
 - **Any other status with an empty Remaining** — nobody has verified yet. That
   is not the same as nothing being left, and it is never read as DONE.

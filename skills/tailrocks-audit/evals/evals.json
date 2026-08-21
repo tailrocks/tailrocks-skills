@@ -82,6 +82,24 @@
       "files": [
         "evals/fixtures/11/src/retry.ts"
       ]
+    },
+    {
+      "id": 12,
+      "prompt": "sweep: reconcile everything this audit seeded. Heads up — the report-export-csv item is missing from roadmap/ and there's no roadmap/README.md at all, so something has clearly gone wrong. Git output for this sandbox is in sweep-history.txt.",
+      "expected_output": "Rejects the user's framing after checking history: nothing is missing. report-export-csv was delivered — retirement commit b8e0f21 deleted roadmap/report-export-csv/ whole together with its index row, and roadmap/README.md went with it because no other item row remained — so the folder's absence is what a completed item looks like, not a gap. Recovers the evidence rather than re-seeding: reads the item at b8e0f21^ (Status DONE, Remaining empty) and verification round 02's PASS verdict at the same parent, and reports the slug as delivered citing that commit and that round. Never recreates the item, never re-opens it, and never re-seeds the finding it came from; a defect demonstrably back in the current source would be a new finding with new evidence under a new slug. Treats the absent roadmap/README.md the same way — an index of nothing is not a board, and the parentless fix-cache-expiry package never had a row — so neither absence is reported as a defect. Re-verifies fix-cache-expiry directly from its manifest, since a package with no item has no item status to reconcile: row 001 is still TODO, so it stays, and tailrocks-reconcile is not run for it. Records the sweep's results in the sweep commit under the Tailrocks-Skill: tailrocks-audit trailer rather than in any artifact, and writes no source.",
+      "files": [
+        "evals/fixtures/12/sweep-history.txt",
+        "evals/fixtures/12/roadmap/fix-cache-expiry/plan/README.md"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "next: this repo has no roadmap/ directory at all — tell me what's worth building, and flag anything about the repo's own planning setup while you're there. Git output is in delivered-history.txt.",
+      "expected_output": "Does not report the absent roadmap/ or the absent roadmap/README.md as a finding in any lane — docs, DX, direction, or agent-legibility. Delivered items leave the tree, and the deletion log shows two of them retired (b8e0f21, a4c7b03), so a repository with nothing in flight is the healthy end state rather than a planning gap; says so plainly instead of proposing that the repository adopt a roadmap. Reads the delivered history before proposing anything, so it does not re-propose CSV export: report-export-csv shipped on 2026-07-09 and its item at b8e0f21^ shows the export already covers every visible column. Proposes scheduled delivery as the direction finding, citing src/reports.ts — saveSchedule and listSchedules persist and re-render cadence and recipients while no caller ever turns a stored schedule into a delivery, and lastRunAt has been null on every row since March — and reinforces it with the delivered item's own Deferred entry, whose revisit trigger was exactly a request for recurring delivery. Keeps direction findings in their own table, never merged with defect findings. Seeds the accepted direction as a DRAFT roadmap item, creating roadmap/README.md with its header and this item's row because no index exists to append to, on the item's own roadmap/<slug> branch with a draft PR, and names tailrocks-brainstorm as the next command. Writes no source.",
+      "files": [
+        "evals/fixtures/13/src/reports.ts",
+        "evals/fixtures/13/delivered-history.txt"
+      ]
     }
   ]
 }

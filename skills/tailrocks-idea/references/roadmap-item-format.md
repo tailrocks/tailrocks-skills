@@ -41,6 +41,27 @@ changes; editing it is not.
 `Tailrocks-Skill` trailer naming the skill that produced each one. See
 [`delivery-git-contract.md`](delivery-git-contract.md).
 
+## Delivered work leaves the tree
+
+A folder under `roadmap/` is work that is **not finished**. When the last
+verification round is clean, every plan row is terminal, and Remaining is
+empty, `tailrocks-reconcile` sets `DONE` and then deletes the whole folder and
+its index row. When the last item goes, `roadmap/README.md` and `roadmap/`
+itself go with it — an index of nothing is not a board, it is a leftover.
+
+Nothing is lost, because nothing was ever stored only here:
+
+```sh
+git log --format='%h %ad %s' --date=short -- roadmap/<slug>/   # what happened
+git show <commit>^:roadmap/<slug>/README.md                    # the item as it stood
+```
+
+The reason is the same one that deleted the Log. An item that stays after its
+work shipped is a document nobody updates and everybody half-trusts — the
+state that let one delivery read `BLOCKED — only release remains` while four
+capabilities were pending. `tailrocks-merge-pr` refuses to merge a pull
+request whose item says `DONE` while the folder is still there.
+
 ## Status machine
 
 Exactly one status at all times, in the item header and mirrored in the
@@ -53,7 +74,7 @@ index. Statuses and owners:
 | `READY` | Product-complete: no open decision-type questions; fit for planning | `tailrocks-finalize` only (or an explicit user override, stated in that commit) |
 | `PLANNED` | `roadmap/<slug>/plan/` and `goal/` exist | `tailrocks-plan` |
 | `IN EXECUTION` | An executor started working the plans | the executor protocol; `tailrocks-reconcile` when truing up |
-| `DONE` | Every plan row DONE, the goal condition met, **and the last verification round found no blocking defect** | `tailrocks-reconcile` only |
+| `DONE` | Every plan row DONE, the goal condition met, **and the last verification round found no blocking defect**. Terminal and short-lived: the item is retired in the same invocation that sets it | `tailrocks-reconcile` only |
 | `PARKED (reason; was: STATUS)` | Deliberately paused at any stage | the user, via any skill; un-parked by `tailrocks-record-decision` |
 
 Transition rules:
@@ -71,6 +92,11 @@ Transition rules:
 - `DONE` is never claimed from plan rows alone. A verification round that
   found blocking defects returns the item to `IN EXECUTION` with those defects
   standing as the remaining work.
+- **`DONE` is a transition, not a resting place.** The invocation that sets it
+  retires the item in the next commit: `roadmap/<slug>/` is deleted whole —
+  item, `plan/`, `verification/`, `goal/` — and its index row goes with it.
+  Two commits, one invocation, so a reviewer sees the item reach `DONE` and
+  then be retired in the same pull request.
 - Parking: any skill may set `PARKED (reason; was: SHAPING)` on the user's
   explicit instruction, recording in the header the status it left.
 - Resuming: `tailrocks-record-decision` un-parks on explicit user instruction

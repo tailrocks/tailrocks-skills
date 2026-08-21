@@ -226,7 +226,7 @@ the repository's own conventions and fall back to their defaults.
 | [`tailrocks-refresh-pr`](/docs/skills/tailrocks-refresh-pr) | An open PR's title or body no longer describes what the branch ships. |
 | [`tailrocks-checkout-pr`](/docs/skills/tailrocks-checkout-pr) | The working repository must land on a PR's branch, with the tree guarded. |
 | [`tailrocks-review-pr`](/docs/skills/tailrocks-review-pr) | A PR, branch, or diff needs a review verdict: verified bugs, structural regressions, routed fixes. |
-| [`tailrocks-merge-pr`](/docs/skills/tailrocks-merge-pr) | A PR is merge-ready and the gates must run fail-closed before it lands. |
+| [`tailrocks-merge-pr`](/docs/skills/tailrocks-merge-pr) | A PR is merge-ready and the gates must run fail-closed before it lands — including the read-only delivery-artifact check when the diff touches `roadmap/`. |
 | [`tailrocks-pr-template`](/docs/skills/tailrocks-pr-template) | The repository needs its own `.github/PULL_REQUEST_TEMPLATE.md`, derived from its structure, gates, and merged-PR history. |
 
 ### review-pr, simplify, or remediate
@@ -278,7 +278,7 @@ flowchart LR
   audit --> idea --> brainstorm --> finalize --> plan --> exec["/goal execution"]
   exec --> feedback["record-feedback"] --> prove --> reconcile
   reconcile -->|Remaining not empty| exec
-  reconcile -->|Remaining empty| done["DONE"]
+  reconcile -->|Remaining empty| done["DONE"] --> retire["retired — folder deleted"]
   audit --> plan
   audit --> sweep["audit sweep"]
   brainstorm <--> research
@@ -296,7 +296,7 @@ flowchart LR
 | [`tailrocks-plan`](/docs/skills/tailrocks-plan) | Converting a READY item into specs, coverage, zero-context plans, and the `goal/` handoff. |
 | [`tailrocks-record-feedback`](/docs/skills/tailrocks-record-feedback) | Something is wrong with what shipped and the user's own words should be on record before anyone argues with them. |
 | [`tailrocks-prove`](/docs/skills/tailrocks-prove) | Whether the shipped work behaves has to be settled by running it, not by reading its status rows. |
-| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | Execution status, blockers, drift, and DONE claims need re-verifying against the repository, or a verification round needs closing. |
+| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | Execution status, blockers, drift, and DONE claims need re-verifying against the repository, a verification round needs closing, or a finished item needs retiring off the board. |
 
 One item, one folder: the item, its `plan/` package, its `verification/`
 rounds, and its `goal/` handoff all live under `roadmap/<slug>/`, with standing
@@ -307,6 +307,40 @@ Every invocation commits into the item's single branch and pull request, marked
 with its skill, which is what
 [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) reads once the item
 has shipped.
+
+### Delivered work leaves the tree
+
+A folder under `roadmap/` is work that is **not finished**. `DONE` is a
+transition, not a resting place: the same
+[`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) invocation that
+writes it retires the item, deleting `roadmap/<slug>/` whole — item, `plan/`,
+`verification/`, `goal/`, assets — along with its index row, in two commits so
+one pull request shows the item earn `DONE` and then go. When the last item
+goes, `roadmap/README.md` and `roadmap/` go with it, and an empty `roadmap/` is
+the healthy steady state rather than a stalled one. Standing research topics
+never go: `research/<topic>/` is independent of any item.
+
+Nothing is lost, because nothing was ever stored only there —
+`git log -- roadmap/<slug>/` says what happened and
+`git show <commit>^:roadmap/<slug>/README.md` reads the item as it stood.
+That is also where retrospect gets its evidence after a retirement.
+
+### reconcile or merge-pr
+
+Only one of them writes. [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile)
+owns the delivery artifacts: it earns the statuses, rewrites Remaining, and
+performs the retirement.
+[`tailrocks-merge-pr`](/docs/skills/tailrocks-merge-pr) owns the last
+checkpoint and is read-only about all of it — when a pull request's diff
+touches `roadmap/`, its delivery-artifact check reads that diff for five
+contradictions and blocks on any of them, naming the files that disagree and
+routing the fix. The two that this rule creates: an item saying `DONE` while
+its folder is still present, and a folder deleted while its latest
+verification round still carried a blocking defect. It never edits, deletes,
+or commits a delivery artifact — it sends you back to reconcile (or to
+[`tailrocks-prove`](/docs/skills/tailrocks-prove), when what is missing is a
+clean round). In a repository with no `roadmap/`, the check does nothing and
+says nothing.
 
 ### record-feedback, prove, reconcile, or retrospect
 
@@ -319,10 +353,13 @@ compares the interface against the blessed reference, and returns a verdict per
 statement — but it writes no status.
 [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) **writes status**: it
 prunes confirmed plan rows, rewrites the item's Remaining from the blocking
-defects, and is the only skill that may set `DONE`.
+defects, is the only skill that may set `DONE` — and, in the same invocation,
+retires the item it just certified.
 [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) **patches skills**:
 it takes what diverged and proposes changes to the skill definitions that let
-it through, never touching the item.
+it through, never touching the item. It runs after the item shipped, so its
+evidence usually comes out of history rather than the tree — it finds the
+retiring commit and reads every artifact from that commit's parent.
 
 Capture before judging is the load-bearing order: a complaint an agent has
 already dismissed never gets executed against.

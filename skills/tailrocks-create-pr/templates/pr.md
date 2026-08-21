@@ -47,6 +47,8 @@ High blast radius — explicit confirm before merge — when the diff touches:
 
 - Add a `CHANGELOG.md` entry under `<!-- next-header -->` when the change is
   user-visible.
+- `Delivery-artifact check: off — <reason>` here switches off the
+  roadmap-consistency gate; omit the line to keep it on.
 
 ## Merge
 

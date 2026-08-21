@@ -423,6 +423,51 @@ That is the whole argument for the pipeline in one paragraph: the facts that
 justified a design are written down with their sources, so when the world moves,
 you find out from a status row rather than from production.
 
+## 13. Retire the item — `tailrocks-reconcile`
+
+Round 02 closes it. The re-planned rows land with the gate proving how many
+Playwright specs it actually ran, sign-off now blocks on unsynced conflicts,
+the supervisor board distinguishes evidence state from document state, and
+`tailrocks-prove` walks both against the blessed design routes and their
+frozen baselines without finding anything blocking. Every hub row is terminal
+and `goal/check.sh` passed in the session.
+
+<Invoke skill="tailrocks-reconcile" args="offline-inspection" />
+
+Two commits, one invocation. The first writes `DONE` with `## Remaining`
+empty. The second retires the item — `roadmap/offline-inspection/` deleted
+whole, index row removed:
+
+```text
+commit 1  ~ roadmap/offline-inspection/README.md   Status: DONE, Remaining empty
+          ~ roadmap/README.md                      DONE
+commit 2  - roadmap/offline-inspection/            README.md, plan/, verification/, goal/
+          ~ roadmap/README.md                      row removed
+```
+
+**What does not go is the research.** `research/` holds standing topics, not
+item artifacts: `offline-crdt-selection`, `browser-offline-durability`, and
+`resumable-evidence-upload` were reusable the day they were written and are
+reusable now, linked to whatever item needs them next. Retirement deletes the
+item's folder and nothing else — which is exactly why the split between
+`roadmap/<slug>/` and `research/<topic>/` is worth keeping straight on a
+brownfield product, where the facts outlive the feature that paid to find
+them.
+
+The item itself is recoverable in full, including the two `A#` assumptions and
+the rounds that retested them:
+
+```sh
+git log --format='%h %ad %s' --date=short -- roadmap/offline-inspection/
+git show <commit>^:roadmap/offline-inspection/README.md
+```
+
+A folder under `roadmap/` is work that is not finished, so a shipped feature
+does not have one. [`tailrocks-merge-pr`](/docs/skills/tailrocks-merge-pr)
+refuses to merge a pull request that gets either half wrong: an item claiming
+`DONE` with its folder still present, or a folder deleted while its latest
+verification round still names a blocking defect.
+
 ## The contrast worth noticing
 
 The [macOS example](/docs/delivery/macos-app) is greenfield, and its risk lives

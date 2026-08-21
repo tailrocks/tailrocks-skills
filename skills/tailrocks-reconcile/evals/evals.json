@@ -91,6 +91,56 @@
       "files": [
         "evals/fixtures/blocking-defects/roadmap/session-sync/README.md"
       ]
+    },
+    {
+      "id": 11,
+      "prompt": "Reconcile session-sync — round 4 came back clean and every plan row is DONE.",
+      "expected_output": "Retirement's four conditions are checked and each is evidenced this session: every hub row terminal, goal/check.sh passing in this run, round 4's report naming no blocking defect with no uncleared round-4 feedback, and Remaining emptied because the two round-3 statements were disproved (the non-blocking loading-copy nit is not promoted into Remaining). Then two commits on the item's existing branch and PR, each trailered Tailrocks-Skill: tailrocks-reconcile: first the item header and index row set to DONE so the transition is visible in the diff, then git rm -r of roadmap/session-sync/ whole — item, plan/, verification/, goal/ — with its index row removed. roadmap/README.md survives because prompt-history still has a row; had it been the last row, roadmap/README.md and roadmap/ itself would go in that same commit. The PR body's status line is refreshed to DONE and retired, the PR is left to the operator, and the five-artifact gate is satisfied by their coherent absence plus the removed index row — not read as missing files. History is the recovery path: git log -- roadmap/session-sync/ and git show <sha>^:roadmap/session-sync/README.md.",
+      "files": [
+        "evals/fixtures/clean-retirement/roadmap/README.md",
+        "evals/fixtures/clean-retirement/roadmap/session-sync/README.md",
+        "evals/fixtures/clean-retirement/roadmap/session-sync/plan/README.md",
+        "evals/fixtures/clean-retirement/roadmap/session-sync/verification/04-feedback.md",
+        "evals/fixtures/clean-retirement/roadmap/session-sync/verification/04-report.md"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Reconcile session-sync and retire it — the goal loop finished, all four plans are DONE, so it shipped.",
+      "expected_output": "Retirement is refused because the evidence is the round: round 3's report names two blocking defects, so the item goes to IN EXECUTION with one observable statement per blocking defect in Remaining, the round-2 defect the report cleared removed and the non-blocking copy nit not promoted. Nothing is deleted, no DONE commit is written, roadmap/session-sync/ stays in the tree and keeps its index row, and the index row carries IN EXECUTION with the new Remaining count. All-rows-DONE and a finished loop do not outweigh a blocking defect — the defect is what is left, and retirement waits for a round that finds none.",
+      "files": [
+        "evals/fixtures/blocking-defects/roadmap/session-sync/README.md",
+        "evals/fixtures/blocking-defects/roadmap/session-sync/plan/README.md",
+        "evals/fixtures/blocking-defects/roadmap/session-sync/verification/03-report.md"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Reconcile session-sync and retire it — all four plans are DONE and the whole test suite is green. There is no verification folder but the work is obviously finished.",
+      "expected_output": "Refuse to retire on plan rows alone: every row DONE with no verification round at all is not completion, it is an unverified claim — the rows say the plans were executed and nobody has run the thing, and a green suite is the claim a round exists to test, never a substitute for one. The rows are still re-earned by re-running their done criteria and reading what executed, any criterion that exited 0 having executed nothing flips its row to TODO with the plan marked STALE, the status stays IN EXECUTION, and the item folder and index row stay in the tree. Route to tailrocks-prove for a verification round; retirement waits for its report. The item's empty Remaining on a non-DONE status means nobody has verified yet, not that nothing is left.",
+      "files": [
+        "evals/fixtures/no-verification-round/roadmap/README.md",
+        "evals/fixtures/no-verification-round/roadmap/session-sync/README.md",
+        "evals/fixtures/no-verification-round/roadmap/session-sync/plan/README.md"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Reconcile session-sync — it is not under roadmap/ any more, so recreate the item folder and true it up.",
+      "expected_output": "An absent roadmap/session-sync/ is a delivered item, not a missing one and not an error. Read it out of git history — git log --diff-filter=D -- roadmap/session-sync/README.md for the retiring commit, git show <sha>^:roadmap/session-sync/README.md for the item as it stood, and the same form for its last verification report — then report when it retired, in which commit, and what that round proved, and stop. The folder is never recreated, the item is never reconstructed from a transcript, and its plans are never re-run: a retired item has no open work by definition, and a resurrected folder would be a claim with no evidence behind it. Genuinely new work starts as a new idea through tailrocks-idea, free to cite the retired item's commits as background. roadmap/README.md is left alone — no row is added back.",
+      "files": [
+        "evals/fixtures/retired/roadmap/README.md"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "Reconcile session-sync and retire it — every row is terminal (004 was rejected), round 5 is clean, and I am telling you it is delivered.",
+      "expected_output": "A PARKED item is never retired, and an operator's say-so is never the evidence: parking is a deliberate pause the user owns, so the item keeps PARKED (waiting on the 2.4 CLI release; was: IN EXECUTION) with only the was: value corrected to what reality supports, and nothing is deleted. Say which conditions do hold — rows terminal with 004 REJECTED counted as terminal, round 5 naming no blocking defect, Remaining empty — and that the park is what blocks retirement. Un-parking is tailrocks-record-decision's on the user's explicit instruction; retirement can only follow that, in a later invocation that re-runs the gate.",
+      "files": [
+        "evals/fixtures/parked-complete/roadmap/session-sync/README.md",
+        "evals/fixtures/parked-complete/roadmap/session-sync/plan/README.md",
+        "evals/fixtures/parked-complete/roadmap/session-sync/verification/05-report.md"
+      ]
     }
   ]
 }

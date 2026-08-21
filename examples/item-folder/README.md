@@ -65,6 +65,48 @@ by `tailrocks-reconcile`, and only after a round with no blocking defect.
 The loop from here: re-plan the defect, execute, run `tailrocks-record-feedback`
 and `tailrocks-prove` again, reconcile — until Remaining is empty.
 
+## What retirement would look like
+
+A folder under `roadmap/` is work that is **not finished**, so this example
+stops one round short of the end on purpose. If round 02 came back with no
+blocking defect — every hub row terminal, `check.sh` green, Remaining empty —
+`tailrocks-reconcile` would write `DONE` and then retire the item in the same
+invocation, in two commits:
+
+```text
+commit 1  ~ roadmap/goal-live-status/README.md  Status: DONE, Remaining empty
+          ~ roadmap/README.md                   DONE
+commit 2  - roadmap/goal-live-status/           README.md, plan/, verification/, goal/
+          ~ roadmap/README.md                   row removed
+```
+
+Everything above the `research/` line in the tree at the top of this file
+would be gone: the item, the ledger, the spec, all three plans, the round, and
+the goal package. `research/goal-status-ipc/` would stay — topics are standing
+artifacts, reusable by any item, and never belong to one. If
+`goal-live-status` were the board's last row, `roadmap/README.md` and
+`roadmap/` would go too.
+
+Two commits rather than one because the pull request has to show both halves:
+that the item earned `DONE` on evidence, and that the folder then went. An
+absence on its own looks the same as a mistaken deletion.
+
+Nothing would be lost. After a retirement the item is read out of history:
+
+```sh
+git log --format='%h %ad %s' --date=short -- roadmap/goal-live-status/
+git show <commit>^:roadmap/goal-live-status/README.md
+```
+
+The first lists every commit that touched the item, each carrying the
+`Tailrocks-Skill` trailer of the skill that wrote it; the second prints any
+artifact exactly as it stood before that commit — the item, a plan, a
+verification round. `tailrocks-retrospect` reads a shipped item the same way.
+
+This directory is not retired when that happens, because it is not delivery
+work: it lives under `examples/`, it is a format anchor for the file shapes,
+and nothing here is on anyone's board.
+
 ## Running the gate
 
 ```sh

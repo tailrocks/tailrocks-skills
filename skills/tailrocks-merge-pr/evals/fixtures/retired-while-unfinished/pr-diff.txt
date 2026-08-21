@@ -1,0 +1,15 @@
+# gh pr diff 118 --name-only
+D  roadmap/session-archive/README.md
+D  roadmap/session-archive/plan/README.md
+D  roadmap/session-archive/plan/001-archive-store.md
+D  roadmap/session-archive/plan/002-archive-action.md
+D  roadmap/session-archive/verification/03-report.md
+D  roadmap/session-archive/goal/START.md
+D  roadmap/session-archive/goal/RESUME.md
+D  roadmap/session-archive/goal/check.sh
+M  roadmap/README.md
+
+# roadmap/README.md — the session-archive row is removed by this diff.
+# The files under roadmap/session-archive/ in this fixture are the pre-image:
+# what the diff deletes. No file in this pull request adds a verification
+# round, changes the item's Remaining, or moves a plan row.

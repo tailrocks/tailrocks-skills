@@ -112,6 +112,26 @@ Every lane brief carries, verbatim, all six:
   skills (per-language idiom correctness) — this lane is about
   discoverability and surface restriction, not correctness.
 
+## An absent `roadmap/` is not a defect
+
+Delivered items leave the tree: the invocation that completes an item deletes
+`roadmap/<slug>/` and its index row, and the last one out takes
+`roadmap/README.md` and `roadmap/` with it. A repository with nothing in
+flight therefore has no roadmap directory at all, and that is the healthy end
+state, not an unplanned one.
+
+No lane reports a missing `roadmap/`, a missing `roadmap/README.md`, or an
+item folder it expected and did not find — not as a docs gap, not as DX
+friction, not as an agent-legibility gap, and not as a direction finding. The
+direction lane reads history rather than the tree for what has already been
+built — `git log --diff-filter=D --date=short -- roadmap/` lists every
+delivered item and the commit that retired it — so it does not propose work
+that shipped last month; a candidate that duplicates a delivered item is
+dropped in verification with that commit as its reason. The reportable defect is the inverse — an item folder still
+present whose own Status reads `DONE` — which is completed work that never
+left, and routes to the delivery family's reconcile pass rather than to a
+plan of its own.
+
 `quick` mode runs correctness, security, and tech debt only, and each lane
 stops at its first pass over obvious hotspots rather than exhaustively
 walking every package. `--deep` composes as a depth modifier over any other
@@ -122,6 +142,13 @@ is never a standalone alternative to a category. A single named category
 runs only that lane. `branch` mode scopes every lane's target to the
 branch diff against its merge base and also composes with `--deep` and a
 named category.
+
+`ask <question>` runs no lanes: it is recon plus one targeted investigation
+of the named question, carrying the same brief rules and the same
+evidence-or-nothing bar a lane would. Under `--deep` it runs parallel
+investigators over that one question instead of a single pass, exhausts
+every package that could bear on it, and reports contradicting evidence
+rather than the first answer that holds.
 
 ## Candidate shape
 

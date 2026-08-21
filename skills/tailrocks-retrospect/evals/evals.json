@@ -81,6 +81,22 @@
       "files": [
         "skills/tailrocks-retrospect/evals/fixtures/1/history.tsv"
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "Retrospect quota-alerts. It shipped last month, so roadmap/quota-alerts/ is not in the tree any more — the captured git output is in the fixture.",
+      "expected_output": "Does not decline and does not recreate the folder: a delivered item is deleted whole in the pull request that set DONE, so a missing roadmap/quota-alerts/ is evidence of shipping rather than a missing input. Anchors on the retirement commit 9f4e2b1 found by the deletion-filtered log, and reads the item, the plan manifest, and verification/01-report.md at 9f4e2b1^ — quoting them from that snapshot rather than describing the folder as unavailable. Records the retirement SHA beside the bind SHA in the record header, with the retirement date. Maps e1c3304 and 9f4e2b1 to tailrocks-reconcile from their trailers. Treats the retirement commit as an artifact commit whose changed paths are deletions of the item's own documents, so its 13 deleted paths never enter D3 as untraceable shipped scope. D5 reports the retirement as clean rather than as a hit: at 9f4e2b1^ the Status is DONE, Remaining is empty, and round 01's verdict is PASS with no blocking defect — absence is what delivery looks like and is never itself the finding. Reports c9a9960, the round-01 feedback commit, as a marking-rule finding: it is an artifact commit with no Tailrocks-Skill trailer, recorded unattributed — or marked inferred:tailrocks-record-feedback per that one commit — never silently credited to the skill its subject names. Runs all six detectors and records a result for each, including none. The refusal this skill keeps is unchanged and rests on trailers, not on files: this lane has trailers, so nothing about the empty tree licenses declining. Writes only the retrospective record; edits nothing under skills/ and nothing in the audited repository.",
+      "files": [
+        "evals/fixtures/9/git-history.txt"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Retrospect billing-export. It's DONE and already retired — the reconcile commit says every plan row was done, so I expect a clean record. Git output is in the fixture.",
+      "expected_output": "Resolves the retired slug from history — retirement commit c2a77d4, every artifact read at c2a77d4^ — and checks the retirement's own claim instead of accepting it: a commit subject and body are claims, and the check is the finding. Round 02, the latest round in the folder at that parent, returns BLOCKED with V2 standing (a 5,200-invoice export downloads 1,000 rows and reports success, contradicting the item's own quality bar), while the item at the same parent stands at DONE with an empty Remaining. Files this as one D5 lifecycle finding over one body of evidence — DONE claimed from the plan manifest's two DONE rows alone, the latest round's verdict never made a precondition, and the folder then deleted in the same commit, which destroys the evidence of the defect — not as three findings and not additionally under D4. Quotes V2 from c2a77d4^ as the evidence, since that is the only place it still exists, and names the retirement SHA with its tailrocks-reconcile trailer. Names the missing check as the skill that owns both the DONE transition and the retirement, at the precondition/final-gate layer, with text making the latest round's clean verdict a precondition of deletion as well as of DONE; the mechanically decidable half — a folder deleted while the round at its parent names a blocking defect, or a DONE item still present at merge — is routed to a gate rather than proposed as prose. Does not report the folder's absence as the defect, and does not treat a cleanly retired item as a hit. Recreates nothing, edits nothing in the audited repository, proposes only, and fills the Evals field on every proposed patch.",
+      "files": [
+        "evals/fixtures/10/git-history.txt"
+      ]
     }
   ]
 }

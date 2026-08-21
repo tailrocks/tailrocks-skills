@@ -1,0 +1,140 @@
+Captured git output for the quota-alerts lane. This sandbox has no .git
+directory, so the commands and their output are transcribed here verbatim.
+
+$ ls roadmap/
+ls: roadmap/: No such file or directory
+
+$ git log --diff-filter=D --format='%H %ad %s' --date=short -- roadmap/quota-alerts/
+9f4e2b1c0a7d5e3b21f8c46a90d2e7b31f5c8a04 2026-06-18 docs(roadmap): retire quota-alerts
+
+$ git log --reverse --author-date-order --date=iso-strict-local \
+    --format='%h%x09%ad%x09%s%x09%(trailers:key=Tailrocks-Skill,valueonly)' \
+    -- roadmap/quota-alerts/ research/ crates/ web/
+a0c1182	2026-06-02T09:20:00+02:00	docs(roadmap): capture quota alerts	tailrocks-idea
+a1d3304	2026-06-02T11:35:00+02:00	docs(roadmap): shape quota alerts	tailrocks-brainstorm
+a2e5526	2026-06-03T10:02:00+02:00	docs(research): usage-metering windows — chapters 01-02	tailrocks-research
+a3f7748	2026-06-03T14:18:00+02:00	docs(roadmap): record threshold-evaluation decision	tailrocks-record-decision
+b4a9960	2026-06-04T09:47:00+02:00	docs(roadmap): finalize quota alerts — READY	tailrocks-finalize
+b5c1182	2026-06-05T09:10:00+02:00	docs(roadmap): quota-alerts plan package	tailrocks-plan
+b6d3304	2026-06-05T15:44:00+02:00	feat(billing): evaluate quota thresholds on the metering window	-
+b7e5526	2026-06-08T10:26:00+02:00	feat(billing): deliver quota alerts over the notification channel	-
+b8f7748	2026-06-09T16:03:00+02:00	feat(web): quota banner on the workspace header	-
+c9a9960	2026-06-15T11:12:00+02:00	docs(roadmap): quota-alerts feedback round 01	-
+d0b1182	2026-06-15T17:38:00+02:00	docs(roadmap): quota-alerts verification round 01	tailrocks-prove
+e1c3304	2026-06-18T09:05:00+02:00	docs(roadmap): quota-alerts DONE	tailrocks-reconcile
+9f4e2b1	2026-06-18T09:07:00+02:00	docs(roadmap): retire quota-alerts	tailrocks-reconcile
+
+$ git show --stat --format='%H%n%B' 9f4e2b1
+9f4e2b1c0a7d5e3b21f8c46a90d2e7b31f5c8a04
+docs(roadmap): retire quota-alerts
+
+Every plan row terminal, goal condition passing, verification round 01
+clean, Remaining empty. Folder and index row deleted; roadmap/README.md
+carried no other row and goes with it.
+
+Tailrocks-Skill: tailrocks-reconcile
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+
+ roadmap/README.md                              | 6 ------
+ roadmap/quota-alerts/README.md                 | 84 -----------------
+ roadmap/quota-alerts/goal/RESUME.md            | 21 -----
+ roadmap/quota-alerts/goal/START.md             | 34 -------
+ roadmap/quota-alerts/goal/check.sh             | 40 --------
+ roadmap/quota-alerts/plan/001-threshold-eval.md| 66 -------------
+ roadmap/quota-alerts/plan/002-delivery.md      | 58 ------------
+ roadmap/quota-alerts/plan/003-quota-banner.md  | 47 ----------
+ roadmap/quota-alerts/plan/README.md            | 19 -----
+ roadmap/quota-alerts/plan/coverage.md          | 31 -------
+ roadmap/quota-alerts/plan/spec/requirements.md | 52 -----------
+ roadmap/quota-alerts/verification/01-feedback.md| 24 ------
+ roadmap/quota-alerts/verification/01-report.md | 38 --------
+ 13 files changed, 520 deletions(-)
+
+$ git ls-tree -r --name-only 9f4e2b1^ -- roadmap/quota-alerts/
+roadmap/quota-alerts/README.md
+roadmap/quota-alerts/goal/RESUME.md
+roadmap/quota-alerts/goal/START.md
+roadmap/quota-alerts/goal/check.sh
+roadmap/quota-alerts/plan/001-threshold-eval.md
+roadmap/quota-alerts/plan/002-delivery.md
+roadmap/quota-alerts/plan/003-quota-banner.md
+roadmap/quota-alerts/plan/README.md
+roadmap/quota-alerts/plan/coverage.md
+roadmap/quota-alerts/plan/spec/requirements.md
+roadmap/quota-alerts/verification/01-feedback.md
+roadmap/quota-alerts/verification/01-report.md
+
+$ git show 9f4e2b1^:roadmap/quota-alerts/README.md
+# Quota alerts
+
+- **Status**: DONE
+- **Slug**: quota-alerts
+- **Created**: 2026-06-02
+- **Plan**: plan/ · **Verified**: verification/01-report.md
+
+## Intent
+
+A workspace owner is told before a quota runs out, not after the API starts
+refusing writes. Observably true when this ships: crossing 80% of a metering
+window's quota delivers one notification per threshold per window.
+
+## Decisions
+
+- 2026-06-03 — **Thresholds are evaluated on the closed metering window, not
+  on live counters.** Because the live counter is eventually consistent across
+  regions and would fire duplicate alerts. Evidence:
+  `research/usage-metering-windows/` chapter 02.
+
+## Capabilities
+
+- Evaluate 80% and 100% thresholds when a metering window closes.
+- Deliver one notification per threshold per window over the existing channel.
+- Show a quota banner on the workspace header while a threshold is crossed.
+
+## Must not
+
+- MUST NOT introduce a second notification transport — the existing channel
+  already carries delivery receipts.
+
+## Research
+
+- [`research/usage-metering-windows/`](../../research/usage-metering-windows/README.md)
+  — window closure semantics and the duplicate-alert failure mode.
+
+## Remaining
+
+(empty)
+
+$ git show 9f4e2b1^:roadmap/quota-alerts/plan/README.md
+# quota-alerts — plan manifest
+
+Ingested at item commit b4a9960.
+
+| # | Plan | Status | Done criteria re-run |
+|---|------|--------|----------------------|
+| 001 | threshold evaluation on window close | DONE | 2026-06-15 |
+| 002 | notification delivery | DONE | 2026-06-15 |
+| 003 | quota banner | DONE | 2026-06-15 |
+
+$ git show 9f4e2b1^:roadmap/quota-alerts/verification/01-report.md
+# Round 01 — report
+
+- **Run**: 2026-06-15
+- **Verdict**: PASS — no blocking defect
+
+## What execution proved
+
+- W1 — closing a window at 82% delivers exactly one notification; re-closing
+  the same window delivers none. `cargo nextest run -p billing quota::` — 14
+  tests executed.
+- W2 — the banner renders while a threshold is crossed and clears on the next
+  window. Playwright baseline `quota-banner/crossed` matched.
+
+## Blocking defects
+
+None.
+
+## Non-blocking observations
+
+- The banner copy says "80%" where the threshold is configurable; cosmetic,
+  raised as a separate idea rather than as a defect of this item.

@@ -454,7 +454,7 @@ const EXPECTED_DIRECT_MARKDOWN_LINKS: Record<string, string[]> = {
     "references/regression.md",
     "references/state-matrix.md",
   ],
-  "tailrocks-merge-pr": [],
+  "tailrocks-merge-pr": ["references/delivery-artifacts.md"],
   "tailrocks-plan": [
     "references/coverage-ledger.md",
     "references/execution-roles.md",
@@ -465,7 +465,11 @@ const EXPECTED_DIRECT_MARKDOWN_LINKS: Record<string, string[]> = {
   ],
   "tailrocks-pr-template": ["references/PULL_REQUEST_TEMPLATE.md"],
   "tailrocks-record-feedback": ["templates/feedback.md"],
-  "tailrocks-reconcile": ["references/remaining.md", "references/row-verification.md"],
+  "tailrocks-reconcile": [
+    "references/remaining.md",
+    "references/retirement.md",
+    "references/row-verification.md",
+  ],
   "tailrocks-prove": [
     "references/execution-evidence.md",
     "references/report-format.md",

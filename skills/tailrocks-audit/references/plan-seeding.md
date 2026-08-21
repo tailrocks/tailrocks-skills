@@ -145,6 +145,40 @@ next command in the report: `tailrocks-brainstorm <slug>` for most items,
 `tailrocks-finalize <slug>` when the audit already answered every open
 question.
 
+## Absence is delivery
+
+A folder under `roadmap/` is work that is **not finished**. When an item is
+genuinely complete, the invocation that sets `DONE` deletes `roadmap/<slug>/`
+whole — item, `plan/`, `verification/`, `goal/` — with its index row, and when
+the last item goes, `roadmap/README.md` and `roadmap/` go with it. So the
+healthy end state of a backlog is an empty tree, and three rules follow:
+
+- **Seeding never assumes an index exists.** A repository with no `roadmap/`
+  is one that finished its work, not one that never planned any. Create
+  `roadmap/README.md` with the header row and this item's row when seeding an
+  item into a tree that has none. A parentless package still adds no row and
+  still creates no index — it is not an item.
+- **A seeded slug that is no longer in the tree was delivered.** Do not read
+  absence as a gap, and never re-seed it:
+
+  ```sh
+  git log --diff-filter=D --format='%H %ad %s' --date=short -- roadmap/<slug>/
+  git show <retirement>^:roadmap/<slug>/README.md
+  ```
+
+  The deletion commit is the delivery; its parent holds the item, the plan
+  manifest, and every verification round as they stood at that moment. Report
+  the slug as delivered, citing the retirement commit and the round that
+  cleared it, and re-derive the original finding's evidence from the current
+  source before deciding anything else — a delivered item whose defect is
+  demonstrably back is a **new** finding with new evidence, seeded under a new
+  slug, never the old item resurrected.
+- **Retiring is deleting.** When a sweep retires a `DRAFT` audit-sourced item
+  whose finding was fixed independently, the folder and its index row are
+  deleted in the sweep commit, and that commit's message carries the reason
+  and the SHA of the commit that fixed it. Marking the item and leaving it in
+  the tree is the state this rule exists to prevent.
+
 ## Routing a finding to its fixer
 
 Not every finding wants the roadmap pipeline. Name the owning skill as the
