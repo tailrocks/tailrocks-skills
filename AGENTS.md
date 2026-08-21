@@ -293,7 +293,9 @@ verification commands that were run during recon rather than guessed. It
 never implements, never writes outside `plans/`, and reconciles its
 backlog on reruns instead of duplicating plans. When the repository runs
 the delivery pipeline and the findings should become roadmap items, that
-is tailrocks-audit's job — improve owns the pipeline-free lane.
+is tailrocks-audit's job — improve owns the pipeline-free lane. One
+carve-out: in a repository whose product is agent skills, the skills
+themselves are judged by tailrocks-skill-audit, not by improve's lanes.
 
 Skill definition: `skills/tailrocks-improve/SKILL.md`
 
