@@ -30,14 +30,16 @@ TZ=<item-authoring-offset> git log --reverse --author-date-order \
 # message matching ^Tailrocks-Skill:[[:space:]]*(.+)$.
 
 # Pass 2 — changed paths per commit. A plain --name-only prints nothing at all
-# for a merge commit; --diff-merges=first-parent is what emits them.
+# for a merge commit, so a merge-synced lane hands the path-keyed detectors an
+# empty set; --diff-merges=first-parent (equivalently -m --first-parent) emits
+# them.
 git log --reverse --author-date-order --diff-merges=first-parent --name-only \
   --format='%x1e%H' <base>..<head>
 
-# The same table for a pull request. Its commits endpoint carries neither the
-# message body — where the trailer lives — nor per-commit files, and the
-# aggregate file list is per-file rather than per-commit, so it cannot map a
-# path to a commit. Each sha is fetched on its own.
+# The same table for a pull request. Its commits endpoint does carry the full
+# message body, so trailers survive there — but it carries no per-commit files,
+# and the aggregate file list is per-file rather than per-commit, so it cannot
+# map a path to a commit. Each sha is fetched on its own for the paths.
 gh api --paginate repos/<owner>/<name>/pulls/<number>/commits --jq '.[].sha' \
 | while read -r sha; do
     gh api repos/<owner>/<name>/commits/"$sha" \
@@ -63,9 +65,10 @@ Rules for the table:
 - **Changed paths per commit** (`--diff-merges=first-parent --name-only`, or
   one `commits/<sha>` fetch per pull-request commit) — five of the six
   detectors key on paths, not subjects. A plain `--name-only` prints nothing
-  at all for a merge commit — a merge-synced lane hands the path-keyed
-  detectors an empty set and they report clean. `--diff-merges=first-parent`
-  emits them; `-m --first-parent` is an equivalent spelling.
+  at all for a merge commit, so a merge-synced lane hands the path-keyed
+  detectors an empty set and they report clean.
+  `--diff-merges=first-parent`, equivalently `-m --first-parent`, is what
+  emits them.
 - **A merge authored no lane work.** A merge-sync's first-parent paths are
   what the base branch brought *in*, not what this item shipped, so handing
   them to the path-keyed detectors turns every file the base happened to touch
@@ -91,6 +94,19 @@ Rules for the table:
   six clean results over a table that was never built. A repository whose
   every item squash-merges is the common case, not the exception — a skill
   that stopped there would be inert on every item it will ever audit.
+- **Reconcile every fetched count against its declared one.** Two pull-request
+  reads truncate silently, with a success exit and no warning on either. The
+  commits endpoint stops at 250 however far `--paginate` is pushed, so compare
+  the rows fetched against `gh api repos/<owner>/<name>/pulls/<number> --jq
+  '.commits'` and fall back to the git form over `<base>..<head>` when the
+  declared count is higher. And never take paths from `gh pr view --json
+  files`: it caps at 100 with no marker, and because a lane's source usually
+  outnumbers its artifacts the surviving window can contain no `roadmap/`,
+  `plans/`, or `research/` path at all — handing the path-keyed detectors an
+  item that appears to have touched none of its own documents. Use
+  `gh api --paginate repos/<owner>/<name>/pulls/<number>/files` for the union
+  and the per-`commits/<sha>` fetch for attribution. A truncated table is an
+  unrun detector, never a clean one.
 - **Trailer first, inference second.** `Tailrocks-Skill` is the primary key.
   A commit without one that touches any artifact the item's own documents
   point at — `roadmap/`, `research/`, `plans/`, and the design package each
@@ -129,8 +145,12 @@ commit that wrote it. Compare against the first commit of the skills that owe
 its fact class — research topics for platform, integration, and library facts;
 design artifacts for structure and component classification; prototype or
 visual evidence for interaction claims. A Decisions entry whose supporting
-class has no earlier commit, and no linked evidence in the item's Research or
-Screens sections, is a hit.
+class has no earlier commit **on this decision's own fact**, and no linked
+evidence in the item's Research or Screens sections, is a hit. The join is on
+the fact, not the skill: the topic the item's Research section or the ledger's
+`Q#`/`R#` row ties to this decision, opened and read. An earlier commit by the
+owing skill on some other subject is not coverage — chronology alone lets an
+unrelated topic vouch for a fact nobody studied.
 
 **Evidence:** the decision text, its commit and timestamp, and the earliest
 commit of the owing skill — or the absence of one. Order on the commit that
@@ -148,7 +168,7 @@ stopping the item from carrying unevidenced facts forward.
 ("weekly windows first") are not fact-shaped and never hit. An explicit
 "decide now, evidence later" recorded in the item is a decision about
 sequencing, not a divergence. Evidence produced in a previous item's research
-topic counts as earlier evidence.
+topic counts as earlier evidence when it closes this decision's fact.
 
 ## D2 — Rework loop
 
@@ -207,7 +227,13 @@ or the executing skill had no boundary refusing work its plan never named.
 
 **False positives:** mechanical repository upkeep the plan legitimately
 implies — formatting, lockfiles, generated files, a rename following a
-covered change — is in scope for its covered ID. Work the item *deferred* by
+covered change — is in scope for its covered ID. One class of generated file
+is never upkeep: a frozen rendered reference. Golden frames, screenshot
+baselines, and captured window images are rewritten by a command whose misuse
+is the named refusal in the producing skill's own final gate, so a commit that
+regenerates them is a hit unless the same lane carries a re-blessing dated at
+or after it — read the manifest's blessing row or the sign-off record, never
+the commit subject. Work the item *deferred* by
 name is out of scope but recorded, so it is not untraceable — provided the
 commit that wrote the deferral predates the plan package. A deferral appended
 after the package froze is un-shipped scope being relabelled, and it is a hit
@@ -215,16 +241,48 @@ in the other direction.
 
 ## D4 — Unconsumed or stale-consumed output
 
-**Finds:** a skill's artifact that nothing downstream ever used, or a
-consumer that ran against a producer's output and never re-ran after the
-producer changed it.
+**Finds:** a skill's artifact that nothing downstream ever used, a consumer
+that ran against a producer's output and never re-ran after the producer
+changed it, or a consumer that shipped with no producer at all.
+
+**The pairs, per lane.** Read the row before running the detector; the
+mechanics are identical across lanes but the artifacts are not, and a run that
+re-derives them each time derives them differently.
+
+| Lane | Producer artifact | Blessing record | Freeze the consumer holds |
+|---|---|---|---|
+| Rust, headless | none | — | the spec scenario and its `B#` row |
+| Rust, terminal | golden frames in the gallery crate | manifest blessing row | the frames themselves — design and freeze are one artifact |
+| TanStack web | design routes and screen components | design manifest blessing row | screenshot baselines |
+| macOS | the runnable prototype package | its sign-off record | window-ID captures under the region policy |
+
+A dash is a real result. On a headless item the design-reference class has no
+member, and the detector records that rather than reporting a clean pair set
+it never had.
 
 **Query:** for each producing skill, take the last commit that wrote its
-artifact. For each consuming skill, take the last commit that read it —
-baseline freezes, plan citations, spec references, prototype sign-offs. A
-producer's last write later than its consumer's last run is a stale
-consumption. A produced artifact that no later artifact cites at all is
+artifact. Reading leaves no git trace, so date consumption by its citation:
+the last commit that added or updated a reference to the producer's path in a
+downstream artifact, or, where the consumer records its own freeze, the commit
+that wrote that freeze line. State which proxy you used — a date derived from
+a citation is weaker than a write date, and a staleness claim has to say which
+it rests on. A produced artifact that no later artifact cites at all is
 unconsumed.
+
+Compare pins, not only timestamps, wherever a consumer records one. The
+coverage ledger names the item commit it ingested; when that commit is no
+longer the item's head at the end of the lane, the freeze is stale however
+many times the consumer ran afterwards for unrelated reasons. A later consumer
+commit clears the finding only when its own pin moved.
+
+Then run the third arm, which is the only one that can see a producer that
+never ran: take every `S#` in the ledger and read the item's `Design:` line
+for that screen. A screen with an empty `Design:` line, in a lane whose row
+above names a producer, whose implementation paths shipped anyway, is a hit —
+the freeze that should have held the code was never earned. Finally, check the
+Log's consumption claims against the artifact: an entry asserting a producer's
+output was linked or ingested, where the named section is empty, is the same
+defect read from the item's side — consumption reported, not performed.
 
 **Evidence:** both timestamps, the artifact, and the downstream file that
 should have cited it.
@@ -304,7 +362,16 @@ Findings interact, and the interaction is usually the real defect:
 - D1 plus D2 on the same artifact means the rework was caused by the missing
   evidence — one patch on the recording skill, not two.
 - D3 plus D6 attributed to the same skill is one unbounded mandate, not two
-  findings; the scope boundary is the single fix.
+  findings; the scope boundary is the single fix. That collapse holds only
+  when one skill owns both gates. Where D3's evidence is a missing ledger row
+  and D6's is a missing scope sentence, they are two skills — the planner that
+  never required shipped scope to map back, and the executor that never
+  refused work outside its own — and merging them keeps the boundary while
+  losing the traceability gate.
+- D2 plus D4 on the same artifact means the rework invalidated a freeze a
+  consumer had already taken. That is one defect with one owner: the
+  producer's final gate, which must state that a downstream freeze it
+  invalidated has to be re-earned. Patch it once.
 - D4 plus D5 means the pipeline ran its stages concurrently rather than in
   order; the patch belongs to whichever skill's precondition should have
   refused to start.
