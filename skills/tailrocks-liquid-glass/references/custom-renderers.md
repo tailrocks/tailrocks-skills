@@ -26,9 +26,8 @@ recedes glass on inactive windows, and revises all of this across OS
 releases — applications using system components inherit each year's
 refinements by recompiling, custom reproductions inherit nothing. A custom
 renderer can reproduce the *appearance* of glass at one point in time; it
-cannot reproduce the implementation or its future. This is the same finding
-as the design-file rule in `apple-patterns.md`: no artifact outside the OS
-is authoritative for the material — not a Sketch file, and not a
+cannot reproduce the implementation or its future. No artifact outside the OS
+is authoritative for the material — not a design file, and not a
 custom-rendered imitation. A blur-plus-rounded-corners imitation of glass is
 a hard failure under `anti-patterns.md`.
 

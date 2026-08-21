@@ -55,9 +55,9 @@ Rules for changing a `SKILL.md`:
   contents. A router section that reads like a table of contents is dilution with
   no benefit; the reference already says all of it, better.
 - Adding a section to a router is a change to **every** behavior in that file.
-  Re-run that skill's eval cases, not only a case related to the new section.
-  Run `mise run evals -- --skill <name> --case <id> --runs 2`. This needs the
-  `claude` CLI and spends budget, so run it locally before tagging, not in PR CI.
+  Eval verification (`mise run evals -- --skill <name> --case <id> --runs 2`)
+  is a CI/CD concern, not a local step in this repository — it needs the
+  `claude` CLI and spends budget, and is not yet wired here.
 - Prefer strengthening an existing section over adding one. Two sections that
   both gesture at the same obligation are weaker than one that states it.
 - When a router grows past roughly 200 lines, the next addition should replace

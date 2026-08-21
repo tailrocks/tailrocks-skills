@@ -37,14 +37,13 @@ contracts.
 
 ## Native macOS
 
-Seven skills take a feature from an approved design to verified pixels.
+Six skills take a feature from an approved design to verified pixels.
 
 ```mermaid
 flowchart LR
   design["macos-design"] --> proto["macos-prototype"]
-  proto --> handoff["sketch-handoff"]
-  handoff --> swift["swift-best-practices"]
-  handoff --> glass["liquid-glass"]
+  proto --> swift["swift-best-practices"]
+  proto --> glass["liquid-glass"]
   swift --> gates["swift-project-setup gates"]
   glass --> gates
   gates --> qa["macos-visual-qa"]
@@ -54,7 +53,6 @@ flowchart LR
 |---|---|
 | [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | Taste. Experience brief, information architecture, native component map, alternatives, scored review. Writes design artifacts, never source. |
 | [`tailrocks-macos-prototype`](/docs/skills/tailrocks-macos-prototype) | The runnable proof. Builds the Liquid Glass prototype from the approved design: fixed launch contract, fixture scenarios, live sign-off, region-scoped match policy. Captures nothing; visual-qa freezes the baseline after finalization. Zero taste. |
-| [`tailrocks-sketch-handoff`](/docs/skills/tailrocks-sketch-handoff) | The design file. Sketch wiring, token extraction, the symbol-to-SwiftUI map, approved exports. |
 | [`tailrocks-liquid-glass`](/docs/skills/tailrocks-liquid-glass) | The material. Content-versus-functional layer split, API surface and availability, the glass acceptance gate. |
 | [`tailrocks-swift-best-practices`](/docs/skills/tailrocks-swift-best-practices) | Code policy. Actor isolation, state ownership, view identity, AppKit interop boundaries, accessibility. |
 | [`tailrocks-swift-project-setup`](/docs/skills/tailrocks-swift-project-setup) | The baseline. Project generation, signing, format and lint gates, test wiring, Xcode agent integration. |

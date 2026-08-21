@@ -73,17 +73,19 @@ across five runs means the form is wrong, not the word count.
 
 ## The improvement loop
 
-Run baseline and with-skill for every case; grade; then generalize from
-failures rather than patching them. The evals are a handful of examples
-standing in for thousands of future invocations — a fix that only fits
-the eval is overfitting, and stacking rigid MUSTs to pass one case is
-the documentation version of hard-coding the test's answer. Read the
-transcripts, not only outcomes: if the skill makes the agent do
-unproductive work, cut the section causing it and re-run. When every
-test run independently rebuilds the same helper, ship the helper with
-the skill instead of the instructions to rebuild it. Stop when the
-behavior the baseline documented no longer occurs and re-runs converge —
-then stop adding.
+Baseline and with-skill runs, for every case, execute in CI — this
+repository does not run `mise run evals` locally. Author cases so CI's
+grading generalizes from failures rather than patching them: the evals
+are a handful of examples standing in for thousands of future
+invocations, a fix that only fits the eval is overfitting, and stacking
+rigid MUSTs to pass one case is the documentation version of
+hard-coding the test's answer. When reviewing CI transcripts, not only
+outcomes: if the skill makes the agent do unproductive work, cut the
+section causing it and let CI re-run. When every test run independently
+rebuilds the same helper, ship the helper with the skill instead of the
+instructions to rebuild it. The behavior the baseline documented should
+no longer occur and re-runs should converge — that is when to stop
+adding.
 
 One skill at a time: written, proven, wired, before the next begins.
 Batching skills defers every test to a future that will not run them.

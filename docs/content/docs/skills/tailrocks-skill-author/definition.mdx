@@ -85,12 +85,14 @@ Do not infer mutation permission from the presence of defects.
    [`testing-doctrine.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-skill-author/references/testing-doctrine.md). Write
    realistic eval cases — normal, boundary, and safety/refusal, with
    fixtures for audit-shaped cases and near-miss should-not-trigger
-   prompts for the description. Run baseline and with-skill; the skill
-   must change the behavior the baseline documented. Capture surviving
-   rationalizations as explicit counters and re-run. Never batch: one
-   skill is written and proven before the next is started.
-   **Complete when:** with-skill runs pass on the behaviors the baseline
-   failed, and every new rationalization has a counter.
+   prompts for the description. Eval execution
+   (baseline vs. with-skill, `mise run evals`) is a CI/CD concern in this
+   repository, not a local step — write the cases so they are ready to
+   run there; do not invoke the runner locally. Capture surviving
+   rationalizations from prior transcripts as explicit counters. Never
+   batch: one skill is written and proven before the next is started.
+   **Complete when:** the eval cases exist, cover the baseline failure,
+   and every known rationalization has a counter.
 
 6. **Wire the repository.** Read
    [`house-wiring.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-skill-author/references/house-wiring.md) for the full artifact
@@ -103,9 +105,10 @@ Do not infer mutation permission from the presence of defects.
    change to every behavior in the file: check the skill's eval cases for
    load-bearing lines before rewording gates or rejection rules, prefer
    strengthening an existing section over adding one, replace rather than
-   append past the tree's router budget, and re-run the skill's full eval
-   set — not only the case nearest the edit.
-   **Complete when:** the full eval set passes on the edited skill.
+   append past the tree's router budget, and update the skill's full eval
+   set — not only the case nearest the edit — for CI to run.
+   **Complete when:** the full eval set covers the edit and validation is
+   green; eval execution itself happens in CI, not here.
 
 ## Audit output
 
@@ -134,6 +137,8 @@ neighboring skill. Every defect names its fix and the layer it lives in.
 
 Never ship a skill or a behavioral edit whose failure was not observed
 first. Never summarize a workflow in a description or a reference in a
-router. Never add a router section without re-running that skill's evals.
-Never leave a new skill unwired or a validator red. Never author two
-skills owning one responsibility. Report every check skipped.
+router. Never add a router section without updating that skill's eval
+cases for CI to run. Never leave a new skill unwired or a validator red.
+Never author two skills owning one responsibility. Never run
+`mise run evals` locally in this repository — it is a CI/CD gate, not a
+local step. Report every check skipped.

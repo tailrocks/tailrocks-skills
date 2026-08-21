@@ -138,10 +138,9 @@ Skill definition: `skills/tailrocks-tanstack-project-setup/SKILL.md`
 
 ### The macOS family — design to verified pixels
 
-Seven skills take a native macOS feature from an approved design through a
-runnable prototype and a design-file handoff to implementation and
-rendered, audited evidence. They exist
-because the ecosystem gap is real:
+Six skills take a native macOS feature from an approved design through a
+runnable prototype to implementation and rendered, audited evidence. They
+exist because the ecosystem gap is real:
 Apple's own exported agent skills contain no Liquid Glass skill and no macOS
 skill, and the highest-traction design-taste skills are built for the web, where
 their defaults (avoid system fonts, avoid neutral grays, avoid spring easing) are
@@ -192,11 +191,6 @@ visual QA's capture-producing `verify`.
   matrix with restore, `performAccessibilityAudit`, and pixel regression on
   captures rather than detached snapshots. Definition:
   `skills/tailrocks-macos-visual-qa/SKILL.md`
-- **tailrocks-sketch-handoff** — design file to implementable package. Sketch
-  MCP wiring, Apple's official macOS UI kit, token extraction into committed
-  code, the symbol-to-SwiftUI design map that replaces a formal design-to-code
-  binding, and approved-frame exports. Definition:
-  `skills/tailrocks-sketch-handoff/SKILL.md`
 
 Two findings shape the whole family and are worth stating up front. Apple's own
 UI kit contains **zero enabled blur effects** — Liquid Glass is baked there as

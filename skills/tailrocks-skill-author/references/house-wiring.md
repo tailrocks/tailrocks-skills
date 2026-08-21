@@ -57,8 +57,8 @@ mise run docs:check  # generated files not stale
 
 Eval runs use the tree's runner:
 `mise run evals -- --skill <name> --case <id> --runs 2`. It needs the
-`claude` CLI and spends budget — run locally before tagging, not in PR
-CI.
+`claude` CLI and spends budget — this repository does not run it locally
+or in gates; eval verification is a CI/CD concern, not yet wired.
 
 ## Update-mode obligations
 
