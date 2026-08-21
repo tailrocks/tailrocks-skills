@@ -28,7 +28,7 @@
     {
       "id": 5,
       "prompt": "Use systematize mode on this approved screen and its review to turn accepted decisions into reusable system knowledge.",
-      "expected_output": "Executes the defined systematize procedure: lands reusable component-map entries, rubric rules, and anti-patterns in their owning design references; hands candidate token roles to tailrocks-sketch-handoff without emitting or committing token code; and completes only when every output is landed in its owning file.",
+      "expected_output": "Executes the defined systematize procedure: lands reusable component-map entries, rubric rules, and anti-patterns in their owning design references; lands token roles as committed values consumed by tailrocks-macos-prototype and tailrocks-swift-best-practices without emitting code; and completes only when every output is landed in its owning file.",
       "files": []
     },
     {
