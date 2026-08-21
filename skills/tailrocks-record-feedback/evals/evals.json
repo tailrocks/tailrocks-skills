@@ -1,0 +1,37 @@
+{
+  "skill_name": "tailrocks-record-feedback",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Record my feedback on loom-sync. The CLI list shows every session as synced even when it is not, the desktop sidebar is empty for me, and refresh does nothing — I press it and no request goes out.",
+      "expected_output": "Three statements written to roadmap/loom-sync/verification/03-feedback.md as U1, U2 and U3 — round 03 because rounds 01 and 02 already exist — each quoting the user's own words rather than a paraphrase, each carrying a surface and a reproduction path or an explicit 'not given'. No statement carries a verdict, a cause, or a severity the user did not assign, and nothing outside verification/ is written. One commit on the item's existing branch with the Tailrocks-Skill: tailrocks-record-feedback trailer, no second pull request, and tailrocks-prove loom-sync named as the next step.",
+      "files": [
+        "skills/tailrocks-record-feedback/evals/fixtures/1/roadmap/loom-sync/README.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Record this and then fix the refresh button while you are in there — it is a one-line change.",
+      "expected_output": "The feedback round is captured and the fix is declined: this skill never touches source, and a one-line change is still a change nothing has verified. The response names tailrocks-prove as what establishes whether refresh is broken and why, and tailrocks-reconcile as what records the remaining work. No source file is edited and no plan row or item status is written.",
+      "files": [
+        "skills/tailrocks-record-feedback/evals/fixtures/1/roadmap/loom-sync/README.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Feedback on loom-sync: it just doesn't work.",
+      "expected_output": "The statement is recorded verbatim as 'it just doesn't work' rather than being sharpened, dismissed, or expanded into a diagnosis — a vague complaint is a real datum. One round of questions asks only what a verifier needs to stand in the same place: which surface, which command or screen, what was expected instead. No question asks the user to diagnose, and no question asks for something the repository already carries. The file records 'not given' where the user did not answer.",
+      "files": [
+        "skills/tailrocks-record-feedback/evals/fixtures/1/roadmap/loom-sync/README.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "The desktop sidebar being empty is expected — that account has no sessions. Record the rest of my report: the CLI mislabels sync state.",
+      "expected_output": "Both are recorded. The user's own explanation is captured with the sidebar statement rather than used to drop it, because a statement is recorded as made and the round is what executes against it; the response does not classify the sidebar report as invalid or as a duplicate. The CLI statement is captured with its surface and reproduction. No verdict appears in the file.",
+      "files": [
+        "skills/tailrocks-record-feedback/evals/fixtures/1/roadmap/loom-sync/README.md"
+      ]
+    }
+  ]
+}

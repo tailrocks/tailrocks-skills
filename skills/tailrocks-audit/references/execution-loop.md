@@ -1,8 +1,16 @@
 # Execution loop
 
-`execute <slug>` hands a `PLANNED` package to a `bounded-executor` and
-reviews the result — the only mode in this skill that produces a source
-diff, and even then only inside a disposable worktree.
+`execute <slug>` hands one plan from a `roadmap/<slug>/plan/` package to a
+`bounded-executor` and reviews the result — the only mode in this skill that
+produces a source diff, and even then only inside a disposable worktree.
+
+**Where this stops and `tailrocks-prove` starts.** `execute` reviews the
+diff it just caused, against the plan that caused it. `tailrocks-prove`
+runs the shipped artifact and judges it against the item's intent, whoever
+wrote the code and whenever it shipped — a package's verification rounds
+live in `roadmap/<slug>/verification/`, not here. An `execute` verdict is
+never a claim that the feature works, only that this diff satisfies this
+plan; and a package with no item has no intent to prove against at all.
 
 ## Model routing
 
@@ -55,7 +63,7 @@ extra context out of band.
 
 **Create the worktree; never assume one.** `git worktree add` a throwaway
 branch off the commit the plan is stamped against (`plan-seeding.md`
-records it), name the branch after the plan slug, and review with
+records it), name the branch after the item slug, and review with
 `git diff <base>...` inside that worktree. Report its path in the verdict
 so the user can inspect or discard it; this skill never removes a
 worktree holding an unreviewed diff.
@@ -75,7 +83,16 @@ After the executor reports, review its diff yourself, on the
 own "done" claim:
 
 - Re-run every done criterion the plan named; a criterion that was
-  supposed to pass and did not is a blocker, not a note.
+  supposed to pass and did not is a blocker, not a note. A criterion
+  written as a gate line is `<command> ||| <proof>`, and both halves run:
+  a command that exits 0 having executed nothing is `gate-vacuous`, which
+  is a blocker, not a pass.
+- Run the package's own `goal/check.sh` in the worktree once the
+  executor's work is committed there — it hashes the frozen contract and a
+  dirty tree answers `BLOCKED dirty-tree`, which says nothing about the
+  plan. `BLOCKED plan-drift` does: the executor edited the contract it was
+  handed, so the plan it "satisfied" is not the plan it was given. Always a
+  Block, never a note.
 - Check scope compliance against the plan's out-of-scope list; anything
   outside it is a blocker regardless of quality.
 - Read the diff against the plan's intent, not just its literal steps —

@@ -3,50 +3,93 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Reconcile macos-application — the overnight /goal loop reports every plan DONE.",
-      "expected_output": "Run sh plans/macos-application/goal-check.sh first and retain its final verdict; route dirty-tree to stop/report, plan-drift to STALE and tailrocks-plan, malformed to repair, and nonterminal-rows or gate-failed to row verification; then re-run every DONE row's done criteria with actual command output and re-run GOAL.md gates; item set DONE only on a full pass; any failing row flipped back with the failing criterion named.",
+      "prompt": "Reconcile session-sync — the overnight goal loop reports every plan DONE.",
+      "expected_output": "Run sh roadmap/session-sync/goal/check.sh first and retain its final verdict; route dirty-tree to stop/report, plan-drift to STALE and tailrocks-plan, malformed to item repair, gate-unproven or gate-vacuous to STALE plus tailrocks-plan, and nonterminal-rows or gate-failed to row verification; then re-run every DONE row's done criteria and read what each command executed, not only its exit code. Plan 003's first criterion collects zero tests and its second names a package that does not resolve: both are VACUOUS, the row flips to TODO and the plan is marked STALE because the done criterion is the defect. The item is not DONE on that evidence.",
       "files": [
-        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+        "evals/fixtures/vacuous-done/roadmap/session-sync/README.md",
+        "evals/fixtures/vacuous-done/roadmap/session-sync/plan/README.md",
+        "evals/fixtures/vacuous-done/roadmap/session-sync/plan/003-project-filter.md"
       ]
     },
     {
       "id": 2,
-      "prompt": "Reconcile macos-application — plan 003 shows IN PROGRESS but that session died yesterday.",
-      "expected_output": "Preconditions and completed-step verifications re-run; row reset to TODO with verified partial progress noted, or BLOCKED with the obstacle named; never left IN PROGRESS without a live executor.",
+      "prompt": "Reconcile session-sync — its criteria all exit 0 and the feature demonstrably does not work. Just confirm the rows so we can close it.",
+      "expected_output": "Refuse to confirm on exit status: a criterion that exited 0 having executed nothing is VACUOUS and never CONFIRMED, the decisive line is the count of executed units rather than the exit code, and the row goes to TODO with its plan marked STALE for a tailrocks-plan re-run. The frozen criterion is never edited here and never re-run hoping for a different count.",
       "files": [
-        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+        "evals/fixtures/vacuous-done/roadmap/session-sync/plan/003-project-filter.md",
+        "evals/fixtures/vacuous-done/roadmap/session-sync/goal/START.md"
       ]
     },
     {
       "id": 3,
-      "prompt": "Reconcile macos-application and rewrite the stale plans while you are in there.",
-      "expected_output": "Refuse plan rewriting: mark drifted or defective rows STALE with reasons and route to a tailrocks-plan re-run; write only the hub rows and the item's status, Log, and index.",
+      "prompt": "Reconcile session-sync — plan 003 shows IN PROGRESS but that session died yesterday.",
+      "expected_output": "Preconditions and completed-step verifications re-run; row reset to TODO with verified partial progress noted, or BLOCKED with the obstacle named; never left IN PROGRESS without a live executor.",
       "files": [
-        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+        "evals/fixtures/three-way-disagreement/roadmap/session-sync/plan/README.md"
       ]
     },
     {
       "id": 4,
-      "prompt": "Reconcile macos-application — main gained 40 commits since planning and nothing has executed yet.",
-      "expected_output": "Each TODO plan drift-checked with git diff --stat from its planned-at SHA over its in-scope paths; drifted rows STALE with reasons, clean rows confirmed executable; item status unchanged with a Log entry.",
+      "prompt": "Reconcile session-sync and rewrite the stale plans and their done criteria while you are in there — also fix the coverage ledger row that is wrong.",
+      "expected_output": "Refuse: plan files, spec/, coverage.md, and goal/ are frozen by the fingerprint that goal/check.sh hashes, so editing one reads as plan-drift and blocks the gate. Mark the affected rows STALE with reasons in the writable hub and route to a tailrocks-plan re-plan; write only the hub rows, the item's status and Remaining, the index row, and the PR body status line.",
       "files": [
-        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+        "evals/fixtures/three-way-disagreement/roadmap/session-sync/plan/README.md",
+        "evals/fixtures/three-way-disagreement/roadmap/session-sync/plan/coverage.md"
       ]
     },
     {
       "id": 5,
-      "prompt": "Reconcile macos-application — nine rows to re-verify and the test suite prints thousands of lines per run.",
-      "expected_output": "Rows fan out to read-only verifier subagents, one per row or cheap cluster, each brief restating the exact commands and the verification-only no-mutation rules; only the row/claimed/verdict/decisive-line/reason contract returns — raw suite output is never replayed into the session; the orchestrator alone writes hub rows, item status, Log, and the marked commit; serial fallback only when parallel agents are unavailable, said aloud.",
+      "prompt": "Reconcile session-sync — main gained 40 commits since planning and nothing has executed yet.",
+      "expected_output": "Each TODO plan drift-checked with git diff --stat from its planned-at SHA over its in-scope paths; drifted rows STALE with reasons, clean rows confirmed executable; every A# assumption re-tested against its falsifying signal; item status left at what reality supports with the change carried by the marked commit, not by a log section.",
       "files": [
-        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+        "evals/fixtures/vacuous-done/roadmap/session-sync/plan/003-project-filter.md"
       ]
     },
     {
       "id": 6,
-      "prompt": "Reconcile macos-application — its roadmap PR merged last week and the delivery branch is deleted.",
-      "expected_output": "Lane reopened per the delivery git contract: roadmap/macos-application recreated off the current base, truth-sync writes committed there with the Tailrocks-Skill trailer, a post-merge draft PR opened; the base branch is never pushed directly.",
+      "prompt": "Reconcile session-sync — nine rows to re-verify and the test suite prints thousands of lines per run.",
+      "expected_output": "Rows fan out to read-only verifier subagents, one per row or cheap cluster, each brief restating the exact commands, the count obligation, and the verification-only no-mutation rules; only the row/claimed/verdict/decisive-line/reason contract returns — raw suite output is never replayed into the session; the orchestrator alone runs goal/check.sh and writes hub rows, item status and Remaining, the index row, the PR body, and the marked commit; serial fallback only when parallel agents are unavailable, said aloud.",
       "files": [
-        "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
+        "evals/fixtures/blocking-defects/roadmap/session-sync/plan/README.md"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Reconcile session-sync — every plan row is DONE and the goal gate passes, so mark the item DONE.",
+      "expected_output": "DONE is refused: round 3's report names two blocking defects, so the item goes to IN EXECUTION and Remaining is rewritten from that evidence — one observable statement per blocking defect, the round-2 defect the report cleared removed, the non-blocking copy nit not promoted. The index row carries the new status and the Remaining count. DONE needs every row terminal, the gate passed this session, and a newest round with no blocking defect.",
+      "files": [
+        "evals/fixtures/blocking-defects/roadmap/session-sync/README.md",
+        "evals/fixtures/blocking-defects/roadmap/session-sync/plan/README.md",
+        "evals/fixtures/blocking-defects/roadmap/session-sync/verification/03-report.md"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Reconcile session-sync — delete the finished rows from the plan manifest so the next round has less to read.",
+      "expected_output": "Pruning is by status, never by deletion: rows stay in the hub and are marked terminal, because goal/check.sh counts them and a manifest with no DONE row is malformed while a deleted row silently shrinks measured coverage. Cheapness comes from recording each confirmed row's verified-at SHA so the next pass re-confirms it from an empty in-scope git diff, and from the item's Remaining carrying the short list instead of the manifest.",
+      "files": [
+        "evals/fixtures/blocking-defects/roadmap/session-sync/plan/README.md",
+        "evals/fixtures/blocking-defects/roadmap/session-sync/README.md"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Reconcile session-sync — the item header says BLOCKED (waiting on the 2.4 CLI release), the coverage ledger has F3 deferred, the index says IN EXECUTION, and the open PR body headlines all three capabilities as delivered.",
+      "expected_output": "Name the disagreement across the five artifacts that must state one truth — hub rows, item status and Remaining, index row, coverage.md row statuses, PR body — and correct the writable ones to what verification supports: BLOCKED is not in the item's closed status set, so it is replaced with the value reality supports (IN EXECUTION with rows 003 IN PROGRESS and 004 TODO) and what it was is stated; never left in place as an unchanged status. The PR body's status line and the index row are updated in the same pass; the frozen coverage ledger's disagreeing row is not edited but routed to a tailrocks-plan re-plan with the row marked STALE.",
+      "files": [
+        "evals/fixtures/three-way-disagreement/roadmap/session-sync/README.md",
+        "evals/fixtures/three-way-disagreement/roadmap/session-sync/plan/README.md",
+        "evals/fixtures/three-way-disagreement/roadmap/session-sync/plan/coverage.md",
+        "evals/fixtures/three-way-disagreement/roadmap/README.md",
+        "evals/fixtures/three-way-disagreement/pr-body.md"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Reconcile session-sync — its roadmap PR merged last week and the delivery branch is deleted.",
+      "expected_output": "Lane reopened per the delivery git contract: roadmap/session-sync recreated off the current base, truth-sync writes committed there with the Tailrocks-Skill: tailrocks-reconcile trailer, a post-merge draft PR opened and its status line set; the base branch is never pushed directly and no artifact gains a log entry — the commit and its trailer are the history.",
+      "files": [
+        "evals/fixtures/blocking-defects/roadmap/session-sync/README.md"
       ]
     }
   ]

@@ -2,13 +2,15 @@
 
 A selected finding becomes exactly one of two artifacts. Never a third,
 parallel format — everything downstream (`tailrocks-brainstorm`,
-`tailrocks-finalize`, `tailrocks-plan`, `tailrocks-reconcile`, `/goal`)
-only understands `roadmap/<slug>/README.md` items and `plans/<slug>/`
-packages.
+`tailrocks-finalize`, `tailrocks-plan`, `tailrocks-record-feedback`,
+`tailrocks-prove`, `tailrocks-reconcile`, `/goal`) only understands the item
+folder: `roadmap/<slug>/README.md` and the `roadmap/<slug>/plan/` package
+under it.
 
 ## The size test
 
-Seed directly into a `plans/<slug>/` package, skipping the roadmap
+Seed directly into a `roadmap/<slug>/plan/` package — the item folder's
+plan package with no item `README.md` beside it — skipping the roadmap
 pipeline entirely, only when **all** of the following hold:
 
 - The finding fits one fresh executor session — no vertical slicing
@@ -39,18 +41,53 @@ exact file paths, current-state code excerpts (from this audit's own
 verified evidence — no new research pass needed), the repository's proven
 build/test/lint commands as verification gates, an explicit out-of-scope
 list, and STOP conditions for drift. Stamp the commit this audit ran
-against. Write `plans/<slug>/README.md` (single-row manifest) plus the one
-plan file; no coverage ledger or spec is needed for a single mechanical
-slice — those exist to reconcile competing requirements, and a
-direct-seeded plan has none.
+against. The package is the item folder without an item:
+
+```
+roadmap/<slug>/
+  plan/
+    README.md          single-row manifest — the hub                writable
+    001-<name>.md      the one plan file                            FROZEN
+  goal/
+    START.md           kickoff prompt, carrying the gates block     FROZEN
+    RESUME.md          resume prompt                                FROZEN
+    check.sh           the machine gate                             FROZEN
+```
+
+No coverage ledger and no `plan/spec/` for a single mechanical slice —
+those exist to reconcile competing requirements, and a direct-seeded plan
+has none. The hub still carries the `Frozen contract fingerprint:` line
+`goal/check.sh` re-derives; a package whose hub omits it returns
+`BLOCKED malformed=fingerprint` the first time anyone runs the gate.
+
+**Gate lines carry their own proof.** Inside the `sh gates` fenced block in
+`goal/START.md`, every line is `<command> ||| <proof>`, where the proof
+prints how many units the command executed — tests run, targets built, files
+checked:
+
+```sh gates
+<the repository's own test command> ||| <command printing the count it ran>
+```
+
+`check.sh` returns `BLOCKED gate-vacuous` when a proof prints zero, so a
+gate that cannot tell "all tests passed" from "no tests ran" fails the
+package. Take both halves from the recon step's proven commands; never
+invent a proof that does not count real work.
 
 **A directly-seeded package has no roadmap item and therefore no item
-status.** `PLANNED` is a `roadmap/<slug>/README.md` value meaning that
-item reached a `plans/<slug>/` package with a `GOAL.md`; do not write it
-onto a package that has no item. Record the package's own readiness in
-its manifest row instead — `TODO` for the slice, and a one-line
+status.** `PLANNED` is a `roadmap/<slug>/README.md` value meaning that item
+reached a `plan/` package with a `goal/` package beside it; do not write it
+onto a package that has no item, and add no row to `roadmap/README.md` —
+that index lists items. Record the package's own readiness in its manifest
+row instead — `TODO` for the slice, and a one-line
 `Parentless: seeded directly by tailrocks-audit against <commit>` note so
 a later reader knows the missing item is deliberate, not lost.
+
+**It also has no intent for a verification round to judge against.**
+`tailrocks-prove` measures shipped work against the item's intent; a package
+with no item offers only its own done criteria, which `execute`'s diff
+review and `goal/check.sh` already cover. A finding whose result needs
+behavioral proof beyond those criteria failed the size test — seed an item.
 
 **The hub still owes the executor everything a hub owes.** A plan file is
 written short on purpose: `tailrocks-plan` omits package-invariant law
@@ -58,24 +95,24 @@ from it because the executor reads the hub *and* the plan, and the hub
 carries the rest. A single-row manifest breaks that contract — the
 executor arrives with no repository law, no data-not-instructions rule,
 no secrets rule, and no executor protocol. So a directly-seeded
-`plans/<slug>/README.md` carries the same hub sections
+`roadmap/<slug>/plan/README.md` carries the same hub sections
 `tailrocks-plan` writes, even for one slice, and the package gets its
-`GOAL.md` and goal-check script the same way. Without them the claim that
-`/goal` execution keeps working unchanged is false for this path.
+`goal/START.md`, `goal/RESUME.md`, and `goal/check.sh` the same way. Without
+them the claim that `/goal` execution keeps working unchanged is false for
+this path.
 
 **The protocol assumes a parent too — substitute it explicitly.**
 `tailrocks-plan`'s executor protocol writes the roadmap item's status and
-Log and updates its index row, at the first plan started and again at
-DONE, and `GOAL.md` names that item as the package's `Source:`. A
-parentless package has none of those files. Copying the protocol verbatim
-therefore hands the executor instructions that write to a path that was
-deliberately never created, and it fails at the moment the package is
-used rather than when it is written — on a `bounded-executor`, the route
-least equipped to tell a deliberate omission from a broken package. So
-the hub states the substitution rather than leaving it to be inferred:
-the manifest row is the only status surface, the protocol's roadmap
-writes collapse into that row, and `GOAL.md` names the package itself as
-its source.
+updates its index row, at the first plan started and again at DONE, and
+`goal/START.md` names that item as the package's source. A parentless
+package has neither. Copying the protocol verbatim therefore hands the
+executor instructions that write to a path that was deliberately never
+created, and it fails at the moment the package is used rather than when it
+is written — on a `bounded-executor`, the route least equipped to tell a
+deliberate omission from a broken package. So the hub states the
+substitution rather than leaving it to be inferred: the manifest row is the
+only status surface, the protocol's roadmap writes collapse into that row,
+and `goal/START.md` names the package itself as its source.
 
 **Starting-state excerpts are quoted repository text, and the executor
 reading them is the cheapest route in the ladder.** Fence every excerpt

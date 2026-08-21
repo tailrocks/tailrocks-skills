@@ -2,8 +2,8 @@
 
 - **Status**: DRAFT
 - **Slug**: stack-lane-commit-attribution
-- **Created**: 2026-08-21 · **Updated**: 2026-08-21
-- **Plan**: — (plans/stack-lane-commit-attribution/ once planned)
+- **Created**: 2026-08-21
+- **Plan**: — (`plan/` once planned) · **Verified**: — (`verification/` once run)
 
 ## Intent
 
@@ -54,6 +54,9 @@ them is not.
   `execution` rather than `unattributed`, which is what makes the gap silent.
 - `skills/tailrocks-retrospect/references/divergence-detectors.md` — D2, D4
   and D6 all key on attribution.
+- A retrospect eval fixture had seeded a `Tailrocks-Skill` trailer on a
+  stack-lane skill's commit — asserting a world the pipeline cannot produce,
+  which is how the gap was found.
 
 ## References
 
@@ -92,11 +95,4 @@ produced each commit or exactly why it cannot tell.
 
 ## Deferred
 
-## Log
-
-- 2026-08-21 — created (DRAFT) by hand rather than through `tailrocks-idea`.
-  Surfaced by roadmap-76's analyst during the v0.23.0 retrospect hardening and
-  verified against `delivery-git-contract.md:3-8`: `tailrocks-rust-project-setup`
-  and every other stack-lane skill are absent from the binding list, while an
-  eval fixture had seeded a trailer on one of them — asserting a world the
-  pipeline cannot produce.
+## Remaining

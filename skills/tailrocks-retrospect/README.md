@@ -4,7 +4,7 @@
 
 `tailrocks-retrospect` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-retrospect)
 
-After a roadmap item ships, rebuild which skills ran from commit trailers and the item Log, diff that against its Decisions, Must not, and spec IDs, and propose patches to the skills at fault. Proposes only; tailrocks-skill-author edits skills.
+After a roadmap item ships, rebuild which skills ran from commit trailers, diff that against its Decisions, Must not, spec IDs, and verification rounds, and propose patches to the skills at fault. Proposes only; tailrocks-skill-author edits skills.
 
 ## Invocation
 

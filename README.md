@@ -57,8 +57,10 @@ Focus on runtime validation, typed failure, and async ownership. Do not edit.
 Each row links to that skill's own README. Which skill to reach for when several
 could apply — family sequences, ownership boundaries, and the delivery
 pipeline — is covered in
-[choosing a skill](https://skills.tailrocks.com/docs/choosing). The eight
-roadmap skills have their own guide with two features taken end to end:
+[choosing a skill](https://skills.tailrocks.com/docs/choosing). The ten
+delivery skills — capture, shaping, planning, `/goal` execution, and the
+verification round that decides whether it is really done — have their own
+guide with two features taken end to end:
 [the delivery pipeline](https://skills.tailrocks.com/docs/delivery).
 
 <!-- skills:start -->
@@ -116,7 +118,7 @@ Debt that shrinks, defects that stop recurring, skills that improve from field e
 | [`tailrocks-code-health`](skills/tailrocks-code-health/README.md) | Establish, audit, or tighten measurable shrink-only code-health ratchets for architecture, lint, dependency, flake, defect, documentation, or verification debt. |
 | [`tailrocks-agents-md`](skills/tailrocks-agents-md/README.md) | Add, place, audit, or repair agent instruction files. |
 | [`tailrocks-skill-author`](skills/tailrocks-skill-author/README.md) | Create, update, or audit agent skills: baseline the failure first, match the guidance form to the failure type, keep routers lean and references deep, write trigger-only descriptions, write baselined eval cases. |
-| [`tailrocks-retrospect`](skills/tailrocks-retrospect/README.md) | After a roadmap item ships, rebuild which skills ran from commit trailers and the item Log, diff that against its Decisions, Must not, and spec IDs, and propose patches to the skills at fault. |
+| [`tailrocks-retrospect`](skills/tailrocks-retrospect/README.md) | After a roadmap item ships, rebuild which skills ran from commit trailers, diff that against its Decisions, Must not, spec IDs, and verification rounds, and propose patches to the skills at fault. |
 | [`tailrocks-simplify`](skills/tailrocks-simplify/README.md) | Review a pull request or diff and remove code without changing behavior: dead paths, hand-rolled utilities the platform provides, indirection, needless branching. |
 | [`tailrocks-remediate`](skills/tailrocks-remediate/README.md) | Analyze or remediate a proven defect through correctness-first architectural redesign. |
 | [`tailrocks-rethink`](skills/tailrocks-rethink/README.md) | Re-derive the design behind a reported bug or friction instead of patching it; restructuring and breaking changes are expected and cost is excluded from the decision. |
@@ -147,8 +149,10 @@ An idea through shaping, planning, autonomous execution, and back to verified tr
 | [`tailrocks-research`](skills/tailrocks-research/README.md) | Run deep, sourced research into a reusable topic under research/, for a question or to extend a roadmap item, using parallel investigators. |
 | [`tailrocks-record-decision`](skills/tailrocks-record-decision/README.md) | Record one user decision on a roadmap item: validate it against settled ground, date it with its reason, propagate it, and flag what it invalidates, including reopening READY or PLANNED work. |
 | [`tailrocks-finalize`](skills/tailrocks-finalize/README.md) | Close the shaping interview on a SHAPING roadmap item: resolve every screen, flow, and open question, then grant READY. |
-| [`tailrocks-plan`](skills/tailrocks-plan/README.md) | Convert a READY roadmap item into plans/<slug>/: coverage ledger, gap research, an OpenSpec-grammar spec, one zero-context plan per work item, and GOAL.md for goal execution. |
-| [`tailrocks-reconcile`](skills/tailrocks-reconcile/README.md) | True up plans/<slug>/ with execution reality: re-verify DONE rows by re-running their criteria, reset dead IN PROGRESS rows, retest BLOCKED, drift-check TODO plans, and fix the item's status. |
+| [`tailrocks-plan`](skills/tailrocks-plan/README.md) | Convert a READY roadmap item into roadmap/<slug>/plan/ and goal/: coverage ledger, gap research, an OpenSpec-grammar spec, one zero-context plan per work item, and the goal handoff. |
+| [`tailrocks-record-feedback`](skills/tailrocks-record-feedback/README.md) | Capture what a user found wrong with a roadmap item's shipped work: their words verbatim, one statement per defect, reproduction as given. |
+| [`tailrocks-prove`](skills/tailrocks-prove/README.md) | Execute every surface a roadmap item claims to ship, confirm or refute each reported defect, and write the verification round — subagent fan-out, evidence per surface, vacuous-proof audit. |
+| [`tailrocks-reconcile`](skills/tailrocks-reconcile/README.md) | True up roadmap/<slug>/ with execution reality: re-run each plan row's done criteria, reject criteria that executed nothing, fold the newest verification round into the item's Remaining, and set the status reality supports. |
 
 <!-- skills:end -->
 

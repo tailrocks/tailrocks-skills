@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Prove"
+  short_description: "Execute a shipped roadmap item and report what does not work"
+  default_prompt: "Use $tailrocks-prove to execute every surface the named roadmap item claims to ship, confirm or refute each reported defect, and write the verification round."
+policy:
+  allow_implicit_invocation: false

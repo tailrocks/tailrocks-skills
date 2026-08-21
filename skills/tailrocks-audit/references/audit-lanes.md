@@ -182,10 +182,26 @@ re-read. A direction finding is verified by confirming the cited evidence
 actually shows the gap claimed, and that no intent document already
 decided against it.
 
-Record every drop with a one-line reason. A rejected finding gets that
-reason logged where the next audit run will see it — the roadmap index's
-Log, or the item's own Log when one already exists — so the same
-rejected idea does not resurface next run without new evidence.
+Record every drop with a one-line reason, in the invocation's own commit
+message. No artifact carries a log — not the item, not the roadmap index —
+so the commit series is the only place a rejection survives the session,
+and a rejection nobody can find is re-derived and re-argued at the next
+run's expense. A run that seeded no artifact still commits its rejections
+(empty commit if it has nothing else to stage) under the trailer, or its
+verification work dies with it.
+
+Read what earlier runs already rejected before re-surfacing a candidate:
+
+```sh
+git log --format='%h %ad %s%n%b' --date=short \
+  --grep='Tailrocks-Skill: tailrocks-audit'
+```
+
+A recorded rejection whose reason was a **decision** (an ADR, a Must not, a
+stated product direction) stays rejected until new evidence contradicts
+that decision — naming the prior rejection and its date is the answer, not
+a fresh listing. A rejection whose reason was **stale or missing
+evidence** is re-checkable: the reason expired, the finding did not.
 
 ## Prioritization
 

@@ -282,20 +282,43 @@ Skill definition: `skills/tailrocks-code-health/SKILL.md`
 
 ### The delivery family — roadmap-driven pipeline
 
-Eight skills drive work from a cold repository or a captured idea through
-autonomous execution and back to verified truth. Artifacts:
-roadmap items in `roadmap/<slug>/README.md` (status machine: DRAFT → SHAPING
-→ READY → PLANNED → IN EXECUTION → DONE, plus PARKED), standing research
-topics in `research/<topic>/` (independent of items, many-to-many links),
-implementation packages in `plans/<slug>/` (coverage ledger, OpenSpec-grammar
-spec, zero-context plans, GOAL.md for Claude Code and Codex goal execution or
-manual Grok prompting). The family works in the PR lifecycle:
-`tailrocks-idea` opens the item's `roadmap/<slug>` branch and draft PR at
-capture, and every invocation of every family skill ends in one commit
-marked with the `Tailrocks-Skill: <name>` trailer and pushed — so an
-item's PR history attributes each commit to the skill that produced it
-(the contract lives in tailrocks-idea's `delivery-git-contract.md`
-reference).
+Ten skills drive work from a cold repository or a captured idea through
+autonomous execution and back to verified truth — a line up to execution, and
+a loop after it.
+
+**One item, one folder.** Everything about an item lives under
+`roadmap/<slug>/`: the item itself (`README.md`, status machine DRAFT →
+SHAPING → READY → PLANNED → IN EXECUTION → DONE, plus PARKED), its
+implementation package (`plan/README.md` manifest hub, `plan/001-*.md`
+zero-context plans, `plan/spec/`, `plan/coverage.md`), its verification rounds
+(`verification/NN-feedback.md`, `NN-report.md`), and its goal handoff
+(`goal/START.md`, `goal/RESUME.md`, `goal/check.sh`). Standing research topics
+stay in `research/<topic>/`, independent of items, with many-to-many links.
+No delivery artifact lives outside the item's folder — there is no parallel
+`plans/` tree to keep in step.
+
+**Frozen means fingerprinted.** The plan files, the spec, the ledger, and the
+whole `goal/` package are FROZEN: `goal/check.sh` hashes them into the hub's
+`Frozen contract fingerprint` line and returns `BLOCKED plan-drift` when one
+changes, so a contract cannot be edited to match what shipped. The item, the
+manifest's Status column, and every verification round sit outside that hash —
+they are what the loop must move. Re-planning is how a frozen file changes.
+
+Execution is handed the file, not a pasted block: `/goal Follow
+roadmap/<slug>/goal/START.md`, and `goal/RESUME.md` after any interruption.
+Every line in `START.md`'s gates block is `<command> ||| <proof>` — the proof
+prints how many units the command executed, because a gate that cannot tell
+"everything passed" from "nothing ran" is not a gate; `check.sh` answers
+`BLOCKED gate-vacuous` for a proof that prints zero and `BLOCKED gate-unproven`
+for a missing `|||`.
+
+**One item, one branch, one pull request.** `tailrocks-idea` opens the item's
+`roadmap/<slug>` branch and draft PR at capture, and every invocation of every
+family skill ends in one commit marked with the `Tailrocks-Skill: <name>`
+trailer and pushed into that same lane — no delivery skill opens a second pull
+request for an item that already has one. No artifact carries a log: the commit
+series is the item's history (the contract lives in tailrocks-idea's
+`delivery-git-contract.md` reference).
 
 - **tailrocks-audit** — the cold-start entry: fan out parallel audit lanes
   (correctness, security, performance, UX, Liquid Glass, agent
@@ -303,7 +326,7 @@ reference).
   inside the house stack — tests, tech debt, dependencies, DX, docs,
   direction) over a repository or a branch diff, verify every
   finding by re-reading its evidence, prioritize by leverage, and seed
-  either a direct `plans/<slug>/` package (small, mechanical, no open
+  either a direct `roadmap/<slug>/plan/` package (small, mechanical, no open
   product question) or a DRAFT roadmap item pre-filled with evidence. Also
   runs the `execute` loop — a `bounded-executor` in an isolated worktree,
   reviewed on the `frontier-judgment` route, never the reverse — and
@@ -333,24 +356,51 @@ reference).
   every open question resolved, deferred with a reason, or reclassified as
   researchable; READY only when the full readiness checklist passes.
   Definition: `skills/tailrocks-finalize/SKILL.md`
-- **tailrocks-plan** — READY item → `plans/<slug>/`: coverage ledger, gap
-  research landed as reusable topics, OpenSpec-grammar spec with screen
-  contracts and a must-not registry, one zero-context plan per manifest item
-  (each written by its own subagent, cold-reviewed by fresh-context
-  reviewers), and GOAL.md — machine-checkable bounded /goal condition plus
-  kickoff and resume prompts. Sets PLANNED.
-  Definition: `skills/tailrocks-plan/SKILL.md`
-- **tailrocks-reconcile** — execution truth-sync: re-verify DONE rows by
-  re-running their done criteria, reset dead-session rows, re-test
-  BLOCKED reasons, drift-check TODO plans against HEAD, mark stale rows,
-  and true up the item's status. Run it when a /goal loop finishes,
-  stalls, or the repository moved on.
-  Definition: `skills/tailrocks-reconcile/SKILL.md`
+- **tailrocks-plan** — READY item → `roadmap/<slug>/plan/` and `goal/`:
+  coverage ledger, gap research landed as reusable topics, OpenSpec-grammar
+  spec with screen contracts and a must-not registry, one zero-context plan per
+  manifest item (each written by its own subagent, cold-reviewed by
+  fresh-context reviewers), then `goal/START.md`, `goal/RESUME.md`, and
+  `goal/check.sh`, with the frozen contract fingerprint stamped into the hub.
+  Sets PLANNED. Definition: `skills/tailrocks-plan/SKILL.md`
+- **tailrocks-record-feedback** — capture what the user found wrong with the
+  shipped work into `verification/NN-feedback.md`: their words verbatim, one
+  statement per defect (`U1`, `U2`, …), reproduction as given. Captures only —
+  it never investigates, judges, or fixes, because a defect the agent already
+  dismissed never gets executed against.
+  Definition: `skills/tailrocks-record-feedback/SKILL.md`
+- **tailrocks-prove** — the round that runs the thing: subagents launch entry
+  points, walk real flows, drive the real interface, and compare shipped
+  screens against the blessed design reference, returning a verdict per
+  reported statement and per plan row in `verification/NN-report.md`. It writes
+  no status — blocking defects route to `tailrocks-reconcile`, skill-level
+  divergence to `tailrocks-retrospect`.
+  Definition: `skills/tailrocks-prove/SKILL.md`
+- **tailrocks-reconcile** — execution truth-sync and the closer of a round:
+  re-verify DONE rows by re-running their done criteria, reset dead-session
+  rows, re-test BLOCKED reasons, drift-check TODO plans against HEAD, mark
+  stale rows, then prune the rows a verification round confirmed, rewrite the
+  item's `Remaining` from its blocking defects, and true up the status. It is
+  the only writer of `DONE`, and only after a round that found none. Run it
+  when a /goal loop finishes, stalls, the repository moved on, or a round
+  needs closing. Definition: `skills/tailrocks-reconcile/SKILL.md`
 
-All eight write only their own artifacts (`roadmap/`, `research/`,
-`plans/`) and never touch source — `tailrocks-audit`'s `execute` mode is
-the one exception, and even there only inside a disposable worktree it
-never merges.
+The loop closes, and iterates until `Remaining` is empty:
+
+```mermaid
+flowchart LR
+  plan --> exec["/goal execution"] --> feedback["record-feedback"]
+  feedback --> prove --> reconcile
+  reconcile -->|Remaining not empty| exec
+  reconcile -->|Remaining empty| done["DONE"]
+```
+
+A `TAILROCKS GOAL: PASS` proves the work ran and the contract is unedited; it
+is never a `DONE` claim.
+
+All ten write only their own artifacts (`roadmap/`, `research/`) and never
+touch source — `tailrocks-audit`'s `execute` mode is the one exception, and
+even there only inside a disposable worktree it never merges.
 After an item ships, `tailrocks-retrospect` reads that marked history back and
 turns what diverged into proposed skill patches.
 Mechanical walkthrough: `docs/design/pipeline-walkthrough.md`; why the audit

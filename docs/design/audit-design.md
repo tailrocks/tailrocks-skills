@@ -82,7 +82,7 @@ pattern out of it.
 | `tailrocks-plan` | READY item to plan package | audit seeds a package directly only when the finding is small, mechanical, and free of open product questions |
 
 Everything the skill writes is an artifact the delivery family already
-understands — `roadmap/<slug>/`, `plans/<slug>/`, and their indices — so
+understands — `roadmap/<slug>/`, its `plan/` package, and the index — so
 `tailrocks-brainstorm`, `tailrocks-finalize`, `tailrocks-plan`,
 `tailrocks-reconcile`, and `/goal` execution keep working on audit-seeded work
 with no special case.

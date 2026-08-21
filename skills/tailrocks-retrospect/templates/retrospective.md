@@ -1,7 +1,9 @@
 # Retrospective — <slug>
 
 - **Item**: `roadmap/<slug>/README.md` at `<short SHA>`
-- **Package**: `plans/<slug>/` at `<short SHA>` — or "none"
+- **Package**: `roadmap/<slug>/plan/` at `<short SHA>` — or "none"
+- **Verification**: `roadmap/<slug>/verification/` — <n> rounds, latest
+  `<NN>` verdict <verdict>, blocking defects <ids | none> — or "none"
 - **Source**: <repository the evidence came from>
 - **Evidence range**: `<base>..<head>` — <N> commits, <first date> to <last date>
 - **Timezone**: all timestamps below are <zone>
@@ -12,18 +14,20 @@
 
 ## Invocation sequence
 
-Ordered by author date. `Log` is what the item claims; `Skill` is what the
-trailers show.
+Ordered by author date. The trailers are the whole history — no artifact
+carries one, so an unmarked commit is a hole, never a subject line to read.
 
-| # | Timestamp | Commit | Skill | Paths | Log entry |
-|---|-----------|--------|-------|-------|-----------|
-| 1 | <ts> | `<sha>` <subject> | <skill \| unattributed \| inferred:<skill> \| shared:<a>+<b>> | <top-level paths> | <matched \| none> |
+| # | Timestamp | Commit | Skill | Paths |
+|---|-----------|--------|-------|-------|
+| 1 | <ts> | `<sha>` <subject> | <skill \| unattributed \| inferred:<skill> \| shared:<a>+<b>> | <top-level paths> |
 
 Counts: <n> attributed, <n> unattributed, <n> inferred, <n> shared.
 Parse: <n> by trailer key, <n> by full-message scan — every difference listed
 with its SHA, because that gap measures dropped attributions rather than a
-marking failure. Log entries with no invocation: <list>. Invocations with no
-Log entry: <list>. Log actors that are not skills: <list>.
+marking failure. Unattributed artifact commits, listed with their paths:
+<list> — each one is the marking rule failing, reported as a finding rather
+than filled in. Artifacts with no attributed commit behind them (a
+`verification/` round, a plan package, a research topic): <list>.
 
 ## Detector results
 

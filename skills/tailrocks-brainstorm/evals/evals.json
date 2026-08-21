@@ -28,7 +28,7 @@
     {
       "id": 4,
       "prompt": "Wrap up the brainstorm now, we only got through half the questions.",
-      "expected_output": "Immediate wrap-up: every still-open decision recorded under Open questions with recommendations attached; nothing silently assumed; Log entry and index row updated.",
+      "expected_output": "Immediate wrap-up: every still-open decision recorded under Open questions with recommendations attached; nothing silently assumed; status and index row updated and the session committed on the item's branch with its Tailrocks-Skill trailer — no Log entry, because the item carries no history section.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]

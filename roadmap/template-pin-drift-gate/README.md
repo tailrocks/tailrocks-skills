@@ -2,10 +2,11 @@
 
 - **Status**: DONE
 - **Slug**: template-pin-drift-gate
-- **Created**: 2026-08-21 · **Updated**: 2026-08-21
+- **Created**: 2026-08-21
 - **Plan**: — shipped directly as #67, #68 and #69; small and mechanical
   enough that a plan package would have documented the work rather than
-  decided anything.
+  decided anything. · **Verified**: — (shipped before the verification round
+  existed)
 
 ## Intent
 
@@ -111,16 +112,4 @@ nothing removes it until that placement changes.
   — deferred until the schedule has run often enough to measure rather than
   guess. Revisit after four scheduled runs.
 
-## Log
-
-- 2026-08-21 — captured by hand from a recurring CI failure, not through
-  `tailrocks-idea`; the item is DRAFT and unshaped, and the gaps above are
-  genuinely empty rather than assumed.
-- 2026-08-21 — DONE. #67 split the assertion: pull requests run
-  `scripts/refresh-template-pins.ts --check-consistency`, offline and
-  deterministic, while the live freshness check stays on main and the
-  nightly schedule, and `.github/workflows/refresh-pins.yml` opens the bump
-  weekly. #68 fixed that workflow reporting a merged pull request as open;
-  #69 stopped its refresh writing versions into `version-policy.md`. The
-  quality bar holds: a diff touching nothing in the template can no longer
-  fail for a pin reason.
+## Remaining

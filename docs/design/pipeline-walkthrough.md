@@ -1,31 +1,50 @@
 # Delivery Pipeline Walkthrough
 
-One feature, `goal-live-status`, from raw thought to reconciled execution.
-Invocations below are agent-neutral: explicitly invoke the named skill.
+One feature, `goal-live-status`, from raw thought through execution to a
+verification round that sends work back. Invocations below are agent-neutral:
+explicitly invoke the named skill.
+
+Everything the item produces lives in one folder, `roadmap/<slug>/`, and the
+whole life of the item is one branch and one pull request. No delivery skill
+opens a second one.
+
+```mermaid
+flowchart LR
+  audit --> idea --> brainstorm --> finalize --> design["design stage"] --> plan --> exec["/goal execution"]
+  exec --> feedback["record-feedback"] --> prove --> reconcile
+  reconcile -->|Remaining not empty| exec
+  reconcile -->|Remaining empty| done["DONE"]
+  audit -.-> plan
+  brainstorm <--> research
+  brainstorm <--> decision["record-decision"]
+```
 
 ## 0. Cold start with tailrocks-audit (only when there is no thought yet)
 
 This walkthrough begins with a raw thought, so it skips step 0. Start here
 instead when the input is a repository rather than an idea: invoke
 tailrocks-audit — bare, or scoped to one lane (`security`, `perf`, `ux`,
-`liquid-glass`, `agent-legibility`), or as `branch` before a pull request, with
-`deep` composing over any of them. It fans out category subagents, re-derives
-every candidate from its cited `file:line`, and prioritizes the survivors.
-Selected findings that still carry an open product question enter at step 1 as
-pre-filled DRAFT items; findings that carry none skip to step 6 as
-`plans/<slug>/` packages written directly.
+`tui`, `liquid-glass`, `agent-legibility`), or as `branch` before a pull
+request, with `deep` composing over any of them. It fans out category
+subagents, re-derives every candidate from its cited `file:line`, and
+prioritizes the survivors. Selected findings that still carry an open product
+question enter at step 1 as pre-filled DRAFT items; findings that carry none
+skip to step 6 as `roadmap/<slug>/plan/` packages written directly on the base
+branch.
 
 ```text
 + roadmap/<slug>/README.md   Status: DRAFT, pre-filled with audit evidence
-+ plans/<slug>/              for findings with no open question
-~ roadmap/README.md          index rows, plus a Log entry per dropped finding
++ roadmap/<slug>/plan/       for findings with no open question
+~ roadmap/README.md          index rows
 ```
 
 ## 1. Capture with tailrocks-idea
 
 Invoke tailrocks-idea with: “Show live status for running goal loops.”
 It derives `goal-live-status`, copies the item shape, preserves only stated
-intent, and leaves unknown sections visibly empty.
+intent, and leaves unknown sections visibly empty. It also opens the item's
+branch, `roadmap/goal-live-status`, and its draft pull request — the single
+lane every later skill commits into.
 
 ```text
 + roadmap/goal-live-status/README.md  Status: DRAFT
@@ -33,7 +52,7 @@ intent, and leaves unknown sections visibly empty.
 ```
 
 Status: DRAFT. Example:
-[`roadmap item`](../examples/plan-package/roadmap/goal-live-status/README.md).
+[`roadmap item`](../../examples/item-folder/roadmap/goal-live-status/README.md).
 
 ## 2. Shape with tailrocks-brainstorm
 
@@ -63,7 +82,7 @@ the orchestrator vets every citation and registers the reusable topic.
 ```
 
 Status stays SHAPING. Example:
-[`research topic`](../examples/plan-package/research/goal-status-ipc/).
+[`research topic`](../../examples/item-folder/research/goal-status-ipc/).
 
 ## 4. Record one decision with tailrocks-record-decision
 
@@ -73,7 +92,7 @@ reason, propagates the choice, and adds the must-not.
 
 ```text
 ~ roadmap/goal-live-status/README.md  decision + propagated constraints
-~ roadmap/README.md                   matching status/date
+~ roadmap/README.md                   matching status
 ```
 
 Status stays SHAPING. If this reversed a PLANNED item, it would return to
@@ -93,70 +112,132 @@ grants READY.
 
 Status: READY.
 
-## 6. Package with tailrocks-plan
+## 6. Bless the screens in the medium's own skill
+
+Between READY and planning. This item's surface is a terminal UI, so invoke
+tailrocks-tui-design: it renders each screen and state through the
+application's own view functions in a gallery crate, the user blesses each
+frame, and the golden test freezes it. Each screen's `Design:` line then points
+at the manifest section instead of re-describing it, and tailrocks-plan refuses
+a screen contract that cites none.
+
+```text
++ crates/status-gallery/…              gallery crate, frames, MANIFEST.md
+~ roadmap/goal-live-status/README.md   Screens: Design pointer per screen
+```
+
+Web screens take the same stage in tailrocks-web-design, macOS windows in
+tailrocks-macos-design plus the runnable tailrocks-macos-prototype. An item
+whose screens have no visual surface skips it. Status stays READY.
+
+## 7. Package with tailrocks-plan
 
 Invoke tailrocks-plan for `goal-live-status`. It inventories every normative
 statement, closes research gaps, writes OpenSpec-grammar requirements, slices
-the manifest baseline-first, writes/cold-reviews one zero-context plan per
-row, then writes GOAL.md and commits the package.
+the manifest baseline-first, writes and cold-reviews one zero-context plan per
+row, then writes the goal package and stamps the frozen contract fingerprint.
 
 ```text
-+ plans/goal-live-status/coverage.md
-+ plans/goal-live-status/spec/
-+ plans/goal-live-status/README.md
-+ plans/goal-live-status/001-*.md ...
-+ plans/goal-live-status/GOAL.md
-~ roadmap/goal-live-status/README.md  Status: PLANNED; Plan link
++ roadmap/goal-live-status/plan/coverage.md
++ roadmap/goal-live-status/plan/spec/
++ roadmap/goal-live-status/plan/README.md      manifest hub, writable
++ roadmap/goal-live-status/plan/001-*.md ...   FROZEN
++ roadmap/goal-live-status/goal/START.md       FROZEN
++ roadmap/goal-live-status/goal/RESUME.md      FROZEN
++ roadmap/goal-live-status/goal/check.sh       FROZEN
+~ roadmap/goal-live-status/README.md           Status: PLANNED; Plan link
 ```
 
 The ledger includes `B#` quality statements; the must-not registry has plan
-backlinks. Status: PLANNED. Worked
-[`ledger`](../examples/plan-package/plans/goal-live-status/coverage.md),
-[`spec`](../examples/plan-package/plans/goal-live-status/spec/),
-[`hub`](../examples/plan-package/plans/goal-live-status/README.md), and
-[`GOAL.md`](../examples/plan-package/plans/goal-live-status/GOAL.md).
+backlinks. The fingerprint in the hub covers every FROZEN file, so the contract
+an executor was handed cannot later be edited to match what shipped —
+re-planning is how a frozen file changes. Status: PLANNED. Worked
+[`ledger`](../../examples/item-folder/roadmap/goal-live-status/plan/coverage.md),
+[`spec`](../../examples/item-folder/roadmap/goal-live-status/plan/spec/),
+[`hub`](../../examples/item-folder/roadmap/goal-live-status/plan/README.md),
+and
+[`goal package`](../../examples/item-folder/roadmap/goal-live-status/goal/START.md).
 
-## 7. Execute through the goal loop
+## 8. Execute through the goal loop
 
-Submit GOAL.md block 1 as the goal condition and block 2 as kickoff:
-
-```text
-Every row is DONE or REJECTED; none is STALE, BLOCKED, or IN PROGRESS;
-the final line of `sh plans/goal-live-status/goal-check.sh` starts with
-`TAILROCKS GOAL: PASS`. At the bounded turn count, the active row becomes
-`BLOCKED (budget exhausted)` without a completion claim.
-```
+The operator hands the executor the start file, not a pasted block:
 
 ```text
-Read plans/goal-live-status/README.md and follow Executor protocol:
-one plan per iteration, preconditions first, every verification run,
-protocol status writes committed with work, no improvisation around STOP.
+/goal Follow roadmap/goal-live-status/goal/START.md
 ```
 
-The first slice sets item/index IN EXECUTION. Hub rows move TODO → IN
-PROGRESS → DONE. When the terminal predicate and both gates pass, protocol
-writes set item/index DONE with a Log entry.
+`START.md` carries the gates block, the machine-checkable goal condition, and
+the kickoff prompt. Each gate line is `<command> ||| <proof>`: the command must
+exit 0 and the proof must print how many units it executed, so
+`goal/check.sh` can return `BLOCKED gate-vacuous` for a suite that ran nothing
+and `BLOCKED gate-unproven` for a line with no proof at all.
 
-## 8. Reconcile a stalled loop
+The first slice sets item and index to IN EXECUTION. Hub rows move TODO → IN
+PROGRESS → DONE. When every row is terminal and the final line reads
+`TAILROCKS GOAL: PASS`, execution stops there and names tailrocks-prove. The
+executor never writes the item's DONE status: a `PASS` proves the work ran, not
+that it behaves.
+
+After an interruption, resume with
+`/goal Follow roadmap/goal-live-status/goal/RESUME.md`.
+
+## 9. Capture what the user hit with tailrocks-record-feedback
+
+Invoke tailrocks-record-feedback for `goal-live-status` after using the thing.
+It writes the user's words verbatim as one statement per defect (`U1`, `U2`, …)
+with the reproduction as given, and nothing else — no diagnosis, no severity
+the user did not assign, no fix.
+
+```text
++ roadmap/goal-live-status/verification/01-feedback.md
+```
+
+Worked
+[`feedback round`](../../examples/item-folder/roadmap/goal-live-status/verification/01-feedback.md).
+
+## 10. Prove it with tailrocks-prove
+
+Invoke tailrocks-prove for `goal-live-status`. It fans out subagents that
+**execute** the shipped work — launch the entry point, walk the real flows,
+drive the real interface, compare the shipped screens against the blessed
+design reference — and returns a verdict per `U#` statement plus what execution
+proved per plan row.
+
+```text
++ roadmap/goal-live-status/verification/01-report.md   Verdict: BLOCKED
+```
+
+It writes no status. Its evidence goes two ways: blocking defects to
+tailrocks-reconcile, and anything that says a *skill* let the divergence
+through to tailrocks-retrospect. Worked
+[`verification report`](../../examples/item-folder/roadmap/goal-live-status/verification/01-report.md).
+
+## 11. Reconcile the round with tailrocks-reconcile
 
 Invoke tailrocks-reconcile for `goal-live-status`. It re-runs every DONE
-criterion, resets abandoned IN PROGRESS rows, retests BLOCKED reasons and
-`A#` assumptions, drift-checks TODO plans, and marks stale plans explicitly.
+criterion, resets abandoned IN PROGRESS rows, retests BLOCKED reasons and `A#`
+assumptions, drift-checks TODO plans, marks stale plans explicitly — and reads
+the round's report: it prunes rows the round confirmed, rewrites the item's
+Remaining from the blocking defects, and sets the item's status.
 
 ```text
-~ plans/goal-live-status/README.md  evidence-backed statuses
-~ roadmap/goal-live-status/README.md
-~ roadmap/README.md
+~ roadmap/goal-live-status/plan/README.md  evidence-backed statuses
+~ roadmap/goal-live-status/README.md       Status + Remaining
+~ roadmap/README.md                        Remaining count
 ```
 
-No plan or source file changes. Resume only from reconciled statuses.
+No plan or source file changes. A round with a blocking defect returns the item
+to IN EXECUTION with that defect standing as the remaining work; `DONE` is
+written only here, and only after a round found none. Resume from step 8 and
+iterate until Remaining is empty.
 
-## 9. Re-plan after changed intent
+## 12. Re-plan after changed intent
 
-Invoke tailrocks-record-decision on the PLANNED/DONE item. A material intent
-change returns it to SHAPING and marks affected rows STALE. Shape/finalize
-again as needed, then invoke tailrocks-plan: it refreshes stale rows, records
-spec deltas, keeps numbering monotonic, and regenerates GOAL.md last.
+Invoke tailrocks-record-decision on the PLANNED or IN EXECUTION item. A
+material intent change returns it to SHAPING and marks affected rows STALE.
+Shape and finalize again as needed, then invoke tailrocks-plan: it refreshes
+stale rows, records spec deltas, keeps numbering monotonic, and regenerates
+`goal/` last so the fingerprint matches the refreshed contract.
 
 A falsified assumption follows the same owned route: executor names failed
 `A#` → record-decision propagates → leaning plans STALE → plan refreshes.
@@ -164,8 +245,13 @@ A falsified assumption follows the same owned route: executor names failed
 ## Common mistakes
 
 - Planning a SHAPING item: finalize must earn READY first.
+- Planning a screen with no blessed design reference: the design stage sits
+  between READY and planning for exactly that reason.
 - Skipping finalization: unresolved decisions cannot become assumptions.
-- Editing stale plans by hand: record the change and re-run tailrocks-plan.
+- Editing a FROZEN file by hand: `check.sh` returns `plan-drift`, and the fix
+  is a re-plan, not a re-stamped fingerprint.
+- Reading `TAILROCKS GOAL: PASS` as DONE: it proves the work ran and the
+  contract is unedited. Behavior is proven by a verification round.
 - Trusting an interrupted loop: reconcile before resume.
 - Treating PARKED as terminal: explicit resume restores its recorded `was:`
   state through tailrocks-record-decision.

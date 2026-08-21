@@ -1,6 +1,6 @@
 ---
 title: Delivery pipeline
-description: "Why eight skills stand between an idea and an executing agent, and what each one refuses to do."
+description: "Why ten skills stand between an idea and shipped work you have seen run, and what each one refuses to do."
 ---
 
 An agent will happily build something from a one-line request. The problem is
@@ -19,21 +19,66 @@ choice follows you across the documentation.
 
 ```mermaid
 flowchart LR
-  audit --> idea --> brainstorm --> finalize --> plan --> exec["goal execution"] --> reconcile
+  audit --> idea --> brainstorm --> finalize --> design["design stage"] --> plan --> exec["/goal execution"]
+  exec --> feedback["record-feedback"] --> prove --> reconcile
+  reconcile -->|Remaining not empty| exec
+  reconcile -->|Remaining empty| done["DONE"]
   audit -.-> plan
   brainstorm <--> research
   finalize <--> decision["record-decision"]
 ```
 
-Straight line for the stages. The two below hang off it: research answers
-questions that have answers in the world, record-decision captures answers only
-you can give. Both run whenever they are needed, at any stage.
+A line up to execution, and a loop after it. The two below hang off the line:
+research answers questions that have answers in the world, record-decision
+captures answers only you can give. Both run whenever they are needed, at any
+stage.
+
+The loop is the part most pipelines are missing. An executor that ran out of
+plan rows has proven it did the work, not that the work behaves — so what
+shipped gets used, what the user hit gets captured verbatim, an agent executes
+the thing and judges it, and whatever is still wrong comes back as remaining
+work. `DONE` is on the far side of a round that found nothing blocking.
 
 Audit sits before the line rather than on it. You reach for it when there is no
 idea to capture yet — a repository you inherited, a branch about to become a
 pull request — and it seeds the line at one of two points: a DRAFT item when
-the finding still has an open product question, or a `plans/<slug>/` package
-directly when it does not (the dotted edge).
+the finding still has an open product question, or a `roadmap/<slug>/plan/`
+package directly when it does not (the dotted edge).
+
+## One item, one folder
+
+Everything about an item lives under `roadmap/<slug>/` — the item itself, the
+plan package, every verification round, the goal handoff. There is no parallel
+tree to keep in step:
+
+```text
+roadmap/<slug>/
+  README.md              the item — intent, decisions, status        writable
+  plan/
+    README.md            manifest: one row per plan, with status      writable
+    001-<name>.md ...    zero-context plans                           FROZEN
+    spec/                requirements, screen contracts, must-nots    FROZEN
+    coverage.md          the traceability ledger                      FROZEN
+  verification/
+    NN-feedback.md       what the user reported, verbatim             writable
+    NN-report.md         what execution proved                        writable
+  goal/
+    START.md             the kickoff prompt an executor is handed     FROZEN
+    RESUME.md            the resume prompt                            FROZEN
+    check.sh             the machine gate                             FROZEN
+```
+
+**Frozen means fingerprinted.** `goal/check.sh` hashes every FROZEN file and
+returns `BLOCKED plan-drift` when one changes, so the contract an executor was
+handed cannot be edited to match what shipped. Everything the loop must move —
+the item, the manifest's status rows, each verification round — sits outside
+that hash by design. Re-planning is how a frozen file changes; editing it is
+not.
+
+**One item, one branch, one pull request.** `tailrocks-idea` opens
+`roadmap/<slug>` and its draft PR at capture, and every later skill commits
+into that same lane under a `Tailrocks-Skill` trailer naming it. No artifact
+carries a history section: the commit series is the history.
 
 ## Status is the contract
 
@@ -45,14 +90,19 @@ and exactly one skill may set each value.
 | `DRAFT` | Raw capture, nothing shaped | `tailrocks-idea` |
 | `SHAPING` | Being shaped; open questions remain | `tailrocks-brainstorm`, `tailrocks-research`, `tailrocks-record-decision` |
 | `READY` | No open decision-type questions; fit for planning | `tailrocks-finalize`, and nothing else |
-| `PLANNED` | `plans/<slug>/` exists with a `GOAL.md` | `tailrocks-plan` |
-| `IN EXECUTION` | An executor started the plans | the executor protocol |
-| `DONE` | Every plan row done and the goal condition met | the executor protocol |
+| `PLANNED` | `roadmap/<slug>/plan/` and `goal/` exist | `tailrocks-plan` |
+| `IN EXECUTION` | An executor started the plans | the executor protocol, and `tailrocks-reconcile` when truing up |
+| `DONE` | Every plan row terminal, the goal condition met, **and the last verification round found no blocking defect** | `tailrocks-reconcile`, and nothing else |
 | `PARKED (reason; was: STATUS)` | Deliberately paused | you, through `tailrocks-record-decision` |
 
 The single most useful rule in the whole pipeline: **only finalize grants
 READY, and plan requires READY.** That one gate is what stops an agent
 implementing a feature whose behavior nobody has decided yet.
+
+The rule at the other end is its mirror: **`DONE` is never claimed from plan
+rows.** An executor that finished every row reports a `TAILROCKS GOAL: PASS`
+and stops; it is `tailrocks-reconcile`, reading a verification round that found
+no blocking defect, that writes the status.
 
 Its companion covers the interface: **plan requires a blessed design
 reference for every screen with a visual surface**, produced in the
@@ -63,14 +113,16 @@ decided, pixels undecided is the other way an implementer ends up guessing.
 
 | Skill | Owns | Refuses | Writes |
 |---|---|---|---|
-| [`tailrocks-audit`](/docs/skills/tailrocks-audit) | Cold start | Editing source; reporting an unverified finding | DRAFT items pre-filled with evidence, or `plans/<slug>/` directly |
+| [`tailrocks-audit`](/docs/skills/tailrocks-audit) | Cold start | Editing source; reporting an unverified finding | DRAFT items pre-filled with evidence, or `roadmap/<slug>/plan/` directly |
 | [`tailrocks-idea`](/docs/skills/tailrocks-idea) | Capture | Interviewing, researching, planning | `roadmap/<slug>/README.md` in DRAFT, index row |
 | [`tailrocks-brainstorm`](/docs/skills/tailrocks-brainstorm) | Expansion | Granting READY; running without a human | Decisions, Vocabulary, Screens, Flows, Must-not |
 | [`tailrocks-research`](/docs/skills/tailrocks-research) | Facts | Deciding anything; questions one lookup answers | `research/<topic>/`, reusable and indexed |
 | [`tailrocks-record-decision`](/docs/skills/tailrocks-record-decision) | One decision | Deciding on your behalf | The dated decision, plus everything it invalidates |
 | [`tailrocks-finalize`](/docs/skills/tailrocks-finalize) | Readiness | Shaping a raw DRAFT; running without a human | READY, or a list of what still blocks it |
-| [`tailrocks-plan`](/docs/skills/tailrocks-plan) | Packaging | Implementing; planning an unshaped item | `plans/<slug>/` — ledger, spec, slices, `GOAL.md` |
-| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | Truth | Writing or refreshing plans | Evidence-backed statuses, nothing else |
+| [`tailrocks-plan`](/docs/skills/tailrocks-plan) | Packaging | Implementing; planning an unshaped item | `roadmap/<slug>/plan/` and `goal/` — ledger, spec, slices, START/RESUME, `check.sh` |
+| [`tailrocks-record-feedback`](/docs/skills/tailrocks-record-feedback) | Capture of what shipped wrong | Judging, investigating, or fixing a report | `verification/NN-feedback.md` — the user's words, one statement per defect |
+| [`tailrocks-prove`](/docs/skills/tailrocks-prove) | Execution as evidence | Writing status; fixing what it finds | `verification/NN-report.md` — a verdict per statement and per plan row |
+| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | Truth | Writing or refreshing plans | Evidence-backed statuses, the item's Remaining, nothing else |
 
 ### Find the work before there is a backlog
 
@@ -95,7 +147,7 @@ ships.
 
 Two modes sit outside the fan-out. `ask <question>` runs recon plus one targeted
 investigation under the same citation discipline, and answers rather than
-forcing an artifact. `execute <slug>` hands a `plans/<slug>/` package — from a
+forcing an artifact. `execute <slug>` hands a `roadmap/<slug>/plan/` package — from a
 PLANNED item, or seeded directly with no parent item — to a `bounded-executor`
 in a throwaway worktree, then reviews the diff on the `frontier-judgment` route
 against the plan's own done criteria. The plan is the product, the diff is a
@@ -142,7 +194,8 @@ Record-decision earns its place at the far end of the pipeline too. Change your
 mind about a PLANNED or DONE item and it does not merely edit a paragraph: it
 walks the item, reopens it to SHAPING, and marks every affected plan row
 `STALE` so nothing downstream is executed against an intent that no longer
-holds.
+holds. The re-plan regenerates `goal/` last and re-stamps the fingerprint — a
+frozen file is never patched into agreement.
 
 ### Earn READY, do not declare it
 
@@ -172,23 +225,82 @@ predictable. It produces:
 - **One zero-context plan per row**, each written by its own subagent and then
   read by a fresh-context reviewer who has only that plan and the repository.
   If the reviewer cannot execute it without asking a question, it is not done.
-- **`GOAL.md`** — a machine-checkable goal condition, a kickoff prompt, and a
-  resume prompt, all copy-pasteable.
+- **`goal/`** — `START.md` with the gates block, the machine-checkable goal
+  condition, and the kickoff prompt; `RESUME.md` for any interruption; and
+  `check.sh`, the gate that hashes the frozen contract, refuses a nonterminal
+  row, and refuses a gate that proved nothing.
 
 <Invoke skill="tailrocks-plan" args="session-replay with --deep" />
 
 `--deep` adds a completeness critic that reslices until a round surfaces
 nothing load-bearing. Worth it for anything you will not be watching.
 
-### Trust nothing after a stall
+### Hand the contract over, do not paste it
+
+An executor is pointed at the file rather than fed a block:
+
+```text
+/goal Follow roadmap/session-replay/goal/START.md
+```
+
+After a stall, a dead session, or a verification round that put work back on
+the board, the same move with `goal/RESUME.md`.
+
+Every line in `START.md`'s gates block is `<command> ||| <proof>`. The command
+has to exit 0 and the proof has to print how many units it executed — tests
+run, targets built, files checked. That second half exists because
+`cargo test -p typo` exits 0 having run nothing, and a gate that cannot tell
+"everything passed" from "nothing ran" is not a gate. `check.sh` returns
+`BLOCKED gate-vacuous` when a proof prints zero and `BLOCKED gate-unproven`
+when the `|||` is missing.
+
+### Find out what it is actually like to use
+
+`TAILROCKS GOAL: PASS` says the rows are terminal, the frozen contract is
+unedited, and every gate both succeeded and executed work. It says nothing
+about whether the thing is any good, so the loop does not end there.
+
+`tailrocks-record-feedback` writes down what you hit while using it, before
+anything argues with it: your words verbatim, one statement per defect
+(`U1`, `U2`, …), the reproduction as given. It does not investigate, judge, or
+fix — a report the agent has already dismissed never gets executed against, and
+"it just doesn't work" is a real datum.
+
+<Invoke skill="tailrocks-record-feedback" args="session-replay" />
+
+`tailrocks-prove` is the half that judges, and it judges by **executing**. It
+fans out subagents that launch the entry point, walk the real flows, drive the
+real interface, and compare the shipped screens against the blessed design
+reference. Every verdict cites a command that ran in this session and the
+output line that decided it; a surface it could not run is reported
+`NOT EXECUTED` with the obstacle, never as passing. It also audits the item's
+own proofs — a done criterion or gate that certified a row without exercising
+it comes back `VACUOUS`, which is usually the reason the defect shipped.
+
+<Invoke skill="tailrocks-prove" args="session-replay" />
+
+It writes no status: blocking defects route to `tailrocks-reconcile`, and any
+finding that a *skill* let the divergence through routes to
+[`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect).
+
+### Trust nothing after a stall, and close the round
 
 When a goal loop finishes, stalls, or the repository moves underneath it,
 `tailrocks-reconcile` re-runs each DONE row's own done criteria rather than
 believing the status, resets rows abandoned by dead sessions, retests BLOCKED
-reasons and `A#` assumptions, and drift-checks TODO plans against HEAD. It
-writes statuses and nothing else.
+reasons and `A#` assumptions, and drift-checks TODO plans against HEAD.
+
+It is also what closes a verification round: it prunes the rows the round
+confirmed, rewrites the item's **Remaining** — what is not done yet, as
+observable statements — from the blocking defects, and writes the status a
+round earned. A round with a blocking defect sends the item back to
+`IN EXECUTION` with that defect as the remaining work; a round with none is the
+only way to `DONE`. It writes statuses and Remaining, and nothing else.
 
 <Invoke skill="tailrocks-reconcile" args="session-replay" />
+
+Then back to execution with `goal/RESUME.md`, and around again until Remaining
+is empty.
 
 ## Where the stack skills plug in
 
@@ -228,14 +340,17 @@ pixels on the implementer's behalf.
 ### Planning
 
 `tailrocks-plan` names the stack skill each slice must be executed under, and
-its verification research produces the exact gate commands. The executor then
-invokes that skill while implementing the slice.
+its verification research produces the exact gate commands — with the proof
+expression that says how many units each one ran. The executor then invokes
+that skill while implementing the slice, and `tailrocks-prove` invokes the
+medium's verification skill afterwards to hold the shipped interface to the
+blessed reference.
 
 Two worked examples follow the whole route:
 
 - [A native macOS app](/docs/delivery/macos-app) — Rust core, SwiftUI and
-  Liquid Glass interface, six macOS skills and two Rust skills across seven
-  delivery stages.
+  Liquid Glass interface, the macOS and Rust skills across the whole delivery
+  loop.
 - [A TanStack feature with a Rust backend](/docs/delivery/tanstack-feature) —
   one feature of an existing product, TypeScript in the browser, Axum behind it.
 
@@ -250,7 +365,9 @@ Two worked examples follow the whole route:
 | An answer only you could give | `tailrocks-record-decision` |
 | A shaped item and no open questions | `tailrocks-finalize` |
 | READY, and no intention of babysitting the build | `tailrocks-plan` |
-| A loop that stopped, or a repository that moved | `tailrocks-reconcile` |
+| Something wrong with what shipped, in your own words | `tailrocks-record-feedback` |
+| A need to know whether it actually works, not whether it built | `tailrocks-prove` |
+| A loop that stopped, a repository that moved, or a round to close | `tailrocks-reconcile` |
 
 ## Common mistakes
 
@@ -260,11 +377,19 @@ Two worked examples follow the whole route:
   become assumptions. What is obvious to you is a coin flip to the executor.
 - **Hand-editing a stale plan.** Record the change through
   `tailrocks-record-decision`, then re-run `tailrocks-plan`. Editing by hand
-  leaves the ledger, the spec, and the plan disagreeing.
+  leaves the ledger, the spec, and the plan disagreeing — and `check.sh` will
+  say so, because a FROZEN file that moved is `plan-drift`.
+- **Reading `PASS` as done.** The gate proves the rows are terminal, the
+  contract is unedited, and every gate executed work. Behavior is proven by a
+  verification round, and only reconcile writes `DONE`.
+- **Filing feedback as a diagnosis.** Capture what you saw in your own words.
+  A complaint that arrives pre-explained sends the verification round after the
+  explanation instead of after the defect.
 - **Resuming an interrupted loop on trust.** Reconcile first. A row that says
   DONE after a dead session is a claim, not evidence.
 - **Treating PARKED as terminal.** It records what it was paused from
   (`was: STATUS`) and resumes explicitly through record-decision.
 - **Asking one skill to do its neighbour's job.** Brainstorm cannot grant READY,
-  research cannot decide, plan cannot implement, reconcile cannot re-plan. Each
-  refusal is load-bearing.
+  research cannot decide, plan cannot implement, record-feedback cannot judge,
+  prove cannot write a status, reconcile cannot re-plan. Each refusal is
+  load-bearing.

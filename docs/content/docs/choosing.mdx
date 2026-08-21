@@ -275,7 +275,10 @@ run `tailrocks-review-pr` once that work becomes a PR.
 
 ```mermaid
 flowchart LR
-  audit --> idea --> brainstorm --> finalize --> plan --> exec["goal execution"] --> reconcile
+  audit --> idea --> brainstorm --> finalize --> plan --> exec["/goal execution"]
+  exec --> feedback["record-feedback"] --> prove --> reconcile
+  reconcile -->|Remaining not empty| exec
+  reconcile -->|Remaining empty| done["DONE"]
   audit --> plan
   audit --> sweep["audit sweep"]
   brainstorm <--> research
@@ -290,22 +293,46 @@ flowchart LR
 | [`tailrocks-research`](/docs/skills/tailrocks-research) | A question or an item needs deep sourced research saved as a reusable topic. |
 | [`tailrocks-record-decision`](/docs/skills/tailrocks-record-decision) | One decision must be recorded and propagated, including reopening stale work. |
 | [`tailrocks-finalize`](/docs/skills/tailrocks-finalize) | Closing the interview and granting READY. |
-| [`tailrocks-plan`](/docs/skills/tailrocks-plan) | Converting a READY item into specs, coverage, zero-context plans, and `GOAL.md`. |
-| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | Execution status, blockers, drift, and DONE claims need re-verifying against the repository. |
+| [`tailrocks-plan`](/docs/skills/tailrocks-plan) | Converting a READY item into specs, coverage, zero-context plans, and the `goal/` handoff. |
+| [`tailrocks-record-feedback`](/docs/skills/tailrocks-record-feedback) | Something is wrong with what shipped and the user's own words should be on record before anyone argues with them. |
+| [`tailrocks-prove`](/docs/skills/tailrocks-prove) | Whether the shipped work behaves has to be settled by running it, not by reading its status rows. |
+| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | Execution status, blockers, drift, and DONE claims need re-verifying against the repository, or a verification round needs closing. |
 
-Artifacts live in `roadmap/<slug>/`, `research/<topic>/`, and `plans/<slug>/`.
-Research and decision recording happen whenever they are needed; only finalize
-grants READY, and plan requires READY.
-Every invocation leaves a commit marked with its skill, which is what
+One item, one folder: the item, its `plan/` package, its `verification/`
+rounds, and its `goal/` handoff all live under `roadmap/<slug>/`, with standing
+topics in `research/<topic>/`. Research and decision recording happen whenever
+they are needed; only finalize grants READY, plan requires READY, and only
+reconcile writes `DONE` — after a verification round with no blocking defect.
+Every invocation commits into the item's single branch and pull request, marked
+with its skill, which is what
 [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) reads once the item
 has shipped.
+
+### record-feedback, prove, reconcile, or retrospect
+
+Four skills act after execution and none of them overlaps.
+[`tailrocks-record-feedback`](/docs/skills/tailrocks-record-feedback)
+**captures**: the user's report, verbatim, one statement per defect, with no
+verdict attached. [`tailrocks-prove`](/docs/skills/tailrocks-prove)
+**executes and judges**: it runs the shipped work, walks the real flows,
+compares the interface against the blessed reference, and returns a verdict per
+statement — but it writes no status.
+[`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) **writes status**: it
+prunes confirmed plan rows, rewrites the item's Remaining from the blocking
+defects, and is the only skill that may set `DONE`.
+[`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) **patches skills**:
+it takes what diverged and proposes changes to the skill definitions that let
+it through, never touching the item.
+
+Capture before judging is the load-bearing order: a complaint an agent has
+already dismissed never gets executed against.
 
 Why each stage exists, what it refuses, and two features taken end to end —
 a native macOS app and a TanStack feature on a Rust backend — are covered in
 [the delivery pipeline guide](/docs/delivery).
 
 Worked examples live in the repository:
-[`examples/plan-package/`](https://github.com/tailrocks/tailrocks-skills/tree/main/examples/plan-package),
+[`examples/item-folder/`](https://github.com/tailrocks/tailrocks-skills/tree/main/examples/item-folder),
 [`examples/macos-screen/`](https://github.com/tailrocks/tailrocks-skills/tree/main/examples/macos-screen),
 and the
 [pipeline walkthrough](https://github.com/tailrocks/tailrocks-skills/blob/main/docs/design/pipeline-walkthrough.md).

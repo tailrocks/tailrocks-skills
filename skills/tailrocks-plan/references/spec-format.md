@@ -12,9 +12,9 @@ The grammar matches OpenSpec (`### Requirement:` /
 ## Layout
 
 ```
-plans/<slug>/spec/
+roadmap/<slug>/plan/spec/
   README.md           ← purpose, capability index, must-not registry,
-                        deferrals, change log
+                        entry-point registry, deferrals, change log
   <capability>.md     ← one file per capability, kebab-case
 ```
 
@@ -117,6 +117,33 @@ plans" during plan writing: every plan whose scope could tempt a violation
 inlines that must-not verbatim. An `N#` with an empty column at the final
 gate is a coverage failure.
 
+## Entry-point registry — in `spec/README.md`
+
+Every surface a user or another system can invoke from outside: a binary, a
+subcommand, a window, a route, an RPC method, a scheduled job. One `E#` each,
+carried from the ledger.
+
+```markdown
+## Entry-point registry
+
+| ID | Entry point | Kind | Created by plan | End-to-end test |
+|----|-------------|------|-----------------|-----------------|
+| E1 | `app run` | CLI subcommand | 003 | tests/cli_run.rs::runs_from_a_clean_checkout |
+```
+
+**The test column names a test that invokes the surface the way its user
+does** — spawns the binary, opens the window, issues the request — and asserts
+it reaches its first useful output. Unit coverage of the code behind the
+surface never fills that column. In one delivery 2,232 unit tests passed while
+three entry points panicked at startup, because no test ever started the
+program.
+
+The orchestrator fills "Created by plan" and "End-to-end test" during plan
+writing, from the plan that owns the surface. An `E#` with either column empty
+at the final gate is a coverage failure, exactly like an unenforced `N#`. An
+entry point discovered during slicing gets a new ID here and in the ledger, in
+the same edit.
+
 ## Deferrals — in `spec/README.md`
 
 Ledger IDs consciously not specified: reason + revisit trigger each. A
@@ -148,8 +175,10 @@ all scenarios; the log records that it changed and which plans went stale.
 
 ## Quality gate before slicing
 
-- Every `S#`, `F#`, `W#`, `N#`, `B#` resolves to a spec location or a logged
-  deferral.
+- Every `S#`, `F#`, `W#`, `N#`, `E#`, `B#` resolves to a spec location or a
+  logged deferral.
+- Every `E#` names the plan that creates the surface and the test that invokes
+  it end to end.
 - Every requirement: SHALL/MUST body, ≥1 four-hash scenario, `Covers:` and
   `Evidence:` trailers pointing at real IDs and vetted chapters.
 - Every screen contract's interactions map to requirement headings that

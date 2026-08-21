@@ -28,6 +28,11 @@ nothing about two inspectors on one job, nothing about photos, nothing about
 what "as it happens" means when a device has been in a basement for two hours.
 Those gaps are the next two stages.
 
+Capture also opens the item's lane — branch `roadmap/offline-inspection`, draft
+pull request — and every later delivery skill commits into it under a
+`Tailrocks-Skill` trailer. One item, one branch, one pull request, from capture
+through the last verification round; the commits are the item's only history.
+
 ## 2. Shape — `tailrocks-brainstorm`
 
 <Invoke skill="tailrocks-brainstorm" args="offline-inspection" />
@@ -99,7 +104,7 @@ answer.
 
 Every claim carries a primary source. The orchestrator opens each citation and
 confirms it supports the claim — misattributions get fixed, unverifiable claims
-get dropped. Topics stay in `research/`, not buried in a plan folder, because
+get dropped. Topics stay in `research/`, not buried in the item folder, because
 the next offline feature in this product will need all three.
 
 ## 4. Decide — `tailrocks-record-decision`
@@ -214,6 +219,22 @@ planning, not inside it:
 
 <Invoke skill="tailrocks-tanstack-project-setup" args="audit this app and remediate every baseline violation" />
 
+Recorded is not the same as trusted. Each gate enters `goal/START.md` as
+`<command> ||| <proof>`, where the proof prints how many units the command
+executed:
+
+```text
+bun test             ||| bun test 2>&1 | grep -Eo '[0-9]+ pass'
+cargo nextest run    ||| cargo nextest run 2>&1 | grep -Eo '[0-9]+ tests run'
+bunx playwright test ||| bunx playwright test --list 2>&1 | grep -Eo 'Total: [0-9]+'
+```
+
+`goal/check.sh` reads the number out of the proof: zero is
+`BLOCKED gate-vacuous`, and a line with no `|||` is `BLOCKED gate-unproven`.
+Brownfield is where that earns its keep. An inherited command that quietly
+matches no spec file passes forever, and the suite most likely to be doing it is
+the one whose output nobody reads.
+
 The spec carries the contract between the two languages as requirements rather
 than folklore:
 
@@ -263,19 +284,35 @@ storage assumptions are wrong, that is the cheapest possible moment to learn it.
 Each plan is written by its own subagent and read by a fresh-context reviewer
 holding only that plan and the repository.
 
+The package lands inside the item's own folder — one item, one folder, no
+parallel tree to keep in step. Everything under `plan/` but the manifest hub,
+and everything under `goal/`, is frozen: `check.sh` hashes it into the
+fingerprint the hub carries and answers `BLOCKED plan-drift` when it changes.
+The item, the manifest's status rows, and the verification rounds stay outside
+that hash, because those are what the loop has to move.
+
 ```text
-+ plans/offline-inspection/coverage.md
-+ plans/offline-inspection/spec/
-+ plans/offline-inspection/README.md
-+ plans/offline-inspection/001-*.md … 006-*.md
-+ plans/offline-inspection/GOAL.md
-~ roadmap/offline-inspection/README.md   Status: PLANNED
++ roadmap/offline-inspection/plan/coverage.md
++ roadmap/offline-inspection/plan/spec/
++ roadmap/offline-inspection/plan/README.md      manifest + executor protocol
++ roadmap/offline-inspection/plan/001-*.md … 006-*.md
++ roadmap/offline-inspection/goal/START.md       gates, goal condition, kickoff
++ roadmap/offline-inspection/goal/RESUME.md      resume prompt
++ roadmap/offline-inspection/goal/check.sh       the machine gate
+~ roadmap/offline-inspection/README.md           Status: PLANNED
 ```
 
-## 9. Execute and reconcile
+## 9. Execute
 
-Paste the goal condition and kickoff prompt from `GOAL.md`. One plan per
-iteration, every verification run, status writes committed with the work.
+```text
+/goal Follow roadmap/offline-inspection/goal/START.md
+```
+
+`START.md` carries the gates, the goal condition, and the kickoff prompt: one
+plan per iteration, every verification run, status writes committed with the
+work, and `sh roadmap/offline-inspection/goal/check.sh` on a clean tree before
+any DONE flip and again as the iteration's last act. An interrupted loop picks
+up from `goal/RESUME.md` the same way.
 
 Each slice names the stack skill it runs under, and here that alternates
 language by language. Slice 001 writes the shared model on both sides at once:
@@ -292,15 +329,89 @@ Slices 003 to 005 put the HTTP and socket surface behind Axum:
 
 <Invoke skill="tailrocks-axum-best-practices" args="implement the sync WebSocket and the resumable upload resource: typed state, ordered middleware, body limits, graceful shutdown" />
 
-Then the part this feature makes vivid. The research recorded two facts that are
-true today and load-bearing tomorrow, and the ledger carries them as `A#`
-assumptions rather than as settled truth:
+## 10. What the field found — `tailrocks-record-feedback`
+
+Two weeks of real inspections, and the reports come back as prose from two
+people who do not share a vocabulary.
+
+<Invoke skill="tailrocks-record-feedback" args="offline-inspection" />
+
+```text
++ roadmap/offline-inspection/verification/01-feedback.md
+
+  U1  "Dyer signed off the Waterside job with a fire door still in
+       conflict, and it printed a certificate."
+  U2  "The board said his tablet was in sync while eight photos still
+       said pending upload, an hour after he came up from the basement."
+```
+
+U1 contradicts a decision from section 4 outright — divergent verdicts are a
+hard conflict that blocks certificate generation — so it is either a defect or a
+misreading of what happened on site. This skill does not decide which. It
+records both statements in the reporter's own words, with the surface, the
+reproduction as given, and the build they were running, and stops there. Working
+out who is right at capture time is how a real defect gets talked out of
+existence before anything has executed it.
+
+## 11. Execute the claims — `tailrocks-prove`
+
+<Invoke skill="tailrocks-prove" args="offline-inspection with --deep" />
+
+It builds from the bound SHA and fans out one subagent per surface, driving the
+real thing: the runner in a browser with the network cut and restored, the sync
+socket, the supervisor stream, the upload resource, the sign-off gate. Every
+verdict cites a command that ran in this session and the line of output that
+decided it; a surface it could not execute is reported `NOT EXECUTED` with the
+reason, never as passing.
+
+The screens are judged twice — against the blessed design routes, the same pure
+components rendering the same fixtures, and against the Playwright baseline
+frozen in section 7. Then the round audits the item's own proofs by what they
+executed rather than by what they exited.
+
+- **U1 — CONFIRMED.** Sign-off checks the conflicts the server has ingested, and
+  the second tablet's operations were still queued when the certificate was
+  generated. The must-not is enforced against the wrong set. Blocking.
+- **U2 — WIDER.** The board's device badge reports document sync only; evidence
+  upload has no representation on it at all, so a device holding eight unsent
+  photos reads as in sync. The absent element is the defect. Blocking.
+- **The visual gate — VACUOUS.** `bunx playwright test --project=visual` has
+  been exiting 0 on zero tests since slice 002 renamed the tag it filters on.
+  Nothing has compared a shipped screen against the baseline for four slices.
+
+```text
++ roadmap/offline-inspection/verification/01-report.md   Verdict: BLOCKED
+```
+
+Every finding gets an independent pass that tries to break it before it is
+written down, and every surface reported clean gets one attempt to fail the way
+the reporter described. The round writes no status and fixes nothing — the
+evidence goes to reconcile.
+
+## 12. Reconcile — `tailrocks-reconcile`
+
+<Invoke skill="tailrocks-reconcile" args="offline-inspection" />
+
+It re-earns every DONE row by running that row's criteria now, then folds round
+01 into the item. The two confirmed defects become the item's `## Remaining` —
+sign-off blocks on conflicts that have not reached the server; the board shows
+evidence state, not only document state — the rows they broke are reopened, and
+the item returns to IN EXECUTION with the roadmap index's Remaining column
+carrying the count. The vacuous gate cannot be fixed here: gate commands live in
+the frozen `goal/START.md`, so the rows it covered go `STALE` for a
+`tailrocks-plan` re-run.
+
+Then round two — `/goal Follow roadmap/offline-inspection/goal/RESUME.md`, the
+reopened rows, feedback, prove, reconcile again. DONE arrives only from a round
+that found no blocking defect, and reconcile is the only skill that may write it.
+
+Every pass also re-tests the part this feature makes vivid. The research
+recorded two facts that are true today and load-bearing tomorrow, and the ledger
+carries them as `A#` assumptions rather than as settled truth:
 
 - the upload client library the evidence pipeline leans on is maintained;
 - no cross-browser API exists for prioritising which stored data survives
   eviction, so the storage-pressure behavior has to be a product decision.
-
-<Invoke skill="tailrocks-reconcile" args="offline-inspection" />
 
 Reconcile retests those assumptions along with everything else. If the upload
 library went unmaintained between planning and slice 004, the row goes `STALE`
@@ -323,6 +434,6 @@ storage rules, protocol maturity, library maintenance. So the weight moves to
 `tailrocks-research`, and the plan's job is to keep those findings attached to
 the work as assumptions that get retested rather than facts that quietly expire.
 
-Same seven skills, same order, completely different centre of gravity. Choosing
-where the effort goes is the judgement; the pipeline is what makes either choice
-survive contact with an agent.
+Same nine delivery skills, same order, completely different centre of gravity.
+Choosing where the effort goes is the judgement; the pipeline is what makes
+either choice survive contact with an agent.

@@ -21,8 +21,10 @@ answer lands in `roadmap/<slug>/README.md` the moment it resolves.
 
 ## Boundaries
 
-- Write only the roadmap item, its asset folder, and the roadmap index row.
-  Keep source, configuration, dependencies, and Git state unchanged.
+- Write only `roadmap/<slug>/README.md`, that folder's assets, and the item's
+  index row. Never its `plan/`, `verification/`, or `goal/` siblings — other
+  skills own them, and `goal/check.sh` fingerprints the frozen ones. Keep
+  source, configuration, dependencies, and Git state unchanged.
 - Ask one question at a time and wait; with `--batch`, one numbered frontier
   round at a time. Every question carries a recommended answer.
 - Put only decisions to the user. Facts findable in the repository, the web,
@@ -45,12 +47,13 @@ answer lands in `roadmap/<slug>/README.md` the moment it resolves.
 Artifact writes land on the item's delivery branch — `roadmap/<slug>`,
 opened with its draft PR by `tailrocks-idea`. A missing branch (item
 predates the contract, or repo law forbids branches) is handled per that
-skill's contract reference, never silently. End every invocation by
+skill's contract reference, never silently. That branch and its PR are the
+item's only lane — never open a second one. End every invocation by
 committing shaping answers written into the item — repository commit convention, subject like
 `docs(roadmap): shape <slug> — rounds N–M` — with the trailer `Tailrocks-Skill: tailrocks-brainstorm`, then
 push; update the draft PR body's status line when the item's status
-changed. One invocation, one marked commit: the trailer is what lets a
-later audit attribute each PR commit to the skill that produced it.
+changed. One invocation, one marked commit: the item keeps no log, so that
+commit and its trailer are the record that the session happened.
 
 ## Steps
 
@@ -79,9 +82,10 @@ later audit attribute each PR commit to the skill that produced it.
    **Complete when:** the frontier is empty or the user steers out — and a
    steered exit recorded every open decision in the item.
 
-4. **Close the session.** Apply the status change, Log entry, and index-row
-   update per the roadmap item format (owned by tailrocks-idea's
-   roadmap-item-format.md), summarizing what was settled and remains. Name the
+4. **Close the session.** Apply the status change and index-row update per the
+   roadmap item format (owned by tailrocks-idea's roadmap-item-format.md) —
+   the item has no Log; the close-out and the invocation's commit subject carry
+   what was settled and what remains. Name the
    next step: more research (`tailrocks-research`), targeted decisions
    (`tailrocks-record-decision`), or finalization (`tailrocks-finalize`)
    when Open questions looks thin. **Prove the exit test with fresh
@@ -97,4 +101,5 @@ later audit attribute each PR commit to the skill that produced it.
 Finish only when every user answer from the session is in the item (dated
 decisions with reasons, sharpened vocabulary, sourced facts), every question
 you invented but did not get answered is recorded open, the status and index
-row are consistent, and no file outside the item folder and index changed.
+row are consistent, and no file outside the item file, its assets, and its
+index row changed.

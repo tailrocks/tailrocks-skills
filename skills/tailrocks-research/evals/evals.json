@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Research: how to build a pure macOS application fully in Rust, not Swift — for the macos-application roadmap item.",
-      "expected_output": "Topic folder research/pure-rust-macos-ui/ with vetted chapters (platform docs, reference-project clones read outside the repo), a conclusion-dense summary with trade-offs, and bidirectional links with roadmap/macos-application/.",
+      "expected_output": "Topic folder research/pure-rust-macos-ui/ with vetted chapters (platform docs, reference-project clones read outside the repo), a conclusion-dense summary with trade-offs, and bidirectional links with roadmap/macos-application/. Commits into that item's existing roadmap/macos-application branch and pull request under the Tailrocks-Skill trailer — one item, one branch, one PR — rather than opening a second PR for the research.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
@@ -44,7 +44,7 @@
     {
       "id": 6,
       "prompt": "Research how signed macOS app updates should be shipped — this is standing knowledge, no roadmap item.",
-      "expected_output": "Standalone lane per the delivery git contract: branch research/<topic> off the base, chapters and summary committed with the Tailrocks-Skill trailer, a draft PR opened; the base branch is never pushed directly.",
+      "expected_output": "Standalone lane per the delivery git contract: branch research/<topic-slug> off the base, chapters and summary committed with the Tailrocks-Skill trailer, a draft PR opened; the base branch is never pushed directly. One subject in one lane — this is not a second lane for a roadmap item, and a later invocation that links the topic to an item keeps working whichever lane is still open.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]

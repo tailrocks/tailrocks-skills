@@ -2,8 +2,8 @@
 
 - **Status**: DRAFT
 - **Slug**: eval-magic-skill-evals
-- **Created**: 2026-08-17 · **Updated**: 2026-08-17
-- **Plan**: — (plans/eval-magic-skill-evals/ once planned)
+- **Created**: 2026-08-17
+- **Plan**: — (`plan/` once planned) · **Verified**: — (`verification/` once run)
 
 ## Intent
 
@@ -88,6 +88,4 @@ actually shifts agent behavior.
 
 ## Deferred
 
-## Log
-
-- 2026-08-17 — tailrocks-idea — created (DRAFT).
+## Remaining

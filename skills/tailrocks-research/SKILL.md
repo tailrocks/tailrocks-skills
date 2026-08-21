@@ -29,8 +29,8 @@ Two invocation shapes:
 
 - Write only under `research/` (topic folders and the index), plus — when a
   roadmap item is linked — that item's Research section, Open research
-  questions, status, and Log. Keep source, configuration, dependencies, and
-  Git state unchanged.
+  questions, and status. No artifact carries a log; the commit series is the
+  history. Keep source, configuration, dependencies, and Git state unchanged.
 - Clone reference projects outside the repository into a disposable
   directory; read-only; cite `file:line` plus repository URL and commit.
 - Every claim carries a source: URL to a primary source for web claims,
@@ -48,17 +48,20 @@ Two invocation shapes:
 
 ## Delivery git contract
 
-Artifact writes land on the item's delivery branch — `roadmap/<slug>`,
-opened with its draft PR by `tailrocks-idea`. A missing branch (item
-predates the contract, or repo law forbids branches) is handled per that
-skill's contract reference, never silently. A question invocation with
-no linked item opens its own lane per that reference: branch
-`research/<topic>` off the base, draft PR, same rules. End every invocation by
-committing the topic's chapters and README — repository commit convention, subject like
-`docs(research): <topic> — chapters NN–NN` — with the trailer `Tailrocks-Skill: tailrocks-research`, then
-push; update the draft PR body's status line when the item's status
-changed. One invocation, one marked commit: the trailer is what lets a
-later audit attribute each PR commit to the skill that produced it.
+One item, one branch, one pull request. Artifact writes land on the item's
+existing delivery branch — `roadmap/<slug>`, opened with its draft PR by
+`tailrocks-idea` — never in a second PR of this skill's own. A missing
+branch (item predates the contract, or repo law forbids branches) is
+handled per that skill's contract reference, never silently. A question
+invocation with no linked item opens its own lane per that reference:
+branch `research/<topic-slug>` off the base, draft PR, same rules — one
+subject in one lane, not a second lane for an item. End every invocation by
+committing the topic's chapters and README — repository commit convention,
+subject like `docs(research): <topic> — chapters NN–NN` — with the trailer
+`Tailrocks-Skill: tailrocks-research`, then push; update the draft PR body's
+status line when the item's status changed. One invocation, one marked
+commit: the trailer is what lets a later audit attribute each PR commit to
+the skill that produced it.
 
 ## Steps
 
@@ -104,11 +107,12 @@ later audit attribute each PR commit to the skill that produced it.
    the index if absent). For each linked roadmap item: add the topic to its
    Research section with one line on what it informs, strike answered
    entries from Open research questions, add surfaced decision-type
-   questions to Open questions. Apply the status change, Log entry, and
-   index-row update per the roadmap item format (owned by tailrocks-idea's
-   roadmap-item-format.md).
+   questions to Open questions. Apply the status change and index-row
+   update per the roadmap item format (owned by tailrocks-idea's
+   roadmap-item-format.md); the commit records what changed, no item
+   section does.
    **Complete when:** every link is bidirectional and every touched item's
-   status, Log, and index row are consistent.
+   status and index row are consistent.
 
 ## Final gate
 

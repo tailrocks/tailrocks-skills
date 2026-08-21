@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Idea: I want to start developing a macOS application for our current CLI/TUI application.",
-      "expected_output": "roadmap/macos-application/README.md created in DRAFT from the template, user's words preserved, empty sections left visibly empty, index row added, next step named.",
+      "expected_output": "roadmap/macos-application/README.md created in DRAFT from the template, user's words preserved, empty sections left visibly empty, no Log or history section written, index row added, the roadmap/macos-application branch opened with one marked commit and a draft PR — the item's single lane — and the next step named.",
       "files": []
     },
     {
