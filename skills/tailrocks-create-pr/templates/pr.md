@@ -49,6 +49,8 @@ High blast radius — explicit confirm before merge — when the diff touches:
   user-visible.
 - `Delivery-artifact check: off — <reason>` here switches off the
   roadmap-consistency gate; omit the line to keep it on.
+- `Documentation gate: off — <reason>` here switches off the
+  tailrocks-document coverage gate; omit the line to keep it on.
 
 ## Merge
 

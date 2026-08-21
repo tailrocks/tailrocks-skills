@@ -1,7 +1,7 @@
 ---
 name: tailrocks-merge-pr
 description: >-
-  Use only when the user explicitly requests this skill. Merge a pull request fail-closed in any repository: CI gate, blast-radius confirm, metadata reconcile, repo-selected merge method, the repo's pre-merge worklist from .tailrocks/pr.md. Do not use to open or iterate a PR.
+  Use only when the user explicitly requests this skill. Merge a pull request fail-closed in any repository: CI and documentation gates, blast-radius confirm, metadata reconcile, repo-selected merge method, the repo's pre-merge worklist from .tailrocks/pr.md. Do not use to open or iterate a PR.
 argument-hint: "[PR] [--no-poll] [--admin <check>]"
 disable-model-invocation: true
 license: Apache-2.0
@@ -84,8 +84,22 @@ settings, and this skill's defaults govern.
    in a repository with no `roadmap/`. A repository switches it off like any
    other worklist item — a `Delivery-artifact check: off — <reason>` line
    under `## Before merge` in `.tailrocks/pr.md`.
-   **Complete when:** every listed item is done and pushed, and either the
-   diff leaves `roadmap/` untouched or no delivery contradiction stands.
+   **Documentation gate.** Fires on every pull request. Find the commits
+   since the merge base that change doc-worthy surface — observable
+   behavior: source, configuration, dependencies, public contracts. Not
+   doc-worthy: tests-only, CI, chores, docs-only commits, and `roadmap/`
+   artifacts the delivery check owns. None found → pass and say why. Any
+   found → the newest one must be followed by a `Tailrocks-Skill:
+   tailrocks-document` commit covering HEAD; a documentation commit that
+   later behavior commits supersede is stale and does not count. Missing
+   or stale → STOP and route to `tailrocks-document`, which commits into
+   this same branch; re-run the gate after. The repository's own verdict
+   also counts when the worklist names it. Switch-off mirrors the delivery
+   check: a `Documentation gate: off — <reason>` line under
+   `## Before merge`.
+   **Complete when:** every listed item is done and pushed, either the
+   diff leaves `roadmap/` untouched or no delivery contradiction stands,
+   and the documentation gate passes.
 
 5. **Reconcile metadata.** Title and body must match the final diff — a
    squash writes the title verbatim into history. Stale → fix via
@@ -110,5 +124,6 @@ settings, and this skill's defaults govern.
 
 Finish only when the merge happened with every required check green or an
 explicitly confirmed named bypass, the pre-merge worklist is done, no delivery
-contradiction stands in a diff that touches `roadmap/`, and the merged title
-and body match the final diff.
+contradiction stands in a diff that touches `roadmap/`, the documentation gate
+passed (trailer commit covering HEAD, or nothing doc-worthy and said so), and
+the merged title and body match the final diff.

@@ -44,7 +44,7 @@ listed here is still binding prose for the stage it names.
 | `## Body` | create, refresh | Template path when nonstandard; a generator command whose stdout is the body skeleton; required sections; how-to-verify policy. |
 | `## Checks` | create, merge | Local gates to run before opening; checks that must be green beyond GitHub's required set. |
 | `## Blast radius` | merge | Path patterns or change classes that force an explicit confirm before merge. |
-| `## Before merge` | merge | Repo-specific worklist at merge time: changelog entry, docs retirement, version checks. A line reading `Delivery-artifact check: off — <reason>` switches off `tailrocks-merge-pr`'s roadmap-consistency gate for this repository. |
+| `## Before merge` | merge | Repo-specific worklist at merge time: changelog entry, docs retirement, version checks. A line reading `Delivery-artifact check: off — <reason>` switches off `tailrocks-merge-pr`'s roadmap-consistency gate for this repository; `Documentation gate: off — <reason>` switches off its tailrocks-document coverage gate. |
 | `## Merge` | merge | Merge method, squash-title format, merge-commit body rules, post-merge steps. |
 
 `tailrocks-checkout-pr` needs nothing from this file.

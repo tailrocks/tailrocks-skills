@@ -4,7 +4,7 @@
 
 `tailrocks-merge-pr` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-merge-pr)
 
-Merge a pull request fail-closed in any repository: CI gate, blast-radius confirm, metadata reconcile, repo-selected merge method, the repo's pre-merge worklist from .tailrocks/pr.md. Do not use to open or iterate a PR.
+Merge a pull request fail-closed in any repository: CI and documentation gates, blast-radius confirm, metadata reconcile, repo-selected merge method, the repo's pre-merge worklist from .tailrocks/pr.md. Do not use to open or iterate a PR.
 
 ## Invocation
 
