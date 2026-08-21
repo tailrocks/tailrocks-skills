@@ -10,7 +10,7 @@
     {
       "id": 2,
       "prompt": "Add a new section to the router of our existing review skill covering how to handle generated files. Should be quick — just append it at the end.",
-      "expected_output": "Refuses the quick append: a router addition changes every behavior in the file. Checks the skill's evals.json for load-bearing lines first, prefers strengthening an existing section or placing the depth in a reference routed by when-to-read, applies the replace-not-append rule if the router is past budget, and requires re-running the skill's full eval set — not just a case about generated files.",
+      "expected_output": "Refuses the quick append: a router addition changes every behavior in the file. Checks the skill's evals.json for load-bearing lines first, prefers strengthening an existing section or placing the depth in a reference routed by when-to-read, applies the replace-not-append rule if the router is past budget, and requires updating the skill's full eval set for CI to run — not just a case about generated files — without invoking the eval harness locally.",
       "files": []
     },
     {
@@ -22,7 +22,7 @@
     {
       "id": 4,
       "prompt": "We need five small skills for the team by end of day. They're all simple, so write them in one batch and we'll test them later once people start using them.",
-      "expected_output": "Refuses the batch: no skill ships without its baseline failure observed first and a with-skill run proving the change, because an untested skill is untested code and production use is not a test plan. Proceeds one skill at a time — baseline, write, prove, wire — and states that simplicity is a rationalization, not an exemption.",
+      "expected_output": "Refuses the batch: no skill ships without its baseline failure observed first by hand and eval cases written to prove the change, because an untested skill is untested code and production use is not a test plan. Does not offer to run the eval harness locally — its execution is deferred to CI. Proceeds one skill at a time — observe, write, cover with cases, wire — and states that simplicity is a rationalization, not an exemption.",
       "files": []
     },
     {

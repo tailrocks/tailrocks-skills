@@ -5,6 +5,15 @@
 > STOP condition occurs, stop and report; do not improvise. When done, update
 > the status row for this plan in `advisor-plans/README.md`.
 >
+> **Eval-execution policy, 2026-08-21 — supersedes every `mise run evals`
+> command below.** This repository does not run the eval harness locally;
+> execution is a CI/CD concern and is not wired yet. Treat every verify row
+> naming `mise run evals` as *author the case and leave it for CI*, not as a
+> command to run. The manual baseline observation — watching an agent attempt
+> the task without the guidance — is unaffected and stays required. A plan
+> step whose only proof is a local harness run is blocked, not skipped: report
+> it and stop.
+>
 > **Drift check (run first)**: after plans 002/003 are published onto the
 > shared branch, capture `rtk proxy git rev-parse HEAD` as one literal
 > `<execution-base>` SHA. Run

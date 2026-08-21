@@ -6,6 +6,13 @@
 > executor leaves advisor status unchanged; only the publisher marks this plan
 > `DONE` after fresh-context acceptance.
 >
+> **Eval-execution policy, 2026-08-21 — supersedes every `mise run evals`
+> command below.** This repository does not run the eval harness locally;
+> execution is a CI/CD concern and is not wired yet. Treat every verify row
+> and STOP condition naming `mise run evals` as *author the case and leave it
+> for CI*. The manual baseline observation stays required. A step whose only
+> proof is a local harness run is blocked, not skipped: report it and stop.
+>
 > **Drift check (run first)**: after all previously accepted commits are
 > published onto the shared branch, capture `rtk proxy git rev-parse HEAD` as
 > one literal `<execution-base>` SHA. Run
