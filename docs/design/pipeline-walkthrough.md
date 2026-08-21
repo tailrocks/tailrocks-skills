@@ -129,7 +129,8 @@ a screen contract that cites none.
 ```
 
 Web screens take the same stage in tailrocks-web-design, macOS windows in
-tailrocks-macos-design plus the runnable tailrocks-macos-prototype. An item
+tailrocks-macos-design, whose prototype stage turns the approved design into
+the running, signed-off Liquid Glass build. An item
 whose screens have no visual surface skips it. Status stays READY.
 
 ## 7. Package with tailrocks-plan

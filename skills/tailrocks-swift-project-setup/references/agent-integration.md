@@ -53,8 +53,7 @@ explicitly invoked:
 | Responsibility | Owner |
 |---|---|
 | Framework correctness | `tailrocks-swift-best-practices` |
-| Material policy | `tailrocks-liquid-glass` |
-| Visual direction and acceptance rubric | `tailrocks-macos-design` |
+| Material policy, visual direction, and acceptance rubric | `tailrocks-macos-design` |
 | Rendering and verification | `tailrocks-macos-visual-qa` |
 | Project mechanics | `tailrocks-swift-project-setup` |
 README's family ownership table is canonical.

@@ -188,7 +188,7 @@ Its lanes are addressable one at a time — `security`, `perf`, `ux`, `tui`,
 mode, so it composes with any of them. The taste lanes carry no taste of their
 own: `ux` judges against `tailrocks-web-design`'s blessed screens, `tui`
 against `tailrocks-tui-design`'s golden frames, and `liquid-glass` against
-`tailrocks-liquid-glass`'s acceptance gate. Blessing-dependent checks skip
+`tailrocks-macos-design`'s acceptance gate. Blessing-dependent checks skip
 where nothing is blessed; objective defects still run wherever that interface
 ships.
 
@@ -397,13 +397,14 @@ One skill per medium, one owner per stage:
 |---|---|---|---|
 | Terminal (Rust, ratatui) | `tailrocks-tui-design` | `tailrocks-tui-design` | `tailrocks-tui-design` — the golden test |
 | Web (TanStack, shadcn/ui) | `tailrocks-web-design` | `tailrocks-web-design` | `tailrocks-web-visual-qa` |
-| macOS (Swift, Liquid Glass) | `tailrocks-macos-design` | `tailrocks-macos-prototype` — on the running app | `tailrocks-macos-visual-qa` |
+| macOS (Swift, Liquid Glass) | `tailrocks-macos-design` | `tailrocks-macos-design` — on the running prototype | `tailrocks-macos-visual-qa` |
 
 **Design** authors the reference on the real substrate from fixtures. **Bless**
 is the user's recorded sign-off; an agent never blesses its own output.
 **Freeze** takes the mechanical baseline. **Audit** checks an implementation
-against the blessed reference. `tailrocks-liquid-glass` owns no stage — it is
-the material authority the macOS skills consult while building.
+against the blessed reference. On macOS the Liquid Glass material authority
+lives inside `tailrocks-macos-design` — it is the rulebook the design and
+prototype stages consult, not a stage of its own.
 
 An item whose screens have no visual surface skips the stage and goes straight
 to planning. An item that skips it with screens that do have one stops at

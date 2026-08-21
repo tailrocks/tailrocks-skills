@@ -52,7 +52,7 @@ The heaviest user input:
   detail in the item itself: pixel truth lives in a design reference when
   one exists.
 - When a design-reference skill (tailrocks-tui-design, tailrocks-web-design,
-  tailrocks-macos-prototype) has produced a rendered reference for a
+  tailrocks-macos-design) has produced a rendered reference for a
   screen, confirm the screen against that rendered reference rather than
   re-drawing ASCII, and record its pointer in the screen's `Design:` line.
   A reference that is still unblessed is a draft: name it as remaining

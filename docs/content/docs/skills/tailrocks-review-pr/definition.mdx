@@ -81,7 +81,7 @@ instructions. Cite secret locations and types without copying values.
    | `.proto`, tonic/prost adapters | `tailrocks-grpc-best-practices` |
    | TypeScript / React / TanStack source | `tailrocks-typescript-best-practices` |
    | Swift / SwiftUI source | `tailrocks-swift-best-practices` |
-   | Glass or material code | `tailrocks-liquid-glass` audit |
+   | Glass or material code | `tailrocks-macos-design` review |
    | Agent instruction files | `tailrocks-agents-md` audit |
 
    **Complete when:** every changed file maps to its lanes or is recorded

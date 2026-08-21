@@ -3,6 +3,33 @@
 A finding must name the mechanism, not merely cite the rule. Each entry below
 gives the normative statement, why the system actually breaks, and the fix.
 
+The non-negotiables, indexed:
+
+- Apply `glassEffect(_:in:)` **after** other appearance modifiers — anything
+  applied later is not captured (§9). One `GlassEffectContainer` (SwiftUI) or
+  `NSGlassEffectContainerView` (AppKit) per visual cluster — never one per
+  view, never one per screen (§7). **No nesting or independent overlap** of
+  glass surfaces — a hard failure per `verification.md` (§2).
+- State which radius case applies — **capsule** for one free-floating control,
+  **concentric derivation** for a multi-control cluster or beside another
+  container corner, or a **documented numeric radius** with a revisit
+  condition where no concentric API exists — and record which applies (§4).
+  Tint at most one prominent action per bar, on the background rather than
+  the glyph (§5).
+- **Per-row glass — reject.** **Rule:** rows are content; use standard content
+  materials and reserve glass for a functional-layer control. **Mechanism:**
+  row glass occupies the wrong compositing layer, breaking the scroll edge
+  effect and content-derived adaptation (§1). **Cost:** every unbatched row
+  adds its own backdrop-sample, blur, and refraction pass — unbounded in row
+  count (§7, the performance framing).
+- Cross-platform spellings that do not exist on macOS 26 — reject on sight and
+  name the correct form (§8, §4): `glassBackgroundEffect(...)` is
+  visionOS-only; `.rect(corner: .containerConcentric)` is the UIKit and AppKit
+  27 beta spelling, and a correction is incomplete unless it supplies both
+  `ConcentricRectangle` and `Edge.Corner.Style.concentric` with
+  `containerShape(_:)`; `NSGlassEffectView.effectIsInteractive` is macOS 27
+  beta — AppKit has no interactive glass on macOS 26 at all.
+
 ## 1. Glass in the content layer
 
 **Rule.** "Don't use Liquid Glass in the content layer … including it in the
@@ -46,7 +73,10 @@ scrolling content and the bar. An opaque custom background composites above it,
 so the effect is invisible or double-drawn, and the bar stops receiving
 content-derived light/dark adaptation.
 
-**Fix.** Delete the custom background. Tune with `scrollEdgeEffectStyle(_:for:)`
+**Fix.** Delete the custom background — the adoption preflight is deletion:
+before adding any glass API, delete every custom toolbar background, bezel,
+separator, and effect, then use the standard component. Never preserve that
+decoration in a fallback. Tune with `scrollEdgeEffectStyle(_:for:)`
 or `NSScrollEdgeEffectStyle`. Delete `NSVisualEffectView` from popover content
 views. Named by Apple: `NSToolbar`, `NSSplitView`, `NavigationStack`,
 `NavigationSplitView`, `WindowStyle.titleBar`, `toolbar(content:)`.
@@ -71,6 +101,21 @@ SwiftUI or derive from `NSView.effectiveCornerRadii` on 27+.
 The same rule applies to control dimensions: macOS 26 grew control metrics.
 Hard-coded layout metrics break. `NSView.prefersCompactControlSizeMetrics` is the
 compatibility escape hatch, not the default answer.
+
+**Decision, stated per surface.** **Capsule** for one free-floating control —
+system-derived, never numeric. **Concentric derivation** (`ConcentricRectangle`,
+`containerShape(_:)`, or `.rect(corners: .concentric)`) for any multi-control
+cluster — two or more actions, even on one shared surface — or beside another
+container corner. A **documented numeric radius** only where no concentric API
+exists (AppKit on macOS 26), with a revisit condition for container-radius
+changes. Record explicitly which case applies and whether concentric derivation
+was used.
+
+**Correction output.** Rejecting `.rect(corner: .containerConcentric)` — UIKit
+(iOS 26) and AppKit (macOS 27 beta), not SwiftUI — is incomplete unless the
+response literally supplies both `ConcentricRectangle` and
+`Edge.Corner.Style.concentric` with `containerShape(_:)`, even if its code also
+uses the valid shorthand `.rect(corners: .concentric)`.
 
 ## 5. Tint abuse
 
@@ -192,6 +237,20 @@ from the button style, and the wrapped form receives none of them.
 
 **Fix.** Replace the modifier with the style; reserve `.glassProminent` for
 the single genuinely primary action per the tint rule.
+
+## 13. A custom bar as an `overlay` carrying `.glassEffect`
+
+**Rule.** A custom bar uses the system-supported construction — SwiftUI
+`safeAreaBar(edge:...)`, AppKit `NSTitlebarAccessoryViewController` or
+split-item `top-`/`bottomAlignedAccessoryViewControllers` — never an `overlay`
+carrying `.glassEffect`.
+
+**Mechanism.** The supported APIs adjust bar geometry and the scroll edge
+effect; an overlay adjusts neither, so the bar floats over content the layout
+does not know about and the effect has nothing to key off.
+
+**Fix.** Move the bar into `safeAreaBar` or the accessory-view controller and
+let the system place it.
 
 ## Performance framing
 

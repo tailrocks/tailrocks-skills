@@ -100,8 +100,8 @@ Rules for changing a `SKILL.md`:
   surfaces only sometimes — which reads as a flaky eval rather than as the
   prose defect it is.
 
-  The case: the content-layer *mechanism* argument sat mid-paragraph in
-  `tailrocks-liquid-glass`, while layer classification and render-pass cost each
+  The case: the content-layer *mechanism* argument sat mid-paragraph in the
+  macOS glass-material router, while layer classification and render-pass cost each
   had dedicated bullets. Subjects reliably produced the well-signposted two and
   intermittently omitted the third, even though its eval case demanded it
   specifically. Promoting rule / mechanism / exception to named bullets — with

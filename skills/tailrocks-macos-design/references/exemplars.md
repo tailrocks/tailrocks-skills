@@ -255,7 +255,7 @@ the shape of a good Liquid Glass decision.
 Glass that is invisible at rest and appears only under direct manipulation. This
 is how a chart or a scrubber can be tactile without becoming decoration — and it
 sidesteps the content-layer prohibition, because at rest there is no material.
-The owning implementation rule is in `tailrocks-liquid-glass`.
+The owning implementation rule lives with the material authority (`swiftui-api.md`).
 
 **On what actually improved, which was not the glass:**
 

@@ -85,9 +85,11 @@ do-not-use clause; everything else is the router's job. This cut the collection
 from 10,141 to 6,875 characters, roughly 2.7k to 1.8k tokens for the clients
 that load them.
 
-**Routers stay under ~200 lines**, already enforced as a notice. Two exceed it
-today: `tailrocks-macos-design` (229) and `tailrocks-liquid-glass` (199). Both
-are candidates for moving material into `references/`, which is free until read.
+**Routers stay under ~200 lines**, already enforced as a notice. One exceeds it
+today: `tailrocks-macos-design` — it merged the design, prototype, and Liquid
+Glass material routers into one file, and its size is the price of keeping one
+taste authority per platform. Its material depth lives in `references/`, which
+is free until read.
 
 ## Rejected
 
