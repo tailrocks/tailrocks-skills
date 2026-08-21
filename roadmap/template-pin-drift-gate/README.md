@@ -1,9 +1,11 @@
 # Take template pin freshness off the per-PR blocking path
 
-- **Status**: DRAFT
+- **Status**: DONE
 - **Slug**: template-pin-drift-gate
 - **Created**: 2026-08-21 · **Updated**: 2026-08-21
-- **Plan**: — (plans/template-pin-drift-gate/ once planned)
+- **Plan**: — shipped directly as #67, #68 and #69; small and mechanical
+  enough that a plan package would have documented the work rather than
+  decided anything.
 
 ## Intent
 
@@ -31,6 +33,17 @@ nothing removes it until that placement changes.
   changing.
 
 ## Decisions
+
+- 2026-08-21 — **Weekly cadence, Monday 04:43 UTC**. Because the drift that
+  caused this is measured in days, and a dependency webhook adds a delivery
+  surface to maintain for an assertion that is not urgent.
+- 2026-08-21 — **The bump pull request always waits for a human**. Because a
+  pull request opened with `GITHUB_TOKEN` does not start its own checks, so
+  an auto-merge would land a version bump nothing verified.
+- 2026-08-21 — **The refresh never writes into `version-policy.md`**.
+  Because that document carries primary release *sources*, not versions, and
+  a refresh that wrote numbers back into it would recreate the second ledger
+  it exists to forbid.
 
 ## Capabilities
 
@@ -86,22 +99,28 @@ nothing removes it until that placement changes.
 
 ## Open questions
 
-- Which cadence for the scheduled refresh — weekly, or on a dependency
-  webhook?
-- Does the bump PR land automatically when its own gates pass, or always
-  wait for a human?
-- Do other skills pin external versions on the same blocking path, or is
-  the tanstack template the only one?
-
 ## Open research questions
 
-- Does any pinned package's `latest` move often enough that a weekly
-  cadence still leaves the repository visibly stale between runs?
-
 ## Deferred
+
+- Whether other skills pin external versions on a blocking path — deferred
+  because the tanstack template was the only `--check-template` caller and
+  no other blocking gate reads a live source today. Revisit when a skill
+  adds a network call to a pull-request gate.
+- Whether a weekly cadence leaves the repository visibly stale between runs
+  — deferred until the schedule has run often enough to measure rather than
+  guess. Revisit after four scheduled runs.
 
 ## Log
 
 - 2026-08-21 — captured by hand from a recurring CI failure, not through
   `tailrocks-idea`; the item is DRAFT and unshaped, and the gaps above are
   genuinely empty rather than assumed.
+- 2026-08-21 — DONE. #67 split the assertion: pull requests run
+  `scripts/refresh-template-pins.ts --check-consistency`, offline and
+  deterministic, while the live freshness check stays on main and the
+  nightly schedule, and `.github/workflows/refresh-pins.yml` opens the bump
+  weekly. #68 fixed that workflow reporting a merged pull request as open;
+  #69 stopped its refresh writing versions into `version-policy.md`. The
+  quality bar holds: a diff touching nothing in the template can no longer
+  fail for a pin reason.
