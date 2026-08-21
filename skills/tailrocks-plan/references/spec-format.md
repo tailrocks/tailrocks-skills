@@ -89,8 +89,8 @@ user's recorded deferral, cited here as `deferred <date> — <reason>`>.
 
 **The Reference line is a gate, not a field.** The design stage runs
 between READY and planning: `tailrocks-tui-design` for a terminal screen,
-`tailrocks-web-design` for a web screen, `tailrocks-macos-design` then
-`tailrocks-macos-prototype` for a macOS window. A screen with a visual
+`tailrocks-web-design` for a web screen, `tailrocks-macos-design`
+(design, then the running prototype) for a macOS window. A screen with a visual
 surface and neither a blessed reference nor a recorded deferral stops
 planning — name the screens, name the skill, and hand the decision back.
 Planning around it converts pixel questions into implementer guesses, and

@@ -4,13 +4,15 @@
 
 `tailrocks-macos-design` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-macos-design)
 
-Design a macOS feature to Apple quality before any production code: experience brief, information architecture, native component map, alternatives, density and typography, and a scored rubric. Writes design artifacts, never source.
+Design a macOS feature and bless it as a running Liquid Glass prototype: experience brief, native component map, structural alternatives, scored rubric, fixed launch contract, live sign-off. The Liquid Glass material authority.
 
 ## Invocation
 
 This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-macos-design` …
+
+Arguments: `[design|prototype|review|systematize] <feature or screen>`
 
 ## Skill definition
 
@@ -19,20 +21,35 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 ## References
 
+- [`anti-patterns.md`](references/anti-patterns.md)
+- [`appkit-api.md`](references/appkit-api.md)
+- [`apple-patterns.md`](references/apple-patterns.md)
 - [`archetypes.md`](references/archetypes.md)
 - [`custom-component-contract.md`](references/custom-component-contract.md)
+- [`custom-renderers.md`](references/custom-renderers.md)
 - [`design-principles.md`](references/design-principles.md)
 - [`exemplars.md`](references/exemplars.md)
 - [`experience-brief.md`](references/experience-brief.md)
+- [`launch-contract.md`](references/launch-contract.md)
+- [`layer-model.md`](references/layer-model.md)
 - [`macos-craft.md`](references/macos-craft.md)
+- [`match-policy.md`](references/match-policy.md)
 - [`motion.md`](references/motion.md)
 - [`native-behavior.md`](references/native-behavior.md)
 - [`native-component-map.md`](references/native-component-map.md)
+- [`platform-baseline.md`](references/platform-baseline.md)
+- [`prototype-package.md`](references/prototype-package.md)
 - [`reference-corpus.md`](references/reference-corpus.md)
+- [`review-mode.md`](references/review-mode.md)
 - [`rubric.md`](references/rubric.md)
+- [`swiftui-api.md`](references/swiftui-api.md)
+- [`verification.md`](references/verification.md)
 
 ## Templates
 
 - [`DesignReview.md`](templates/DesignReview.md)
 - [`ExperienceBrief.md`](templates/ExperienceBrief.md)
 - [`NativeComponentMap.md`](templates/NativeComponentMap.md)
+- [`ProtoMain.swift`](templates/ProtoMain.swift)
+- [`Regions.md`](templates/Regions.md)
+- [`SIGNOFF.md`](templates/SIGNOFF.md)

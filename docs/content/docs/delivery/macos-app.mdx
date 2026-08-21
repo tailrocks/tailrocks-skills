@@ -119,13 +119,13 @@ points at them. One source per fact.
 judgement over the same screens. Two owners produce inconsistency between
 features rather than an error you can see.
 
-## 6. Prove it runs — `tailrocks-macos-prototype`
+## 6. Prove it runs — `tailrocks-macos-design`'s prototype stage
 
 The approved design is still a document, and no document is authoritative for
 Liquid Glass — the operating system is. So before finalize and plan treat these
 screens as settled, the design has to exist as something that runs.
 
-<Invoke skill="tailrocks-macos-prototype" args="log-explorer: build the prototype from the approved design and walk every scenario with me" />
+<Invoke skill="tailrocks-macos-design" args="prototype log-explorer: build the prototype from the approved design and walk every scenario with me" />
 
 It scaffolds a small SwiftPM executable beside the design artifacts, rendering
 the design's own fixture scenarios and nothing else — no parser, no index, no
@@ -208,11 +208,11 @@ The slice list is the part worth studying:
 
 | Slice | What it stands up | Executed under |
 |---|---|---|
-| — | Not a slice: the signed-off prototype and its `Regions.md`, standing before READY | `tailrocks-macos-prototype` |
+| — | Not a slice: the signed-off prototype and its `Regions.md`, standing before READY | `tailrocks-macos-design` |
 | 001 | Verification baseline: workspace, empty Rust crate, empty app target, one task runner, all gates green | `tailrocks-rust-project-setup`, `tailrocks-swift-project-setup` |
 | 002 | Tracer bullet: Rust returns a hardcoded snapshot, Swift renders it, gates still green | `tailrocks-rust-best-practices`, `tailrocks-swift-best-practices` |
 | 003 | Real parser and index behind the same snapshot type | `tailrocks-rust-best-practices` |
-| 004 | Timeline and results surface: the prototype's view layer over real snapshots, with its Liquid Glass chrome | `tailrocks-liquid-glass`, `tailrocks-swift-best-practices` |
+| 004 | Timeline and results surface: the prototype's view layer over real snapshots, with its Liquid Glass chrome | `tailrocks-macos-design`, `tailrocks-swift-best-practices` |
 | 005 | Query during index build, cancellation, error states | both language skills |
 | 006 | Rendered verification against the prototype baseline, across appearance and accessibility states | `tailrocks-macos-visual-qa` |
 
@@ -308,7 +308,7 @@ happens next — code policy and the material:
 
 <Invoke skill="tailrocks-swift-best-practices" args="implement the timeline view model: actor isolation for the snapshot poller, state ownership, and work kept out of body" />
 
-<Invoke skill="tailrocks-liquid-glass" args="audit the toolbar and sidebar chrome for layer split and availability. Do not edit." />
+<Invoke skill="tailrocks-macos-design" args="review the toolbar and sidebar chrome for layer split and availability. Do not edit." />
 
 Slice 006 proves it:
 

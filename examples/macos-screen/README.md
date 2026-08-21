@@ -14,10 +14,10 @@ Read in this order:
 6. `StateMatrix.md` and `captures/` — `tailrocks-macos-visual-qa`
 7. `DesignReview.md` — independent `tailrocks-macos-design` review
 8. `ReviewDisposition.md` — per-finding disposition and intake
-9. `prototype/` — `tailrocks-macos-prototype`
+9. `prototype/` — `tailrocks-macos-design`'s prototype stage
 
 The historical run built its scratch app by hand and discarded the source —
-the loss that `tailrocks-macos-prototype` now prevents. `prototype/` is the
+the loss that `tailrocks-macos-design`'s prototype stage now prevents. `prototype/` is the
 standardized replacement, kept as the repository's runnable Liquid Glass
 reference: a committed SwiftPM package rendering the approved design's
 fixture scenarios under the fixed `--tr-*` launch contract, with

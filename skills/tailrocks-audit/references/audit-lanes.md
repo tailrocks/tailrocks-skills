@@ -81,7 +81,7 @@ Every lane brief carries, verbatim, all six:
   in a repository with no terminal UI.
 - **Liquid Glass** — native macOS chrome and material misuse. This lane
   carries no taste of its own: its judgment source is `tailrocks-macos-design`'s
-  `review` mode rubric and `tailrocks-liquid-glass`'s acceptance gate,
+  `review` mode — the rubric and the glass acceptance gate —
   invoked directly rather than re-derived, so exactly one skill still owns
   the aesthetic call. Candidates are rubric hard-failures and gate
   violations found against shipped native screens, not fresh taste

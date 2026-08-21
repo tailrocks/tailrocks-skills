@@ -67,7 +67,7 @@ where each one is encoded; the skills are the normative text.
 - `skills/tailrocks-swift-project-setup/references/rust-core.md` —
   decision 8: layout, Cargo configuration, pins, packaging, and the CI
   gate order.
-- `skills/tailrocks-liquid-glass/references/anti-patterns.md` §12 — the
+- `skills/tailrocks-macos-design/references/anti-patterns.md` §12 — the
   one glass rule the research pass surfaced that the family had not stated
   explicitly: raw `glassEffect` on a standard button versus the native
   glass button styles.
