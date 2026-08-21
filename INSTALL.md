@@ -367,6 +367,16 @@ path instead.
 
 ## Compatibility matrix (verified August 2026)
 
+Re-verified 2026-08-21 by running the clients installed on the release
+machine: Claude Code 2.1.233 (`claude plugin marketplace update` present),
+Codex CLI 0.148.0 (`codex plugin marketplace upgrade` and `codex plugin add`
+present), OpenCode 1.18.15, and Amp `0.0.1786824065` (`amp skill add`
+present). The Grok Build, Kimi Code, and Antigravity CLI rows carry their
+documentation-verified values and were not re-run — the clients are not
+installed here, and a row nobody executed should say so rather than inherit
+a date it did not earn.
+
+
 | Client | Install channel | Manifest read | Explicit invocation | `disable-model-invocation` | Duplicate semantics |
 |---|---|---|---|---|---|
 | Claude Code | marketplace plugin | `.claude-plugin/plugin.json` | `/tailrocks-skills:<name>` | honored | plugin skills namespaced; a skills-dir copy would ALSO list |

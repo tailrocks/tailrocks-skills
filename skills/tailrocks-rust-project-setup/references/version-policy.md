@@ -5,26 +5,26 @@ release series for pre-1.0 crates. Repository `main`, nightly, alpha, beta, and 
 builds are not newer stable versions. Use a prerelease only when explicitly
 required and isolate it behind a documented upgrade trigger.
 
-## Verified 2026-07-12
+## Verified 2026-08-21
 
 | Component | Current stable | Primary source |
 |---|---:|---|
-| Rust | 1.97.0 | <https://forge.rust-lang.org/> |
+| Rust | 1.98.0 | <https://forge.rust-lang.org/> |
 | Axum | 0.8.9 | <https://docs.rs/axum/latest/axum/> |
-| Tokio | 1.52.3 | <https://crates.io/crates/tokio> |
+| Tokio | 1.53.1 | <https://crates.io/crates/tokio> |
 | Tower | 0.5.3 | <https://crates.io/crates/tower> |
 | tower-http | 0.7.0 | <https://crates.io/crates/tower-http> |
-| cargo-nextest | 0.9.140 | <https://crates.io/crates/cargo-nextest> |
+| cargo-nextest | 0.9.143 | <https://crates.io/crates/cargo-nextest> |
 | cargo-deny | 0.20.2 | <https://crates.io/crates/cargo-deny> |
 | cargo-audit | 0.22.2 | <https://crates.io/crates/cargo-audit> |
-| cargo-shear | 1.13.1 | <https://crates.io/crates/cargo-shear> |
+| cargo-shear | 1.13.4 | <https://crates.io/crates/cargo-shear> |
 | cargo-hack | 0.6.45 | <https://crates.io/crates/cargo-hack> |
-| cargo-llvm-cov | 0.8.7 | <https://crates.io/crates/cargo-llvm-cov> |
-| cargo-semver-checks | 0.48.0 | <https://crates.io/crates/cargo-semver-checks> |
+| cargo-llvm-cov | 0.9.0 | <https://crates.io/crates/cargo-llvm-cov> |
+| cargo-semver-checks | 0.50.0 | <https://crates.io/crates/cargo-semver-checks> |
 | cargo-vet | 0.10.2 | <https://crates.io/crates/cargo-vet> |
 | cargo-mutants | 27.1.0 | <https://crates.io/crates/cargo-mutants> |
 | cargo-careful | 0.4.10 | <https://crates.io/crates/cargo-careful> |
-| cargo-dylint / dylint-link | 6.0.1 | <https://github.com/trailofbits/dylint> |
+| cargo-dylint / dylint-link | 6.0.4 | <https://github.com/trailofbits/dylint> |
 
 ## Freshness gate
 
