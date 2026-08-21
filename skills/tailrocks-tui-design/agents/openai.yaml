@@ -1,5 +1,5 @@
 interface:
-  display_name: "TUI Design"
+  display_name: "Tailrocks: TUI Design"
   short_description: "Design terminal UI screens as blessed ratatui golden frames"
   default_prompt: "Use $tailrocks-tui-design to design this feature's terminal screens: collect states and fixtures, render them through the gallery crate, iterate to a user blessing, and freeze the golden frames and manifest."
 policy:

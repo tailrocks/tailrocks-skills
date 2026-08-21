@@ -55,18 +55,6 @@ export function applyPins(template: string, latest: Latest): string {
   return out;
 }
 
-/** Rewrites the policy table's rows and the date it claims to be verified on. */
-export function applyPolicy(policy: string, latest: Latest, verifiedOn: string): string {
-  let out = policy.replace(/^## Verified \d{4}-\d{2}-\d{2}$/m, `## Verified ${verifiedOn}`);
-  for (const [label, name] of POLICY_ROWS) {
-    const version = latest.get(name);
-    if (version === undefined) continue;
-    const key = label.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
-    out = out.replace(new RegExp(String.raw`^\| ${key} \| [^|]+ \|`, "m"), `| ${label} | ${version} |`);
-  }
-  return out;
-}
-
 /**
  * Keeps the repository on the same bun it tells a scaffolded project to use.
  * A template-only bump leaves the gates running on one runtime while the
@@ -120,6 +108,13 @@ export function consistencyMismatches(template: string, policy: string): Mismatc
     // A document that carries no version table is not disagreeing with one.
     if (row === null) continue;
     const documented = row[1].trim();
+    // Nor is a document whose table carries something other than a version.
+    // The policy's own rule is that `templates/package.json` is the only exact
+    // pin source and versions are never copied into prose, so its table lists
+    // primary release *sources* under the same component labels. A source URL
+    // is not a competing pin, and reading one as a version reports every row
+    // as a mismatch.
+    if (!/^\d+(?:\.\d+)*(?:-[\w.]+)?$/.test(documented)) continue;
     if (documented !== pinned) {
       mismatches.push({ label, package: name, policy: documented, template: pinned });
     }
@@ -172,13 +167,14 @@ if (import.meta.main) {
   }
 
   const templateBefore = await Bun.file(templatePath).text();
-  const policyBefore = await Bun.file(policyPath).text();
-  const verifiedOn = new Date().toISOString().slice(0, 10);
   const templateAfter = applyPins(templateBefore, latest);
-  const policyAfter = applyPolicy(policyBefore, latest, verifiedOn);
 
+  // The policy document is never rewritten. It carries primary release
+  // *sources*, not versions, because its own rule is that
+  // `templates/package.json` is the only exact pin source and versions are
+  // never copied into prose. A refresh that wrote numbers back into it would
+  // recreate the second ledger the document exists to forbid.
   if (templateAfter !== templateBefore) await Bun.write(templatePath, templateAfter);
-  if (policyAfter !== policyBefore) await Bun.write(policyPath, policyAfter);
 
   const misePath = path.join(ROOT, MISE);
   const miseBefore = await Bun.file(misePath).text();
@@ -190,6 +186,6 @@ if (import.meta.main) {
   }
 
   const moved = templateAfter !== templateBefore;
-  console.log(moved ? `refreshed ${TEMPLATE} and ${POLICY}` : "pins already current");
-  console.log(`resolved ${latest.size} packages, verified ${verifiedOn}`);
+  console.log(moved ? `refreshed ${TEMPLATE}` : "pins already current");
+  console.log(`resolved ${latest.size} packages`);
 }

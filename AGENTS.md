@@ -138,10 +138,9 @@ Skill definition: `skills/tailrocks-tanstack-project-setup/SKILL.md`
 
 ### The macOS family — design to verified pixels
 
-Seven skills take a native macOS feature from an approved design through a
-runnable prototype and a design-file handoff to implementation and
-rendered, audited evidence. They exist
-because the ecosystem gap is real:
+Six skills take a native macOS feature from an approved design through a
+runnable prototype to implementation and rendered, audited evidence. They
+exist because the ecosystem gap is real:
 Apple's own exported agent skills contain no Liquid Glass skill and no macOS
 skill, and the highest-traction design-taste skills are built for the web, where
 their defaults (avoid system fonts, avoid neutral grays, avoid spring easing) are
@@ -192,18 +191,13 @@ visual QA's capture-producing `verify`.
   matrix with restore, `performAccessibilityAudit`, and pixel regression on
   captures rather than detached snapshots. Definition:
   `skills/tailrocks-macos-visual-qa/SKILL.md`
-- **tailrocks-sketch-handoff** — design file to implementable package. Sketch
-  MCP wiring, Apple's official macOS UI kit, token extraction into committed
-  code, the symbol-to-SwiftUI design map that replaces a formal design-to-code
-  binding, and approved-frame exports. Definition:
-  `skills/tailrocks-sketch-handoff/SKILL.md`
 
-Two findings shape the whole family and are worth stating up front. Apple's own
-UI kit contains **zero enabled blur effects** — Liquid Glass is baked there as
-static fill, blend-mode, and shadow recipes — so no design file is authoritative
-for the material; the operating system is. And Liquid Glass surfaces snapshot
-**fully transparent** from a detached view, so any verification of glass chrome
-must screen-capture the running app.
+Two findings shape the whole family and are worth stating up front. **No design
+file is authoritative for Liquid Glass; the operating system is** — a static
+mock can only approximate the material with fill, blend-mode, and shadow
+recipes, so the reference is a running app, never an exported artifact. And
+Liquid Glass surfaces snapshot **fully transparent** from a detached view, so
+any verification of glass chrome must screen-capture the running app.
 
 ### The design-reference family — blessed targets before implementation
 
@@ -212,6 +206,26 @@ must match. The reference is authored on the real UI substrate with fixture
 data, iterated with the user, and blessed; from then on "matches the design"
 is a mechanical check, not a review. One skill per medium, and taste never
 has two owners.
+
+**A prototype is real code on the real substrate — never a design file.**
+No skill in this repository takes a design-tool document as a design
+source, produces one as a deliverable, or treats one as the reference an
+implementation is measured against; that rules out Sketch, Figma, Penpot,
+Adobe XD, InVision, Framer, and anything else of the kind, and it rules
+out a hand-frozen HTML or image mockup standing in for the application.
+The reason is not preference. A design file is a *picture* of the design:
+it cannot run the real components, cannot render the platform's own
+material, cannot exercise a state machine, and drifts the moment the code
+moves — so "matches the design" degrades from a mechanical check back
+into an argument. The reference for a React screen is a guarded design
+route rendering the shipped component from typed fixtures; for a terminal
+screen, a golden frame the application's own view functions rendered; for
+a macOS window, a running Liquid Glass prototype whose view layer lifts
+verbatim into the app. Each is copyable into production because it
+already *is* production code. A screenshot or an exported artifact may
+illustrate a decision in a document; it is never the source of one.
+`scripts/validate-skills.ts` gates the tool names; this rule carries what
+a name list cannot.
 
 - **tailrocks-tui-design** — terminal screens for Rust ratatui applications
   as golden frames: a gallery crate renders the application's own view
@@ -247,8 +261,8 @@ Skill definition: `skills/tailrocks-code-health/SKILL.md`
 
 ### The delivery family — roadmap-driven pipeline
 
-Seven skills drive an idea from capture through autonomous execution and
-back to verified truth. Artifacts:
+Eight skills drive work from a cold repository or a captured idea through
+autonomous execution and back to verified truth. Artifacts:
 roadmap items in `roadmap/<slug>/README.md` (status machine: DRAFT → SHAPING
 → READY → PLANNED → IN EXECUTION → DONE, plus PARKED), standing research
 topics in `research/<topic>/` (independent of items, many-to-many links),
@@ -262,6 +276,19 @@ item's PR history attributes each commit to the skill that produced it
 (the contract lives in tailrocks-idea's `delivery-git-contract.md`
 reference).
 
+- **tailrocks-audit** — the cold-start entry: fan out parallel audit lanes
+  (correctness, security, performance, UX, Liquid Glass, agent
+  legibility — including whether the repository's languages and tools stay
+  inside the house stack — tests, tech debt, dependencies, DX, docs,
+  direction) over a repository or a branch diff, verify every
+  finding by re-reading its evidence, prioritize by leverage, and seed
+  either a direct `plans/<slug>/` package (small, mechanical, no open
+  product question) or a DRAFT roadmap item pre-filled with evidence. Also
+  runs the `execute` loop — a `bounded-executor` in an isolated worktree,
+  reviewed on the `frontier-judgment` route, never the reverse — and
+  `sweep`, which reconciles the backlog it seeded. Every lane and mode
+  takes `--deep`; `--batch` makes a run non-interactive. Definition:
+  `skills/tailrocks-audit/SKILL.md`
 - **tailrocks-idea** — capture a raw idea as a DRAFT item with a
   content-derived slug and an index row. Capture only; gaps stay visibly
   empty. Definition: `skills/tailrocks-idea/SKILL.md`
@@ -299,11 +326,15 @@ reference).
   stalls, or the repository moved on.
   Definition: `skills/tailrocks-reconcile/SKILL.md`
 
-All seven write only their own artifacts (`roadmap/`, `research/`,
-`plans/`) and never touch source.
+All eight write only their own artifacts (`roadmap/`, `research/`,
+`plans/`) and never touch source — `tailrocks-audit`'s `execute` mode is
+the one exception, and even there only inside a disposable worktree it
+never merges.
 After an item ships, `tailrocks-retrospect` reads that marked history back and
 turns what diverged into proposed skill patches.
-Mechanical walkthrough: `docs/design/pipeline-walkthrough.md`. The published
+Mechanical walkthrough: `docs/design/pipeline-walkthrough.md`; why the audit
+is one lane-bearing skill rather than six "improve X" skills, and how it routes
+judgment and bounded execution: `docs/design/audit-design.md`. The published
 guide — why each stage exists, what it refuses, and two features taken end to
 end (a native macOS app with a Rust core, and a TanStack feature on an Axum
 backend) — lives in `docs/content/docs/delivery/` and explains how the delivery
@@ -458,7 +489,8 @@ measurably backfires. Placement is decided before writing: gates beat
 prose, the owning `AGENTS.md` beats a skill, extending a neighbor beats
 forking a rival. Update mode protects what already works: load-bearing
 lines checked against the eval set, strengthen over append, replace past
-the router budget, full eval re-run after any router change.
+the router budget, and a router change updates that skill's eval cases so
+CI re-runs the whole set — eval execution never happens locally here.
 
 Skill definition: `skills/tailrocks-skill-author/SKILL.md`
 
@@ -562,7 +594,12 @@ for other projects.
 ## Validation
 
 Requires Bun, pinned in `mise.toml`; `mise install` provisions it. Before
-publishing changes, run the Bun-native skill and manifest validator:
+publishing changes, run the Bun-native skill and manifest validator — it
+checks every skill and manifest, and rejects three things in shipped
+skill content: code-forge URLs, design-file tool names, and model brand
+names (a skill names a capability role, never the route that fills it
+today). Each gate allows a line that names the thing in order to forbid
+it.
 
 ```sh
 bun run scripts/validate-skills.ts
@@ -575,6 +612,15 @@ Load the plugin locally in Claude Code:
 ```sh
 claude --plugin-dir .
 ```
+
+**Evals are authored here and executed in CI, never locally.** Every skill
+ships `evals/evals.json`, and keeping those cases honest is part of every
+change — but `mise run evals` needs the `claude` CLI and spends real budget,
+so no gate in this repository runs it and no instruction in this repository
+may require it. Record the expected red-before / green-after in the pull
+request and let the CI lane own execution once it lands. This does not
+weaken the observed-failure law: the red bar is watching the behavior fail
+in a session, which is a manual observation and needs no harness.
 
 ## Documentation
 
@@ -652,5 +698,8 @@ footer in the body.
 6. Re-verify the INSTALL.md matrix commands against current client versions
    and refresh its verified date.
 7. Re-verify macOS platform baselines against Apple DocC availability data and
-   `gdmf.apple.com/v2/pmv`; rerun the macOS evals and refresh verification
-   stamps. Use `examples/macos-screen/` as the rendered regression corpus.
+   `gdmf.apple.com/v2/pmv`, and refresh their verification stamps. Use
+   `examples/macos-screen/` as the rendered regression corpus. **Eval
+   execution is not a release step** — `mise run evals` is a CI/CD concern
+   in this repository, never run locally; update the affected `evals.json`
+   cases in the release change and let CI own the run.

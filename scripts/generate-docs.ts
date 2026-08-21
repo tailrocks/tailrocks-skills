@@ -219,7 +219,7 @@ function escapeAttribute(value: string): string {
 export function renderReadme(skill: Skill): string {
   return `${banner}
 
-# ${skill.title}
+# Tailrocks: ${skill.title}
 
 \`${skill.name}\` — part of [tailrocks-skills](../../README.md) · [documentation](${siteUrl}/docs/skills/${skill.name})
 
@@ -248,7 +248,7 @@ function beyondSummary(skill: Skill): string {
 export function renderSkillOverview(skill: Skill): string {
   const base = `${repoBlob}/skills/${skill.name}`;
   return `---
-title: ${skill.title}
+title: ${JSON.stringify(`Tailrocks: ${skill.title}`)}
 description: ${JSON.stringify(skill.summary)}
 ---
 
@@ -272,7 +272,7 @@ export function renderSkillDefinition(skill: Skill): string {
   const base = `${repoBlob}/skills/${skill.name}`;
   const body = escapeMdx(absoluteLinks(skill.body, base));
   return `---
-title: Skill definition
+title: ${JSON.stringify(`Tailrocks: ${skill.title} — Skill definition`)}
 description: ${JSON.stringify(`The instructions ${skill.name} loads, verbatim.`)}
 ---
 

@@ -111,7 +111,9 @@ Required UI tests:
 An approved custom component becomes durable product knowledge:
 
 - a reusable implementation component with a stable name,
-- a design-file component with matching name and variant names,
+- a prototype scenario rendering every variant under that same name, so the
+  next feature reads the component by running it rather than by reading a
+  picture of it,
 - an entry in the component map with its allowed and forbidden customizations,
 - preview fixtures covering every state in the contract,
 - a regression case in the visual suite.

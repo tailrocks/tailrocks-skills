@@ -1,5 +1,5 @@
 ---
-title: Skill definition
+title: "Tailrocks: Web Design — Skill definition"
 description: "The instructions tailrocks-web-design loads, verbatim."
 ---
 
@@ -43,6 +43,14 @@ its values drift from the pipeline silently, and every divergence lands on
 the implementer or gets papered over later. Never hand-freeze utility CSS,
 never hand-copy component markup into a mockup, and never spec a screen as
 class strings to reproduce.
+
+**The blessed component is the shipping component.** The design route is
+not a picture the implementer reproduces — it renders the same pure
+component the real page renders later, so the screen is *lifted*, not
+rebuilt: the real route imports it and supplies real props where the
+design route supplied fixtures. A screen reimplemented from a blessed
+route has already diverged, and every later "matches the design" check is
+someone's judgement instead of the same component running.
 
 Rationalizations that surface here, each invalid:
 
@@ -114,7 +122,8 @@ to capture during design, decline and name that boundary.
 ## Final gate
 
 Never ship a reference the application did not render. Never hand-freeze
-CSS or hand-copy component markup as a mockup. Never mark a screen blessed
+CSS or hand-copy component markup as a mockup. Never leave a blessed
+screen to be reimplemented — the real route imports the same component. Never mark a screen blessed
 without the user's recorded approval. Never capture screenshot baselines —
 that is `tailrocks-web-visual-qa`'s job, after finalization. Never write
 loaders, mutations, or server functions in design mode. Never leave a

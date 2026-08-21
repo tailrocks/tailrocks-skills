@@ -1,5 +1,5 @@
 interface:
-  display_name: "Web Visual QA"
+  display_name: "Tailrocks: Web Visual QA"
   short_description: "Freeze and regress screenshot baselines from finalized web designs"
   default_prompt: "Use $tailrocks-web-visual-qa to freeze the screenshot baseline matrix from this feature's finalized design routes — verify the blessing first — and wire the visual suite and baseline record."
 policy:

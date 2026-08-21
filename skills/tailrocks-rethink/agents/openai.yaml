@@ -1,5 +1,5 @@
 interface:
-  display_name: "Rethink"
+  display_name: "Tailrocks: Rethink"
   short_description: "Re-derive the ideal design behind a bug; breaking changes allowed"
   default_prompt: "Use $tailrocks-rethink to derive the ideal design for this problem from scratch, name the established engineering concept it applies, and make the reported failure unrepresentable — never ranking or shrinking the design by cost, effort, duration, diff size, or migration work."
 policy:

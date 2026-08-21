@@ -30,7 +30,7 @@ one shared directory:
 - **macOS (native):** `tailrocks-macos-design`, `tailrocks-macos-prototype`,
   `tailrocks-liquid-glass`,
   `tailrocks-swift-best-practices`, `tailrocks-swift-project-setup`,
-  `tailrocks-macos-visual-qa`, `tailrocks-sketch-handoff`
+  `tailrocks-macos-visual-qa`
 - **Design references:** `tailrocks-tui-design`, `tailrocks-web-design`,
   `tailrocks-web-visual-qa`
 - **Code quality:** `tailrocks-code-health`, `tailrocks-agents-md`,
@@ -39,7 +39,7 @@ one shared directory:
 - **Pull requests:** `tailrocks-create-pr`, `tailrocks-refresh-pr`,
   `tailrocks-checkout-pr`, `tailrocks-review-pr`, `tailrocks-merge-pr`,
   `tailrocks-pr-template`
-- **Delivery pipeline:** `tailrocks-idea`, `tailrocks-brainstorm`,
+- **Delivery pipeline:** `tailrocks-audit`, `tailrocks-idea`, `tailrocks-brainstorm`,
   `tailrocks-research`, `tailrocks-record-decision`, `tailrocks-finalize`,
   `tailrocks-plan`, `tailrocks-reconcile`
 
@@ -186,6 +186,9 @@ codex plugin marketplace add tailrocks/tailrocks-skills@v0.22.0
   `interface.display_name`, `interface.short_description`,
   `interface.default_prompt`, and `policy.allow_implicit_invocation: false`
   (defaults to `true`; `false` makes the skill explicit-only).
+- Canonical skill IDs and invocations remain `tailrocks-*`; Codex display
+  labels use `Tailrocks: <label>`. Validation rejects unbranded names and
+  labels.
 - Invocation: type `$` and pick `$<skill-name>`, or run `/skills`. Because
   every tailrocks skill ships `policy.allow_implicit_invocation: false`, the
   skills do not appear in the model-visible implicit skill list (verified via

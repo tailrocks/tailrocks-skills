@@ -22,8 +22,9 @@ the launch contract, and lands where that skill's regression lane keeps
 its baselines.
 ```
 
-`Design/` is the same package root the design-file handoff uses; the
-prototype sits beside those artifacts as the runnable member of the set.
+`Design/` is the package root `tailrocks-macos-design` writes its artifacts
+into; the prototype sits beside them as the runnable member of the set —
+the design documents describe the screen, the prototype is the screen.
 Scaffold the package with `tailrocks-swift-project-setup`'s baseline so
 toolchain, format, and lint gates match the repository; never build from a
 temporary directory — windows die within seconds and captures lie.

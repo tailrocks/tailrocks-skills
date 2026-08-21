@@ -37,14 +37,13 @@ contracts.
 
 ## Native macOS
 
-Seven skills take a feature from an approved design to verified pixels.
+Six skills take a feature from an approved design to verified pixels.
 
 ```mermaid
 flowchart LR
   design["macos-design"] --> proto["macos-prototype"]
-  proto --> handoff["sketch-handoff"]
-  handoff --> swift["swift-best-practices"]
-  handoff --> glass["liquid-glass"]
+  proto --> swift["swift-best-practices"]
+  proto --> glass["liquid-glass"]
   swift --> gates["swift-project-setup gates"]
   glass --> gates
   gates --> qa["macos-visual-qa"]
@@ -54,17 +53,18 @@ flowchart LR
 |---|---|
 | [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | Taste. Experience brief, information architecture, native component map, alternatives, scored review. Writes design artifacts, never source. |
 | [`tailrocks-macos-prototype`](/docs/skills/tailrocks-macos-prototype) | The runnable proof. Builds the Liquid Glass prototype from the approved design: fixed launch contract, fixture scenarios, live sign-off, region-scoped match policy. Captures nothing; visual-qa freezes the baseline after finalization. Zero taste. |
-| [`tailrocks-sketch-handoff`](/docs/skills/tailrocks-sketch-handoff) | The design file. Sketch wiring, token extraction, the symbol-to-SwiftUI map, approved exports. |
 | [`tailrocks-liquid-glass`](/docs/skills/tailrocks-liquid-glass) | The material. Content-versus-functional layer split, API surface and availability, the glass acceptance gate. |
 | [`tailrocks-swift-best-practices`](/docs/skills/tailrocks-swift-best-practices) | Code policy. Actor isolation, state ownership, view identity, AppKit interop boundaries, accessibility. |
 | [`tailrocks-swift-project-setup`](/docs/skills/tailrocks-swift-project-setup) | The baseline. Project generation, signing, format and lint gates, test wiring, Xcode agent integration. |
 | [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa) | Verification. Kill-launch-capture, window-ID capture, accessibility audits, state matrix, pixel regression. |
 
 Never run two skills that both encode aesthetic taste. Two findings shape the
-whole family: Apple's own UI kit ships **zero enabled blur effects**, so no
-design file is authoritative for Liquid Glass — the operating system is. And
-glass surfaces snapshot **fully transparent** from a detached view, so verifying
-glass chrome requires screen-capturing the running app.
+whole family. **No design file is authoritative for Liquid Glass; the operating
+system is** — a static mock can only approximate a material that keeps adapting
+to appearance, accessibility settings, and content, so the reference is a
+running app, never an exported artifact. And glass surfaces snapshot **fully
+transparent** from a detached view, so verifying glass chrome requires
+screen-capturing that running app.
 
 ## Design references
 
@@ -98,7 +98,7 @@ implementation to it afterward.
 |---|---|
 | [`tailrocks-code-health`](/docs/skills/tailrocks-code-health) | A debt class must stop growing and become a measurable, shrink-only contract. |
 | [`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) | A rule must be recorded for coding agents, or the instruction files have grown, drifted, or landed in the wrong directory. |
-| [`tailrocks-skill-author`](/docs/skills/tailrocks-skill-author) | A skill must be created, updated, or audited — with the failure baselined first and the result proven by evals. |
+| [`tailrocks-skill-author`](/docs/skills/tailrocks-skill-author) | A skill must be created, updated, or audited — with the failure observed first and eval cases written to hold it. |
 | [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) | A roadmap item has shipped and its delivery history should say which skills let it diverge from its own plan. |
 | [`tailrocks-simplify`](/docs/skills/tailrocks-simplify) | A pull request works and should carry less code, with behavior frozen. |
 | [`tailrocks-remediate`](/docs/skills/tailrocks-remediate) | A defect is proven and the system must keep its promises while being corrected. |
@@ -215,17 +215,40 @@ hard stops, and per-contribution human approval before anything outward.
 `tailrocks-create-pr` is for repositories the user works in as their own —
 invoking it authorizes the push and the PR.
 
+### audit, code-health, or review-pr
+
+[`tailrocks-audit`](/docs/skills/tailrocks-audit) is the cold-start
+entry: no idea captured yet, no PR open, just a repository or a branch
+that needs a first pass to find out what is worth doing. Selected
+findings go to the roadmap/plan pipeline, or straight to a
+`bounded-executor` when the finding is small, certain, and low-risk to
+get wrong — and to a fixer skill instead when the finding's shape says
+so: `tailrocks-remediate` when the defect class will recur,
+`tailrocks-rethink` when nothing failed but the shape keeps producing
+near-misses, `tailrocks-simplify` for redundancy inside a diff.
+[`tailrocks-code-health`](/docs/skills/tailrocks-code-health) is not a
+one-off audit — it is the standing, monotonic debt gate that keeps a
+named class from growing once it is wired into CI.
+[`tailrocks-review-pr`](/docs/skills/tailrocks-review-pr) never runs cold:
+it reviews one open PR, branch, or diff against author intent, and never
+seeds roadmap items or plans. Run `tailrocks-audit` to find work, wire
+`tailrocks-code-health` to keep a fixed debt class from regressing, and
+run `tailrocks-review-pr` once that work becomes a PR.
+
 ## Roadmap and delivery
 
 ```mermaid
 flowchart LR
-  idea --> brainstorm --> finalize --> plan --> exec["goal execution"] --> reconcile
+  audit --> idea --> brainstorm --> finalize --> plan --> exec["goal execution"] --> reconcile
+  audit --> plan
+  audit --> sweep["audit sweep"]
   brainstorm <--> research
   finalize <--> decision["record-decision"]
 ```
 
 | Skill | Reach for it when |
 |---|---|
+| [`tailrocks-audit`](/docs/skills/tailrocks-audit) | Nothing is captured yet — audit a repository or branch cold and turn findings into items or plans. |
 | [`tailrocks-idea`](/docs/skills/tailrocks-idea) | Capturing a raw idea as a DRAFT item without inventing missing detail. |
 | [`tailrocks-brainstorm`](/docs/skills/tailrocks-brainstorm) | Shaping a DRAFT or SHAPING item through a one-question-at-a-time interview. |
 | [`tailrocks-research`](/docs/skills/tailrocks-research) | A question or an item needs deep sourced research saved as a reusable topic. |

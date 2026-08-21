@@ -57,7 +57,7 @@ Focus on runtime validation, typed failure, and async ownership. Do not edit.
 Each row links to that skill's own README. Which skill to reach for when several
 could apply — family sequences, ownership boundaries, and the delivery
 pipeline — is covered in
-[choosing a skill](https://skills.tailrocks.com/docs/choosing). The seven
+[choosing a skill](https://skills.tailrocks.com/docs/choosing). The eight
 roadmap skills have their own guide with two features taken end to end:
 [the delivery pipeline](https://skills.tailrocks.com/docs/delivery).
 
@@ -92,7 +92,6 @@ Design to verified pixels; exactly one skill owns each responsibility.
 |---|---|
 | [`tailrocks-macos-design`](skills/tailrocks-macos-design/README.md) | Design a macOS feature to Apple quality before any production code: experience brief, information architecture, native component map, alternatives, density and typography, and a scored rubric. |
 | [`tailrocks-macos-prototype`](skills/tailrocks-macos-prototype/README.md) | Build the runnable Liquid Glass prototype proving an approved macOS design before implementation: standard launch contract, fixture scenarios, live sign-off, region match policy. |
-| [`tailrocks-sketch-handoff`](skills/tailrocks-sketch-handoff/README.md) | Turn a Sketch design into an implementable native macOS handoff: Sketch MCP wiring, Apple's macOS UI kit, token extraction, the symbol-to-SwiftUI design map, and approved frame exports. |
 | [`tailrocks-liquid-glass`](skills/tailrocks-liquid-glass/README.md) | Apply, audit, or remediate Apple's Liquid Glass material in a native macOS SwiftUI or AppKit app: layer split, glass APIs and availability, scroll edge effects, tint policy, and the accessibility gate. |
 | [`tailrocks-swift-best-practices`](skills/tailrocks-swift-best-practices/README.md) | Write, review, or refactor Swift and SwiftUI for macOS: strict concurrency and actor isolation, state ownership and view identity, AppKit interop boundaries, typed failure, availability guards, accessibility, and tests. |
 | [`tailrocks-swift-project-setup`](skills/tailrocks-swift-project-setup/README.md) | Scaffold, audit, or remediate a strict native macOS Swift baseline: project generation, deployment targets and SDK lanes, local signing, format and lint gates, test wiring, mise tooling, Xcode agent integration. |
@@ -116,7 +115,7 @@ Debt that shrinks, defects that stop recurring, skills that improve from field e
 |---|---|
 | [`tailrocks-code-health`](skills/tailrocks-code-health/README.md) | Establish, audit, or tighten measurable shrink-only code-health ratchets for architecture, lint, dependency, flake, defect, documentation, or verification debt. |
 | [`tailrocks-agents-md`](skills/tailrocks-agents-md/README.md) | Add, place, audit, or repair agent instruction files. |
-| [`tailrocks-skill-author`](skills/tailrocks-skill-author/README.md) | Create, update, or audit agent skills: baseline the failure first, match the guidance form to the failure type, keep routers lean and references deep, write trigger-only descriptions, prove the skill with baselined evals. |
+| [`tailrocks-skill-author`](skills/tailrocks-skill-author/README.md) | Create, update, or audit agent skills: baseline the failure first, match the guidance form to the failure type, keep routers lean and references deep, write trigger-only descriptions, write baselined eval cases. |
 | [`tailrocks-retrospect`](skills/tailrocks-retrospect/README.md) | After a roadmap item ships, rebuild which skills ran from commit trailers and the item Log, diff that against its Decisions, Must not, and spec IDs, and propose patches to the skills at fault. |
 | [`tailrocks-simplify`](skills/tailrocks-simplify/README.md) | Review a pull request or diff and remove code without changing behavior: dead paths, hand-rolled utilities the platform provides, indirection, needless branching. |
 | [`tailrocks-remediate`](skills/tailrocks-remediate/README.md) | Analyze or remediate a proven defect through correctness-first architectural redesign. |
@@ -142,6 +141,7 @@ An idea through shaping, planning, autonomous execution, and back to verified tr
 
 | Skill | What it does |
 |---|---|
+| [`tailrocks-audit`](skills/tailrocks-audit/README.md) | Cold-start audit of a repository or branch with no backlog yet: verified findings, prioritized, seeded as roadmap items or plans. |
 | [`tailrocks-idea`](skills/tailrocks-idea/README.md) | Capture a raw product or feature idea as a new DRAFT roadmap item under roadmap/<slug>/ and register it in the index. |
 | [`tailrocks-brainstorm`](skills/tailrocks-brainstorm/README.md) | Shape a DRAFT or SHAPING roadmap item through a one-question-at-a-time interview, writing every answer into the item as it resolves. |
 | [`tailrocks-research`](skills/tailrocks-research/README.md) | Run deep, sourced research into a reusable topic under research/, for a question or to extend a roadmap item, using parallel investigators. |

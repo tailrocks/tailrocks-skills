@@ -1,6 +1,6 @@
 interface:
-  display_name: "Skill Author"
+  display_name: "Tailrocks: Skill Author"
   short_description: "Create, update, or audit agent skills with baselined evals"
-  default_prompt: "Use $tailrocks-skill-author on this request: observe the baseline failure before writing anything, decide placement (skill, instruction file, gate, or nothing), match the guidance form to the failure type, keep the router lean with depth in references, and prove the result with baseline-versus-with-skill eval runs before wiring the repository."
+  default_prompt: "Use $tailrocks-skill-author on this request: observe the baseline failure before writing anything, decide placement (skill, instruction file, gate, or nothing), match the guidance form to the failure type, keep the router lean with depth in references, and write the baseline-versus-with-skill eval cases for CI before wiring the repository — never run the eval harness locally."
 policy:
   allow_implicit_invocation: false
