@@ -1,0 +1,108 @@
+Raw commit messages for the loom-sync lane, one record per commit.
+Records are separated by a line containing only ---, and each record opens with
+its SHA on the first line. This is what `git log --format=%H%n%B` gives; the
+resolved `trailer` column in history.tsv is a claim to check against it.
+
+---
+a1f0c31
+docs(roadmap): capture loom sync
+
+Tailrocks-Skill: tailrocks-idea
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+b2d4417
+docs(roadmap): shape loom sync
+
+Round 2 of the shaping interview; queue durability still open.
+
+Tailrocks-Skill: tailrocks-brainstorm
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+c3a9820
+docs(roadmap): record process isolation decision
+
+Tailrocks-Skill: tailrocks-record-decision
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+c4b1173
+docs(roadmap): record queue backing decision
+
+Tailrocks-Skill: tailrocks-record-decision
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+c5c7d05
+docs(roadmap): record retry backoff decision
+
+Tailrocks-Skill: tailrocks-record-decision
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+d6e2244
+feat(api): add workspace index cache table
+
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+d7f8391
+ci(build): split the workspace test job by crate
+
+Tailrocks-Skill: tailrocks-rust-project-setup
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+d8a4460
+refactor(api)!: move error types into a shared crate
+
+BREAKING CHANGE: crates/api no longer re-exports ApiError.
+
+Tailrocks-Skill: tailrocks-rust-project-setup
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+e9b6612
+docs(research): postgres queueing — chapters 01-03
+
+Tailrocks-Skill: tailrocks-research
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+f0c3378
+docs(research): correct the advisory-lock contention chapter
+
+Tailrocks-Skill: tailrocks-research
+
+Co-authored-by: A Reviewer <reviewer@example.invalid>
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+f1d5529
+docs(roadmap): record subscription transport decision
+
+Tailrocks-Skill: tailrocks-record-decision
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+f2e7741
+docs(roadmap): finalize loom sync — READY
+
+Tailrocks-Skill: tailrocks-finalize
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+a3f9903
+docs(plans): loom-sync package
+
+Tailrocks-Skill: tailrocks-plan
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+b4a1125
+feat(loom): sync process, queue, backoff
+
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+b5b3347
+feat(loom): publish sync state over the subscription
+
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+b6c5569
+feat(web): workspace header sync badge
+
+Signed-off-by: A Maintainer <maintainer@example.invalid>
+---
+b7d7781
+feat(api): add a per-request workspace content cache
+
+Signed-off-by: A Maintainer <maintainer@example.invalid>
