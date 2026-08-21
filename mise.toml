@@ -49,5 +49,5 @@ dir = "docs"
 run = "bun run preview"
 
 [tasks.evals]
-description = "Run one skill eval case (needs the claude CLI; spends budget)"
+description = "Skill eval runner — CI/CD concern, not yet wired; never a local step (needs the claude CLI; spends budget)"
 run = "bun scripts/run-evals.ts"
