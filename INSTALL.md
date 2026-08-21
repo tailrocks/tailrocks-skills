@@ -112,6 +112,9 @@ lists the repo root as the plugin source):
 
 ```text
 /plugin marketplace add tailrocks/tailrocks-skills
+```
+
+```text
 /plugin install tailrocks-skills@tailrocks-skills
 ```
 
@@ -119,6 +122,9 @@ Non-interactive equivalent:
 
 ```sh
 claude plugin marketplace add tailrocks/tailrocks-skills
+```
+
+```sh
 claude plugin install tailrocks-skills@tailrocks-skills
 ```
 
@@ -163,6 +169,9 @@ marketplaces, so the same self-listing marketplace works:
 
 ```sh
 codex plugin marketplace add tailrocks/tailrocks-skills
+```
+
+```sh
 codex plugin add tailrocks-skills
 ```
 
@@ -171,6 +180,9 @@ marketplace snapshot, then reinstall from it:
 
 ```sh
 codex plugin marketplace upgrade tailrocks-skills
+```
+
+```sh
 codex plugin add tailrocks-skills
 ```
 
@@ -209,7 +221,13 @@ skills), so use its own global skills directory:
 
 ```sh
 git clone --depth 1 --branch v0.25.0 https://github.com/tailrocks/tailrocks-skills.git /tmp/tailrocks-skills
+```
+
+```sh
 mkdir -p ~/.config/opencode/skills
+```
+
+```sh
 cp -R /tmp/tailrocks-skills/skills/* ~/.config/opencode/skills/
 ```
 
@@ -274,6 +292,9 @@ existed):
 
 ```text
 /plugins install https://github.com/tailrocks/tailrocks-skills
+```
+
+```text
 /plugins reload
 ```
 
@@ -307,6 +328,9 @@ local clone (the CLI installs plugins from local paths):
 
 ```sh
 git clone --depth 1 --branch v0.25.0 https://github.com/tailrocks/tailrocks-skills.git
+```
+
+```sh
 agy plugin install ./tailrocks-skills
 ```
 

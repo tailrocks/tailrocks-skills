@@ -17,30 +17,165 @@ Documentation: **<https://skills.tailrocks.com>**
 2. Explicitly name the skill in your request; skills are manual-only.
 3. Give the skill a concrete target, mode, and desired outcome.
 
-| Agent | Install latest | Upgrade to latest |
-|---|---|---|
-| Claude Code | `/plugin marketplace add tailrocks/tailrocks-skills`, then `/plugin install tailrocks-skills@tailrocks-skills` | `/plugin marketplace update tailrocks-skills` — or enable auto-update once (`/plugin` → **Marketplaces**) and it stays current on its own |
-| Codex CLI | `codex plugin marketplace add tailrocks/tailrocks-skills`, then `codex plugin add tailrocks-skills@tailrocks-skills` | `codex plugin marketplace upgrade tailrocks-skills`, then `codex plugin add tailrocks-skills@tailrocks-skills` |
-| OpenCode | Copy `skills/*` into `~/.config/opencode/skills/` | Re-copy the tree from a fresh clone or `git pull` |
-| Grok Build | Reuse the Claude plugin, or run `grok plugin install tailrocks/tailrocks-skills --trust` | `grok plugin update tailrocks-skills` |
-| Kimi Code | `/plugins install https://github.com/tailrocks/tailrocks-skills`, then `/plugins reload` | Re-run `/plugins install`, then `/plugins reload` |
-| Antigravity CLI | Clone the repository, then run `agy plugin install ./tailrocks-skills` | Re-clone, then re-run `agy plugin install ./tailrocks-skills` |
-| Amp | Reuse the installed Claude Code plugin; otherwise `amp skill add tailrocks/tailrocks-skills --global` | Inherited from Claude Code; standalone: `amp skill add tailrocks/tailrocks-skills --global --overwrite` |
+Every command below installs the latest release and can be pasted as-is.
 
-These install the latest release. Pin a tag instead when a build must be
-reproducible. See [INSTALL.md](INSTALL.md) for the full upgrade and pinning
-contract per client, duplicate prevention, and the verified compatibility
-matrix.
+### Claude Code
+
+Install (in the Claude Code session):
+
+```text
+/plugin marketplace add tailrocks/tailrocks-skills
+```
+
+```text
+/plugin install tailrocks-skills@tailrocks-skills
+```
+
+Upgrade:
+
+```text
+/plugin marketplace update tailrocks-skills
+```
+
+Or enable auto-update once (`/plugin` → **Marketplaces** → **Enable
+auto-update**) and Claude Code stays current on its own.
+
+### Codex CLI
+
+Install:
+
+```sh
+codex plugin marketplace add tailrocks/tailrocks-skills
+```
+
+```sh
+codex plugin add tailrocks-skills@tailrocks-skills
+```
+
+Upgrade:
+
+```sh
+codex plugin marketplace upgrade tailrocks-skills
+```
+
+```sh
+codex plugin add tailrocks-skills@tailrocks-skills
+```
+
+### OpenCode
+
+OpenCode has no plugin channel for skills — install by copying the tree:
+
+```sh
+git clone --depth 1 https://github.com/tailrocks/tailrocks-skills.git /tmp/tailrocks-skills
+```
+
+```sh
+mkdir -p ~/.config/opencode/skills
+```
+
+```sh
+cp -R /tmp/tailrocks-skills/skills/* ~/.config/opencode/skills/
+```
+
+Upgrade: re-run the same three commands.
+
+### Grok Build
+
+Install (skip when Claude Code already has the plugin — Grok ingests it):
+
+```sh
+grok plugin install tailrocks/tailrocks-skills --trust
+```
+
+Upgrade:
+
+```sh
+grok plugin update tailrocks-skills
+```
+
+### Kimi Code
+
+Install (in the Kimi TUI):
+
+```text
+/plugins install https://github.com/tailrocks/tailrocks-skills
+```
+
+```text
+/plugins reload
+```
+
+Upgrade: re-run the same pair.
+
+### Antigravity CLI
+
+Install (from a local clone — the CLI installs plugins from local paths):
+
+```sh
+git clone --depth 1 https://github.com/tailrocks/tailrocks-skills.git
+```
+
+```sh
+agy plugin install ./tailrocks-skills
+```
+
+Upgrade: re-clone, then re-run `agy plugin install ./tailrocks-skills`.
+
+### Amp
+
+Install (skip when Claude Code already has the plugin — Amp reads its cache):
+
+```sh
+amp skill add tailrocks/tailrocks-skills --global
+```
+
+Upgrade:
+
+```sh
+amp skill add tailrocks/tailrocks-skills --global --overwrite
+```
+
+Pin a tag instead when a build must be reproducible. See
+[INSTALL.md](INSTALL.md) for the full upgrade and pinning contract per
+client, duplicate prevention, and the verified compatibility matrix.
 
 ## Invoke a skill
 
+Claude Code:
+
 ```text
-Claude Code   /tailrocks-skills:tailrocks-rust-best-practices review this crate
-Codex CLI     $tailrocks-rust-best-practices review this crate
-Grok Build    /tailrocks-rust-best-practices review this crate
-Kimi Code     /skill:tailrocks-rust-best-practices review this crate
-Antigravity   /tailrocks-rust-best-practices review this crate
-OpenCode/Amp  Use tailrocks-rust-best-practices to review this crate
+/tailrocks-skills:tailrocks-rust-best-practices review this crate
+```
+
+Codex CLI:
+
+```text
+$tailrocks-rust-best-practices review this crate
+```
+
+Grok Build:
+
+```text
+/tailrocks-rust-best-practices review this crate
+```
+
+Kimi Code:
+
+```text
+/skill:tailrocks-rust-best-practices review this crate
+```
+
+Antigravity CLI:
+
+```text
+/tailrocks-rust-best-practices review this crate
+```
+
+OpenCode and Amp:
+
+```text
+Use tailrocks-rust-best-practices to review this crate
 ```
 
 A strong request names the skill, action, scope, and constraint:
