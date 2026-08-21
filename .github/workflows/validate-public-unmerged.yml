@@ -24,7 +24,10 @@ jobs:
       - run: bun run scripts/validate-skills.ts
       - run: bun run scripts/generate-docs.ts --check
       - run: bun test scripts/
-      - run: bun skills/tailrocks-tanstack-project-setup/scripts/resolve-package-versions.ts --check-template skills/tailrocks-tanstack-project-setup/templates/package.json
+      # Freshness against the live registry is a fact about the day, not about
+      # the diff, so it runs on main and on a schedule. What a pull request can
+      # be held to is that the pins and the documents quoting them agree.
+      - run: bun scripts/refresh-template-pins.ts --check-consistency
 
   templates-macos:
     runs-on: macos-26
