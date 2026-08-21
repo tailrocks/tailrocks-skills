@@ -12,8 +12,8 @@ This example is worth walking because the interesting decisions are not in
 either language — they are on the boundary between them, and that is exactly
 what an agent guesses wrong when you hand it one sentence.
 
-Twelve skills appear. Seven are the delivery pipeline; the rest are the stack
-skills it hands work to.
+Thirteen skills appear. Seven are the delivery pipeline; the rest are the
+stack skills it hands work to.
 
 ## 1. Capture — `tailrocks-idea`
 
@@ -112,14 +112,67 @@ points at them. One source per fact.
 judgement over the same screens. Two owners produce inconsistency between
 features rather than an error you can see.
 
-## 6. Earn READY — `tailrocks-finalize`
+## 6. Prove it runs — `tailrocks-macos-prototype`
+
+The approved design is still a document, and no document is authoritative for
+Liquid Glass — the operating system is. So before finalize and plan treat these
+screens as settled, the design has to exist as something that runs.
+
+<Invoke skill="tailrocks-macos-prototype" args="log-explorer: build the prototype from the approved design and walk every scenario with me" />
+
+It scaffolds a small SwiftPM executable beside the design artifacts, rendering
+the design's own fixture scenarios and nothing else — no parser, no index, no
+file I/O. Every prototype answers the same five launch arguments
+(`--tr-scenario`, `--tr-appearance`, `--tr-window`, `--tr-reduce`,
+`--tr-backdrop`), so a harness can drive this feature's states without knowing
+anything about this feature.
+
+Three properties of the stage carry its weight:
+
+- **It is reviewed running, never as images.** You launch it — or the agent
+  drives the scenarios in front of you — and judge the real material live. A
+  screenshot taken mid-iteration is churn, re-shot on every tweak; this skill
+  captures nothing during design and declines when asked to.
+- **It encodes no taste.** The prototype reproduces the approved brief, the
+  component map, and the contract for every `CUSTOM` region. A gap or
+  contradiction found while building it is a design finding that routes back to
+  `tailrocks-macos-design`, never something the prototype settles on its own.
+- **You sign it off, not the agent.** Every scenario, both appearances, the
+  declared sizes — walked live — and then `SIGNOFF.md` records the date and
+  the revision of the design artifacts it approved. Until that row is filled
+  the prototype binds nobody and the item is still SHAPING ground.
+
+The view layer is production code and it is committed: it lifts verbatim into
+the real app at slice 004, and it stays afterwards, because discarding it
+forfeits the contract the real app inherits and the ability to ever re-capture
+the baseline. `Regions.md` falls out of the same run — every region from the
+component map with its class, its match mode, and its budget, custom and content
+regions pixel-budgeted, native regions checked structurally, because
+pixel-matching a native control rewards a hand-drawn fake over the correct
+dynamic one.
+
+```text
++ Design/Prototypes/LogExplorer/Package.swift
++ Design/Prototypes/LogExplorer/Sources/LogExplorerProto/…
++ Design/Prototypes/LogExplorer/Regions.md
++ Design/Prototypes/LogExplorer/SIGNOFF.md
+~ roadmap/log-explorer/README.md   Screens: Design pointer per screen
+```
+
+After finalization, `tailrocks-macos-visual-qa` drives this same package through
+the launch contract and freezes the baseline the implementation is held to.
+That is the only capture in the whole stage, and it happens once the design has
+stopped moving.
+
+## 7. Earn READY — `tailrocks-finalize`
 
 <Invoke skill="tailrocks-finalize" args="log-explorer" />
 
 The closing interview walks the primary flow — open a file, watch the index
-build, run a query mid-build, scrub the timeline — and confirms each screen as a
-schematic mockup. Every remaining open question is resolved, deferred with a
-reason, or reclassified as researchable.
+build, run a query mid-build, scrub the timeline — and confirms each screen
+against the running prototype its `Design:` line points at, rather than against
+a paragraph. Every remaining open question is resolved, deferred with a reason,
+or reclassified as researchable.
 
 Expect it to refuse the first time. Typical blockers on this item: no stated
 number for "fast", no decided behavior for a query issued against a half-built
@@ -130,7 +183,7 @@ are three bugs you did not write.
 ~ roadmap/log-explorer/README.md   Status: READY
 ```
 
-## 7. Package — `tailrocks-plan`
+## 8. Package — `tailrocks-plan`
 
 <Invoke skill="tailrocks-plan" args="log-explorer with --deep" />
 
@@ -148,12 +201,17 @@ The slice list is the part worth studying:
 
 | Slice | What it stands up | Executed under |
 |---|---|---|
+| — | Not a slice: the signed-off prototype and its `Regions.md`, standing before READY | `tailrocks-macos-prototype` |
 | 001 | Verification baseline: workspace, empty Rust crate, empty app target, one task runner, all gates green | `tailrocks-rust-project-setup`, `tailrocks-swift-project-setup` |
 | 002 | Tracer bullet: Rust returns a hardcoded snapshot, Swift renders it, gates still green | `tailrocks-rust-best-practices`, `tailrocks-swift-best-practices` |
 | 003 | Real parser and index behind the same snapshot type | `tailrocks-rust-best-practices` |
-| 004 | Timeline and results surface with real Liquid Glass chrome | `tailrocks-liquid-glass`, `tailrocks-swift-best-practices` |
+| 004 | Timeline and results surface: the prototype's view layer over real snapshots, with its Liquid Glass chrome | `tailrocks-liquid-glass`, `tailrocks-swift-best-practices` |
 | 005 | Query during index build, cancellation, error states | both language skills |
-| 006 | Rendered verification across appearance and accessibility states | `tailrocks-macos-visual-qa` |
+| 006 | Rendered verification against the prototype baseline, across appearance and accessibility states | `tailrocks-macos-visual-qa` |
+
+The first row is not a slice. The prototype was signed off before the item
+reached READY, so no plan row builds it — it appears in the manifest as what
+slice 004 lifts and what slice 006 is measured against.
 
 Two things in that table are not decoration.
 
@@ -183,7 +241,7 @@ about is a gap in the plan, not a gap in the reviewer.
 ~ roadmap/log-explorer/README.md        Status: PLANNED
 ```
 
-## 8. Execute
+## 9. Execute
 
 Paste `GOAL.md`'s goal condition and kickoff prompt into your agent's goal
 execution. The executor works one plan per iteration, runs every verification,
@@ -194,8 +252,9 @@ is Rust, so the executor works under the Rust skills:
 
 <Invoke skill="tailrocks-rust-best-practices" args="review crates/sift-core: ownership across the index, error and panic policy, and the unsafe boundary. Do not edit." />
 
-Slice 004 is the interface, and two skills own different halves of it — code
-policy and the material:
+Slice 004 is the interface, and it starts from code that already exists: the
+prototype's view layer, lifted verbatim. Two skills own different halves of what
+happens next — code policy and the material:
 
 <Invoke skill="tailrocks-swift-best-practices" args="implement the timeline view model: actor isolation for the snapshot poller, state ownership, and work kept out of body" />
 
@@ -207,9 +266,12 @@ Slice 006 proves it:
 
 That last one is not optional decoration. Glass surfaces snapshot fully
 transparent from a detached view, so capturing the running app by window ID is
-the only verification that means anything for the chrome.
+the only verification that means anything for the chrome. It compares against
+the baseline frozen from the prototype, region by region as `Regions.md`
+declared: custom regions to a pixel budget, native regions through the
+accessibility tree instead.
 
-## 9. Reconcile — `tailrocks-reconcile`
+## 10. Reconcile — `tailrocks-reconcile`
 
 <Invoke skill="tailrocks-reconcile" args="log-explorer" />
 
@@ -223,7 +285,7 @@ availability floor that the research topic recorded and a later toolchain update
 moved. Reconcile is what turns that from a silent wrong build into a `STALE` row
 with a reason.
 
-## 10. When the intent changes
+## 11. When the intent changes
 
 Halfway through, you decide the app should tail growing files after all. Do not
 edit the plan.

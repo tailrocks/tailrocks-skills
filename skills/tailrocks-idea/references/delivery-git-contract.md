@@ -1,10 +1,13 @@
 # The delivery git contract
 
-Every delivery-family skill (`tailrocks-idea`, `tailrocks-brainstorm`,
-`tailrocks-research`, `tailrocks-record-decision`, `tailrocks-finalize`,
-`tailrocks-plan`, `tailrocks-reconcile`) ends each invocation with a
-marked commit, so an item's pull request becomes a legible record of
-which skill produced what. That record is what a later field audit reads
+Every delivery-family skill (`tailrocks-audit`, `tailrocks-idea`,
+`tailrocks-brainstorm`, `tailrocks-research`, `tailrocks-record-decision`,
+`tailrocks-finalize`, `tailrocks-plan`, `tailrocks-reconcile`) ends each
+invocation with a marked commit, so an item's pull request becomes a
+legible record of which skill produced what. `tailrocks-audit` is the one
+that can write without an item: a directly-seeded `plans/<slug>/` package
+commits on the base branch under the same trailer, with no item branch and
+no draft pull request to open. That record is what a later field audit reads
 to judge each skill's output and improve it.
 
 ## The branch and the pull request

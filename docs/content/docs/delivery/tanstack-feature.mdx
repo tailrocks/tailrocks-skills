@@ -116,15 +116,62 @@ the item, and turned into Must-not entries where it forbids something. The
 second one above is the sort of constraint that is invisible in a schema review
 six months later and obvious in the item's Decisions section forever.
 
-## 5. Earn READY — `tailrocks-finalize`
+## 5. Design the screens — `tailrocks-web-design`
+
+Finalize is about to ask for five screens. A screen drawn outside the
+application is a picture of a design; a screen the application renders is the
+design — so these five get built where they will ship.
+
+<Invoke skill="tailrocks-web-design" args="offline-inspection: design the inspection runner, the sync-center drawer, the live site board, conflict review, and sign-off" />
+
+Each screen becomes one pure presentational component under
+`src/components/screens/`: props in, markup out, no loader, no router coupling,
+rendered by a guarded `/design/<screen>/<state>` route from typed fixtures. The
+guard is one rule — the design routes answer only under `import.meta.env.DEV`
+or `VITE_DESIGN_ROUTES=1`, and throw `notFound()` otherwise. Everything renders
+through the app's own Vite and Tailwind pipeline out of the installed shadcn/ui
+components; a component that is missing gets added with the pinned CLI rather
+than approximated in hand-written markup. Design mode writes the component and
+its prop types and stops there: loaders, mutations, and server functions stay
+unwritten until the slices.
+
+The fixtures are where this particular feature earns the stage. They are
+deterministic — fixed dates, ordered collections, no randomness — and
+realistic, which here means the states nobody volunteers to draw: a verdict
+chip reading `pending upload` with its photo still queued, a device badge two
+hours stale, two contradictory verdicts side by side with both the device and
+the server timestamp, a storage-pressure banner mid-capture. A screen blessed
+on `foo` has not met its layout.
+
+Then you bless them, live in the browser, one state and one theme at a time. The
+agent never blesses a screen: the recorded blessing lands in
+`src/design/MANIFEST.md` with its date, and each screen's `Design:` line in the
+item points at that section instead of re-describing it. An item whose screens
+carry no blessing is SHAPING ground however finished they look.
+
+Nothing is captured here — the design is live on the dev server, and a baseline
+frozen mid-iteration is churn that gets re-frozen on every tweak.
+
+```text
++ src/components/screens/*.tsx
++ src/design/fixtures/*.ts
++ src/design/registry.tsx
++ src/design/MANIFEST.md
++ src/routes/design/…
+~ roadmap/offline-inspection/README.md   Screens: Design pointer per screen
+```
+
+## 6. Earn READY — `tailrocks-finalize`
 
 <Invoke skill="tailrocks-finalize" args="offline-inspection" />
 
-Five screens have to be confirmed as schematic mockups, not adjectives: the
+The five screens are no longer adjectives, they are routes you can open: the
 inspection runner with a per-item sync-state chip, the sync-center drawer with
 its "safe to close" indicator, the live site board with a per-device staleness
 badge, the conflict review with side-by-side verdicts and both timestamps, and
-sign-off blocked on unresolved conflicts or unuploaded evidence.
+sign-off blocked on unresolved conflicts or unuploaded evidence. Each one is
+confirmed against its blessed manifest section, walked live rather than
+described.
 
 Then the flow is walked end to end, including the ugly path: two inspectors,
 one asset, contradictory verdicts, one device still in a basement when the
@@ -134,7 +181,28 @@ Anything still open at the end is resolved, deferred with a reason, or
 reclassified as researchable. READY is granted only when the whole checklist
 passes.
 
-## 6. Package — `tailrocks-plan`
+## 7. Freeze the reference — `tailrocks-web-visual-qa`
+
+READY is the point where the design stops moving, and that is the only point at
+which a screenshot baseline is worth keeping.
+
+<Invoke skill="tailrocks-web-visual-qa" args="freeze offline-inspection: every screen, state, viewport, and theme from the design routes" />
+
+One baseline per screen × state × viewport × theme, walked from the design
+registry rather than from the route parameters — a state that exists only as a
+URL string is a state the suite silently skips, so the registry is the
+enumeration of record. Every capture lands in `tests/visual/BASELINES.md` with
+the manifest blessing it was frozen from, the environment it binds to, and every
+mask with the reason for it, because a masked region is an unverified region.
+
+The precondition does not bend: a screen whose manifest carries no recorded
+blessing cannot be frozen, and a draft baseline "just for now" is the same
+violation with a schedule. Afterwards authority runs one way — the baseline
+holds the code. A red suite has two exits, fix the code or take the change back
+to the user for a re-blessing; regenerating the snapshots to make it green is
+neither, and reduces the contract to `x == x`.
+
+## 8. Package — `tailrocks-plan`
 
 <Invoke skill="tailrocks-plan" args="offline-inspection with --deep" />
 
@@ -166,12 +234,18 @@ The slices, in dependency order:
 
 | Slice | Ships | Executed under |
 |---|---|---|
+| — | Not a slice: the design routes blessed before READY and the baseline frozen from them the moment it was granted | `tailrocks-web-design`, `tailrocks-web-visual-qa` |
 | 001 | Document model, wire types, validation core in Rust with a conformance vector suite the TypeScript validator must also pass | `tailrocks-rust-best-practices`, `tailrocks-typescript-best-practices` |
 | 002 | Offline runner, local only: local replica, persistence, storage telemetry, capture UI, photo staging | `tailrocks-typescript-best-practices` |
 | 003 | Sync channel: WebSocket endpoint, server replica, state-vector backfill, dual-timestamp acks | `tailrocks-axum-best-practices`, `tailrocks-rust-best-practices` |
 | 004 | Resumable evidence pipeline and reconciliation of pending references | `tailrocks-axum-best-practices` |
 | 005 | Live site board: event fan-out, resume, gap event, staleness model | both stacks |
 | 006 | Conflict detection, supervisor adjudication, sign-off gating, certificate | both stacks |
+
+The first row is not a slice. The screens were blessed and their baseline
+frozen before planning began, so no plan row builds them — they enter the
+manifest as the components the UI slices render and the suite those slices are
+measured against, cited by the spec as each screen's observable check.
 
 Two details in that ordering are deliberate.
 
@@ -198,7 +272,7 @@ holding only that plan and the repository.
 ~ roadmap/offline-inspection/README.md   Status: PLANNED
 ```
 
-## 7. Execute and reconcile
+## 9. Execute and reconcile
 
 Paste the goal condition and kickoff prompt from `GOAL.md`. One plan per
 iteration, every verification run, status writes committed with the work.
@@ -210,8 +284,9 @@ language by language. Slice 001 writes the shared model on both sides at once:
 
 <Invoke skill="tailrocks-typescript-best-practices" args="implement the TypeScript validator against the Rust conformance vectors: exhaustive state, runtime validation at the boundary, typed failure" />
 
-Slice 002 is browser-only, and slices 003 to 005 put the HTTP and socket surface
-behind Axum:
+Slice 002 is browser-only, and its screens already exist and are blessed, so the
+work is putting real state behind the components the design routes render.
+Slices 003 to 005 put the HTTP and socket surface behind Axum:
 
 <Invoke skill="tailrocks-typescript-best-practices" args="review the offline queue and local replica in src/inspection: async ownership, readonly boundaries, rollback on failure. Do not edit." />
 
