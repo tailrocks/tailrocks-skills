@@ -41,6 +41,21 @@ push; update the draft PR body's status line when the item's status
 changed. One invocation, one marked commit: the trailer is what lets a
 later audit attribute each PR commit to the skill that produced it.
 
+## Precondition: evidence before lock-in
+
+A decision that answers a question research or design was meant to settle —
+platform facts, integration seams, structural alternatives, component
+classification — needs that evidence linked, not asserted. Before step 1,
+check whether the decision depends on a fact class this item's linked
+`research/` topics or `tailrocks-macos-design` artifacts have not yet
+produced. If it does and no linked evidence exists: record the decision as
+provisional (`PROVISIONAL:` prefix, reason: evidence pending), name which
+skill owes the missing evidence, and stop — do not propagate it into
+capabilities, screens, or must-nots as settled. A user's explicit
+"decide now, evidence later" overrides this and is recorded as the reason.
+Preference and scope decisions the user is simply choosing between (not
+deriving from unresearched facts) are unaffected and proceed normally.
+
 ## Steps
 
 1. **Load and validate.** Read `roadmap/<slug>/README.md` fully. Check the
@@ -83,5 +98,7 @@ later audit attribute each PR commit to the skill that produced it.
 
 Finish only when the decision is dated with a reason, every touched section
 agrees with it, invalidated content is struck rather than silently deleted,
-status transitions follow the item format's machine, and nothing outside the
-item, index, and plan-index stale markers changed.
+status transitions follow the item format's machine, nothing outside the
+item, index, and plan-index stale markers changed, and any decision recorded
+without linked research/design evidence carries the `PROVISIONAL:` marker
+and its owing skill.
