@@ -55,9 +55,21 @@ Rules for changing a `SKILL.md`:
   contents. A router section that reads like a table of contents is dilution with
   no benefit; the reference already says all of it, better.
 - Adding a section to a router is a change to **every** behavior in that file.
-  Eval verification (`mise run evals -- --skill <name> --case <id> --runs 2`)
-  is a CI/CD concern, not a local step in this repository — it needs the
-  `claude` CLI and spends budget, and is not yet wired here.
+- **Eval execution is a CI/CD concern, never a local step.** `mise run evals`
+  needs the `claude` CLI and spends budget, and no gate in this repository runs
+  it. Authoring and updating `evals/evals.json` is part of the work; running
+  the harness is not. Never block a change on a local eval run, never claim a
+  change is verified because the harness passed on your machine, and never add
+  a `mise run evals` invocation to a skill body, an instruction file, or a
+  workflow gate. Record the expected red-before / green-after in the pull
+  request and let CI own execution once that lane lands.
+
+  This does not weaken the observed-failure law in `tailrocks-skill-author`.
+  The red bar is *watching the behavior fail* — run the skill against the case
+  prompt in a session and read what it produces. That is a manual observation,
+  costs one invocation, and needs no harness. `mise run evals` is the scoring
+  harness for that same case at scale; the two are not substitutes, and only
+  the second one defers to CI.
 - Prefer strengthening an existing section over adding one. Two sections that
   both gesture at the same obligation are weaker than one that states it.
 - When a router grows past roughly 200 lines, the next addition should replace

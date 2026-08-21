@@ -28,13 +28,24 @@ instead of a diff.
   once and never finished) — an idea with no evidence behind it is not a
   finding, it is idea-slop, and gets dropped in verification.
 - **UX** — usability defects in screens the repository already ships
-  (existing routes, existing components) — broken flows, missing states,
-  inconsistent interaction, accessibility gaps. This audits what shipped
-  against taste `tailrocks-web-design` already blessed; it never proposes
-  new screen designs and never overrides a blessed pattern — a candidate
-  that contradicts a blessed design is not a finding, it is routed to
-  `tailrocks-web-design` to re-bless or reject. Skip this lane in a
-  repository with no blessed web screens.
+  (existing routes, existing components). It never proposes new screen
+  designs and never overrides a blessed pattern — a candidate that
+  contradicts a blessed design is not a finding, it is routed to
+  `tailrocks-web-design` to re-bless or reject. The lane has two halves
+  with two different skip conditions:
+  - **Objective defects** — broken flows, unreachable or missing states,
+    inconsistent interaction, accessibility gaps. These need no blessing
+    to judge and **run in any repository that ships a UI at all**. Skip
+    only when there is no UI.
+  - **Blessed-pattern conformance** — what shipped measured against taste
+    `tailrocks-web-design` already blessed. Skip this half in a
+    repository with no blessed web screens, and say so.
+- **Terminal UI** — screens in a ratatui application, judged against the
+  golden frames `tailrocks-tui-design` blessed. Same split as the UX
+  lane: frame drift against a blessed golden runs only where goldens
+  exist; unreachable states, unhandled resize, and key bindings a user
+  cannot discover run wherever the repository ships a terminal UI. Skip
+  in a repository with no terminal UI.
 - **Liquid Glass** — native macOS chrome and material misuse. This lane
   carries no taste of its own: its judgment source is `tailrocks-macos-design`'s
   `review` mode rubric and `tailrocks-liquid-glass`'s acceptance gate,
@@ -43,25 +54,40 @@ instead of a diff.
   violations found against shipped native screens, not fresh taste
   judgment. Skip this lane in a repository with no native macOS surface.
 - **Agent legibility** — how safely an agent, not a human, can navigate
-  and extend this codebase cold: file and function sizes that blow a
-  fresh-context read, names that do not survive a cold grep, missing or
-  stale `AGENTS.md` coverage for a directory with conventions of its own,
-  and any language, framework, package manager, or tool in use outside
-  the house stack this repository has actually decided on — a stray
-  dependency is evidence for this lane, not a stack-skill matter, because
-  the failure mode is an agent copying the wrong pattern from it. Distinct
-  from tech debt (structural rot) and from the best-practices skills
-  (per-language idiom correctness) — this lane is about discoverability
-  and surface restriction, not correctness.
+  and extend this codebase cold. Two obligations, each load-bearing:
+  - **Cold-read navigability** — file and function sizes that blow a
+    fresh-context read, names that do not survive a cold grep, missing or
+    stale `AGENTS.md` coverage for a directory with conventions of its
+    own.
+  - **House-stack conformance** — any language, framework, package
+    manager, tool, **or protocol and layering role** in use outside the
+    stack this repository has decided on. Not just stray artifacts: a
+    public REST API where the doctrine says GraphQL, a second protocol
+    between services where it says gRPC, or business logic living in the
+    UI layer where it says the UI is a thin shell over a Rust-owned core
+    are all findings for this lane, and none of them is a stray
+    dependency. **The baseline is the repository's own decisions, never
+    this skill's preferences:** read its instruction files
+    (`AGENTS.md`/`CLAUDE.md` at every level), its lockfiles and
+    `mise.toml`/equivalent, and its ADRs. A stack the repository has
+    genuinely decided on is not a finding no matter what it is; a
+    deviation from a stack it *did* decide on is one even when the
+    deviation is individually reasonable, because the failure mode is an
+    agent copying the wrong pattern from it.
+
+  Distinct from tech debt (structural rot) and from the best-practices
+  skills (per-language idiom correctness) — this lane is about
+  discoverability and surface restriction, not correctness.
 
 `quick` mode runs correctness, security, and tech debt only, and each lane
 stops at its first pass over obvious hotspots rather than exhaustively
-walking every package. `deep` composes as a depth modifier over any other
-mode or named lane — `deep security`, `deep liquid-glass`, plain `deep` —
+walking every package. `--deep` composes as a depth modifier over any other
+mode or named lane — `security --deep`, `liquid-glass --deep`, plain
+`--deep` —
 running every applicable lane over every package with no early cutoff; it
 is never a standalone alternative to a category. A single named category
 runs only that lane. `branch` mode scopes every lane's target to the
-branch diff against its merge base and also composes with `deep` and a
+branch diff against its merge base and also composes with `--deep` and a
 named category.
 
 ## Candidate shape

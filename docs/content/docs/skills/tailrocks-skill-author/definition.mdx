@@ -42,7 +42,9 @@ Do not infer mutation permission from the presence of defects.
 
 1. **Capture the failure, not the wish.** State what an agent does wrong
    *without* the skill — from the current conversation when the request is
-   "turn this into a skill", from a reproduced baseline run otherwise. A
+   "turn this into a skill", otherwise by watching a fresh agent attempt
+   the task without it. That observation is made by hand, here, and is
+   never the eval harness: the harness defers to CI, the red bar does not. A
    skill request with no observable failure behind it is refused: record
    what was asked and why no skill is warranted. Document the baseline
    verbatim — the exact wrong choice or rationalization is what the skill
@@ -88,7 +90,7 @@ Do not infer mutation permission from the presence of defects.
    prompts for the description. Eval execution
    (baseline vs. with-skill, `mise run evals`) is a CI/CD concern in this
    repository, not a local step — write the cases so they are ready to
-   run there; do not invoke the runner locally. Capture surviving
+   run when it is wired; do not invoke the runner locally. Capture surviving
    rationalizations from prior transcripts as explicit counters. Never
    batch: one skill is written and proven before the next is started.
    **Complete when:** the eval cases exist, cover the baseline failure,
@@ -106,9 +108,9 @@ Do not infer mutation permission from the presence of defects.
    load-bearing lines before rewording gates or rejection rules, prefer
    strengthening an existing section over adding one, replace rather than
    append past the tree's router budget, and update the skill's full eval
-   set — not only the case nearest the edit — for CI to run.
+   set — not only the case nearest the edit — for CI to run once wired.
    **Complete when:** the full eval set covers the edit and validation is
-   green; eval execution itself happens in CI, not here.
+   green; eval execution is deferred to CI and never run here.
 
 ## Audit output
 
@@ -129,7 +131,7 @@ neighboring skill. Every defect names its fix and the layer it lives in.
 - "Put the workflow in the description so it triggers better" — agents
   follow the description and skip the body; triggers only.
 - "Just add a section" to a router — additions dilute every existing
-  behavior; strengthen or replace, then re-run the whole eval set.
+  behavior; strengthen or replace, then update the whole eval set for CI.
 - A skill whose evals pass without it — the skill is dead weight or the
   evals are theater; fix one.
 
@@ -138,7 +140,10 @@ neighboring skill. Every defect names its fix and the layer it lives in.
 Never ship a skill or a behavioral edit whose failure was not observed
 first. Never summarize a workflow in a description or a reference in a
 router. Never add a router section without updating that skill's eval
-cases for CI to run. Never leave a new skill unwired or a validator red.
+cases for CI to run once wired. Never leave a new skill unwired or a validator red.
 Never author two skills owning one responsibility. Never run
-`mise run evals` locally in this repository — it is a CI/CD gate, not a
-local step. Report every check skipped.
+`mise run evals` locally in this repository — its execution is deferred
+to CI and not yet wired; only the eval *cases* are written here. That
+deferral never excuses the red bar: the observed failure is watched by
+hand, and a skill whose failure was never seen does not ship. Report
+every check skipped.

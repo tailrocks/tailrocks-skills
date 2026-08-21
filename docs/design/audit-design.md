@@ -39,9 +39,11 @@ land in the same prioritized table and compete on the same leverage axis. Split
 across skills, they arrive as separate reports that no one ranks against each
 other, and the user is left doing the prioritization the skill exists to do.
 
-`deep` is a *depth modifier*, not a seventh mode, precisely so this does not
-regress: it composes over any mode or named lane (`deep`, `deep security`,
-`deep branch`) instead of forking a parallel set of deep-flavored entry points.
+`--deep` is a *depth modifier*, not a seventh mode, precisely so this does not
+regress: it composes over any mode or named lane (`--deep`, `security --deep`,
+`branch --deep`) instead of forking a parallel set of deep-flavored entry
+points. It is spelled as a flag, matching `tailrocks-plan` and
+`tailrocks-research`, so depth reads the same way across the delivery family.
 
 ## Taste has exactly one owner
 
@@ -105,15 +107,27 @@ the user re-rejects it forever.
 
 ## Model routing
 
-Judgment runs on the capable tier already running the skill. Execution runs on
-the cheapest tier that can follow mechanical instructions for that plan's
-scope — Haiku 4.5 or Fable 5 today — in an isolated worktree, handed only the
-plan file and inheriting nothing from the audit conversation.
+Routing is by capability role, not by model brand: **frontier judgment** for
+recon, fan-out, verification, prioritization, and diff review; **bounded
+execution** for one self-contained plan; **fast mechanical** for search,
+extraction, and deterministic transforms inside a step. Execution runs in an
+isolated worktree, handed only the plan file and inheriting nothing from the
+audit conversation.
 
-The tier is a scope judgment, not a fixed name. A plan with dense STOP
-conditions or many interacting files may need the next tier up; a one-file,
-one-substitution, one-command plan is exactly what the cheap tier is for.
-Dispatching the capable tier as executor defeats the separation entirely.
+The routes are ordered by capability, and the ladder does not follow model
+naming or release order. As of 2026-08-21 the Claude ladder runs Fable 5 →
+Opus 5 → Sonnet 5 → Haiku 4.5, with Fable 5 both the most capable route and
+the most expensive per token — so it is a *frontier-judgment* route and never
+the cheap executor. An early draft of this skill listed "Haiku 4.5 or Fable 5"
+as interchangeable executor tiers, which would have paid the top rate in the
+ladder for mechanical work; the fix is to name the role and verify the tier,
+not to memorize a model list.
+
+The role is a scope judgment, not a fixed name. A plan with dense STOP
+conditions or many interacting files may move bounded execution up a route; a
+one-file, one-substitution, one-command plan is exactly what fast mechanical is
+for. Dispatching the frontier route as executor defeats the separation
+entirely.
 
 The split has a useful side effect: it makes plan quality *measurable*. If the
 executor has to ask a question the plan should have answered, that is a plan

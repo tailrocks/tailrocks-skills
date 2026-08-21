@@ -37,10 +37,16 @@ list, and STOP conditions for drift. Stamp the commit this audit ran
 against. Write `plans/<slug>/README.md` (single-row manifest) plus the one
 plan file; no coverage ledger or spec is needed for a single mechanical
 slice — those exist to reconcile competing requirements, and a
-direct-seeded plan has none. Set the roadmap-adjacent status this package
-needs (`PLANNED`, ready for `execute` or a manual hand-off) without a
-backing roadmap item; `tailrocks-reconcile` treats a package with no
-parent item the same as one with a merged, closed-out item.
+direct-seeded plan has none.
+
+**A directly-seeded package has no roadmap item and therefore no item
+status.** `PLANNED` is a `roadmap/<slug>/README.md` value meaning that
+item reached a `plans/<slug>/` package with a `GOAL.md`; do not write it
+onto a package that has no item. Record the package's own readiness in
+its manifest row instead — `TODO` for the slice, and a one-line
+`Parentless: seeded directly by tailrocks-audit against <commit>` note so
+a later reader knows the missing item is deliberate, not lost. `execute`
+accepts such a package on that note; it does not require an item.
 
 ## Seeding a roadmap item
 
@@ -55,3 +61,23 @@ committed with the `Tailrocks-Skill: tailrocks-audit` trailer. Name the
 next command in the report: `tailrocks-brainstorm <slug>` for most items,
 `tailrocks-finalize <slug>` when the audit already answered every open
 question.
+
+## Routing a finding to its fixer
+
+Not every finding wants the roadmap pipeline. Name the owning skill as the
+item's next command when the finding's shape says so, or the class comes
+back as another one-session plan:
+
+- **The defect class will recur** — the finding is one instance of an
+  enabling condition still present in the architecture → `tailrocks-remediate`.
+- **Nothing failed, but the shape is wrong** — friction, an awkward
+  implementation, a design that keeps producing near-misses →
+  `tailrocks-rethink`.
+- **The finding is redundancy inside a diff** with no behavior to change →
+  `tailrocks-simplify`, scoped to that diff.
+- **A blessed screen or a glass surface is the subject** → back to
+  `tailrocks-web-design`, `tailrocks-macos-design`, or
+  `tailrocks-liquid-glass`; this skill never re-blesses taste.
+
+Routing names the next command; it never invokes the fixer or writes its
+artifacts here.

@@ -4,7 +4,7 @@
 
 `tailrocks-audit` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-audit)
 
-Cold-start a repository audit: fan out category findings, verify each by re-reading its evidence, prioritize by leverage, and turn selected ones into roadmap items or plans. Read-only on source.
+Cold-start audit of a repository or branch with no backlog yet: verified findings, prioritized, seeded as roadmap items or plans. Read-only on source. Not for reviewing an open pull request.
 
 ## Invocation
 
@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-audit` …
 
-Arguments: `[quick|deep|branch|next|<category>|ask <question>|plan <description>|execute <slug>|sweep] [target]`
+Arguments: `[quick|branch|next|<category>|ask <question>|plan <description>|execute <slug>|sweep] [target] [--deep]`
 
 ## Skill definition
 

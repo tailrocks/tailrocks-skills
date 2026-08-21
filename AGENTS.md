@@ -192,12 +192,12 @@ visual QA's capture-producing `verify`.
   captures rather than detached snapshots. Definition:
   `skills/tailrocks-macos-visual-qa/SKILL.md`
 
-Two findings shape the whole family and are worth stating up front. Apple's own
-UI kit contains **zero enabled blur effects** — Liquid Glass is baked there as
-static fill, blend-mode, and shadow recipes — so no design file is authoritative
-for the material; the operating system is. And Liquid Glass surfaces snapshot
-**fully transparent** from a detached view, so any verification of glass chrome
-must screen-capture the running app.
+Two findings shape the whole family and are worth stating up front. **No design
+file is authoritative for Liquid Glass; the operating system is** — a static
+mock can only approximate the material with fill, blend-mode, and shadow
+recipes, so the reference is a running app, never an exported artifact. And
+Liquid Glass surfaces snapshot **fully transparent** from a detached view, so
+any verification of glass chrome must screen-capture the running app.
 
 ### The design-reference family — blessed targets before implementation
 
@@ -206,6 +206,26 @@ must match. The reference is authored on the real UI substrate with fixture
 data, iterated with the user, and blessed; from then on "matches the design"
 is a mechanical check, not a review. One skill per medium, and taste never
 has two owners.
+
+**A prototype is real code on the real substrate — never a design file.**
+No skill in this repository takes a design-tool document as a design
+source, produces one as a deliverable, or treats one as the reference an
+implementation is measured against; that rules out Sketch, Figma, Penpot,
+Adobe XD, InVision, Framer, and anything else of the kind, and it rules
+out a hand-frozen HTML or image mockup standing in for the application.
+The reason is not preference. A design file is a *picture* of the design:
+it cannot run the real components, cannot render the platform's own
+material, cannot exercise a state machine, and drifts the moment the code
+moves — so "matches the design" degrades from a mechanical check back
+into an argument. The reference for a React screen is a guarded design
+route rendering the shipped component from typed fixtures; for a terminal
+screen, a golden frame the application's own view functions rendered; for
+a macOS window, a running Liquid Glass prototype whose view layer lifts
+verbatim into the app. Each is copyable into production because it
+already *is* production code. A screenshot or an exported artifact may
+illustrate a decision in a document; it is never the source of one.
+`scripts/validate-skills.ts` gates the tool names; this rule carries what
+a name list cannot.
 
 - **tailrocks-tui-design** — terminal screens for Rust ratatui applications
   as golden frames: a gallery crate renders the application's own view
@@ -257,14 +277,17 @@ item's PR history attributes each commit to the skill that produced it
 reference).
 
 - **tailrocks-audit** — the cold-start entry: fan out parallel audit lanes
-  (correctness, security, performance, tests, tech debt, dependencies, DX,
-  docs, direction) over a repository or a branch diff, verify every
+  (correctness, security, performance, UX, Liquid Glass, agent
+  legibility — including whether the repository's languages and tools stay
+  inside the house stack — tests, tech debt, dependencies, DX, docs,
+  direction) over a repository or a branch diff, verify every
   finding by re-reading its evidence, prioritize by leverage, and seed
   either a direct `plans/<slug>/` package (small, mechanical, no open
   product question) or a DRAFT roadmap item pre-filled with evidence. Also
-  runs the cheap-tier `execute` loop — a Haiku 4.5/Fable 5 executor in an
-  isolated worktree, reviewed by the capable tier — and `sweep`, which
-  reconciles the backlog it seeded. Definition:
+  runs the cheap-tier `execute` loop — a bounded-execution route in an
+  isolated worktree, reviewed on the frontier route, never the reverse —
+  and `sweep`, which reconciles the backlog it seeded. Every lane and mode
+  takes `--deep`. Definition:
   `skills/tailrocks-audit/SKILL.md`
 - **tailrocks-idea** — capture a raw idea as a DRAFT item with a
   content-derived slug and an index row. Capture only; gaps stay visibly
@@ -464,7 +487,8 @@ measurably backfires. Placement is decided before writing: gates beat
 prose, the owning `AGENTS.md` beats a skill, extending a neighbor beats
 forking a rival. Update mode protects what already works: load-bearing
 lines checked against the eval set, strengthen over append, replace past
-the router budget, full eval re-run after any router change.
+the router budget, and a router change updates that skill's eval cases so
+CI re-runs the whole set — eval execution never happens locally here.
 
 Skill definition: `skills/tailrocks-skill-author/SKILL.md`
 
@@ -559,6 +583,15 @@ Load the plugin locally in Claude Code:
 claude --plugin-dir .
 ```
 
+**Evals are authored here and executed in CI, never locally.** Every skill
+ships `evals/evals.json`, and keeping those cases honest is part of every
+change — but `mise run evals` needs the `claude` CLI and spends real budget,
+so no gate in this repository runs it and no instruction in this repository
+may require it. Record the expected red-before / green-after in the pull
+request and let the CI lane own execution once it lands. This does not
+weaken the observed-failure law: the red bar is watching the behavior fail
+in a session, which is a manual observation and needs no harness.
+
 ## Documentation
 
 <https://skills.tailrocks.com> is published from `docs/` — Fumadocs on TanStack
@@ -635,5 +668,8 @@ footer in the body.
 6. Re-verify the INSTALL.md matrix commands against current client versions
    and refresh its verified date.
 7. Re-verify macOS platform baselines against Apple DocC availability data and
-   `gdmf.apple.com/v2/pmv`; rerun the macOS evals and refresh verification
-   stamps. Use `examples/macos-screen/` as the rendered regression corpus.
+   `gdmf.apple.com/v2/pmv`, and refresh their verification stamps. Use
+   `examples/macos-screen/` as the rendered regression corpus. **Eval
+   execution is not a release step** — `mise run evals` is a CI/CD concern
+   in this repository, never run locally; update the affected `evals.json`
+   cases in the release change and let CI own the run.

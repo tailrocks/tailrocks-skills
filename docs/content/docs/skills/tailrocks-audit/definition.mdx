@@ -10,14 +10,12 @@ agent loads it. Source: [SKILL.md](https://github.com/tailrocks/tailrocks-skills
 
 ---
 
-The delivery family turns a captured idea into executable plans, but
-nothing in it starts from a bare repository and asks "what here is worth
-fixing." Getting from a cold codebase to ready-to-execute work today means
-manually running `tailrocks-idea`, `tailrocks-brainstorm`, and
-`tailrocks-finalize` once per candidate, with no fan-out audit and no
-built-in cheap-tier execution loop. This skill is that cold-start entry:
-it judges with the capable model running it and hands only the mechanical
-execution to a cheaper one — the plan is the product, never the diff.
+Start from a bare repository — or a branch about to become a pull
+request — and produce the work worth doing: parallel audit lanes, every
+finding re-derived from its own cited evidence before it may be listed,
+ordered by leverage, seeded as roadmap items or plan packages. Judgment
+stays on the frontier route; only mechanical execution is handed down.
+The plan is the product, never the diff.
 
 **Read-only on source.** This skill writes only `roadmap/<slug>/` items,
 `plans/<slug>/` packages, and the index files those two already use — the
@@ -31,21 +29,25 @@ the user's call.
 
 - *(none)*: full audit — every category, whole repository.
 - `quick`: cheap pass — hotspots and top findings only, fewer lanes.
-- `deep`: a depth modifier, not a standalone mode — composes with any
-  other mode or named lane (`deep`, `deep security`, `deep branch`) to run
-  every applicable lane over every package with no leverage cutoff.
+- `--deep`: a depth modifier, not a standalone mode — composes with any
+  other mode or named lane (`--deep`, `security --deep`, `branch --deep`)
+  to run every applicable lane over every package with no leverage cutoff.
+  Every mode and every lane accepts it, `ask` included. Mutually exclusive
+  with `quick`; a bare `deep` means the same thing.
 - `branch`: scope the audit to what the current branch changed against its
-  merge base — the pre-PR pass. Composes with `deep` and a named category.
-- `<category>`: one lane only (`security`, `perf`, `ux`, `liquid-glass`,
-  `agent-legibility`, `tests`, …).
+  merge base — the pre-PR pass. Composes with `--deep` and a named category.
+- `<category>`: one lane only (`security`, `perf`, `ux`, `tui`,
+  `liquid-glass`, `agent-legibility`, `tests`, …).
 - `next`: direction only — evidence-grounded feature and roadmap
   suggestions, no defect lanes.
 - `ask <question>`: recon plus a targeted investigation of one question,
   same evidence-and-citation discipline as a lane, no forced plan or
   roadmap item — answer, then offer to seed one if the answer implies
-  work.
+  work. With `--deep`, run parallel investigators over the question
+  instead of one, exhaust every package that could bear on it, and report
+  contradicting evidence rather than the first answer that holds.
 - `plan <description>`: skip the audit, spec one named thing directly.
-- `execute <slug>`: dispatch a cheap-tier executor against a `PLANNED`
+- `execute <slug>`: dispatch a bounded-execution executor against a `PLANNED`
   package, review its diff, report a verdict.
 - `sweep`: reconcile the backlog this skill seeded — verify, unblock,
   retire.
@@ -77,15 +79,17 @@ the user's call.
    [`references/audit-lanes.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-audit/references/audit-lanes.md). Dispatch
    parallel category subagents — correctness, security, performance, test
    coverage, tech debt, dependencies and migrations, DX, docs, direction,
-   UX, Liquid Glass, and agent legibility — scoped to the mode's target
-   (whole repo, branch diff, or named category). The UX and Liquid Glass
-   lanes carry no taste of their own: they judge against
-   `tailrocks-web-design`'s blessed patterns and
+   UX, terminal UI, Liquid Glass, and agent legibility — scoped to the
+   mode's target (whole repo, branch diff, or named category).
+   **The interface lanes carry no taste of their own.** They judge
+   against `tailrocks-web-design`'s blessed routes,
+   `tailrocks-tui-design`'s golden frames, and
    `tailrocks-macos-design`'s review rubric / `tailrocks-liquid-glass`'s
-   acceptance gate respectively, never a fresh aesthetic call, and skip
-   cleanly in a repository with no blessed screens or no native surface.
-   Direction findings must cite repository evidence; generic suggestions
-   are not findings. `quick` runs fewer, hotspot-only lanes; `deep`
+   acceptance gate — never a fresh aesthetic call. Blessing-dependent
+   checks skip where nothing is blessed; objective defects (dead flows,
+   missing states, accessibility gaps) still run wherever that interface
+   ships. Direction findings must cite repository evidence; generic
+   suggestions are not findings. `quick` runs fewer, hotspot-only lanes; `--deep`
    composes over any mode to run every lane with no early cutoff.
    **Complete when:** every in-scope lane reported candidates or was
    explicitly skipped with its reason.
@@ -98,10 +102,13 @@ the user's call.
 
 3. **Verify adversarially.** Subagents over-report. Re-open every
    candidate's cited `file:line` yourself before it may be listed — confirm
-   the claim, correct wrong attributions, drop what does not hold. Record
-   every drop with its reason so it does not resurface next run; check
-   prior audit rejections in `roadmap/README.md`'s Log entries for this
-   skill before re-surfacing something already rejected.
+   the claim, correct wrong attributions, drop what does not hold. Never
+   let the lane that raised a candidate be the only thing that confirms
+   it; under `--deep`, re-derive through a fresh-context verifier that
+   gets the cited location and the claim but not the lane's reasoning.
+   Record every drop with its reason so it does not resurface next run;
+   check prior audit rejections in `roadmap/README.md`'s Log entries for
+   this skill before re-surfacing something already rejected.
    **Complete when:** every listed finding survived re-derivation and every
    drop is named.
 
@@ -129,14 +136,15 @@ the user's call.
 
 6. **`execute` mode: dispatch and review.** Read
    [`references/execution-loop.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-audit/references/execution-loop.md). Requires
-   a `PLANNED` package or a directly-seeded `plans/<slug>/` package.
-   Dispatch the cheapest tier capable of mechanical instruction-following
-   for the plan's scope — Haiku 4.5 or Fable 5 today — as executor, in an
-   isolated worktree, handed only the plan file. Review its diff yourself,
-   on the capable tier, against the plan's done criteria and out-of-scope
-   list: approve (merge decision stays the user's), send back with a named
-   gap (two rounds max), or block and route to `tailrocks-plan` for a
-   defective plan.
+   a `plans/<slug>/` package — one a `PLANNED` roadmap item produced, or
+   one this skill seeded directly with no parent item.
+   Dispatch a **bounded-execution** route — the cheapest route capable of
+   mechanical instruction-following at the plan's scope, never the frontier
+   route — in an isolated worktree, handed only the plan file. Review its
+   diff yourself, on the frontier route, against the plan's done criteria
+   and out-of-scope list: approve (merge decision stays the user's), send
+   back with a named gap (two rounds max), or block and route to
+   `tailrocks-plan` for a defective plan.
    **Complete when:** a verdict is reported and, if blocked, the plan
    defect is named.
 
