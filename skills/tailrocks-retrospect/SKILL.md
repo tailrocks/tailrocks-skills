@@ -1,7 +1,7 @@
 ---
 name: tailrocks-retrospect
 description: >-
-  Use only when the user explicitly requests this skill. A roadmap item has shipped and its delivery history should say which skills let it diverge from its own plan. Proposes patches only; do not use to edit a skill (tailrocks-skill-author) or to re-verify plan rows (tailrocks-reconcile).
+  Use only when the user explicitly requests this skill. After a roadmap item ships, rebuild which skills ran from commit trailers and the item Log, diff that against its Decisions, Must not, and spec IDs, and propose patches to the skills at fault. Proposes only; tailrocks-skill-author edits skills.
 argument-hint: "<roadmap-slug> [--source <path>] [--repo <owner/name>] [--pr <number>]"
 disable-model-invocation: true
 license: Apache-2.0
