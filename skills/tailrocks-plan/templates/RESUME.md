@@ -18,9 +18,11 @@ BLOCKED row.
 
 Run `sh roadmap/<slug>/goal/check.sh` before resuming work and paste its final
 line. Route dirty-tree to cleanup and stop, plan-drift to STALE re-planning,
-and malformed to package repair; nonterminal-rows continues row-by-row
-verification without a completion claim, and gate-failed or gate-vacuous is
-work to finish — a gate that ran nothing has not been satisfied. Run it again
+decisions-drift to "decisions changed — run tailrocks-plan <slug> to refresh
+the package, then resume", and malformed to package repair; nonterminal-rows
+continues row-by-row verification without a completion claim, and gate-failed
+or gate-vacuous is work to finish — a gate that ran nothing has not been
+satisfied. Run it again
 after each status/work commit and as the final act before claiming the package
 complete. Leave the roadmap item at IN EXECUTION; DONE is set later by
 tailrocks-reconcile, after a verification round found no blocking defect.

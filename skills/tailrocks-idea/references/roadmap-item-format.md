@@ -15,10 +15,13 @@ tree to keep in step, and no artifact about the item lives anywhere else.
 ```
 roadmap/<slug>/
   README.md              the item — intent, decisions, status        writable
+  REPORT.md              verified-accomplishment ledger              writable
   plan/
     README.md            manifest: one row per plan, with status      writable
     001-<name>.md ...    zero-context plans                           FROZEN
-    spec/                requirements, screen contracts, must-nots    FROZEN
+    spec/                requirements, screen contracts, must-nots,
+                         decisions.md (snapshot of the item's
+                         Decisions at planning time)                  FROZEN
     coverage.md          the traceability ledger                      FROZEN
   verification/
     NN-feedback.md       what the user reported, verbatim             writable
@@ -37,9 +40,19 @@ loop must move — the item, the manifest's status rows, each verification
 round — sits outside that hash by design. Re-planning is how a frozen file
 changes; editing it is not.
 
+**The item's Decisions are fingerprinted too, by proxy.** Planning snapshots
+the section verbatim into `plan/spec/decisions.md`, and `check.sh` answers
+`BLOCKED decisions-drift` when the live section no longer matches the
+snapshot. A decision is still changeable at any time — through
+`tailrocks-record-decision`, which marks the affected plans `STALE` — but it
+is never *silently* changeable: the gate fires until `tailrocks-plan`
+re-runs and re-stamps the snapshot.
+
 **No artifact carries its own history.** The commits carry it, with the
 `Tailrocks-Skill` trailer naming the skill that produced each one. See
-[`delivery-git-contract.md`](delivery-git-contract.md).
+[`delivery-git-contract.md`](delivery-git-contract.md). The one exception is
+`REPORT.md`: it records *what is verified true*, not what happened — current
+state, restated each pass, never a log.
 
 ## Delivered work leaves the tree
 
@@ -49,18 +62,25 @@ empty, `tailrocks-reconcile` sets `DONE` and then deletes the whole folder and
 its index row. When the last item goes, `roadmap/README.md` and `roadmap/`
 itself go with it — an index of nothing is not a board, it is a leftover.
 
-Nothing is lost, because nothing was ever stored only here:
+One thing stays behind in the tree: the item's verified report, moved to
+`delivery/<slug>.md` in the retiring commit. It holds only what the rounds
+*proved* — the final state of every fully accomplished capability, each with
+its verifying evidence — never the attempts, never the unverified. `delivery/`
+is created by the first retirement and never deleted, even when `roadmap/`
+goes: it is the one place a reader can answer "what did this pipeline actually
+ship, proven" without archaeology. Everything else about the item is in git,
+addressable forever:
 
 ```sh
 git log --format='%h %ad %s' --date=short -- roadmap/<slug>/   # what happened
 git show <commit>^:roadmap/<slug>/README.md                    # the item as it stood
 ```
 
-The reason is the same one that deleted the Log. An item that stays after its
-work shipped is a document nobody updates and everybody half-trusts — the
-state that let one delivery read `BLOCKED — only release remains` while four
-capabilities were pending. `tailrocks-merge-pr` refuses to merge a pull
-request whose item says `DONE` while the folder is still there.
+The reason the folder goes is the same one that deleted the Log. An item that
+stays after its work shipped is a document nobody updates and everybody
+half-trusts — the state that let one delivery read `BLOCKED — only release
+remains` while four capabilities were pending. `tailrocks-merge-pr` refuses to
+merge a pull request whose item says `DONE` while the folder is still there.
 
 ## Status machine
 
@@ -197,6 +217,10 @@ What is not done yet, as observable statements. Written by
 `tailrocks-reconcile` from verification evidence, emptied as rounds close.
 An empty Remaining on a `DONE` item is the claim that nothing is left; on any
 other status it means nobody has verified yet.
+
+## Run
+
+— (`goal/` once planned)
 ```
 
 Section rules:
@@ -208,7 +232,14 @@ Section rules:
   considered", an empty one "not yet known"; only the latter is honest.
 - Decisions, Vocabulary, and Must not are settled once written; changes go
   through `tailrocks-record-decision` so they are dated, reasoned, and
-  propagated.
+  propagated. Once a plan package exists, the Decisions section is also
+  mechanically guarded: `plan/spec/decisions.md` snapshots it, `check.sh`
+  answers `decisions-drift` on any mismatch, and only a `tailrocks-plan`
+  re-run re-stamps the snapshot.
+- `## Run` belongs to `tailrocks-plan`: it writes the pasteable execution
+  blocks there when the package lands and refreshes them on every re-plan.
+  Until then the section holds its placeholder — a `PLANNED` item with an
+  empty `## Run` is a planning defect.
 - Open questions vs Open research questions is the decision/fact split: "do
   we sync at all?" is a decision; "which sync engine fits?" is researchable.
   Misfiling a decision as researchable is how agents end up guessing.
@@ -221,6 +252,9 @@ Section rules:
 | Slug | Title | Status | Remaining |
 |------|-------|--------|-----------|
 | <slug> | <title> | DRAFT | — |
+
+Run an item: `/goal Follow roadmap/<slug>/goal/START.md` — each item's `## Run`
+section carries its pasteable start and resume blocks once planned.
 ```
 
 `Remaining` is the count of open statements in the item's Remaining section,

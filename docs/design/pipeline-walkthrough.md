@@ -15,7 +15,7 @@ flowchart LR
   audit --> idea --> brainstorm --> finalize --> design["design stage"] --> plan --> exec["/goal execution"]
   exec --> feedback["record-feedback"] --> prove --> reconcile
   reconcile -->|Remaining not empty| exec
-  reconcile -->|Remaining empty| done["DONE"] --> retire["retired — folder deleted"]
+  reconcile -->|Remaining empty| done["DONE"] --> retire["retired — report kept at delivery/<slug>.md, folder deleted"]
   audit -.-> plan
   brainstorm <--> research
   brainstorm <--> decision["record-decision"]
@@ -142,19 +142,24 @@ row, then writes the goal package and stamps the frozen contract fingerprint.
 
 ```text
 + roadmap/goal-live-status/plan/coverage.md
-+ roadmap/goal-live-status/plan/spec/
++ roadmap/goal-live-status/plan/spec/          incl. decisions.md snapshot, FROZEN
 + roadmap/goal-live-status/plan/README.md      manifest hub, writable
 + roadmap/goal-live-status/plan/001-*.md ...   FROZEN
 + roadmap/goal-live-status/goal/START.md       FROZEN
 + roadmap/goal-live-status/goal/RESUME.md      FROZEN
 + roadmap/goal-live-status/goal/check.sh       FROZEN
-~ roadmap/goal-live-status/README.md           Status: PLANNED; Plan link
+~ roadmap/goal-live-status/README.md           Status: PLANNED; Plan link; ## Run blocks
 ```
 
 The ledger includes `B#` quality statements; the must-not registry has plan
 backlinks. The fingerprint in the hub covers every FROZEN file, so the contract
 an executor was handed cannot later be edited to match what shipped —
-re-planning is how a frozen file changes. Status: PLANNED. Worked
+re-planning is how a frozen file changes. The item's `## Decisions` section
+stays writable, so planning snapshots it verbatim into `spec/decisions.md`:
+`check.sh` answers `BLOCKED decisions-drift` when the live section moves under
+the snapshot, and only a re-plan re-stamps it. The item's `## Run` section now
+carries the pasteable start and resume blocks, so the operator never opens the
+goal package to find the invocation. Status: PLANNED. Worked
 [`ledger`](../../examples/item-folder/roadmap/goal-live-status/plan/coverage.md),
 [`spec`](../../examples/item-folder/roadmap/goal-live-status/plan/spec/),
 [`hub`](../../examples/item-folder/roadmap/goal-live-status/plan/README.md),
@@ -221,11 +226,13 @@ Invoke tailrocks-reconcile for `goal-live-status`. It re-runs every DONE
 criterion, resets abandoned IN PROGRESS rows, retests BLOCKED reasons and `A#`
 assumptions, drift-checks TODO plans, marks stale plans explicitly — and reads
 the round's report: it prunes rows the round confirmed, rewrites the item's
-Remaining from the blocking defects, and sets the item's status.
+Remaining from the blocking defects, records what the round proved into
+`REPORT.md`, and sets the item's status.
 
 ```text
 ~ roadmap/goal-live-status/plan/README.md  evidence-backed statuses
 ~ roadmap/goal-live-status/README.md       Status + Remaining
+~ roadmap/goal-live-status/REPORT.md       what the round proved, kept
 ~ roadmap/README.md                        Remaining count
 ```
 
@@ -246,10 +253,12 @@ Two commits, one invocation:
 
 ```text
 commit 1  ~ roadmap/goal-live-status/README.md  Status: DONE, Remaining empty
+          ~ roadmap/goal-live-status/REPORT.md  final: DONE, nothing unproven
           ~ roadmap/README.md                   DONE
           Tailrocks-Skill: tailrocks-reconcile
 
-commit 2  - roadmap/goal-live-status/           README.md, plan/, verification/, goal/
+commit 2  > delivery/goal-live-status.md        REPORT.md moved — proof kept
+          - roadmap/goal-live-status/           README.md, plan/, verification/, goal/
           ~ roadmap/README.md                   row removed
           Tailrocks-Skill: tailrocks-reconcile
 ```
@@ -257,8 +266,12 @@ commit 2  - roadmap/goal-live-status/           README.md, plan/, verification/,
 The split is the point. One squashed commit would show only an absence, which
 is indistinguishable from a mistaken deletion; two show the item earning `DONE`
 on evidence and then being retired, both in the pull request the item has had
-since capture. The deletion is whole — no file is kept back, and a folder half
-emptied is the drift the rule exists to prevent. If `goal-live-status` was the
+since capture. The deletion is whole — no file is kept back inside the folder,
+and a folder half
+emptied is the drift the rule exists to prevent. One artifact leaves the
+folder before it goes: `REPORT.md` moves to `delivery/goal-live-status.md`,
+so what the rounds proved stays in the tree after the item is archaeology;
+`delivery/` is never deleted. If `goal-live-status` was the
 last row, `roadmap/README.md` and `roadmap/` go with it. `research/` is
 untouched: topics are standing artifacts, not item artifacts.
 

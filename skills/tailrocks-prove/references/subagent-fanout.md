@@ -23,6 +23,27 @@ And three prohibitions, stated in the brief because agents drift toward
 helpfulness: **do not fix anything**, **do not report a verdict you did not
 execute**, and **do not soften a defect into a suggestion**.
 
+## The decisions lane
+
+One agent checks the item's recorded decisions against what shipped. Its
+brief: the decisions list (the package's `plan/spec/decisions.md`, or the
+item's live `## Decisions` when no package exists), the bound SHA, the built
+artifacts, and the same three prohibitions. It returns one row per decision:
+
+- `HELD` — the artifact honors the decision, with the evidence: a command
+  that exercised the behavior, or `file:line` for a structural choice that
+  only inspection can settle.
+- `VIOLATED` — the artifact contradicts the decision. This is a blocking
+  finding: the user made a choice, nothing re-opened it, and the work broke
+  it. Report what the artifact does instead, with evidence.
+- `NOT VERIFIABLE` — the round cannot settle it (no environment, decision
+  not yet reachable by any shipped surface). Named with what would settle
+  it; never silently dropped, because an unchecked decision is how "the
+  user decided X" quietly becomes "the build does Y".
+
+A decision the evidence shows violated gets the same refute pass as any
+defect before it is reported.
+
 ## What an agent returns
 
 The evidence block from `execution-evidence.md`, nothing else. No
@@ -59,10 +80,13 @@ Once, at the end, with everything visible:
 
 1. **Blocking** — the surface cannot be used at all: it panics, hangs,
    produces nothing, or produces something actively wrong.
-2. **Contract drift** — it runs, and it is not what was blessed or specified.
-3. **Proof defects** — criteria and gates that certified rows they never
+2. **Decision violations** — the artifact contradicts a recorded decision.
+   Blocking in effect, reported on their own because they are ground the
+   user settled, not behavior that broke.
+3. **Contract drift** — it runs, and it is not what was blessed or specified.
+4. **Proof defects** — criteria and gates that certified rows they never
    exercised.
-4. **What holds up** — named explicitly, because a report that lists only
+5. **What holds up** — named explicitly, because a report that lists only
    failures reads as a verdict on the whole delivery, and the parts that work
    are what the next round must not break.
 

@@ -267,8 +267,20 @@ the repository's own conventions and fall back to their defaults.
 | [`tailrocks-refresh-pr`](/docs/skills/tailrocks-refresh-pr) | An open PR's title or body no longer describes what the branch ships. |
 | [`tailrocks-checkout-pr`](/docs/skills/tailrocks-checkout-pr) | The working repository must land on a PR's branch, with the tree guarded. |
 | [`tailrocks-review-pr`](/docs/skills/tailrocks-review-pr) | A PR, branch, or diff needs a review verdict: verified bugs, structural regressions, routed fixes. |
-| [`tailrocks-merge-pr`](/docs/skills/tailrocks-merge-pr) | A PR is merge-ready and the gates must run fail-closed before it lands — including the read-only delivery-artifact check when the diff touches `roadmap/`. |
+| [`tailrocks-merge-pr`](/docs/skills/tailrocks-merge-pr) | A PR is merge-ready and the gates must run fail-closed before it lands — including the read-only delivery-artifact check when the diff touches `roadmap/` and the documentation gate that stops an undocumented merge. |
+| [`tailrocks-document`](/docs/skills/tailrocks-document) | The last content commit before a merge: the repository's own docs rewritten into the final source of truth for what the PR shipped — never a changelog page. |
 | [`tailrocks-pr-template`](/docs/skills/tailrocks-pr-template) | The repository needs its own `.github/PULL_REQUEST_TEMPLATE.md`, derived from its structure, gates, and merged-PR history. |
+
+### document or refresh-pr
+
+Both rewrite prose about a pull request, and they own different surfaces.
+[`tailrocks-refresh-pr`](/docs/skills/tailrocks-refresh-pr) reconciles the
+PR's own metadata — title and body — against the current diff.
+[`tailrocks-document`](/docs/skills/tailrocks-document) rewrites the
+repository's documentation so it describes the system the diff creates, and
+`tailrocks-merge-pr`'s documentation gate refuses a merge whose doc-worthy
+commits it does not cover. Refresh describes the change to reviewers;
+document describes the system to readers.
 
 ### review-pr, simplify, or remediate
 

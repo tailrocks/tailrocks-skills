@@ -100,6 +100,12 @@
         "evals/fixtures/13/src/reports.ts",
         "evals/fixtures/13/delivered-history.txt"
       ]
+    },
+    {
+      "prompt": "Sweep the seeded backlog. Audit-sourced DRAFT item stale-crash was fixed independently in commit abc1234.",
+      "expected_output": "Retire it in a sweep commit naming the fixing commit — and write the minimal report at delivery/stale-crash.md first: the audit-sweep variant of the delivery report, one entry per capability with 'fixed in abc1234' as its evidence. The folder and its index row are deleted; delivery/ is created by the first retirement and never deleted. A retirement without even that report is an unverified claim and does not retire.",
+      "id": 14,
+      "files": []
     }
   ]
 }

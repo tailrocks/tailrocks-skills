@@ -72,10 +72,13 @@ never the base branch:
 ```text
 commit 1   docs(roadmap): <slug> is DONE
            roadmap/<slug>/README.md   status → DONE, Remaining empty
+           roadmap/<slug>/REPORT.md   final: Status DONE, Not proven empty
            roadmap/README.md          index row → DONE, Remaining 0
            Tailrocks-Skill: tailrocks-reconcile
 
 commit 2   docs(roadmap): retire <slug>
+           git mv roadmap/<slug>/REPORT.md delivery/<slug>.md
+                                      the verified report stays in the tree
            git rm -r roadmap/<slug>/  item, plan/, spec/, coverage.md,
                                       verification/, goal/, assets — whole
            roadmap/README.md          the item's row removed
@@ -97,7 +100,12 @@ PR ready.
 
 Everything under `roadmap/<slug>/` goes at once — the item, the frozen
 `plan/` package, `verification/`, `goal/`, and any mockups or captures beside
-them. This is the only deletion this skill performs, and it is legal precisely
+them. One thing does not go: `REPORT.md` moves to `delivery/<slug>.md` first,
+carrying the item's verified accomplishments into the tree that survives.
+`delivery/` is created by the first retirement and never deleted, even when
+the last item takes `roadmap/` with it — it is the standing answer to "what
+did this pipeline ship, proven". The deletion itself is the only one this
+skill performs, and it is legal precisely
 because the whole item goes: no frozen file is edited, and none is left
 half-present to drift against a fingerprint nothing hashes any more. Deleting
 *part* of an item — dropping `verification/` to tidy up, cutting `goal/` to
@@ -126,6 +134,7 @@ free to cite the retired item's commits as background.
 ## The close-out
 
 A retiring invocation reports: the four conditions and the evidence for each,
-the two commit SHAs, what the index now looks like (row removed, or index and
-directory gone), and where the item is readable in history. No `goal/RESUME.md`
-line — there is nothing to resume.
+the two commit SHAs, the report's new home at `delivery/<slug>.md`, what the
+index now looks like (row removed, or index and directory gone), and where the
+item is readable in history. No `goal/RESUME.md` line — there is nothing to
+resume.

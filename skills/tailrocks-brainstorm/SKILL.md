@@ -85,7 +85,11 @@ commit and its trailer are the record that the session happened.
 4. **Close the session.** Apply the status change and index-row update per the
    roadmap item format (owned by tailrocks-idea's roadmap-item-format.md) —
    the item has no Log; the close-out and the invocation's commit subject carry
-   what was settled and what remains. Name the
+   what was settled and what remains. Emit the research agenda when Open
+   research questions is non-empty: the questions grouped into proposed
+   `tailrocks-research` invocations, each with a one-line brief — the hand to
+   research is a command the user can paste, not a suggestion to look into
+   things. Name the
    next step: more research (`tailrocks-research`), targeted decisions
    (`tailrocks-record-decision`), or finalization (`tailrocks-finalize`)
    when Open questions looks thin. **Prove the exit test with fresh

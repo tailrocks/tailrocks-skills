@@ -106,3 +106,17 @@ and without the viewer being able to touch the executor.
 - The run list still presents a run whose snapshot has stopped advancing as
   `active`, with no staleness signal on the row (round 01 `B1`, answering `U1`;
   S1, F4, and the blessed frame for §Run list).
+
+## Run
+
+Start execution:
+
+```text
+/goal Follow roadmap/goal-live-status/goal/START.md
+```
+
+Resume after any interruption:
+
+```text
+/goal Follow roadmap/goal-live-status/goal/RESUME.md
+```

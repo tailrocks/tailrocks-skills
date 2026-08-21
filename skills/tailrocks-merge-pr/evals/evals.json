@@ -63,6 +63,30 @@
         "evals/fixtures/no-roadmap/.tailrocks/pr.md",
         "evals/fixtures/no-roadmap/src/rate_limit.rs"
       ]
+    },
+    {
+      "prompt": "Merge PR 41. The diff deletes roadmap/session-sync/ whole with a clean newest round, but adds no delivery/session-sync.md.",
+      "expected_output": "Block: retired without its report. The verified report is the one artifact retirement keeps in the tree — a deletion without delivery/<slug>.md either dropped the report or retired an item that never accumulated one, and a retirement with nothing proven to record is retirement-while-unfinished wearing a tidier coat. Route to tailrocks-reconcile: a legitimate retirement re-runs with its report written; a premature one restores the folder from the diff's pre-image. Never edit, delete, or commit an artifact here.",
+      "id": 8,
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "Merge PR #64. Its commits add a new public endpoint and change a default; the newest commit is the feature work. All checks green.",
+      "expected_output": "The documentation gate finds doc-worthy commits with no Tailrocks-Skill: tailrocks-document commit after them, so it STOPs before merging, names the uncovered commits, and routes to tailrocks-document — no merge happens.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "Merge PR #65. The branch added a feature, then its newest commit is a docs commit carrying the Tailrocks-Skill: tailrocks-document trailer. All checks green.",
+      "expected_output": "The documentation gate passes — the trailer commit covers HEAD with no later behavior commits — and the merge proceeds through the remaining gates.",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "Merge PR #66. A tailrocks-document trailer commit landed three commits ago, but two source commits came after it. All checks green.",
+      "expected_output": "The documentation gate treats the trailer commit as stale — behavior commits superseded it — STOPs, and routes back to tailrocks-document for a re-run before any merge.",
+      "files": []
     }
   ]
 }

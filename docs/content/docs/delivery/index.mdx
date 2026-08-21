@@ -22,7 +22,7 @@ flowchart LR
   audit --> idea --> brainstorm --> finalize --> design["design stage"] --> plan --> exec["/goal execution"]
   exec --> feedback["record-feedback"] --> prove --> reconcile
   reconcile -->|Remaining not empty| exec
-  reconcile -->|Remaining empty| done["DONE"] --> retire["retired — folder deleted"]
+  reconcile -->|Remaining empty| done["DONE"] --> retire["retired — report kept at delivery/<slug>.md, folder deleted"]
   audit -.-> plan
   brainstorm <--> research
   finalize <--> decision["record-decision"]
@@ -59,10 +59,13 @@ tree to keep in step:
 ```text
 roadmap/<slug>/
   README.md              the item — intent, decisions, status        writable
+  REPORT.md              verified-accomplishment ledger              writable
   plan/
     README.md            manifest: one row per plan, with status      writable
     001-<name>.md ...    zero-context plans                           FROZEN
-    spec/                requirements, screen contracts, must-nots    FROZEN
+    spec/                requirements, screen contracts, must-nots,
+                         decisions.md (the item's Decisions,
+                         snapshotted at planning time)                FROZEN
     coverage.md          the traceability ledger                      FROZEN
   verification/
     NN-feedback.md       what the user reported, verbatim             writable
@@ -78,7 +81,11 @@ returns `BLOCKED plan-drift` when one changes, so the contract an executor was
 handed cannot be edited to match what shipped. Everything the loop must move —
 the item, the manifest's status rows, each verification round — sits outside
 that hash by design. Re-planning is how a frozen file changes; editing it is
-not.
+not. The item's Decisions stay writable, so they are fingerprinted by proxy:
+`spec/decisions.md` snapshots them at planning time, and `check.sh` answers
+`BLOCKED decisions-drift` when the live section no longer matches. A decision
+is still changeable at any time through `tailrocks-record-decision` — but
+never silently: the gate fires until a re-plan re-stamps the snapshot.
 
 **One item, one branch, one pull request.** `tailrocks-idea` opens
 `roadmap/<slug>` and its draft PR at capture, and every later skill commits
@@ -92,7 +99,11 @@ genuinely complete — every plan row terminal, the goal condition passing, the
 latest verification round carrying no blocking defect, and `## Remaining`
 empty — `tailrocks-reconcile` writes `DONE` and then retires the item:
 `roadmap/<slug>/` is deleted whole, item, `plan/`, `verification/`, `goal/`,
-and assets alike, and its index row goes with it. Two commits in one
+and assets alike, and its index row goes with it. One artifact stays in the
+tree: `REPORT.md`, the ledger of what the rounds proved, moves to
+`delivery/<slug>.md` in the retiring commit — and `delivery/` is never
+deleted, so "what did this pipeline ship, proven" always has a live answer.
+Two commits in one
 invocation, so a reviewer sees the item reach `DONE` and then be retired in
 the same pull request. When the last item goes, `roadmap/README.md` and
 `roadmap/` go too — an index of nothing is a leftover, not a board.
@@ -159,8 +170,8 @@ decided, pixels undecided is the other way an implementer ends up guessing.
 | [`tailrocks-finalize`](/docs/skills/tailrocks-finalize) | Readiness | Shaping a raw DRAFT; running without a human | READY, or a list of what still blocks it |
 | [`tailrocks-plan`](/docs/skills/tailrocks-plan) | Packaging | Implementing; planning an unshaped item | `roadmap/<slug>/plan/` and `goal/` — ledger, spec, slices, START/RESUME, `check.sh` |
 | [`tailrocks-record-feedback`](/docs/skills/tailrocks-record-feedback) | Capture of what shipped wrong | Judging, investigating, or fixing a report | `verification/NN-feedback.md` — the user's words, one statement per defect |
-| [`tailrocks-prove`](/docs/skills/tailrocks-prove) | Execution as evidence | Writing status; fixing what it finds | `verification/NN-report.md` — a verdict per statement and per plan row |
-| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | Truth, and retirement | Writing or refreshing plans | Evidence-backed statuses, the item's Remaining — and, on `DONE`, the deletion of `roadmap/<slug>/` and its index row |
+| [`tailrocks-prove`](/docs/skills/tailrocks-prove) | Execution as evidence | Writing status; fixing what it finds | `verification/NN-report.md` — a verdict per statement, per recorded decision, and per plan row |
+| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | Truth, and retirement | Writing or refreshing plans | Evidence-backed statuses, the item's Remaining, its `REPORT.md` — and, on `DONE`, the report's move to `delivery/<slug>.md` and the deletion of `roadmap/<slug>/` and its index row |
 
 ### Find the work before there is a backlog
 
@@ -204,7 +215,12 @@ has decided, and it is what the next two skills work through.
 `tailrocks-brainstorm` asks one question at a time, always with a recommended
 answer, and writes each answer into the item the moment it resolves. It looks
 up anything lookup-able itself rather than asking you. Add `--batch` for
-numbered rounds when you would rather answer five at once.
+numbered rounds when you would rather answer five at once. When it closes
+with open research questions, it does not leave a vague blob: it emits a
+research agenda — grouped, pasteable `tailrocks-research` invocations with
+one-line briefs — and any question that cannot be stated precisely becomes a
+graduation condition instead, so a fact never silently turns into an
+executor's guess.
 
 <Invoke skill="tailrocks-brainstorm" args="session-replay" />
 
@@ -254,7 +270,10 @@ predictable. It produces:
   assumption, and open question gets an ID (`S#`, `F#`, `W#`, `N#`, `B#`, `D#`,
   `R#`, `A#`, `Q#`). Nothing in the item is silently dropped.
 - **`spec/`** — requirements in OpenSpec grammar with scenarios, screen
-  contracts per mockup, and a must-not registry.
+  contracts per mockup, a must-not registry, and the item's Decisions
+  snapshotted verbatim into `spec/decisions.md` — so a decision that moves
+  under the plan trips `check.sh` as `decisions-drift` instead of silently
+  rewriting the contract's ground.
 - **A sliced manifest** — vertical tracer-bullet slices, each a complete path
   through every layer it touches, sized to one fresh executor session. In a
   greenfield chain, slice 001 stands up the verification baseline — task runner,
@@ -267,6 +286,10 @@ predictable. It produces:
   condition, and the kickoff prompt; `RESUME.md` for any interruption; and
   `check.sh`, the gate that hashes the frozen contract, refuses a nonterminal
   row, and refuses a gate that proved nothing.
+- **The item's `## Run` section** — the pasteable start and resume blocks,
+  written into the item README itself and refreshed on every re-plan, so the
+  operator never opens the goal package to find the invocation. A PLANNED
+  item with an empty `## Run` is a planning defect.
 
 <Invoke skill="tailrocks-plan" args="session-replay with --deep" />
 
@@ -275,7 +298,9 @@ nothing load-bearing. Worth it for anything you will not be watching.
 
 ### Hand the contract over, do not paste it
 
-An executor is pointed at the file rather than fed a block:
+An executor is pointed at the file rather than fed a block — and it does not
+have to find the file: the item's own `## Run` section carries both
+invocations, pasteable as-is:
 
 ```text
 /goal Follow roadmap/session-replay/goal/START.md
@@ -283,6 +308,14 @@ An executor is pointed at the file rather than fed a block:
 
 After a stall, a dead session, or a verification round that put work back on
 the board, the same move with `goal/RESUME.md`.
+
+A host that can run parallel executor sessions may work plans with disjoint
+in-scope path sets concurrently — each in its own git worktree off the item
+branch, the manifest's status rows written by the orchestrating session
+alone, worktrees merged back one at a time with done criteria and gates
+re-run. Planning keeps slice scopes disjoint wherever the design allows for
+exactly this; unavoidable overlaps are recorded in the hub as forced
+sequences. Sequential execution remains the default and is always correct.
 
 Every line in `START.md`'s gates block is `<command> ||| <proof>`. The command
 has to exit 0 and the proof has to print how many units it executed — tests
@@ -311,7 +344,10 @@ fans out subagents that launch the entry point, walk the real flows, drive the
 real interface, and compare the shipped screens against the blessed design
 reference. Every verdict cites a command that ran in this session and the
 output line that decided it; a surface it could not run is reported
-`NOT EXECUTED` with the obstacle, never as passing. It also audits the item's
+`NOT EXECUTED` with the obstacle, never as passing. One agent checks every
+recorded decision — `HELD`, `VIOLATED`, or `NOT VERIFIABLE` — and a violated
+decision blocks the round like a blocking defect, because the artifact broke
+a choice you made and nobody re-opened. It also audits the item's
 own proofs — a done criterion or gate that certified a row without exercising
 it comes back `VACUOUS`, which is usually the reason the defect shipped.
 
@@ -330,11 +366,15 @@ reasons and `A#` assumptions, and drift-checks TODO plans against HEAD.
 
 It is also what closes a verification round: it prunes the rows the round
 confirmed, rewrites the item's **Remaining** — what is not done yet, as
-observable statements — from the blocking defects, and writes the status a
-round earned. A round with a blocking defect sends the item back to
-`IN EXECUTION` with that defect as the remaining work; a round with none is the
-only way to `DONE`. Inside the item's own tree it writes statuses and
-Remaining, and nothing else.
+observable statements — from the blocking defects, moves what the round
+proved into `REPORT.md` with its evidence, and writes the status a round
+earned. What execution cannot close gets tagged instead of dropped:
+`(needs-decision: …)` routes to `tailrocks-record-decision`,
+`(needs-research: …)` to `tailrocks-research`. A round with a blocking defect
+sends the item back to `IN EXECUTION` with that defect as the remaining work;
+a round with none is the only way to `DONE`. Every close-out names the
+back-edge explicitly — resume, re-plan, record-decision, brainstorm, or
+research — so you always know the next command.
 
 <Invoke skill="tailrocks-reconcile" args="session-replay" />
 
@@ -375,25 +415,31 @@ They meet in two places: the design stage, and planning.
 
 ### The design stage
 
-Between READY and planning. `tailrocks-finalize` grants READY on schematic
-mockups — layout intent, never pixel truth. The medium's design skill then
-produces the reference the implementation is measured against, and
-`tailrocks-plan` refuses a screen contract that cites none.
+Between READY and planning — and this is where interfaces get prototyped.
+`tailrocks-finalize` grants READY on schematic mockups: layout intent, never
+pixel truth. The medium's design skill then builds the interface for real, on
+the real UI substrate, from fixture data — that running artifact **is** the
+prototype, and after you bless it, it is the reference the implementation is
+measured against. `tailrocks-plan` refuses a screen contract that cites none.
 
-One skill per medium, one owner per stage:
+One skill per medium, one owner per stage — each platform prototypes in its
+own skill:
 
-| Medium | design | bless | freeze |
-|---|---|---|---|
-| Terminal (Rust, ratatui) | `tailrocks-tui-design` | `tailrocks-tui-design` | `tailrocks-tui-design` — the golden test |
-| Web (TanStack, shadcn/ui) | `tailrocks-web-design` | `tailrocks-web-design` | `tailrocks-web-visual-qa` |
-| macOS (Swift, Liquid Glass) | `tailrocks-macos-design` | `tailrocks-macos-design` — on the running prototype | `tailrocks-macos-visual-qa` |
+| Medium | Prototype built as | design | bless | freeze |
+|---|---|---|---|---|
+| Terminal (Rust, ratatui) | A gallery crate rendering the application's own view functions | `tailrocks-tui-design` | `tailrocks-tui-design` | `tailrocks-tui-design` — the golden test |
+| Web (TanStack, shadcn/ui) | Guarded `/design/...` routes in the real app, blessed live in the browser | `tailrocks-web-design` | `tailrocks-web-design` | `tailrocks-web-visual-qa` |
+| macOS (Swift, Liquid Glass) | A running Liquid Glass prototype app — the material only exists at runtime | `tailrocks-macos-design` | `tailrocks-macos-design` — sign-off on the running app | `tailrocks-macos-visual-qa` |
 
-**Design** authors the reference on the real substrate from fixtures. **Bless**
+**Design** authors the prototype on the real substrate from fixtures. **Bless**
 is the user's recorded sign-off; an agent never blesses its own output.
 **Freeze** takes the mechanical baseline. **Audit** checks an implementation
-against the blessed reference. On macOS the Liquid Glass material authority
-lives inside `tailrocks-macos-design` — it is the rulebook the design and
-prototype stages consult, not a stage of its own.
+against the blessed reference. The prototype is real code on the real
+substrate — never a design-tool file — so the view layer lifts into
+production verbatim, and "matches the design" is a mechanical check from then
+on. On macOS the Liquid Glass material authority lives inside
+`tailrocks-macos-design` — it is the rulebook the design and prototype stages
+consult, not a stage of its own.
 
 An item whose screens have no visual surface skips the stage and goes straight
 to planning. An item that skips it with screens that do have one stops at

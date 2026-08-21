@@ -93,6 +93,12 @@ deriving from unresearched facts) are unaffected and proceed normally.
    affected rows `STALE` in `roadmap/<slug>/plan/README.md` with a one-line
    reason. Apply the status change and index-row update per the roadmap item
    format (owned by tailrocks-idea's roadmap-item-format.md).
+   A decision recorded on an item with a plan package also moves the item's
+   `## Decisions` body under the frozen snapshot: `check.sh` answers
+   `BLOCKED decisions-drift` from then on — by design, the contract's ground
+   provably moved. Say so when it applies and name the next step: a
+   `tailrocks-plan` re-run re-stamps the snapshot and un-marks what the
+   decision did not actually stale.
    An explicit user instruction to park or resume is recordable: park per
    the format, or un-park to the recorded `was:` status through the reopen
    rule when intent changed.

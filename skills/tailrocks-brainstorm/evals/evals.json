@@ -40,6 +40,18 @@
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
+    },
+    {
+      "prompt": "Wrap up brainstorming session-sync — three open research questions remain on sync engines and clock skew.",
+      "expected_output": "The close-out emits a research agenda: the open research questions grouped into the smallest set of coherent topics, each as a proposed tailrocks-research invocation with a one-line brief naming which item questions it answers — a command the user can paste, not a suggestion to look into things. Every still-open decision lands in Open questions with a recommendation attached; nothing is silently assumed.",
+      "id": 6,
+      "files": []
+    },
+    {
+      "prompt": "Brainstorm session-sync. The user says: there's sync stuff to figure out, let's research it later.",
+      "expected_output": "Do not file a vague research blob. An open research question must be precisely statable — one whose answer would be recognizable on arrival. 'Sync stuff to figure out' is not statable yet: record what would make it statable (the graduation condition, usually a decision to bring back to the user, such as whether sync is per-account or global), and ask that decision now if it is on the frontier.",
+      "id": 7,
+      "files": []
     }
   ]
 }

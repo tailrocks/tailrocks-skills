@@ -40,7 +40,7 @@ one shared directory:
   `tailrocks-skill-audit`, `tailrocks-skill-refactor`
 - **Pull requests:** `tailrocks-create-pr`, `tailrocks-refresh-pr`,
   `tailrocks-checkout-pr`, `tailrocks-review-pr`, `tailrocks-merge-pr`,
-  `tailrocks-pr-template`
+  `tailrocks-document`, `tailrocks-pr-template`
 - **Delivery pipeline:** `tailrocks-audit`, `tailrocks-idea`, `tailrocks-brainstorm`,
   `tailrocks-research`, `tailrocks-record-decision`, `tailrocks-finalize`,
   `tailrocks-plan`, `tailrocks-record-feedback`, `tailrocks-prove`,

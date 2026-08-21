@@ -404,6 +404,7 @@ const EXPECTED_DIRECT_MARKDOWN_LINKS: Record<string, string[]> = {
     "references/submission-gate.md",
   ],
   "tailrocks-create-pr": ["references/pr-body.md", "references/repo-conventions.md"],
+  "tailrocks-document": [],
   "tailrocks-finalize": ["references/readiness-and-grilling.md"],
   "tailrocks-graphql-best-practices": [
     "references/client-tanstack.md",
@@ -458,6 +459,7 @@ const EXPECTED_DIRECT_MARKDOWN_LINKS: Record<string, string[]> = {
   "tailrocks-pr-template": ["references/PULL_REQUEST_TEMPLATE.md"],
   "tailrocks-record-feedback": ["templates/feedback.md"],
   "tailrocks-reconcile": [
+    "references/delivery-report.md",
     "references/remaining.md",
     "references/retirement.md",
     "references/row-verification.md",
@@ -727,7 +729,9 @@ linkedDescribe("linked skill material", () => {
   linkedTest("keeps exactly the earned tailrocks-plan eval cases", async () => {
     const root = resolve(import.meta.dir, "..");
     const evals = await Bun.file(join(root, "skills/tailrocks-plan/evals/evals.json")).json();
-    linkedExpect(evals.evals.map((item: { id: number }) => item.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    linkedExpect(evals.evals.map((item: { id: number }) => item.id)).toEqual([
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+    ]);
   });
   linkedTest("stages fixtures at the paths a skill would really read", async () => {
     // The mechanism, not one skill's fixture data: a leading case-id segment is

@@ -24,6 +24,12 @@
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
+    },
+    {
+      "prompt": "Record on session-sync (status PLANNED, plan package exists): the user decided sync is per-account, not global.",
+      "expected_output": "Record the dated decision with its reason, propagate it through every touched section, move the item back to SHAPING, and mark the affected rows STALE in the writable hub. Then say what the package now does: the Decisions body moved under the frozen snapshot, so check.sh answers BLOCKED decisions-drift by design — the contract's ground provably moved — and the next step is a tailrocks-plan re-run that re-stamps the snapshot. Never edit plan/spec/decisions.md or any frozen file here.",
+      "id": 4,
+      "files": []
     }
   ]
 }

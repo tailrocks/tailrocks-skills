@@ -42,7 +42,8 @@ true, from outside the code:
 
 Sources, in order:
 
-1. Blocking defects in the highest-numbered `verification/NN-report.md`.
+1. Blocking defects in the highest-numbered `verification/NN-report.md` —
+   including its `VIOLATED` decision rows, which are blocking.
 2. Defects in the newest `verification/NN-feedback.md` that the report did not
    clear — a user-reported defect nobody has re-tested is still open.
 3. Nonterminal hub rows, one statement each, naming the plan number.
@@ -50,8 +51,18 @@ Sources, in order:
 Rules:
 
 - **Delete what this pass disproved.** A statement whose defect no longer
-  reproduces, or whose row just went DONE, comes out. Remaining that only
-  grows is a changelog, and the item carries no history.
+  reproduces, or whose row just went DONE, comes out — and moves into
+  `REPORT.md` with its evidence (format:
+  [`delivery-report.md`](delivery-report.md)). Remaining that only grows is a
+  changelog, and the item carries no history; the report is where proven work
+  is kept.
+- **Tag what execution cannot close.** A statement whose next step is not
+  another execution round gets its back-edge in the line:
+  `(needs-decision: <what the user must settle>)` routes to
+  `tailrocks-record-decision`, `(needs-research: <the open fact>)` routes to
+  `tailrocks-research`. An untaggable statement is execution work; a tagged
+  one is how the close-out names the right skill instead of re-running a
+  loop that cannot close it.
 - Observable statements, not tasks. "Filter ignores archived sessions" is
   evidence; "fix the filter" is a plan, and plans are frozen elsewhere.
 - No wishes. Improvements nobody committed to belong in the item's own

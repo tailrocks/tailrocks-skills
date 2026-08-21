@@ -49,11 +49,15 @@ status, `tailrocks-retrospect` turns the round into skill patches.
 
 1. **Bind the round.** Read `roadmap/<slug>/README.md`, the plan manifest
    `plan/README.md`, `plan/coverage.md`, and the latest
-   `verification/NN-feedback.md` if one exists. Fix the branch and `HEAD`
-   short SHA now — every claim in the report is about that commit. This round
-   is the highest existing number plus one.
-   **Complete when:** the item's claims, the reported statements, and the
-   exact commit under test are written down.
+   `verification/NN-feedback.md` if one exists. When the package carries
+   `plan/spec/decisions.md`, read it too — it is the decision ground truth
+   the package was built against; when it differs from the item's live
+   `## Decisions`, verify against the live section and report the difference
+   itself as contract drift (the package predates a recorded decision). Fix
+   the branch and `HEAD` short SHA now — every claim in the report is about
+   that commit. This round is the highest existing number plus one.
+   **Complete when:** the item's claims, the reported statements, the
+   decisions under test, and the exact commit under test are written down.
 
 2. **Inventory the surfaces.** Read
    [`references/surface-inventory.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-prove/references/surface-inventory.md).
@@ -77,9 +81,14 @@ status, `tailrocks-retrospect` turns the round into skill patches.
    [`references/execution-evidence.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-prove/references/execution-evidence.md) —
    command, exit status, decisive output line, capture path, and for a visual
    surface its comparison against the blessed reference. Agents never fix
-   anything and never read another agent's findings.
+   anything and never read another agent's findings. One additional agent
+   runs the decisions lane: every recorded decision checked against what
+   shipped, `HELD` / `VIOLATED` / `NOT VERIFIABLE` with evidence — a
+   `VIOLATED` decision blocks the round like a blocking defect, because the
+   artifact broke a choice the user made and nobody re-opened.
    **Complete when:** every surface row carries a verdict backed by output
-   produced in this session.
+   produced in this session, and every decision carries one of its three
+   verdicts.
 
 5. **Audit the proofs.** Re-run the plan's own done criteria and the gates in
    `goal/START.md`, and judge each one's *strength*, not just its exit status:
@@ -104,8 +113,8 @@ status, `tailrocks-retrospect` turns the round into skill patches.
 7. **Write the round and hand off.** Use
    [`templates/report.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-prove/templates/report.md), whose shape is fixed by
    [`references/report-format.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-prove/references/report-format.md): blocking
-   defects first with their evidence, then contract drift, then what holds up,
-   then the recommended order. Commit on the item's existing branch —
+   defects first with their evidence, then decision compliance, then contract
+   drift, then what holds up, then the recommended order. Commit on the item's existing branch —
    `docs(roadmap): <slug> verification round <NN>`, trailer
    `Tailrocks-Skill: tailrocks-prove` — and push. Name `tailrocks-reconcile
    &lt;slug>` next.
@@ -135,6 +144,7 @@ status, `tailrocks-retrospect` turns the round into skill patches.
 Finish only when every claimed surface was executed or explicitly reported
 `NOT EXECUTED` with its reason, every verdict cites output produced in this
 session, every reported statement carries `CONFIRMED`, `REFUTED`, or `WIDER`,
+every recorded decision carries `HELD`, `VIOLATED`, or `NOT VERIFIABLE`,
 every done criterion and gate carries `PROVEN`, `VACUOUS`, or `FAILED`, no
 finding survived on one unchallenged observation, no source file and no status
 changed, and the round is committed on the item's own branch under its

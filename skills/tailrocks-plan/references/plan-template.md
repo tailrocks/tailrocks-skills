@@ -399,5 +399,9 @@ second package beside it:
   requirement loses its trace in the ledger.
 - Record spec deltas per the spec format rather than rewriting a requirement
   in place, so what changed stays legible.
+- Re-stamp `spec/decisions.md` from the item's live `## Decisions` body after
+  the refreshed spec is final — that is the only way the snapshot moves, and
+  it clears the `decisions-drift` gate that fired when the decision changed.
 - Regenerate `goal/` last, so the frozen contract fingerprint matches the
-  refreshed package rather than the one it replaced.
+  refreshed package rather than the one it replaced, and refresh the item's
+  `## Run` blocks in the same commit.

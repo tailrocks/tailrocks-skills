@@ -42,6 +42,20 @@
       "files": [
         "skills/tailrocks-prove/evals/fixtures/1/roadmap/loom-sync/verification/01-feedback.md"
       ]
+    },
+    {
+      "prompt": "Run a verification round on session-sync. The item has three recorded decisions and a plan/spec/decisions.md snapshot that matches the live section.",
+      "expected_output": "One additional agent runs the decisions lane: each recorded decision checked against what shipped and reported HELD, VIOLATED, or NOT VERIFIABLE with evidence — a command that exercised the behavior, or file:line for a structural choice. A VIOLATED decision is a blocking finding because the user settled it and nothing re-opened it; a NOT VERIFIABLE names what would settle it and is never silently dropped. The report carries the decision-compliance table after the blocking defects, before contract drift.",
+      "files": [
+        "evals/fixtures/1/roadmap/loom-sync/README.md"
+      ],
+      "id": 6
+    },
+    {
+      "prompt": "Prove session-sync — its plan/spec/decisions.md snapshot no longer matches the item's live Decisions section.",
+      "expected_output": "Verify against the item's live Decisions — the user's latest word — and report the difference itself as contract drift: the package predates a recorded decision. Never verify against the stale snapshot as if it were current, and never reconcile the two by hand; the re-stamp is a tailrocks-plan re-run.",
+      "id": 7,
+      "files": []
     }
   ]
 }

@@ -19,31 +19,27 @@ same blocks as manual prompts.
 
 One item, one folder: `roadmap/<slug>/plan/` (hub, plans, `spec/`,
 `coverage.md`) and `roadmap/<slug>/goal/` (`START.md`, `RESUME.md`,
-`check.sh`). Several items together only on explicit request, recorded as the
-exception.
+`check.sh`). Several items only on explicit request, recorded as the exception.
 
 ## Boundaries
 
 - Write only under `roadmap/<slug>/plan/`, `roadmap/<slug>/goal/`, `research/`
-  (gap-filling topics), and the item's status and Plan link. Never write
-  `roadmap/<slug>/verification/` — rounds belong to the skills that capture
-  reported defects and prove shipped work. Source, configuration, and
+  (gap-filling topics), and the item's status, Plan link, and `## Run` section.
+  Never write `roadmap/<slug>/verification/` — rounds belong to the skills that
+  capture reported defects and prove shipped work. Source, configuration, and
   dependencies stay unchanged; Git moves only per the delivery git contract
   below. Never implement — the package is the deliverable.
 - Require `READY`. On anything less, name the missing stage and stop; the
   user may override explicitly, and the override plus the skipped gaps are
   recorded in the handoff commit message and the plan hub.
-- The item's Decisions, Vocabulary, and Must not are fixed constraints. Where
-  repository reality contradicts the item, surface the conflict — never
-  silently pick a side.
+- The item's Decisions, Vocabulary, and Must not are fixed constraints;
+  repository reality contradicting them is surfaced, never silently resolved.
 - Evidence standard everywhere: URL, `file:line`, or method. Commands written
   into plans, gates, and done criteria come from the verification-tooling
   research and are **executed once during planning** — a package, target, or
-  path that does not resolve is a planning defect, never an executor's
-  surprise.
+  path that does not resolve is a planning defect.
 - New research lands in `research/<topic>/` as reusable, indexed topics, not
-  buried in the item folder.
-- An existing `plan/` is refreshed, never duplicated — the re-run rules are in
+  buried in the item folder.- An existing `plan/` is refreshed, never duplicated — the re-run rules are in
   [`references/plan-template.md`](references/plan-template.md).
 - Subagents inherit nothing: every brief restates its rules; a plan-writer
   subagent writes exactly one plan, never two.
@@ -84,19 +80,21 @@ later audit reads, and the commits are the item's only history.
    and index them.
    With `--deep`, run a completeness critic and reslice until a round surfaces
    nothing load-bearing. **Complete when:** every ledger unknown has vetted
-   evidence, a named assumption, or an explicit deferral — and verification
-   commands are proven by running them, not assumed.
+   evidence, a named assumption, or an explicit deferral, and verification
+   commands are proven by running them.
 
 3. **Write the spec.** Read
    [`references/spec-format.md`](references/spec-format.md). Write
    `roadmap/<slug>/plan/spec/README.md` (capability index, must-not
    registry, entry-point registry, deferrals) and one capability file per
-   area: requirements with scenarios, screen contracts per mockup. **A
-   screen with a visual surface and no blessed design reference stops
+   area: requirements with scenarios, screen contracts per mockup. Snapshot
+   the item's `## Decisions` body verbatim into `plan/spec/decisions.md`
+   (blank lines stripped per the format reference), so a decision moving under
+   the package trips `check.sh` as `decisions-drift`.
+   **A screen with a visual surface and no blessed design reference stops
    planning here** — say which screens, name the medium's design skill, and
    let the user run it or record the deferral; a schematic mockup is layout
-   intent, never pixel truth, and planning around it hands the implementer an
-   argument instead of a contract.
+   intent, never pixel truth.
    **Complete when:** every `S#`, `F#`, `W#`, `N#`, `E#`, `B#` lands in the
    spec or a logged deferral; every screen contract cites a blessed reference
    or the user's recorded deferral; every `E#` names the plan that creates
@@ -114,7 +112,10 @@ later audit reads, and the commits are the item's only history.
    runner, build, test, lint gates green on an empty skeleton — before any
    feature slice; the goal gates and every later precondition may reference
    only tooling an earlier slice guarantees. For existing repositories with
-   working gates, note the proven commands instead.
+   working gates, note the proven commands instead. Keep slice scopes disjoint
+   wherever the design allows — non-overlapping in-scope path sets are what the
+   executor protocol may run concurrently; record every unavoidable overlap in
+   the hub's Dependency notes as a forced sequence.
    Write `roadmap/<slug>/plan/README.md` first — manifest table, one-line
    item briefs, the repo law binding every plan, dependency notes, executor
    protocol — and copy `templates/check.sh` to `roadmap/<slug>/goal/check.sh`
@@ -122,7 +123,6 @@ later audit reads, and the commits are the item's only history.
    **Complete when:** the dependency graph is acyclic, every requirement
    is assigned or explicitly deferred, and every slice is demoable or
    verifiable on its own.
-
 5. **Write plans via subagents.** Read
    [`references/plan-template.md`](references/plan-template.md) including
    its writer brief, and
@@ -154,7 +154,7 @@ later audit reads, and the commits are the item's only history.
    in each plan it could tempt, every entry point owned by a plan and an
    end-to-end test, every dependency edge backed by a precondition check — it
    reports uncovered IDs and missing edges; the orchestrator fixes and re-runs
-   the gate. Run the gate inline when parallel agents are unavailable.
+   the gate — run inline when parallel agents are unavailable.
    **Complete when:** no reviewer-reported ambiguity remains and the gate
    passes.
 
@@ -165,7 +165,10 @@ later audit reads, and the commits are the item's only history.
    `roadmap/<slug>/goal/RESUME.md`, then stamp the hub's frozen contract
    fingerprint. **Every gate line is `<command> ||| <proof>`** — the proof
    prints how many units the command executed, because a gate that cannot tell
-   "everything passed" from "nothing ran" is not a gate. Set the item
+   "everything passed" from "nothing ran" is not a gate. Write the item's
+   `## Run` section with the pasteable start and resume blocks per the handoff
+   reference — refreshed on every re-plan, never pointing at a goal file that
+   does not exist. Set the item
    `PLANNED` with its Plan link and index row per the roadmap item format
    (tailrocks-idea's roadmap-item-format.md), then commit the package as the
    final action. **Complete when:** a goal-executing host takes the blocks
@@ -185,8 +188,7 @@ neither is a named exception in the hub, never a silent inclusion.
 ## Final gate
 
 Never plan pixel truth from a schematic mockup: a screen with a visual surface
-needs its blessed design reference, or the user's recorded deferral, before its
-contract is written.
+needs its blessed design reference or the user's recorded deferral first.
 
 Finish only when source is untouched, the ledger shows every spec-bearing ID
 (`S#`/`F#`/`W#`/`N#`/`E#`/`B#`) covered or deferred aloud and every other prefix
@@ -195,4 +197,4 @@ done criteria that assert executed work and specific STOP conditions, every
 command in the package ran once during planning, the goal condition is
 machine-checkable and gate-first with a proof expression on every gate, the
 closing content gate passed, and the item is `PLANNED` with consistent links and
-index row.
+index.

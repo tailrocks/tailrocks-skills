@@ -58,6 +58,8 @@ files.
 ## Dependency notes
 
 - 002 requires 001 because <reason>.
+- Scope overlaps that force sequencing where the manifest has no edge:
+  <plan A> and <plan B> both touch <path> — never run concurrently.
 
 ## Deferrals carried from the spec
 
@@ -89,8 +91,11 @@ One plan per fresh session or loop iteration. Before work that could lead to
 any DONE flip, run `sh roadmap/<slug>/goal/check.sh` on the clean tree and
 paste its final line. `BLOCKED nonterminal-rows` is expected while plans
 remain; dirty-tree stops for cleanup, plan-drift marks the package STALE for
-re-planning, malformed stops for repair, and gate-failed or gate-vacuous is
-unfinished work — a gate that executed nothing has not been satisfied.
+re-planning, decisions-drift means the item's Decisions moved under the
+frozen snapshot — stop and report "decisions changed — run tailrocks-plan
+<slug> to refresh the package, then resume", malformed stops for repair, and
+gate-failed or gate-vacuous is unfinished work — a gate that executed nothing
+has not been satisfied.
 
 1. Re-read this file first — other sessions may have updated it. Set the
    roadmap item at roadmap/<slug>/README.md to IN EXECUTION on the first
@@ -125,6 +130,26 @@ unfinished work — a gate that executed nothing has not been satisfied.
    works. DONE is set only after a verification round found no blocking
    defect, and only by tailrocks-reconcile.
 
+Concurrent execution, when the host can run parallel executor sessions:
+
+- Two TODO plans may run concurrently only when every dependency of both is
+  DONE and their Scope sections name disjoint in-scope path sets. Overlapping
+  paths are an implicit dependency edge — run those sequentially, whatever
+  the manifest says.
+- Each concurrent plan runs in its own `git worktree` branched from the item
+  branch's HEAD, worked by a separate executor session following this same
+  protocol inside the worktree.
+- The orchestrating session alone writes hub rows: the IN PROGRESS claim
+  lands before dispatch (that claim is how a second session skips the row),
+  and DONE lands only after the worktree merged back and the plan's done
+  criteria re-ran green on the merged tree.
+- Merge worktrees back one at a time. After each merge: re-run that plan's
+  done criteria, then the gates, on the item branch — never inside a
+  worktree — then remove the worktree. A merge that breaks a gate stops
+  dispatching further work until it is resolved.
+- Sequential execution remains the default and is always correct; concurrency
+  only shortens the wall clock of independent slices.
+
 Plans are self-contained — do not read the roadmap item, spec, or
 research to fill a gap; a gap is a plan defect to report, not improvise
 around.
@@ -156,6 +181,35 @@ message. A host that takes **a task directly** gets the kickoff prompt with
 the condition restated inside it. A host with **no goal loop** consumes both
 as manual prompts, with no persisted objective and no stop enforcement — the
 operator runs the script and reads its final line.
+
+## The item's `## Run` section — the copy-paste surface
+
+The user should never have to open the goal package to find the invocation.
+When the package lands, and on every re-plan, write the item's `## Run`
+section (the section and its placeholder are part of the roadmap item format)
+with exactly two blocks:
+
+```markdown
+## Run
+
+Start execution:
+
+```text
+/goal Follow roadmap/<slug>/goal/START.md
+```
+
+Resume after any interruption:
+
+```text
+/goal Follow roadmap/<slug>/goal/RESUME.md
+```
+```
+
+A host without a goal loop takes the prompt blocks from `goal/START.md`
+itself; the section says so in one line under the blocks when the package's
+host class is "no goal loop". The section is writable item content — refresh
+it in the same commit as the package, and never let it point at a goal file
+that does not exist.
 
 ## The gates block — every gate names how it proves it executed work
 
