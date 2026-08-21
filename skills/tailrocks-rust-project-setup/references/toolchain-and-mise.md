@@ -1,8 +1,10 @@
 # Toolchain and Mise
 
-`rust-toolchain.toml` is the single Rust version source. The house baseline pins
-current stable Rust 1.97.0 plus Clippy, rustfmt, and LLVM coverage tools. Keep
-`workspace.package.rust-version` equal when only latest stable is supported.
+`rust-toolchain.toml` is the single Rust version source, so it is the only place
+that carries the number: read the channel there rather than from any prose. The
+house baseline pins current stable plus Clippy, rustfmt, and LLVM coverage
+tools. Keep `workspace.package.rust-version` and `clippy.toml`'s `msrv` equal to
+it when only latest stable is supported — a gate checks that they agree.
 
 Mise owns every cargo tool at an exact version. Commit `mise.toml` and
 `mise.lock`; local and CI invoke the same `mise run` tasks. Upgrade the Rust pin,
