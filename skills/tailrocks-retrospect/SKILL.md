@@ -83,8 +83,9 @@ commit, no comment. Proposed patches stay as text inside the record until
    **Complete when:** the item, package, topics, and the full commit table
    exist, or the invocation is declined with what was missing.
 
-2. **Rebuild the invocation sequence.** Order the commit table by author date
-   in one stated timezone. Map each commit to a skill by its
+2. **Rebuild the invocation sequence.** Order the commit table on the author
+   instant, and render its dates in the frame the reference names. Map each
+   commit to a skill by its
    `Tailrocks-Skill` trailer. With no trailer: default to `unattributed`,
    itself evidence that the marking rule did not bind — but only where a
    skill's contract actually required a trailer on those paths; source no

@@ -6,7 +6,13 @@ TanStack application, or a native macOS surface. The lane changes which skills
 the findings land on, never how the findings are found.
 
 Run all six. Record a result for each, including "none" — an unrun detector
-and a clean detector are indistinguishable in a record that omits both.
+and a clean detector are indistinguishable in a record that omits both. A
+detector whose inputs are unattributed reports `unrunnable over <n> commits`,
+never `none`: D2 and D4 group by skill and D6 reads only attributed commits,
+so an untrailered stretch forms no group and is silently skipped rather than
+found clean. This is the same rule the partial-table check applies below, for
+the same reason — a detector that could not see the commits has not cleared
+them.
 
 ## Building the sequence first
 
@@ -24,8 +30,7 @@ TZ=<item-authoring-offset> git log --reverse --author-date-order \
 # message matching ^Tailrocks-Skill:[[:space:]]*(.+)$.
 
 # Pass 2 — changed paths per commit. A plain --name-only prints nothing at all
-# for a merge commit, and so does `-m --first-parent`; --diff-merges is the
-# spelling that actually emits them.
+# for a merge commit; --diff-merges=first-parent is what emits them.
 git log --reverse --author-date-order --diff-merges=first-parent --name-only \
   --format='%x1e%H' <base>..<head>
 
@@ -58,8 +63,9 @@ Rules for the table:
 - **Changed paths per commit** (`--diff-merges=first-parent --name-only`, or
   one `commits/<sha>` fetch per pull-request commit) — five of the six
   detectors key on paths, not subjects. A plain `--name-only` prints nothing
-  at all for a merge commit, and neither does `-m --first-parent`; only the
-  `--diff-merges` spelling emits them.
+  at all for a merge commit — a merge-synced lane hands the path-keyed
+  detectors an empty set and they report clean. `--diff-merges=first-parent`
+  emits them; `-m --first-parent` is an equivalent spelling.
 - **A merge authored no lane work.** A merge-sync's first-parent paths are
   what the base branch brought *in*, not what this item shipped, so handing
   them to the path-keyed detectors turns every file the base happened to touch
@@ -75,10 +81,16 @@ Rules for the table:
   partial table are worse than no record at all.
 - **Name the lane's shape before trusting the table.** A merged item has no
   `roadmap/<slug>` branch left: resolve `<head>` from its pull request's merge
-  commit and `<base>` from that commit's first parent. A squash-merged lane is
-  a single commit carrying every skill's trailer at once — the per-commit
-  detectors cannot run on it, and the record says so and stops rather than
-  reporting six clean results over a table that was never built.
+  commit and `<base>` from that commit's first parent. A squash-merged lane
+  collapses to a single commit carrying every skill's trailer at once, so the
+  git range cannot feed the per-commit detectors — but the squash discards the
+  commits only from the branch, not from the forge. The pull request still
+  serves them: build the table from `pulls/<number>/commits`, or fetch
+  `refs/pull/<number>/head` and range against that. Only when neither is
+  reachable does the record name the squash and stop, rather than reporting
+  six clean results over a table that was never built. A repository whose
+  every item squash-merges is the common case, not the exception — a skill
+  that stopped there would be inert on every item it will ever audit.
 - **Trailer first, inference second.** `Tailrocks-Skill` is the primary key.
   A commit without one that touches any artifact the item's own documents
   point at — `roadmap/`, `research/`, `plans/`, and the design package each

@@ -29,12 +29,12 @@ Log entry: <list>. Log actors that are not skills: <list>.
 
 | Detector | Result |
 |---|---|
-| D1 evidence after lock-in | <n findings \| none> |
-| D2 rework loop | <n findings \| none> |
-| D3 untraceable shipped scope | <n findings \| none> |
-| D4 unconsumed or stale-consumed output | <n findings \| none> |
-| D5 lifecycle inversion | <n findings \| none> |
-| D6 write-scope breach | <n findings \| none> |
+| D1 evidence after lock-in | <n findings \| none \| unrunnable over <n> commits> |
+| D2 rework loop | <n findings \| none \| unrunnable over <n> commits> |
+| D3 untraceable shipped scope | <n findings \| none \| unrunnable over <n> commits> |
+| D4 unconsumed or stale-consumed output | <n findings \| none \| unrunnable over <n> commits> |
+| D5 lifecycle inversion | <n findings \| none \| unrunnable over <n> commits> |
+| D6 write-scope breach | <n findings \| none \| unrunnable over <n> commits> |
 
 ## Findings
 
