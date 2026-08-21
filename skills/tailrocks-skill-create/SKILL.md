@@ -67,9 +67,12 @@ types without copying values.
    conditional for context-dependent behavior; the wrong form measurably
    backfires. Split content by cost: the router carries triggers, mode
    gates, and the rules an agent must hold while working; depth defaults
-   to references, routed by *when to read*, never summarized.
-   **Complete when:** each baseline failure maps to a form and each
-   section to a layer.
+   to references, routed by *when to read*, never summarized. The
+   contract also names the deliverable's destination — the conversation
+   or a file in the repository; the doctrine's output-contract section
+   owns that choice.
+   **Complete when:** each baseline failure maps to a form, each
+   section to a layer, and the deliverable has a named destination.
 
 4. **Write it.** Start from the shipped skeleton —
    [`SKILL.md`](templates/skill/SKILL.md),

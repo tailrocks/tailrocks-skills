@@ -17,8 +17,10 @@ is a change to *every* behavior in the file: each added line dilutes the
 ones already there.
 
 An update never changes how the skill is invoked or when it fires —
-name, trigger surface, and arguments stay. A change that would alter
-them is not an update; stop and say so.
+name, trigger surface, and arguments stay — and never moves where the
+deliverable lands: the conversation or a file is part of the contract.
+A change that would alter any of these is not an update; stop and say
+so.
 
 The authoring doctrine — design, testing, and house wiring — is shipped
 with `tailrocks-skill-audit`; this skill operationalizes it for edits.

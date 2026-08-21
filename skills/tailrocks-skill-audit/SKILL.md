@@ -41,7 +41,7 @@ present does not imply permission to remove it.
 
 2. **Judge against the doctrine.** Read
    [`design-doctrine.md`](references/design-doctrine.md) for description,
-   router, and reference defects;
+   router, reference, and output-contract defects;
    [`testing-doctrine.md`](references/testing-doctrine.md) for eval
    defects; [`house-wiring.md`](references/house-wiring.md) for wiring
    gaps. Judge overlap last: two skills owning one responsibility is a
