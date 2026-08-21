@@ -40,6 +40,12 @@
       "prompt": "Use the same approach to design the preferences window for our macOS app — an HTML design route we can screenshot as its reference.",
       "expected_output": "Declines: macOS windows are outside this skill's territory and an HTML prototype is not a design source for native macOS; routes macOS design to tailrocks-macos-design.",
       "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "The invoice list design is blessed, so let's build the real page now. Write the /billing/invoices route with the loader hitting our invoices endpoint, and rebuild the table markup in the route file so the page is self-contained and we're not importing out of a design folder.",
+      "expected_output": "Refuses the rebuild and lifts instead: the real route imports the same InvoiceListScreen component the blessed design route rendered, and supplies real props from the loader where the design route supplied fixtures. States why a reimplementation is not equivalent — a screen rebuilt from a blessed route has already diverged, and every later \"matches the design\" check becomes someone's judgement instead of the same component running. Keeps the component where it lives rather than copying its markup into the route, and writes the loader and data wiring in the route only.",
+      "files": ["skills/tailrocks-web-design/evals/fixtures/blessed-screen/MANIFEST.md", "skills/tailrocks-web-design/evals/fixtures/blessed-screen/invoice-list-screen.tsx"]
     }
   ]
 }
