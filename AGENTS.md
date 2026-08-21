@@ -280,6 +280,23 @@ automated latest-version enforcement.
 
 Skill definition: `skills/tailrocks-code-health/SKILL.md`
 
+### tailrocks-improve
+
+Audit any repository — no roadmap or pipeline required — and turn verified
+findings into standalone, executor-ready implementation plans under
+`plans/`. Parallel read-only investigator subagents run the audit lanes;
+every finding's evidence is re-read by the planner before it may be
+reported; ranking is leverage discounted by confidence and fix-risk; each
+plan is self-contained for a zero-context executor, stamped with the
+commit it was planned at, drift-checked against that SHA, and gated on
+verification commands that were run during recon rather than guessed. It
+never implements, never writes outside `plans/`, and reconciles its
+backlog on reruns instead of duplicating plans. When the repository runs
+the delivery pipeline and the findings should become roadmap items, that
+is tailrocks-audit's job — improve owns the pipeline-free lane.
+
+Skill definition: `skills/tailrocks-improve/SKILL.md`
+
 ### The delivery family — roadmap-driven pipeline
 
 Ten skills drive work from a cold repository or a captured idea through

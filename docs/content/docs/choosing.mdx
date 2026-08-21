@@ -173,6 +173,21 @@ skills** that produced it, proposing patches against their definitions.
 Audit needs no roadmap item and produces them; retrospect needs exactly one
 and produces none. If there is no item to point at, the answer is audit.
 
+### audit or improve
+
+Both cold-start a repository and end in plans; they differ in what the
+findings become. [`tailrocks-audit`](/docs/skills/tailrocks-audit) seeds
+this collection's own pipeline — findings land as DRAFT roadmap items or as
+direct `roadmap/<slug>/plan/` packages, judged against the house stack, and
+stay inside that repository's delivery loop.
+[`tailrocks-improve`](/docs/skills/tailrocks-improve) owns the
+pipeline-free lane: the same fan-out, the same evidence vetting, but the
+output is a standalone `plans/` backlog of zero-context executor plans in a
+repository that adopts nothing else — judged against the repository's own
+contracts, and never implementing what it plans. Choose audit when the
+repository runs (or should run) the roadmap pipeline; choose improve when
+it does not.
+
 ### retrospect or reconcile
 
 Both look backwards at an item, at different subjects.
