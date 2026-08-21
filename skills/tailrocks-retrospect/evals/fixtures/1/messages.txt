@@ -44,7 +44,6 @@ Signed-off-by: A Maintainer <maintainer@example.invalid>
 d7f8391
 ci(build): split the workspace test job by crate
 
-Tailrocks-Skill: tailrocks-rust-project-setup
 Signed-off-by: A Maintainer <maintainer@example.invalid>
 ---
 d8a4460
