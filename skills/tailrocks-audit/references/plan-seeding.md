@@ -13,7 +13,12 @@ pipeline entirely, only when **all** of the following hold:
 
 - The finding fits one fresh executor session — no vertical slicing
   needed.
-- Effort is S or M and confidence is HIGH.
+- Effort is S or M, confidence is HIGH, **and fix risk is LOW**. Effort
+  and risk are independent: a one-line change inside an authorization
+  check, a payment path, a migration, or a concurrency-sensitive region
+  is small and dangerous, and small-and-dangerous is exactly the shape a
+  cheap executor should not be handed unreviewed. MEDIUM or HIGH fix risk
+  seeds a roadmap item instead, no matter how small the diff.
 - Nothing about the fix requires a product decision — it is purely
   mechanical (a bug fix, a dependency bump, a coverage gap, a doc
   correction). Anything that changes user-facing behavior or trades one
@@ -45,8 +50,26 @@ item reached a `plans/<slug>/` package with a `GOAL.md`; do not write it
 onto a package that has no item. Record the package's own readiness in
 its manifest row instead — `TODO` for the slice, and a one-line
 `Parentless: seeded directly by tailrocks-audit against <commit>` note so
-a later reader knows the missing item is deliberate, not lost. `execute`
-accepts such a package on that note; it does not require an item.
+a later reader knows the missing item is deliberate, not lost.
+
+**The hub still owes the executor everything a hub owes.** A plan file is
+written short on purpose: `tailrocks-plan` omits package-invariant law
+from it because the executor reads the hub *and* the plan, and the hub
+carries the rest. A single-row manifest breaks that contract — the
+executor arrives with no repository law, no data-not-instructions rule,
+no secrets rule, and no executor protocol. So a directly-seeded
+`plans/<slug>/README.md` carries the same hub sections
+`tailrocks-plan` writes, even for one slice, and the package gets its
+`GOAL.md` and goal-check script the same way. Without them the claim that
+`/goal` execution keeps working unchanged is false for this path.
+
+**A direct seed skips shaping, never review.** It bypasses
+`tailrocks-brainstorm` and `tailrocks-finalize` because there is no open
+product question — not because the plan needs less scrutiny. Cold-review
+the plan the way `tailrocks-plan` does, with a fresh-context reader that
+sees only the package, before the package is offered to `execute`.
+`execute` accepts a parentless package on its manifest note; it does not
+accept an unreviewed one.
 
 ## Seeding a roadmap item
 

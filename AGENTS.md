@@ -569,7 +569,12 @@ for other projects.
 ## Validation
 
 Requires Bun, pinned in `mise.toml`; `mise install` provisions it. Before
-publishing changes, run the Bun-native skill and manifest validator:
+publishing changes, run the Bun-native skill and manifest validator — it
+checks every skill and manifest, and rejects three things in shipped
+skill content: code-forge URLs, design-file tool names, and model brand
+names (a skill names a capability role, never the route that fills it
+today). Each gate allows a line that names the thing in order to forbid
+it.
 
 ```sh
 bun run scripts/validate-skills.ts

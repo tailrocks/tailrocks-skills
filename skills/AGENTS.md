@@ -6,7 +6,23 @@ The validator forbids code-forge URLs (github.com, gitlab.com,
 bitbucket.org, codeberg.org, and all gists) in shipped skill content —
 `SKILL.md`, `references/`, `templates/` — allowing only release pages,
 the allowlisted canonical homes of house-adopted libraries, and
-placeholder owners. What the gate cannot judge, these rules do:
+placeholder owners.
+
+It rejects two more things in that same content. **A design-file tool is
+never the design reference** — the reference is real code on the real
+substrate: a design route the application rendered, a running prototype,
+a ratatui golden frame — so a skill never sends an agent to one, never
+asks for one as a deliverable, and never treats one as the thing an
+implementation is measured against. And **a skill names the capability
+role it needs, never the model route that fills it today**: provider
+mappings are volatile and the shared tree is source-neutral, so a skill
+says "the cheapest route that can follow this plan mechanically" and the
+concrete mapping lives in a design note or the client capability
+registry, where it can be dated and re-verified. Both gates allow a line
+that names the thing in order to forbid it — a prohibition has to say
+what it prohibits.
+
+What the gates cannot judge, these rules do:
 
 - Extract external knowledge into the skill's own references; never
   point the reader at another project, above all another skill or

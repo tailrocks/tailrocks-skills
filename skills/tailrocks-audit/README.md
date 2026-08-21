@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-audit` …
 
-Arguments: `[quick|branch|next|<category>|ask <question>|plan <description>|execute <slug>|sweep] [target] [--deep]`
+Arguments: `[quick|branch|next|<category>|ask <question>|plan <description>|execute <slug>|sweep] [target] [--deep] [--batch]`
 
 ## Skill definition
 
