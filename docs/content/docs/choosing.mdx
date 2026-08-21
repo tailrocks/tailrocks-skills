@@ -192,8 +192,13 @@ invoking it authorizes the push and the PR.
 
 [`tailrocks-audit`](/docs/skills/tailrocks-audit) is the cold-start
 entry: no idea captured yet, no PR open, just a repository or a branch
-that needs a first pass to find out what is worth doing, and it hands
-selected findings to the roadmap/plan pipeline or a cheap-tier executor.
+that needs a first pass to find out what is worth doing. Selected
+findings go to the roadmap/plan pipeline, or straight to a
+`bounded-executor` when the finding is small, certain, and low-risk to
+get wrong — and to a fixer skill instead when the finding's shape says
+so: `tailrocks-remediate` when the defect class will recur,
+`tailrocks-rethink` when nothing failed but the shape keeps producing
+near-misses, `tailrocks-simplify` for redundancy inside a diff.
 [`tailrocks-code-health`](/docs/skills/tailrocks-code-health) is not a
 one-off audit — it is the standing, monotonic debt gate that keeps a
 named class from growing once it is wired into CI.
