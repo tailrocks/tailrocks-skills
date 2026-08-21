@@ -79,7 +79,10 @@ image file in this folder, or Mermaid).
 - **Key interactions**: <element — behavior>
 - **Design**: <pointer to the blessed design reference — a gallery
   manifest section, visual-test manifest section, or prototype sign-off —
-  once a design-reference skill produced one; — until then>
+  once a design-reference skill produced one; — until then. A screen with a
+  visual surface needs one before `tailrocks-plan` will write its contract:
+  the design stage runs between READY and planning, in the medium's own
+  skill.>
 
 ## Flows
 

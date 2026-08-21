@@ -88,9 +88,15 @@ later audit attribute each PR commit to the skill that produced it.
    [`references/spec-format.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-plan/references/spec-format.md). Write
    `plans/<slug>/spec/README.md` (capability index, must-not registry,
    deferrals) and one capability file per area: requirements with
-   scenarios, screen contracts per mockup.
+   scenarios, screen contracts per mockup. **A screen with a visual
+   surface and no blessed design reference stops planning here** — say
+   which screens, name the medium's design skill, and let the user run it
+   or record the deferral; a schematic mockup is layout intent, never
+   pixel truth, and a plan that treats it as truth hands the implementer
+   an argument instead of a contract.
    **Complete when:** every `S#`, `F#`, `W#`, `N#`, `B#` lands in the spec
-   or a logged deferral; `D#`/`R#`/`A#`/`Q#` resolve per the ledger's
+   or a logged deferral; every screen contract cites a blessed reference
+   or the user's recorded deferral; `D#`/`R#`/`A#`/`Q#` resolve per the ledger's
    pipeline table; and every requirement cites its item anchor and research
    evidence.
 
@@ -173,6 +179,10 @@ the plan hub, not a silent inclusion — this is what a self-reported `DONE`
 row in `coverage.md` cannot catch on its own.
 
 ## Final gate
+
+Never plan pixel truth from a schematic mockup: a screen with a visual
+surface needs its blessed design reference or the user's recorded deferral
+before its contract is written.
 
 Finish only when source is untouched, the ledger shows every spec-bearing ID
 (`S#`/`F#`/`W#`/`N#`/`B#`) covered or deferred aloud and every other prefix

@@ -40,6 +40,14 @@
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "The frontier is empty on tui-dashboard and both screens still have an empty Design line — run the readiness gate.",
+      "expected_output": "READY is granted: an empty Design line does not block it, because the checklist requires schematic mockups and states, not a rendered reference. The close-out names the design stage as the next step before planning — tailrocks-tui-design for these terminal screens, since the item's decided stack is ratatui — and says that tailrocks-plan refuses a screen contract with no blessed reference. Naming tailrocks-plan as the only next step, or holding READY hostage to a design reference, are both wrong.",
+      "files": [
+        "skills/tailrocks-finalize/evals/fixtures/roadmap/tui-dashboard/README.md"
+      ]
     }
   ]
 }

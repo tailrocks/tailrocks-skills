@@ -54,6 +54,11 @@ The single most useful rule in the whole pipeline: **only finalize grants
 READY, and plan requires READY.** That one gate is what stops an agent
 implementing a feature whose behavior nobody has decided yet.
 
+Its companion covers the interface: **plan requires a blessed design
+reference for every screen with a visual surface**, produced in the
+[design stage](#the-design-stage) between READY and planning. Behavior
+decided, pixels undecided is the other way an implementer ends up guessing.
+
 ## What each skill owns
 
 | Skill | Owns | Refuses | Writes |
@@ -189,22 +194,39 @@ to write Swift, Rust, or TypeScript — that is what the stack skills are for, a
 mixing the two would put language policy in a roadmap item where nobody looks
 for it.
 
-They meet in two places:
+They meet in two places: the design stage, and planning.
 
-1. **During shaping**, a design skill produces the artifacts the item points at.
-   `tailrocks-macos-design` writes the experience brief and native component
-   map; the roadmap item's Screens section references them rather than
-   re-describing them. The design-reference skills go one step further and
-   produce the rendered target itself — `tailrocks-tui-design` golden
-   frames, `tailrocks-web-design` design routes, `tailrocks-macos-prototype`
-   a runnable prototype — which each screen's `Design:` line points at and
-   finalize confirms against, live. Screenshot baselines are frozen only
-   after finalization (`tailrocks-web-visual-qa` for web,
-   `tailrocks-macos-visual-qa` for macOS), and the plan's done criteria
-   enforce the resulting check mechanically.
-2. **During planning**, `tailrocks-plan` names the stack skill each slice must
-   be executed under, and its verification research produces the exact gate
-   commands. The executor then invokes that skill while implementing the slice.
+### The design stage
+
+Between READY and planning. `tailrocks-finalize` grants READY on schematic
+mockups — layout intent, never pixel truth. The medium's design skill then
+produces the reference the implementation is measured against, and
+`tailrocks-plan` refuses a screen contract that cites none.
+
+One skill per medium, one owner per stage:
+
+| Medium | design | bless | freeze |
+|---|---|---|---|
+| Terminal (Rust, ratatui) | `tailrocks-tui-design` | `tailrocks-tui-design` | `tailrocks-tui-design` — the golden test |
+| Web (TanStack, shadcn/ui) | `tailrocks-web-design` | `tailrocks-web-design` | `tailrocks-web-visual-qa` |
+| macOS (Swift, Liquid Glass) | `tailrocks-macos-design` | `tailrocks-macos-prototype` — on the running app | `tailrocks-macos-visual-qa` |
+
+**Design** authors the reference on the real substrate from fixtures. **Bless**
+is the user's recorded sign-off; an agent never blesses its own output.
+**Freeze** takes the mechanical baseline. **Audit** checks an implementation
+against the blessed reference. `tailrocks-liquid-glass` owns no stage — it is
+the material authority the macOS skills consult while building.
+
+An item whose screens have no visual surface skips the stage and goes straight
+to planning. An item that skips it with screens that do have one stops at
+`tailrocks-plan`, which names the screens and the skill rather than guessing
+pixels on the implementer's behalf.
+
+### Planning
+
+`tailrocks-plan` names the stack skill each slice must be executed under, and
+its verification research produces the exact gate commands. The executor then
+invokes that skill while implementing the slice.
 
 Two worked examples follow the whole route:
 
