@@ -30,10 +30,17 @@ the user's call.
 - *(none)*: full audit — every category, whole repository.
 - `quick`: cheap pass — hotspots and top findings only, fewer lanes.
 - `--deep`: a depth modifier, not a standalone mode — composes with any
-  other mode or named lane (`--deep`, `security --deep`, `branch --deep`)
-  to run every applicable lane over every package with no leverage cutoff.
-  Every mode and every lane accepts it, `ask` included. Mutually exclusive
-  with `quick`; a bare `deep` means the same thing.
+  other mode or named lane (`--deep`, `security --deep`, `branch --deep`).
+  Mutually exclusive with `quick`; a bare `deep` means the same thing.
+  Every mode accepts it and each has one concrete deeper operation: for a
+  lane run, every applicable lane over every package with no leverage
+  cutoff; for `ask`, parallel investigators instead of one; for `next`,
+  competing directions with their trade-offs rather than a single
+  recommendation; for `plan`, a second cold reviewer on the package; for
+  `execute`, a second independent review of the diff before the verdict;
+  for `sweep`, re-verify every row rather than sampling.
+- `--batch`: no interactive selection — take the size test's own default
+  and report it. For headless and `/goal` runs.
 - `branch`: scope the audit to what the current branch changed against its
   merge base — the pre-PR pass. Composes with `--deep` and a named category.
 - `<category>`: one lane only (`security`, `perf`, `ux`, `tui`,
@@ -114,11 +121,19 @@ the user's call.
 
 4. **Prioritize.** Order surviving findings by leverage — impact over
    effort, weighted by confidence — into one table: finding, category,
-   evidence, effort, confidence. Ask the user which findings become work;
-   `next` mode's suggestions get their own table, never merged with defect
-   findings.
+   evidence, impact, effort, confidence, fix risk. Ask the user which
+   findings become work; `next` mode's suggestions get their own table,
+   never merged with defect findings.
    **Complete when:** the table is delivered and the user's selection is
-   captured.
+   captured — or, under `--batch`, the default selection is stated.
+
+   **`--batch` makes this step non-interactive** for a headless or `/goal`
+   run: instead of asking, select every finding the size test would seed
+   directly and report the selection and its rule as part of the table.
+   Everything else still becomes a `DRAFT` item, which is where a human
+   picks it up. `--batch` never lowers a bar — a MEDIUM-or-worse fix risk
+   still seeds an item rather than a package, and no finding skips
+   verification because nobody is watching.
 
 5. **Seed the right artifact.** Read
    [`references/plan-seeding.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-audit/references/plan-seeding.md) for the
@@ -155,6 +170,18 @@ the user's call.
    the item's Log and point at `tailrocks-brainstorm` to re-shape.
    **Complete when:** every audit-sourced item and package has a
    re-verified status.
+
+## Delivery git contract
+
+Artifact writes follow the delivery family's contract, per
+`tailrocks-idea`'s reference. A seeded roadmap item lands on its own
+`roadmap/<slug>` delivery branch with its draft PR. A directly-seeded
+`plans/<slug>/` package has no item and therefore no item branch: commit
+it on the branch the audit ran from, and say so in the report. Either
+way, end every invocation by committing this skill's own artifact writes
+in the repository's commit convention, with the trailer
+`Tailrocks-Skill: tailrocks-audit`, then push. An `execute` worktree is
+the exception — its branch is disposable and this skill never pushes it.
 
 ## Final gate
 
