@@ -239,6 +239,55 @@ describe("validate", () => {
     expect(await validate(root)).toContain("INSTALL.md: release pin v0.9.0 must equal v1.0.0");
   });
 
+  test("rejects a design-file tool named in skill content", async () => {
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\nExport the artboard from Figma and match it.\n`,
+    );
+    expect(await validate(root)).toContain(
+      `${skill}:SKILL.md: design-file tool forbidden in skill content: Export the artboard from Figma and match it.`,
+    );
+  });
+
+  test("allows a design-file tool named in order to forbid it", async () => {
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\nA Figma file is never the design reference.\n`,
+    );
+    expect(await validate(root)).toEqual([]);
+  });
+
+  test("does not match sketch used as an ordinary verb", async () => {
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\nA description that sketches the workflow becomes a shortcut.\n`,
+    );
+    expect(await validate(root)).toEqual([]);
+  });
+
+  test("rejects a model route pinned in skill content", async () => {
+    await write(`skills/${skill}/references/routing.md`, "Dispatch Haiku 4.5 as the executor.\n");
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[Routing](references/routing.md)\n`,
+    );
+    expect(await validate(root)).toContain(
+      `${skill}:references/routing.md: model brand name forbidden in skill content: Dispatch Haiku 4.5 as the executor.`,
+    );
+  });
+
+  test("allows a client name that is not a model route", async () => {
+    await write(
+      `skills/${skill}/references/routing.md`,
+      "`CLAUDE.md` and `GEMINI.md` are symlinks to the AGENTS.md beside them.\n",
+    );
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[Routing](references/routing.md)\n`,
+    );
+    expect(await validate(root)).toEqual([]);
+  });
+
   test("requires Kimi keywords to include Claude keywords", async () => {
     const base = { name: "tailrocks-skills", version: "1.0.0", description: "same" };
     await write(".claude-plugin/plugin.json", JSON.stringify({ ...base, keywords: ["swift"] }));
