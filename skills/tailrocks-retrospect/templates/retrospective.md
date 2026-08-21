@@ -29,12 +29,17 @@ Log entry: <list>. Log actors that are not skills: <list>.
 
 | Detector | Result |
 |---|---|
-| D1 evidence after lock-in | <n findings \| none> |
-| D2 rework loop | <n findings \| none> |
-| D3 untraceable shipped scope | <n findings \| none> |
-| D4 unconsumed or stale-consumed output | <n findings \| none> |
-| D5 lifecycle inversion | <n findings \| none> |
-| D6 write-scope breach | <n findings \| none> |
+| D1 evidence after lock-in | <n findings \| none \| not applicable — <what this lane has none of>> |
+| D2 rework loop | <n findings \| none \| not applicable — <what this lane has none of>> |
+| D3 untraceable shipped scope | <n findings \| none \| not applicable — <what this lane has none of>> |
+| D4 unconsumed or stale-consumed output | <n findings \| none \| not applicable — <what this lane has none of>> |
+| D5 lifecycle inversion | <n findings \| none \| not applicable — <what this lane has none of>> |
+| D6 write-scope breach | <n findings \| none \| not applicable — <what this lane has none of>> |
+
+`none` means the check ran and found nothing. `not applicable` means the lane
+carries no artifact of the kind the detector reads, or the lane's shape stopped
+the check before it could run, and it names which. The two are different
+evidence, and a record that writes `none` for both cannot be re-audited.
 
 ## Findings
 
