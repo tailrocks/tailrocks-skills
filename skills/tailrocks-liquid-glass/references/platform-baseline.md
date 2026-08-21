@@ -21,13 +21,13 @@ An availability guard is not optional decoration. Several glass symbols an agent
 will reach for by analogy with iOS or with a newer SDK do not exist on
 macOS 26 at all.
 
-## State of the platform as verified 2026-08-17
+## State of the platform as verified 2026-08-21
 
 | Fact | Value |
 |---|---|
-| Latest shipping macOS | 26.6.1 "Tahoe" |
+| Latest shipping macOS | 26.6.2 "Tahoe" — `gdmf.apple.com/v2/pmv`, 2026-08-21 |
 | macOS 27 | Announced, named "Golden Gate", **not shipping** — beta, "coming this fall" |
-| Shipping toolchain | Xcode 26.6, Swift 6.3, macOS 26.5 SDK as reported by `xcrun --show-sdk-version` on 2026-08-17; requires host macOS 26.2+ |
+| Shipping toolchain | Xcode 26.6 (17F113), Swift 6.3.3, macOS 26.5 SDK as reported by `xcrun --show-sdk-version` on 2026-08-21; requires host macOS 26.2+ |
 | Beta toolchain | Xcode 27 beta 5, Swift 6.4, macOS 27 SDK; requires host macOS 26.4+; checked 2026-08-17 |
 | Intel | Xcode 27 is Apple-silicon-only; `ARCHS_STANDARD` drops `x86_64` when the deployment target is 27.0 or later. Universal back-deploy to macOS 12 still supported. |
 
