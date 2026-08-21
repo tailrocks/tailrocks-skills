@@ -288,6 +288,32 @@ describe("validate", () => {
     expect(await validate(root)).toEqual([]);
   });
 
+  test("rejects a fenced eval harness invocation in skill content", async () => {
+    await write(
+      `skills/${skill}/references/wiring.md`,
+      "Verify the change:\n\n```sh\nmise run evals -- --skill sample --case 1\n```\n",
+    );
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[Wiring](references/wiring.md)\n`,
+    );
+    expect(await validate(root)).toContain(
+      `${skill}:references/wiring.md: eval harness invocation forbidden in skill content: mise run evals -- --skill sample --case 1`,
+    );
+  });
+
+  test("allows prose that names the eval harness to defer it", async () => {
+    await write(
+      `skills/${skill}/references/wiring.md`,
+      "Eval execution is a CI/CD concern: never run `mise run evals` locally.\n",
+    );
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[Wiring](references/wiring.md)\n`,
+    );
+    expect(await validate(root)).toEqual([]);
+  });
+
   test("requires Kimi keywords to include Claude keywords", async () => {
     const base = { name: "tailrocks-skills", version: "1.0.0", description: "same" };
     await write(".claude-plugin/plugin.json", JSON.stringify({ ...base, keywords: ["swift"] }));

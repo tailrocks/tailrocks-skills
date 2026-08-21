@@ -149,6 +149,19 @@ const designToolPattern =
 const modelBrandPattern =
   /\b(?:fable\s*\d|mythos\s*\d|opus\s*\d|sonnet\s*\d|haiku\s*\d|claude-(?:opus|sonnet|haiku|fable|mythos)|gpt-\d|gemini-\d|llama\s*\d|mistral-\w)\b/i;
 
+// The eval harness. Authoring `evals/evals.json` is part of every skill
+// change; running the harness is a CI/CD concern that nothing in this
+// repository has wired yet. Prose *about* the policy has to be able to name
+// the command, so only a fenced block matches — a fenced command is a
+// copy-paste invocation, which is the failure this gate exists to stop.
+const evalRunnerPattern = /\bmise\s+run\s+evals\b|\brun-evals\.ts\b/;
+
+function evalRunnerInvocations(source: string): string[] {
+  return fencedCode(source)
+    .split("\n")
+    .filter((line) => evalRunnerPattern.test(line));
+}
+
 function bannedTermLines(source: string, pattern: RegExp): string[] {
   return source.split("\n").filter((line) => pattern.test(line) && !negationPattern.test(line));
 }
@@ -159,6 +172,9 @@ function scanBannedTerms(source: string, directory: string, label: string, error
   }
   for (const line of bannedTermLines(source, modelBrandPattern)) {
     errors.push(`${directory}:${label}: model brand name forbidden in skill content: ${line.trim()}`);
+  }
+  for (const line of evalRunnerInvocations(source)) {
+    errors.push(`${directory}:${label}: eval harness invocation forbidden in skill content: ${line.trim()}`);
   }
 }
 
