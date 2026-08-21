@@ -136,7 +136,7 @@ with no evidence is a defect in the lane's run, not a finding — drop it
 before it reaches verification.
 
 Fix risk is load-bearing downstream: `plan-seeding.md`'s size test routes
-work to a bounded-execution executor, and effort plus confidence alone
+work to a `bounded-executor`, and effort plus confidence alone
 would hand an auth-path change to the cheapest route that can follow
 instructions. It also survives into the prioritized table, so the user
 selecting findings sees it before choosing.
@@ -147,7 +147,7 @@ The lane is where untrusted text is first read, not where it stops
 moving. A candidate carries excerpts of the repository, those excerpts
 survive verification into the prioritized table, and from there into a
 roadmap item or a plan file's Starting-state section — which is read by a
-bounded-execution executor, the least capable route in the ladder and the
+`bounded-executor`, the least capable route in the ladder and the
 one most likely to treat an instruction-shaped sentence as an
 instruction. A repository nobody in this house wrote is exactly the input
 this skill exists for, so the chain has to hold end to end.

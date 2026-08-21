@@ -284,10 +284,10 @@ reference).
   finding by re-reading its evidence, prioritize by leverage, and seed
   either a direct `plans/<slug>/` package (small, mechanical, no open
   product question) or a DRAFT roadmap item pre-filled with evidence. Also
-  runs the cheap-tier `execute` loop — a bounded-execution route in an
-  isolated worktree, reviewed on the frontier route, never the reverse —
-  and `sweep`, which reconciles the backlog it seeded. Every lane and mode
-  takes `--deep`. Definition:
+  runs the `execute` loop — a `bounded-executor` in an isolated worktree,
+  reviewed on the `frontier-judgment` route, never the reverse — and
+  `sweep`, which reconciles the backlog it seeded. Every lane and mode
+  takes `--deep`; `--batch` makes a run non-interactive. Definition:
   `skills/tailrocks-audit/SKILL.md`
 - **tailrocks-idea** — capture a raw idea as a DRAFT item with a
   content-derived slug and an index row. Capture only; gaps stay visibly
@@ -332,7 +332,7 @@ the one exception, and even there only inside a disposable worktree it
 never merges.
 Mechanical walkthrough: `docs/design/pipeline-walkthrough.md`; why the audit
 is one lane-bearing skill rather than six "improve X" skills, and how it routes
-judgment and cheap-tier execution: `docs/design/audit-design.md`. The published
+judgment and bounded execution: `docs/design/audit-design.md`. The published
 guide — why each stage exists, what it refuses, and two features taken end to
 end (a native macOS app with a Rust core, and a TanStack feature on an Axum
 backend) — lives in `docs/content/docs/delivery/` and explains how the delivery

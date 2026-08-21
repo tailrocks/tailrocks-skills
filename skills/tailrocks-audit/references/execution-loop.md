@@ -1,22 +1,28 @@
 # Execution loop
 
-`execute <slug>` hands a `PLANNED` package to a bounded-execution
-executor and reviews the result — the only mode in this skill that
-produces a source diff, and even then only inside a disposable worktree.
+`execute <slug>` hands a `PLANNED` package to a `bounded-executor` and
+reviews the result — the only mode in this skill that produces a source
+diff, and even then only inside a disposable worktree.
 
 ## Model routing
 
-Route by capability role, never by model brand. Three roles matter here:
+Route by capability role, never by model brand. The role names are the
+delivery family's own — do not invent a second routing vocabulary. Three
+of them matter here:
 
-- **Frontier judgment** — recon, lane fan-out, adversarial verification,
-  prioritization, and review of the executor's diff. This is the tier
-  already running the skill, and it is the most capable route available,
-  not the cheapest one that seems adequate.
-- **Bounded execution** — one self-contained plan with exact scope,
+- **`frontier-judgment`** — recon, lane fan-out, adversarial
+  verification, prioritization, and review of the executor's diff. This
+  is the route already running the skill, and it is the most capable one
+  available, not the cheapest one that seems adequate.
+- **`bounded-executor`** — one self-contained plan with exact scope,
   commands, done criteria, and STOP conditions. The cheapest route that
   can follow mechanical instructions at that plan's scope.
-- **Fast mechanical** — search, extraction, formatting, deterministic
-  transforms inside a plan step. Narrower than bounded execution.
+- **`fast-mechanical`** — search, extraction, formatting, deterministic
+  transforms inside a plan step. Narrower than `bounded-executor`.
+
+A fourth applies under `--deep`: **`independent-verifier`**, a
+fresh-context route that re-derives a candidate from its cited location
+and claim without the lane's reasoning, and never edits what it judges.
 
 **Verify the ladder before you assign a role; never infer it from a
 model's name, release order, or recency.** This file names no models on
@@ -29,11 +35,12 @@ guessing: a wrong guess here pays the top rate in the ladder for
 mechanical work, or silently runs judgment on a route that cannot do it.
 
 The role is a scope judgment, not a fixed name: a plan with unusually
-dense STOP conditions or many interacting files may need bounded
-execution to move up a route; a trivially mechanical plan (one file, one
-substitution, one verification command) is exactly what fast mechanical
-exists for. Never dispatch the frontier route as executor — that defeats
-the point of separating judgment from mechanical work.
+dense STOP conditions or many interacting files may need
+`bounded-executor` to move up a route; a trivially mechanical plan (one
+file, one substitution, one verification command) is exactly what
+`fast-mechanical` exists for. Never dispatch the `frontier-judgment`
+route as executor — that defeats the point of separating judgment from
+mechanical work.
 
 ## Dispatch
 
@@ -54,17 +61,18 @@ so the user can inspect or discard it; this skill never removes a
 worktree holding an unreviewed diff.
 
 **Dispatch through the client's own subagent mechanism with an explicit
-route override to bounded execution.** If the client cannot set a
+route override to `bounded-executor`.** If the client cannot set a
 subagent's route, say so and stop — report that `execute` is unavailable
 here and hand the plan back for manual execution. Never run the executor
-on the frontier route and call it an execute run: the whole point of the
+on the `frontier-judgment` route and call it an execute run: the whole point of the
 mode is that judgment and mechanical work ran on different routes, and a
 run that quietly collapses them proves nothing about the plan.
 
 ## Tech-lead review
 
-After the executor reports, review its diff yourself, on the capable
-tier, against the plan — never take the executor's own "done" claim:
+After the executor reports, review its diff yourself, on the
+`frontier-judgment` route, against the plan — never take the executor's
+own "done" claim:
 
 - Re-run every done criterion the plan named; a criterion that was
   supposed to pass and did not is a blocker, not a note.

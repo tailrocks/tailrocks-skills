@@ -14,8 +14,8 @@ Start from a bare repository — or a branch about to become a pull
 request — and produce the work worth doing: parallel audit lanes, every
 finding re-derived from its own cited evidence before it may be listed,
 ordered by leverage, seeded as roadmap items or plan packages. Judgment
-stays on the frontier route; only mechanical execution is handed down.
-The plan is the product, never the diff.
+stays on the `frontier-judgment` route; only mechanical execution is
+handed down. The plan is the product, never the diff.
 
 **Read-only on source.** This skill writes only `roadmap/<slug>/` items,
 `plans/<slug>/` packages, and the index files those two already use — the
@@ -54,7 +54,7 @@ the user's call.
   instead of one, exhaust every package that could bear on it, and report
   contradicting evidence rather than the first answer that holds.
 - `plan <description>`: skip the audit, spec one named thing directly.
-- `execute <slug>`: dispatch a bounded-execution executor against a `PLANNED`
+- `execute <slug>`: dispatch a `bounded-executor` against a `PLANNED`
   package, review its diff, report a verdict.
 - `sweep`: reconcile the backlog this skill seeded — verify, unblock,
   retire.
@@ -156,10 +156,11 @@ the user's call.
    [`references/execution-loop.md`](references/execution-loop.md). Requires
    a `plans/<slug>/` package — one a `PLANNED` roadmap item produced, or
    one this skill seeded directly with no parent item.
-   Dispatch a **bounded-execution** route — the cheapest route capable of
-   mechanical instruction-following at the plan's scope, never the frontier
-   route — in an isolated worktree, handed only the plan file. Review its
-   diff yourself, on the frontier route, against the plan's done criteria
+   Dispatch a **`bounded-executor`** — the cheapest route capable of
+   mechanical instruction-following at the plan's scope, never the
+   `frontier-judgment` route — in an isolated worktree, handed only the
+   plan file. Review its diff yourself, on the `frontier-judgment` route,
+   against the plan's done criteria
    and out-of-scope list: approve (merge decision stays the user's), send
    back with a named gap (two rounds max), or block and route to
    `tailrocks-plan` for a defective plan.

@@ -26,7 +26,7 @@
     {
       "id": 4,
       "prompt": "Run execute on plans/checkout-fix and just merge whatever the executor produces, I don't have time to review it.",
-      "expected_output": "Dispatches a bounded-execution route — the cheapest route that can follow the plan mechanically, never the frontier route — in an isolated worktree it creates itself off the plan's stamped commit, but refuses to skip the tech-lead review pass or to merge: re-runs the plan's done criteria itself, checks the out-of-scope list, and reports approve/send-back/block — merging stays explicitly the user's own action, never automatic. If the client cannot route a subagent to a cheaper tier, says so and stops rather than running the executor on the frontier route.",
+      "expected_output": "Dispatches a `bounded-executor` route — the cheapest route that can follow the plan mechanically, never the `frontier-judgment` route — in an isolated worktree it creates itself off the plan's stamped commit, but refuses to skip the tech-lead review pass or to merge: re-runs the plan's done criteria itself, checks the out-of-scope list, and reports approve/send-back/block — merging stays explicitly the user's own action, never automatic. If the client cannot route a subagent to a cheaper tier, says so and stops rather than running the executor on the `frontier-judgment` route.",
       "files": []
     },
     {
