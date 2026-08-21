@@ -1,0 +1,61 @@
+name: refresh pins
+on:
+  schedule:
+    - cron: "43 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: refresh-pins
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ${{ 'ubuntu-26.04' }}
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@3c2e0cf82a5b2e5249f0d3635a4d83d0ae861518 # v4.2.5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - run: bun scripts/refresh-template-pins.ts
+      - name: Relock tooling on the refreshed versions
+        run: mise install
+      - name: Prove the refreshed tree still passes its own gates
+        run: mise run ci
+      - name: Open or update the refresh pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: chore/refresh-template-pins
+        run: |
+          set -euo pipefail
+          git diff --quiet && { echo "pins already current"; exit 0; }
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
+          git commit -a -s \
+            -m "chore(deps): refresh template pins to current stable" \
+            -m "Opened by the scheduled refresh, because the freshness gate compares pins against the registry and drift arrives on upstream's release calendar rather than in anyone's diff."
+          git push --force-with-lease \
+            "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$BRANCH"
+
+          if gh pr view "$BRANCH" --json number --jq .number >/dev/null 2>&1; then
+            echo "pull request already open for $BRANCH; it now carries the newest pins"
+            exit 0
+          fi
+          gh pr create --base main --head "$BRANCH" \
+            --title "chore(deps): refresh template pins to current stable" \
+            --body "$(printf '%s\n' \
+              'Scheduled refresh of the pinned versions in the TanStack template, the version-policy table beside it when it carries one, and the bun this repository runs its own gates on.' \
+              '' \
+              '`mise run ci` passed on the refreshed tree inside this run.' \
+              '' \
+              'Checks do not start themselves on a pull request opened with `GITHUB_TOKEN`. Push an empty signed commit, or close and reopen, to run them before merging.')"
