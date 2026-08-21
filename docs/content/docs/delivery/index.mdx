@@ -1,6 +1,6 @@
 ---
 title: Delivery pipeline
-description: "Why seven skills stand between an idea and an executing agent, and what each one refuses to do."
+description: "Why eight skills stand between an idea and an executing agent, and what each one refuses to do."
 ---
 
 An agent will happily build something from a one-line request. The problem is
@@ -19,7 +19,8 @@ choice follows you across the documentation.
 
 ```mermaid
 flowchart LR
-  idea --> brainstorm --> finalize --> plan --> exec["goal execution"] --> reconcile
+  audit --> idea --> brainstorm --> finalize --> plan --> exec["goal execution"] --> reconcile
+  audit -.-> plan
   brainstorm <--> research
   finalize <--> decision["record-decision"]
 ```
@@ -27,6 +28,12 @@ flowchart LR
 Straight line for the stages. The two below hang off it: research answers
 questions that have answers in the world, record-decision captures answers only
 you can give. Both run whenever they are needed, at any stage.
+
+Audit sits before the line rather than on it. You reach for it when there is no
+idea to capture yet — a repository you inherited, a branch about to become a
+pull request — and it seeds the line at one of two points: a DRAFT item when
+the finding still has an open product question, or a `plans/<slug>/` package
+directly when it does not (the dotted edge).
 
 ## Status is the contract
 
@@ -51,6 +58,7 @@ implementing a feature whose behavior nobody has decided yet.
 
 | Skill | Owns | Refuses | Writes |
 |---|---|---|---|
+| [`tailrocks-audit`](/docs/skills/tailrocks-audit) | Cold start | Editing source; reporting an unverified finding | DRAFT items pre-filled with evidence, or `plans/<slug>/` directly |
 | [`tailrocks-idea`](/docs/skills/tailrocks-idea) | Capture | Interviewing, researching, planning | `roadmap/<slug>/README.md` in DRAFT, index row |
 | [`tailrocks-brainstorm`](/docs/skills/tailrocks-brainstorm) | Expansion | Granting READY; running without a human | Decisions, Vocabulary, Screens, Flows, Must-not |
 | [`tailrocks-research`](/docs/skills/tailrocks-research) | Facts | Deciding anything; questions one lookup answers | `research/<topic>/`, reusable and indexed |
@@ -58,6 +66,32 @@ implementing a feature whose behavior nobody has decided yet.
 | [`tailrocks-finalize`](/docs/skills/tailrocks-finalize) | Readiness | Shaping a raw DRAFT; running without a human | READY, or a list of what still blocks it |
 | [`tailrocks-plan`](/docs/skills/tailrocks-plan) | Packaging | Implementing; planning an unshaped item | `plans/<slug>/` — ledger, spec, slices, `GOAL.md` |
 | [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | Truth | Writing or refreshing plans | Evidence-backed statuses, nothing else |
+
+### Find the work before there is a backlog
+
+Every other skill on this page assumes you already know what you want. When you
+do not — a repository you inherited, a quarter with no plan, a branch you are
+about to open a pull request from — `tailrocks-audit` fans out one subagent per
+category, then re-opens every candidate's cited `file:line` itself before the
+finding is allowed onto the table. Subagents over-report; the re-derivation is
+what makes the output worth reading, and every dropped candidate is reported
+with its reason so it does not resurface next run.
+
+Its lanes are addressable one at a time — `security`, `perf`, `ux`,
+`liquid-glass`, `agent-legibility` — and `deep` is a modifier rather than a
+mode, so it composes with any of them. The taste lanes carry no taste of their
+own: `ux` judges against `tailrocks-web-design`'s blessed screens and
+`liquid-glass` against `tailrocks-liquid-glass`'s acceptance gate, and both skip
+cleanly in a repository that has neither.
+
+<Invoke skill="tailrocks-audit" args="deep security" />
+
+Two modes sit outside the fan-out. `ask <question>` runs recon plus one targeted
+investigation under the same citation discipline, and answers rather than
+forcing an artifact. `execute <slug>` hands a `PLANNED` package to the cheapest
+tier that can follow it, in a throwaway worktree, and reviews the resulting diff
+on the capable tier against the plan's own done criteria — the plan is the
+product, the diff is a proposal, and merging stays your call.
 
 ### Capture without inventing
 
@@ -184,6 +218,7 @@ Two worked examples follow the whole route:
 
 | You have | Reach for |
 |---|---|
+| A repository and no backlog, or a branch about to become a PR | `tailrocks-audit` |
 | A thought you do not want to lose | `tailrocks-idea` |
 | A DRAFT and half an hour | `tailrocks-brainstorm` |
 | A question with a factual answer | `tailrocks-research` |
