@@ -46,13 +46,11 @@ merging stays the user's call.
 - `next`: direction only — evidence-grounded feature and roadmap
   suggestions, no defect lanes.
 - `ask <question>`: recon plus one targeted investigation of that question,
-  same evidence-and-citation discipline as a lane, no forced plan or roadmap
-  item; step 2 carries the mechanics.
+  same evidence-and-citation discipline as a lane, no forced plan or item.
 - `plan <description>`: skip the audit, spec one named thing directly.
-- `execute <slug>`: dispatch a `bounded-executor` against a seeded
-  package, review its diff, report a verdict.
-- `sweep`: reconcile the backlog this skill seeded — verify, unblock,
-  retire.
+- `execute <slug>`: dispatch a `bounded-executor` against a seeded package,
+  review its diff, report a verdict.
+- `sweep`: reconcile the seeded backlog — verify, unblock, retire.
 
 ## Boundaries
 
@@ -171,9 +169,11 @@ merging stays the user's call.
    that same fact for the whole backlog — nothing is in flight — never a
    finding. For still-`DRAFT` audit-sourced items, re-check the original
    evidence: fixed independently → retire it, deleting the folder and its
-   index row in a sweep commit naming the fixing commit; still live → leave
-   as-is; evidence stale → say so in the sweep commit and point at
-   `tailrocks-brainstorm` to re-shape.
+   index row in a sweep commit naming the fixing commit — and write the
+   minimal report at `delivery/<slug>.md` first: the audit-sweep variant from
+   `tailrocks-reconcile`'s delivery-report reference, one entry per capability
+   with `fixed in <SHA>` as its evidence; still live → leave as-is; evidence
+   stale → say so in the sweep commit and point at `tailrocks-brainstorm`.
    **Complete when:** every audit-sourced item and package has a re-verified
    status, and every absent one is reported delivered with its retirement SHA.
 

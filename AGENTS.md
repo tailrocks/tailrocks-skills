@@ -306,20 +306,25 @@ a loop after it.
 **One item, one folder.** Everything about an item lives under
 `roadmap/<slug>/`: the item itself (`README.md`, status machine DRAFT →
 SHAPING → READY → PLANNED → IN EXECUTION → DONE, plus PARKED), its
+verified-accomplishment ledger (`REPORT.md`), its
 implementation package (`plan/README.md` manifest hub, `plan/001-*.md`
 zero-context plans, `plan/spec/`, `plan/coverage.md`), its verification rounds
 (`verification/NN-feedback.md`, `NN-report.md`), and its goal handoff
 (`goal/START.md`, `goal/RESUME.md`, `goal/check.sh`). Standing research topics
 stay in `research/<topic>/`, independent of items, with many-to-many links.
 No delivery artifact lives outside the item's folder — there is no parallel
-`plans/` tree to keep in step.
+`plans/` tree to keep in step. The item's `## Run` section carries the
+pasteable `/goal` start and resume blocks once planned.
 
 **Delivered work leaves the tree.** A folder under `roadmap/` is work that is
 **not finished**. `DONE` is a transition, not a resting place: when every plan
 row is terminal, the goal condition passes, the newest verification round names
 no blocking defect, and `## Remaining` is empty, `tailrocks-reconcile` writes
 `DONE` and then retires the item — `roadmap/<slug>/` deleted whole (README,
-`plan/`, `verification/`, `goal/`, assets) and its index row removed. Two
+`plan/`, `verification/`, `goal/`, assets) and its index row removed, with one
+exception: `REPORT.md` moves to `delivery/<slug>.md` first, so what the rounds
+*proved* stays in the tree after everything else is archaeology. `delivery/`
+is created by the first retirement and never deleted. Two
 commits inside one invocation, so the pull request shows the item reach `DONE`
 and then be retired. When the last item goes, `roadmap/README.md` and
 `roadmap/` go too; an index of nothing is a leftover, not a board. Standing
@@ -335,6 +340,11 @@ whole `goal/` package are FROZEN: `goal/check.sh` hashes them into the hub's
 changes, so a contract cannot be edited to match what shipped. The item, the
 manifest's Status column, and every verification round sit outside that hash —
 they are what the loop must move. Re-planning is how a frozen file changes.
+The item's `## Decisions` section is writable (record-decision appends to it),
+so it is fingerprinted by proxy instead: planning snapshots it verbatim into
+`plan/spec/decisions.md`, and `check.sh` answers `BLOCKED decisions-drift`
+when the live section no longer matches — a decision is still changeable at
+any time through `tailrocks-record-decision`, but never *silently* changeable.
 
 Execution is handed the file, not a pasted block: `/goal Follow
 roadmap/<slug>/goal/START.md`, and `goal/RESUME.md` after any interruption.
@@ -342,7 +352,11 @@ Every line in `START.md`'s gates block is `<command> ||| <proof>` — the proof
 prints how many units the command executed, because a gate that cannot tell
 "everything passed" from "nothing ran" is not a gate; `check.sh` answers
 `BLOCKED gate-vacuous` for a proof that prints zero and `BLOCKED gate-unproven`
-for a missing `|||`.
+for a missing `|||`. A host that can run parallel executor sessions may work
+disjoint-scope plans concurrently — each in its own git worktree, hub rows
+written by the orchestrating session alone, merged back one at a time with
+done criteria and gates re-run on the item branch; sequential execution
+remains the default and is always correct.
 
 **One item, one branch, one pull request.** `tailrocks-idea` opens the item's
 `roadmap/<slug>` branch and draft PR at capture, and every invocation of every
@@ -404,7 +418,9 @@ series is the item's history (the contract lives in tailrocks-idea's
 - **tailrocks-prove** — the round that runs the thing: subagents launch entry
   points, walk real flows, drive the real interface, and compare shipped
   screens against the blessed design reference, returning a verdict per
-  reported statement and per plan row in `verification/NN-report.md`. It writes
+  reported statement, per recorded decision (`HELD` / `VIOLATED` /
+  `NOT VERIFIABLE` — a violated decision blocks like a defect), and per plan
+  row in `verification/NN-report.md`. It writes
   no status — blocking defects route to `tailrocks-reconcile`, skill-level
   divergence to `tailrocks-retrospect`.
   Definition: `skills/tailrocks-prove/SKILL.md`
@@ -412,9 +428,13 @@ series is the item's history (the contract lives in tailrocks-idea's
   re-verify DONE rows by re-running their done criteria, reset dead-session
   rows, re-test BLOCKED reasons, drift-check TODO plans against HEAD, mark
   stale rows, then prune the rows a verification round confirmed, rewrite the
-  item's `Remaining` from its blocking defects, and true up the status. It is
+  item's `Remaining` from its blocking defects, move what the pass proved
+  into `REPORT.md`, and true up the status — closing out by naming the
+  back-edge (resume, re-plan, record-decision, brainstorm, research) rather
+  than just the state. It is
   the only writer of `DONE`, and only after a round that found none — and the
-  invocation that writes it retires the item in a second commit. Run it
+  invocation that writes it retires the item in a second commit, keeping the
+  report at `delivery/<slug>.md`. Run it
   when a /goal loop finishes, stalls, the repository moved on, or a round
   needs closing. Definition: `skills/tailrocks-reconcile/SKILL.md`
 
@@ -426,7 +446,7 @@ flowchart LR
   plan --> exec["/goal execution"] --> feedback["record-feedback"]
   feedback --> prove --> reconcile
   reconcile -->|Remaining not empty| exec
-  reconcile -->|Remaining empty| done["DONE"] --> retire["retired — folder deleted"]
+  reconcile -->|Remaining empty| done["DONE"] --> retire["retired — report kept at delivery/<slug>.md, folder deleted"]
 ```
 
 A `TAILROCKS GOAL: PASS` proves the work ran and the contract is unedited; it
@@ -491,7 +511,7 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
   touches `roadmap/`, and is read-only about every artifact it reads: it
   blocks on an item saying `DONE` while its folder is still present, on a
   folder deleted while its newest verification round still carried a blocking
-  defect, and on three further contradictions — naming the files that disagree
+  defect, and on four further contradictions — naming the files that disagree
   and routing to `tailrocks-reconcile` (or `tailrocks-prove` when what is
   missing is a clean round). It never writes a delivery artifact.
   Definition: `skills/tailrocks-merge-pr/SKILL.md`
