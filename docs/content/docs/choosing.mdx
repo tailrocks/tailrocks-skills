@@ -122,6 +122,7 @@ implementation to it afterward.
 | [`tailrocks-code-health`](/docs/skills/tailrocks-code-health) | A debt class must stop growing and become a measurable, shrink-only contract. |
 | [`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) | A rule must be recorded for coding agents, or the instruction files have grown, drifted, or landed in the wrong directory. |
 | [`tailrocks-skill-author`](/docs/skills/tailrocks-skill-author) | A skill must be created, updated, or audited — with the failure observed first and eval cases written to hold it. |
+| [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) | A roadmap item has shipped and its delivery history should say which skills let it diverge from its own plan. |
 | [`tailrocks-simplify`](/docs/skills/tailrocks-simplify) | A pull request works and should carry less code, with behavior frozen. |
 | [`tailrocks-remediate`](/docs/skills/tailrocks-remediate) | A defect is proven and the system must keep its promises while being corrected. |
 | [`tailrocks-rethink`](/docs/skills/tailrocks-rethink) | The current shape itself is under review and breaking it is acceptable. |
@@ -138,6 +139,45 @@ evals. The placement decision is part of skill-author's job: a rule a
 competent agent needs on every request routes to the owning `AGENTS.md`, a
 mechanically checkable rule routes to a gate, and only an observed failure
 that needs invoked guidance earns a skill.
+
+### retrospect or skill-author
+
+They are two halves of one loop and neither does the other's job.
+[`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) reads a shipped
+roadmap item's delivery history and produces evidence: which skills ran, in
+what order, and which of the item's own Decisions, Must-nots, and spec IDs the
+result failed to honor. It writes one record and never touches `skills/`.
+[`tailrocks-skill-author`](/docs/skills/tailrocks-skill-author) owns the edit
+— the router budget, the load-bearing lines, the full eval re-run — and its
+iron law is that no behavioral change ships without an observed failure. A
+retrospective finding is that observed failure, sourced from production
+instead of from a baseline run.
+
+Use retrospect when the question is *what went wrong across a delivery*. Use
+skill-author when the question is *what should this skill say*.
+
+### retrospect or audit
+
+Both end in prioritized findings, and their subjects do not overlap.
+[`tailrocks-audit`](/docs/skills/tailrocks-audit) reads a repository or a
+branch and finds what is wrong with **the code**, seeding the result as
+roadmap items or plans — it is the cold-start skill for a codebase with no
+backlog yet. [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) reads
+one shipped item's delivery history and finds what is wrong with **the
+skills** that produced it, proposing patches against their definitions.
+
+Audit needs no roadmap item and produces them; retrospect needs exactly one
+and produces none. If there is no item to point at, the answer is audit.
+
+### retrospect or reconcile
+
+Both look backwards at an item, at different subjects.
+[`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) re-earns the truth of
+the *work*: it re-runs done criteria and corrects plan rows and the item's
+status in the delivering repository. `tailrocks-retrospect` never writes
+there — the item is evidence — and its subject is the *skills*, not the
+work. Reconcile when the statuses are suspect; retrospect after they are
+settled.
 
 ### simplify, remediate, or rethink
 
@@ -256,6 +296,9 @@ flowchart LR
 Artifacts live in `roadmap/<slug>/`, `research/<topic>/`, and `plans/<slug>/`.
 Research and decision recording happen whenever they are needed; only finalize
 grants READY, and plan requires READY.
+Every invocation leaves a commit marked with its skill, which is what
+[`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) reads once the item
+has shipped.
 
 Why each stage exists, what it refuses, and two features taken end to end —
 a native macOS app and a TanStack feature on a Rust backend — are covered in
