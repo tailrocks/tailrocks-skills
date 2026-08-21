@@ -24,9 +24,9 @@ TZ=<item-authoring-offset> git log --reverse --author-date-order \
 # message matching ^Tailrocks-Skill:[[:space:]]*(.+)$.
 
 # Pass 2 — changed paths per commit. A plain --name-only prints nothing at all
-# for a merge commit, so a lane that took a merge-sync hands the path-keyed
-# detectors an empty set and they report clean.
-git log --reverse --author-date-order -m --first-parent --name-only \
+# for a merge commit, and so does `-m --first-parent`; --diff-merges is the
+# spelling that actually emits them.
+git log --reverse --author-date-order --diff-merges=first-parent --name-only \
   --format='%x1e%H' <base>..<head>
 
 # The same table for a pull request. Its commits endpoint carries neither the
@@ -55,10 +55,18 @@ Rules for the table:
   before comparing, and name the frame in the record. Plain `--reverse` orders
   by *commit* date, which the pre-commit rebase the delivery contract mandates
   rewrites; `--author-date-order` is what makes the ordering claim evidence.
-- **Changed paths per commit** (`-m --first-parent --name-only`, or one
-  `commits/<sha>` fetch per pull-request commit) — five of the six detectors
-  key on paths, not subjects, and a plain `--name-only` prints nothing at all
-  for a merge commit.
+- **Changed paths per commit** (`--diff-merges=first-parent --name-only`, or
+  one `commits/<sha>` fetch per pull-request commit) — five of the six
+  detectors key on paths, not subjects. A plain `--name-only` prints nothing
+  at all for a merge commit, and neither does `-m --first-parent`; only the
+  `--diff-merges` spelling emits them.
+- **A merge authored no lane work.** A merge-sync's first-parent paths are
+  what the base branch brought *in*, not what this item shipped, so handing
+  them to the path-keyed detectors turns every file the base happened to touch
+  into untraceable shipped scope. Record merge commits as `merge` with their
+  first-parent paths captured, so nothing vanishes; exclude them from D3, D5,
+  and D6; and **state the exclusion in the record**, because a detector that
+  quietly skipped rows is indistinguishable from one that found nothing.
 - **Prove the table is complete before running a detector.** The pull-request
   commits endpoint caps its result however you paginate, and the file list
   caps too — both silently, both exit zero. Compare the fetched row count
