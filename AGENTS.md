@@ -207,6 +207,27 @@ data, iterated with the user, and blessed; from then on "matches the design"
 is a mechanical check, not a review. One skill per medium, and taste never
 has two owners.
 
+**One process across all three platforms.** The stage runs between READY and
+planning — `tailrocks-finalize` grants READY on schematic mockups, the
+medium's skill produces the blessed reference, and `tailrocks-plan` refuses a
+screen contract that cites none. Four stages, same words everywhere:
+**design** (author on the real substrate from fixtures), **bless** (the user
+signs off; an agent never blesses its own output), **freeze** (the mechanical
+baseline), **audit** (implementation against the blessed reference).
+
+| Medium | Stack | design | bless | freeze |
+|---|---|---|---|---|
+| Terminal | Rust, ratatui, crossterm | tailrocks-tui-design | same | same — the golden test |
+| Web | TanStack Start, React, shadcn/ui | tailrocks-web-design | same | tailrocks-web-visual-qa |
+| macOS | Swift, SwiftUI, Liquid Glass | tailrocks-macos-design | tailrocks-macos-prototype | tailrocks-macos-visual-qa |
+
+macOS splits design from bless because the material only exists at runtime:
+taste is decided in the design skill, the sign-off happens on a running
+prototype. tailrocks-liquid-glass owns no stage — it is the material
+authority the macOS skills consult. An item whose screens have no visual
+surface skips the stage; an item that skips it with screens that do stops at
+tailrocks-plan.
+
 **A prototype is real code on the real substrate — never a design file.**
 No skill in this repository takes a design-tool document as a design
 source, produces one as a deliverable, or treats one as the reference an

@@ -75,8 +75,14 @@ later audit attribute each PR commit to the skill that produced it.
    reference — a clean-context reader of the item alone reports its
    inventory and every guess or question — never by self-certification. Apply the status change, Log
    entry, and index-row update per the roadmap item format (owned by
-   tailrocks-idea's roadmap-item-format.md). On pass, name the next step
-   (`tailrocks-plan <slug>`). On a steered exit before pass: status stays
+   tailrocks-idea's roadmap-item-format.md). On pass, name the next step:
+   the design stage for every screen with a visual surface and no blessed
+   reference — `tailrocks-tui-design` for a terminal screen,
+   `tailrocks-web-design` for a web screen, `tailrocks-macos-design` then
+   `tailrocks-macos-prototype` for a macOS window — and `tailrocks-plan
+   <slug>` after it, or straight to `tailrocks-plan <slug>` when the item
+   has no visual surface. Planning refuses a screen that reached it with
+   neither. On a steered exit before pass: status stays
    `SHAPING`, the Log entry lists exactly what remains, and the close-out
    says what a future session must still collect.
    **Complete when:** status, Log, and index truthfully reflect the gate's
