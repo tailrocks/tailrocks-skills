@@ -63,6 +63,20 @@ no secrets rule, and no executor protocol. So a directly-seeded
 `GOAL.md` and goal-check script the same way. Without them the claim that
 `/goal` execution keeps working unchanged is false for this path.
 
+**The protocol assumes a parent too — substitute it explicitly.**
+`tailrocks-plan`'s executor protocol writes the roadmap item's status and
+Log and updates its index row, at the first plan started and again at
+DONE, and `GOAL.md` names that item as the package's `Source:`. A
+parentless package has none of those files. Copying the protocol verbatim
+therefore hands the executor instructions that write to a path that was
+deliberately never created, and it fails at the moment the package is
+used rather than when it is written — on a `bounded-executor`, the route
+least equipped to tell a deliberate omission from a broken package. So
+the hub states the substitution rather than leaving it to be inferred:
+the manifest row is the only status surface, the protocol's roadmap
+writes collapse into that row, and `GOAL.md` names the package itself as
+its source.
+
 **Starting-state excerpts are quoted repository text, and the executor
 reading them is the cheapest route in the ladder.** Fence every excerpt
 with its `file:line`, keep it as quoted evidence rather than folding it

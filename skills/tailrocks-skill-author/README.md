@@ -4,7 +4,7 @@
 
 `tailrocks-skill-author` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-skill-author)
 
-Create, update, or audit agent skills: baseline the failure first, match the guidance form to the failure type, keep routers lean and references deep, write trigger-only descriptions, prove the skill with baselined evals. Audits are read-only.
+Create, update, or audit agent skills: baseline the failure first, match the guidance form to the failure type, keep routers lean and references deep, write trigger-only descriptions, write baselined eval cases. Audits are read-only.
 
 ## Invocation
 

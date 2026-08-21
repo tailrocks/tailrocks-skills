@@ -1,7 +1,7 @@
 ---
 name: tailrocks-skill-author
 description: >-
-  Use only when the user explicitly requests this skill. Create, update, or audit agent skills: baseline the failure first, match the guidance form to the failure type, keep routers lean and references deep, write trigger-only descriptions, prove the skill with baselined evals. Audits are read-only.
+  Use only when the user explicitly requests this skill. Create, update, or audit agent skills: baseline the failure first, match the guidance form to the failure type, keep routers lean and references deep, write trigger-only descriptions, write baselined eval cases. Audits are read-only.
 argument-hint: "[create|update|audit] <skill name or capability>"
 disable-model-invocation: true
 license: Apache-2.0
