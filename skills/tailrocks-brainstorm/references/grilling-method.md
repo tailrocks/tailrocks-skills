@@ -37,6 +37,14 @@ source, it is a fact. When a fact lookup is slow, do not block the interview
 on it — ask the frontier questions that do not depend on it and fold the
 result in when it lands.
 
+**An open research question is precisely statable, or it is not a question
+yet.** "How does sync conflict resolution behave under clock skew?" is a
+question research can answer. "Sync stuff to figure out" is not — record
+what would make it statable instead (the graduation condition: "statable
+once we know whether sync is per-account or global", a decision to ask the
+user). A vague research blob is how a fact silently becomes an agent's guess
+at execution time.
+
 **Slow lookups run in background investigators.** A quick grep or file
 open happens inline; anything heavier — a reference-project read, a
 multi-page platform-docs verification — goes to a read-only background
@@ -91,6 +99,22 @@ to a later round. Everything else is unchanged.
 2. **User steers out** ("wrap up", "enough"). Honor immediately: every
    still-open decision goes to Open questions with your recommendation
    attached, stated plainly in the close-out. Never silently assume.
+
+## The research agenda
+
+At close, a non-empty Open research questions list becomes a runnable
+agenda, not a gesture at future work: group the questions into the smallest
+set of coherent topics, and emit each as a proposed invocation with its
+one-line brief —
+
+```text
+tailrocks-research sync-conflict-semantics — how CRDT engines order
+concurrent edits under clock skew; informs the sync engine choice (Q2, Q5)
+```
+
+Each agenda line names which item questions it answers. The user runs them
+verbatim or trims; either way the hand to research is a command, and the
+item's facts stop being the interview's loose ends.
 
 ## The close check — fresh eyes
 

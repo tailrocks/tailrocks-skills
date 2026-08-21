@@ -71,6 +71,11 @@ Every open question ends the session as exactly one of:
    The test: would two competent engineers converge after reading the same
    sources? Then it is researchable. "Do we need offline mode?" fails that
    test and must be resolved or deferred, not laundered into research.
+   And it must be **precisely statable**: a question research can run is
+   one whose answer would be recognizable on arrival. A question still too
+   unformed to state precisely is not researchable yet — record what would
+   make it statable (usually a decision to take back to the user) rather
+   than filing a vague blob an agent will answer by guessing.
 
 ## The readiness checklist — the only gate to READY
 
@@ -98,7 +103,7 @@ All must hold; check each against the live item, not memory:
 - [ ] Quality bar states what acceptance means in checkable terms.
 - [ ] Open questions is empty.
 - [ ] Every Open research question is genuinely researchable (passes the
-      convergence test).
+      convergence test) and precisely statable.
 - [ ] Every Deferred entry has a reason and revisit trigger.
 - [ ] Decisions are internally consistent — no section contradicts a dated
       decision.
