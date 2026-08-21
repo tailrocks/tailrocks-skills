@@ -63,6 +63,47 @@ operation is fragile and consistency is the point. Over-specifying a
 robust task wastes tokens and produces brittle compliance;
 under-specifying a fragile one produces confident breakage.
 
+## The output contract
+
+Every skill's deliverable has a destination: the conversation, or a file
+in the repository. Choose by who reads it next.
+
+**A deliverable earns a file when it outlives the session.** No skill
+spec defines an artifact mechanism, so a repo-resident Markdown file —
+pointed to from where the next reader starts — is the only handoff that
+crosses sessions and agents. Persist when the output is:
+
+- consumed by another agent or a later session — an audit report a
+  refactor skill applies by ID, a plan a zero-context executor runs;
+- substantial — a report, a plan, a research result. The conversation
+  gets the path and the verdict line, never the content;
+- exact — evidence tables, snapshots, anything summarization corrupts;
+- re-entered after compaction — context is truncated and re-attached;
+  a file is not.
+
+**A deliverable stays in the conversation when it is** a short answer or
+a status, a derivation only the next step consumes, or anything
+re-derivable from the repository — persisting what the code already says
+is spec rot planted on purpose.
+
+Both directions have a cost. Over-persisting hoards: stale files nobody
+re-reads, evolving intent frozen into a static document, long files that
+decay adherence. Under-persisting amputates: decisions re-derived every
+session, rejected patterns re-suggested, provenance lost. The test is
+the next reader — if none exists past this session's next step, do not
+write the file.
+
+Rules for a file deliverable:
+
+- The path is stable and stated in the router; the format lives in a
+  reference, so a fresh agent in a fresh session produces a consumable
+  artifact without this session's context.
+- The file is self-contained for a zero-context reader and carries what
+  it was produced from — a commit SHA, a date — so drift is checkable.
+- Items carry stable IDs when a downstream skill consumes them
+  selectively.
+- Secrets never persist — cite location and type.
+
 ## The description
 
 The description is the trigger, nothing else.
@@ -103,6 +144,9 @@ Run every draft against these before validation:
 - Two skills sharing one responsibility, or one skill carrying two.
 - Force-loading references (inline includes) instead of routing by
   when-to-read.
+- A substantial deliverable dumped into the conversation, or a file
+  written for output with no reader beyond the current session — the
+  output-contract section owns the choice.
 - Changelog prose or a reference to the skill's own previous version —
   "this replaces the earlier…", "formerly…", "we now…". A skill states
   current doctrine only; an agent loading it has no earlier version to

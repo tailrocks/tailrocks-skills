@@ -80,7 +80,8 @@ Rules for changing a `SKILL.md`:
   workflow gate. Record the expected red-before / green-after in the pull
   request and let CI own execution once that lane lands.
 
-  This does not weaken the observed-failure law in `tailrocks-skill-author`.
+  This does not weaken the observed-failure law carried by
+  `tailrocks-skill-create` and `tailrocks-skill-update`.
   The red bar is *watching the behavior fail* — run the skill against the case
   prompt in a session and read what it produces. That is a manual observation,
   costs one invocation, and needs no harness. `mise run evals` is the scoring

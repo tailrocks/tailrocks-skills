@@ -102,4 +102,4 @@ Evals:    <case ids at risk>
 
 | Rank | Proposal | Owning skill | Record | Command | Evals to re-run |
 |---|---|---|---|---|---|
-| 1 | <RF id / X id> | <skill> | `retrospectives/<source>-<slug>.md#RF<id>` | `tailrocks-skill-author update <skill>` | <case ids> |
+| 1 | <RF id / X id> | <skill> | `retrospectives/<source>-<slug>.md#RF<id>` | `tailrocks-skill-update <skill>` | <case ids> |

@@ -4,7 +4,7 @@ A saved prompt for this repository. Paste it into an agent session opened at
 this repository's root, replacing `<PR>` with a pull-request URL or
 `owner/name#number` from a repository where the tailrocks skills did real
 work. It drives the shipped self-improvement loop — `tailrocks-retrospect`
-into `tailrocks-skill-author` — and nothing else. There is deliberately no
+into `tailrocks-skill-update` — and nothing else. There is deliberately no
 repo-local skill for this job; the shipped skills are the better owner, and a
 local copy would be a second owner of one responsibility.
 
@@ -33,7 +33,7 @@ Rules of engagement:
    (the marking rule failed to bind in that repository) and stop. Never
    reconstruct skill usage from commit subjects.
 4. The deliverable is the retrospect record under retrospectives/, then — per
-   proposed patch, and only after I approve — tailrocks-skill-author update
+   proposed patch, and only after I approve — tailrocks-skill-update
    <skill>. Skill edits obey this repository's law: router budget,
    references-first, no external names in shipped content, evals updated in
    the same change and executed only in CI, DCO signoff, conventional
@@ -46,6 +46,6 @@ Rules of engagement:
 
 Why a prompt and not a skill: everything behavioral here already lives in the
 shipped skills — the evidence model and detectors in `tailrocks-retrospect`,
-the edit discipline in `tailrocks-skill-author`. What remained was a fixed
+the edit discipline in `tailrocks-skill-update`. What remained was a fixed
 invocation with the context-hygiene rule spelled out, and a prompt file is
 the honest form for that: no frontmatter, no evals, nothing to drift.

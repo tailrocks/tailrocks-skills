@@ -502,11 +502,15 @@ const EXPECTED_DIRECT_MARKDOWN_LINKS: Record<string, string[]> = {
     "references/workspace-and-layout.md",
   ],
   "tailrocks-simplify": ["references/behavior-preservation.md", "references/simplification-ladder.md"],
-  "tailrocks-skill-author": [
+  "tailrocks-skill-audit": [
     "references/design-doctrine.md",
     "references/house-wiring.md",
+    "references/report-format.md",
     "references/testing-doctrine.md",
   ],
+  "tailrocks-skill-create": ["templates/skill/SKILL.md"],
+  "tailrocks-skill-refactor": [],
+  "tailrocks-skill-update": [],
   "tailrocks-swift-best-practices": [
     "references/accessibility.md",
     "references/appkit-interop.md",

@@ -1,0 +1,6 @@
+interface:
+  display_name: "<Display Name>"
+  short_description: "<one line naming the behavior this skill changes>"
+  default_prompt: "Use $<skill-name> on <scope>: <the core discipline in one sentence>."
+policy:
+  allow_implicit_invocation: false
