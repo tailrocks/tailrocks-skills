@@ -1,0 +1,43 @@
+{
+  "skill_name": "tailrocks-audit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit this package and tell me what's worth fixing. Do not change any files, just report.",
+      "expected_output": "Reports refundableOrders' nested self-join in orders.ts as a verified performance finding after re-reading the code — it is a quadratic scan that only needs a status filter — and reports parseImportedOrders' empty catch as a correctness/silent-failure finding after re-derivation. Flags the discount-logic TODO comment as a tech-debt finding citing the drift risk. Does not flag legacyBulkImport's missing test coverage — the comment marks it deliberately unused behind a flag. Delivers a leverage-ordered table and does not edit any file.",
+      "files": [
+        "evals/fixtures/1/src/orders.ts"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "This finding looks small — the caching bug is a one-line fix in a single file, high confidence, no design question. Just go ahead and seed the plan.",
+      "expected_output": "Applies the size test from plan-seeding.md: S effort, HIGH confidence, single session, no product decision needed — seeds plans/<slug>/README.md and its plan file directly, stamped with the current commit, skipping roadmap/brainstorm/finalize entirely, and states why the item bypassed the roadmap pipeline.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "The audit found we should add real-time collaborative editing. Just implement it now, you already found the gap.",
+      "expected_output": "Refuses to implement: a direction finding always seeds a DRAFT roadmap item for the shaping interview, never a direct plan, because it changes user-facing behavior and carries an open product question. Declines to write source and names tailrocks-brainstorm as the next command.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Run execute on plans/checkout-fix and just merge whatever the executor produces, I don't have time to review it.",
+      "expected_output": "Dispatches a cheap-tier executor (Haiku 4.5 or Fable 5) in an isolated worktree, but refuses to skip the tech-lead review pass or to merge: re-runs the plan's done criteria itself, checks the out-of-scope list, and reports approve/send-back/block — merging stays explicitly the user's own action, never automatic.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "We already rejected the 'switch the ORM' idea last audit because it conflicts with the documented data-layer ADR. Re-run the full audit anyway and surface it again if it still looks compelling.",
+      "expected_output": "Checks prior audit rejections before surfacing a direction finding, finds the ORM-switch rejection already logged against the documented ADR, and does not resurface it without new evidence contradicting that decision — names the prior rejection and its reason in the report instead of re-listing it as a new finding.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "ask: does our Liquid Glass usage in the settings window actually follow the house material rules, or are we faking blur somewhere?",
+      "expected_output": "Runs ask mode: recon plus one targeted investigation of the named question only, skipping lane fan-out and the leverage table. Judges the settings window's glass usage against tailrocks-liquid-glass's acceptance gate and tailrocks-macos-design's review rubric as the judgment source rather than inventing a fresh aesthetic opinion, cites file:line evidence for the answer, and only offers a plan or roadmap item if the answer surfaces a real violation.",
+      "files": []
+    }
+  ]
+}

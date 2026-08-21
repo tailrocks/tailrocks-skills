@@ -241,8 +241,8 @@ Skill definition: `skills/tailrocks-code-health/SKILL.md`
 
 ### The delivery family — roadmap-driven pipeline
 
-Seven skills drive an idea from capture through autonomous execution and
-back to verified truth. Artifacts:
+Eight skills drive work from a cold repository or a captured idea through
+autonomous execution and back to verified truth. Artifacts:
 roadmap items in `roadmap/<slug>/README.md` (status machine: DRAFT → SHAPING
 → READY → PLANNED → IN EXECUTION → DONE, plus PARKED), standing research
 topics in `research/<topic>/` (independent of items, many-to-many links),
@@ -256,6 +256,16 @@ item's PR history attributes each commit to the skill that produced it
 (the contract lives in tailrocks-idea's `delivery-git-contract.md`
 reference).
 
+- **tailrocks-audit** — the cold-start entry: fan out parallel audit lanes
+  (correctness, security, performance, tests, tech debt, dependencies, DX,
+  docs, direction) over a repository or a branch diff, verify every
+  finding by re-reading its evidence, prioritize by leverage, and seed
+  either a direct `plans/<slug>/` package (small, mechanical, no open
+  product question) or a DRAFT roadmap item pre-filled with evidence. Also
+  runs the cheap-tier `execute` loop — a Haiku 4.5/Fable 5 executor in an
+  isolated worktree, reviewed by the capable tier — and `sweep`, which
+  reconciles the backlog it seeded. Definition:
+  `skills/tailrocks-audit/SKILL.md`
 - **tailrocks-idea** — capture a raw idea as a DRAFT item with a
   content-derived slug and an index row. Capture only; gaps stay visibly
   empty. Definition: `skills/tailrocks-idea/SKILL.md`
@@ -293,8 +303,10 @@ reference).
   stalls, or the repository moved on.
   Definition: `skills/tailrocks-reconcile/SKILL.md`
 
-All seven write only their own artifacts (`roadmap/`, `research/`,
-`plans/`) and never touch source.
+All eight write only their own artifacts (`roadmap/`, `research/`,
+`plans/`) and never touch source — `tailrocks-audit`'s `execute` mode is
+the one exception, and even there only inside a disposable worktree it
+never merges.
 Mechanical walkthrough: `docs/design/pipeline-walkthrough.md`. The published
 guide — why each stage exists, what it refuses, and two features taken end to
 end (a native macOS app with a Rust core, and a TanStack feature on an Axum

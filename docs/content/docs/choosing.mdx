@@ -186,17 +186,35 @@ hard stops, and per-contribution human approval before anything outward.
 `tailrocks-create-pr` is for repositories the user works in as their own —
 invoking it authorizes the push and the PR.
 
+### audit, code-health, or review-pr
+
+[`tailrocks-audit`](/docs/skills/tailrocks-audit) is the cold-start
+entry: no idea captured yet, no PR open, just a repository or a branch
+that needs a first pass to find out what is worth doing, and it hands
+selected findings to the roadmap/plan pipeline or a cheap-tier executor.
+[`tailrocks-code-health`](/docs/skills/tailrocks-code-health) is not a
+one-off audit — it is the standing, monotonic debt gate that keeps a
+named class from growing once it is wired into CI.
+[`tailrocks-review-pr`](/docs/skills/tailrocks-review-pr) never runs cold:
+it reviews one open PR, branch, or diff against author intent, and never
+seeds roadmap items or plans. Run `tailrocks-audit` to find work, wire
+`tailrocks-code-health` to keep a fixed debt class from regressing, and
+run `tailrocks-review-pr` once that work becomes a PR.
+
 ## Roadmap and delivery
 
 ```mermaid
 flowchart LR
-  idea --> brainstorm --> finalize --> plan --> exec["goal execution"] --> reconcile
+  audit --> idea --> brainstorm --> finalize --> plan --> exec["goal execution"] --> reconcile
+  audit --> plan
+  audit --> sweep["audit sweep"]
   brainstorm <--> research
   finalize <--> decision["record-decision"]
 ```
 
 | Skill | Reach for it when |
 |---|---|
+| [`tailrocks-audit`](/docs/skills/tailrocks-audit) | Nothing is captured yet — audit a repository or branch cold and turn findings into items or plans. |
 | [`tailrocks-idea`](/docs/skills/tailrocks-idea) | Capturing a raw idea as a DRAFT item without inventing missing detail. |
 | [`tailrocks-brainstorm`](/docs/skills/tailrocks-brainstorm) | Shaping a DRAFT or SHAPING item through a one-question-at-a-time interview. |
 | [`tailrocks-research`](/docs/skills/tailrocks-research) | A question or an item needs deep sourced research saved as a reusable topic. |
