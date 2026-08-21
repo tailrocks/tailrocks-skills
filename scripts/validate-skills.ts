@@ -91,6 +91,12 @@ async function scanLinks(
   }
 }
 
+// The router budget. A SKILL.md loads whole on every invocation and stays in
+// context, so every line competes with every other behavior in the file;
+// references cost nothing until read. This was a notice for a long time and
+// three routers drifted past it unnoticed, which is what a notice buys.
+const ROUTER_BUDGET = 200;
+
 const forgeUrlPattern =
   /https?:\/\/(gist\.github\.com|github\.com|gitlab\.com|bitbucket\.org|codeberg\.org)\/[^\s)>`"'\]]*/g;
 // Canonical homes of house-adopted libraries and tools, used as version and
@@ -196,7 +202,13 @@ export async function validate(root: string): Promise<string[]> {
     }
 
     const source = await readFile(skillFile, "utf8");
-    if (source.split("\n").length > 500) errors.push(`${directory}: SKILL.md exceeds 500 lines`);
+    const routerLines = source.split("\n").length;
+    if (routerLines > ROUTER_BUDGET) {
+      errors.push(
+        `${directory}: SKILL.md is ${routerLines} lines, over the ${ROUTER_BUDGET}-line router budget — ` +
+          `move depth into references/ or replace a section rather than appending one`,
+      );
+    }
     const block = source.match(/^---\n([\s\S]*?)\n---/);
     if (!block) {
       errors.push(`${directory}: invalid frontmatter`);
@@ -488,12 +500,6 @@ if (import.meta.main) {
   if (errors.length > 0) {
     for (const error of errors) console.error(`error: ${error}`);
     process.exit(1);
-  }
-  for (const entry of await readdir(path.join(root, "skills"), { withFileTypes: true })) {
-    if (!entry.isDirectory()) continue;
-    const file = path.join(root, "skills", entry.name, "SKILL.md");
-    const lines = (await readFile(file, "utf8")).split("\n").length;
-    if (lines > 200) console.log(`notice: ${entry.name}: SKILL.md is ${lines} lines (router budget: ~200)`);
   }
   const entries = (await readdir(path.join(root, "skills"), { withFileTypes: true })).filter((entry) =>
     entry.isDirectory(),

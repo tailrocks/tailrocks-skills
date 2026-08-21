@@ -40,20 +40,19 @@ Do not infer mutation permission from the presence of gaps.
 ## Scope boundary: baseline vs. mid-feature rearchitecture
 
 This skill owns the *baseline* — project generation, toolchain pins, format/lint
-gates, test wiring, agent integration. It does not own feature scope. Invoked
-mid-feature (from `tailrocks-macos-prototype` step 2, or directly during a
-roadmap item's implementation), it audits and closes only gaps that block that
-item's own build/test/lint from being reproducible — it does not open unrelated
-baseline debt.
+gates, test wiring, agent integration — never feature scope. Invoked mid-feature
+(from `tailrocks-macos-prototype` step 2, or during a roadmap item's
+implementation), it closes only gaps blocking that item's own build/test/lint
+from being reproducible, and opens no unrelated baseline debt.
 
 Before any `remediate` write, name which roadmap item or plan authorizes it.
-Replacing a working FFI code generator, rewriting the CI cadence graph,
-adding a new Cargo release/symbolication profile, or renegotiating linter rule
-policy are baseline-architecture changes, not feature scope, even when found
-during an audit run inside a feature PR. Report them as a gap with a proposed
-fix; do not remediate them in the same delivery branch unless the roadmap item
-or the user explicitly names that work in scope. An audit finding is never its
-own authorization to act.
+Baseline-architecture changes — replacing a working FFI code generator,
+rewriting the CI cadence graph, adding a Cargo release/symbolication profile,
+renegotiating linter rule policy — are not feature scope even when an audit
+inside a feature PR finds them: report the gap with a proposed fix, and do not
+remediate it in the same delivery branch unless the roadmap item or the user
+names that work in scope. **An audit finding is never its own authorization to
+act.**
 
 ## Copy-ready baseline
 
@@ -70,23 +69,17 @@ scaffold still leaves a coherent baseline rather than a torso:
 3. `project.yml` — with the deployment target and **both SDK lanes recorded
    as comments in the manifest** (shipping and forward-validation), ad-hoc
    signing, synchronized source folders, app + unit-test + UI-test targets.
-4. `.swift-format` and `.swiftlint.yml` — and name the strict invocations.
+4. `.swift-format` and `.swiftlint.yml` from
+   [`swift-format.json`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-swift-project-setup/templates/swift-format.json) and
+   [`swiftlint.yml`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-swift-project-setup/templates/swiftlint.yml) — and name the strict
+   invocations. [`Tests.swiftlint.yml`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-swift-project-setup/templates/Tests.swiftlint.yml) lands
+   twice, as `Tests/.swiftlint.yml` and `UITests/.swiftlint.yml`.
 5. One Swift Testing unit test and one XCUITest with the scoped
    accessibility audit — never empty test targets.
 6. The app entry-point stub, then everything else.
 
-Templates:
-
-| Template | Destination |
-|---|---|
-| [`project.yml`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-swift-project-setup/templates/project.yml) | project root |
-| [`swift-format.json`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-swift-project-setup/templates/swift-format.json) | `.swift-format` |
-| [`swiftlint.yml`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-swift-project-setup/templates/swiftlint.yml) | `.swiftlint.yml` |
-| [`Tests.swiftlint.yml`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-swift-project-setup/templates/Tests.swiftlint.yml) | `Tests/.swiftlint.yml` and `UITests/.swiftlint.yml` |
-| [`mise.toml`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-swift-project-setup/templates/mise.toml) | `mise.toml` |
-| [`gitignore`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-swift-project-setup/templates/gitignore) | `.gitignore` |
-
-Preserve stronger compatible local policy. Resolve version markers to the latest
+Every file above has a template in [`templates/`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-swift-project-setup/templates/) named after its
+destination. Preserve stronger compatible local policy. Resolve version markers to the latest
 stable pin and remove brackets; replace other marked project values literally.
 
 ## New project
@@ -132,30 +125,26 @@ stable pin and remove brackets; replace other marked project values literally.
    **Complete when:** exactly one skill owns each of framework correctness,
    material policy, and visual direction; every installed third-party skill is pinned.
 
-6. **Validate only after the complete baseline is written.** Provision with mise, then run the repository's tasks for
-   generate, format check, lint, build, and test. `mise.toml` carries both
-   halves: the `[tools]` version pins **and** the shared `[tasks]` definitions
-   (generate, format:check, lint, build, test) that local and
-   continuous-integration runs resolve identically — pins without tasks have
-   not established command parity. Continuous integration invokes the same
-   `mise run` task names rather than restating commands; scaffold the CI
-   workflow that way and say so. The parity artifact is the task set itself:
-   if workflow-file creation is blocked by policy, the tasks still establish
-   shared entry points — state the exact `mise run` invocations the workflow
-   will use instead of deferring parity as a gap.
+6. **Validate only after the complete baseline is written.** Provision with
+   mise, then run the repository's tasks for generate, format check, lint,
+   build, and test. `mise.toml` carries both halves — the `[tools]` pins **and**
+   the shared `[tasks]` definitions local and CI runs resolve identically — so
+   pins without tasks have not established command parity. **The parity
+   artifact is the task set**, not the workflow file: CI invokes the same
+   `mise run` names rather than restating commands, and if workflow creation is
+   blocked, state the exact `mise run` invocations it will use instead of
+   deferring parity as a gap.
    **Complete when:** every applicable gate has a recorded pass, failure,
    unavailability, or explicit reason it was not run.
 
 ## Rust-core lane
 
 When the app keeps its behavior in a Rust core behind the SwiftUI shell,
-additionally read [`rust-core.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-swift-project-setup/references/rust-core.md): the split
-workspace layout with bridge knowledge confined to the contracts and FFI
-crates, the one-way Swift package chain where only the handwritten bridge
-package imports the generated bindings, exact bridge crate and CLI pins
-under mise, static-library XCFramework packaging as a task ordered before
-`generate`, and the extra gates — binding-drift detection in CI and the
-Rust test lane running in the same pipeline as the Swift build.
+additionally read [`rust-core.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-swift-project-setup/references/rust-core.md). Two rules carry
+here: bridge knowledge stays confined to the contracts and FFI crates, and the
+Swift package chain is one-way — only the handwritten bridge package imports
+the generated bindings. The lane adds two gates of its own, binding-drift
+detection and a Rust test lane in the same pipeline as the Swift build.
 
 ## Existing project audit and remediation
 

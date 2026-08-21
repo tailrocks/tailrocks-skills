@@ -288,6 +288,21 @@ describe("validate", () => {
     expect(await validate(root)).toEqual([]);
   });
 
+  test("rejects a router over the line budget", async () => {
+    const body = await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text();
+    await write(`skills/${skill}/SKILL.md`, `${body}${"padding\n".repeat(210)}`);
+    const errors = await validate(root);
+    expect(errors.some((error) => error.includes("over the 200-line router budget"))).toBe(true);
+  });
+
+  test("allows a router at the line budget", async () => {
+    const body = await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text();
+    const remaining = 200 - body.split("\n").length;
+    await write(`skills/${skill}/SKILL.md`, `${body}${"padding\n".repeat(remaining)}`);
+    const errors = await validate(root);
+    expect(errors.some((error) => error.includes("router budget"))).toBe(false);
+  });
+
   test("rejects a fenced eval harness invocation in skill content", async () => {
     await write(
       `skills/${skill}/references/wiring.md`,
