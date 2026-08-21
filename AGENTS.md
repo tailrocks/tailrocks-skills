@@ -307,7 +307,9 @@ All eight write only their own artifacts (`roadmap/`, `research/`,
 `plans/`) and never touch source — `tailrocks-audit`'s `execute` mode is
 the one exception, and even there only inside a disposable worktree it
 never merges.
-Mechanical walkthrough: `docs/design/pipeline-walkthrough.md`. The published
+Mechanical walkthrough: `docs/design/pipeline-walkthrough.md`; why the audit
+is one lane-bearing skill rather than six "improve X" skills, and how it routes
+judgment and cheap-tier execution: `docs/design/audit-design.md`. The published
 guide — why each stage exists, what it refuses, and two features taken end to
 end (a native macOS app with a Rust core, and a TanStack feature on an Axum
 backend) — lives in `docs/content/docs/delivery/` and explains how the delivery
