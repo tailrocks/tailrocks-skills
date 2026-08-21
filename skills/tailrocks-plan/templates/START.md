@@ -39,6 +39,13 @@ it. If the first eligible plan or any TODO dependency is STALE, stop and report
 "package reopened — run tailrocks-plan <slug> to refresh, then resume". Never
 build on a STALE or BLOCKED row.
 
+<When the host can run parallel executor sessions, add: "TODO plans with
+disjoint in-scope path sets may run concurrently per the hub protocol's
+concurrent-execution rules — each in its own git worktree off the item branch,
+hub rows written by this orchestrating session alone, worktrees merged back one
+at a time with done criteria and gates re-run on the item branch. Sequential
+execution remains the default and is always correct.">
+
 <If any plans pause on user input by design, name them: "Plans NNN/MMM pause on
 user input by design (<what each awaits>); those BLOCKED states are correct
 outcomes, not failures.">

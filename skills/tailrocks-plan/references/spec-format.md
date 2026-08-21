@@ -16,11 +16,35 @@ roadmap/<slug>/plan/spec/
   README.md           ← purpose, capability index, must-not registry,
                         entry-point registry, deferrals, change log
   <capability>.md     ← one file per capability, kebab-case
+  decisions.md        ← the item's Decisions section, snapshotted verbatim
 ```
 
 Capabilities partition the ledger's `F#`/`S#`/`W#` entries into coherent,
 independently specifiable areas. Every ledger ID lands in exactly one
 capability file or in the deferral list in `spec/README.md`.
+
+## Decisions snapshot — `decisions.md`
+
+The item's `## Decisions` section is writable — it has to be, because
+`tailrocks-record-decision` appends to it — so it cannot sit inside the frozen
+fingerprint directly. The snapshot is how a decision becomes unfalsifiable
+contract ground anyway: at planning time, copy the section **body** — every
+line between the `## Decisions` heading and the next `## ` heading — into
+`decisions.md`, verbatim, then strip every blank line (`check.sh` compares
+blank-stripped content, so the file must be stored pre-stripped; an empty
+section snapshots as an empty file).
+
+From then on `check.sh` answers `BLOCKED decisions-drift` whenever the live
+section differs from the snapshot — a silent edit by any hand, agent or
+human, trips the gate. A legitimate decision change travels
+`tailrocks-record-decision` → affected rows `STALE` → `tailrocks-plan`
+re-run → snapshot re-stamped, in that order; the re-run refreshes
+`decisions.md` from the live section after the refreshed spec is final, never
+before. Plans and verification rounds treat the snapshot as the
+decision ground truth the package was built against; the item's live section
+is the user's latest word, and a difference between them is itself a finding
+(package predates a recorded decision), reported rather than reconciled by
+hand.
 
 ## Capability file
 
@@ -184,3 +208,6 @@ all scenarios; the log records that it changed and which plans went stale.
 - Every screen contract's interactions map to requirement headings that
   exist.
 - No requirement contradicts a `D#` decision or an `N#` entry.
+- `decisions.md` holds the item's current Decisions body, blank-stripped —
+  written fresh at every planning run, never carried over from a previous
+  package.

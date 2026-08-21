@@ -54,6 +54,27 @@ actual_fingerprint=$(
 [ "$actual_fingerprint" = "$expected_fingerprint" ] ||
   verdict "BLOCKED plan-drift"
 
+# The decisions snapshot: the item's ## Decisions body is writable (record-
+# decision appends to it), so planning froze a verbatim copy into the spec.
+# Any later difference — whatever hand made it — means the contract's ground
+# moved; only a re-plan may re-stamp the snapshot. Blank lines are stripped
+# on both sides; the snapshot is stored pre-stripped. Older packages carry
+# no snapshot and skip this check.
+decisions_snapshot="$item/plan/spec/decisions.md"
+if [ -f "$decisions_snapshot" ]; then
+  strip_blanks() { grep -v '^[[:space:]]*$' || true; }
+  current_decisions=$(
+    awk '
+      /^## Decisions[[:space:]]*$/ { inside = 1; next }
+      inside && /^## / { exit }
+      inside { print }
+    ' "$item/README.md" | strip_blanks | git hash-object --stdin
+  )
+  expected_decisions=$(strip_blanks < "$decisions_snapshot" | git hash-object --stdin)
+  [ "$current_decisions" = "$expected_decisions" ] ||
+    verdict "BLOCKED decisions-drift"
+fi
+
 status_counts=$(awk -F '|' '
   /^\|/ {
     status = $(NF - 1)

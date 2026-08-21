@@ -79,6 +79,18 @@
       "prompt": "A proposed plan asks its executor to choose between two storage designs. Return only the routing decision; no repository lookup is required.",
       "expected_output": "Refuses the bounded-executor label because choosing architecture is outside that role's eligibility, keeps the decision with frontier-judgment, and names the unresolved storage decision as what must be settled before a bounded executor can be handed the plan.",
       "files": []
+    },
+    {
+      "prompt": "Plan the READY item session-sync. Its ## Decisions holds two dated entries.",
+      "expected_output": "Snapshot the item's ## Decisions body verbatim into plan/spec/decisions.md with blank lines stripped — stored pre-stripped, an empty section as an empty file — so a later silent edit trips check.sh as BLOCKED decisions-drift instead of rewriting the contract's ground. And write the item's ## Run section with exactly two blocks — /goal Follow roadmap/session-sync/goal/START.md and /goal Follow roadmap/session-sync/goal/RESUME.md — refreshed on every re-plan, never pointing at a goal file that does not exist.",
+      "id": 11,
+      "files": []
+    },
+    {
+      "prompt": "Re-plan session-sync after record-decision marked plans 003 and 004 STALE — the user reversed the sync-engine decision.",
+      "expected_output": "Refresh the STALE rows against the updated item, record the spec delta in the spec change log rather than rewriting in place, re-stamp plan/spec/decisions.md from the live ## Decisions body after the refreshed spec is final — that is the only way the snapshot moves and it clears the decisions-drift gate — then regenerate goal/ last so the fingerprint matches the refreshed package, and refresh the item's ## Run blocks in the same commit.",
+      "id": 12,
+      "files": []
     }
   ]
 }
