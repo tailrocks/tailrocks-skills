@@ -1,0 +1,23 @@
+{
+  "skill_name": "<skill-name>",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "<normal case: a realistic request squarely inside the skill's scope>",
+      "expected_output": "<the behavior the skill must produce, including the baseline failure it must avoid>",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "<boundary case: a near-miss or partial-scope request>",
+      "expected_output": "<the behavior at the edge, including what the skill must not do>",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "<refusal case: a tempting request the skill must decline>",
+      "expected_output": "<the refusal and its stated reason>",
+      "files": []
+    }
+  ]
+}

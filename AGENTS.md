@@ -291,7 +291,9 @@ verification commands that were run during recon rather than guessed. It
 never implements, never writes outside `plans/`, and reconciles its
 backlog on reruns instead of duplicating plans. When the repository runs
 the delivery pipeline and the findings should become roadmap items, that
-is tailrocks-audit's job — improve owns the pipeline-free lane.
+is tailrocks-audit's job — improve owns the pipeline-free lane. One
+carve-out: in a repository whose product is agent skills, the skills
+themselves are judged by tailrocks-skill-audit, not by improve's lanes.
 
 Skill definition: `skills/tailrocks-improve/SKILL.md`
 
@@ -618,29 +620,46 @@ This repository is its own first customer: every instruction file is an
 `AGENTS.md` with `CLAUDE.md` symlinked beside it — at the root and in `docs/`,
 `.github/`, and `skills/`.
 
-### tailrocks-skill-author
+### The skill-authoring family — evidence in, doctrine applied
 
-Create, update, or audit agent skills under two laws: no new skill and no
-behavioral edit without the failure observed first (the baseline run is the
-red bar, and a skill whose evals pass without it is dead weight), and the
-context window is a public good (trigger-only descriptions that never
-summarize workflow, lean routers, depth in references routed by
-when-to-read). Guidance form is matched to the failure type — prohibitions
-plus rationalization counters for discipline violations, positive recipes
-for wrong-shaped output, required slots for omissions, predicate-keyed
-conditionals for context-dependent behavior — because the wrong form
-measurably backfires. Placement is decided before writing: gates beat
-prose, the owning `AGENTS.md` beats a skill, extending a neighbor beats
-forking a rival. Update mode protects what already works: load-bearing
-lines checked against the eval set, strengthen over append, replace past
-the router budget, and a router change updates that skill's eval cases so
-CI re-runs the whole set — eval execution never happens locally here.
+Four skills carry the two authoring laws: no new skill and no behavioral edit
+without the failure observed first (the baseline run is the red bar, and a
+skill whose evals pass without it is dead weight), and the context window is a
+public good (trigger-only descriptions that never summarize workflow, lean
+routers, depth in references routed by when-to-read). Guidance form is matched
+to the failure type — prohibitions plus rationalization counters for
+discipline violations, positive recipes for wrong-shaped output, required
+slots for omissions, predicate-keyed conditionals for context-dependent
+behavior — because the wrong form measurably backfires. Exactly one skill owns
+each phase of a skill's life.
 
-Skill definition: `skills/tailrocks-skill-author/SKILL.md`
+- **tailrocks-skill-create** — a new skill from an observed failure: baseline
+  captured verbatim (a retrospective field record with commit-level evidence
+  is the strongest form), placement decided before writing (gates beat prose,
+  the owning `AGENTS.md` beats a skill, extending a neighbor beats forking a
+  rival), the copy-ready skeleton under `templates/skill/`, baselined eval
+  cases, full repository wiring.
+  Definition: `skills/tailrocks-skill-create/SKILL.md`
+- **tailrocks-skill-update** — an in-place edit that preserves the invocation
+  contract: eval-pinned lines checked before a gate is reworded, strengthen
+  over append, replace past the router budget, and the full eval set updated
+  for CI — eval execution never happens locally here.
+  Definition: `skills/tailrocks-skill-update/SKILL.md`
+- **tailrocks-skill-audit** — the doctrine authority and the read-only judge:
+  audits one skill or sweeps the tree with one read-only subagent per skill,
+  vets every finding against its own reads, and writes the layered report —
+  description, router, references, evals, wiring, overlap — to
+  `skill-audits/<skill>.md` with stable finding IDs and named fixes. Never
+  edits. Definition: `skills/tailrocks-skill-audit/SKILL.md`
+- **tailrocks-skill-refactor** — applies user-selected finding IDs from a
+  report: no report, no refactor; nothing beyond the selection; the
+  invocation contract untouched; the pass ends in an independent re-audit —
+  the implementer never self-verifies.
+  Definition: `skills/tailrocks-skill-refactor/SKILL.md`
 
-tailrocks-agents-md owns instruction files;
-tailrocks-skill-author owns skills — a rule that belongs in an `AGENTS.md`
-or a gate is routed there, not wrapped in a new skill.
+tailrocks-agents-md owns instruction files; the family owns skills — a rule
+that belongs in an `AGENTS.md` or a gate is routed there, not wrapped in a new
+skill.
 
 ### tailrocks-retrospect
 
@@ -668,7 +687,7 @@ reconstructed). The skill writes one file, its record under
 
 Skill definition: `skills/tailrocks-retrospect/SKILL.md`
 
-tailrocks-retrospect produces the observed failure; tailrocks-skill-author
+tailrocks-retrospect produces the observed failure; tailrocks-skill-update
 consumes it and owns the edit, the router budget, and the eval re-run. A
 skill change with neither a baseline run nor a retrospective finding behind
 it has no evidence at all.
@@ -686,7 +705,7 @@ What remains repo-local is the invocation, not the behavior:
 `prompts/improve-from-pr.md` is a saved prompt that drives
 `tailrocks-retrospect` against an external pull request with its
 subagent fan-out, then hands approved patches to
-`tailrocks-skill-author`.
+`tailrocks-skill-update`.
 
 ## Adding a Skill
 

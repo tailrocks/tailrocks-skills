@@ -1,0 +1,23 @@
+{
+  "skill_name": "tailrocks-skill-create",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "That workflow we just went through for rotating the API credentials was painful to figure out. Turn it into a skill so future sessions get it right.",
+      "expected_output": "Extracts the intent and the observed failure from the conversation itself as the baseline — what an agent got wrong without guidance, documented concretely — before writing anything. Runs the placement decision: checks whether the fix belongs in a validator or gate, an owning instruction file, or an existing skill via tailrocks-skill-update before creating a new one, and states why the chosen destination wins. Only then designs the skill, starting from the shipped skeleton, with eval cases planned against the documented baseline.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Write the description for my new skill so it lists the main workflow steps — that way the agent knows what to do even from the listing.",
+      "expected_output": "Refuses the workflow summary: a description that sketches the process becomes a shortcut the agent follows instead of reading the body, silently dropping the rules that live there. Writes a trigger-only description — symptoms, situations, artifact names, and the do-not-use boundary — and keeps the workflow in the router, honoring the tree's guard sentence and character budget where they apply.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "We need five small skills for the team by end of day. They're all simple, so write them in one batch and we'll test them later once people start using them.",
+      "expected_output": "Refuses the batch: no skill ships without its baseline failure observed first by hand and eval cases written to prove the change, because an untested skill is untested code and production use is not a test plan. Does not offer to run the eval harness locally — its execution is deferred to CI. Proceeds one skill at a time — observe, write, cover with cases, wire — and states that simplicity is a rationalization, not an exemption.",
+      "files": []
+    }
+  ]
+}

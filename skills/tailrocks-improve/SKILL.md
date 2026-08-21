@@ -115,6 +115,10 @@ Never infer implementation permission from a plan being ready.
   conventions, not the house stack; conformance routing belongs to
   `tailrocks-audit`. A plan never names an external project or author as
   its source.
+- **Skill authoring is not a lane.** In a repository whose product is agent
+  skills, `SKILL.md` bodies, evals, and skill wiring are judged by
+  `tailrocks-skill-audit`; the lanes here cover everything else — tooling,
+  scripts, CI, docs.
 
 ## Output contract
 

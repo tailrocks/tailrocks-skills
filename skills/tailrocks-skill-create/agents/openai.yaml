@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Skill Create"
+  short_description: "Create a new agent skill from an observed failure with baselined evals and full wiring"
+  default_prompt: "Use $tailrocks-skill-create on this request: observe the baseline failure before writing anything, decide placement (gate, instruction file, existing skill, or new skill), match the guidance form to the failure type, keep the router lean with depth in references, and write the baseline-versus-with-skill eval cases for CI before wiring the repository — never run the eval harness locally."
+policy:
+  allow_implicit_invocation: false
