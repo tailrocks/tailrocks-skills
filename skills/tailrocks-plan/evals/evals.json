@@ -40,6 +40,14 @@
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "Plan tui-dashboard — the item is READY and both screens have an empty Design line.",
+      "expected_output": "Planning stops at the spec step instead of writing screen contracts: the response names Run overview and Lane detail as screens with a visual surface and no blessed design reference, names tailrocks-tui-design as the medium's design skill (ratatui is the item's decided stack), and offers the user the choice of running the design stage or recording a deferral. No plans/tui-dashboard/spec screen contract invents regions, states, or pixel detail from the schematic mockup; the item is not set PLANNED.",
+      "files": [
+        "skills/tailrocks-plan/evals/fixtures/roadmap/tui-dashboard/README.md"
+      ]
     }
   ]
 }

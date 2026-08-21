@@ -86,6 +86,10 @@ All must hold; check each against the live item, not memory:
 - [ ] Every screen with a design reference points at it via its `Design:`
       line and the reference is blessed — an unblessed reference is
       SHAPING ground, named as such.
+- [ ] Every screen with a visual surface and no blessed reference is named
+      in the close-out as design-stage work, with its medium's skill. READY
+      does not require the reference; planning does, and an item that
+      arrives there without it stops.
 - [ ] Every flow names its steps, screens, and failure points.
 - [ ] Data & integrations names every external touchpoint and what is
       settled about it.

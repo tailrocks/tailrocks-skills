@@ -76,8 +76,9 @@ For every `S#` the capability owns, after the requirements:
 Mockup: roadmap item §Screens/"Session list" — layout intent, not pixel
 truth.
 Reference: <the screen's blessed design reference by path — gallery
-manifest section, visual-test manifest section, or prototype sign-off —
-pixel truth when present; omit the line when the item has none>.
+manifest section, visual-test manifest section, or prototype sign-off.
+Required for a screen with a visual surface; the only substitute is the
+user's recorded deferral, cited here as `deferred <date> — <reason>`>.
 
 - **Regions**: <structural areas, top to bottom>
 - **States**: default | empty | loading | error — what each shows; which
@@ -85,6 +86,15 @@ pixel truth when present; omit the line when the item has none>.
 - **Interactions**: <element → behavior → requirement it exercises>
 - **Navigation**: arrives from <screen/flow>, exits to <screen/flow>
 ```
+
+**The Reference line is a gate, not a field.** The design stage runs
+between READY and planning: `tailrocks-tui-design` for a terminal screen,
+`tailrocks-web-design` for a web screen, `tailrocks-macos-design` then
+`tailrocks-macos-prototype` for a macOS window. A screen with a visual
+surface and neither a blessed reference nor a recorded deferral stops
+planning — name the screens, name the skill, and hand the decision back.
+Planning around it converts pixel questions into implementer guesses, and
+the implementer resolves them alone and late.
 
 Behavior stays in requirements; the screen contract binds structure,
 states, and navigation to them. Screen behavior not traceable to a

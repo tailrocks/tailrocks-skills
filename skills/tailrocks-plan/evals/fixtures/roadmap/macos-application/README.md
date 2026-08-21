@@ -33,6 +33,9 @@ Add a native macOS companion for the existing CLI/TUI.
 └───────────┴─────────────────────┘
 ```
 
+- **Design**: prototype sign-off — `design/session-list/SIGNOFF.md`, blessed
+  2026-08-14 on the running prototype.
+
 ### Session detail
 
 ```text
@@ -41,6 +44,9 @@ Add a native macOS companion for the existing CLI/TUI.
 │ [Open] [Stop]                   │
 └─────────────────────────────────┘
 ```
+
+- **Design**: prototype sign-off — `design/session-detail/SIGNOFF.md`, blessed
+  2026-08-14 on the running prototype.
 
 ## Flows
 
