@@ -116,6 +116,18 @@ nobody.
    **Complete when:** the sign-off names the pending capture lane and what
    it will cover.
 
+6. **Retire the prototype package from the feature branch.** The prototype
+   is committed for review and capture, not for permanent coexistence with
+   production. Once `tailrocks-macos-visual-qa` has frozen its baseline from
+   this package, the feature PR that ships the real implementation must
+   either delete the prototype package or move it to a location outside the
+   PR's diff (a separate reference branch, or a standing fixtures/prototypes
+   home the repo already excludes from production builds) before that PR is
+   proposed for merge. A prototype package still present in the same diff as
+   the shipped feature is a defect to report, not a detail to note.
+   **Complete when:** the feature PR's diff contains either zero prototype
+   files, or an explicit, named exception the user approved for keeping it.
+
 ## Final gate
 
 Never capture screenshots during design — capture is
@@ -124,5 +136,7 @@ Never ship a bespoke capture loop, diff tool, or manifest shape. Never
 rename or extend the launch contract per feature. Never resolve a design
 gap in the prototype instead of routing it to the design. Never pixel-gate
 a native region or a cross-binary whole window. Never record a sign-off
-the user did not give. Never discard the prototype source. Report every
-skipped check.
+the user did not give. Never discard the prototype source before capture is
+frozen; never leave it permanently coexisting with the shipped feature in
+the same PR once capture is frozen, absent a named user exception. Report
+every skipped check.
