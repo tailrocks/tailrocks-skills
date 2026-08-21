@@ -1,0 +1,18 @@
+sha	author_date	subject	trailer	paths
+a1f0c31	2026-05-04T09:12:00+02:00	docs(roadmap): capture loom sync	tailrocks-idea	roadmap/loom-sync/
+b2d4417	2026-05-04T10:41:00+02:00	docs(roadmap): shape loom sync	tailrocks-brainstorm	roadmap/loom-sync/
+c3a9820	2026-05-04T11:02:00+02:00	docs(roadmap): record process isolation decision	tailrocks-record-decision	roadmap/loom-sync/
+c4b1173	2026-05-04T11:04:00+02:00	docs(roadmap): record queue backing decision	tailrocks-record-decision	roadmap/loom-sync/
+c5c7d05	2026-05-04T11:06:00+02:00	docs(roadmap): record retry backoff decision	tailrocks-record-decision	roadmap/loom-sync/
+d6e2244	2026-05-05T14:20:00+02:00	feat(api): add workspace index cache table	-	crates/api/, migrations/
+d7f8391	2026-05-05T16:55:00+02:00	ci(build): split the workspace test job by crate	tailrocks-rust-project-setup	.github/workflows/, Cargo.toml
+d8a4460	2026-05-06T09:30:00+02:00	refactor(api)!: move error types into a shared crate	tailrocks-rust-project-setup	crates/, Cargo.toml
+e9b6612	2026-05-09T10:15:00+02:00	docs(research): postgres queueing — chapters 01-03	tailrocks-research	research/postgres-queueing/
+f0c3378	2026-05-09T10:48:00+02:00	docs(research): correct the advisory-lock contention chapter	tailrocks-research	research/postgres-queueing/
+f1d5529	2026-05-09T15:02:00+02:00	docs(roadmap): record subscription transport decision	tailrocks-record-decision	roadmap/loom-sync/
+f2e7741	2026-05-09T17:40:00+02:00	docs(roadmap): finalize loom sync — READY	tailrocks-finalize	roadmap/loom-sync/
+a3f9903	2026-05-10T09:05:00+02:00	docs(plans): loom-sync package	tailrocks-plan	plans/loom-sync/, roadmap/loom-sync/
+b4a1125	2026-05-10T13:22:00+02:00	feat(loom): sync process, queue, backoff	-	crates/loom/
+b5b3347	2026-05-10T18:01:00+02:00	feat(loom): publish sync state over the subscription	-	crates/loom/, crates/api/
+b6c5569	2026-05-11T09:44:00+02:00	feat(web): workspace header sync badge	-	web/src/
+b7d7781	2026-05-11T11:10:00+02:00	feat(api): add a per-request workspace content cache	-	crates/api/

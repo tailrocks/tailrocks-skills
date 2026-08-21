@@ -301,6 +301,8 @@ reference).
 
 All seven write only their own artifacts (`roadmap/`, `research/`,
 `plans/`) and never touch source.
+After an item ships, `tailrocks-retrospect` reads that marked history back and
+turns what diverged into proposed skill patches.
 Mechanical walkthrough: `docs/design/pipeline-walkthrough.md`. The published
 guide — why each stage exists, what it refuses, and two features taken end to
 end (a native macOS app with a Rust core, and a TanStack feature on an Axum
@@ -464,16 +466,39 @@ tailrocks-agents-md owns instruction files;
 tailrocks-skill-author owns skills — a rule that belongs in an `AGENTS.md`
 or a gate is routed there, not wrapped in a new skill.
 
+### tailrocks-retrospect
+
+The loop that closes back onto the collection. Point it at one shipped or
+in-flight roadmap item and it rebuilds which skills actually ran — commit
+trailers first, per-commit inference marked as inference, the item's Log
+beside it as the claim to be checked — then runs six lane-agnostic detectors
+over that sequence: evidence recorded after lock-in, a skill's own output
+reworked by its own follow-up, shipped scope that no coverage ID or Must-not
+claims, output nothing downstream consumed or that a consumer froze before it
+changed, the status machine run out of order, and a skill writing outside the
+scope its Boundaries declare. Every finding names the skill and the layer
+whose missing check allowed it — the executor is never the unit of fault —
+and every lane-shaped patch is held against its siblings in the other lanes
+before it is proposed. The skill writes one file, its record under
+`retrospectives/`, and edits nothing under `skills/`.
+
+Skill definition: `skills/tailrocks-retrospect/SKILL.md`
+
+tailrocks-retrospect produces the observed failure; tailrocks-skill-author
+consumes it and owns the edit, the router budget, and the eval re-run. A
+skill change with neither a baseline run nor a retrospective finding behind
+it has no evidence at all.
+
 ## Repo-local skills
 
 `.claude/skills/` holds skills that serve work **on this repository
 itself** and never ship: they are outside `skills/`, so the plugin
-manifests, catalog, validator, and docs pipeline ignore them.
-`self-improve` is the current one — point it at an external PR where the
-tailrocks skills were applied and it audits that PR commit by commit
-(attribution via the `Tailrocks-Skill` trailer), judges each skill's
-output against its own contract, and maps the verdicts to skill
-improvements here, writing its field report under `plans/field-reports/`.
+manifests, catalog, validator, and docs pipeline ignore them. None is
+defined today. The field-audit job that used to live here ships as
+`tailrocks-retrospect` instead — every repository that installs this
+collection has the same need to turn its own delivery history into skill
+improvements, and a repo-local copy would have been a second owner of one
+responsibility.
 
 ## Adding a Skill
 

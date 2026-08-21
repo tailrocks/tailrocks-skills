@@ -49,11 +49,12 @@
     {
       "id": "quality",
       "title": "Code quality and contribution",
-      "summary": "Debt that shrinks, defects that stop recurring, and work on repositories you do not own.",
+      "summary": "Debt that shrinks, defects that stop recurring, skills that improve from field evidence, and work on repositories you do not own.",
       "skills": [
         "tailrocks-code-health",
         "tailrocks-agents-md",
         "tailrocks-skill-author",
+        "tailrocks-retrospect",
         "tailrocks-simplify",
         "tailrocks-remediate",
         "tailrocks-rethink",
