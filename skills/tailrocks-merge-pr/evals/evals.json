@@ -63,6 +63,12 @@
         "evals/fixtures/no-roadmap/.tailrocks/pr.md",
         "evals/fixtures/no-roadmap/src/rate_limit.rs"
       ]
+    },
+    {
+      "prompt": "Merge PR 41. The diff deletes roadmap/session-sync/ whole with a clean newest round, but adds no delivery/session-sync.md.",
+      "expected_output": "Block: retired without its report. The verified report is the one artifact retirement keeps in the tree — a deletion without delivery/<slug>.md either dropped the report or retired an item that never accumulated one, and a retirement with nothing proven to record is retirement-while-unfinished wearing a tidier coat. Route to tailrocks-reconcile: a legitimate retirement re-runs with its report written; a premature one restores the folder from the diff's pre-image. Never edit, delete, or commit an artifact here.",
+      "id": 8,
+      "files": []
     }
   ]
 }

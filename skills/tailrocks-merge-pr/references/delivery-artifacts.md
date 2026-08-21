@@ -53,6 +53,9 @@ nothing more:
   round listing none is clean.
 - **`roadmap/README.md`** — the index: one table row per item folder, carrying
   the slug and its status.
+- **`delivery/<slug>.md`** — the retired item's verified report: the one
+  artifact retirement keeps in the tree. Its absence beside a deleted folder
+  is itself a contradiction (case 6).
 
 Item statuses run `DRAFT` → `SHAPING` → `READY` → `PLANNED` → `IN EXECUTION` →
 `DONE`, plus `PARKED (reason; was: STATUS)`. `DONE` is a transition, not a
@@ -62,7 +65,7 @@ request, which is what makes cases 1 and 4 checkable at merge.
 A `roadmap/` that is not this shape yields no findings — no item header means
 no item, and nothing to contradict.
 
-## The five contradictions
+## The six contradictions
 
 Each one blocks. Report the contradiction, the exact files that disagree, and
 the routing skill. Where several fire, report them all; they usually share a
@@ -136,6 +139,22 @@ without an item is a merge that leaves two sources of truth disagreeing on the
 first read after it.
 
 **Route** — `tailrocks-reconcile`.
+
+### 6. Retired without its report
+
+**Detect** — the diff deletes `roadmap/<slug>/` but adds no
+`delivery/<slug>.md`.
+
+**Block** — the verified report is the one artifact retirement keeps in the
+tree: it is the standing record of what the item provably shipped, and it
+survives precisely because everything else goes. A deletion without it
+either dropped the report or retired an item that never accumulated one —
+and a retirement with nothing proven to record is case 2 wearing a tidier
+coat.
+
+**Route** — `tailrocks-reconcile`: a legitimate retirement re-runs with its
+report written; a premature one restores the folder from the diff's
+pre-image and re-derives `## Remaining` from the newest round.
 
 ## Negative space
 
