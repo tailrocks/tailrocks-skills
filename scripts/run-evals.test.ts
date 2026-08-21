@@ -376,6 +376,11 @@ import {
 const roots: string[] = [];
 const EXPECTED_DIRECT_MARKDOWN_LINKS: Record<string, string[]> = {
   "tailrocks-agents-md": ["references/placement-and-topology.md", "references/rule-writing.md"],
+  "tailrocks-audit": [
+    "references/audit-lanes.md",
+    "references/execution-loop.md",
+    "references/plan-seeding.md",
+  ],
   "tailrocks-axum-best-practices": [
     "references/architecture-and-state.md",
     "references/extractors-and-errors.md",
@@ -465,6 +470,11 @@ const EXPECTED_DIRECT_MARKDOWN_LINKS: Record<string, string[]> = {
   "tailrocks-remediate": ["references/principles-and-evidence.md"],
   "tailrocks-research": ["references/research-playbook.md"],
   "tailrocks-rethink": ["references/concept-corpus.md", "references/redesign-discipline.md"],
+  "tailrocks-retrospect": [
+    "references/divergence-detectors.md",
+    "references/patch-shape.md",
+    "templates/retrospective.md",
+  ],
   "tailrocks-review-pr": [
     "references/finding-bar.md",
     "references/reporting.md",
@@ -487,15 +497,6 @@ const EXPECTED_DIRECT_MARKDOWN_LINKS: Record<string, string[]> = {
     "references/workspace-and-layout.md",
   ],
   "tailrocks-simplify": ["references/behavior-preservation.md", "references/simplification-ladder.md"],
-  "tailrocks-sketch-handoff": [
-    "references/apple-kit.md",
-    "references/design-map.md",
-    "references/handoff-package.md",
-    "references/sketch-mcp.md",
-    "references/token-extraction.md",
-    "templates/DESIGN_MAP.md",
-    "templates/DesignSource.md",
-  ],
   "tailrocks-skill-author": [
     "references/design-doctrine.md",
     "references/house-wiring.md",
@@ -717,7 +718,7 @@ linkedDescribe("linked skill material", () => {
   linkedTest("keeps exactly the earned tailrocks-plan eval cases", async () => {
     const root = resolve(import.meta.dir, "..");
     const evals = await Bun.file(join(root, "skills/tailrocks-plan/evals/evals.json")).json();
-    linkedExpect(evals.evals.map((item: { id: number }) => item.id)).toEqual([1, 2, 3, 4, 5, 7, 8]);
+    linkedExpect(evals.evals.map((item: { id: number }) => item.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
   });
   linkedTest("stages isolated direct-case fixtures at their authoritative workspace paths", async () => {
     const root = resolve(import.meta.dir, "..");
