@@ -464,7 +464,15 @@ const EXPECTED_DIRECT_MARKDOWN_LINKS: Record<string, string[]> = {
     "references/spec-format.md",
   ],
   "tailrocks-pr-template": ["references/PULL_REQUEST_TEMPLATE.md"],
-  "tailrocks-reconcile": ["references/row-verification.md"],
+  "tailrocks-record-feedback": ["templates/feedback.md"],
+  "tailrocks-reconcile": ["references/remaining.md", "references/row-verification.md"],
+  "tailrocks-prove": [
+    "references/execution-evidence.md",
+    "references/report-format.md",
+    "references/subagent-fanout.md",
+    "references/surface-inventory.md",
+    "templates/report.md",
+  ],
   "tailrocks-record-decision": [],
   "tailrocks-refresh-pr": [],
   "tailrocks-remediate": ["references/principles-and-evidence.md"],
@@ -718,58 +726,25 @@ linkedDescribe("linked skill material", () => {
   linkedTest("keeps exactly the earned tailrocks-plan eval cases", async () => {
     const root = resolve(import.meta.dir, "..");
     const evals = await Bun.file(join(root, "skills/tailrocks-plan/evals/evals.json")).json();
-    linkedExpect(evals.evals.map((item: { id: number }) => item.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+    linkedExpect(evals.evals.map((item: { id: number }) => item.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   });
-  linkedTest("stages isolated direct-case fixtures at their authoritative workspace paths", async () => {
+  linkedTest("stages fixtures at the paths a skill would really read", async () => {
+    // The mechanism, not one skill's fixture data: a leading case-id segment is
+    // stripped so a fixture lands where the skill reads it, and nowhere else.
     const root = resolve(import.meta.dir, "..");
     const skillDir = join(root, "skills/tailrocks-plan");
     const evals = await Bun.file(join(skillDir, "evals/evals.json")).json();
-    for (const id of [2, 3, 4, 5]) {
-      const workspace = await mkdtemp(join(tmpdir(), `tailrocks-eval-fixture-${id}-`));
+    for (const evaluation of evals.evals as { id: number; files: string[] }[]) {
+      if (evaluation.files.length === 0) continue;
+      const workspace = await mkdtemp(join(tmpdir(), `tailrocks-eval-fixture-${evaluation.id}-`));
       cleanup.push(workspace);
-      const evaluation = evals.evals.find((item: { id: number }) => item.id === id)!;
       await stageFixtures(root, skillDir, evaluation.files, workspace);
-      linkedExpect(
-        await Bun.file(join(workspace, "roadmap/macos-application/README.md")).exists(),
-      ).toBeTrue();
-      linkedExpect(
-        await Bun.file(join(workspace, String(id), "roadmap/macos-application/README.md")).exists(),
-      ).toBeFalse();
-      if (id === 2) {
-        const item = await Bun.file(join(workspace, "roadmap/macos-application/README.md")).text();
-        linkedExpect(item).toContain("Status: SHAPING");
-        linkedExpect(item.match(/^\d\. /gm)?.length).toBe(6);
-      }
-      if (id === 3)
-        linkedExpect(await Bun.file(join(workspace, "roadmap/macos-application/README.md")).text()).toContain(
-          "Status: READY",
-        );
-      if (id === 4) {
-        linkedExpect(await Bun.file(join(workspace, "roadmap/macos-application/README.md")).text()).toContain(
-          "Status: READY",
-        );
-        const hub = await Bun.file(join(workspace, "plans/macos-application/README.md")).text();
-        const decision = await Bun.file(join(workspace, "roadmap/macos-application/README.md")).text();
-        const oldContract = await Bun.file(
-          join(workspace, "plans/macos-application/spec/session-storage.md"),
-        ).text();
-        linkedExpect(decision).toContain("Rust-owned append-only session event log");
-        linkedExpect(decision).toContain("one-time atomic import");
-        linkedExpect(decision).toContain("Rust reopens the new log and imported session IDs/count match");
-        linkedExpect(oldContract).toContain("Mutable JSON session snapshot");
-        linkedExpect(hub).toContain("| 004 | STALE |");
-        linkedExpect(hub).toContain("| 007 | STALE |");
-        linkedExpect(await Bun.file(join(workspace, "plans/macos-application/GOAL.md")).exists()).toBeTrue();
-      }
-      if (id === 5) {
-        linkedExpect(await Bun.file(join(workspace, "roadmap/macos-application/README.md")).text()).toContain(
-          "Status: READY",
-        );
-        linkedExpect(await Bun.file(join(workspace, "plans/macos-application/001.md")).exists()).toBeTrue();
-        linkedExpect(await Bun.file(join(workspace, "plans/macos-application/009.md")).exists()).toBeTrue();
+      for (const file of evaluation.files) {
+        const authoritative = file.replace(/^skills\/[^/]+\/evals\/fixtures\/(?:\d+\/)?/, "");
+        linkedExpect(await Bun.file(join(workspace, authoritative)).exists()).toBeTrue();
         linkedExpect(
-          await Bun.file(join(workspace, "research/session-boundary/README.md")).exists(),
-        ).toBeTrue();
+          await Bun.file(join(workspace, String(evaluation.id), authoritative)).exists(),
+        ).toBeFalse();
       }
     }
   });

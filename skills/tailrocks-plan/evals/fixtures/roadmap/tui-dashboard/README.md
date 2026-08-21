@@ -1,6 +1,9 @@
 # TUI Dashboard
 
-Status: READY
+- **Status**: READY
+- **Slug**: tui-dashboard
+- **Created**: 2026-08-12
+- **Plan**: — (`plan/` once planned) · **Verified**: — (`verification/` once run)
 
 ## Intent
 
@@ -77,7 +80,4 @@ An operator can tell, in one frame, which lanes are alive and which failed.
 
 ## Deferred
 
-## Log
-
-- 2026-08-12 — tailrocks-finalize — READY. Screens carry schematic mockups and
-  states; no design reference has been produced yet.
+## Remaining

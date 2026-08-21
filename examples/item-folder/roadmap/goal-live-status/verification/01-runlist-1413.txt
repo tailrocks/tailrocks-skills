@@ -1,0 +1,7 @@
+captured 2026-07-29 14:13, 11 minutes after run `docs` was killed at 14:02
+
+┌ Runs ───────────────────────────┐
+│ ● docs     002/003  active      │
+│ ✓ parser   004/004  done        │
+└─────────────────────────────────┘
+  ↑↓ select · enter detail · q quit

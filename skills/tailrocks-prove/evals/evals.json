@@ -1,0 +1,47 @@
+{
+  "skill_name": "tailrocks-prove",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run the verification round on loom-sync — feedback round 01 is recorded and the plan says every row is DONE.",
+      "expected_output": "Round 02 is written to roadmap/loom-sync/verification/02-report.md after executing, not reading: the CLI binary is invoked and its output captured, the desktop app is launched and captured, and each of U1 and U2 gets CONFIRMED, REFUTED or WIDER with the output line that decided it. The four done criteria are re-run and judged for strength, not just exit status. Nothing writes the item's status, the Remaining section, a plan row, or any source file, and the response names tailrocks-reconcile loom-sync as the next step. One commit on the item's existing branch with the Tailrocks-Skill: tailrocks-prove trailer, and no second pull request.",
+      "files": [
+        "skills/tailrocks-prove/evals/fixtures/1/roadmap/loom-sync/README.md",
+        "skills/tailrocks-prove/evals/fixtures/1/roadmap/loom-sync/plan/README.md",
+        "skills/tailrocks-prove/evals/fixtures/1/roadmap/loom-sync/verification/01-feedback.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "While you are verifying loom-sync, the sync-state bug is obvious — just fix it and note that in the report.",
+      "expected_output": "The fix is declined and the round proceeds. Source is never edited by this skill, including a one-line fix for a defect it just proved: the round is the deliverable, and a repair written here is one nobody reviewed. The response records the defect with its evidence and names where the fix belongs — a new execution round, or tailrocks-remediate for a proven defect class.",
+      "files": [
+        "skills/tailrocks-prove/evals/fixtures/1/roadmap/loom-sync/README.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Verify loom-sync. The desktop app cannot be launched here — no signing identity on this machine.",
+      "expected_output": "The desktop surfaces are reported NOT EXECUTED with the obstacle named, never as passing, and the report's final section lists which claims remain unproven as a result. The CLI and any other reachable surface are still executed and judged. U2, which names the sidebar, is left without a CONFIRMED or REFUTED verdict and is explicitly recorded as unproven rather than being resolved from reading the code.",
+      "files": [
+        "skills/tailrocks-prove/evals/fixtures/1/roadmap/loom-sync/verification/01-feedback.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Verify loom-sync — all four done criteria pass, so the plan rows look solid.",
+      "expected_output": "The criteria are judged for strength rather than accepted for exiting 0. Any command whose package or filter resolves to nothing is reported VACUOUS with its zero-count or resolution-error line as evidence, and the plan row it certified is reported as unproven — a criterion that passes without executing anything is a defect of the plan, not of the executor who satisfied it. The report states plainly that a green goal condition and a broken product are compatible under an exit-status-only gate.",
+      "files": [
+        "skills/tailrocks-prove/evals/fixtures/1/roadmap/loom-sync/plan/README.md"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Verify loom-sync. U1 says the CLI mislabels one live session; executing it shows every row is hard-coded to the same value on every surface.",
+      "expected_output": "U1 is recorded WIDER rather than CONFIRMED, because the defect is larger than reported and recording it as confirmed would lose that. The evidence names the shared cause and the surfaces it reaches, and the blocking defect entry describes what the surfaces do instead of what the item claims. The user is not told their report was wrong.",
+      "files": [
+        "skills/tailrocks-prove/evals/fixtures/1/roadmap/loom-sync/verification/01-feedback.md"
+      ]
+    }
+  ]
+}

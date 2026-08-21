@@ -15,8 +15,11 @@ record, then reconcile.
 
 ## Boundaries
 
-- Write only the roadmap item, its asset folder, the roadmap index row, and —
-  when plans exist — stale markers in `plans/<slug>/README.md`. Keep source, configuration, dependencies,
+- Write only `roadmap/<slug>/README.md`, that folder's assets, the item's index
+  row, and — when a plan package exists — stale markers in the writable manifest
+  `roadmap/<slug>/plan/README.md`. Never a `001-*.md` plan, `plan/spec/`,
+  `plan/coverage.md`, or `goal/`: those are frozen and fingerprinted, and
+  re-planning is how they change. Keep source, configuration, dependencies,
   and Git state unchanged.
 - The decision is the user's; the consistency check is yours. Never soften,
   reinterpret, or extend it; never record a decision they did not state.
@@ -34,12 +37,14 @@ record, then reconcile.
 Artifact writes land on the item's delivery branch — `roadmap/<slug>`,
 opened with its draft PR by `tailrocks-idea`. A missing branch (item
 predates the contract, or repo law forbids branches) is handled per that
-skill's contract reference, never silently. End every invocation by
+skill's contract reference, never silently. That branch and its PR are the
+item's only lane — never open a second one. End every invocation by
 committing the decision and its propagation — repository commit convention, subject like
 `docs(roadmap): record <slug> decision — <one-line>` — with the trailer `Tailrocks-Skill: tailrocks-record-decision`, then
 push; update the draft PR body's status line when the item's status
-changed. One invocation, one marked commit: the trailer is what lets a
-later audit attribute each PR commit to the skill that produced it.
+changed. One invocation, one marked commit: the item keeps no log, so the
+dated Decisions entry is the decision and that commit is the record that it
+was taken.
 
 ## Precondition: evidence before lock-in
 
@@ -84,14 +89,14 @@ deriving from unresearched facts) are unaffected and proceed normally.
 
 4. **Reconcile status.** `DRAFT` → `SHAPING`. If the item is `READY`,
    `PLANNED`, or `IN EXECUTION` and the decision changes product intent:
-   move it back to `SHAPING`; when `plans/<slug>/` exists, mark the
-   affected plan rows `STALE` in `plans/<slug>/README.md` with a one-line
-   reason. Apply the status change, Log entry, and index-row update per the
-   roadmap item format (owned by tailrocks-idea's roadmap-item-format.md).
+   move it back to `SHAPING`; when `roadmap/<slug>/plan/` exists, mark the
+   affected rows `STALE` in `roadmap/<slug>/plan/README.md` with a one-line
+   reason. Apply the status change and index-row update per the roadmap item
+   format (owned by tailrocks-idea's roadmap-item-format.md).
    An explicit user instruction to park or resume is recordable: park per
    the format, or un-park to the recorded `was:` status through the reopen
    rule when intent changed.
-   **Complete when:** status, Log, index, and any stale markers are
+   **Complete when:** status, index row, and any stale markers are
    consistent with the recorded decision.
 
 ## Final gate
@@ -99,6 +104,7 @@ deriving from unresearched facts) are unaffected and proceed normally.
 Finish only when the decision is dated with a reason, every touched section
 agrees with it, invalidated content is struck rather than silently deleted,
 status transitions follow the item format's machine, nothing outside the
-item, index, and plan-index stale markers changed, and any decision recorded
+item, its index row, and the plan manifest's stale markers changed, and any
+decision recorded
 without linked research/design evidence carries the `PROVISIONAL:` marker
 and its owing skill.

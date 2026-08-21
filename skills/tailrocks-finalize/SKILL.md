@@ -18,8 +18,10 @@ else.
 
 ## Boundaries
 
-- Write only the roadmap item, its asset folder, and the roadmap index row.
-  Keep source, configuration, dependencies, and Git state unchanged.
+- Write only `roadmap/<slug>/README.md`, that folder's assets, and the item's
+  index row. Never its `plan/`, `verification/`, or `goal/` siblings — other
+  skills own them, and `goal/check.sh` fingerprints the frozen ones. Keep
+  source, configuration, dependencies, and Git state unchanged.
 - Ask one question at a time and wait; with `--batch`, one numbered frontier
   round at a time. Every question carries a recommended answer.
 - Put only decisions to the user; look up facts under the house evidence
@@ -41,12 +43,14 @@ else.
 Artifact writes land on the item's delivery branch — `roadmap/<slug>`,
 opened with its draft PR by `tailrocks-idea`. A missing branch (item
 predates the contract, or repo law forbids branches) is handled per that
-skill's contract reference, never silently. End every invocation by
+skill's contract reference, never silently. That branch and its PR are the
+item's only lane — never open a second one. End every invocation by
 committing the closing-interview writes — repository commit convention, subject like
 `docs(roadmap): finalize <slug> — READY` — with the trailer `Tailrocks-Skill: tailrocks-finalize`, then
 push; update the draft PR body's status line when the item's status
-changed. One invocation, one marked commit: the trailer is what lets a
-later audit attribute each PR commit to the skill that produced it.
+changed. One invocation, one marked commit: the item keeps no log, so the
+commit granting READY is the record that the gate passed, and its subject
+carries the reason.
 
 ## Steps
 
@@ -73,8 +77,8 @@ later audit attribute each PR commit to the skill that produced it.
 4. **Run the readiness gate.** Check the item against the reference's
    checklist. The planning dry run is earned by fresh eyes per the
    reference — a clean-context reader of the item alone reports its
-   inventory and every guess or question — never by self-certification. Apply the status change, Log
-   entry, and index-row update per the roadmap item format (owned by
+   inventory and every guess or question — never by self-certification. Apply
+   the status change and index-row update per the roadmap item format (owned by
    tailrocks-idea's roadmap-item-format.md). On pass, name the next step:
    the design stage for every screen with a visual surface and no blessed
    reference — `tailrocks-tui-design` for a terminal screen,
@@ -83,15 +87,15 @@ later audit attribute each PR commit to the skill that produced it.
    <slug>` after it, or straight to `tailrocks-plan <slug>` when the item
    has no visual surface. Planning refuses a screen that reached it with
    neither. On a steered exit before pass: status stays
-   `SHAPING`, the Log entry lists exactly what remains, and the close-out
-   says what a future session must still collect.
-   **Complete when:** status, Log, and index truthfully reflect the gate's
-   outcome.
+   `SHAPING`, every remaining gap stands under Open questions, and the
+   close-out says what a future session must still collect.
+   **Complete when:** status and index row truthfully reflect the gate's
+   outcome — the item records no session history; its commit does.
 
 ## Final gate
 
 Finish only when every session answer is in the item, every screen the item
 promises has a schematic and states, the Open questions section is empty (or
-the item is honestly `SHAPING` with the remainder logged), READY was granted
-only by the full checklist, and nothing outside the item folder and index
-changed.
+the item is honestly `SHAPING` with the remainder standing under Open
+questions), READY was granted only by the full checklist, and nothing outside
+the item file, its assets, and its index row changed.

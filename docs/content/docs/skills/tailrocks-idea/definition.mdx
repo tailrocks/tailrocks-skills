@@ -24,6 +24,9 @@ into the item template, stop. Zero questions is the normal case.
 - Write only `roadmap/<slug>/README.md` and the index `roadmap/README.md`
   (create either when absent). Keep source, configuration, and dependencies
   unchanged; Git moves only as the delivery git contract below directs.
+- `roadmap/<slug>/` is the item's whole home: `plan/`, `verification/`, and
+  `goal/` appear there later, written by the skills that own them. Capture
+  creates the item file and nothing else.
 - Capture, do not invent: every statement must come from the user's input or
   a cited repository fact. Gaps stay visibly empty — an empty section is a
   truthful signal for `tailrocks-brainstorm`; a filled guess is a lie that
@@ -36,14 +39,19 @@ into the item template, stop. Zero questions is the normal case.
 ## Delivery git contract
 
 Read [`references/delivery-git-contract.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-idea/references/delivery-git-contract.md)
-before writing. This skill opens the item's delivery lane: branch
-`roadmap/<slug>` off the base branch **before** the first write (repo law
-and `.tailrocks/pr.md` govern naming and exceptions), and after
-registering, commit the two files with the repository's convention plus
-the trailer `Tailrocks-Skill: tailrocks-idea`, push, and open the
-**draft** PR the rest of the family will ripen. One invocation, one
-marked commit — that trailer is how later audits attribute PR commits to
-skills.
+before writing.
+
+- **One item, one branch, one pull request.** This skill opens the lane —
+  branch `roadmap/<slug>` off the base branch **before** the first write (repo
+  law and `.tailrocks/pr.md` govern naming and exceptions) — and every later
+  delivery skill commits into that same branch and that same pull request. No
+  delivery skill opens a second PR for an item that already has one.
+- After registering, commit the two files with the repository's convention plus
+  the trailer `Tailrocks-Skill: tailrocks-idea`, push, and open the **draft**
+  PR the rest of the family ripens.
+- **The commit series is the history.** One invocation, one marked commit; the
+  trailer attributes it. The item carries no log of its own — a status change
+  is recorded by the commit that makes it.
 
 ## Steps
 
@@ -59,7 +67,7 @@ skills.
    status `DRAFT`, the user's intent in their own words, every concrete
    statement sorted into its section (capabilities, screens, must-nots,
    references, quality bar), open questions the input itself raises under
-   Open questions, everything else left empty. Add one Log entry.
+   Open questions, everything else left empty.
    **Complete when:** every statement from the input landed in exactly one
    section and nothing appears that the user did not say.
 
@@ -81,7 +89,6 @@ skills.
 ## Final gate
 
 Finish only when the item file and index row exist, the item contains no
-invented content, no source file changed, the status is `DRAFT` with a
-dated Log entry naming this skill, and the work sits committed with its
-`Tailrocks-Skill` trailer on the item's delivery branch with its draft PR
-open.
+invented content and no history section, no source file changed, the status is
+`DRAFT`, and the work sits committed with its `Tailrocks-Skill` trailer on the
+item's delivery branch with its draft PR open.

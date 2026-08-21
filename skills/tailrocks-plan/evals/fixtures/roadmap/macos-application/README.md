@@ -1,6 +1,9 @@
 # macOS Application
 
-Status: READY
+- **Status**: READY
+- **Slug**: macos-application
+- **Created**: 2026-07-23
+- **Plan**: — (`plan/` once planned) · **Verified**: — (`verification/` once run)
 
 ## Intent
 
@@ -84,8 +87,4 @@ Add a native macOS companion for the existing CLI/TUI.
 
 ## Deferred
 
-## Log
-
-- 2026-07-23 — Captured as DRAFT.
-- 2026-07-23 — Shaped through brainstorm.
-- 2026-07-23 — Final readiness checklist passed; set READY.
+## Remaining

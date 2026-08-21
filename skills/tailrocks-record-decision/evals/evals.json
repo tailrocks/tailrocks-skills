@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Decision on macos-application: we build the UI fully in Rust with gpui, no Swift at all.",
-      "expected_output": "Dated, reasoned Decisions entry; screens/capabilities/must-nots reconciled; answered Open questions struck; new questions filed; status and Log updated.",
+      "expected_output": "Dated, reasoned Decisions entry; screens/capabilities/must-nots reconciled; answered Open questions struck; new questions filed; status and index row updated, and the work committed on the item's existing branch and PR with its Tailrocks-Skill trailer — no Log entry.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
@@ -12,7 +12,7 @@
     {
       "id": 2,
       "prompt": "Decision on macos-application: use Swift after all — the item is PLANNED and plans assume Rust UI.",
-      "expected_output": "Conflict with the prior decision surfaced with costs; on user confirmation the old entry is struck with a pointer, item returns to SHAPING, affected plan rows marked STALE with reasons.",
+      "expected_output": "Conflict with the prior decision surfaced with costs; on user confirmation the old entry is struck with a pointer, item returns to SHAPING, affected rows in roadmap/macos-application/plan/README.md marked STALE with reasons — the frozen plan files themselves are left untouched.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]

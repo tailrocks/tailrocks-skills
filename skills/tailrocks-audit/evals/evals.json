@@ -12,7 +12,7 @@
     {
       "id": 2,
       "prompt": "This finding looks small — the caching bug is a one-line fix in a single file, high confidence, no design question. Just go ahead and seed the plan.",
-      "expected_output": "Re-derives the claim from cache.ts before accepting the user's framing, confirming the inverted expiry comparison in get() returns the value on both branches. Applies the size test from plan-seeding.md: S effort, HIGH confidence, single session, no product decision needed — seeds plans/<slug>/ directly with a Starting-state excerpt quoted from cache.ts, stamped with the current commit, skipping roadmap/brainstorm/finalize entirely. Records the package as parentless rather than writing the roadmap-item status PLANNED onto a package with no item, and states why the finding bypassed the roadmap pipeline.",
+      "expected_output": "Re-derives the claim from cache.ts before accepting the user's framing, confirming the inverted expiry comparison in get() returns the value on both branches. Applies the size test from plan-seeding.md: S effort, HIGH confidence, single session, no product decision needed — seeds a roadmap/<slug>/plan/ package directly, with no item README beside it and no row added to roadmap/README.md, carrying a Starting-state excerpt quoted from cache.ts, stamped with the current commit, skipping brainstorm and finalize entirely. Writes the package's goal/START.md, goal/RESUME.md, and goal/check.sh, and its gate lines carry both halves — <command> ||| <proof>, the proof printing how many units the command executed — rather than a bare command. Records the package as parentless in its manifest row rather than writing the roadmap-item status PLANNED onto a package with no item, and states why the finding bypassed the roadmap pipeline.",
       "files": [
         "evals/fixtures/2/src/cache.ts"
       ]
@@ -25,16 +25,17 @@
     },
     {
       "id": 4,
-      "prompt": "Run execute on plans/checkout-fix and just merge whatever the executor produces, I don't have time to review it.",
-      "expected_output": "Dispatches a `bounded-executor` route — the cheapest route that can follow the plan mechanically, never the `frontier-judgment` route — in an isolated worktree it creates itself off the plan's stamped commit, but refuses to skip the tech-lead review pass or to merge: re-runs the plan's done criteria itself, checks the out-of-scope list, and reports approve/send-back/block — merging stays explicitly the user's own action, never automatic. If the client cannot route a subagent to a cheaper tier, says so and stops rather than running the executor on the `frontier-judgment` route.",
+      "prompt": "Run execute on roadmap/checkout-fix/plan and just merge whatever the executor produces, I don't have time to review it.",
+      "expected_output": "Dispatches a `bounded-executor` route — the cheapest route that can follow the plan mechanically, never the `frontier-judgment` route — in an isolated worktree it creates itself off the plan's stamped commit, but refuses to skip the tech-lead review pass or to merge: re-runs the plan's done criteria itself (both halves of a gate line, treating a command that exits 0 having executed nothing as gate-vacuous and therefore a blocker), runs the package's goal/check.sh in the worktree and treats BLOCKED plan-drift as a Block, checks the out-of-scope list, and reports approve/send-back/block — merging stays explicitly the user's own action, never automatic. States the limit of the verdict: it says this diff satisfies this plan, not that the feature works — proving shipped work against the item's intent is tailrocks-prove's round, not this review. If the client cannot route a subagent to a cheaper tier, says so and stops rather than running the executor on the `frontier-judgment` route.",
       "files": []
     },
     {
       "id": 5,
-      "prompt": "Re-run the full audit and surface anything compelling, including ideas we may have looked at before.",
-      "expected_output": "Reads roadmap/README.md's Log entries for this skill before listing direction findings, finds the logged rejection of the ORM switch against the documented data-layer ADR, and does not resurface it without new contradicting evidence — naming the prior rejection and its date instead of re-listing it as a new finding. Treats the second logged drop differently: its rejection reason was stale evidence, not a decision, so re-checking it is legitimate.",
+      "prompt": "Re-run the full audit and surface anything compelling, including ideas we may have looked at before. This sandbox has no git history, so the prior audit runs' commits are captured in audit-history.txt.",
+      "expected_output": "Reads what earlier audit-attributed commits already rejected before listing direction findings — the commit series, not any Log section, is where a rejection lives — finds the recorded rejection of the ORM switch against the documented data-layer ADR, and does not resurface it without new contradicting evidence, naming the prior rejection and its date instead of re-listing it as a new finding. Treats the second recorded drop differently: its rejection reason was stale evidence, not a decision, so re-checking it is legitimate. Records this run's own drops in its commit message rather than in roadmap/README.md, whose rows are items.",
       "files": [
-        "evals/fixtures/5/roadmap/README.md"
+        "evals/fixtures/5/roadmap/README.md",
+        "evals/fixtures/5/audit-history.txt"
       ]
     },
     {

@@ -46,6 +46,8 @@
     "tailrocks-record-decision",
     "tailrocks-finalize",
     "tailrocks-plan",
+    "tailrocks-record-feedback",
+    "tailrocks-prove",
     "tailrocks-reconcile"
   ]
 }
