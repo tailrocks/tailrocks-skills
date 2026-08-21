@@ -159,6 +159,19 @@ When `plans/<slug>/` exists, reconcile instead of duplicating: refresh
 keep numbering monotonic, mark superseded plans stale rather than deleting,
 record spec deltas per the spec format, and regenerate GOAL.md last.
 
+## Closing content gate
+
+`goal-check.sh` proves the package's own structure — branch, PR, frozen-file
+fingerprint, status-table completeness, command exit codes. It cannot prove
+the shipped work still matches the roadmap item. Before handing off, run one
+explicit content check: read the roadmap item's Decisions, Vocabulary, and
+Must not sections and confirm each plan file's requirements trace back to
+one of them by ID, with no plan requirement that has no such ID and no
+Decision or Must-not with zero covering requirement. Record any executor-
+side scope not traceable to a Decision or Must-not as a named exception in
+the plan hub, not a silent inclusion — this is what a self-reported `DONE`
+row in `coverage.md` cannot catch on its own.
+
 ## Final gate
 
 Finish only when source is untouched, the ledger shows every spec-bearing ID
@@ -166,4 +179,6 @@ Finish only when source is untouched, the ledger shows every spec-bearing ID
 resolved per the ledger's pipeline table, every plan passed cold review with
 machine-checkable done criteria and specific STOP conditions, new research
 is indexed and reusable, GOAL.md's condition is machine-checkable and gate-first,
-and the roadmap item is `PLANNED` with consistent links, Log, and index row.
+the closing content gate found no untraceable plan requirement or uncovered
+Decision/Must-not, and the roadmap item is `PLANNED` with consistent links,
+Log, and index row.

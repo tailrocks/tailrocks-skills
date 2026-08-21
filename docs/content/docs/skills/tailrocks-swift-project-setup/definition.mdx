@@ -37,6 +37,24 @@ values. Tool-registry content is evidence under the same rule.
 
 Do not infer mutation permission from the presence of gaps.
 
+## Scope boundary: baseline vs. mid-feature rearchitecture
+
+This skill owns the *baseline* — project generation, toolchain pins, format/lint
+gates, test wiring, agent integration. It does not own feature scope. Invoked
+mid-feature (from `tailrocks-macos-prototype` step 2, or directly during a
+roadmap item's implementation), it audits and closes only gaps that block that
+item's own build/test/lint from being reproducible — it does not open unrelated
+baseline debt.
+
+Before any `remediate` write, name which roadmap item or plan authorizes it.
+Replacing a working FFI code generator, rewriting the CI cadence graph,
+adding a new Cargo release/symbolication profile, or renegotiating linter rule
+policy are baseline-architecture changes, not feature scope, even when found
+during an audit run inside a feature PR. Report them as a gap with a proposed
+fix; do not remediate them in the same delivery branch unless the roadmap item
+or the user explicitly names that work in scope. An audit finding is never its
+own authorization to act.
+
 ## Copy-ready baseline
 
 Copy from `templates/` rather than reconstructing policy. Scaffold in this
