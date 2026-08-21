@@ -608,7 +608,13 @@ changed, the status machine run out of order, and a skill writing outside the
 scope its Boundaries declare. Every finding names the skill and the layer
 whose missing check allowed it — the executor is never the unit of fault —
 and every lane-shaped patch is held against its siblings in the other lanes
-before it is proposed. The skill writes one file, its record under
+before it is proposed. The evidence reads fan out to parallel read-only
+subagent investigators — commit tables, diffs, artifacts at their pinned SHAs
+— while the detectors and every verdict stay in the main context; mandatory
+on an external lane, where `--repo owner/name --pr N` audits an item that
+shipped in another repository (read-only through `gh`, and only when that
+lane ran this pipeline: a lane with no trailers is declined, not
+reconstructed). The skill writes one file, its record under
 `retrospectives/`, and edits nothing under `skills/`.
 
 Skill definition: `skills/tailrocks-retrospect/SKILL.md`

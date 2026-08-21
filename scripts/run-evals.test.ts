@@ -485,6 +485,7 @@ const EXPECTED_DIRECT_MARKDOWN_LINKS: Record<string, string[]> = {
   "tailrocks-retrospect": [
     "references/divergence-detectors.md",
     "references/patch-shape.md",
+    "references/subagent-fanout.md",
     "templates/retrospective.md",
   ],
   "tailrocks-review-pr": [

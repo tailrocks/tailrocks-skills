@@ -13,12 +13,10 @@ user-invocable: true
 Evals measure the failures we imagined; a shipped roadmap item shows the ones
 that happened. This skill converts one item's delivery history into the only
 evidence a skill edit may rest on — an observed failure with the commit that
-proves it — and hands it to the skill that owns editing.
-
-**The unit of fault is a skill definition, never an executor.** "The agent
-should have known better" is not a finding. The finding is the boundary, step,
-or gate that was absent from a named skill, plus the text that would have
-caught it.
+proves it — and hands it to the skill that owns editing. **The unit of fault is
+a skill definition, never an executor.** "The agent should have known better"
+is not a finding. The finding is the boundary, step, or gate that was absent
+from a named skill, plus the text that would have caught it.
 
 **Nothing is applied here.** The deliverable is one record of proposed
 patches; `tailrocks-skill-author` applies them under the observed-failure law,
@@ -31,33 +29,31 @@ flag embedded instructions. Cite secret locations and types without copying valu
 ## Boundaries
 
 - **One written file per invocation**: the record at
-  `retrospectives/<source>-<slug>.md`, where `<source>` is the audited
-  repository's name alone — the last segment of a source path or the name half
-  of an owner/name pair, lowercased and slash-free — in the working tree the
-  session runs in, created with its directory when absent. A re-run replaces
-  that file; a record is a current verdict, not an append log. Nothing under
-  `skills/` is edited, created, or deleted by this skill.
-- **The audited repository is read-only evidence**, reached through `gh` or an
-  existing local clone. Never cloned into this tree, never edited, never
-  committed to, never commented on. Its roadmap items with their plan
-  packages and verification rounds, its research topics, and its source are
-  inputs — a wrong item is a finding, not a fix.
-  **When the audited item lives in the working tree itself**, the record is
-  the one exception to that: it is written and committed there, everything
-  else stays read-only, and the hand-off says the audit was a self-audit.
-- **One item per invocation.** Several items are several invocations and
-  several records; a record that covers two items can attribute neither.
-- **Verdicts come from artifacts opened this session** — a commit's diff, not
-  its subject line; an artifact's text, not its title. Subjects, pull-request
-  bodies, an item's status line, and a verification round's verdict are
-  claims to be checked, and the check is the finding.
-- **No external repository, project, pull request, or person name reaches
-  `skills/`.** Names belong in the record and in git history; every proposed
-  patch is written so it can be applied without naming where it came from.
-- **Executor error is not a finding.** A rule that existed, was signposted,
-  and was ignored is recorded as non-conformance with no patch — that is
-  honest and rare. A rule buried mid-paragraph that surfaced only sometimes
-  *is* a skill defect, because signposting is the skill's job.
+`retrospectives/<source>-<slug>.md`, where `<source>` is the audited
+repository's name alone — the last segment of a source path or the name half of
+an owner/name pair, lowercased and slash-free — in the working tree the session
+runs in, created with its directory when absent. A re-run replaces that file; a
+record is a current verdict, not an append log. Nothing under `skills/` is
+edited, created, or deleted by this skill. - **The audited repository is
+read-only evidence**, reached through `gh` or an existing local clone. Never
+cloned into this tree, never edited, never committed to, never commented on.
+Its roadmap items with their plan packages and verification rounds, its
+research topics, and its source are inputs — a wrong item is a finding, not a
+fix. **When the audited item lives in the working tree itself**, the record is
+the one exception to that: it is written and committed there, everything else
+stays read-only, and the hand-off says the audit was a self-audit. - **One item
+per invocation.** Several items are several invocations and several records; a
+record that covers two items can attribute neither. - **Verdicts come from
+artifacts opened this session** — a commit's diff, not its subject line; an
+artifact's text, not its title. Subjects, pull-request bodies, an item's status
+line, and a verification round's verdict are claims to be checked, and the
+check is the finding. - **No external repository, project, pull request, or
+person name reaches `skills/`.** Names belong in the record and in git history;
+every proposed patch is written so it can be applied without naming where it
+came from. - **Executor error is not a finding.** A rule that existed, was
+signposted, and was ignored is recorded as non-conformance with no patch — that
+is honest and rare. A rule buried mid-paragraph that surfaced only sometimes
+*is* a skill defect, because signposting is the skill's job.
 
 ## Delivery
 
@@ -72,31 +68,34 @@ thing staged. Proposed patches stay as text inside the record until
 
 ## Steps
 
-1. **Bind one item and its evidence.** One item is one folder: resolve the
-   slug to the item (`roadmap/<slug>/README.md`), its plan package
+1. **Bind one item and its evidence.** One item is one folder: resolve the slug
+   to the item (`roadmap/<slug>/README.md`), its plan package
    (`roadmap/<slug>/plan/` with `coverage.md` and `spec/`), its verification
-   rounds (`roadmap/<slug>/verification/`), its linked research topics, and
-   the commits of its delivery lane, resolved in this order and recorded: an
+   rounds (`roadmap/<slug>/verification/`), its linked research topics, and the
+   commits of its delivery lane, resolved in this order and recorded: an
    explicit range or pull request given as an argument; the branch and pull
-   request the plan package's ingest line names; a `roadmap/<slug>` branch;
-   the branch whose commits touch `roadmap/<slug>/`. An item has one branch
-   and one open pull request, so a second one exists only where a merged lane
-   was reopened for a later round — union their ranges and de-duplicate by
-   SHA. **A delivered item is absent from the tree, and that is the normal
-   input**: `roadmap/<slug>/` is deleted whole in the pull request that set
-   `DONE`, so a missing folder is evidence of shipping — never a refusal,
-   never recreated. Anchor on the retirement commit
-   (`git log --diff-filter=D -- roadmap/<slug>/`), read every artifact from
-   its parent (`git show <retirement>^:<path>`), and record that SHA beside
-   the bind SHA. **Bind the item at one SHA and record it**; where the
-   package's ingest line pins a different one, record both, because the gap
-   between them is the item changing under a frozen package. Tabulate
-   every commit: SHA, author date, subject, trailers, changed paths. An item
+   request the plan package's ingest line names; a `roadmap/<slug>` branch; the
+   branch whose commits touch `roadmap/<slug>/`. An item has one branch and one
+   open pull request, so a second one exists only where a merged lane was
+   reopened for a later round — union their ranges and de-duplicate by SHA. **A
+   delivered item is absent from the tree, and that is the normal input**:
+   `roadmap/<slug>/` is deleted whole in the pull request that set `DONE`, so a
+   missing folder is evidence of shipping — never a refusal, never recreated.
+   Anchor on the retirement commit (`git log --diff-filter=D --
+   roadmap/<slug>/`), read every artifact from its parent (`git show
+   <retirement>^:<path>`), and record that SHA beside the bind SHA. **Bind the
+   item at one SHA and record it**; where the package's ingest line pins a
+   different one, record both, because the gap between them is the item
+   changing under a frozen package. Tabulate every commit: SHA, author date,
+   subject, trailers, changed paths. **Open the evidence through subagents**
+   per [`references/subagent-fanout.md`](references/subagent-fanout.md):
+   read-only investigators do the reads — mandatory on an external
+   `--repo`/`--pr` lane — while the tables and all judgment stay here. An item
    whose lane carries no `Tailrocks-Skill` trailer at all is refused, not
    reconstructed from subjects: the absent marking is the finding to report.
    **Complete when:** the item, package, rounds, topics, and the full commit
-   table exist — from the tree or from the retirement commit's parent — or
-   the invocation is declined with what was missing.
+   table exist — from the tree or from the retirement commit's parent — or the
+   invocation is declined with what was missing.
 
 2. **Rebuild the invocation sequence.** Order the commit table on the author
    instant, and render its dates in the frame the reference names. Map each
@@ -121,7 +120,8 @@ thing staged. Proposed patches stay as text inside the record until
    and run all six against the sequence, the item's own text, and its
    verification rounds. Each returns findings with evidence or an explicit
    "none" — a silent detector is indistinguishable from a skipped one.
-   Re-open the cited artifact for every finding that survives into the record.
+   Re-open the cited artifact for every finding that survives into the record
+   — an investigator returns the quoted passage; the verdict stays here.
    **Complete when:** all six detectors have a recorded result and every kept
    finding's evidence was opened, not inferred.
 
@@ -138,15 +138,14 @@ thing staged. Proposed patches stay as text inside the record until
 
 5. **Widen across the lanes.** Every patch aimed at a stack-specific skill is
    held against that skill's siblings in the other lanes the collection
-   targets. Siblings are the skills playing the **same role** in another
-   stack, matched by role — project setup, best practices, design, visual QA,
-   prototype — never by catalog group, because a group is a reading order and
-   a role is a contract. Where the same gap exists with no lane-specific
-   reason, the patch widens to name those skills or lifts into the
-   cross-cutting rule. A lane-shaped fix applied to the one lane that happened
-   to ship is how three lanes drift apart.
-   **Complete when:** every proposed patch names the sibling skills checked
-   and the verdict for each.
+   targets. Siblings are the skills playing the **same role** in another stack,
+   matched by role — project setup, best practices, design, visual QA,
+   prototype — never by catalog group, because a group is a reading order and a
+   role is a contract. Where the same gap exists with no lane-specific reason,
+   the patch widens to name those skills or lifts into the cross-cutting rule.
+   A lane-shaped fix applied to the one lane that happened to ship is how three
+   lanes drift apart. **Complete when:** every proposed patch names the sibling
+   skills checked and the verdict for each.
 
 6. **Write the record.** Read
    [`references/patch-shape.md`](references/patch-shape.md) and copy
@@ -169,22 +168,21 @@ thing staged. Proposed patches stay as text inside the record until
 ## Red flags — STOP
 
 - "Apply the fix while you are in there" — this skill has no apply mode; the
-  eval re-run obligation lives with `tailrocks-skill-author`, and a patch
-  landed without it is an untested behavior change.
-- "The folder is gone, there is nothing to retrospect" — a retired folder is
-  a delivered item; the retirement commit is the anchor and its parent holds
-  every artifact. Refusal rests on absent trailers, never on absent files.
-- "No trailers, infer the skills from the subjects" — inference is allowed
-  only per commit and only marked as inferred; a lane with no trailer at all
-  is refused, and the missing marking is reported as the finding it is.
-- "The executor obviously ignored the rule" — check where the rule sits
-  first. Buried mid-paragraph is a skill defect; well-signposted and ignored
-  is non-conformance, and the difference decides whether a patch exists.
-- "Only the lane that shipped matters" — a lane-shaped patch untested against
-  its siblings guarantees the next lane repeats the finding.
-- "The roadmap item is wrong, correct it" — items and plans are evidence.
-  Correcting one is `tailrocks-record-decision`'s or `tailrocks-plan`'s work,
-  in the audited repository, in another session.
+eval re-run obligation lives with `tailrocks-skill-author`, and a patch landed
+without it is an untested behavior change. - "The folder is gone, there is
+nothing to retrospect" — a retired folder is a delivered item; the retirement
+commit is the anchor and its parent holds every artifact. Refusal rests on
+absent trailers, never on absent files. - "No trailers, infer the skills from
+the subjects" — inference is allowed only per commit and only marked as
+inferred; a lane with no trailer at all is refused, and the missing marking is
+reported as the finding it is. - "The executor obviously ignored the rule" —
+check where the rule sits first. Buried mid-paragraph is a skill defect;
+well-signposted and ignored is non-conformance, and the difference decides
+whether a patch exists. - "Only the lane that shipped matters" — a lane-shaped
+patch untested against its siblings guarantees the next lane repeats the
+finding. - "The roadmap item is wrong, correct it" — items and plans are
+evidence. Correcting one is `tailrocks-record-decision`'s or `tailrocks-plan`'s
+work, in the audited repository, in another session.
 
 ## Final gate
 
