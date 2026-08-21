@@ -34,13 +34,40 @@ matrix.
 
 ## Invoke a skill
 
+Claude Code:
+
 ```text
-Claude Code   /tailrocks-skills:tailrocks-rust-best-practices review this crate
-Codex CLI     $tailrocks-rust-best-practices review this crate
-Grok Build    /tailrocks-rust-best-practices review this crate
-Kimi Code     /skill:tailrocks-rust-best-practices review this crate
-Antigravity   /tailrocks-rust-best-practices review this crate
-OpenCode/Amp  Use tailrocks-rust-best-practices to review this crate
+/tailrocks-skills:tailrocks-rust-best-practices review this crate
+```
+
+Codex CLI:
+
+```text
+$tailrocks-rust-best-practices review this crate
+```
+
+Grok Build:
+
+```text
+/tailrocks-rust-best-practices review this crate
+```
+
+Kimi Code:
+
+```text
+/skill:tailrocks-rust-best-practices review this crate
+```
+
+Antigravity CLI:
+
+```text
+/tailrocks-rust-best-practices review this crate
+```
+
+OpenCode and Amp:
+
+```text
+Use tailrocks-rust-best-practices to review this crate
 ```
 
 A strong request names the skill, action, scope, and constraint:
