@@ -1,5 +1,5 @@
 # Pairs with the workspace lint table. Keep MSRV equal to workspace.package.
-msrv = "1.97.0"
+msrv = "1.98.0"
 check-incompatible-msrv-in-tests = true
 avoid-breaking-exported-api = true
 

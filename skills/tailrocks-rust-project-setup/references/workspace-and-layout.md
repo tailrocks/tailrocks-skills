@@ -63,7 +63,9 @@ Root `Cargo.toml`:
 ```toml
 [workspace.package]
 edition = "2024"
-rust-version = "1.97.0"
+# Equal to rust-toolchain.toml's channel — that file owns the number, and a
+# gate checks the two agree. Copy the value from `templates/Cargo.toml`.
+rust-version = "<toolchain channel>"
 # Open source? Uncomment and set your SPDX identifier.
 # license = "Apache-2.0"
 repository = "https://github.com/your-org/your-repo"

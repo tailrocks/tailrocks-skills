@@ -4,6 +4,8 @@ import {
   applyMiseBun,
   applyPins,
   consistencyMismatches,
+  ledgerRows,
+  rustConsistencyProblems,
   POLICY_ROWS,
   templateBun,
 } from "./refresh-template-pins";
@@ -71,4 +73,69 @@ test("consistency check is silent when the policy carries no version table", () 
   const policy = `# Version policy\n\nSources of truth only, no numbers.\n`;
   // A row that does not exist is not a disagreement: the template is the ledger.
   expect(consistencyMismatches(template, policy)).toEqual([]);
+});
+
+test("ledger check flags a version carried in a policy table", () => {
+  const ledger = `## Verified 2026-08-21\n\n| Component | Current stable | Primary source |\n|---|---:|---|\n| Rust | 1.98.0 | <https://forge.rust-lang.org/> |\n`;
+  expect(ledgerRows(ledger)).toHaveLength(1);
+  expect(ledgerRows(ledger)[0]).toContain("1.98.0");
+});
+
+test("ledger check accepts a policy table that carries only sources", () => {
+  const sources = `## Primary release sources\n\n| Component | Primary source |\n|---|---|\n| Rust | <https://forge.rust-lang.org/> |\n| Tokio | <https://crates.io/crates/tokio> |\n`;
+  expect(ledgerRows(sources)).toEqual([]);
+});
+
+const agreeing = {
+  toolchain: `[toolchain]\nchannel = "1.98.0"\n`,
+  cargo: `[workspace.package]\nrust-version = "1.98.0"\n`,
+  clippy: `msrv = "1.98.0"\n`,
+  mise: `"cargo:cargo-dylint" = "6.0.4"\n"cargo:dylint-link" = "6.0.4"\n`,
+};
+
+test("rust consistency is silent when every copy of the pin agrees", () => {
+  expect(rustConsistencyProblems(agreeing)).toEqual([]);
+});
+
+test("rust consistency catches a half-applied toolchain bump", () => {
+  // Note what this does NOT catch: the drift that motivated the gate was
+  // prose-only — every artifact agreed on 1.97.0 while the policy table read
+  // 1.98.0 — so `ledgerRows` is what would have caught that, not this. This
+  // half catches the next failure instead: someone moves the channel and
+  // leaves the two files that must track it behind.
+  const problems = rustConsistencyProblems({
+    ...agreeing,
+    cargo: `rust-version = "1.97.0"\n`,
+    clippy: `msrv = "1.97.0"\n`,
+  });
+  expect(problems).toHaveLength(2);
+  expect(problems.join(" ")).toContain("rust-version 1.97.0");
+  expect(problems.join(" ")).toContain("msrv 1.97.0");
+});
+
+test("rust consistency catches a split dylint pair", () => {
+  const problems = rustConsistencyProblems({
+    ...agreeing,
+    mise: `"cargo:cargo-dylint" = "6.0.4"\n"cargo:dylint-link" = "6.0.1"\n`,
+  });
+  expect(problems).toHaveLength(1);
+  expect(problems[0]).toContain("dylint-link 6.0.1");
+});
+
+test("applyPins never rewrites a package name used as a script command", () => {
+  // The template's scripts block has `"shadcn": "bunx --bun shadcn"`. A blind
+  // key match turns that command into a version and breaks the scaffold's own
+  // script — silently, in an auto-opened bump pull request.
+  const template = `{
+  "scripts": { "shadcn": "bunx --bun shadcn" },
+  "dependencies": { "shadcn": "4.17.0" }
+}`;
+  const out = applyPins(template, new Map([["shadcn", "4.18.0"]]));
+  expect(out).toContain(`"shadcn": "bunx --bun shadcn"`);
+  expect(out).toContain(`"shadcn": "4.18.0"`);
+});
+
+test("applyPins rewrites a range-prefixed pin", () => {
+  const out = applyPins(`{ "dependencies": { "vite": "^8.2.1" } }`, new Map([["vite", "8.2.2"]]));
+  expect(out).toContain(`"vite": "8.2.2"`);
 });
