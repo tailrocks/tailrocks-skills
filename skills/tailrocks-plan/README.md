@@ -22,6 +22,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 ## References
 
 - [`coverage-ledger.md`](references/coverage-ledger.md)
+- [`execution-roles.md`](references/execution-roles.md)
 - [`goal-handoff.md`](references/goal-handoff.md)
 - [`plan-template.md`](references/plan-template.md)
 - [`research-shape.md`](references/research-shape.md)

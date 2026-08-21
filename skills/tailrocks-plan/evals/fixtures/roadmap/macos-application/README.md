@@ -61,11 +61,14 @@ Add a native macOS companion for the existing CLI/TUI.
 
 ## References
 
-- Existing CLI/TUI behavior.
+- Existing CLI/TUI behavior: `crates/session-cli/src/main.rs`.
 
 ## Research
 
-- `research/pure-rust-macos-ui/`
+- `research/macos-native-shell/README.md`
+- `research/session-cli-boundary/README.md`
+- `research/verification-tooling/README.md`
+- `research/macos-accessibility/README.md`
 
 ## Must not
 

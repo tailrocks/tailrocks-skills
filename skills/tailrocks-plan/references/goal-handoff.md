@@ -149,12 +149,13 @@ Three files, copied from this skill's templates and filled in:
 | `RESUME.md` | `templates/RESUME.md` | the resume prompt for any interrupted or reconciled session |
 | `check.sh` | `templates/check.sh` | copied verbatim, never edited per item |
 
-Each fenced block in `START.md` and `RESUME.md` is independently pasteable.
-Claude Code: paste the goal condition into `/goal`, then send the kickoff
-prompt as the message. Codex takes a task directly: send the kickoff prompt
-(its evaluator uses the same condition, restated inside the prompt). Current
-Grok 1.0 has no native `/goal`; the kickoff and resume prompts are manual
-prompts there, with no persisted goal or stop enforcement.
+Each fenced block in `START.md` and `RESUME.md` is independently pasteable,
+because hosts consume them differently. A host with a **persisted goal loop**
+takes the condition into that loop and the kickoff prompt as its first
+message. A host that takes **a task directly** gets the kickoff prompt with
+the condition restated inside it. A host with **no goal loop** consumes both
+as manual prompts, with no persisted objective and no stop enforcement — the
+operator runs the script and reads its final line.
 
 ## The gates block — every gate names how it proves it executed work
 
@@ -221,16 +222,22 @@ function of the committed tree for a cooperating user, not an
 adversary-resistant trust boundary; human PR review and repository CI remain
 the trust boundary for merged work.
 
-## Client wiring evidence
+## Host classes and what they enforce
 
-Re-verify each installed client version at execution time; these CLI facts are
-volatile. The script verdict has `deterministic_local` trust on every path.
+A host is classified by what it does with the condition, never by its name —
+product behavior and versions are volatile, and a skill that names today's
+client is wrong by the next release. Re-verify the installed host's behavior
+at execution time.
 
-| Client | Locally verified | Enforcement and wiring | Client trust |
-|---|---|---|---|
-| Claude Code | 2.1.228, 2026-08-12 | `/goal` blocks stopping until its small-model transcript judge accepts the condition. Show `sh roadmap/<slug>/goal/check.sh` and its output in the current turn; condition: the final line starts with `TAILROCKS GOAL: PASS`. | Model-judged stop behavior; verdict is `deterministic_local`. |
-| Codex | codex-cli 0.147.0, 2026-08-12 | `/goal` keeps a durable objective whose model decides satisfaction; hooks are guardrails, not enforcement. Put the same command and final-line condition in kickoff. | Model-judged satisfaction; verdict is `deterministic_local`. |
-| Grok | 1.0.0, 2026-08-12 | No native goal. The blocks are manual prompts; the human runs the script and reads its final line. | Manual stop behavior; verdict is `deterministic_local`. |
+| Host class | What it enforces | Trust of the verdict |
+|---|---|---|
+| Persisted goal loop, model-judged | Blocks stopping until a model accepts the condition against the transcript. Show `sh roadmap/<slug>/goal/check.sh` and its output in the current turn. | The script's verdict is deterministic and local; the *stop behavior* is model-judged |
+| Durable task, model-satisfied | Keeps the objective; a model decides satisfaction. Hooks are guardrails, not enforcement. Restate the command and final-line condition in kickoff. | Same — deterministic verdict, model-judged satisfaction |
+| No goal loop | Nothing. The blocks are manual prompts and the operator runs the script. | Deterministic verdict, manual stop behavior |
+
+In every class the script's final line is the fact and the host's judgement is
+the wrapper: a host that accepts a turn without `TAILROCKS GOAL: PASS` has not
+made the work complete, it has stopped asking.
 
 ## Writing the condition — rules
 
@@ -261,5 +268,5 @@ A small model judges the condition against the transcript each turn:
   session reconstructs exact progress by reading one file.
 - The kickoff prompt never duplicates plan content — plans are the source
   of truth; the prompt only wires protocol to files.
-- The protocol is agent-neutral; current Grok 1.0 consumes its blocks only as
-  manual prompts.
+- The protocol is host-neutral: a host with no goal loop consumes the same
+  blocks as manual prompts, and the script's verdict is unchanged.

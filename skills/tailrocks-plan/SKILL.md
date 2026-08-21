@@ -12,37 +12,39 @@ user-invocable: true
 
 Turn one READY roadmap item into everything an autonomous executor needs:
 product intent traced statement-by-statement into requirements, requirements
-into self-contained plans, fronted by the `goal/START.md` block the user pastes
-into `/goal` — file paths, code shapes, verification commands, and the loop
-protocol that survives fresh sessions. Grok 1.0 has no native `/goal` and uses
-the handoff as manual prompts.
+into self-contained plans, fronted by the `goal/START.md` block the user hands
+to a goal loop — file paths, code shapes, verification commands, and a loop
+protocol that survives fresh sessions. A host with no goal loop consumes the
+same blocks as manual prompts.
 
 One item, one folder: `roadmap/<slug>/plan/` (hub, plans, `spec/`,
 `coverage.md`) and `roadmap/<slug>/goal/` (`START.md`, `RESUME.md`,
-`check.sh`). Planning several items together only on explicit request,
-recorded as the exception.
+`check.sh`). Several items together only on explicit request, recorded as the
+exception.
 
 ## Boundaries
 
 - Write only under `roadmap/<slug>/plan/`, `roadmap/<slug>/goal/`, `research/`
   (gap-filling topics), and the item's status and Plan link. Never write
-  `roadmap/<slug>/verification/` — those rounds belong to the skills that
-  capture user-reported defects and prove shipped work. Keep source,
-  configuration, and dependencies unchanged; Git moves only per the delivery
-  git contract below. Never implement — the package is the deliverable.
+  `roadmap/<slug>/verification/` — rounds belong to the skills that capture
+  reported defects and prove shipped work. Source, configuration, and
+  dependencies stay unchanged; Git moves only per the delivery git contract
+  below. Never implement — the package is the deliverable.
 - Require `READY`. On anything less, name the missing stage and stop; the
   user may override explicitly, and the override plus the skipped gaps are
   recorded in the handoff commit message and the plan hub.
-- The item's Decisions, Vocabulary, and Must not are fixed constraints.
-  Where repository reality contradicts the item, surface the conflict —
-  never silently pick a side.
+- The item's Decisions, Vocabulary, and Must not are fixed constraints. Where
+  repository reality contradicts the item, surface the conflict — never
+  silently pick a side.
 - Evidence standard everywhere: URL, `file:line`, or method. Commands written
   into plans, gates, and done criteria come from the verification-tooling
   research and are **executed once during planning** — a package, target, or
   path that does not resolve is a planning defect, never an executor's
   surprise.
-- New research lands in `research/<topic>/` as reusable topics — vetted and
-  indexed — not buried in the item folder.
+- New research lands in `research/<topic>/` as reusable, indexed topics, not
+  buried in the item folder.
+- An existing `plan/` is refreshed, never duplicated — the re-run rules are in
+  [`references/plan-template.md`](references/plan-template.md).
 - Subagents inherit nothing: every brief restates its rules; a plan-writer
   subagent writes exactly one plan, never two.
 - Clone reference projects into a disposable directory outside the repository;
@@ -52,16 +54,14 @@ recorded as the exception.
 
 ## Delivery git contract
 
-Artifact writes land on the item's delivery branch — `roadmap/<slug>`, opened
-with its draft PR by `tailrocks-idea`. A missing branch is handled per that
-skill's contract reference, never silently. End every invocation by committing
-`roadmap/<slug>/plan/`, `roadmap/<slug>/goal/`, and the item's status flip —
-repository commit convention, subject like `docs(roadmap): <slug> plan
-package` — with the trailer `Tailrocks-Skill: tailrocks-plan`, then push, and
-refresh the draft PR body's status line. One invocation, one marked commit:
-the trailer is what lets a later audit attribute each PR commit to the skill
-that produced it. No artifact carries a log of its own — the commits are the
-history.
+Artifact writes land on the item's own branch `roadmap/<slug>` and its one
+pull request, opened by `tailrocks-idea`; a missing branch is handled per that
+skill's contract reference, never silently, and never by opening a second PR.
+End the invocation by committing `plan/`, `goal/`, and the item's status flip
+under `docs(roadmap): <slug> plan package` with the trailer
+`Tailrocks-Skill: tailrocks-plan`, push, and refresh the PR body's status
+line. One invocation, one marked commit — the trailer is the attribution a
+later audit reads, and the commits are the item's only history.
 
 ## Steps
 
@@ -125,13 +125,20 @@ history.
 
 5. **Write plans via subagents.** Read
    [`references/plan-template.md`](references/plan-template.md) including
-   its writer brief. One subagent per manifest item, parallel where
-   dependencies allow, each producing `roadmap/<slug>/plan/NNN-<slug>.md`.
-   Verify each returned plan per the template's verifier brief: a
-   fresh-context, read-only verifier — blind to the writer's reasoning — opens
-   every cited source and reports excerpt mismatches; on any reported mismatch
-   the orchestrator re-opens that plan's sources and re-verifies all of them.
-   Verify inline when parallel agents are unavailable, and say so.
+   its writer brief, and
+   [`references/execution-roles.md`](references/execution-roles.md) for which
+   capability may hold which part of the work. One subagent per manifest item,
+   parallel where dependencies allow, each producing
+   `roadmap/<slug>/plan/NNN-<slug>.md`. A plan that asks its executor to
+   choose an architecture is not a `bounded-executor` plan — that decision
+   stays with `frontier-judgment` and is settled before the plan ships.
+   Verify each returned plan per the template's verifier brief: an
+   `independent-verifier` — fresh context, read-only, blind to the writer's
+   reasoning — opens every cited source and reports excerpt mismatches; on any
+   reported mismatch the orchestrator re-opens that plan's sources and
+   re-verifies all of them. With no fresh context available, record the
+   assurance as `DEGRADED`, name the independence property that is missing,
+   and do not set `PLANNED`.
    After accepting each plan, the orchestrator backfills the ledger's Plans
    columns and the must-not and entry-point registries — writer subagents
    never touch shared files.
@@ -161,40 +168,31 @@ history.
    "everything passed" from "nothing ran" is not a gate. Set the item
    `PLANNED` with its Plan link and index row per the roadmap item format
    (tailrocks-idea's roadmap-item-format.md), then commit the package as the
-   final action. **Complete when:** a user can paste the goal blocks into
-   Claude Code or Codex goal execution, or use them as manual Grok prompts,
-   and the executor runs to completion without this conversation.
-
-## Re-runs
-
-When `roadmap/<slug>/plan/` exists, reconcile instead of duplicating: refresh
-`STALE` rows (marked by `tailrocks-record-decision`) against the updated item,
-keep numbering monotonic, mark superseded plans stale rather than deleting,
-record spec deltas per the spec format, and regenerate `goal/` last so the
-fingerprint matches the refreshed contract.
+   final action. **Complete when:** a goal-executing host takes the blocks
+   verbatim — or an operator pastes them by hand — and the executor runs to
+   completion without this conversation.
 
 ## Closing content gate
 
 `goal/check.sh` proves the package's own structure — clean tree,
 frozen-contract fingerprint, status-table completeness, and that each gate both
 succeeded and executed work. It cannot prove the package still matches the
-item. Before handing off, read the item's Decisions, Vocabulary, and Must not
-and confirm each plan requirement traces to one by ID, with no plan requirement
-lacking an ID and no Decision or Must-not with zero covering requirement.
-Executor-side scope tracing to neither is a named exception in the plan hub,
-never a silent inclusion.
+item. Before handing off, confirm each plan requirement traces by ID to a
+Decision, a Vocabulary term, or a Must not, with no requirement lacking an ID
+and no Decision or Must-not left uncovered. Executor-side scope tracing to
+neither is a named exception in the hub, never a silent inclusion.
 
 ## Final gate
 
-Never plan pixel truth from a schematic mockup: a screen with a visual
-surface needs its blessed design reference or the user's recorded deferral
-before its contract is written.
+Never plan pixel truth from a schematic mockup: a screen with a visual surface
+needs its blessed design reference, or the user's recorded deferral, before its
+contract is written.
 
 Finish only when source is untouched, the ledger shows every spec-bearing ID
-(`S#`/`F#`/`W#`/`N#`/`E#`/`B#`) covered or deferred aloud and every other
-prefix resolved per the ledger's pipeline table, every plan passed cold review
-with done criteria that assert executed work and specific STOP conditions,
-every command in the package ran once during planning, the goal condition is
+(`S#`/`F#`/`W#`/`N#`/`E#`/`B#`) covered or deferred aloud and every other prefix
+resolved per the ledger's pipeline table, every plan passed cold review with
+done criteria that assert executed work and specific STOP conditions, every
+command in the package ran once during planning, the goal condition is
 machine-checkable and gate-first with a proof expression on every gate, the
-closing content gate passed, and the item is `PLANNED` with consistent links
-and index row.
+closing content gate passed, and the item is `PLANNED` with consistent links and
+index row.

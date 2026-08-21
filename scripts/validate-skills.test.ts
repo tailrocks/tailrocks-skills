@@ -196,6 +196,22 @@ describe("validate", () => {
     expect(await validate(root)).toContain(`${skill}: eval case 2 has invalid shape`);
   });
 
+  test("rejects an unknown eval execution mode", async () => {
+    const evaluation = await Bun.file(path.join(root, `skills/${skill}/evals/evals.json`)).json();
+    evaluation.evals[0].execution_mode = "fanout";
+    await write(`skills/${skill}/evals/evals.json`, JSON.stringify(evaluation));
+    expect(await validate(root)).toContain(`${skill}: eval case 1 has invalid execution_mode: fanout`);
+  });
+
+  test("accepts each explicit eval execution mode", async () => {
+    for (const execution_mode of ["single_subject", "workflow"]) {
+      const evaluation = await Bun.file(path.join(root, `skills/${skill}/evals/evals.json`)).json();
+      evaluation.evals[0].execution_mode = execution_mode;
+      await write(`skills/${skill}/evals/evals.json`, JSON.stringify(evaluation));
+      expect(await validate(root)).toEqual([]);
+    }
+  });
+
   test("rejects a missing eval fixture", async () => {
     const evaluation = await Bun.file(path.join(root, `skills/${skill}/evals/evals.json`)).json();
     evaluation.evals[0].files = ["evals/fixtures/missing.txt"];

@@ -7,7 +7,8 @@
       "expected_output": "roadmap/macos-application/plan/ with coverage ledger, gap research landed as reusable research/ topics, OpenSpec-grammar spec, one cold-reviewed plan per manifest item each written by its own subagent, and roadmap/macos-application/goal/ carrying START.md (machine-checkable gate-first condition, gates block, kickoff), RESUME.md, and check.sh copied from the template; the hub records the frozen contract fingerprint over plan/** and goal/** except the hub itself; kickoff invokes sh roadmap/macos-application/goal/check.sh before DONE work and after each status/work commit, and only a final TAILROCKS GOAL: PASS proves the package complete; gate text precedes terminal-row text; no success predicate contains 'or stop after'; budget exhaustion marks the active row BLOCKED (budget exhausted); package-complete leaves the item IN EXECUTION because DONE needs a verification round and belongs to tailrocks-reconcile; no provider hook or executable beyond the copied check.sh is generated; client wiring labels deterministic_local verdict trust separately from model-judged or manual stop behavior; item set PLANNED.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
-      ]
+      ],
+      "execution_mode": "workflow"
     },
     {
       "id": 2,
@@ -31,7 +32,8 @@
       "expected_output": "Reconcile, not duplicate: refresh the stale plans against the updated item, record spec deltas in the change log, keep numbering monotonic, regenerate goal/ last and re-stamp the hub's frozen contract fingerprint so the refreshed contract is what check.sh hashes.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
-      ]
+      ],
+      "execution_mode": "workflow"
     },
     {
       "id": 5,
@@ -39,7 +41,8 @@
       "expected_output": "Per plan, a fresh-context read-only verifier blind to the writer's reasoning opens every cited source and reports excerpt mismatches; any mismatch makes the orchestrator re-open that plan's sources and re-verify all; cold reviewers get only the plan file and the hub roadmap/macos-application/plan/README.md; the traceability gate runs as a fresh-context read-only checker over ledger, spec, and plans reporting uncovered IDs and entry points with no owning plan or end-to-end test; the orchestrator alone fixes files and backfills the ledger and the must-not and entry-point registries.",
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
-      ]
+      ],
+      "execution_mode": "workflow"
     },
     {
       "id": 6,
@@ -64,6 +67,18 @@
       "files": [
         "skills/tailrocks-plan/evals/fixtures/roadmap/macos-application/README.md"
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "No fresh reviewer or session exists. Return only the exact plan-hub excerpt this package requires; no repository lookup is required.",
+      "expected_output": "Includes a literal structured Assurance record with DEGRADED, names the missing fresh-context independence property, refuses PLANNED, and stops. Prose that merely says review is unavailable does not pass.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "A proposed plan asks its executor to choose between two storage designs. Return only the routing decision; no repository lookup is required.",
+      "expected_output": "Refuses the bounded-executor label because choosing architecture is outside that role's eligibility, keeps the decision with frontier-judgment, and names the unresolved storage decision as what must be settled before a bounded executor can be handed the plan.",
+      "files": []
     }
   ]
 }
