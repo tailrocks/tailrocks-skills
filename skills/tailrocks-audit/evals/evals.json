@@ -41,7 +41,7 @@
     {
       "id": 6,
       "prompt": "ask: does our Liquid Glass usage in the settings window actually follow the house material rules, or are we faking blur somewhere?",
-      "expected_output": "Runs ask mode: recon plus one targeted investigation of the named question only, skipping lane fan-out and the leverage table. Cites SettingsWindow.swift's header as the answer's evidence — a hand-rolled translucent fill plus blur standing in for the platform's own container, which does not react to scrolled content and ignores reduce-transparency. Judges it against tailrocks-liquid-glass's acceptance gate and tailrocks-macos-design's review rubric as the judgment source rather than inventing a fresh aesthetic opinion, and only offers a plan or roadmap item because the answer surfaced a real violation.",
+      "expected_output": "Runs ask mode: recon plus one targeted investigation of the named question only, skipping lane fan-out and the leverage table. Cites SettingsWindow.swift's header as the answer's evidence — a hand-rolled translucent fill plus blur standing in for the platform's own container, which does not react to scrolled content and ignores reduce-transparency. Judges it against tailrocks-macos-design's glass acceptance gate and review rubric as the judgment source rather than inventing a fresh aesthetic opinion, and only offers a plan or roadmap item because the answer surfaced a real violation.",
       "files": [
         "evals/fixtures/6/Sources/SettingsWindow.swift"
       ]

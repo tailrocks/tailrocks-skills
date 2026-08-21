@@ -68,7 +68,7 @@ programmatically, so it must be visually verified under both looks.
 ## Required states
 
 The canonical platform and material axis registry is
-`tailrocks-liquid-glass/references/verification.md`. Its full list applies,
+`tailrocks-macos-design/references/verification.md`. Its full list applies,
 including Show Borders on macOS 27 and sRGB/Display P3 color profiles. This file
 owns how to reach and capture those states, not a second copy of the list.
 

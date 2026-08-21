@@ -275,7 +275,7 @@ but the signal is worth reading: a dense professional tool is where this materia
 is hardest to apply well.
 
 The annotated version of this corpus, with third-party exemplars, counter-examples,
-and a practitioner postmortem, is `tailrocks-macos-design`'s exemplar reference.
+and a practitioner postmortem, is this skill's exemplar reference (`exemplars.md`).
 
 ## The adoption method
 

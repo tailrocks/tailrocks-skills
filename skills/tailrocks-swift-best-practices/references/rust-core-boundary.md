@@ -40,7 +40,7 @@ Liquid Glass, accessibility, menus, focus, and window behavior harder and
 inherits nothing from future OS releases. A high-performance custom region
 is drawn with Apple's own rendering — `Canvas`, SwiftUI Metal shader
 modifiers, or a justified `MTKView` boundary — per
-`tailrocks-liquid-glass`'s custom-renderer rule.
+`tailrocks-macos-design`'s custom-renderer rule.
 A dynamic "Rust sends a UI schema, Swift renders it generically" design is
 rejected for the same reason: it rebuilds an inferior UI framework and loses
 SwiftUI's compile-time behavior, accessibility, previews, and design

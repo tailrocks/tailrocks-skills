@@ -11,7 +11,7 @@
       "id": 2,
       "prompt": "Review this screenshot of our records workspace against our design standards.",
       "expected_output": "Scores the eight rubric categories against the rendered evidence, checks the hard-failure list explicitly, orders findings by severity from broken workflow down to micro-polish, names what can be deleted, and flags any required state that has no screenshot as a finding, and the review includes a Preserve section and the score-caps table.",
-      "files": ["evals/fixtures/2/DesignReview-input.md"]
+      "files": ["evals/fixtures/review-input/DesignReview-input.md"]
     },
     {
       "id": 3,
@@ -28,13 +28,112 @@
     {
       "id": 5,
       "prompt": "Use systematize mode on this approved screen and its review to turn accepted decisions into reusable system knowledge.",
-      "expected_output": "Executes the defined systematize procedure: lands reusable component-map entries, rubric rules, and anti-patterns in their owning design references; lands token roles as committed values consumed by tailrocks-macos-prototype and tailrocks-swift-best-practices without emitting code; and completes only when every output is landed in its owning file.",
+      "expected_output": "Executes the defined systematize procedure: lands reusable component-map entries, rubric rules, and anti-patterns in their owning design references; lands token roles as committed values consumed by the prototype stage and tailrocks-swift-best-practices without emitting code; and completes only when every output is landed in its owning file.",
       "files": []
     },
     {
       "id": 6,
       "prompt": "Give the final design verdict for this review, including what survives correction.",
       "expected_output": "Produces a Preserve list, applies every hard failure and score cap, orders corrections, and completes only when the rubric threshold is met, no hard failure remains, and required rendered states have evidence.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "The Connections Board design is approved — brief, component map, custom-component contract, fixtures are all in Design/. Before we implement it in the real app, I want proof of how it will actually look on screen that we can sign off and then hold the implementation to.",
+      "expected_output": "Builds the Design/Prototypes/<Feature>/ package with the standard --tr-scenario/--tr-appearance/--tr-window/--tr-reduce/--tr-backdrop launch contract; reviews it running — scenarios, both appearances, declared sizes — rather than producing screenshots; derives Regions.md with native regions structural and custom regions pixel-budgeted; stops at the sign-off with the Blessed row pending, naming tailrocks-macos-visual-qa as the post-finalization capture lane.",
+      "files": ["evals/fixtures/approved-design/NativeComponentMap.md"]
+    },
+    {
+      "id": 8,
+      "prompt": "Write a quick standalone capture script and a little pixel-diff tool for the prototype — the visual-qa harness looks like overkill for a proof of concept.",
+      "expected_output": "Refuses: capture — when it happens, after finalization — runs through the visual-qa harness and diff protocol; a second capture loop and private diff tool split the repository into two verification stacks whose baselines cannot read each other.",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "For this feature let's use launch args like --demo-state and --force-dark, they read better for this app.",
+      "expected_output": "Declines: the launch contract's argument names are fixed across every prototype and shipped debug-only by the real app; per-feature names are the convergence failure the contract exists to stop.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "While we iterate on the prototype, screenshot every revision so we can compare them side by side and pick the best one.",
+      "expected_output": "Declines to capture during design: the prototype is reviewed running, and screenshots are frozen only after finalization by tailrocks-macos-visual-qa driving the launch contract; alternative selection is this skill's design stage, not a screenshot comparison here.",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "Set the acceptance gate to a zero-pixel whole-window diff between the prototype and the real app — the prototype renders deterministically, so exact equality is achievable.",
+      "expected_output": "Rejects the whole-window zero-diff across binaries: same-binary determinism does not transfer; the match policy is region-scoped — custom and content regions pixel-budgeted, native regions checked structurally through the accessibility tree, glass compared only under the identical backdrop.",
+      "files": []
+    },
+    {
+      "id": 12,
+      "prompt": "Audit the prototype package for the sessions feature and tell me what's wrong with it.",
+      "expected_output": "Read-only review; finds the bespoke capture script bypassing the visual-qa harness, the Regions.md row pixel-gating a NATIVE table, and the sign-off claiming a blessing with no user or date; does not flag the per-process reduce-transparency preview, which is legitimate alongside the visual-qa real-settings lane; does not edit anything.",
+      "files": [
+        "evals/fixtures/audit-package/SIGNOFF.md",
+        "evals/fixtures/audit-package/Regions.md",
+        "evals/fixtures/audit-package/capture-quick.sh"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Visual QA froze the baseline for the sessions window, so the prototype has done its job. I'm about to open the PR that ships the real implementation — just delete Design/Prototypes/Sessions/ in the same commit so the diff is clean.",
+      "expected_output": "Agrees the prototype must leave the shipping PR's diff but refuses to delete it: the visual-qa lane re-captures an already-frozen baseline from this package whenever a re-blessing changes the rendering, so deleting it forfeits the only source that baseline can be regenerated from and forces the next design change to rebuild the prototype from nothing. Relocates instead — a reference branch or a standing prototypes home the repository already excludes from production builds — and names where it went. Confirms the shipped feature's diff carries no prototype files, and notes that the view layer itself is not being discarded because it lifts verbatim into the real app.",
+      "files": []
+    },
+    {
+      "id": 14,
+      "prompt": "Audit this macOS SwiftUI window for Liquid Glass violations. Do not edit anything.",
+      "expected_output": "Produces a read-only violation report that classifies every region as content or functional, names the mechanism behind each violation rather than only the rule, checks container batching, modifier order, corner concentricity, tint count, and symbol availability against the deployment target, and edits nothing.",
+      "files": [
+        "evals/fixtures/records-window/RecordsWindow.swift",
+        "evals/fixtures/records-window/project.yml"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "Design a floating zoom control cluster over the canvas in this macOS app and show me how it will look running.",
+      "expected_output": "Walks the decision order before writing glass, records why no standard component suffices, classifies the cluster CUSTOM in the functional layer (FUNCTIONAL) with its contract, and proves it in the prototype inside a single GlassEffectContainer, deriving its shape concentrically rather than hard-coding a radius, tinting at most one prominent action, and recording the substitution under Reduce Transparency and Reduce Motion.",
+      "files": []
+    },
+    {
+      "id": 16,
+      "prompt": "Make the record rows in this table look premium by giving each row a glass card background.",
+      "expected_output": "Refuses the content-layer glass, cites the normative rule and the compositing mechanism that breaks scroll edge effects and light/dark adaptation, notes the unbounded render-pass cost of per-row effects, and offers standard content materials plus a functional-layer alternative instead.",
+      "files": []
+    },
+    {
+      "id": 17,
+      "prompt": "Use glassBackgroundEffect and .rect(corner: .containerConcentric) for this Mac panel, and mark the AppKit glass view interactive.",
+      "expected_output": "Rejects all three: glassBackgroundEffect is visionOS only, .rect(corner: .containerConcentric) is not SwiftUI API and containerConcentric is the UIKit and AppKit spelling, and NSGlassEffectView.effectIsInteractive is macOS 27 beta with no macOS 26 equivalent; supplies the correct SwiftUI ConcentricRectangle and Edge.Corner.Style spellings and an availability guard.",
+      "files": []
+    },
+    {
+      "id": 18,
+      "prompt": "Adopt Liquid Glass in this app, starting from the custom toolbar background in Toolbar.swift.",
+      "expected_output": "Applies decision-order step 2 — delete every custom toolbar background, bezel, separator, and effect before adding any glass API, because a custom background composited above the scroll edge effect hides or double-draws it — and routes the production change to implementation, since this skill writes design artifacts and the prototype package and never edits production source.",
+      "files": [
+        "evals/fixtures/toolbar/Toolbar.swift"
+      ]
+    },
+    {
+      "id": 19,
+      "prompt": "Remediate the violations in this audit report now. No mutation approval has been given.",
+      "expected_output": "Refuses the mutation: review mode is read-only and never confers mutation permission from the presence of violations; closing them routes to tailrocks-remediate with the violation report as the proven defect.",
+      "files": []
+    },
+    {
+      "id": 20,
+      "prompt": "Implement a bottom bar as an overlay with .glassEffect.",
+      "expected_output": "Rejects the overlay and names the correct construction: safeAreaBar(edge:...), not an overlay with a glass background.",
+      "files": []
+    },
+    {
+      "id": 21,
+      "prompt": "We are building the whole Mac app in GPUI (Rust). Recreate the Liquid Glass toolbar look inside the GPUI layer with a blur shader and rounded corners so it matches the system apps.",
+      "expected_output": "Reject GPUI outright: it is never used in a native app under the house rule; the architecture is a thin SwiftUI shell (windows, toolbars, glass chrome from system components) over a Rust-owned application runtime behind a generated bridge, with any high-performance custom region drawn via Apple rendering (Canvas, SwiftUI Metal shader modifiers, a justified MTKView boundary) and classified CONTENT; a glass imitation is a hard failure because the material's sampling, grouping, and per-release evolution are system-managed; a hard no-Swift constraint uses AppKit through the objc2 bindings (NSGlassEffectView/NSGlassEffectContainerView), still never GPUI.",
       "files": []
     }
   ]
