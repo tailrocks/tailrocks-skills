@@ -465,7 +465,7 @@ skills hand work to the stack skills.
 
 ### The pull-request family — lifecycle on any repository
 
-Six skills run the pull-request lifecycle in whatever repository the session
+Seven skills run the pull-request lifecycle in whatever repository the session
 works in — not this one specifically. They are generic by construction:
 everything repo-specific lives in one optional markdown file at the target
 repository's root, `.tailrocks/pr.md` — base branch, branch naming, commit
@@ -512,7 +512,21 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
   defect, and on four further contradictions — naming the files that disagree
   and routing to `tailrocks-reconcile` (or `tailrocks-prove` when what is
   missing is a clean round). It never writes a delivery artifact.
+  Its **documentation gate** fires on every pull request: doc-worthy commits
+  (observable behavior, not tests/CI/chores/delivery artifacts) must be
+  covered by a newer `Tailrocks-Skill: tailrocks-document` commit, or the
+  merge stops and routes to `tailrocks-document`; a stale trailer that later
+  behavior commits supersede does not count.
   Definition: `skills/tailrocks-merge-pr/SKILL.md`
+- **tailrocks-document** — the last content commit before a merge: locate
+  the repository's documentation surfaces and their own rules, inventory
+  the diff against the merge base, and make the docs the final source of
+  truth for what shipped — rewriting the prose the change makes wrong,
+  adding the pages and sections new capability earns, reorganizing when the
+  structure no longer fits, and never writing a changelog into the docs
+  (git history is the changelog). Commits once with its trailer; a diff
+  with nothing doc-worthy earns an explicit verdict, not a commit.
+  Definition: `skills/tailrocks-document/SKILL.md`
 - **tailrocks-pr-template** — generate the repository's own
   `.github/PULL_REQUEST_TEMPLATE.md` by tailoring the base template
   (shipped as the skill's reference) to evidence: the repository's

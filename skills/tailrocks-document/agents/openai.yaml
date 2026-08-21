@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Document"
+  short_description: "Make the repository's docs the source of truth for what a PR shipped"
+  default_prompt: "Use $tailrocks-document to update the documentation for this pull request's changes before merge."
+policy:
+  allow_implicit_invocation: false

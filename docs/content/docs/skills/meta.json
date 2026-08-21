@@ -36,6 +36,7 @@
     "tailrocks-checkout-pr",
     "tailrocks-review-pr",
     "tailrocks-merge-pr",
+    "tailrocks-document",
     "tailrocks-pr-template",
     "---Roadmap and delivery---",
     "tailrocks-audit",
