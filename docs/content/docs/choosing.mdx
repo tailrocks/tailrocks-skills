@@ -59,10 +59,12 @@ flowchart LR
 | [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa) | Verification. Kill-launch-capture, window-ID capture, accessibility audits, state matrix, pixel regression. |
 
 Never run two skills that both encode aesthetic taste. Two findings shape the
-whole family: Apple's own UI kit ships **zero enabled blur effects**, so no
-design file is authoritative for Liquid Glass — the operating system is. And
-glass surfaces snapshot **fully transparent** from a detached view, so verifying
-glass chrome requires screen-capturing the running app.
+whole family. **No design file is authoritative for Liquid Glass; the operating
+system is** — a static mock can only approximate a material that keeps adapting
+to appearance, accessibility settings, and content, so the reference is a
+running app, never an exported artifact. And glass surfaces snapshot **fully
+transparent** from a detached view, so verifying glass chrome requires
+screen-capturing that running app.
 
 ## Design references
 

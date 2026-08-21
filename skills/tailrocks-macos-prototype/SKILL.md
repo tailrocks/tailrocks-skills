@@ -10,8 +10,8 @@ user-invocable: true
 
 # macOS Prototype
 
-No design file is authoritative for Liquid Glass — the operating system is —
-so the only honest proof of an approved design is the design running: a
+**No design file is authoritative for Liquid Glass — the operating system
+is.** The only honest proof of an approved design is the design running: a
 small native app rendering the real material from fixture data, reviewed
 live on screen, and signed off before the real implementation starts. This
 skill builds that prototype. Its view layer is written to lift verbatim

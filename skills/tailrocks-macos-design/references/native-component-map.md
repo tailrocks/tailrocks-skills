@@ -109,7 +109,7 @@ expansion" is.
 For `NATIVE` regions the agent uses the mapped API and does not reconstruct the
 frame. That is what makes the result both faithful and dynamically correct: the
 app renders the real system material, which keeps adapting to appearance,
-accessibility settings, and content long after the design file was frozen.
+accessibility settings, and content long after the design was approved.
 
 For `CUSTOM` regions the agent reproduces the approved geometry closely, because
 there is no system component to defer to.
