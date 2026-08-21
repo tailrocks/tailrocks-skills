@@ -4,7 +4,7 @@
 
 `tailrocks-retrospect` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-retrospect)
 
-After a roadmap item ships, rebuild which skills actually ran from commit trailers and the item Log, diff that against its Decisions, Must not, and spec IDs, and propose patches to the skills at fault. Proposes only; never edits a skill.
+A roadmap item has shipped and its delivery history should say which skills let it diverge from its own plan. Proposes patches only; do not use to edit a skill (tailrocks-skill-author) or to re-verify plan rows (tailrocks-reconcile).
 
 ## Invocation
 

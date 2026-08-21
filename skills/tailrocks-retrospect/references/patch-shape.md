@@ -17,10 +17,16 @@ finding never examined.
    when the step existed but nothing checked its result.
 4. **A reference file plus one router line** — depth the router cannot afford.
    The router line says *when to read it*, never what it contains.
+5. **A template slot, added or removed** — a copy-ready asset that made the
+   executor invent a shape, or a section no reader of the record used. Give
+   the template path, the section it follows, and the exact block.
+6. **An eval case** — a behavior the skill claims and no case proves. Give the
+   prompt and the expected output; the applying skill owns the baseline that
+   admits it. A fixture that pre-computes the step under test is this shape
+   too: it can never fail the case that tests it.
 
-A patch that fits none of these is not ready: either the finding is really
-about a template or an eval, or it is a whole-skill redesign that belongs to
-a create-or-restructure invocation of the skill-authoring skill.
+A patch that fits none of these is a whole-skill redesign that belongs to a
+create-or-restructure invocation of the skill-authoring skill.
 
 ## The anchor
 
@@ -32,7 +38,7 @@ Target:   skills/<name>/SKILL.md
 Shape:    Boundaries bullet | appended step | final-gate clause | reference + router line
 Anchor:   after the "<exact heading or bullet>" that currently ends with "<quoted tail>"
 Text:     <the exact prose to insert, in the target's voice and line width>
-Evals:    <case ids in the target's evals/evals.json whose expected_output sits near the anchor>
+Evals:    <ids of the target's cases whose expected_output describes behavior the patched section governs — proximity is behavioral, not positional>
 Replaces: <nothing | the exact lines this patch removes, and why>
 ```
 
@@ -73,11 +79,14 @@ against each skill is how the lanes acquire different wording for one rule.
 repository — a path that must not exist, a field that must be present, a
 status drawn from a fixed set — belongs in the collection's validator or a
 repository gate, not in prose an agent must remember. Propose it there and
-say so; prose that duplicates a gate is dilution.
+say so; prose that duplicates a gate is dilution. Name the skill that owns
+establishing gates and debt ledgers as the receiver, so the hand-off carries a
+command rather than a file path.
 
 **Instruction file.** A rule that is specific to one repository rather than
-to the skill belongs in that repository's own instruction file. Say which
-file, and stop.
+to the skill belongs in that repository's own instruction file. Name the skill
+that owns instruction files as the receiver, say which directory owns the rule
+— the owning directory, never the root by default — and stop.
 
 **No patch.** A rule that existed, was signposted, and was ignored is
 recorded with its evidence and no proposal. So is a divergence whose only

@@ -5,7 +5,9 @@
 - **Source**: <repository the evidence came from>
 - **Evidence range**: `<base>..<head>` — <N> commits, <first date> to <last date>
 - **Timezone**: all timestamps below are <zone>
-- **Lane**: <the stack this item shipped on>
+- **Lanes**: <every stack this item's commits touched, and which skills ran
+  on each — "none" for a lane the item never entered; step 5 widens against
+  the siblings of each>
 - **Run**: <YYYY-MM-DD>
 
 ## Invocation sequence
@@ -15,11 +17,13 @@ trailers show.
 
 | # | Timestamp | Commit | Skill | Paths | Log entry |
 |---|-----------|--------|-------|-------|-----------|
-| 1 | <ts> | `<sha>` <subject> | <skill \| unattributed \| inferred:<skill>> | <top-level paths> | <matched \| none> |
+| 1 | <ts> | `<sha>` <subject> | <skill \| unattributed \| inferred:<skill> \| shared:<a>+<b>> | <top-level paths> | <matched \| none> |
 
-Counts: <n> attributed, <n> unattributed, <n> inferred. Log entries with no
-invocation: <list>. Invocations with no Log entry: <list>. Log actors that are
-not skills: <list>.
+Counts: <n> attributed, <n> unattributed, <n> inferred, <n> shared.
+Parse: <n> by trailer key, <n> by full-message scan — every difference listed
+with its SHA, because that gap measures dropped attributions rather than a
+marking failure. Log entries with no invocation: <list>. Invocations with no
+Log entry: <list>. Log actors that are not skills: <list>.
 
 ## Detector results
 
@@ -34,7 +38,11 @@ not skills: <list>.
 
 ## Findings
 
-### F1 — <one-line divergence> (<detector>)
+Finding ids are `RF#`, cross-cutting ids `X#`. Bare `F#` and `D#` belong to
+the coverage ledger's capabilities and Decisions; reusing them makes a
+record's own references ambiguous against the item it audits.
+
+### RF1 — <one-line divergence> (<detector>)
 
 - **Evidence**: <commits, timestamps, paths, quoted artifact lines — each one
   opened this session>
@@ -61,7 +69,7 @@ Evals:    <case ids at risk>
 
 ### X1 — <rule name>
 
-- **Findings behind it**: <F ids>
+- **Findings behind it**: <RF ids>
 - **Skills in scope**: <every skill that must link it, across every lane>
 - **Proposed reference**: <path and the one router line each skill adds>
 
@@ -76,6 +84,6 @@ Evals:    <case ids at risk>
 
 ## Hand-off
 
-| Rank | Proposal | Owning skill | Command | Evals to re-run |
-|---|---|---|---|---|
-| 1 | <F id / X id> | <skill> | `tailrocks-skill-author update <skill>` | <case ids> |
+| Rank | Proposal | Owning skill | Record | Command | Evals to re-run |
+|---|---|---|---|---|---|
+| 1 | <RF id / X id> | <skill> | `retrospectives/<source>-<slug>.md#RF<id>` | `tailrocks-skill-author update <skill>` | <case ids> |
