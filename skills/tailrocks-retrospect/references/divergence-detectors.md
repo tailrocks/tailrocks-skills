@@ -336,7 +336,7 @@ override is a logged exception, not an inversion.
 
 ## D6 — Write-scope breach
 
-**Finds:** a skill that wrote outside the scope its own Boundaries claim.
+**Finds:** a skill that wrote outside the scope its own definition declares.
 
 **Query:** for each attributed commit, read the target skill's declared write
 scope **wherever that skill states it** — a `## Boundaries` section when it
@@ -353,8 +353,18 @@ appearing in its own declared scope** — several delivery skills legitimately
 write one another's areas, and the declared scope, not the directory name,
 decides.
 
-**Evidence:** the commit, its paths and type, and the Boundaries sentence it
-contradicts.
+**Evidence:** the commit, its paths and type, the sentence it contradicts, and
+**which section that sentence came from**. A scope read from a `## Modes`
+bullet or a final gate is weaker evidence than a declared boundary, and a
+verdict that hides which one it rests on cannot be audited.
+
+**Reach:** D6 fires only on commits the trailer contract attributes, and
+`delivery-git-contract.md` binds the delivery family alone. Source written
+under a stack-lane skill is `execution`, not a marking failure, so D6 has
+nothing to attribute there — say `not attributable — no stack-lane skill
+stamps the trailer` rather than reporting the lane clean. Silence and
+absence read identically otherwise, which is the failure this detector
+exists to catch.
 
 **Defect class:** the boundary was stated for the skill's primary invocation
 and left silent for the case that actually occurred — most often a skill

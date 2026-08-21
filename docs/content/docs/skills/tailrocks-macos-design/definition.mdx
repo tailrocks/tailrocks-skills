@@ -167,63 +167,21 @@ missing required state is its own hard-failure finding. Complete only when the
 threshold is met, no hard failure remains, and every required rendered state
 has evidence.
 
-## The axes and the tests
+## The references and the rule each carries
 
-Read [`design-principles.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-macos-design/references/design-principles.md) before scoring.
-Apple's principles supply the **axes** but no formula for combining them, so
-they cannot be the whole review; the platform-citizenship checklists there
-supply the **pass/fail tests**, covering what Apple documents and never
-aggregates.
+Read the reference before the work it governs. Each carries one rule at router
+level; the rest lives in the file.
+
+| Read | Before | The rule it carries |
+|---|---|---|
+| [`design-principles.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-macos-design/references/design-principles.md) | scoring | Apple's principles supply the **axes** but no formula for combining them, so they cannot be the whole review; the platform-citizenship checklists supply the **pass/fail tests**. |
+| [`native-behavior.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-macos-design/references/native-behavior.md) | approving the brief | **Do not draw what the system can own.** A hand-drawn equivalent forfeits material updates, accessibility adaptation, shape grammar, window states, keyboard behavior, focus indication, and localization. |
+| [`macos-craft.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-macos-design/references/macos-craft.md) | density, typography, color, iconography, or interaction decisions | Apple's first macOS best practice is *"more content in fewer nested levels"*, against iPhone's *"limit the number of onscreen controls"* — use fewer nested levels for primary content and reserve progressive disclosure for rare controls. |
+| [`motion.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-macos-design/references/motion.md) | adding or reviewing any animation | A duration-based easing curve cannot preserve velocity through an interruption, so any interruptible, gesture-driven, or retargetable motion built on one is a defect by Apple's own criterion. Dismissal reverses the reveal along the same axis; no animation may be one a person sits through twice; under Reduce Motion every blur — including every glass morph — becomes a fade. |
+| [`exemplars.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-macos-design/references/exemplars.md), then [`reference-corpus.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-macos-design/references/reference-corpus.md) | building taste that persists | Apple's own apps split into Mac-shaped and iPhone-shaped, and the iPhone-shaped ones running on the Mac are the counter-examples — copy the first group only. Every repeated rejection becomes a documented anti-pattern or a rubric line, or the same failure returns next feature. |
 
 The fastest judgement of any screen is Apple's own three questions: **Where am
 I? What can I do? Where can I go from here?**
-
-## The behavior contract
-
-Read [`native-behavior.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-macos-design/references/native-behavior.md) before the brief is
-approved — it lists what a design must specify beyond appearance, and appearance
-is the cheap half of native.
-
-One rule carries at this level: **do not draw what the system can own.** Every
-hand-drawn equivalent silently forfeits material updates, accessibility
-adaptation, shape grammar, window states, keyboard behavior, focus indication,
-and localization.
-
-## macOS is not a large iPhone
-
-Read [`macos-craft.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-macos-design/references/macos-craft.md) before making density,
-typography, color, iconography, or interaction decisions — it enumerates the
-Mac obligations agent output most often drops, from menu-bar commands for every
-toolbar action to resize down to the declared minimum.
-
-The inversion to hold onto: Apple's first macOS best practice is *"more content
-in fewer nested levels"*; iPhone's is *"limit the number of onscreen controls."*
-For primary content, use fewer nested levels; reserve progressive disclosure for
-advanced or rare controls, never primary work.
-
-## Motion
-
-Read [`motion.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-macos-design/references/motion.md) before adding or reviewing any
-animation. Motion is the one axis with a mechanical definition of correct: a
-duration-based easing curve cannot preserve velocity through an interruption, so
-any interruptible, gesture-driven, or retargetable motion built on one is a
-defect by Apple's own stated criterion rather than a preference.
-
-Two further pass/fail tests: dismissal reverses the reveal **along the same
-axis**, and no animation may be one a person must sit through twice. Under
-Reduce Motion, blur animations — which includes every glass morph — become fades per the material owner's gate.
-
-## Building taste that persists
-
-Read [`exemplars.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-macos-design/references/exemplars.md) for the populated corpus, then
-[`reference-corpus.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-macos-design/references/reference-corpus.md) for how to extend it.
-
-Two rules carry at this level. Apple's own apps split by whether they are
-Mac-shaped or iPhone-shaped, and the iPhone-shaped ones running on the Mac are
-the counter-examples — copy the first group only. And every repeated rejection
-becomes either a documented anti-pattern or a rubric line, because negative
-examples outperform additional adjectives and an unrecorded rejection returns
-next feature.
 
 ## Final gate
 
