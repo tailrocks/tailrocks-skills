@@ -1,0 +1,11 @@
+{
+  "skill_name": "alpha-focus",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Start a 50-minute focus session on the chapter draft.",
+      "expected_output": "Starts the timer, enables focus mode, opens the interruption log; ends only with a logged reason and a session summary appended.",
+      "files": []
+    }
+  ]
+}

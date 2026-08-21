@@ -53,12 +53,22 @@
         "tailrocks-code-health",
         "tailrocks-improve",
         "tailrocks-agents-md",
-        "tailrocks-skill-author",
         "tailrocks-retrospect",
         "tailrocks-simplify",
         "tailrocks-remediate",
         "tailrocks-rethink",
         "tailrocks-contribute"
+      ]
+    },
+    {
+      "id": "skill-authoring",
+      "title": "Skill authoring",
+      "summary": "Create, update, audit, and refactor agent skills under the observed-failure law and the context-window budget.",
+      "skills": [
+        "tailrocks-skill-create",
+        "tailrocks-skill-update",
+        "tailrocks-skill-audit",
+        "tailrocks-skill-refactor"
       ]
     },
     {

@@ -121,44 +121,11 @@ implementation to it afterward.
 |---|---|
 | [`tailrocks-code-health`](/docs/skills/tailrocks-code-health) | A debt class must stop growing and become a measurable, shrink-only contract. |
 | [`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) | A rule must be recorded for coding agents, or the instruction files have grown, drifted, or landed in the wrong directory. |
-| [`tailrocks-skill-author`](/docs/skills/tailrocks-skill-author) | A skill must be created, updated, or audited — with the failure observed first and eval cases written to hold it. |
 | [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) | A roadmap item has shipped and its delivery history should say which skills let it diverge from its own plan. |
 | [`tailrocks-simplify`](/docs/skills/tailrocks-simplify) | A pull request works and should carry less code, with behavior frozen. |
 | [`tailrocks-remediate`](/docs/skills/tailrocks-remediate) | A defect is proven and the system must keep its promises while being corrected. |
 | [`tailrocks-rethink`](/docs/skills/tailrocks-rethink) | The current shape itself is under review and breaking it is acceptable. |
 | [`tailrocks-contribute`](/docs/skills/tailrocks-contribute) | The repository belongs to someone else. |
-
-### agents-md or skill-author
-
-Both are meta skills; they own different artifacts.
-[`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) owns agent
-instruction files — always-loaded rules scoped to the directory that owns
-them. [`tailrocks-skill-author`](/docs/skills/tailrocks-skill-author) owns
-skills — invoked behavior with descriptions, routers, references, and
-evals. The placement decision is part of skill-author's job: a rule a
-competent agent needs on every request routes to the owning `AGENTS.md`, a
-mechanically checkable rule routes to a gate, and only an observed failure
-that needs invoked guidance earns a skill.
-
-### retrospect or skill-author
-
-They are two halves of one loop and neither does the other's job.
-[`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) reads a shipped
-roadmap item's delivery history and produces evidence: which skills ran, in
-what order, and which of the item's own Decisions, Must-nots, and spec IDs the
-result failed to honor. It writes one record and never touches `skills/`.
-[`tailrocks-skill-author`](/docs/skills/tailrocks-skill-author) owns the edit
-— the router budget, the load-bearing lines, the full eval re-run — and its
-iron law is that no behavioral change ships without an observed failure. A
-retrospective finding is that observed failure, sourced from production
-instead of from a baseline run.
-
-Use retrospect when the question is *what went wrong across a delivery*. Use
-skill-author when the question is *what should this skill say*. The whole
-loop — including how a pull request in another repository becomes evidence
-through `--repo`/`--pr`, and why the analysis fans out to subagents while the
-judgment stays put — is documented under
-[self-improvement](/docs/self-improve).
 
 ### retrospect or audit
 
@@ -230,6 +197,64 @@ structural measure.
 
 Use ordinary best-practice skills for routine implementation. Neither of these
 is a substitute for them.
+
+## Skill authoring
+
+Four skills carry the authoring laws — no new skill and no behavioral edit
+without the failure observed first, and the context window is a public good —
+and exactly one owns each phase of a skill's life.
+
+| Skill | Reach for it when |
+|---|---|
+| [`tailrocks-skill-create`](/docs/skills/tailrocks-skill-create) | A capability needs a new skill — baseline the observed failure, decide placement, match the guidance form, wire the repository. |
+| [`tailrocks-skill-update`](/docs/skills/tailrocks-skill-update) | An existing skill's behavior must change in place — eval-pinned lines protected, the invocation contract untouched. |
+| [`tailrocks-skill-audit`](/docs/skills/tailrocks-skill-audit) | One skill or the whole tree must be judged against the doctrine — read-only, a report with stable finding IDs under `skill-audits/`. |
+| [`tailrocks-skill-refactor`](/docs/skills/tailrocks-skill-refactor) | Selected findings from an audit report must be applied — by ID, nothing beyond the selection, verified by an independent re-audit. |
+
+### agents-md or the authoring family
+
+Both are meta work; they own different artifacts.
+[`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) owns agent
+instruction files — always-loaded rules scoped to the directory that owns
+them. The authoring family owns skills — invoked behavior with descriptions,
+routers, references, and evals. The placement decision is part of
+[`tailrocks-skill-create`](/docs/skills/tailrocks-skill-create)'s job: a rule
+a competent agent needs on every request routes to the owning `AGENTS.md`, a
+mechanically checkable rule routes to a gate, and only an observed failure
+that needs invoked guidance earns a skill.
+
+### retrospect or the authoring family
+
+They are two halves of one loop and neither does the other's job.
+[`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) reads a shipped
+roadmap item's delivery history and produces evidence: which skills ran, in
+what order, and which of the item's own Decisions, Must-nots, and spec IDs the
+result failed to honor. It writes one record and never touches `skills/`.
+[`tailrocks-skill-update`](/docs/skills/tailrocks-skill-update) owns the edit
+— the router budget, the load-bearing lines, the full eval re-run — and its
+iron law is that no behavioral change ships without an observed failure; a
+retrospective finding is that observed failure, sourced from production
+instead of from a baseline run. When the evidence says no skill owns the
+behavior at all, the handoff goes to
+[`tailrocks-skill-create`](/docs/skills/tailrocks-skill-create) instead.
+
+Use retrospect when the question is *what went wrong across a delivery*. Use
+the family when the question is *what should this skill say*. The whole loop —
+including how a pull request in another repository becomes evidence through
+`--repo`/`--pr`, and why the analysis fans out to subagents while the judgment
+stays put — is documented under [self-improvement](/docs/self-improve).
+
+### skill-audit or improve
+
+Both audit, at different subjects.
+[`tailrocks-skill-audit`](/docs/skills/tailrocks-skill-audit) judges the
+**skills** — descriptions, routers, references, evals, wiring, overlap —
+against the authoring doctrine, and its report feeds
+[`tailrocks-skill-refactor`](/docs/skills/tailrocks-skill-refactor).
+[`tailrocks-improve`](/docs/skills/tailrocks-improve) judges the repository's
+**code** and turns verified findings into executor-ready plans under `plans/`.
+A repository whose product is agent skills gets its `SKILL.md` files audited
+by skill-audit and its tooling by improve — the two never overlap.
 
 ## Pull request lifecycle
 

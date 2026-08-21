@@ -1,0 +1,23 @@
+{
+  "skill_name": "tailrocks-skill-update",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add a new section to the router of our existing review skill covering how to handle generated files. Should be quick — just append it at the end.",
+      "expected_output": "Refuses the quick append: a router addition changes every behavior in the file. Baselines the observed failure first, checks the skill's evals.json for load-bearing lines, prefers strengthening an existing section or placing the depth in a reference routed by when-to-read, applies the replace-not-append rule if the router is past budget, and requires updating the skill's full eval set for CI to run — not just a case about generated files — without invoking the eval harness locally.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "The 'Complete when' clauses in our review skill read awkwardly. Rephrase them all to flow better — pure prose polish, nothing behavioral.",
+      "expected_output": "Does not treat gate wording as free prose: checks the skill's evals.json first for cases that depend on those completion clauses, names which clauses are eval-pinned, and refuses any blind reword of a pinned line — a reword of a load-bearing clause requires updating the pinning eval cases for CI in the same change. Only un-pinned wording may be polished, and the invocation contract stays untouched.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Agents keep skipping the body template in our PR skill — we see it weekly. Strengthen that rule so it actually lands.",
+      "expected_output": "Baselines the observed failure from the conversation (template skipped weekly, documented concretely), reads the skill whole including its evals, strengthens the existing template obligation — structural cue, reason stated — rather than appending a new section, keeps depth in references, reviews and updates the full eval set for CI rather than only the template case, runs the tree's validator, and never invokes the eval harness locally.",
+      "files": []
+    }
+  ]
+}

@@ -100,12 +100,22 @@ Debt that shrinks, defects that stop recurring, skills that improve from field e
 | [`tailrocks-code-health`](skills/tailrocks-code-health/README.md) | Establish, audit, or tighten measurable shrink-only code-health ratchets for architecture, lint, dependency, flake, defect, documentation, or verification debt. |
 | [`tailrocks-improve`](skills/tailrocks-improve/README.md) | Audit any repository through parallel read-only investigators and turn verified findings into standalone, executor-ready implementation plans under plans/ — no roadmap required. |
 | [`tailrocks-agents-md`](skills/tailrocks-agents-md/README.md) | Add, place, audit, or repair agent instruction files. |
-| [`tailrocks-skill-author`](skills/tailrocks-skill-author/README.md) | Create, update, or audit agent skills: baseline the failure first, match the guidance form to the failure type, keep routers lean and references deep, write trigger-only descriptions, write baselined eval cases. |
 | [`tailrocks-retrospect`](skills/tailrocks-retrospect/README.md) | After a roadmap item ships, rebuild which skills ran from commit trailers, diff that against its Decisions, Must not, spec IDs, and verification rounds, and propose patches to the skills at fault. |
 | [`tailrocks-simplify`](skills/tailrocks-simplify/README.md) | Review a pull request or diff and remove code without changing behavior: dead paths, hand-rolled utilities the platform provides, indirection, needless branching. |
 | [`tailrocks-remediate`](skills/tailrocks-remediate/README.md) | Analyze or remediate a proven defect through correctness-first architectural redesign. |
 | [`tailrocks-rethink`](skills/tailrocks-rethink/README.md) | Re-derive the design behind a reported bug or friction instead of patching it; restructuring and breaking changes are expected and cost is excluded from the decision. |
 | [`tailrocks-contribute`](skills/tailrocks-contribute/README.md) | Contribute to an external open-source project: discover its contribution contract, prepare a minimal evidenced change, and submit only after explicit human approval. |
+
+### Skill authoring
+
+Create, update, audit, and refactor agent skills under the observed-failure law and the context-window budget.
+
+| Skill | What it does |
+|---|---|
+| [`tailrocks-skill-create`](skills/tailrocks-skill-create/README.md) | Create a new agent skill from an observed failure: baseline first, placement decided before writing, guidance form matched to the failure type, lean router with deep references, trigger-only description, baselined eval cases, full repository wiring. |
+| [`tailrocks-skill-update`](skills/tailrocks-skill-update/README.md) | Update an existing skill in place without changing its invocation contract: baseline the failure, check its eval set before touching load-bearing lines, strengthen over append, update the full eval set for CI. |
+| [`tailrocks-skill-audit`](skills/tailrocks-skill-audit/README.md) | Audit one skill or every skill in the repository against the authoring doctrine. |
+| [`tailrocks-skill-refactor`](skills/tailrocks-skill-refactor/README.md) | Apply user-selected findings, by ID, from a skill-audit report to a skill: fix descriptions, routers, references, and evals per doctrine while preserving the invocation contract. |
 
 ### Pull request lifecycle
 

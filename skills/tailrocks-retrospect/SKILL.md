@@ -1,7 +1,7 @@
 ---
 name: tailrocks-retrospect
 description: >-
-  Use only when the user explicitly requests this skill. After a roadmap item ships, rebuild which skills ran from commit trailers, diff that against its Decisions, Must not, spec IDs, and verification rounds, and propose patches to the skills at fault. Proposes only; tailrocks-skill-author edits skills.
+  Use only when the user explicitly requests this skill. After a roadmap item ships, rebuild which skills ran from commit trailers, diff that against its Decisions, Must not, spec IDs, and verification rounds, and propose patches to the skills at fault. Proposes only; tailrocks-skill-update edits skills.
 argument-hint: "<roadmap-slug> [--source <path>] [--repo <owner/name>] [--pr <number>]"
 disable-model-invocation: true
 license: Apache-2.0
@@ -19,7 +19,7 @@ is not a finding. The finding is the boundary, step, or gate that was absent
 from a named skill, plus the text that would have caught it.
 
 **Nothing is applied here.** The deliverable is one record of proposed
-patches; `tailrocks-skill-author` applies them under the observed-failure law,
+patches; `tailrocks-skill-update` applies them under the observed-failure law,
 the router budget, and the eval re-run obligation that it owns. Mutation is
 never inferred from findings.
 
@@ -64,7 +64,7 @@ the record and nothing else — conventional subject,
 trailers. Where the audited repository is a different tree it gets no branch,
 no commit, no comment; where it is this one, the record is still the only
 thing staged. Proposed patches stay as text inside the record until
-`tailrocks-skill-author` applies them on its own branch.
+`tailrocks-skill-update` applies them on its own branch.
 
 ## Steps
 
@@ -160,7 +160,7 @@ thing staged. Proposed patches stay as text inside the record until
 
 7. **Hand off.** Report the record path, the findings ranked by how much
    future divergence each patch prevents, and per patch the exact next
-   command — `tailrocks-skill-author update <skill>` — with the eval cases it
+   command — `tailrocks-skill-update <skill>` — with the eval cases it
    must re-run. Commit the record as the final action.
    **Complete when:** the user knows every proposed patch, its owning skill,
    and the command that would apply it.
@@ -168,7 +168,7 @@ thing staged. Proposed patches stay as text inside the record until
 ## Red flags — STOP
 
 - "Apply the fix while you are in there" — this skill has no apply mode; the
-eval re-run obligation lives with `tailrocks-skill-author`, and a patch landed
+eval re-run obligation lives with `tailrocks-skill-update`, and a patch landed
 without it is an untested behavior change. - "The folder is gone, there is
 nothing to retrospect" — a retired folder is a delivered item; the retirement
 commit is the anchor and its parent holds every artifact. Refusal rests on

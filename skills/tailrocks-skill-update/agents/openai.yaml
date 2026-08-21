@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Skill Update"
+  short_description: "Update a skill in place — baselined, eval-checked, contract preserved"
+  default_prompt: "Use $tailrocks-skill-update on the named skill: baseline the observed failure first, check the skill's eval set before touching load-bearing lines, strengthen existing sections rather than appending, update the full eval set for CI, and keep the invocation contract unchanged — never run the eval harness locally."
+policy:
+  allow_implicit_invocation: false

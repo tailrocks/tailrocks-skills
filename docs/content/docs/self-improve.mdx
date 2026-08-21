@@ -12,7 +12,7 @@ an eval re-run. Two skills own it, and neither does the other's job.
 flowchart LR
   field["shipped item, any repository"] --> retro["tailrocks-retrospect"]
   retro --> record["retrospectives/source-slug.md"]
-  record --> author["tailrocks-skill-author update"]
+  record --> author["tailrocks-skill-update"]
   author --> evals["evals updated, CI re-runs"]
 ```
 
@@ -74,11 +74,11 @@ declined with what was missing, and the absent marking is itself the finding
 to report. It is never reconstructed from subject lines: findings against
 skills that may never have run are worse than no findings.
 
-## The edit side — `tailrocks-skill-author`
+## The edit side — `tailrocks-skill-update`
 
 The record's hand-off table names, per patch, the exact next command:
 
-<Invoke skill="tailrocks-skill-author" args="update tailrocks-plan" />
+<Invoke skill="tailrocks-skill-update" args="tailrocks-plan" />
 
 The field record is the strongest admissible baseline under the
 observed-failure law — no behavioral edit without a failure observed first.
@@ -96,7 +96,7 @@ so applying one is a decision, not a drafting exercise.
 ## What the loop refuses
 
 - **Applying a patch inside the retrospective.** Retrospect proposes;
-  skill-author applies. A patch landed without the eval update is an
+  skill-update applies. A patch landed without the eval update is an
   untested behavior change.
 - **Findings about the executor.** A well-signposted rule that was ignored is
   recorded as non-conformance, honestly, with no patch.

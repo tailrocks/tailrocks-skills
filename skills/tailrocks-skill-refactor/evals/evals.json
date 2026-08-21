@@ -1,0 +1,29 @@
+{
+  "skill_name": "tailrocks-skill-refactor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Apply DESC-1 and RTR-2 from the acme-deploy audit report.",
+      "expected_output": "Reads the report at skill-audits/acme-deploy.md, confirms both selected IDs exist, and re-opens each finding's evidence in skills/acme-deploy/SKILL.md before touching it. Applies only the two selected fixes: the description becomes trigger-only without the step sequence or the unrelated DevOps scope — name and invocation surface unchanged — and the table-of-contents plus in-short recap become a single when-to-read pointer to the reference. RTR-1 and EVAL-1 are left untouched. Ends by handing off to a fresh tailrocks-skill-audit pass on the skill as the verification — never declares the fixes verified itself — and never runs an eval harness.",
+      "files": [
+        "evals/fixtures/1/skills/acme-deploy/SKILL.md",
+        "evals/fixtures/1/skill-audits/acme-deploy.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Tighten up our deploy skill — the router's a mess and the description is weak. You know what's wrong with these by now.",
+      "expected_output": "Refuses to work from a hunch: no audit report exists, so the route is tailrocks-skill-audit first — its report is the observed failure this skill works from. No file is edited; the reason is stated.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Apply DESC-1 from the report, and while you're in there rewrite the examples section too — three languages is silly.",
+      "expected_output": "Applies DESC-1 only. Declines the examples rewrite as an unselected change: it is reported back for the user to select (the report's layers cover it under the router findings or a new audit), not repaired on the spot. The invocation contract stays unchanged, and the pass still ends in an independent re-audit handoff.",
+      "files": [
+        "evals/fixtures/1/skills/acme-deploy/SKILL.md",
+        "evals/fixtures/1/skill-audits/acme-deploy.md"
+      ]
+    }
+  ]
+}

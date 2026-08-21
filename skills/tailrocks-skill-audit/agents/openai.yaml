@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Skill Audit"
+  short_description: "Audit skills against the authoring doctrine into a report with stable finding IDs"
+  default_prompt: "Use $tailrocks-skill-audit on the named skill or the whole tree: judge each layer against the doctrine in its references, vet every finding against your own reads, and write the layered report to skill-audits/ — never edit the skill."
+policy:
+  allow_implicit_invocation: false
