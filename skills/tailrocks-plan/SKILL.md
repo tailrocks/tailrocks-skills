@@ -24,9 +24,8 @@ together only on explicit request, recorded as the exception.
 - Write only under `plans/<slug>/`, `research/` (gap-filling topics), and
   the roadmap item's Plan link, status, and Log. Keep source,
   configuration, and dependencies unchanged; Git moves only per the
-  delivery git contract below — one marked commit adding the finished
-  `plans/<slug>/` package (and the item's status flip) at hand-off,
-  nothing else. Never implement — the package is the deliverable.
+  delivery git contract below. Never implement — the package is the
+  deliverable.
 - Require `READY`. On anything less, name the next missing stage and stop; for
   `SHAPING`, say it literally as `tailrocks-finalize`. The user may override
   explicitly, and the override plus the skipped gaps are recorded in the
@@ -70,19 +69,19 @@ later audit attribute each PR commit to the skill that produced it.
    **Complete when:** the ledger accounts for the whole item with no
    silently dropped statement.
 
-2. **Research the gaps.** Collect the item's linked `research/` topics;
-   vet-check they are still current — vetting per the research shape: open
-   every citation, confirm it supports the claim, fix misattributions, and
-   drop the unverifiable. Derive what planning still lacks —
-   platform facts, integration seams, reference-project practice, and
-   always the exact build/test/lint commands for the target stack. Fan out
-   investigators per
-   [`references/research-shape.md`](references/research-shape.md) into
-   `research/<topic>/` folders (extend overlapping topics, never fork), vet,
-   and index them. `fast-mechanical` workers may collect facts; the
-   orchestrator retains `frontier-judgment` to vet and synthesize them.
-   With `--deep`, run a completeness critic and reslice until a round
-   surfaces nothing load-bearing.
+2. **Research the gaps.** Collect the item's linked `research/` topics and
+   vet-check them per
+   [`references/research-shape.md`](references/research-shape.md):
+   open every citation, confirm it supports the claim, fix misattributions,
+   drop the unverifiable. Derive what planning still lacks — platform
+   facts, integration seams, reference-project practice, and always the
+   exact build/test/lint commands for the target stack. Fan out
+   investigators per that reference into `research/<topic>/` folders
+   (extend overlapping topics, never fork), vet, and index them.
+   `fast-mechanical` workers may collect facts; the orchestrator retains
+   `frontier-judgment` to vet and synthesize them. With `--deep`, run a
+   completeness critic and reslice until a round surfaces nothing
+   load-bearing.
    **Complete when:** every ledger unknown has vetted evidence, a named
    assumption, or an explicit deferral — and verification commands are
    proven, not assumed.
@@ -128,12 +127,11 @@ later audit attribute each PR commit to the skill that produced it.
    its writer brief. One subagent per manifest item, parallel where
    dependencies allow, each producing `plans/<slug>/NNN-<slug>.md`.
    Verify each returned plan per the template's verifier brief: a
-   fresh-context, read-only `independent-verifier` — blind to the writer's reasoning —
-   opens every cited source and reports excerpt mismatches; on any
-   reported mismatch the orchestrator re-opens that plan's sources and
-   re-verifies all of them. A bounded check may verify mechanical evidence,
-   but final semantic acceptance remains `frontier-judgment +
-   independent-verifier`.
+   fresh-context, read-only `independent-verifier`, blind to the writer's
+   reasoning, opens every cited source and reports excerpt mismatches; on
+   any mismatch the orchestrator re-opens and re-verifies all of that
+   plan's sources. A bounded check may verify mechanical evidence; final
+   semantic acceptance remains `frontier-judgment + independent-verifier`.
    After accepting each plan, the orchestrator backfills the ledger's Plans
    columns and the must-not registry's "Enforced in plans" column — writer
    subagents never touch shared files.
@@ -141,9 +139,8 @@ later audit attribute each PR commit to the skill that produced it.
    template's quality bar.
 
 6. **Cold review and gate.** Fresh-context, read-only reviewers with
-   `frontier-judgment` capability read
-   each plan with only the plan file and the repository; fix every
-   reported gap. Then the traceability gate, run by a fresh-context,
+   `frontier-judgment` capability read each plan with only the plan file
+   and the repository; fix every reported gap. Then the traceability gate, run by a fresh-context,
    read-only checker over the ledger, spec, and plans: every requirement
    covered, every must-not inlined in each plan it could tempt, every
    dependency edge backed by a precondition check — it reports uncovered
@@ -161,9 +158,9 @@ later audit attribute each PR commit to the skill that produced it.
    tailrocks-idea's roadmap-item-format.md), setting `PLANNED` and the Plan
    link. Commit the package as the
    final action before reporting.
-   **Complete when:** a user can use GOAL.md's blocks with a supported goal
-   host or manual protocol consumer, and the executor can run to completion
-   without this conversation.
+   **Complete when:** GOAL.md's blocks serve a supported goal host or manual
+   protocol consumer, and the executor runs to completion without this
+   conversation.
 
 ## Re-runs
 
@@ -174,16 +171,15 @@ record spec deltas per the spec format, and regenerate GOAL.md last.
 
 ## Closing content gate
 
-`goal-check.sh` proves the package's own structure — branch, PR, frozen-file
-fingerprint, status-table completeness, command exit codes. It cannot prove
-the shipped work still matches the roadmap item. Before handing off, run one
-explicit content check: read the roadmap item's Decisions, Vocabulary, and
-Must not sections and confirm each plan file's requirements trace back to
-one of them by ID, with no plan requirement that has no such ID and no
-Decision or Must-not with zero covering requirement. Record any executor-
-side scope not traceable to a Decision or Must-not as a named exception in
-the plan hub, not a silent inclusion — this is what a self-reported `DONE`
-row in `coverage.md` cannot catch on its own.
+`goal-check.sh` proves the package's own structure — branch, PR,
+frozen-file fingerprint, status-table completeness, command exit codes. It
+cannot prove the shipped work still matches the item. Before handing off,
+read the item's Decisions, Vocabulary, and Must not and confirm every plan
+requirement traces to one of them by ID — no requirement without an ID, no
+Decision or Must-not with zero covering requirement. Record executor-side
+scope not traceable to a Decision or Must-not as a named exception in the
+plan hub, not a silent inclusion — what a self-reported `DONE` row in
+`coverage.md` cannot catch on its own.
 
 ## Final gate
 
@@ -196,8 +192,7 @@ Finish only when source is untouched, the ledger shows every spec-bearing ID
 resolved per the ledger's pipeline table, every plan passed cold review with
 machine-checkable done criteria, an execution profile, specific STOP
 escalation, and semantic acceptance by `frontier-judgment +
-independent-verifier`, new research is indexed and reusable, GOAL.md's
-condition is machine-checkable and gate-first, the closing content gate found
-no untraceable plan requirement or uncovered Decision/Must-not, assurance is
-verified, and the roadmap item is `PLANNED` with consistent links, Log, and
-index row.
+independent-verifier`, new research is indexed and reusable, GOAL.md is
+machine-checkable and gate-first, the content gate found no untraceable
+requirement or uncovered Decision/Must-not, assurance is verified, and the
+item is `PLANNED` with consistent links, Log, and index row.
