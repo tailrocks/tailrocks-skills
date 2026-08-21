@@ -23,6 +23,14 @@
 - **Cause**: <file:line and the mechanism, when the evidence locates it>
 - **Instead of**: <what the item says this surface does>
 
+## Decision compliance
+
+Every recorded decision against what shipped. A `VIOLATED` row is blocking.
+
+| Decision | Verdict | Evidence |
+|----------|---------|----------|
+| <date — the decision, one line> | HELD \| VIOLATED \| NOT VERIFIABLE | <command output or file:line; for NOT VERIFIABLE, what would settle it> |
+
 ## Contract drift
 
 It runs, and it is not what was blessed or specified.
@@ -30,6 +38,9 @@ It runs, and it is not what was blessed or specified.
 - **<surface>** — <what shipped> against <what the reference carries>,
   reference `<path>`, blessed <date>. <Present-and-wrong, or
   present-in-reference-and-absent.>
+- **Decisions snapshot** — <when `plan/spec/decisions.md` differs from the
+  item's live `## Decisions`: the package predates a recorded decision; this
+  round verified against the live section. Omit this line when they match.>
 
 ## Proof defects
 
