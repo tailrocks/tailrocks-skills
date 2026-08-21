@@ -40,7 +40,7 @@
     {
       "id": 4,
       "prompt": "Retrospect loom-sync. The finding about the setup skill rearchitecting crates mid-feature is real — write the patch for it.",
-      "expected_output": "Writes the patch as a Boundaries or appended-step addition to the named setup skill with its own Complete when, never a rewrite of unrelated sections, and then holds it against that skill's siblings in the other lanes the collection targets — the TanStack and macOS project-setup skills — reporting for each whether the same gap exists or a lane-specific reason excuses it. Where the gap is shared, proposes one cross-cutting rule naming every skill in scope instead of duplicating the wording per lane. Names the eval cases at risk in each target.",
+      "expected_output": "Writes the patch as a Boundaries or appended-step addition to the named setup skill with its own Complete when, never a rewrite of unrelated sections, and then holds it against that skill's siblings in the other lanes the collection targets — the TanStack and macOS project-setup skills — reporting for each whether the same gap exists or a lane-specific reason excuses it. Where the gap is shared, proposes one cross-cutting rule naming every skill in scope instead of duplicating the wording per lane. Names the eval cases at risk in each target. The D6 evidence line names which section the declared scope was read from — a `## Boundaries` section, a `## Modes` bullet, a named scope-boundary heading, or the final gate — because the setup skills in two of three lanes carry no Boundaries heading and a verdict that hides its source cannot be audited.",
       "files": [
         "evals/fixtures/1/history.tsv"
       ]
@@ -70,6 +70,14 @@
       "expected_output": "Refuses to carry the source into shipped skill content: patch text states present doctrine with no external repository, pull request, organization, or person named, and no provenance aside. The names stay in the retrospective record and in git history, which is where a later reader recovers them.",
       "files": [
         "evals/fixtures/1/history.tsv"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Retrospect loom-sync — D6 found nothing on the Rust lane, where the executor wrote every crate under tailrocks-rust-best-practices.",
+      "expected_output": "D6 reports the Rust lane as not attributable rather than clean: the trailer contract in delivery-git-contract.md binds the delivery family only, no stack-lane skill stamps Tailrocks-Skill, and source written under one is classified execution rather than unattributed. The report says so explicitly instead of emitting an empty D6 result, and flags the reach limit itself as the finding worth escalating — a detector whose headline case cannot fire from real data is a gap in the contract, not evidence of compliance.",
+      "files": [
+        "skills/tailrocks-retrospect/evals/fixtures/1/history.tsv"
       ]
     }
   ]
