@@ -8,15 +8,19 @@ Before changing any pin, resolve current releases from official sources —
 compatible stable toolchain. Commit exact versions. If only a prerelease
 satisfies a requirement, report that and require explicit approval.
 
-## State of the platform as verified 2026-08-11
+## State of the platform as verified 2026-08-21
 
-Re-verify before relying on these.
+Re-verify before relying on these. The shipping column was re-checked on
+2026-08-21 against `gdmf.apple.com/v2/pmv` and the installed toolchain; the
+forward-validation column keeps its 2026-08-11 check, because Xcode 27 beta is
+not installed on the machine that re-verified and a stamp nobody earned reads
+as current when it is not.
 
 | | Shipping | Forward validation |
 |---|---|---|
-| macOS | 26.6.1 "Tahoe" | 27 "Golden Gate" — beta, not shipping, "coming this fall" |
-| Xcode | 26.6 | 27 beta |
-| Swift | 6.3 | 6.4 |
+| macOS | 26.6.2 "Tahoe" | 27 "Golden Gate" — beta, not shipping, "coming this fall" |
+| Xcode | 26.6 (17F113) | 27 beta |
+| Swift | 6.3.3 | 6.4 |
 | SDK | macOS 26.5 | macOS 27 |
 | Host requirement | macOS 26.2+ | macOS 26.4+ |
 
