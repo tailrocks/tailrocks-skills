@@ -12,11 +12,10 @@ user-invocable: true
 Liquid Glass is a functional layer that floats above content, not a decoration
 applied to content. Almost every quality failure traces to one root cause: glass
 was placed in the wrong layer, or a custom surface was hand-rolled where a
-standard component would have received the material automatically.
-
-The correct default is to write **less** glass code, not more. Standard SwiftUI
-and AppKit components adopt Liquid Glass with no API calls. Custom glass is a
-narrow exception that must be justified per surface.
+standard component would have received the material automatically. So the
+correct default is to write **less** glass code — standard SwiftUI and AppKit
+components adopt Liquid Glass with no API calls, and custom glass is a narrow
+exception justified per surface.
 
 Before writing or changing any glass code, establish the deployment target and
 read [`platform-baseline.md`](references/platform-baseline.md). Availability is
@@ -30,18 +29,15 @@ values.
 ## Not a design stage
 
 The material authority, consumed by whatever is building — the prototype during
-design, the app during implementation. The stages belong to the three macOS
-skills.
+design, the app during implementation. The stages belong to the three macOS skills.
 
 ## Modes
 
 - `adopt`: bring an existing macOS app onto Liquid Glass.
 - `apply`: add a justified custom glass surface to a specific element.
-- `audit`: inspect and produce a violation report; do not edit files.
+- `audit`: inspect and produce a violation report; do not edit files. Do not
+  infer mutation permission from the presence of violations.
 - `remediate`: close approved audit violations in never-broken slices.
-
-Do not infer mutation permission from the presence of violations.
-
 - **Apply completion:** in `apply` mode the request itself is permission. Walk the decision order and produce the justified implementation with its
   container, shape record, tint policy, guards, an opaque/material Reduce
   Transparency fallback, and nonmorphing Reduce Motion behavior.
@@ -87,31 +83,27 @@ materials, not glass. Every content-layer finding names both halves:
 - **The exception** — a transient interactive element only: a slider or
   toggle taking glass while a person is actively manipulating it.
 
-Classify every region of the screen as `CONTENT` or `FUNCTIONAL` before any
-glass API is written. A surface that cannot be classified is a design defect,
-not an implementation question.
+Classify every screen region as `CONTENT` or `FUNCTIONAL` before any glass API
+is written; a surface that cannot be classified is a design defect.
 
 ## Custom renderers
 
-When a non-Apple renderer (GPUI or similar) is proposed, or the app is
-Rust without Swift, read
-[`custom-renderers.md`](references/custom-renderers.md). The rules carried
-here: **never GPUI or anything similar in a native Swift app** — the
-renderer is always Apple's modern one, and high-performance custom regions
-are drawn with Apple's own rendering (`Canvas`, SwiftUI Metal shader
-modifiers, a justified `MTKView` boundary); such a region is `CONTENT`
-with glass chrome only from system components above it; and a hand-rolled
-glass imitation is a hard failure — the material's sampling, grouping, and
-per-release evolution belong to the OS.
+When a non-Apple renderer (GPUI or similar) is proposed, or the app is Rust
+without Swift, read [`custom-renderers.md`](references/custom-renderers.md).
+Three rules carry here. **Never GPUI or anything similar in a native Swift
+app** — the renderer is always Apple's modern one, and high-performance custom
+regions use Apple's own rendering (`Canvas`, SwiftUI Metal shader modifiers, a
+justified `MTKView` boundary). Such a region is `CONTENT`, with glass chrome
+only from system components above it. And a hand-rolled glass imitation is a
+hard failure: the material's sampling, grouping, and per-release evolution
+belong to the OS.
 
 ## Implementation
 
 Use SwiftUI for new surfaces and read [`swiftui-api.md`](references/swiftui-api.md).
 At a justified AppKit capability boundary, read [`appkit-api.md`](references/appkit-api.md). Both carry exact signatures and
-per-symbol availability. Apple ships no downloadable AppKit Liquid Glass sample
-and no AppKit listing in its adoption guide; WWDC26 session 289 does include an
-Apple-authored AppKit `cornerConfiguration` listing. Verify every symbol against
-the SDK in use rather than transposing SwiftUI patterns.
+per-symbol availability. Verify every symbol against the SDK in use rather than
+transposing SwiftUI patterns.
 
 Non-negotiable mechanics:
 
@@ -136,13 +128,11 @@ Non-negotiable mechanics:
 - **Per-row glass — reject:** **Rule:** rows are content, so use standard content materials and reserve glass for a functional-layer control. **Mechanism:** row glass occupies the wrong compositing layer, breaking the system scroll edge effect and content-derived light/dark adaptation. **Cost:** every unbatched row adds its own backdrop-sample, blur, and refraction pass, so cost is unbounded in row count.
 
 Cross-platform spellings that do **not** exist on macOS 26 — reject them on
-sight and name the correct form:
+sight and name the correct form; the full list is in
+[`swiftui-api.md`](references/swiftui-api.md) and
+[`appkit-api.md`](references/appkit-api.md):
 
 - `glassBackgroundEffect(...)` is visionOS-only.
-- `toolbarOverflowMenu(content:)` and `ToolbarItemPlacement.topBarPinnedTrailing`
-  have no macOS availability.
-- `tabViewBottomAccessory(content:)` is documented for iPhone tab bars, not
-  macOS chrome; use a platform-native toolbar or safe-area bar on macOS.
 - **Concentric correction output:** reject `.rect(corner: .containerConcentric)`:
   `containerConcentric` is UIKit (iOS 26) and AppKit (macOS 27 beta), not SwiftUI.
   The response is incomplete unless it literally supplies both `ConcentricRectangle`
@@ -150,9 +140,6 @@ sight and name the correct form:
   also uses the valid shorthand `.rect(corners: .concentric)`.
 - `NSGlassEffectView.effectIsInteractive` is macOS 27 beta — AppKit has no
   interactive glass on macOS 26 at all.
-- `prominentGlass` / `clearGlass` button configurations are UIKit. SwiftUI uses
-  `.buttonStyle(.glassProminent)` (macOS 26.0); AppKit uses
-  `NSToolbarItem.Style.prominent`.
 
 **Correction guard:** always supply concrete `#available` code; when no target is present, state and use macOS 26. Every newer symbol gets a guard; fallback and
 removal-condition discipline belongs to `tailrocks-swift-best-practices`.
@@ -160,23 +147,17 @@ removal-condition discipline belongs to `tailrocks-swift-best-practices`.
 ## What correct looks like
 
 Read [`apple-patterns.md`](references/apple-patterns.md) for the normative rules
-in Apple's own words, each tied to the first-party app it was demonstrated on:
-the sidebar-floats / inspector-is-edge-to-edge split, automatic typed toolbar
-grouping, hard scroll edge as the Mac case, controls floating above a canvas,
-glass receding on inactive windows, window radius that depends on window
-contents, and the density ladder.
+in Apple's own words, each tied to the first-party app it was demonstrated on.
+App-level model/anti-model judgement is owned by `tailrocks-macos-design`'s
+exemplar corpus; consult it before copying any Apple app.
 
-App-level model/anti-model judgement is owned by
-`tailrocks-macos-design`'s exemplar corpus; consult it before copying any Apple
-app.
-
-Two process rules from that reference carry more weight than any API detail:
-**adopt, then redesign** — recompiling gets the material, current system
-components get the usability gains, and a redesign is a separate later decision;
-and, in SwiftUI only, `Glass.identity` plus `.interactive()` gives a chart or
-scrubber a tactile response while remaining inert at rest. The API is macOS
-26.0, but pointer-tuned response is refined in macOS 27; verify behavior on the
-deployment target. AppKit 26 has no interactive glass.
+Two process rules from that reference outweigh any API detail. **Adopt, then
+redesign** — recompiling gets the material, current system components get the
+usability gains, and a redesign is a separate later decision. And in SwiftUI
+only, `Glass.identity` plus `.interactive()` gives a chart or scrubber a tactile
+response while remaining inert at rest; the API is macOS 26.0, pointer-tuned
+response is refined in macOS 27, so verify on the deployment target. AppKit 26
+has no interactive glass.
 
 ## Audit
 
