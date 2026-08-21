@@ -47,8 +47,11 @@ jobs:
           git push --force-with-lease \
             "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "$BRANCH"
 
-          if gh pr view "$BRANCH" --json number --jq .number >/dev/null 2>&1; then
-            echo "pull request already open for $BRANCH; it now carries the newest pins"
+          # `gh pr view <branch>` resolves a merged pull request from an earlier
+          # refresh, so ask for open ones on this head specifically.
+          open=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -n "$open" ]; then
+            echo "pull request #$open already open for $BRANCH; it now carries the newest pins"
             exit 0
           fi
           gh pr create --base main --head "$BRANCH" \
