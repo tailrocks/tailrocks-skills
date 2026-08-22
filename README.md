@@ -105,7 +105,9 @@ One design skill per platform — macOS, web, terminal — each producing a bles
 
 | Skill | What it does | Invocation |
 |---|---|---|
-| [`tailrocks-macos-design`](skills/tailrocks-macos-design/README.md) | Apply macOS visual-design and Liquid Glass policy when in-scope work touches native screen structure, material, component mapping, prototypes, or design review. | Model policy |
+| [`tailrocks-macos-design`](skills/tailrocks-macos-design/README.md) | Apply macOS visual-design and Liquid Glass policy when in-scope work touches native screen structure, material, component mapping, or a runnable prototype. | Model policy |
+| [`tailrocks-macos-design-review`](skills/tailrocks-macos-design-review/README.md) | Score an existing macOS screen, window, or prototype against the native-design and Liquid Glass contract. | Manual only |
+| [`tailrocks-macos-design-systematize`](skills/tailrocks-macos-design-systematize/README.md) | Turn one user-approved macOS design and independent review into reusable product design-system records. | Manual only |
 | [`tailrocks-web-design`](skills/tailrocks-web-design/README.md) | Apply web visual-design policy when in-scope work touches TanStack screens, design routes, shadcn/ui composition, visual fixtures, or design review. | Model policy |
 | [`tailrocks-tui-design`](skills/tailrocks-tui-design/README.md) | Apply terminal visual-design policy when in-scope work touches ratatui screens, terminal UX, fixture galleries, golden frames, or design review. | Model policy |
 | [`tailrocks-macos-visual-qa`](skills/tailrocks-macos-visual-qa/README.md) | Build, launch, capture, drive, and verify a native macOS app so an agent can see its own interface: window-ID capture, accessibility-tree driving, appearance and accessibility state matrix, audits, and pixel regression. | Manual only |

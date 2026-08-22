@@ -4,7 +4,7 @@
 
 `tailrocks-macos-design` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-macos-design)
 
-Apply macOS visual-design and Liquid Glass policy when in-scope work touches native screen structure, material, component mapping, prototypes, or design review. Selection alone never authorizes blessing, capture, or mutation.
+Apply macOS visual-design and Liquid Glass policy when in-scope work touches native screen structure, material, component mapping, or a runnable prototype. Selection alone never authorizes blessing, capture, or mutation.
 
 ## Invocation
 
@@ -14,7 +14,7 @@ active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-macos-design` …
 
-Arguments: `[design|prototype|review|systematize] <feature or screen>`
+Arguments: `[design|prototype] <feature or screen>`
 
 ## Skill definition
 
@@ -43,15 +43,12 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`platform-baseline.md`](references/platform-baseline.md)
 - [`prototype-package.md`](references/prototype-package.md)
 - [`reference-corpus.md`](references/reference-corpus.md)
-- [`review-mode.md`](references/review-mode.md)
-- [`rubric.md`](references/rubric.md)
 - [`runtime-trust.md`](references/runtime-trust.md)
 - [`swiftui-api.md`](references/swiftui-api.md)
 - [`verification.md`](references/verification.md)
 
 ## Templates
 
-- [`DesignReview.md`](templates/DesignReview.md)
 - [`ExperienceBrief.md`](templates/ExperienceBrief.md)
 - [`NativeComponentMap.md`](templates/NativeComponentMap.md)
 - [`ProtoMain.swift`](templates/ProtoMain.swift)

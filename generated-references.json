@@ -70,6 +70,8 @@
         "skills/tailrocks-improve-reconcile/references/runtime-trust.md",
         "skills/tailrocks-improve-security/references/runtime-trust.md",
         "skills/tailrocks-improve/references/runtime-trust.md",
+        "skills/tailrocks-macos-design-review/references/runtime-trust.md",
+        "skills/tailrocks-macos-design-systematize/references/runtime-trust.md",
         "skills/tailrocks-macos-design/references/runtime-trust.md",
         "skills/tailrocks-macos-visual-qa/references/runtime-trust.md",
         "skills/tailrocks-merge-pr/references/runtime-trust.md",
@@ -290,6 +292,122 @@
       "source": "skills/tailrocks-grpc-best-practices/references/tonic-server-client.md",
       "destinations": [
         "skills/tailrocks-grpc-review/references/tonic-server-client.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design-systematize/references/exemplars.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/exemplars.md",
+        "skills/tailrocks-macos-design/references/exemplars.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design-systematize/references/reference-corpus.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/reference-corpus.md",
+        "skills/tailrocks-macos-design/references/reference-corpus.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/anti-patterns.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/anti-patterns.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/appkit-api.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/appkit-api.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/apple-patterns.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/apple-patterns.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/archetypes.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/archetypes.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/custom-component-contract.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/custom-component-contract.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/custom-renderers.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/custom-renderers.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/design-principles.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/design-principles.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/experience-brief.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/experience-brief.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/layer-model.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/layer-model.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/macos-craft.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/macos-craft.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/match-policy.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/match-policy.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/motion.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/motion.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/native-behavior.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/native-behavior.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/native-component-map.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/native-component-map.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/platform-baseline.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/platform-baseline.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/swiftui-api.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/swiftui-api.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/verification.md",
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/verification.md"
       ]
     },
     {

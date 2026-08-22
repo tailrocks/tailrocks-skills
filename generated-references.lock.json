@@ -307,9 +307,124 @@
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
     },
     {
+      "source": "skills/tailrocks-macos-design/references/anti-patterns.md",
+      "destination": "skills/tailrocks-macos-design-review/references/anti-patterns.md",
+      "sha256": "3e15eca79e8b305bdb2e59c4082ef1fd438667d0ad0ef387406056ca23269c3b"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/appkit-api.md",
+      "destination": "skills/tailrocks-macos-design-review/references/appkit-api.md",
+      "sha256": "a56771b47225daa1f554bb157bce683349d321861b118c8dba59215d6871bac7"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/apple-patterns.md",
+      "destination": "skills/tailrocks-macos-design-review/references/apple-patterns.md",
+      "sha256": "6fe42ccfc9a921a1394ffae9f31e05f2585c881aa28acc4311493ccf7d64b8b2"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/archetypes.md",
+      "destination": "skills/tailrocks-macos-design-review/references/archetypes.md",
+      "sha256": "bc9d9ef9cd118e9b7d7ab8c66e11f3c661f3297257c727bcecf842c39a920668"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/custom-component-contract.md",
+      "destination": "skills/tailrocks-macos-design-review/references/custom-component-contract.md",
+      "sha256": "ef8798e1d76936b3b6077db8b318e7151e08e2177b7a8ead3fa0a4bfc6842f54"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/custom-renderers.md",
+      "destination": "skills/tailrocks-macos-design-review/references/custom-renderers.md",
+      "sha256": "d30394cbb1a982ff7915a9905be9815dfe51b54f7aeeb4b803cc183efb3d4a25"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/design-principles.md",
+      "destination": "skills/tailrocks-macos-design-review/references/design-principles.md",
+      "sha256": "ec24966be4c150783ae97ddaaf893840c396691aad37902343771ae589336b62"
+    },
+    {
+      "source": "skills/tailrocks-macos-design-systematize/references/exemplars.md",
+      "destination": "skills/tailrocks-macos-design-review/references/exemplars.md",
+      "sha256": "02f8d91c698d02bf3c33be75abc29cf1efcbefe0b5c1f5127b1494ba9db2f2cc"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/experience-brief.md",
+      "destination": "skills/tailrocks-macos-design-review/references/experience-brief.md",
+      "sha256": "f35dff29b3d3310775bcd825d75a874b6d1a4c20a1a72b7c7f758adeda0ce0d9"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/layer-model.md",
+      "destination": "skills/tailrocks-macos-design-review/references/layer-model.md",
+      "sha256": "bb3d6c82566c60ff3a1eeb9630cec378d73fea798e36db2912de0c713cfddeb6"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/macos-craft.md",
+      "destination": "skills/tailrocks-macos-design-review/references/macos-craft.md",
+      "sha256": "7cd9494812218d8ec9719142b0683d1c0d7d40e219578362a0fe2e7bd94e2e0f"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/match-policy.md",
+      "destination": "skills/tailrocks-macos-design-review/references/match-policy.md",
+      "sha256": "e63c570b478473994ae7b7b5176ca25ec6bbaf009f19d3085b72e73f79dd716d"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/motion.md",
+      "destination": "skills/tailrocks-macos-design-review/references/motion.md",
+      "sha256": "4d025ff671d0a2bd54d809bab0b2cbed8f1c9a64c1c1dd43532d8901e6f0f37c"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/native-behavior.md",
+      "destination": "skills/tailrocks-macos-design-review/references/native-behavior.md",
+      "sha256": "20bdc41dc3ef2975cec63008dd9d5dae5aa6e8e91826e2ba8a94f0a295560a64"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/native-component-map.md",
+      "destination": "skills/tailrocks-macos-design-review/references/native-component-map.md",
+      "sha256": "9efbd68278db8c087b0c8775a17e96eade3ea9ddaa85f9f0b3443a7b65d003dd"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/platform-baseline.md",
+      "destination": "skills/tailrocks-macos-design-review/references/platform-baseline.md",
+      "sha256": "7839659b5388ec3592b2646865398fdb4f2e472869a4ff3a964f8f433f41065a"
+    },
+    {
+      "source": "skills/tailrocks-macos-design-systematize/references/reference-corpus.md",
+      "destination": "skills/tailrocks-macos-design-review/references/reference-corpus.md",
+      "sha256": "8b50aec90d9242dd15cc64d58265e4c2362417cb6f89e20a3798aaeb5d7e0afb"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-macos-design-review/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/swiftui-api.md",
+      "destination": "skills/tailrocks-macos-design-review/references/swiftui-api.md",
+      "sha256": "7cde5b4d93f171a2bd7d324c82fbb97aa2143f4d8c50451af14fc239c9a8c48a"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/verification.md",
+      "destination": "skills/tailrocks-macos-design-review/references/verification.md",
+      "sha256": "fba1487ec6dbdcba3addaf2e31da6d52e563f20adcef6f4d5a11550973143ef9"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-macos-design-systematize/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
       "source": "shared/references/design-pipeline.md",
       "destination": "skills/tailrocks-macos-design/references/design-pipeline.md",
       "sha256": "00bbf16de54860b26445c91e75b408b1536a5025c698923aee7241f7ab6e3de9"
+    },
+    {
+      "source": "skills/tailrocks-macos-design-systematize/references/exemplars.md",
+      "destination": "skills/tailrocks-macos-design/references/exemplars.md",
+      "sha256": "02f8d91c698d02bf3c33be75abc29cf1efcbefe0b5c1f5127b1494ba9db2f2cc"
+    },
+    {
+      "source": "skills/tailrocks-macos-design-systematize/references/reference-corpus.md",
+      "destination": "skills/tailrocks-macos-design/references/reference-corpus.md",
+      "sha256": "8b50aec90d9242dd15cc64d58265e4c2362417cb6f89e20a3798aaeb5d7e0afb"
     },
     {
       "source": "shared/references/runtime-trust.md",

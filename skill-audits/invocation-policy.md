@@ -3,7 +3,7 @@
 - Status: **CONFIRMED AND IMPLEMENTED**
 - Audited source SHA: `2626d51827747c3b3e0e76cd20a7d38363c82648`
 - Reconciled: `2026-08-22`
-- Scope: all 78 published skills
+- Scope: all 80 published skills
 
 `invocation-registry.json` is the executable authority. It has exactly two
 classes and exactly one sorted row for every skill:

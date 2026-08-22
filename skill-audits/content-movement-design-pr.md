@@ -5,24 +5,24 @@
 - Generated `README.md`, docs, catalogs, and client metadata are regenerated after each move. They are never hand-copied.
 - Current validation forbids cross-skill relative links. Repository-owned shared doctrine is authored once, generated into each consuming skill's local `references/`, and byte-validated.
 - Before any move, source-neutralize retained/moved prose that names outside projects or authors as provenance, including `references/exemplars.md:127` and `references/design-principles.md:351-400`. Preserve mechanisms; delete attribution/source framing.
-- Compatibility aliases ship in `v0.28.0` and are removed in `v1.0.0`. Every “one major” or “next major” gate below means that exact `v1.0.0` removal; failed evidence delays `v1.0.0` rather than silently extending an alias.
+- Public owners and routes move directly in this branch and pull request. No
+  deprecated alias, dispatcher, symlink, delayed-removal route, or migration
+  artifact remains; frozen eval bytes stay inactive and untouched.
 
 ## `tailrocks-macos-design`
 
 | Current surface | Op | Exact target | Compatibility/removal |
 |---|---:|---|---|
 | `SKILL.md:1-84` except mode bullets below; `## Prototype` lines 98-134; `## The material authority` lines 135-179; design/prototype final-gate clauses | KEEP | `skills/tailrocks-macos-design/SKILL.md` | Existing name remains primary; arguments become `[design\|prototype]`. |
-| `SKILL.md:85-96` (`4 — Score`), `SKILL.md:180-192` (`## Review mode`), mode bullet lines 37-38 | MOVE | `skills/tailrocks-macos-design-review/SKILL.md` | Legacy `review` redirects throughout `v0.28.x`; remove in `v1.0.0` after routing surfaces exist and old evals 2/6/12/14/19 pass under new name. |
-| `SKILL.md:39-44` (`systematize`) | MOVE | `skills/tailrocks-macos-design-systematize/SKILL.md` | Redirect throughout `v0.28.x`; remove in `v1.0.0` after target output contract and discriminating eval exist. |
-| `references/{review-mode,rubric}.md`, `templates/DesignReview.md` | MOVE | Same filenames under `skills/tailrocks-macos-design-review/references/` and `skills/tailrocks-macos-design-review/templates/` | Optional old-path symlink through `v0.28.x`; remove in `v1.0.0` when no shipped reference points there. |
+| `SKILL.md:85-96` (`4 — Score`), `SKILL.md:180-192` (`## Review mode`), mode bullet lines 37-38 | MOVE | `skills/tailrocks-macos-design-review/SKILL.md` | Base selector removed immediately; no redirect. Preliminary review precedes prototype, acceptance review precedes blessing. |
+| `SKILL.md:39-44` (`systematize`) | MOVE | `skills/tailrocks-macos-design-systematize/SKILL.md` | Base selector removed immediately; no redirect. |
+| `references/{review-mode,rubric}.md`, `templates/DesignReview.md` | MOVE | Same filenames under `skills/tailrocks-macos-design-review/references/` and `skills/tailrocks-macos-design-review/templates/` | Old paths deleted immediately; no symlink. |
 | `references/{exemplars,reference-corpus}.md` | MOVE | Same filenames under `skills/tailrocks-macos-design-systematize/references/` | Design/review receive generated local copies; never sibling-link. |
 | Systematize-owned `references/{exemplars,reference-corpus}.md` | COPY | Same filenames under `skills/tailrocks-macos-design/references/` and `skills/tailrocks-macos-design-review/references/` | Generate and byte-check; source-neutralization gate applies first. |
 | `references/{anti-patterns,appkit-api,apple-patterns,archetypes,custom-component-contract,custom-renderers,design-principles,experience-brief,launch-contract,layer-model,macos-craft,match-policy,motion,native-behavior,native-component-map,platform-baseline,prototype-package,swiftui-api,verification}.md` | KEEP | Identical paths under `skills/tailrocks-macos-design/references/` | Material/taste authority remains here; consumers receive generated local copies where needed. |
 | Review-required material/taste references `anti-patterns`, `appkit-api`, `apple-patterns`, `archetypes`, `custom-component-contract`, `custom-renderers`, `design-principles`, `experience-brief`, `layer-model`, `macos-craft`, `match-policy`, `motion`, `native-behavior`, `native-component-map`, `platform-baseline`, `swiftui-api`, `verification` | COPY | Same filenames under `skills/tailrocks-macos-design-review/references/` | Generate and byte-check. Do not copy `launch-contract.md` or `prototype-package.md`; they depend on design-owned prototype templates and are not review inputs. |
 | `templates/{ExperienceBrief,NativeComponentMap,ProtoMain,Regions,SIGNOFF}.*` | KEEP | Identical paths under `skills/tailrocks-macos-design/templates/` | Design/prototype artifacts. |
-| Eval IDs `1,3,4,7-11,13,15-18,20-21`; fixtures `approved-design/`, `toolbar/` | KEEP | `skills/tailrocks-macos-design/evals/evals.json` and matching paths under `skills/tailrocks-macos-design/evals/fixtures/` | Fix stale stage number in ID 3. |
-| Eval IDs `2,6,12,14,19`; fixtures `review-input/`, `audit-package/`, `records-window/` | MOVE | `skills/tailrocks-macos-design-review/evals/evals.json` + matching paths under `skills/tailrocks-macos-design-review/evals/fixtures/` | Keep old ID as `legacy_id` until baseline evidence. |
-| Eval ID `5` | MOVE | `skills/tailrocks-macos-design-systematize/evals/evals.json` | Add fixture-backed output oracle before alias removal. |
+| All legacy eval IDs and fixtures | PRESERVE | Frozen legacy paths, inactive and undiscoverable | Never inspect, move, modify, execute, or certify them; non-protected deterministic tests prove new ownership. |
 | `agents/openai.yaml` | KEEP | `skills/tailrocks-macos-design/agents/openai.yaml` | Narrow prompt; create separate target metadata. |
 
 ## `tailrocks-web-design`

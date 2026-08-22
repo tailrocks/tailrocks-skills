@@ -12,10 +12,13 @@ Rendered evidence is the design *running*: the prototype app
 judged live, or captures `tailrocks-macos-visual-qa` froze from it after
 finalization, or the shipped screen itself. A design file, an exported image,
 and a mockup are none of these — they are a picture of the screen, and a
-picture cannot show a material the operating system renders. A first-pass
-design direction has no prototype yet and therefore no rendered evidence: score
-it, mark the unassessable categories zero, and let the missing-evidence hard
-failure bind only once a prototype or an implementation exists to render.
+picture cannot show a material the operating system renders.
+
+Two passes share the rubric. A `preliminary` direction has no prototype yet:
+score its brief, map, fixtures, alternatives, and any live evidence; mark
+unassessable categories zero. Its verdict is `PRELIMINARY` when no blocking
+structural defect remains, never PASS. An `acceptance` review drives the running
+prototype and requires the complete evidence matrix; only it can return PASS.
 
 **Evidence integrity:** a named capture matches its declared window size exactly
 (pixels = backing scale × logical size, with chrome height noted); verify
@@ -89,7 +92,7 @@ Severity:
 | Performance, edge cases, and finish | 5 |
 | **Total** | **100** |
 
-Acceptance:
+Acceptance PASS:
 
 ```
 Total score:      at least 90 / 100
@@ -98,8 +101,6 @@ Hard failures:    zero
 Rendered evidence: mandatory
 Reviewer:         not the implementing agent
 ```
-
-A filled, rejected review with captures lives at examples/macos-screen/.
 
 A category minimum matters as much as the total. A 92 built from a perfect visual
 score and a failing accessibility score is a worse product than an 88 that is

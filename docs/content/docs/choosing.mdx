@@ -65,18 +65,23 @@ contracts.
 
 ## Native macOS
 
-Four skills take a feature from an approved design to verified pixels.
+The macOS family takes a feature from direction through independent review,
+running proof, implementation, and verified pixels.
 
 ```mermaid
 flowchart LR
-  design["macos-design"] --> swift["swift-best-practices"]
+  design["macos-design"] --> review["macos-design-review"]
+  review --> design
+  design --> swift["swift-best-practices"]
   swift --> gates["swift-project-setup gates"]
   gates --> qa["macos-visual-qa"]
 ```
 
 | Skill | Owns |
 |---|---|
-| [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | Taste, the runnable proof, and the material. Experience brief, information architecture, native component map, alternatives, scored review; then the signed-off Liquid Glass prototype under the fixed launch contract; and the Liquid Glass rules — content-versus-functional layer split, API surface and availability, the glass acceptance gate. Writes design artifacts and the prototype package, never production source. |
+| [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | Sole taste/material owner: brief, information architecture, native component map, alternatives, selected direction, and signed-off Liquid Glass prototype. Never scores its own work or edits production. |
+| [`tailrocks-macos-design-review`](/docs/skills/tailrocks-macos-design-review) | Independently review a direction preliminarily or score the full running prototype for acceptance. Writes only the report; never fixes, blesses, captures, or systematizes. |
+| [`tailrocks-macos-design-systematize`](/docs/skills/tailrocks-macos-design-systematize) | Persist reusable product design-system learning only after user approval and independent acceptance. Never designs, reviews, blesses, captures, or edits production. |
 | [`tailrocks-swift-best-practices`](/docs/skills/tailrocks-swift-best-practices) | Writing native Swift/SwiftUI behavior under code-level policy. |
 | [`tailrocks-swift-review`](/docs/skills/tailrocks-swift-review) | Reviewing Swift/SwiftUI code read-only for verified platform-contract defects. |
 | [`tailrocks-swift-refactor`](/docs/skills/tailrocks-swift-refactor) | Restructuring Swift/SwiftUI while preserving behavior and platform contracts. |

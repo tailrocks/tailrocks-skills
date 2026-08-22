@@ -3,11 +3,12 @@
 Reviewer (must not be the implementing agent):
 Date:
 Deployment target:
-Rendered evidence attached: yes / no
+Pass: preliminary / acceptance
+Live-render session or frozen evidence record:
 
 ## Rendered evidence
 
-| State | Screenshot |
+| State | Live observation or evidence locator |
 |---|---|
 | Typical window, light | |
 | Typical window, dark | |
@@ -30,7 +31,8 @@ Rendered evidence attached: yes / no
 | Missing values | |
 | Reduce Motion | |
 
-A missing row is a finding, not an omission.
+For acceptance, a missing row is a finding, not an omission. Preliminary review
+marks prototype-only rows pending and cannot pass acceptance.
 
 ## First impression
 

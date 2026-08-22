@@ -58,6 +58,8 @@
       "summary": "One design skill per platform — macOS, web, terminal — each producing a blessed reference rendered by the real substrate, plus the capture loops that freeze it.",
       "skills": [
         "tailrocks-macos-design",
+        "tailrocks-macos-design-review",
+        "tailrocks-macos-design-systematize",
         "tailrocks-web-design",
         "tailrocks-tui-design",
         "tailrocks-macos-visual-qa",

@@ -998,10 +998,25 @@ all terminal checks pass, and the final literal marker is changed to
 
 ## P07 — Split design and visual verification ownership
 
-- [ ] [IN_PROGRESS] P07.01 macOS design → design/prototype/blessing, design review, and
+- [x] [COMPLETED] P07.01 macOS design → design/prototype/blessing, design review, and
   systematize; retain `MODEL_POLICY` only on the existing named owner pending
   descendant approval.
-- [ ] [TODO] P07.02 Web design → design/blessing and design audit; retain
+  - Evidence receipt (2026-08-23): split the existing macOS design owner into
+    exclusive `design|prototype`, manual preliminary/acceptance review, and
+    manual systematize owners. The base owner alone retains `MODEL_POLICY`;
+    both descendants are `MANUAL_ONLY`. Removed the base owner's retired public
+    review/systematize routes and moved their doctrine, report template, and
+    source-neutral learning corpus to exact canonical owners. Review now binds
+    independent reviewer/session identity, uses live-render evidence, and must
+    pass before blessing; systematize applies only user-accepted, preimage-bound
+    ledger rows with CAS-safe rollback. Registry/docs cover 80 skills (69
+    manual, 11 model-policy), 20,521 total description characters, and 16,726
+    capped characters; 73 sources produced 225 byte-identical destinations and
+    244 generated docs checked. Focused proof passed 80 tests/670 assertions;
+    final `rtk mise run migration-check` passed 367 tests/2,379 assertions
+    across 49 selected non-protected files. Fresh subagent verdict: PASS.
+    Protected paths unchanged; no evals run.
+- [ ] [IN_PROGRESS] P07.02 Web design → design/blessing and design audit; retain
   `MODEL_POLICY` only on the existing named owner pending descendant approval.
 - [ ] [TODO] P07.03 Terminal design → design/blessing/golden freeze and design
   audit; retain `MODEL_POLICY` only on the existing named owner pending

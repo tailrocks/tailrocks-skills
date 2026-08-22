@@ -32,6 +32,8 @@
     { "skill": "tailrocks-improve-reconcile", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-improve-security", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-macos-design", "class": "MODEL_POLICY" },
+    { "skill": "tailrocks-macos-design-review", "class": "MANUAL_ONLY" },
+    { "skill": "tailrocks-macos-design-systematize", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-macos-visual-qa", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-merge-pr", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-plan", "class": "MANUAL_ONLY" },

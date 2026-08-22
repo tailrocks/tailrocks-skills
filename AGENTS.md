@@ -25,7 +25,7 @@ Apple-recommended one; GPUI and similar non-Apple UI frameworks are never
 used in a native Swift app, and high-performance custom regions are drawn
 with Apple's own rendering. An app that pairs Rust with a native interface
 uses a thin SwiftUI shell over a Rust-owned application runtime; that shell
-is an Apple *platform* shell, not only a UI layer — Apple-only capabilities
+is an Apple _platform_ shell, not only a UI layer — Apple-only capabilities
 (StoreKit, notifications, background tasks, Keychain, security-scoped
 files, widgets, intents) get narrow Swift adapters whose mechanism lives in
 Swift while every product decision around them stays in Rust.
@@ -296,8 +296,8 @@ reasonable and on Apple platforms are wrong.
 Exactly one skill owns each responsibility. Never run two skills that both encode
 aesthetic taste — they conflict, and the conflict surfaces as inconsistency
 across features rather than as an error. Inspection modes are named `audit`,
-except macOS design's scored `review` and visual QA's capture-producing
-`verify`.
+except `tailrocks-macos-design-review`'s scored `preliminary` and `acceptance`
+reviews and visual QA's capture-producing `verify`.
 
 **One process across all three platforms.** The stage runs between READY and
 planning — `tailrocks-finalize` grants READY on schematic mockups, the
@@ -307,11 +307,11 @@ screen contract that cites none. Four stages, same words everywhere:
 signs off; an agent never blesses its own output), **freeze** (the mechanical
 baseline), **audit** (implementation against the blessed reference).
 
-| Medium | Stack | design | bless | freeze |
-|---|---|---|---|---|
-| Terminal | Rust, ratatui, crossterm | tailrocks-tui-design | same | same — the golden test |
-| Web | TanStack Start, React, shadcn/ui | tailrocks-web-design | same | tailrocks-web-visual-qa |
-| macOS | Swift, SwiftUI, Liquid Glass | tailrocks-macos-design | same — on the running prototype | tailrocks-macos-visual-qa |
+| Medium   | Stack                            | design                 | bless                           | freeze                    |
+| -------- | -------------------------------- | ---------------------- | ------------------------------- | ------------------------- |
+| Terminal | Rust, ratatui, crossterm         | tailrocks-tui-design   | same                            | same — the golden test    |
+| Web      | TanStack Start, React, shadcn/ui | tailrocks-web-design   | same                            | tailrocks-web-visual-qa   |
+| macOS    | Swift, SwiftUI, Liquid Glass     | tailrocks-macos-design | same — on the running prototype | tailrocks-macos-visual-qa |
 
 macOS keeps design and bless in one skill because the material only exists at
 runtime: taste is decided in the design stages, and the sign-off happens on
@@ -327,7 +327,7 @@ source, produces one as a deliverable, or treats one as the reference an
 implementation is measured against; that rules out Sketch, Figma, Penpot,
 Adobe XD, InVision, Framer, and anything else of the kind, and it rules
 out a hand-frozen HTML or image mockup standing in for the application.
-The reason is not preference. A design file is a *picture* of the design:
+The reason is not preference. A design file is a _picture_ of the design:
 it cannot run the real components, cannot render the platform's own
 material, cannot exercise a state machine, and drifts the moment the code
 moves — so "matches the design" degrades from a mechanical check back
@@ -336,27 +336,41 @@ route rendering the shipped component from typed fixtures; for a terminal
 screen, a golden frame the application's own view functions rendered; for
 a macOS window, a running Liquid Glass prototype whose view layer lifts
 verbatim into the app. Each is copyable into production because it
-already *is* production code. A screenshot or an exported artifact may
+already _is_ production code. A screenshot or an exported artifact may
 illustrate a decision in a document; it is never the source of one.
 `scripts/validate-skills.ts` gates the tool names; this rule carries what
 a name list cannot.
 
-- **tailrocks-macos-design** — the macOS taste authority, runnable proof, and
-  material authority in one skill. Experience brief, information architecture,
+- **tailrocks-macos-design** — the sole macOS taste authority, runnable proof,
+  and material authority. Experience brief, information architecture,
   and the native component map that classifies every region `NATIVE` /
   `NATIVE-COMPOSED` / `CUSTOM`; structurally different alternatives with
   realistic fixtures; macOS density, typography, colour, and iconography; the
-  custom component contract; a weighted rubric with hard failures and a
-  correction order. Then the runnable proof: the Liquid Glass prototype built
+  custom component contract; structurally different alternatives and human
+  selection. Then the runnable proof: the Liquid Glass prototype built
   from the approved design — the fixed `--tr-*` launch contract, fixture
   scenarios, a live sign-off on the running app, and the region-scoped match
-  policy (custom regions pixel-budgeted, native regions structural). Carries
+  policy (custom regions pixel-budgeted, native regions structural). Separate
+  preliminary and acceptance verdicts belong to
+  `tailrocks-macos-design-review`; design writes neither verdict. Carries
   the Liquid Glass material authority: the `CONTENT`-versus-`FUNCTIONAL`
   layer split, the standard-component-first decision order, the exact SwiftUI
   and AppKit API surface with per-symbol availability, the anti-patterns each
   stating their mechanism, and the glass acceptance gate. Writes design
   artifacts and the prototype package, never production source.
   Definition: `skills/tailrocks-macos-design/SKILL.md`
+- **tailrocks-macos-design-review** — independent read/report judgment for a
+  direction or running prototype. Preliminary review may clear selected
+  structure for prototyping but never passes acceptance; acceptance scores the
+  full live state matrix, hard failures, and weighted rubric before blessing.
+  It never fixes, blesses, captures, or systematizes. Definition:
+  `skills/tailrocks-macos-design-review/SKILL.md`
+- **tailrocks-macos-design-systematize** — after user sign-off and independent
+  acceptance, turns demonstrated learning into product-owned component, token,
+  corpus, decision, rubric, anti-pattern, and regression records by CAS. It
+  never designs, reviews, blesses, captures, edits production, or mutates the
+  installed skill. Definition:
+  `skills/tailrocks-macos-design-systematize/SKILL.md`
 - **tailrocks-web-design** — TanStack Start screens as blessed in-app design
   routes: guarded `/design/<screen>/<state>` routes render pure screen
   components from typed fixtures through the real Vite, Tailwind, and
@@ -477,7 +491,7 @@ no blocking defect, and `## Remaining` is empty, `tailrocks-reconcile` writes
 `DONE` and then retires the item — `roadmap/<slug>/` deleted whole (README,
 `plan/`, `verification/`, `goal/`, assets) and its index row removed, with one
 exception: `REPORT.md` moves to `delivery/<slug>.md` first, so what the rounds
-*proved* stays in the tree after everything else is archaeology. `delivery/`
+_proved_ stays in the tree after everything else is archaeology. `delivery/`
 is created by the first retirement and never deleted. Two
 commits inside one invocation, so the pull request shows the item reach `DONE`
 and then be retired. When the last item goes, `roadmap/README.md` and
@@ -498,7 +512,7 @@ The item's `## Decisions` section is writable (record-decision appends to it),
 so it is fingerprinted by proxy instead: planning snapshots it verbatim into
 `plan/spec/decisions.md`, and `check.sh` answers `BLOCKED decisions-drift`
 when the live section no longer matches — a decision is still changeable at
-any time through `tailrocks-record-decision`, but never *silently* changeable.
+any time through `tailrocks-record-decision`, but never _silently_ changeable.
 
 Execution is handed the file, not a pasted block: `/goal Follow
 roadmap/<slug>/goal/START.md`, and `goal/RESUME.md` after any interruption.
@@ -997,19 +1011,19 @@ Subject format: `<type>[optional scope][!]: <description>`
 
 Allowed types:
 
-| Type | Use for |
-|---|---|
-| `feat` | New user-visible feature (a new skill, a new rule) |
-| `fix` | Bug fix (wrong guidance, broken template) |
-| `docs` | Documentation-only change |
-| `style` | Formatting, whitespace; no content change |
-| `refactor` | Internal restructuring; no behavior change |
-| `perf` | Performance improvement |
-| `test` | Adding or updating tests |
-| `build` | Build system, tooling, dependencies |
-| `ci` | CI configuration |
-| `chore` | Routine maintenance |
-| `revert` | Reverts a prior commit |
+| Type       | Use for                                            |
+| ---------- | -------------------------------------------------- |
+| `feat`     | New user-visible feature (a new skill, a new rule) |
+| `fix`      | Bug fix (wrong guidance, broken template)          |
+| `docs`     | Documentation-only change                          |
+| `style`    | Formatting, whitespace; no content change          |
+| `refactor` | Internal restructuring; no behavior change         |
+| `perf`     | Performance improvement                            |
+| `test`     | Adding or updating tests                           |
+| `build`    | Build system, tooling, dependencies                |
+| `ci`       | CI configuration                                   |
+| `chore`    | Routine maintenance                                |
+| `revert`   | Reverts a prior commit                             |
 
 Breaking changes use `!` after the type or scope and include a `BREAKING CHANGE:`
 footer in the body.
