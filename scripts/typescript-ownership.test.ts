@@ -92,8 +92,8 @@ test("only the writer retains model policy and routing names the read-only owner
   };
   expect(registry.owners).toContainEqual({ skill: writer, class: "MODEL_POLICY" });
   for (const skill of descendants) expect(registry.owners).toContainEqual({ skill, class: "MANUAL_ONLY" });
-  expect(await source("tailrocks-review-pr")).toContain(
-    "| TypeScript / React / TanStack source | `tailrocks-typescript-review` |",
+  expect(await source("tailrocks-review-pr")).toMatch(
+    /\|\s*TypeScript \/ React \/ TanStack source\s*\|\s*`tailrocks-typescript-review`\s*\|/,
   );
   const catalog = await readFile(path.join(root, "catalog.json"), "utf8");
   for (const skill of [writer, ...descendants]) expect(catalog).toContain(skill);

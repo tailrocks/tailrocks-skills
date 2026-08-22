@@ -4,7 +4,7 @@
 
 `tailrocks-web-design` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-web-design)
 
-Apply web visual-design policy when in-scope work touches TanStack screens, design routes, shadcn/ui composition, visual fixtures, or design review. Selection alone never authorizes blessing, baseline freeze, capture, or mutation.
+Apply web visual-design policy when in-scope work touches TanStack screens, design routes, shadcn/ui composition, or visual fixtures. Selection alone never authorizes blessing, baseline freeze, capture, or mutation.
 
 ## Invocation
 
@@ -14,7 +14,7 @@ active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-web-design` …
 
-Arguments: `[design|audit] <feature or screens>`
+Arguments: `design <feature or screens>`
 
 ## Skill definition
 

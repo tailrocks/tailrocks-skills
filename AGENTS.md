@@ -307,11 +307,11 @@ screen contract that cites none. Four stages, same words everywhere:
 signs off; an agent never blesses its own output), **freeze** (the mechanical
 baseline), **audit** (implementation against the blessed reference).
 
-| Medium   | Stack                            | design                 | bless                           | freeze                    |
-| -------- | -------------------------------- | ---------------------- | ------------------------------- | ------------------------- |
-| Terminal | Rust, ratatui, crossterm         | tailrocks-tui-design   | same                            | same — the golden test    |
-| Web      | TanStack Start, React, shadcn/ui | tailrocks-web-design   | same                            | tailrocks-web-visual-qa   |
-| macOS    | Swift, SwiftUI, Liquid Glass     | tailrocks-macos-design | same — on the running prototype | tailrocks-macos-visual-qa |
+| Medium   | Stack                            | design                 | bless                           | freeze                    | audit                         |
+| -------- | -------------------------------- | ---------------------- | ------------------------------- | ------------------------- | ----------------------------- |
+| Terminal | Rust, ratatui, crossterm         | tailrocks-tui-design   | same                            | same — the golden test    | tailrocks-tui-design          |
+| Web      | TanStack Start, React, shadcn/ui | tailrocks-web-design   | same                            | tailrocks-web-visual-qa   | tailrocks-web-design-audit    |
+| macOS    | Swift, SwiftUI, Liquid Glass     | tailrocks-macos-design | same — on the running prototype | tailrocks-macos-visual-qa | tailrocks-macos-design-review |
 
 macOS keeps design and bless in one skill because the material only exists at
 runtime: taste is decided in the design stages, and the sign-off happens on
@@ -375,8 +375,14 @@ a name list cannot.
   routes: guarded `/design/<screen>/<state>` routes render pure screen
   components from typed fixtures through the real Vite, Tailwind, and
   shadcn/ui pipeline; the user blesses live in the browser, and the real
-  page ships the same component. Captures nothing.
+  page ships the same component. Captures nothing and never audits itself.
   Definition: `skills/tailrocks-web-design/SKILL.md`
+- **tailrocks-web-design-audit** — independent, read-only judgment of an
+  existing design-route package or shipped screen against the blessed route,
+  component, fixture, state, theme, viewport, and accessibility contract. It
+  applies the design owner's generated rules but never creates taste, fixes,
+  blesses, freezes, or captures. Definition:
+  `skills/tailrocks-web-design-audit/SKILL.md`
 - **tailrocks-tui-design** — terminal screens for Rust ratatui applications
   as golden frames: a gallery crate renders the application's own view
   functions through a test backend, the user blesses each frame, and a

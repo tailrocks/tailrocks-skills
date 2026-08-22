@@ -83,7 +83,7 @@ test("Only the original Rust owner retains model policy and review dispatch is c
     expect(registry.owners).toContainEqual({ skill, class: "MANUAL_ONLY" });
 
   const prReview = await source("tailrocks-review-pr");
-  expect(prReview).toContain("| Rust source | `tailrocks-rust-review` |");
+  expect(prReview).toMatch(/\|\s*Rust source\s*\|\s*`tailrocks-rust-review`\s*\|/);
   expect(prReview).not.toContain("| Rust source | `tailrocks-rust-best-practices` review |");
   const landing = await readFile(path.join(root, "docs/content/docs/index.mdx"), "utf8");
   expect(landing.match(/tailrocks-rust-review/g)?.length).toBe(6);

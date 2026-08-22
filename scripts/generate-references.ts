@@ -154,6 +154,11 @@ const generatedFamilies = [
     ],
     destinations: ["tailrocks-typescript-refactor", "tailrocks-typescript-review"],
   },
+  {
+    owner: "tailrocks-web-design",
+    references: ["design-routes.md", "screen-package.md", "web-screen-craft.md"],
+    destinations: ["tailrocks-web-design-audit"],
+  },
 ] as const;
 const familySources = generatedFamilies.flatMap((family) =>
   family.references.map((name) => `skills/${family.owner}/references/${name}`),

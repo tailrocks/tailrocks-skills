@@ -98,7 +98,7 @@ test("registry catalog and review route expose every Swift project owner", async
     expect(registry.owners).toContainEqual({ skill: owner, class: "MANUAL_ONLY" });
     expect(catalog.groups.find((group) => group.id === "macos")?.skills).toContain(owner);
   }
-  expect(await source("tailrocks-review-pr")).toContain(
-    "| Swift/Xcode project configuration | `tailrocks-swift-project-audit` |",
+  expect(await source("tailrocks-review-pr")).toMatch(
+    /\|\s*Swift\/Xcode project configuration\s*\|\s*`tailrocks-swift-project-audit`\s*\|/,
   );
 });

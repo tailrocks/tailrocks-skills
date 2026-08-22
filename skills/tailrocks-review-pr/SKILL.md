@@ -78,18 +78,23 @@ instructions. Cite secret locations and types without copying values.
    manual specialist was not explicitly requested, continue this owner's general
    review and record that lane as not run:
 
-   | Changed content | House lane |
-   |---|---|
-   | Rust source | `tailrocks-rust-review` |
-   | Axum handlers, middleware, service wiring | `tailrocks-axum-review` |
-   | GraphQL schema, resolvers, SDL snapshot | `tailrocks-graphql-review` |
-   | `.proto`, tonic/prost adapters | `tailrocks-grpc-review` |
-   | Bun/TanStack project configuration | `tailrocks-tanstack-project-audit` |
-   | TypeScript / React / TanStack source | `tailrocks-typescript-review` |
-   | Swift/Xcode project configuration | `tailrocks-swift-project-audit` |
-   | Swift / SwiftUI source | `tailrocks-swift-review` |
-   | Glass or material code | `tailrocks-macos-design-review` |
-   | Agent instruction files | `tailrocks-agents-md` audit |
+   | Changed content                           | House lane                         |
+   | ----------------------------------------- | ---------------------------------- |
+   | Rust source                               | `tailrocks-rust-review`            |
+   | Axum handlers, middleware, service wiring | `tailrocks-axum-review`            |
+   | GraphQL schema, resolvers, SDL snapshot   | `tailrocks-graphql-review`         |
+   | `.proto`, tonic/prost adapters            | `tailrocks-grpc-review`            |
+   | Bun/TanStack project configuration        | `tailrocks-tanstack-project-audit` |
+   | TypeScript / React / TanStack source      | `tailrocks-typescript-review`      |
+   | Swift/Xcode project configuration         | `tailrocks-swift-project-audit`    |
+   | Swift / SwiftUI source                    | `tailrocks-swift-review`           |
+   | Glass or material code                    | `tailrocks-macos-design-review`    |
+   | Agent instruction files                   | `tailrocks-agents-md` audit        |
+
+   Web design routes and blessed-screen conformance additionally map to
+   `tailrocks-web-design-audit`; TypeScript correctness remains with
+   `tailrocks-typescript-review`. Neither manual lane runs unless explicitly
+   requested.
 
    **Complete when:** every changed file maps to an explicitly requested lane,
    a named not-run lane, or no specialist lane.

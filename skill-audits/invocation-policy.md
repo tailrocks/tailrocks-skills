@@ -19,19 +19,19 @@ menus. There is no pending, dual, or inherited invocation class.
 
 ## Confirmed model-policy owners
 
-| Skill | Exact trigger boundary |
-|---|---|
-| `tailrocks-agents-md` | Instruction rules or instruction-file topology is already in scope. |
-| `tailrocks-axum-best-practices` | Building or changing Axum HTTP adapter behavior, Tower policy, lifecycle, or transport tests is already in scope. |
-| `tailrocks-graphql-best-practices` | Evolving a public GraphQL schema, Juniper resolver, SDL contract, pagination, or generated web client is already in scope. |
-| `tailrocks-grilling` | The user asks to be grilled, challenged, interrogated, or stress-tested before action. |
-| `tailrocks-grpc-best-practices` | Evolving a cross-service proto, Buf contract, tonic/prost adapter, deadline, streaming, health, or wire test is already in scope. |
-| `tailrocks-macos-design` | Native macOS screen structure, material, component mapping, prototype, or design review is already in scope. |
-| `tailrocks-rust-best-practices` | Writing new or changing existing Rust behavior is already in scope. |
-| `tailrocks-swift-best-practices` | Swift, SwiftUI, concurrency, accessibility, or a narrow AppKit bridge is already in scope. |
-| `tailrocks-tui-design` | Ratatui screens, terminal UX, fixture galleries, golden frames, or terminal design review are already in scope. |
-| `tailrocks-typescript-best-practices` | TypeScript, TSX, React state, validation, async ownership, or API work is already in scope. |
-| `tailrocks-web-design` | TanStack screens, design routes, shadcn/ui composition, visual fixtures, or web design review is already in scope. |
+| Skill                                 | Exact trigger boundary                                                                                                            |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `tailrocks-agents-md`                 | Instruction rules or instruction-file topology is already in scope.                                                               |
+| `tailrocks-axum-best-practices`       | Building or changing Axum HTTP adapter behavior, Tower policy, lifecycle, or transport tests is already in scope.                 |
+| `tailrocks-graphql-best-practices`    | Evolving a public GraphQL schema, Juniper resolver, SDL contract, pagination, or generated web client is already in scope.        |
+| `tailrocks-grilling`                  | The user asks to be grilled, challenged, interrogated, or stress-tested before action.                                            |
+| `tailrocks-grpc-best-practices`       | Evolving a cross-service proto, Buf contract, tonic/prost adapter, deadline, streaming, health, or wire test is already in scope. |
+| `tailrocks-macos-design`              | Native macOS screen structure, material, component mapping, prototype, or design review is already in scope.                      |
+| `tailrocks-rust-best-practices`       | Writing new or changing existing Rust behavior is already in scope.                                                               |
+| `tailrocks-swift-best-practices`      | Swift, SwiftUI, concurrency, accessibility, or a narrow AppKit bridge is already in scope.                                        |
+| `tailrocks-tui-design`                | Ratatui screens, terminal UX, fixture galleries, golden frames, or terminal design review are already in scope.                   |
+| `tailrocks-typescript-best-practices` | TypeScript, TSX, React state, validation, async ownership, or API work is already in scope.                                       |
+| `tailrocks-web-design`                | TanStack screen design, design routes, shadcn/ui composition, or visual fixtures are already in scope.                            |
 
 Every other skill is `MANUAL_ONLY`. A new skill or split descendant defaults
 manual and requires a separately confirmed exact trigger before entering model

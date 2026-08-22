@@ -62,15 +62,17 @@ Every lane brief carries, verbatim, all six:
   finding, it is idea-slop, and gets dropped in verification.
 - **UX** — usability defects in screens the repository already ships
   (existing routes, existing components). It never proposes new screen
-  designs and never overrides a blessed pattern — a candidate that
-  contradicts a blessed design is not a finding, it is routed to
-  `tailrocks-web-design` to re-bless or reject. The lane has two halves
+  designs and never overrides a blessed pattern. Read-only judgment belongs to
+  `tailrocks-web-design-audit`; a candidate that contradicts a blessed design is
+  not a finding, it is routed to `tailrocks-web-design` to re-bless or reject.
+  The lane has two halves
   with two different skip conditions:
   - **Objective defects** — broken flows, unreachable or missing states,
     inconsistent interaction, accessibility gaps. These need no blessing
     to judge and **run in any repository that ships a UI at all**. Skip
     only when there is no UI.
   - **Blessed-pattern conformance** — what shipped measured against taste
+    `tailrocks-web-design-audit` applies from the routes
     `tailrocks-web-design` already blessed. Skip this half in a
     repository with no blessed web screens, and say so.
 - **Terminal UI** — screens in a ratatui application, judged against the
@@ -104,7 +106,7 @@ Every lane brief carries, verbatim, all six:
     (`AGENTS.md`/`CLAUDE.md` at every level), its lockfiles and
     `mise.toml`/equivalent, and its ADRs. A stack the repository has
     genuinely decided on is not a finding no matter what it is; a
-    deviation from a stack it *did* decide on is one even when the
+    deviation from a stack it _did_ decide on is one even when the
     deviation is individually reasonable, because the failure mode is an
     agent copying the wrong pattern from it.
 

@@ -7,7 +7,7 @@ This note records decisions; the skill itself is the contract.
 ## The gap it closes
 
 The delivery family started at a captured idea. Nothing in it began from a
-bare repository and asked *what here is worth fixing*. Reaching ready-to-execute
+bare repository and asked _what here is worth fixing_. Reaching ready-to-execute
 work from a cold codebase meant running `tailrocks-idea`,
 `tailrocks-brainstorm`, and `tailrocks-finalize` once per candidate — with no
 fan-out over the repository, no verification of what the fan-out claimed, and
@@ -39,7 +39,7 @@ land in the same prioritized table and compete on the same leverage axis. Split
 across skills, they arrive as separate reports that no one ranks against each
 other, and the user is left doing the prioritization the skill exists to do.
 
-`--deep` is a *depth modifier*, not a seventh mode, precisely so this does not
+`--deep` is a _depth modifier_, not a seventh mode, precisely so this does not
 regress: it composes over any mode or named lane (`--deep`, `security --deep`,
 `branch --deep`) instead of forking a parallel set of deep-flavored entry
 points. It is spelled as a flag, matching `tailrocks-plan` and
@@ -49,10 +49,10 @@ points. It is spelled as a flag, matching `tailrocks-plan` and
 
 Two lanes touch aesthetics, and neither may own it.
 
-| Lane | Judgment source | What the lane may not do |
-|---|---|---|
-| UX | patterns `tailrocks-web-design` already blessed | propose a new screen design, or override a blessed pattern |
-| Liquid Glass | `tailrocks-macos-design-review`'s rubric and glass acceptance gate | make a fresh material or chrome call |
+| Lane         | Judgment source                                                                       | What the lane may not do                                   |
+| ------------ | ------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| UX           | `tailrocks-web-design-audit` applying patterns `tailrocks-web-design` already blessed | propose a new screen design, or override a blessed pattern |
+| Liquid Glass | `tailrocks-macos-design-review`'s rubric and glass acceptance gate                    | make a fresh material or chrome call                       |
 
 Both lanes invoke the owning skill's rubric rather than re-deriving one, and
 both skip cleanly when the repository has no blessed screens or no native
@@ -63,7 +63,7 @@ rather than as an error anyone can see.
 
 The agent-legibility lane is the one that could have been mistaken for a
 best-practices skill. It is not about per-language idiom — that belongs to the
-stack skills. It asks how safely a *fresh-context agent* can navigate and extend
+stack skills. It asks how safely a _fresh-context agent_ can navigate and extend
 the code: reads that blow a cold context, names that do not survive a cold grep,
 directories with conventions and no `AGENTS.md`, and any language, framework,
 package manager, or tool in use outside the house stack. A stray dependency is
@@ -72,15 +72,15 @@ pattern out of it.
 
 ## Boundaries against the neighbors
 
-| Neighbor | Owns | Audit boundary |
-|---|---|---|
-| `tailrocks-review-pr` | one diff, verified findings, comments | audit starts from a cold repository; `branch` mode overlaps by design and stops at seeding, never comments on a PR |
-| `tailrocks-code-health` | measured baselines and shrink-only ratchets | may cite a ratchet's findings; never establishes or tightens one |
-| `tailrocks-root-cause` | proven defect or concrete friction, causal design | routes diagnosis there; never diagnoses deeply or fixes |
-| `tailrocks-remediate` | one approved causal correction | never grants approval or applies it from audit |
-| `tailrocks-research` | sourced `research/` topics | may seed an open question; never writes `research/` |
-| `tailrocks-idea` | capture of the user's own words | audit items are evidence-derived and marked with their source |
-| `tailrocks-plan` | READY item to plan package | audit seeds a package directly only when the finding is small, mechanical, and free of open product questions |
+| Neighbor                | Owns                                              | Audit boundary                                                                                                     |
+| ----------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `tailrocks-review-pr`   | one diff, verified findings, comments             | audit starts from a cold repository; `branch` mode overlaps by design and stops at seeding, never comments on a PR |
+| `tailrocks-code-health` | measured baselines and shrink-only ratchets       | may cite a ratchet's findings; never establishes or tightens one                                                   |
+| `tailrocks-root-cause`  | proven defect or concrete friction, causal design | routes diagnosis there; never diagnoses deeply or fixes                                                            |
+| `tailrocks-remediate`   | one approved causal correction                    | never grants approval or applies it from audit                                                                     |
+| `tailrocks-research`    | sourced `research/` topics                        | may seed an open question; never writes `research/`                                                                |
+| `tailrocks-idea`        | capture of the user's own words                   | audit items are evidence-derived and marked with their source                                                      |
+| `tailrocks-plan`        | READY item to plan package                        | audit seeds a package directly only when the finding is small, mechanical, and free of open product questions      |
 
 Everything the skill writes is an artifact the delivery family already
 understands — `roadmap/<slug>/`, its `plan/` package, and the index — so
@@ -151,7 +151,7 @@ effort-plus-confidence alone routed exactly that shape to the cheapest route
 that can follow instructions. MEDIUM or worse now seeds a roadmap item no
 matter how small the diff.
 
-The split has a useful side effect: it makes plan quality *measurable*. If the
+The split has a useful side effect: it makes plan quality _measurable_. If the
 executor has to ask a question the plan should have answered, that is a plan
 defect, and it routes back to `tailrocks-plan` rather than being patched with
 out-of-band context. Feeding the executor extra context hides the defect and

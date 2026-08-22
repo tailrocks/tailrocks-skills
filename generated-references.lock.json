@@ -1112,6 +1112,26 @@
       "sha256": "e4fb011fc953eb302a783882265f657157371ab6ae0aa59883342d310a7e02aa"
     },
     {
+      "source": "skills/tailrocks-web-design/references/design-routes.md",
+      "destination": "skills/tailrocks-web-design-audit/references/design-routes.md",
+      "sha256": "439d10781bf4755369c863fa9bb1476c7f93edd553aef4257da8cb73b07ad9e4"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-web-design-audit/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-web-design/references/screen-package.md",
+      "destination": "skills/tailrocks-web-design-audit/references/screen-package.md",
+      "sha256": "3ddf521599ad00d83f5ada2fb0ada30f6808c99ff2e3b5eb73f807c2a2a18ea7"
+    },
+    {
+      "source": "skills/tailrocks-web-design/references/web-screen-craft.md",
+      "destination": "skills/tailrocks-web-design-audit/references/web-screen-craft.md",
+      "sha256": "5aa0ceb039f3c85b6ee2ab16c65028aad9a011a8f0c4061202f4cb485c53259e"
+    },
+    {
       "source": "shared/references/design-pipeline.md",
       "destination": "skills/tailrocks-web-design/references/design-pipeline.md",
       "sha256": "00bbf16de54860b26445c91e75b408b1536a5025c698923aee7241f7ab6e3de9"

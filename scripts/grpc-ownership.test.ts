@@ -43,8 +43,8 @@ test("gRPC manifest, registry, and review routes are exact", async () => {
   };
   expect(registry.owners).toContainEqual({ skill: "tailrocks-grpc-best-practices", class: "MODEL_POLICY" });
   expect(registry.owners).toContainEqual({ skill: "tailrocks-grpc-review", class: "MANUAL_ONLY" });
-  expect(await source("tailrocks-review-pr")).toContain(
-    "| `.proto`, tonic/prost adapters | `tailrocks-grpc-review` |",
+  expect(await source("tailrocks-review-pr")).toMatch(
+    /\|\s*`\.proto`, tonic\/prost adapters\s*\|\s*`tailrocks-grpc-review`\s*\|/,
   );
   const graphqlReview = await source("tailrocks-graphql-review");
   expect(graphqlReview).toContain("refuse this review, name");

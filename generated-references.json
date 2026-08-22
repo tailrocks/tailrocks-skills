@@ -118,6 +118,7 @@
         "skills/tailrocks-typescript-migrate/references/runtime-trust.md",
         "skills/tailrocks-typescript-refactor/references/runtime-trust.md",
         "skills/tailrocks-typescript-review/references/runtime-trust.md",
+        "skills/tailrocks-web-design-audit/references/runtime-trust.md",
         "skills/tailrocks-web-design/references/runtime-trust.md",
         "skills/tailrocks-web-visual-qa/references/runtime-trust.md"
       ]
@@ -204,9 +205,7 @@
     },
     {
       "source": "skills/tailrocks-code-health/references/architecture-and-docs.md",
-      "destinations": [
-        "skills/tailrocks-code-health-audit/references/architecture-and-docs.md"
-      ],
+      "destinations": ["skills/tailrocks-code-health-audit/references/architecture-and-docs.md"],
       "slice": {
         "start": "<!-- tailrocks-code-health-audit:start -->\n",
         "end": "<!-- tailrocks-code-health-audit:end -->"
@@ -214,9 +213,7 @@
     },
     {
       "source": "skills/tailrocks-code-health/references/defects-flakes-and-reports.md",
-      "destinations": [
-        "skills/tailrocks-code-health-audit/references/defects-flakes-and-reports.md"
-      ],
+      "destinations": ["skills/tailrocks-code-health-audit/references/defects-flakes-and-reports.md"],
       "slice": {
         "start": "<!-- tailrocks-code-health-audit:start -->\n",
         "end": "<!-- tailrocks-code-health-audit:end -->"
@@ -224,9 +221,7 @@
     },
     {
       "source": "skills/tailrocks-code-health/references/ratchets-and-baselines.md",
-      "destinations": [
-        "skills/tailrocks-code-health-audit/references/ratchets-and-baselines.md"
-      ],
+      "destinations": ["skills/tailrocks-code-health-audit/references/ratchets-and-baselines.md"],
       "slice": {
         "start": "<!-- tailrocks-code-health-audit:start -->\n",
         "end": "<!-- tailrocks-code-health-audit:end -->"
@@ -234,9 +229,7 @@
     },
     {
       "source": "skills/tailrocks-code-health/references/verification-lanes.md",
-      "destinations": [
-        "skills/tailrocks-code-health-audit/references/verification-lanes.md"
-      ],
+      "destinations": ["skills/tailrocks-code-health-audit/references/verification-lanes.md"],
       "slice": {
         "start": "<!-- tailrocks-code-health-audit:start -->\n",
         "end": "<!-- tailrocks-code-health-audit:end -->"
@@ -244,9 +237,7 @@
     },
     {
       "source": "skills/tailrocks-code-health/references/versions-and-dependencies.md",
-      "destinations": [
-        "skills/tailrocks-code-health-audit/references/versions-and-dependencies.md"
-      ],
+      "destinations": ["skills/tailrocks-code-health-audit/references/versions-and-dependencies.md"],
       "slice": {
         "start": "<!-- tailrocks-code-health-audit:start -->\n",
         "end": "<!-- tailrocks-code-health-audit:end -->"
@@ -254,45 +245,31 @@
     },
     {
       "source": "skills/tailrocks-graphql-best-practices/references/client-tanstack.md",
-      "destinations": [
-        "skills/tailrocks-graphql-review/references/client-tanstack.md"
-      ]
+      "destinations": ["skills/tailrocks-graphql-review/references/client-tanstack.md"]
     },
     {
       "source": "skills/tailrocks-graphql-best-practices/references/contract-gates.md",
-      "destinations": [
-        "skills/tailrocks-graphql-review/references/contract-gates.md"
-      ]
+      "destinations": ["skills/tailrocks-graphql-review/references/contract-gates.md"]
     },
     {
       "source": "skills/tailrocks-graphql-best-practices/references/schema-design.md",
-      "destinations": [
-        "skills/tailrocks-graphql-review/references/schema-design.md"
-      ]
+      "destinations": ["skills/tailrocks-graphql-review/references/schema-design.md"]
     },
     {
       "source": "skills/tailrocks-graphql-best-practices/references/server-rust.md",
-      "destinations": [
-        "skills/tailrocks-graphql-review/references/server-rust.md"
-      ]
+      "destinations": ["skills/tailrocks-graphql-review/references/server-rust.md"]
     },
     {
       "source": "skills/tailrocks-grpc-best-practices/references/operations.md",
-      "destinations": [
-        "skills/tailrocks-grpc-review/references/operations.md"
-      ]
+      "destinations": ["skills/tailrocks-grpc-review/references/operations.md"]
     },
     {
       "source": "skills/tailrocks-grpc-best-practices/references/proto-contracts.md",
-      "destinations": [
-        "skills/tailrocks-grpc-review/references/proto-contracts.md"
-      ]
+      "destinations": ["skills/tailrocks-grpc-review/references/proto-contracts.md"]
     },
     {
       "source": "skills/tailrocks-grpc-best-practices/references/tonic-server-client.md",
-      "destinations": [
-        "skills/tailrocks-grpc-review/references/tonic-server-client.md"
-      ]
+      "destinations": ["skills/tailrocks-grpc-review/references/tonic-server-client.md"]
     },
     {
       "source": "skills/tailrocks-macos-design-systematize/references/exemplars.md",
@@ -310,105 +287,71 @@
     },
     {
       "source": "skills/tailrocks-macos-design/references/anti-patterns.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/anti-patterns.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/anti-patterns.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/appkit-api.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/appkit-api.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/appkit-api.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/apple-patterns.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/apple-patterns.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/apple-patterns.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/archetypes.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/archetypes.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/archetypes.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/custom-component-contract.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/custom-component-contract.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/custom-component-contract.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/custom-renderers.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/custom-renderers.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/custom-renderers.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/design-principles.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/design-principles.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/design-principles.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/experience-brief.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/experience-brief.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/experience-brief.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/layer-model.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/layer-model.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/layer-model.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/macos-craft.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/macos-craft.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/macos-craft.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/match-policy.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/match-policy.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/match-policy.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/motion.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/motion.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/motion.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/native-behavior.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/native-behavior.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/native-behavior.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/native-component-map.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/native-component-map.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/native-component-map.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/platform-baseline.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/platform-baseline.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/platform-baseline.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/swiftui-api.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/swiftui-api.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/swiftui-api.md"]
     },
     {
       "source": "skills/tailrocks-macos-design/references/verification.md",
-      "destinations": [
-        "skills/tailrocks-macos-design-review/references/verification.md"
-      ]
+      "destinations": ["skills/tailrocks-macos-design-review/references/verification.md"]
     },
     {
       "source": "skills/tailrocks-rust-best-practices/references/api-design.md",
@@ -610,6 +553,18 @@
         "skills/tailrocks-typescript-refactor/references/state-and-errors.md",
         "skills/tailrocks-typescript-review/references/state-and-errors.md"
       ]
+    },
+    {
+      "source": "skills/tailrocks-web-design/references/design-routes.md",
+      "destinations": ["skills/tailrocks-web-design-audit/references/design-routes.md"]
+    },
+    {
+      "source": "skills/tailrocks-web-design/references/screen-package.md",
+      "destinations": ["skills/tailrocks-web-design-audit/references/screen-package.md"]
+    },
+    {
+      "source": "skills/tailrocks-web-design/references/web-screen-craft.md",
+      "destinations": ["skills/tailrocks-web-design-audit/references/web-screen-craft.md"]
     }
   ]
 }

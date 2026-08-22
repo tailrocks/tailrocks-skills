@@ -47,7 +47,7 @@ one shared directory:
   `tailrocks-swift-rust-core-setup`
 - **Design and prototypes:** `tailrocks-macos-design`, `tailrocks-macos-design-review`,
   `tailrocks-macos-design-systematize`, `tailrocks-web-design`,
-  `tailrocks-tui-design`, `tailrocks-macos-visual-qa`,
+  `tailrocks-web-design-audit`, `tailrocks-tui-design`, `tailrocks-macos-visual-qa`,
   `tailrocks-web-visual-qa`
 - **Code quality:** `tailrocks-code-health`, `tailrocks-code-health-audit`, `tailrocks-improve`,
   `tailrocks-improve-deep`, `tailrocks-improve-security`,
@@ -80,7 +80,7 @@ The registry classifies 11 skills as `MODEL_POLICY`: `tailrocks-agents-md`,
 `tailrocks-macos-design`, `tailrocks-rust-best-practices`,
 `tailrocks-swift-best-practices`, `tailrocks-tui-design`,
 `tailrocks-typescript-best-practices`, and `tailrocks-web-design`. They may load
-only under their exact description trigger. The other 69 skills are
+only under their exact description trigger. The other 70 skills are
 `MANUAL_ONLY` and require an explicit request.
 
 Model selection grants no mutation, tool, blessing, commit, push, release,
@@ -93,8 +93,8 @@ one chosen channel. See README.md for what each skill does.
 
 ## The one rule that prevents duplicates
 
-Every agent scans several skill locations, and several agents scan *each
-other's* locations. Installing the same collection through two channels
+Every agent scans several skill locations, and several agents scan _each
+other's_ locations. Installing the same collection through two channels
 therefore produces double listings (Codex dedupes by file path only; Claude
 Code and Grok namespace plugin skills separately from directory skills, so
 both copies stay visible).
@@ -132,15 +132,15 @@ Releases are tagged `vX.Y.Z`, and the current release is
 The `version` field is identical across all four manifests, so a bump is what
 tells a client an update exists.
 
-| Client | Updates itself | Upgrade command | Pin syntax |
-|---|---|---|---|
-| Claude Code | **Yes**, per marketplace — off by default for third-party marketplaces, turn it on once | `/plugin marketplace update tailrocks-skills` | `#v0.27.0` on the Git URL |
-| Codex CLI | No | `codex plugin marketplace upgrade tailrocks-skills`, then `codex plugin add tailrocks-skills` | `@v0.27.0` or `--ref v0.27.0` |
-| Grok Build | No | `grok plugin update tailrocks-skills` | `@v0.27.0` |
-| Kimi Code | No | re-run `/plugins install`, then `/plugins reload` | release or `/tree/<ref>` URL |
-| Amp | Inherits Claude Code's copy when installed plugin-first | `amp skill add tailrocks/tailrocks-skills --global --overwrite` | clone a tag, add the local path |
-| OpenCode | No — it is a file copy | re-copy the tree | `git clone --branch v0.27.0` |
-| Antigravity CLI | No — it installs from a local path | re-clone, reinstall | `git clone --branch v0.27.0` |
+| Client          | Updates itself                                                                          | Upgrade command                                                                               | Pin syntax                      |
+| --------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------- |
+| Claude Code     | **Yes**, per marketplace — off by default for third-party marketplaces, turn it on once | `/plugin marketplace update tailrocks-skills`                                                 | `#v0.27.0` on the Git URL       |
+| Codex CLI       | No                                                                                      | `codex plugin marketplace upgrade tailrocks-skills`, then `codex plugin add tailrocks-skills` | `@v0.27.0` or `--ref v0.27.0`   |
+| Grok Build      | No                                                                                      | `grok plugin update tailrocks-skills`                                                         | `@v0.27.0`                      |
+| Kimi Code       | No                                                                                      | re-run `/plugins install`, then `/plugins reload`                                             | release or `/tree/<ref>` URL    |
+| Amp             | Inherits Claude Code's copy when installed plugin-first                                 | `amp skill add tailrocks/tailrocks-skills --global --overwrite`                               | clone a tag, add the local path |
+| OpenCode        | No — it is a file copy                                                                  | re-copy the tree                                                                              | `git clone --branch v0.27.0`    |
+| Antigravity CLI | No — it installs from a local path                                                      | re-clone, reinstall                                                                           | `git clone --branch v0.27.0`    |
 
 Claude Code is the only client here that keeps itself current unattended. Turn
 its auto-update on once (below) and the rest of the collection follows every
@@ -326,7 +326,7 @@ tailrocks/tailrocks-skills@v0.27.0 --trust`.
 - Duplicate semantics: name-deduped by priority (local > repo > user >
   Claude/Cursor compat), but plugin skills are namespaced separately from
   directory skills — do not also copy the tree into `~/.grok/skills/` or
-  `~/.agents/skills/`. Installing natively *and* having the Claude plugin
+  `~/.agents/skills/`. Installing natively _and_ having the Claude plugin
   ingested counts as two plugins of the same name; higher-priority wins, but
   keep one channel anyway.
 
@@ -388,14 +388,14 @@ the source again. Upgrade by re-cloning the newer tag and re-running
   `https://antigravity.google/schemas/v1/plugin.json` schema; the `skills/`
   directory at the plugin root ships every skill. Installs land in
   `~/.gemini/config/plugins/<name>/` (verified with `agy` 1.1.5; `agy plugin
-  list` shows the import).
+list` shows the import).
 - Alternative without the plugin manager (also covers the Antigravity IDE):
   copy `skills/*` into `~/.gemini/config/skills/` (global, read by IDE and
   CLI) or the workspace `.agents/skills/`.
 - Skills auto-convert to slash commands (`/<skill-name>`); activation is
   description-driven; only `name` and `description` frontmatter are read.
 - Gemini CLI (the predecessor): `gemini skills install
-  https://github.com/tailrocks/tailrocks-skills.git --scope user` or package
+https://github.com/tailrocks/tailrocks-skills.git --scope user` or package
   consumption via `~/.agents/skills/`; `agy plugin import gemini` migrates.
 - Pick one location: plugin **or** `~/.gemini/config/skills/` copy, never
   both (Antigravity's cross-path precedence is undocumented).
@@ -447,16 +447,15 @@ documentation-verified values and were not re-run — the clients are not
 installed here, and a row nobody executed should say so rather than inherit
 a date it did not earn.
 
-
-| Client | Install channel | Manifest read | Explicit invocation | Invocation-class control | Duplicate semantics |
-|---|---|---|---|---|---|
-| Claude Code | marketplace plugin | `.claude-plugin/plugin.json` | `/tailrocks-skills:<name>` | `disable-model-invocation: true` manual; omitted for model policy | plugin skills namespaced; a skills-dir copy would ALSO list |
-| Codex CLI | marketplace plugin | `.codex-plugin/plugin.json` (+ Claude-format marketplace) | `$<name>`, `/skills` | `agents/openai.yaml` implicit `false` manual; `true` model policy | path-dedupe only — never dual-install |
-| OpenCode | `~/.config/opencode/skills/` copy | none (skills only) | ask for skill by name (`skill` tool) | ignored — use `permission.skill` | warning + last-write-wins |
-| Grok Build | Claude plugin auto-ingest, or `grok plugin install` | `.grok-plugin/` then `.claude-plugin/plugin.json` | `/<name>`, `/tailrocks-skills:<name>` | honored | name-dedupe by priority; plugins namespaced |
-| Kimi Code | `/plugins install <github-url>` | `.kimi-plugin/plugin.json` (or root `kimi.plugin.json`) | `/skill:<name>`, `/<name>` | honored (alias) | first-registration-wins by name |
-| Antigravity CLI | `agy plugin install <local-clone>` | root `plugin.json` (Antigravity schema) | `/<name>` | not read | undocumented — keep one location |
-| Amp | Claude plugin auto-ingest; otherwise `amp skill add --global` | Claude plugin cache or skills only | palette skill list / name in prompt | tolerated, not enforced | first-wins by name; never dual-install |
+| Client          | Install channel                                               | Manifest read                                             | Explicit invocation                   | Invocation-class control                                          | Duplicate semantics                                         |
+| --------------- | ------------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------- |
+| Claude Code     | marketplace plugin                                            | `.claude-plugin/plugin.json`                              | `/tailrocks-skills:<name>`            | `disable-model-invocation: true` manual; omitted for model policy | plugin skills namespaced; a skills-dir copy would ALSO list |
+| Codex CLI       | marketplace plugin                                            | `.codex-plugin/plugin.json` (+ Claude-format marketplace) | `$<name>`, `/skills`                  | `agents/openai.yaml` implicit `false` manual; `true` model policy | path-dedupe only — never dual-install                       |
+| OpenCode        | `~/.config/opencode/skills/` copy                             | none (skills only)                                        | ask for skill by name (`skill` tool)  | ignored — use `permission.skill`                                  | warning + last-write-wins                                   |
+| Grok Build      | Claude plugin auto-ingest, or `grok plugin install`           | `.grok-plugin/` then `.claude-plugin/plugin.json`         | `/<name>`, `/tailrocks-skills:<name>` | honored                                                           | name-dedupe by priority; plugins namespaced                 |
+| Kimi Code       | `/plugins install <github-url>`                               | `.kimi-plugin/plugin.json` (or root `kimi.plugin.json`)   | `/skill:<name>`, `/<name>`            | honored (alias)                                                   | first-registration-wins by name                             |
+| Antigravity CLI | `agy plugin install <local-clone>`                            | root `plugin.json` (Antigravity schema)                   | `/<name>`                             | not read                                                          | undocumented — keep one location                            |
+| Amp             | Claude plugin auto-ingest; otherwise `amp skill add --global` | Claude plugin cache or skills only                        | palette skill list / name in prompt   | tolerated, not enforced                                           | first-wins by name; never dual-install                      |
 
 Portable baseline (Agent Skills specification, agentskills.io): required
 `name` (1–64 chars, lowercase-hyphen, must equal the directory name) and

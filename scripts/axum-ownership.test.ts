@@ -70,7 +70,9 @@ test("manifest and invocation wiring retain one Axum policy owner", async () => 
   for (const skill of ["tailrocks-axum-refactor", "tailrocks-axum-review"])
     expect(registry.owners).toContainEqual({ skill, class: "MANUAL_ONLY" });
   const prReview = await source("tailrocks-review-pr");
-  expect(prReview).toContain("| Axum handlers, middleware, service wiring | `tailrocks-axum-review` |");
+  expect(prReview).toMatch(
+    /\|\s*Axum handlers, middleware, service wiring\s*\|\s*`tailrocks-axum-review`\s*\|/,
+  );
   expect(prReview).toContain("consult the root invocation registry");
   expect(prReview).toContain("whole-PR owner alone does not invoke that child");
   expect(prReview).toContain("A `MODEL_POLICY` specialist may load only when its exact content trigger");

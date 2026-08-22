@@ -27,7 +27,7 @@ merging stays the user's call.
 
 ## Modes
 
-- *(none)*: full audit — every category, whole repository.
+- _(none)_: full audit — every category, whole repository.
 - `quick`: cheap pass — hotspots and top findings only, fewer lanes.
 - `--deep`: a depth modifier, not a standalone mode — composes with any
   other mode or named lane (`--deep`, `security --deep`, `branch --deep`),
@@ -84,7 +84,8 @@ merging stays the user's call.
    UX, terminal UI, Liquid Glass, and agent legibility — scoped to the
    mode's target (whole repo, branch diff, or named category).
    **The interface lanes carry no taste of their own.** They judge against
-   `tailrocks-web-design`'s blessed routes, `tailrocks-tui-design`'s golden
+   `tailrocks-web-design-audit` applying blessed web routes,
+   `tailrocks-tui-design`'s golden
    frames, and `tailrocks-macos-design-review`'s rubric and
    glass acceptance gate — never a fresh aesthetic call.
    Blessing-dependent checks skip where nothing is blessed; objective defects

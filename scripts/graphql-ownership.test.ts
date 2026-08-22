@@ -52,7 +52,7 @@ test("GraphQL manifest, registry, and PR review route are exact", async () => {
     class: "MODEL_POLICY",
   });
   expect(registry.owners).toContainEqual({ skill: "tailrocks-graphql-review", class: "MANUAL_ONLY" });
-  expect(await source("tailrocks-review-pr")).toContain(
-    "| GraphQL schema, resolvers, SDL snapshot | `tailrocks-graphql-review` |",
+  expect(await source("tailrocks-review-pr")).toMatch(
+    /\|\s*GraphQL schema, resolvers, SDL snapshot\s*\|\s*`tailrocks-graphql-review`\s*\|/,
   );
 });

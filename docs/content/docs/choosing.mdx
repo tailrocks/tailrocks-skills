@@ -20,21 +20,21 @@ never starts a neighboring workflow or makes a human decision.
 
 ## Rust and services
 
-| Skill | Reach for it when |
-|---|---|
-| [`tailrocks-rust-project-setup`](/docs/skills/tailrocks-rust-project-setup) | A new Rust workspace needs its strict layout, toolchain, lint, dependency, and gate baseline scaffolded. |
-| [`tailrocks-rust-project-audit`](/docs/skills/tailrocks-rust-project-audit) | An existing Rust workspace needs a read-only, evidence-backed baseline gap report. |
-| [`tailrocks-rust-project-remediate`](/docs/skills/tailrocks-rust-project-remediate) | The user has approved exact Rust workspace baseline gaps to close in verified slices. |
-| [`tailrocks-rust-best-practices`](/docs/skills/tailrocks-rust-best-practices) | New Rust behavior needs explicit ownership, API, failure, unsafe, test, and performance contracts. |
-| [`tailrocks-rust-review`](/docs/skills/tailrocks-rust-review) | Rust source or a Rust diff needs a focused read-only correctness review; use `tailrocks-review-pr` for whole-PR orchestration. |
-| [`tailrocks-rust-refactor`](/docs/skills/tailrocks-rust-refactor) | Rust structure must change while observable behavior and public contracts remain frozen by an oracle. |
-| [`tailrocks-axum-best-practices`](/docs/skills/tailrocks-axum-best-practices) | Axum HTTP behavior must be built or changed: routers, extractors, Tower policy, lifecycle, and transport tests. |
-| [`tailrocks-axum-review`](/docs/skills/tailrocks-axum-review) | Axum adapters or a diff need focused read-only review; use `tailrocks-review-pr` for whole-PR orchestration. |
-| [`tailrocks-axum-refactor`](/docs/skills/tailrocks-axum-refactor) | Axum or Tower structure must change while routes, HTTP contracts, policy order, and lifecycle remain frozen. |
-| [`tailrocks-graphql-best-practices`](/docs/skills/tailrocks-graphql-best-practices) | A public GraphQL API must evolve: schema design, committed SDL, breaking-change gates, Juniper server, generated web client. |
-| [`tailrocks-graphql-review`](/docs/skills/tailrocks-graphql-review) | A GraphQL diff or whole public API surface needs read-only schema, server, SDL-gate, and generated-client findings. |
-| [`tailrocks-grpc-best-practices`](/docs/skills/tailrocks-grpc-best-practices) | A cross-service gRPC contract must evolve: proto under Buf gates, tonic adapters, deadlines, statuses, and wire tests. |
-| [`tailrocks-grpc-review`](/docs/skills/tailrocks-grpc-review) | A gRPC diff or whole service surface needs read-only proto, adapter, operations, and wire-contract findings. |
+| Skill                                                                               | Reach for it when                                                                                                              |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| [`tailrocks-rust-project-setup`](/docs/skills/tailrocks-rust-project-setup)         | A new Rust workspace needs its strict layout, toolchain, lint, dependency, and gate baseline scaffolded.                       |
+| [`tailrocks-rust-project-audit`](/docs/skills/tailrocks-rust-project-audit)         | An existing Rust workspace needs a read-only, evidence-backed baseline gap report.                                             |
+| [`tailrocks-rust-project-remediate`](/docs/skills/tailrocks-rust-project-remediate) | The user has approved exact Rust workspace baseline gaps to close in verified slices.                                          |
+| [`tailrocks-rust-best-practices`](/docs/skills/tailrocks-rust-best-practices)       | New Rust behavior needs explicit ownership, API, failure, unsafe, test, and performance contracts.                             |
+| [`tailrocks-rust-review`](/docs/skills/tailrocks-rust-review)                       | Rust source or a Rust diff needs a focused read-only correctness review; use `tailrocks-review-pr` for whole-PR orchestration. |
+| [`tailrocks-rust-refactor`](/docs/skills/tailrocks-rust-refactor)                   | Rust structure must change while observable behavior and public contracts remain frozen by an oracle.                          |
+| [`tailrocks-axum-best-practices`](/docs/skills/tailrocks-axum-best-practices)       | Axum HTTP behavior must be built or changed: routers, extractors, Tower policy, lifecycle, and transport tests.                |
+| [`tailrocks-axum-review`](/docs/skills/tailrocks-axum-review)                       | Axum adapters or a diff need focused read-only review; use `tailrocks-review-pr` for whole-PR orchestration.                   |
+| [`tailrocks-axum-refactor`](/docs/skills/tailrocks-axum-refactor)                   | Axum or Tower structure must change while routes, HTTP contracts, policy order, and lifecycle remain frozen.                   |
+| [`tailrocks-graphql-best-practices`](/docs/skills/tailrocks-graphql-best-practices) | A public GraphQL API must evolve: schema design, committed SDL, breaking-change gates, Juniper server, generated web client.   |
+| [`tailrocks-graphql-review`](/docs/skills/tailrocks-graphql-review)                 | A GraphQL diff or whole public API surface needs read-only schema, server, SDL-gate, and generated-client findings.            |
+| [`tailrocks-grpc-best-practices`](/docs/skills/tailrocks-grpc-best-practices)       | A cross-service gRPC contract must evolve: proto under Buf gates, tonic adapters, deadlines, statuses, and wire tests.         |
+| [`tailrocks-grpc-review`](/docs/skills/tailrocks-grpc-review)                       | A gRPC diff or whole service surface needs read-only proto, adapter, operations, and wire-contract findings.                   |
 
 Axum best practices apply only where there is an HTTP adapter. Domain logic
 behind it belongs to the Rust write, review, or refactor owner matching the task.
@@ -52,16 +52,16 @@ contracts.
 
 ## TypeScript and TanStack
 
-| Skill | Reach for it when |
-|---|---|
-| [`tailrocks-tanstack-project-setup`](/docs/skills/tailrocks-tanstack-project-setup) | Scaffolding a new Bun-only TanStack Start application. |
-| [`tailrocks-tanstack-project-audit`](/docs/skills/tailrocks-tanstack-project-audit) | Measuring an existing application against the baseline without mutation. |
-| [`tailrocks-tanstack-project-migrate`](/docs/skills/tailrocks-tanstack-project-migrate) | Moving a foreign or older frontend stack to the baseline while preserving behavior. |
-| [`tailrocks-tanstack-project-remediate`](/docs/skills/tailrocks-tanstack-project-remediate) | Closing exact approved baseline-audit gaps in an existing house-stack app. |
-| [`tailrocks-typescript-best-practices`](/docs/skills/tailrocks-typescript-best-practices) | Writing strict TypeScript and React behavior under language-level contracts. |
-| [`tailrocks-typescript-review`](/docs/skills/tailrocks-typescript-review) | Reviewing TypeScript/React code read-only for verified language-contract defects. |
-| [`tailrocks-typescript-refactor`](/docs/skills/tailrocks-typescript-refactor) | Restructuring TypeScript/React while preserving behavior and public contracts. |
-| [`tailrocks-typescript-migrate`](/docs/skills/tailrocks-typescript-migrate) | Migrating source semantics after the TanStack project baseline is established. |
+| Skill                                                                                       | Reach for it when                                                                   |
+| ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| [`tailrocks-tanstack-project-setup`](/docs/skills/tailrocks-tanstack-project-setup)         | Scaffolding a new Bun-only TanStack Start application.                              |
+| [`tailrocks-tanstack-project-audit`](/docs/skills/tailrocks-tanstack-project-audit)         | Measuring an existing application against the baseline without mutation.            |
+| [`tailrocks-tanstack-project-migrate`](/docs/skills/tailrocks-tanstack-project-migrate)     | Moving a foreign or older frontend stack to the baseline while preserving behavior. |
+| [`tailrocks-tanstack-project-remediate`](/docs/skills/tailrocks-tanstack-project-remediate) | Closing exact approved baseline-audit gaps in an existing house-stack app.          |
+| [`tailrocks-typescript-best-practices`](/docs/skills/tailrocks-typescript-best-practices)   | Writing strict TypeScript and React behavior under language-level contracts.        |
+| [`tailrocks-typescript-review`](/docs/skills/tailrocks-typescript-review)                   | Reviewing TypeScript/React code read-only for verified language-contract defects.   |
+| [`tailrocks-typescript-refactor`](/docs/skills/tailrocks-typescript-refactor)               | Restructuring TypeScript/React while preserving behavior and public contracts.      |
+| [`tailrocks-typescript-migrate`](/docs/skills/tailrocks-typescript-migrate)                 | Migrating source semantics after the TanStack project baseline is established.      |
 
 ## Native macOS
 
@@ -77,21 +77,21 @@ flowchart LR
   gates --> qa["macos-visual-qa"]
 ```
 
-| Skill | Owns |
-|---|---|
-| [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | Sole taste/material owner: brief, information architecture, native component map, alternatives, selected direction, and signed-off Liquid Glass prototype. Never scores its own work or edits production. |
-| [`tailrocks-macos-design-review`](/docs/skills/tailrocks-macos-design-review) | Independently review a direction preliminarily or score the full running prototype for acceptance. Writes only the report; never fixes, blesses, captures, or systematizes. |
-| [`tailrocks-macos-design-systematize`](/docs/skills/tailrocks-macos-design-systematize) | Persist reusable product design-system learning only after user approval and independent acceptance. Never designs, reviews, blesses, captures, or edits production. |
-| [`tailrocks-swift-best-practices`](/docs/skills/tailrocks-swift-best-practices) | Writing native Swift/SwiftUI behavior under code-level policy. |
-| [`tailrocks-swift-review`](/docs/skills/tailrocks-swift-review) | Reviewing Swift/SwiftUI code read-only for verified platform-contract defects. |
-| [`tailrocks-swift-refactor`](/docs/skills/tailrocks-swift-refactor) | Restructuring Swift/SwiftUI while preserving behavior and platform contracts. |
-| [`tailrocks-swift-rust-core-boundary`](/docs/skills/tailrocks-swift-rust-core-boundary) | Owning the thin SwiftUI platform shell over a Rust application runtime. |
-| [`tailrocks-swift-project-setup`](/docs/skills/tailrocks-swift-project-setup) | Scaffolding a new native project baseline. |
-| [`tailrocks-swift-project-audit`](/docs/skills/tailrocks-swift-project-audit) | Auditing an existing Swift/Xcode baseline read-only. |
-| [`tailrocks-swift-project-remediate`](/docs/skills/tailrocks-swift-project-remediate) | Closing exact approved baseline ledger rows. |
-| [`tailrocks-swift-agent-integration`](/docs/skills/tailrocks-swift-agent-integration) | Wiring Xcode bridge access and pinned read-only agent knowledge. |
-| [`tailrocks-swift-rust-core-setup`](/docs/skills/tailrocks-swift-rust-core-setup) | Adding the generated Rust-core project/package lane and gates. |
-| [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa) | Verification. Kill-launch-capture, window-ID capture, accessibility audits, state matrix, pixel regression. |
+| Skill                                                                                   | Owns                                                                                                                                                                                                      |
+| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design)                         | Sole taste/material owner: brief, information architecture, native component map, alternatives, selected direction, and signed-off Liquid Glass prototype. Never scores its own work or edits production. |
+| [`tailrocks-macos-design-review`](/docs/skills/tailrocks-macos-design-review)           | Independently review a direction preliminarily or score the full running prototype for acceptance. Writes only the report; never fixes, blesses, captures, or systematizes.                               |
+| [`tailrocks-macos-design-systematize`](/docs/skills/tailrocks-macos-design-systematize) | Persist reusable product design-system learning only after user approval and independent acceptance. Never designs, reviews, blesses, captures, or edits production.                                      |
+| [`tailrocks-swift-best-practices`](/docs/skills/tailrocks-swift-best-practices)         | Writing native Swift/SwiftUI behavior under code-level policy.                                                                                                                                            |
+| [`tailrocks-swift-review`](/docs/skills/tailrocks-swift-review)                         | Reviewing Swift/SwiftUI code read-only for verified platform-contract defects.                                                                                                                            |
+| [`tailrocks-swift-refactor`](/docs/skills/tailrocks-swift-refactor)                     | Restructuring Swift/SwiftUI while preserving behavior and platform contracts.                                                                                                                             |
+| [`tailrocks-swift-rust-core-boundary`](/docs/skills/tailrocks-swift-rust-core-boundary) | Owning the thin SwiftUI platform shell over a Rust application runtime.                                                                                                                                   |
+| [`tailrocks-swift-project-setup`](/docs/skills/tailrocks-swift-project-setup)           | Scaffolding a new native project baseline.                                                                                                                                                                |
+| [`tailrocks-swift-project-audit`](/docs/skills/tailrocks-swift-project-audit)           | Auditing an existing Swift/Xcode baseline read-only.                                                                                                                                                      |
+| [`tailrocks-swift-project-remediate`](/docs/skills/tailrocks-swift-project-remediate)   | Closing exact approved baseline ledger rows.                                                                                                                                                              |
+| [`tailrocks-swift-agent-integration`](/docs/skills/tailrocks-swift-agent-integration)   | Wiring Xcode bridge access and pinned read-only agent knowledge.                                                                                                                                          |
+| [`tailrocks-swift-rust-core-setup`](/docs/skills/tailrocks-swift-rust-core-setup)       | Adding the generated Rust-core project/package lane and gates.                                                                                                                                            |
+| [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa)                   | Verification. Kill-launch-capture, window-ID capture, accessibility audits, state matrix, pixel regression.                                                                                               |
 
 Never run two skills that both encode aesthetic taste. Two findings shape the
 whole family. **No design file is authoritative for Liquid Glass; the operating
@@ -109,18 +109,18 @@ runs between READY and planning, uses the same four words, and ends with a
 reference the implementation is mechanically held to — `tailrocks-plan`
 refuses a screen contract that cites none.
 
-| Stage | What happens | Who may do it |
-|---|---|---|
-| **design** | Author the reference on the real UI substrate, from fixture data | the agent |
-| **bless** | Sign off that this is the screen, recorded with its date | **the user, never the agent** |
-| **freeze** | Take the mechanical baseline the implementation is compared against | the agent |
-| **audit** | Check an implementation against the blessed reference, read-only | the agent |
+| Stage      | What happens                                                        | Who may do it                 |
+| ---------- | ------------------------------------------------------------------- | ----------------------------- |
+| **design** | Author the reference on the real UI substrate, from fixture data    | the agent                     |
+| **bless**  | Sign off that this is the screen, recorded with its date            | **the user, never the agent** |
+| **freeze** | Take the mechanical baseline the implementation is compared against | the agent                     |
+| **audit**  | Check an implementation against the blessed reference, read-only    | the agent                     |
 
-| Medium | Stack | design | bless | freeze |
-|---|---|---|---|---|
-| Terminal | Rust, ratatui, crossterm | [`tailrocks-tui-design`](/docs/skills/tailrocks-tui-design) | same | same — the golden test |
-| Web | TanStack Start, React, shadcn/ui | [`tailrocks-web-design`](/docs/skills/tailrocks-web-design) | same | [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa) |
-| macOS | Swift, SwiftUI, Liquid Glass | [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | same — on the running prototype | [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa) |
+| Medium   | Stack                            | design                                                          | bless                           | freeze                                                                | audit                                                                         |
+| -------- | -------------------------------- | --------------------------------------------------------------- | ------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Terminal | Rust, ratatui, crossterm         | [`tailrocks-tui-design`](/docs/skills/tailrocks-tui-design)     | same                            | same — the golden test                                                | same                                                                          |
+| Web      | TanStack Start, React, shadcn/ui | [`tailrocks-web-design`](/docs/skills/tailrocks-web-design)     | same                            | [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa)     | [`tailrocks-web-design-audit`](/docs/skills/tailrocks-web-design-audit)       |
+| macOS    | Swift, SwiftUI, Liquid Glass     | [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | same — on the running prototype | [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa) | [`tailrocks-macos-design-review`](/docs/skills/tailrocks-macos-design-review) |
 
 macOS keeps design and bless in one skill because the material only exists at
 runtime: taste is decided in the design stages, and the sign-off happens on
@@ -128,11 +128,12 @@ the running Liquid Glass prototype the same skill builds. The Liquid Glass
 material authority owns no separate stage — it is the rulebook the design and
 prototype stages consult.
 
-| Skill | Reach for it when |
-|---|---|
-| [`tailrocks-tui-design`](/docs/skills/tailrocks-tui-design) | A terminal screen needs a pinned, verifiable design before implementation: ratatui golden frames rendered from fixtures, blessed by the user, enforced by a golden test. |
-| [`tailrocks-web-design`](/docs/skills/tailrocks-web-design) | A TanStack screen needs its look agreed before implementation: guarded design routes over the installed shadcn/ui components, blessed live in the browser. Captures nothing. |
-| [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa) | A finalized web design needs its baselines frozen, or an existing visual suite needs a regress run: Playwright screenshot matrix, determinism rules, the baseline record — refused for unblessed screens. |
+| Skill                                                                   | Reach for it when                                                                                                                                                                                         |
+| ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`tailrocks-tui-design`](/docs/skills/tailrocks-tui-design)             | A terminal screen needs a pinned, verifiable design before implementation: ratatui golden frames rendered from fixtures, blessed by the user, enforced by a golden test.                                  |
+| [`tailrocks-web-design`](/docs/skills/tailrocks-web-design)             | A TanStack screen needs its look agreed before implementation: guarded design routes over the installed shadcn/ui components, blessed live in the browser. Captures nothing.                              |
+| [`tailrocks-web-design-audit`](/docs/skills/tailrocks-web-design-audit) | Existing design routes or shipped web screens need read-only verification against their blessed component, state, theme, viewport, and accessibility contract.                                            |
+| [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa)       | A finalized web design needs its baselines frozen, or an existing visual suite needs a regress run: Playwright screenshot matrix, determinism rules, the baseline record — refused for unblessed screens. |
 
 ### One design owner per medium
 
@@ -154,30 +155,30 @@ implementation to it afterward.
 
 ## Code quality
 
-| Skill | Reach for it when |
-|---|---|
-| [`tailrocks-code-health`](/docs/skills/tailrocks-code-health) | One explicitly approved debt class must become or tighten a standing shrink-only contract. |
-| [`tailrocks-code-health-audit`](/docs/skills/tailrocks-code-health-audit) | One debt class needs read-only measurement and fixed-ID evidence before any ratchet is authorized. |
-| [`tailrocks-improve`](/docs/skills/tailrocks-improve) | A repository needs a bounded non-security audit and one verified read-only report. |
-| [`tailrocks-improve-deep`](/docs/skills/tailrocks-improve-deep) | Every applicable non-security lane and package needs exhaustive coverage plus fresh refutation. |
-| [`tailrocks-improve-security`](/docs/skills/tailrocks-improve-security) | A repository needs a security-only threat audit with secret-safe evidence. |
-| [`tailrocks-improve-plan`](/docs/skills/tailrocks-improve-plan) | One verified finding or described change needs one standalone `plans/` plan. |
-| [`tailrocks-improve-execution`](/docs/skills/tailrocks-improve-execution) | One approved standalone plan should run in an isolated worktree and return a reviewed verdict. |
-| [`tailrocks-improve-reconcile`](/docs/skills/tailrocks-improve-reconcile) | The standalone `plans/` index must be synchronized with repository truth. |
-| [`tailrocks-seed-roadmap`](/docs/skills/tailrocks-seed-roadmap) | One verified finding or approved plan must enter the roadmap delivery pipeline as a DRAFT item. |
-| [`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) | One task-authorized non-obvious rule must be added at its narrowest owning directory. |
-| [`tailrocks-agents-md-audit`](/docs/skills/tailrocks-agents-md-audit) | Instruction placement, deletion evidence, topology, and load cost need one read-only report. |
-| [`tailrocks-agents-md-sync`](/docs/skills/tailrocks-agents-md-sync) | One current audit repair set has explicit approval and must be applied exactly. |
-| [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) | A roadmap item has shipped and its delivery history should say which skills let it diverge from its own plan. |
-| [`tailrocks-simplify-audit`](/docs/skills/tailrocks-simplify-audit) | One diff needs a read-only search for measured removals with behavior frozen. |
-| [`tailrocks-simplify`](/docs/skills/tailrocks-simplify) | One exact audited removal set has explicit approval and a proven preservation oracle. |
-| [`tailrocks-root-cause`](/docs/skills/tailrocks-root-cause) | A proven defect or concrete friction needs read-only causal diagnosis and corrective design. |
-| [`tailrocks-remediate`](/docs/skills/tailrocks-remediate) | One current root-cause design has explicit approval and must be applied exactly. |
-| [`tailrocks-contribute-recon`](/docs/skills/tailrocks-contribute-recon) | One external project needs a current local contribution contract. |
-| [`tailrocks-contribute-propose`](/docs/skills/tailrocks-contribute-propose) | Current recon must become one local venue proposal or hard-stop redirect. |
-| [`tailrocks-contribute-prepare`](/docs/skills/tailrocks-contribute-prepare) | An approved proposal must be implemented locally in the user's fork without pushing. |
-| [`tailrocks-contribute-submit`](/docs/skills/tailrocks-contribute-submit) | One prepared contribution is ready for separately approved legal, push, and PR actions. |
-| [`tailrocks-contribute-respond`](/docs/skills/tailrocks-contribute-respond) | One submitted contribution needs a current review round handled under per-action approval. |
+| Skill                                                                       | Reach for it when                                                                                             |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| [`tailrocks-code-health`](/docs/skills/tailrocks-code-health)               | One explicitly approved debt class must become or tighten a standing shrink-only contract.                    |
+| [`tailrocks-code-health-audit`](/docs/skills/tailrocks-code-health-audit)   | One debt class needs read-only measurement and fixed-ID evidence before any ratchet is authorized.            |
+| [`tailrocks-improve`](/docs/skills/tailrocks-improve)                       | A repository needs a bounded non-security audit and one verified read-only report.                            |
+| [`tailrocks-improve-deep`](/docs/skills/tailrocks-improve-deep)             | Every applicable non-security lane and package needs exhaustive coverage plus fresh refutation.               |
+| [`tailrocks-improve-security`](/docs/skills/tailrocks-improve-security)     | A repository needs a security-only threat audit with secret-safe evidence.                                    |
+| [`tailrocks-improve-plan`](/docs/skills/tailrocks-improve-plan)             | One verified finding or described change needs one standalone `plans/` plan.                                  |
+| [`tailrocks-improve-execution`](/docs/skills/tailrocks-improve-execution)   | One approved standalone plan should run in an isolated worktree and return a reviewed verdict.                |
+| [`tailrocks-improve-reconcile`](/docs/skills/tailrocks-improve-reconcile)   | The standalone `plans/` index must be synchronized with repository truth.                                     |
+| [`tailrocks-seed-roadmap`](/docs/skills/tailrocks-seed-roadmap)             | One verified finding or approved plan must enter the roadmap delivery pipeline as a DRAFT item.               |
+| [`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md)                   | One task-authorized non-obvious rule must be added at its narrowest owning directory.                         |
+| [`tailrocks-agents-md-audit`](/docs/skills/tailrocks-agents-md-audit)       | Instruction placement, deletion evidence, topology, and load cost need one read-only report.                  |
+| [`tailrocks-agents-md-sync`](/docs/skills/tailrocks-agents-md-sync)         | One current audit repair set has explicit approval and must be applied exactly.                               |
+| [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect)                 | A roadmap item has shipped and its delivery history should say which skills let it diverge from its own plan. |
+| [`tailrocks-simplify-audit`](/docs/skills/tailrocks-simplify-audit)         | One diff needs a read-only search for measured removals with behavior frozen.                                 |
+| [`tailrocks-simplify`](/docs/skills/tailrocks-simplify)                     | One exact audited removal set has explicit approval and a proven preservation oracle.                         |
+| [`tailrocks-root-cause`](/docs/skills/tailrocks-root-cause)                 | A proven defect or concrete friction needs read-only causal diagnosis and corrective design.                  |
+| [`tailrocks-remediate`](/docs/skills/tailrocks-remediate)                   | One current root-cause design has explicit approval and must be applied exactly.                              |
+| [`tailrocks-contribute-recon`](/docs/skills/tailrocks-contribute-recon)     | One external project needs a current local contribution contract.                                             |
+| [`tailrocks-contribute-propose`](/docs/skills/tailrocks-contribute-propose) | Current recon must become one local venue proposal or hard-stop redirect.                                     |
+| [`tailrocks-contribute-prepare`](/docs/skills/tailrocks-contribute-prepare) | An approved proposal must be implemented locally in the user's fork without pushing.                          |
+| [`tailrocks-contribute-submit`](/docs/skills/tailrocks-contribute-submit)   | One prepared contribution is ready for separately approved legal, push, and PR actions.                       |
+| [`tailrocks-contribute-respond`](/docs/skills/tailrocks-contribute-respond) | One submitted contribution needs a current review round handled under per-action approval.                    |
 
 ### retrospect or audit
 
@@ -207,9 +208,9 @@ verified evidence to one DRAFT roadmap item. Naming a handoff invokes nothing.
 
 Both look backwards at an item, at different subjects.
 [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) re-earns the truth of
-the *work*: it re-runs done criteria and corrects plan rows and the item's
+the _work_: it re-runs done criteria and corrects plan rows and the item's
 status in the delivering repository. `tailrocks-retrospect` never writes
-there — the item is evidence — and its subject is the *skills*, not the
+there — the item is evidence — and its subject is the _skills_, not the
 work. Reconcile when the statuses are suspect; retrospect after they are
 settled.
 
@@ -285,11 +286,11 @@ mediates it.
 No deprecated migration owner, alias, dispatcher, or compatibility route exists,
 and none of these four skills executes direct migration under any selector.
 
-| Skill | Reach for it when |
-|---|---|
-| [`tailrocks-skill-create`](/docs/skills/tailrocks-skill-create) | Any repository needs a new skill — record durable evidence, derive target policy, scaffold deterministically from its template, and wire its supported surfaces. |
-| [`tailrocks-skill-update`](/docs/skills/tailrocks-skill-update) | Existing behavior must change in place while every public-contract field and independently invokable responsibility stays fixed. |
-| [`tailrocks-skill-audit`](/docs/skills/tailrocks-skill-audit) | One skill or the whole tree must be judged against the doctrine — read-only, a report with stable finding IDs under `skill-audits/`. |
+| Skill                                                               | Reach for it when                                                                                                                                                                                                         |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`tailrocks-skill-create`](/docs/skills/tailrocks-skill-create)     | Any repository needs a new skill — record durable evidence, derive target policy, scaffold deterministically from its template, and wire its supported surfaces.                                                          |
+| [`tailrocks-skill-update`](/docs/skills/tailrocks-skill-update)     | Existing behavior must change in place while every public-contract field and independently invokable responsibility stays fixed.                                                                                          |
+| [`tailrocks-skill-audit`](/docs/skills/tailrocks-skill-audit)       | One skill or the whole tree must be judged against the doctrine — read-only, a report with stable finding IDs under `skill-audits/`.                                                                                      |
 | [`tailrocks-skill-refactor`](/docs/skills/tailrocks-skill-refactor) | Ownership structure must change while behavior and public contracts stay frozen. Contract-breaking work stops unchanged for separate explicit direct-migration authorization; audit remains a separate manual invocation. |
 
 ### agents-md or the authoring family
@@ -322,8 +323,8 @@ instead of from a baseline run. When the evidence says no skill owns the
 behavior at all, the handoff goes to
 [`tailrocks-skill-create`](/docs/skills/tailrocks-skill-create) instead.
 
-Use retrospect when the question is *what went wrong across a delivery*. Use
-the family when the question is *what should this skill say*. The whole loop —
+Use retrospect when the question is _what went wrong across a delivery_. Use
+the family when the question is _what should this skill say_. The whole loop —
 including how a pull request in another repository becomes evidence through
 `--repo`/`--pr`, and why the analysis fans out to subagents while the judgment
 stays put — is documented under [self-improvement](/docs/self-improve).
@@ -349,14 +350,14 @@ pre-merge worklist, merge method — comes from one optional file at the
 target repository's root, `.tailrocks/pr.md`; without it the skills discover
 the repository's own conventions and fall back to their defaults.
 
-| Skill | Reach for it when |
-|---|---|
-| [`tailrocks-create-pr`](/docs/skills/tailrocks-create-pr) | A self-contained change needs a branch, a commit in the repo's convention, and an opened PR. |
-| [`tailrocks-refresh-pr`](/docs/skills/tailrocks-refresh-pr) | An open PR's title or body no longer describes what the branch ships. |
-| [`tailrocks-review-pr`](/docs/skills/tailrocks-review-pr) | A PR, branch, or diff needs a review verdict: verified bugs, structural regressions, routed fixes. |
-| [`tailrocks-merge-pr`](/docs/skills/tailrocks-merge-pr) | A PR is merge-ready and the gates must run fail-closed before it lands — including the read-only delivery-artifact check when the diff touches `roadmap/` and the documentation gate that stops an undocumented merge. |
-| [`tailrocks-document`](/docs/skills/tailrocks-document) | The last content commit before a merge: the repository's own docs rewritten into the final source of truth for what the PR shipped — never a changelog page. |
-| [`tailrocks-pr-template`](/docs/skills/tailrocks-pr-template) | The repository needs its own `.github/PULL_REQUEST_TEMPLATE.md`, derived from its structure, gates, and merged-PR history. |
+| Skill                                                         | Reach for it when                                                                                                                                                                                                      |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`tailrocks-create-pr`](/docs/skills/tailrocks-create-pr)     | A self-contained change needs a branch, a commit in the repo's convention, and an opened PR.                                                                                                                           |
+| [`tailrocks-refresh-pr`](/docs/skills/tailrocks-refresh-pr)   | An open PR's title or body no longer describes what the branch ships.                                                                                                                                                  |
+| [`tailrocks-review-pr`](/docs/skills/tailrocks-review-pr)     | A PR, branch, or diff needs a review verdict: verified bugs, structural regressions, routed fixes.                                                                                                                     |
+| [`tailrocks-merge-pr`](/docs/skills/tailrocks-merge-pr)       | A PR is merge-ready and the gates must run fail-closed before it lands — including the read-only delivery-artifact check when the diff touches `roadmap/` and the documentation gate that stops an undocumented merge. |
+| [`tailrocks-document`](/docs/skills/tailrocks-document)       | The last content commit before a merge: the repository's own docs rewritten into the final source of truth for what the PR shipped — never a changelog page.                                                           |
+| [`tailrocks-pr-template`](/docs/skills/tailrocks-pr-template) | The repository needs its own `.github/PULL_REQUEST_TEMPLATE.md`, derived from its structure, gates, and merged-PR history.                                                                                             |
 
 ### document or refresh-pr
 
@@ -428,18 +429,18 @@ flowchart LR
   finalize <--> decision["record-decision"]
 ```
 
-| Skill | Reach for it when |
-|---|---|
-| [`tailrocks-audit`](/docs/skills/tailrocks-audit) | Nothing is captured yet — audit a repository or branch cold and turn findings into items or plans. |
-| [`tailrocks-idea`](/docs/skills/tailrocks-idea) | Capturing a raw idea as a DRAFT item without inventing missing detail. |
-| [`tailrocks-brainstorm`](/docs/skills/tailrocks-brainstorm) | Shaping a DRAFT or SHAPING item through a one-question-at-a-time interview. |
-| [`tailrocks-research`](/docs/skills/tailrocks-research) | A question or an item needs deep sourced research saved as a reusable topic. |
-| [`tailrocks-record-decision`](/docs/skills/tailrocks-record-decision) | One decision must be recorded and propagated, including reopening stale work. |
-| [`tailrocks-finalize`](/docs/skills/tailrocks-finalize) | Closing the interview and granting READY. |
-| [`tailrocks-plan`](/docs/skills/tailrocks-plan) | Converting a READY item into specs, coverage, zero-context plans, and the `goal/` handoff. |
-| [`tailrocks-record-feedback`](/docs/skills/tailrocks-record-feedback) | Something is wrong with what shipped and the user's own words should be on record before anyone argues with them. |
-| [`tailrocks-prove`](/docs/skills/tailrocks-prove) | Whether the shipped work behaves has to be settled by running it, not by reading its status rows. |
-| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | Execution status, blockers, drift, and DONE claims need re-verifying against the repository, a verification round needs closing, or a finished item needs retiring off the board. |
+| Skill                                                                 | Reach for it when                                                                                                                                                                 |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`tailrocks-audit`](/docs/skills/tailrocks-audit)                     | Nothing is captured yet — audit a repository or branch cold and turn findings into items or plans.                                                                                |
+| [`tailrocks-idea`](/docs/skills/tailrocks-idea)                       | Capturing a raw idea as a DRAFT item without inventing missing detail.                                                                                                            |
+| [`tailrocks-brainstorm`](/docs/skills/tailrocks-brainstorm)           | Shaping a DRAFT or SHAPING item through a one-question-at-a-time interview.                                                                                                       |
+| [`tailrocks-research`](/docs/skills/tailrocks-research)               | A question or an item needs deep sourced research saved as a reusable topic.                                                                                                      |
+| [`tailrocks-record-decision`](/docs/skills/tailrocks-record-decision) | One decision must be recorded and propagated, including reopening stale work.                                                                                                     |
+| [`tailrocks-finalize`](/docs/skills/tailrocks-finalize)               | Closing the interview and granting READY.                                                                                                                                         |
+| [`tailrocks-plan`](/docs/skills/tailrocks-plan)                       | Converting a READY item into specs, coverage, zero-context plans, and the `goal/` handoff.                                                                                        |
+| [`tailrocks-record-feedback`](/docs/skills/tailrocks-record-feedback) | Something is wrong with what shipped and the user's own words should be on record before anyone argues with them.                                                                 |
+| [`tailrocks-prove`](/docs/skills/tailrocks-prove)                     | Whether the shipped work behaves has to be settled by running it, not by reading its status rows.                                                                                 |
+| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile)             | Execution status, blockers, drift, and DONE claims need re-verifying against the repository, a verification round needs closing, or a finished item needs retiring off the board. |
 
 One item, one folder: the item, its `plan/` package, its `verification/`
 rounds, and its `goal/` handoff all live under `roadmap/<slug>/`, with standing

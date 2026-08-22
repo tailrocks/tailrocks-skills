@@ -8,11 +8,11 @@ against Claude Code 2.1.233.
 
 Three layers, with very different costs:
 
-| Layer | Loads | Cost |
-|---|---|---|
-| Skill listing (names + descriptions) | Every request, for model-invocable skills | Permanent |
-| `SKILL.md` body | On invocation, and **stays in context across turns** | Recurring for the session |
-| `references/`, `templates/` | Only when read | None until read |
+| Layer                                | Loads                                                | Cost                      |
+| ------------------------------------ | ---------------------------------------------------- | ------------------------- |
+| Skill listing (names + descriptions) | Every request, for model-invocable skills            | Permanent                 |
+| `SKILL.md` body                      | On invocation, and **stays in context across turns** | Recurring for the session |
+| `references/`, `templates/`          | Only when read                                       | None until read           |
 
 The listing has a budget of **1% of the model's context window**. On overflow,
 Claude Code shortens descriptions starting with the least-used skills, which
@@ -37,15 +37,15 @@ not name-only. Codex behaves the same way with
 `policy.allow_implicit_invocation: false`, verified previously through
 `codex debug prompt-input`.
 
-Consequence: in Claude Code and Codex the current 69 manual-only skills add
+Consequence: in Claude Code and Codex the current 70 manual-only skills add
 **zero** tokens until named; the 11 model-policy descriptions remain visible so
 their exact triggers can match. OpenCode, Amp, and the Antigravity CLI ignore
-both fields and load all 80 descriptions; there the explicit-request guard on
-the 69 manual owners is their discovery control.
+both fields and load all 81 descriptions; there the explicit-request guard on
+the 70 manual owners is their discovery control.
 
 ## Measurement: the guard sentence earns its length
 
-The guard costs 54 characters per skill, 3,726 across the 69 manual owners.
+The guard costs 54 characters per skill, 3,780 across the 70 manual owners.
 Whether a
 shorter form works was tested rather than argued, in the condition that matters:
 a model-invocable skill, as OpenCode, Amp, and Antigravity see ours.
@@ -55,11 +55,11 @@ its body instructed the model to emit a marker token, and a prompt that strongly
 matches the description was sent repeatedly. The marker can only appear if the
 body loaded.
 
-| Description prefix | Fired on a tempting prompt | Fired on explicit request |
-|---|---|---|
-| `Use only when the user explicitly requests this skill.` | **0 / 8** | 4 / 4 |
-| `Explicit request only.` | **7 / 8** | 4 / 4 |
-| none | 2 / 4 | 4 / 4 |
+| Description prefix                                       | Fired on a tempting prompt | Fired on explicit request |
+| -------------------------------------------------------- | -------------------------- | ------------------------- |
+| `Use only when the user explicitly requests this skill.` | **0 / 8**                  | 4 / 4                     |
+| `Explicit request only.`                                 | **7 / 8**                  | 4 / 4                     |
+| none                                                     | 2 / 4                      | 4 / 4                     |
 
 The fragment performs **worse than no guard at all**. A sentence in the
 imperative is read as an instruction; a noun fragment reads as a label
@@ -89,9 +89,9 @@ starting mutation, execution, blessing, or external action.
 `scripts/validate-skills.ts`: manual-only owners are measured after removing and
 trimming the full guard sentence; model-policy owners, which have no guard, are
 measured in full. The description carries the trigger and boundary; everything
-else is the router's job. The current 80 descriptions total 20,521 characters;
-16,726 count against the per-skill caps. The other 3,795 are the 3,726 guard
-characters plus one trimmed separator on each of 69 manual owners.
+else is the router's job. The current 81 descriptions total 20,754 characters;
+16,904 count against the per-skill caps. The other 3,850 are the 3,780 guard
+characters plus one trimmed separator on each of 70 manual owners.
 
 **Routers stay under ~200 lines**, already enforced as a notice. One exceeds it
 today: `tailrocks-macos-design` — it merged the design, prototype, and Liquid

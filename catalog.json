@@ -61,6 +61,7 @@
         "tailrocks-macos-design-review",
         "tailrocks-macos-design-systematize",
         "tailrocks-web-design",
+        "tailrocks-web-design-audit",
         "tailrocks-tui-design",
         "tailrocks-macos-visual-qa",
         "tailrocks-web-visual-qa"
@@ -98,9 +99,7 @@
       "id": "decision-support",
       "title": "Decision support",
       "summary": "Conversation-only challenge before action, with facts retrieved and choices left to the user.",
-      "skills": [
-        "tailrocks-grilling"
-      ]
+      "skills": ["tailrocks-grilling"]
     },
     {
       "id": "skill-authoring",

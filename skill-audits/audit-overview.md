@@ -1016,9 +1016,28 @@ all terminal checks pass, and the final literal marker is changed to
     final `rtk mise run migration-check` passed 367 tests/2,379 assertions
     across 49 selected non-protected files. Fresh subagent verdict: PASS.
     Protected paths unchanged; no evals run.
-- [ ] [IN_PROGRESS] P07.02 Web design → design/blessing and design audit; retain
+- [x] [COMPLETED] P07.02 Web design → design/blessing and design audit; retain
   `MODEL_POLICY` only on the existing named owner pending descendant approval.
-- [ ] [TODO] P07.03 Terminal design → design/blessing/golden freeze and design
+  - Evidence receipt (2026-08-23): split the existing web design owner into
+    exclusive `design`/human-blessing and manual read-only audit owners. The
+    base alone retains `MODEL_POLICY`; the audit descendant is `MANUAL_ONLY`,
+    returns one conversation report, and has no templates, mutation, blessing,
+    capture, freeze, or taste authority. Removed the base `audit` selector
+    immediately with no alias or redirect. Three canonical design-contract
+    references generate byte-identically to the audit owner, where authoring and
+    commit imperatives are criteria only. Base design now binds a synthetic-only
+    allowed write set, exact blessing hashes/matrix/user/date, and CAS-safe
+    publication/rollback. Audit live rendering requires an enforceably read-only
+    disposable exact-revision subject, external writable state, owned loopback
+    identity, and rejection of tracked, ignored, or untracked writes. Registry
+    and docs cover 81 skills (70 manual, 11 model-policy), 20,754 total
+    description characters, and 16,904 capped characters; 76 sources produced
+    229 byte-identical destinations and 247 generated docs checked. Focused
+    proof passed 84 tests/662 assertions; final
+    `rtk mise run migration-check` passed 372 tests/2,434 assertions across 50
+    selected non-protected files. Fresh subagent verdict: PASS. Protected paths
+    unchanged; no evals run.
+- [ ] [IN_PROGRESS] P07.03 Terminal design → design/blessing/golden freeze and design
   audit; retain `MODEL_POLICY` only on the existing named owner pending
   descendant approval.
 - [ ] [TODO] P07.04 macOS visual verification → current-render verification,

@@ -80,6 +80,7 @@
     { "skill": "tailrocks-typescript-refactor", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-typescript-review", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-web-design", "class": "MODEL_POLICY" },
+    { "skill": "tailrocks-web-design-audit", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-web-visual-qa", "class": "MANUAL_ONLY" }
   ]
 }

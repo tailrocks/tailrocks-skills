@@ -79,8 +79,8 @@ test("only writer retains model policy and PR review routes read-only", async ()
   };
   expect(registry.owners).toContainEqual({ skill: writer, class: "MODEL_POLICY" });
   for (const skill of manual) expect(registry.owners).toContainEqual({ skill, class: "MANUAL_ONLY" });
-  expect(await source("tailrocks-review-pr")).toContain(
-    "| Swift / SwiftUI source | `tailrocks-swift-review` |",
+  expect(await source("tailrocks-review-pr")).toMatch(
+    /\|\s*Swift \/ SwiftUI source\s*\|\s*`tailrocks-swift-review`\s*\|/,
   );
   const catalog = await readFile(path.join(root, "catalog.json"), "utf8");
   for (const skill of [writer, ...manual]) expect(catalog).toContain(skill);

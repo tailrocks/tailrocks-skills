@@ -133,15 +133,15 @@ sends you back to reconcile.
 An item's status is not a label. It is a claim about what is safe to do next,
 and exactly one skill may set each value.
 
-| Status | Means | Set by |
-|---|---|---|
-| `DRAFT` | Raw capture, nothing shaped | `tailrocks-idea` |
-| `SHAPING` | Being shaped; open questions remain | `tailrocks-brainstorm`, `tailrocks-research`, `tailrocks-record-decision` |
-| `READY` | No open decision-type questions; fit for planning | `tailrocks-finalize`, and nothing else |
-| `PLANNED` | `roadmap/<slug>/plan/` and `goal/` exist | `tailrocks-plan` |
-| `IN EXECUTION` | An executor started the plans | the executor protocol, and `tailrocks-reconcile` when truing up |
-| `DONE` | Every plan row terminal, the goal condition met, **and the last verification round found no blocking defect**. Terminal and short-lived: the same invocation retires the item | `tailrocks-reconcile`, and nothing else |
-| `PARKED (reason; was: STATUS)` | Deliberately paused | you, through `tailrocks-record-decision` |
+| Status                         | Means                                                                                                                                                                         | Set by                                                                    |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `DRAFT`                        | Raw capture, nothing shaped                                                                                                                                                   | `tailrocks-idea`                                                          |
+| `SHAPING`                      | Being shaped; open questions remain                                                                                                                                           | `tailrocks-brainstorm`, `tailrocks-research`, `tailrocks-record-decision` |
+| `READY`                        | No open decision-type questions; fit for planning                                                                                                                             | `tailrocks-finalize`, and nothing else                                    |
+| `PLANNED`                      | `roadmap/<slug>/plan/` and `goal/` exist                                                                                                                                      | `tailrocks-plan`                                                          |
+| `IN EXECUTION`                 | An executor started the plans                                                                                                                                                 | the executor protocol, and `tailrocks-reconcile` when truing up           |
+| `DONE`                         | Every plan row terminal, the goal condition met, **and the last verification round found no blocking defect**. Terminal and short-lived: the same invocation retires the item | `tailrocks-reconcile`, and nothing else                                   |
+| `PARKED (reason; was: STATUS)` | Deliberately paused                                                                                                                                                           | you, through `tailrocks-record-decision`                                  |
 
 The single most useful rule in the whole pipeline: **only finalize grants
 READY, and plan requires READY.** That one gate is what stops an agent
@@ -160,18 +160,18 @@ decided, pixels undecided is the other way an implementer ends up guessing.
 
 ## What each skill owns
 
-| Skill | Owns | Refuses | Writes |
-|---|---|---|---|
-| [`tailrocks-audit`](/docs/skills/tailrocks-audit) | Cold start | Editing source; reporting an unverified finding | DRAFT items pre-filled with evidence, or `roadmap/<slug>/plan/` directly |
-| [`tailrocks-idea`](/docs/skills/tailrocks-idea) | Capture | Interviewing, researching, planning | `roadmap/<slug>/README.md` in DRAFT, index row |
-| [`tailrocks-brainstorm`](/docs/skills/tailrocks-brainstorm) | Expansion | Granting READY; running without a human | Decisions, Vocabulary, Screens, Flows, Must-not |
-| [`tailrocks-research`](/docs/skills/tailrocks-research) | Facts | Deciding anything; questions one lookup answers | `research/<topic>/`, reusable and indexed |
-| [`tailrocks-record-decision`](/docs/skills/tailrocks-record-decision) | One decision | Deciding on your behalf | The dated decision, plus everything it invalidates |
-| [`tailrocks-finalize`](/docs/skills/tailrocks-finalize) | Readiness | Shaping a raw DRAFT; running without a human | READY, or a list of what still blocks it |
-| [`tailrocks-plan`](/docs/skills/tailrocks-plan) | Packaging | Implementing; planning an unshaped item | `roadmap/<slug>/plan/` and `goal/` — ledger, spec, slices, START/RESUME, `check.sh` |
-| [`tailrocks-record-feedback`](/docs/skills/tailrocks-record-feedback) | Capture of what shipped wrong | Judging, investigating, or fixing a report | `verification/NN-feedback.md` — the user's words, one statement per defect |
-| [`tailrocks-prove`](/docs/skills/tailrocks-prove) | Execution as evidence | Writing status; fixing what it finds | `verification/NN-report.md` — a verdict per statement, per recorded decision, and per plan row |
-| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile) | Truth, and retirement | Writing or refreshing plans | Evidence-backed statuses, the item's Remaining, its `REPORT.md` — and, on `DONE`, the report's move to `delivery/<slug>.md` and the deletion of `roadmap/<slug>/` and its index row |
+| Skill                                                                 | Owns                          | Refuses                                         | Writes                                                                                                                                                                              |
+| --------------------------------------------------------------------- | ----------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`tailrocks-audit`](/docs/skills/tailrocks-audit)                     | Cold start                    | Editing source; reporting an unverified finding | DRAFT items pre-filled with evidence, or `roadmap/<slug>/plan/` directly                                                                                                            |
+| [`tailrocks-idea`](/docs/skills/tailrocks-idea)                       | Capture                       | Interviewing, researching, planning             | `roadmap/<slug>/README.md` in DRAFT, index row                                                                                                                                      |
+| [`tailrocks-brainstorm`](/docs/skills/tailrocks-brainstorm)           | Expansion                     | Granting READY; running without a human         | Decisions, Vocabulary, Screens, Flows, Must-not                                                                                                                                     |
+| [`tailrocks-research`](/docs/skills/tailrocks-research)               | Facts                         | Deciding anything; questions one lookup answers | `research/<topic>/`, reusable and indexed                                                                                                                                           |
+| [`tailrocks-record-decision`](/docs/skills/tailrocks-record-decision) | One decision                  | Deciding on your behalf                         | The dated decision, plus everything it invalidates                                                                                                                                  |
+| [`tailrocks-finalize`](/docs/skills/tailrocks-finalize)               | Readiness                     | Shaping a raw DRAFT; running without a human    | READY, or a list of what still blocks it                                                                                                                                            |
+| [`tailrocks-plan`](/docs/skills/tailrocks-plan)                       | Packaging                     | Implementing; planning an unshaped item         | `roadmap/<slug>/plan/` and `goal/` — ledger, spec, slices, START/RESUME, `check.sh`                                                                                                 |
+| [`tailrocks-record-feedback`](/docs/skills/tailrocks-record-feedback) | Capture of what shipped wrong | Judging, investigating, or fixing a report      | `verification/NN-feedback.md` — the user's words, one statement per defect                                                                                                          |
+| [`tailrocks-prove`](/docs/skills/tailrocks-prove)                     | Execution as evidence         | Writing status; fixing what it finds            | `verification/NN-report.md` — a verdict per statement, per recorded decision, and per plan row                                                                                      |
+| [`tailrocks-reconcile`](/docs/skills/tailrocks-reconcile)             | Truth, and retirement         | Writing or refreshing plans                     | Evidence-backed statuses, the item's Remaining, its `REPORT.md` — and, on `DONE`, the report's move to `delivery/<slug>.md` and the deletion of `roadmap/<slug>/` and its index row |
 
 ### Find the work before there is a backlog
 
@@ -186,7 +186,8 @@ with its reason so it does not resurface next run.
 Its lanes are addressable one at a time — `security`, `perf`, `ux`, `tui`,
 `liquid-glass`, `agent-legibility` — and `--deep` is a modifier rather than a
 mode, so it composes with any of them. The taste lanes carry no taste of their
-own: `ux` judges against `tailrocks-web-design`'s blessed screens, `tui`
+own: `ux` uses `tailrocks-web-design-audit` to judge against
+`tailrocks-web-design`'s blessed screens, `tui`
 against `tailrocks-tui-design`'s golden frames, and `liquid-glass` against
 `tailrocks-macos-design`'s acceptance gate. Blessing-dependent checks skip
 where nothing is blessed; objective defects still run wherever that interface
@@ -240,9 +241,15 @@ Confusing the two is the most common way a shaping session stalls. An agent
 that "decides" a product question has invented a requirement; an agent that
 asks you what a specification already says is wasting your attention.
 
-<Invoke skill="tailrocks-research" args="session-replay: how do browsers throttle timers in background tabs, and what does that mean for playback accuracy?" />
+<Invoke
+  skill="tailrocks-research"
+  args="session-replay: how do browsers throttle timers in background tabs, and what does that mean for playback accuracy?"
+/>
 
-<Invoke skill="tailrocks-record-decision" args="session-replay: replay is read-only and can never mutate the recorded session, because a corrupted recording is unrecoverable evidence" />
+<Invoke
+  skill="tailrocks-record-decision"
+  args="session-replay: replay is read-only and can never mutate the recorded session, because a corrupted recording is unrecoverable evidence"
+/>
 
 Record-decision earns its place at the far end of the pipeline too. Change your
 mind about a PLANNED or DONE item and it does not merely edit a paragraph: it
@@ -354,7 +361,7 @@ it comes back `VACUOUS`, which is usually the reason the defect shipped.
 <Invoke skill="tailrocks-prove" args="session-replay" />
 
 It writes no status: blocking defects route to `tailrocks-reconcile`, and any
-finding that a *skill* let the divergence through routes to
+finding that a _skill_ let the divergence through routes to
 [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect).
 
 ### Trust nothing after a stall, and close the round
@@ -425,11 +432,11 @@ measured against. `tailrocks-plan` refuses a screen contract that cites none.
 One skill per medium, one owner per stage — each platform prototypes in its
 own skill:
 
-| Medium | Prototype built as | design | bless | freeze |
-|---|---|---|---|---|
-| Terminal (Rust, ratatui) | A gallery crate rendering the application's own view functions | `tailrocks-tui-design` | `tailrocks-tui-design` | `tailrocks-tui-design` — the golden test |
-| Web (TanStack, shadcn/ui) | Guarded `/design/...` routes in the real app, blessed live in the browser | `tailrocks-web-design` | `tailrocks-web-design` | `tailrocks-web-visual-qa` |
-| macOS (Swift, Liquid Glass) | A running Liquid Glass prototype app — the material only exists at runtime | `tailrocks-macos-design` | `tailrocks-macos-design` — sign-off on the running app | `tailrocks-macos-visual-qa` |
+| Medium                      | Prototype built as                                                         | design                   | bless                                                  | freeze                                   |
+| --------------------------- | -------------------------------------------------------------------------- | ------------------------ | ------------------------------------------------------ | ---------------------------------------- |
+| Terminal (Rust, ratatui)    | A gallery crate rendering the application's own view functions             | `tailrocks-tui-design`   | `tailrocks-tui-design`                                 | `tailrocks-tui-design` — the golden test |
+| Web (TanStack, shadcn/ui)   | Guarded `/design/...` routes in the real app, blessed live in the browser  | `tailrocks-web-design`   | `tailrocks-web-design`                                 | `tailrocks-web-visual-qa`                |
+| macOS (Swift, Liquid Glass) | A running Liquid Glass prototype app — the material only exists at runtime | `tailrocks-macos-design` | `tailrocks-macos-design` — sign-off on the running app | `tailrocks-macos-visual-qa`              |
 
 **Design** authors the prototype on the real substrate from fixtures. **Bless**
 is the user's recorded sign-off; an agent never blesses its own output.
@@ -468,18 +475,18 @@ Three worked examples follow the whole route:
 
 ## Which skill now?
 
-| You have | Reach for |
-|---|---|
-| A repository and no backlog, or a branch about to become a PR | `tailrocks-audit` |
-| A thought you do not want to lose | `tailrocks-idea` |
-| A DRAFT and half an hour | `tailrocks-brainstorm` |
-| A question with a factual answer | `tailrocks-research` |
-| An answer only you could give | `tailrocks-record-decision` |
-| A shaped item and no open questions | `tailrocks-finalize` |
-| READY, and no intention of babysitting the build | `tailrocks-plan` |
-| Something wrong with what shipped, in your own words | `tailrocks-record-feedback` |
-| A need to know whether it actually works, not whether it built | `tailrocks-prove` |
-| A loop that stopped, a repository that moved, a round to close, or an item that is finally finished | `tailrocks-reconcile` |
+| You have                                                                                            | Reach for                   |
+| --------------------------------------------------------------------------------------------------- | --------------------------- |
+| A repository and no backlog, or a branch about to become a PR                                       | `tailrocks-audit`           |
+| A thought you do not want to lose                                                                   | `tailrocks-idea`            |
+| A DRAFT and half an hour                                                                            | `tailrocks-brainstorm`      |
+| A question with a factual answer                                                                    | `tailrocks-research`        |
+| An answer only you could give                                                                       | `tailrocks-record-decision` |
+| A shaped item and no open questions                                                                 | `tailrocks-finalize`        |
+| READY, and no intention of babysitting the build                                                    | `tailrocks-plan`            |
+| Something wrong with what shipped, in your own words                                                | `tailrocks-record-feedback` |
+| A need to know whether it actually works, not whether it built                                      | `tailrocks-prove`           |
+| A loop that stopped, a repository that moved, a round to close, or an item that is finally finished | `tailrocks-reconcile`       |
 
 ## Common mistakes
 
