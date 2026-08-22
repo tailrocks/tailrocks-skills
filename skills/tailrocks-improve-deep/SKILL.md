@@ -2,7 +2,7 @@
 name: tailrocks-improve-deep
 description: >-
   Use only when the user explicitly requests this skill. Audit a whole repository or one non-security category exhaustively through read-only lanes and fresh independent refutation, returning one verified report and no artifacts.
-argument-hint: "[<non-security category>] [--batch] [repository path]"
+argument-hint: "[correctness|perf|tests|tech-debt|dependencies|dx|docs|direction|agent-legibility] [--batch] [repository path]"
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
@@ -16,11 +16,24 @@ Own exhaustive non-security repository audit. Apply
 is read-only and returns one report; it never plans, implements, reconciles, or
 seeds delivery work.
 
+No category means the whole-repository deep route. One accepted category means
+the focused deep route. `--batch` may accompany either form. The caller does not
+pass a redundant `--deep` flag: selecting this owner already selects deep audit.
+
 ## Audit
 
 1. Bind root, revision, dirty state, whole-repository or one category scope, and
-   every package in scope. Refuse `quick`, security, branch review, and multiple
-   primary categories with the exact owning route.
+   every package in scope. The only focused categories accepted here are
+   `correctness`, `perf`, `tests`, `tech-debt`, `dependencies`, `dx`, `docs`,
+   `direction`, and `agent-legibility`. Refuse `quick`, security, platform-design
+   categories (`ux`, `tui`, `liquid-glass`), branch review, unknown categories,
+   and multiple primary categories. Name `tailrocks-improve-security` for
+   security, `tailrocks-web-design-audit` for `ux`,
+   `tailrocks-tui-design-audit` for `tui`, and
+   `tailrocks-macos-design-review` for `liquid-glass`; report the route and stop,
+   never dispatch it. `--batch` only makes this owner's
+   selection non-interactive; it changes neither exhaustive coverage nor
+   authority.
 2. Map every applicable common lane over every package. No hotspot sampling,
    leverage cutoff, silent package omission, or inferred execution authority.
    A target command runs only with explicit authority in an enforceably

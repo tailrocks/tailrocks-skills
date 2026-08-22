@@ -1163,9 +1163,22 @@ all terminal checks pass, and the final literal marker is changed to
     host application activation (412 pass, 2 fail); P08.GATE retains the clean
     full-gate obligation and P09.15 owns that harness. Protected paths unchanged;
     no evals run.
-- [ ] [IN_PROGRESS] P08.02 Route default/quick/category/batch to standard improve;
+- [x] [COMPLETED] P08.02 Route default/quick/category/batch to standard improve;
   whole-repository deep to improve-deep; security to improve-security.
-- [ ] [TODO] P08.03 Route branch variants to PR review; next/ask variants to
+  - Evidence receipt (2026-08-23): `tailrocks-improve` now directly owns default,
+    quick, and the exact twelve non-deep categories; its three platform
+    categories are objective/non-taste audits. Whole-repository deep and the
+    exact nine standard deep categories route to `tailrocks-improve-deep`
+    without a redundant depth flag. Security and security-deep route directly
+    to `tailrocks-improve-security`. Every covered route preserves `--batch` as
+    deterministic non-interactive selection with unchanged coverage,
+    refutation, report oracle, and authority. Generated READMEs/docs agree.
+    Focused proof passed 14 tests/299 assertions; fresh subagent verdict: PASS.
+    The non-eval migration gate passed all changed/schema/generated checks but
+    the unrelated macOS GUI lane retained the host activation failure (413 pass,
+    2 fail), deferred to its explicit P09.15 harness row. Protected paths
+    unchanged; no evals run.
+- [ ] [IN_PROGRESS] P08.03 Route branch variants to PR review; next/ask variants to
   research; visual-conformance questions to the matching design owner.
 - [ ] [TODO] P08.04 Route plan, seed, execute, plan-sweep, and roadmap-sweep to
   their exclusive owners, preserving deep and batch modifiers.

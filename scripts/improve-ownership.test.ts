@@ -2,6 +2,8 @@ import { expect, test } from "bun:test";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
+import { IMPROVE_CATEGORIES, IMPROVE_ROUTES } from "./improve-route-schema";
+
 const root = path.resolve(import.meta.dir, "..");
 const owners = [
   "tailrocks-improve",
@@ -116,4 +118,62 @@ test("all improve owners are manual-only and published", async () => {
     expect(await source(owner, "agents/openai.yaml")).toContain("allow_implicit_invocation: false");
   }
   expect(registry.owners.filter((owner) => owner.class === "MODEL_POLICY")).toHaveLength(11);
+});
+
+test("standard deep and security audit routes are closed and preserve batch authority", async () => {
+  const [standard, deep, security] = await Promise.all([
+    source("tailrocks-improve"),
+    source("tailrocks-improve-deep"),
+    source("tailrocks-improve-security"),
+  ]);
+  const nonSecurity = [...IMPROVE_CATEGORIES.standard, ...Object.keys(IMPROVE_CATEGORIES.platformDesign)];
+  for (const category of IMPROVE_CATEGORIES.standard) {
+    expect(standard).toContain(`\`${category}\``);
+    expect(deep).toContain(`\`${category}\``);
+  }
+  for (const category of Object.keys(IMPROVE_CATEGORIES.platformDesign)) {
+    expect(standard).toContain(`\`${category}\``);
+  }
+  expect(nonSecurity).toHaveLength(12);
+  expect(IMPROVE_ROUTES.find(({ id }) => id === "category")?.target).toBe("tailrocks-improve");
+  expect(IMPROVE_ROUTES.find(({ id }) => id === "category")?.categoryClasses).toEqual([
+    "standard",
+    "platform-design",
+  ]);
+  expect(IMPROVE_ROUTES.find(({ id }) => id === "whole-repository-deep")?.targetArguments).toEqual([]);
+  expect(IMPROVE_ROUTES.find(({ id }) => id === "category-deep")?.targetArguments).toEqual(["<category>"]);
+  expect(IMPROVE_ROUTES.find(({ id }) => id === "security")?.targetArguments).toEqual([]);
+  expect(IMPROVE_ROUTES.find(({ id }) => id === "security-deep")?.targetArguments).toEqual(["--deep"]);
+  for (const route of IMPROVE_ROUTES.filter(({ id }) =>
+    [
+      "default",
+      "quick",
+      "category",
+      "whole-repository-deep",
+      "category-deep",
+      "security",
+      "security-deep",
+    ].includes(id),
+  )) {
+    expect(route.batchForward).toBe(true);
+    expect(route.batchEffect).toBe("non-interactive-selection");
+    expect(route.authority).toBe("target-only");
+  }
+  expect(standard).toContain("No other category spelling is valid");
+  expect(standard).toContain("Report that invocation and stop");
+  expect(standard).toContain("Whole-repository `--deep`");
+  expect(deep).toContain("platform-design\n   categories (`ux`, `tui`, `liquid-glass`)");
+  expect(deep).toContain("does not\npass a redundant `--deep` flag");
+  expect(security).toContain(
+    "accepts only the `security` route, optional `--deep`, and\n   optional `--batch`",
+  );
+  expect(security).toContain("No flag is the normal security route");
+  for (const owner of [standard, deep, security]) {
+    expect(owner).toContain("non-interactive");
+    expect(owner).toMatch(/grants no|changes neither|changes no/);
+    expect(owner).not.toContain("tailrocks-audit");
+  }
+  expect(await readFile(path.join(root, "scripts", "improve-route-schema.ts"), "utf8")).not.toContain(
+    "tailrocks-audit",
+  );
 });

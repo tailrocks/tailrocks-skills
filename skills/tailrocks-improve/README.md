@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-improve` …
 
-Arguments: `[quick|<non-security focus>] [--batch] [repository path]`
+Arguments: `[quick|correctness|perf|tests|tech-debt|dependencies|dx|docs|direction|agent-legibility|ux|tui|liquid-glass] [--batch] [repository path]`
 
 ## Skill definition
 

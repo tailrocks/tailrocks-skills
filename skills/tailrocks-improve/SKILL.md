@@ -2,7 +2,7 @@
 name: tailrocks-improve
 description: >-
   Use only when the user explicitly requests this skill. Audit a repository read-only with bounded parallel non-security lanes, adversarially verify every candidate, and return one evidence-ranked report. Never plans, implements, reconciles, or seeds delivery work.
-argument-hint: "[quick|<non-security focus>] [--batch] [repository path]"
+argument-hint: "[quick|correctness|perf|tests|tech-debt|dependencies|dx|docs|direction|agent-legibility|ux|tui|liquid-glass] [--batch] [repository path]"
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
@@ -20,13 +20,26 @@ Apply [`runtime-trust.md`](references/runtime-trust.md) and
 
 ## Selection
 
-- Default and `quick` use the same report oracle. Default covers every common
-  lane; `quick` bounds reconnaissance to named hotspots and top candidates.
-- A non-security focus runs only matching common lanes. Security routes to
-  `tailrocks-improve-security`; whole-repository or focused `--deep` routes to
-  `tailrocks-improve-deep`.
-- `--batch` makes candidate selection non-interactive; it grants no downstream
-  mutation. Refuse `quick --deep` and multiple primary selectors.
+- No selector and `quick` stay here and use the same report oracle. Default
+  covers every common lane; `quick` bounds reconnaissance to named hotspots and
+  top candidates.
+- Exactly one non-security category stays here without `--deep`:
+  `correctness`, `perf`, `tests`, `tech-debt`, `dependencies`, `dx`, `docs`,
+  `direction`, `agent-legibility`, `ux`, `tui`, or `liquid-glass`. Run only that
+  category. For `ux`, `tui`, and `liquid-glass`, report objective non-taste
+  defects only; design conformance belongs to the matching design audit or
+  review owner. No other category spelling is valid.
+- Whole-repository `--deep` routes to `tailrocks-improve-deep`; invoke it with no
+  depth flag. A deep standard category routes to
+  `tailrocks-improve-deep <category>`. `security` routes to
+  `tailrocks-improve-security`; preserve `--deep` when present. Preserve
+  `--batch` on each exact target invocation. Report that invocation and stop;
+  never invoke another manual owner.
+- `--batch` composes with every valid selection and is forwarded to its exact
+  owner. Here it makes candidate selection deterministic and non-interactive;
+  lane coverage, adversarial re-reading, and the report oracle stay unchanged.
+  It grants no downstream mutation or authority outside that owner.
+- Refuse `quick --deep`, unknown categories, and multiple primary selectors.
 - Branch review, questions, planning, execution, reconciliation, and delivery
   seeding belong to their named owners; do not emulate them here.
 
