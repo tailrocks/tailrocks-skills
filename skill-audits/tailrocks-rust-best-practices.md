@@ -40,7 +40,8 @@ None.
 
 - **Defect:** One recorded non-certifying 3/3 smoke case is not a complete pinned portfolio result; no baseline, mutation set, runtime lock, or tool trace exists for the full skill.
 - **Evidence:** docs/design/eval-runner-design.md:69; skills/tailrocks-rust-best-practices/evals/evals.json; mise.toml:51-53.
-- **Fix:** run the replacement pinned reliability suite through tailrocks-skill-evaluate.
+- **Fix:** run the replacement pinned non-protected deterministic reliability
+  suite directly through repository gates; no evaluation product route exists.
 - **Dimensions:** behavior, predictability, portability.
 - **Identity tuple:** evals; repeated discriminating evidence; partial historical sample only; Rust best practices; eval evidence.
 - **Action:** validator.
@@ -78,4 +79,3 @@ None.
 ## Killed findings
 
 - Split each Rust topic into a skill — killed: topics are branch-loaded references under one language contract, not independent user outcomes.
-

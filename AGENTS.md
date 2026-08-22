@@ -785,6 +785,8 @@ refactor stop with the tree unchanged and name the exact delta, compatibility,
 and rollback obligations. The operator may perform a direct migration only
 under a separately scoped explicit authorization for the named branch and pull
 request; no migration-plan artifact or product skill mediates that authority.
+No deprecated migration owner, alias, dispatcher, or compatibility route exists;
+none of the four authoring skills executes direct migration under any selector.
 
 - **tailrocks-skill-create** — a new skill from an observed failure: baseline
   captured verbatim (a retrospective field record with commit-level evidence

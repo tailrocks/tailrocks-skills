@@ -40,7 +40,8 @@ None.
 
 - **Defect:** Authored cases have no stored baseline, repeated run, mutation result, runtime lock, or tool trace.
 - **Evidence:** skills/tailrocks-rust-project-setup/evals/evals.json; mise.toml:51-53; scripts/run-evals.ts:458-525.
-- **Fix:** run the replacement pinned reliability suite through tailrocks-skill-evaluate.
+- **Fix:** run the replacement pinned non-protected deterministic reliability
+  suite directly through repository gates; no evaluation product route exists.
 - **Dimensions:** behavior, predictability, portability.
 - **Identity tuple:** evals; repeated discriminating evidence; no persisted results; Rust project setup; eval runner output path.
 - **Action:** validator.
@@ -79,4 +80,3 @@ None.
 
 - Split workspace layout from toolchain/lints — killed: they form one scaffold baseline transaction.
 - Rust code-policy overlap — killed: rust-best-practices owns code semantics, not workspace mechanics.
-

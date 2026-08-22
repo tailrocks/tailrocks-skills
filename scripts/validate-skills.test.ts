@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { mkdtemp, mkdir, rm, symlink, writeFile } from "node:fs/promises";
+import { cp, mkdtemp, mkdir, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -673,6 +673,25 @@ policy:
     await write("skill-migrations/rename.md", "# Migration plan\n");
     expect(await validate(root)).toContain(
       "skill-migrations/rename.md: migration-plan artifacts are forbidden; use an explicitly authorized direct migration",
+    );
+  });
+
+  test("rejects retired migration product skill names", async () => {
+    const retired = "tailrocks-skill-migrate";
+    await cp(path.join(root, "skills", skill), path.join(root, "skills", retired), { recursive: true });
+    const file = path.join(root, "skills", retired, "SKILL.md");
+    await writeFile(file, (await readFile(file, "utf8")).replaceAll(skill, retired));
+    expect(await validate(root)).toContain(`${retired}: retired skill name is forbidden`);
+  });
+
+  test("rejects retired migration product routes", async () => {
+    await write("README.md", `${skill}\ntailrocks-skill-evaluate\n`);
+    expect(await validate(root)).toContain(
+      "README.md: retired skill route is forbidden: tailrocks-skill-evaluate",
+    );
+    await write("docs/content/docs/skills/tailrocks-skill-migration-plan/index.mdx", "# Retired\n");
+    expect(await validate(root)).toContain(
+      "docs/content/docs/skills/tailrocks-skill-migration-plan: retired skill route is forbidden",
     );
   });
 

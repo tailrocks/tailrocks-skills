@@ -6,6 +6,11 @@ import { parseInvocationRegistry, type InvocationClass } from "./invocation-regi
 
 const guard = "Use only when the user explicitly requests this skill.";
 const descriptionBudget = 250;
+const retiredSkillNames = new Set([
+  "tailrocks-skill-evaluate",
+  "tailrocks-skill-migrate",
+  "tailrocks-skill-migration-plan",
+]);
 
 async function exists(file: string): Promise<boolean> {
   try {
@@ -96,6 +101,33 @@ async function validateDurableContracts(root: string, errors: string[]): Promise
     errors.push(
       `${path.relative(root, file)}: migration-plan artifacts are forbidden; use an explicitly authorized direct migration`,
     );
+  }
+}
+
+async function validateRetiredRoutes(root: string, errors: string[]): Promise<void> {
+  const surfaces = [
+    "AGENTS.md",
+    "INSTALL.md",
+    "README.md",
+    "catalog.json",
+    "invocation-registry.json",
+    "docs/content/docs/choosing.mdx",
+    "docs/content/docs/skills/meta.json",
+  ];
+  for (const relative of surfaces) {
+    const file = path.join(root, relative);
+    if (!(await exists(file))) continue;
+    const source = await readFile(file, "utf8");
+    for (const name of retiredSkillNames) {
+      if (source.includes(name)) errors.push(`${relative}: retired skill route is forbidden: ${name}`);
+    }
+  }
+  const docsRoot = path.join(root, "docs/content/docs/skills");
+  if (!(await exists(docsRoot))) return;
+  for (const entry of await readdir(docsRoot, { withFileTypes: true })) {
+    if (entry.isDirectory() && retiredSkillNames.has(entry.name)) {
+      errors.push(`docs/content/docs/skills/${entry.name}: retired skill route is forbidden`);
+    }
   }
 }
 
@@ -397,6 +429,7 @@ async function generatedReferenceDestinations(root: string, errors: string[]): P
 export async function validate(root: string): Promise<string[]> {
   const errors: string[] = [];
   await validateDurableContracts(root, errors);
+  await validateRetiredRoutes(root, errors);
   const generatedReferences = await generatedReferenceDestinations(root, errors);
   const skillsRoot = path.join(root, "skills");
   if (!(await exists(skillsRoot))) return ["missing skills directory"];
@@ -407,6 +440,9 @@ export async function validate(root: string): Promise<string[]> {
   const entries: string[] = [];
   for (const directory of directories) {
     if (await exists(path.join(skillsRoot, directory, "SKILL.md"))) entries.push(directory);
+  }
+  for (const directory of entries) {
+    if (retiredSkillNames.has(directory)) errors.push(`${directory}: retired skill name is forbidden`);
   }
   const invocationClasses = await validateInvocationRegistry(root, entries, errors);
 

@@ -16,7 +16,9 @@ outcomes.
 - **Create:** gather evidence read-only, snapshot starting state, and inspect
   gates, instructions, catalogs, registries, and sibling owners. Accept a new,
   unowned responsibility before the first durable write. Rejection leaves the
-  starting tree unchanged.
+  starting tree unchanged. A replacement-derived name, rename, split, merge,
+  retirement, transfer, alias, or compatibility route is a contract migration,
+  never a new owner.
 - **Update:** inventory sibling descriptions and responsibility records, then
   read every plausible owner's full public contract before mutation. Existing
   ownership routes to that owner; a new independent responsibility routes to
@@ -25,4 +27,5 @@ outcomes.
   the exact delta, compatibility, and rollback obligations. Execution requires
   a separately scoped, explicit user authorization for direct migration in the
   named branch and pull request. Do not create a migration plan, migration
-  artifact, or migration product skill.
+  artifact, or migration product skill. Create, update, and refactor never
+  execute that migration under any selector or inherited authorization.

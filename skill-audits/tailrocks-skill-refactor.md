@@ -2,7 +2,8 @@
 
 - Audited at: 2626d51827747c3b3e0e76cd20a7d38363c82648 (2026-08-22)
 - Verdict: RTR 1, REF 1, EVAL 2
-- Topology: SPLIT migration planning from behavior-preserving refactor
+- Topology: behavior-preserving refactor only; contract deltas stop for direct
+  branch/PR migration authority
 
 ## Description
 
@@ -14,11 +15,13 @@ None after migration-plan extraction.
 
 - **Defect:** Description excludes migration, but a contract delta writes a different durable migration artifact and schema.
 - **Evidence:** skills/tailrocks-skill-refactor/SKILL.md:34-50 and skills/tailrocks-skill-refactor/templates/migration-contract.md:1-25.
-- **Fix:** refactor only preserves public contracts; tailrocks-skill-migration-plan writes the contract; tailrocks-skill-migrate executes an approved contract.
+- **Fix:** refactor only preserves public contracts; a contract delta leaves the
+  tree unchanged and names the separately scoped direct migration authority.
 - **Dimensions:** contract, predictability, topology.
 - **Identity tuple:** router; separate output/contract; migration plan inside refactor; skill topology; step 3.
 - **Action:** refactor.
-- **Acceptance:** contract-delta refactor leaves tree unchanged and routes; only migration-plan writes the checked artifact.
+- **Acceptance:** contract-delta refactor leaves the tree unchanged and creates
+  no artifact, product owner, alias, or route.
 
 ## References
 

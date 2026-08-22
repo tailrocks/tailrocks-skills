@@ -42,6 +42,18 @@ async function fixture(): Promise<string> {
 }
 
 describe("scaffoldSkill", () => {
+  test("rejects retired migration product names before mutation", async () => {
+    const root = await fixture();
+    try {
+      await expect(scaffoldSkill(root, "tailrocks-skill-migrate")).rejects.toThrow(
+        "retired skill name is forbidden",
+      );
+      expect(await readdir(path.join(root, ".agent-skills")).catch(() => [])).toEqual([]);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+
   test("CLI parser and entrypoint reject unmatched argument state", async () => {
     expect(() => parseScaffoldArguments(["one", "two"])).toThrow();
     expect(() => parseScaffoldArguments(["--root", "/tmp", "--root", "/tmp", "one"])).toThrow();

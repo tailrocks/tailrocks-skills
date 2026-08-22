@@ -55,7 +55,9 @@ The supplied research was applied as doctrine, not copied as provenance. Its str
 
 - **Defect:** The portfolio has case prose but no persisted baseline/control run, repeated-trial result, pass^k metric, mutation result, runtime lock, or tool trace. Single-run intent cannot certify predictable behavior.
 - **Evidence:** mise.toml:51-53 says the runner is not wired; .github/workflows/validate.yml:27-31 runs static validation/tests only; scripts/run-evals.ts:458-460 defaults to one run and 521-525 deletes passing workspaces and prints the only result.
-- **Fix:** create tailrocks-skill-evaluate, a strict eval schema, eval-runtime.lock.json, durable result envelopes, changed-skill and scheduled CI lanes, and capability-specific workflow runners.
+- **Fix:** use strict non-protected deterministic evidence, durable result
+  envelopes, changed-skill and scheduled CI lanes, and capability-specific
+  workflow runners directly; no evaluation product route exists.
 - **Dimensions:** behavior, predictability, portability, security.
 - **Identity tuple:** evals; repeated discriminating evidence; no stored behavioral execution; all skills; eval runner and CI wiring.
 - **Action:** validator.
@@ -95,11 +97,16 @@ The current per-skill baseline is enumerated in the [43-skill behavioral-evidenc
 
 - **Defect:** skill-refactor writes a migration handoff while claiming refactor-only scope; no skill owns approved contract-breaking execution; create/update exclude eval artifact edits even though house wiring requires them; the canonical doctrine lives under the audit skill.
 - **Evidence:** skills/tailrocks-skill-refactor/SKILL.md:34-50, skills/tailrocks-skill-create/SKILL.md:71-96, skills/tailrocks-skill-update/SKILL.md:60-65, and skills/tailrocks-skill-audit/SKILL.md:84-94.
-- **Fix:** add tailrocks-skill-migration-plan, tailrocks-skill-migrate, and tailrocks-skill-evaluate; move canonical doctrine to repository-owned skill-authoring/references; make create/update author complete eval sets while evaluate owns execution/evidence.
+- **Fix:** keep create/update/refactor exclusive from contract migration, move
+  canonical doctrine to repository-owned `skill-authoring/references`, and use
+  separately scoped direct branch/PR authorization with no product route or
+  migration artifact.
 - **Dimensions:** contract, behavior, topology, portability.
 - **Identity tuple:** wiring; complete authoring lifecycle; no owner for migration/evidence; skill authoring family; authoring routers and doctrine paths.
 - **Action:** instruction.
-- **Acceptance:** a contract-breaking split has one approved migration artifact, one executor, one rollback path, one independent evaluation record, and no audit/update/refactor skill silently performs another role.
+- **Acceptance:** a contract-breaking split is performed directly in the named
+  authorized branch/PR with rollback proof; no authoring skill, deprecated
+  alias, dispatcher, product route, or migration artifact mediates it.
 
 ## Final improve family
 
@@ -209,34 +216,37 @@ The manifests are migration specifications, not implementation. `KEEP`, `MOVE`, 
 
 | Skill | Sole responsibility |
 |---|---|
-| tailrocks-skill-create | Atomically create one evidenced, unowned skill and its authored eval cases |
-| tailrocks-skill-update | Change behavior inside one fixed responsibility/public contract and update regression cases |
+| tailrocks-skill-create | Atomically create one evidenced, unowned skill and all supported wiring |
+| tailrocks-skill-update | Change behavior inside one fixed responsibility/public contract and update non-protected deterministic evidence |
 | tailrocks-skill-audit | Read-only report over one skill or portfolio; no edits |
 | tailrocks-skill-refactor | Split/merge/extract while observable public contracts remain identical |
-| tailrocks-skill-migration-plan | Write one approved, checker-valid contract-breaking migration contract |
-| tailrocks-skill-migrate | Execute one approved migration with compatibility, rollback, and old-to-new route proof |
-| tailrocks-skill-evaluate | Run the pinned reliability suite and write the durable evidence envelope; never edit skill behavior |
 
 Authoring changes required before portfolio migration:
 
 1. Move doctrine out of the audit skill so no operational skill owns shared policy by accident.
 2. Make update inspect sibling ownership before editing; a delta already owned elsewhere routes to that owner, and a new separate responsibility routes to refactor/migration.
 3. Make create decide placement before it writes durable evidence; rejected placement leaves no partial artifact.
-4. Remove create/update’s exclusion of eval-file edits. They author cases; evaluate executes them.
-5. Replace refactor’s obsolete semantic-update evals with split, keep-together, and contract-delta cases.
-6. Add migration and evaluation owners before changing public command names.
+4. Keep frozen legacy eval files inactive and untouched; author non-protected
+   deterministic evidence instead.
+5. Prove refactor split, keep-together, and contract-delta refusal through
+   non-protected deterministic tests.
+6. Remove old public names and routes directly in the authorized branch/PR; do
+   not create migration or evaluation product owners.
 
 ## Migration sequence
 
 ### Wave 0 — Freeze and authorize
 
-Write one checked migration contract at the audited SHA. Map every old invocation to exactly one new invocation, name compatibility aliases and removal dates, inventory durable artifacts, and define rollback. User approval is required because command names and public contracts change.
-
-Ship new owners and exact redirects in `v0.28.0`. Remove legacy names, modes, and paths in `v1.0.0` only after target-derived evidence gates pass; failed evidence delays `v1.0.0` rather than permitting early or silent removal.
+Bind explicit direct-migration authority to the named branch and pull request.
+Map every old invocation to exactly one new owner, inventory durable artifacts,
+define rollback, remove the old public names/routes in the same change, and prove
+the final topology. No compatibility alias or delayed-removal route remains.
 
 ### Wave 1 — Build authoring/eval substrate
 
-Land canonical authoring references, strict eval schema, runtime lock, deterministic ID reconciler, eval evidence format, capability registry, and CI lanes. Create skill-migration-plan, skill-migrate, and skill-evaluate. Prove these before using them.
+Land canonical authoring references, deterministic ID reconciliation,
+non-protected evidence formats, capability registry, and CI lanes. Keep the four
+authoring owners exhaustive and manual-only.
 
 ### Wave 2 — Remove duplicated sources
 

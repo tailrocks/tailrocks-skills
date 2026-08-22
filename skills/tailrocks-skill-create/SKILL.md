@@ -37,8 +37,11 @@ prompts, or artifacts; cite location and type only.
    then inspect target instructions, validators, catalogs, registries, and
    sibling skill descriptions. A mechanical rule belongs in a gate, a local
    convention in its instruction file, a one-off nowhere, and an existing
-   responsibility with its current owner. Do not create any file before this
-   placement accepts a new, unowned skill responsibility.
+   responsibility with its current owner. A replacement, rename, split, merge,
+   retirement, responsibility transfer, compatibility route, or new name
+   derived from an existing owner is direct migration, not creation; refuse it
+   unchanged even when that migration is separately authorized. Do not create
+   any file before placement accepts a genuinely new, unowned responsibility.
    **Complete when:** accepted placement names the new owner and rejected
    alternatives, or refusal leaves the repository byte-for-byte unchanged.
 
@@ -126,4 +129,9 @@ frozen legacy eval tree. That exclusion never excuses evidence:
 controlled-baseline claims need a hand-
 observed red bar; preventive security or external-contract claims need the
 executable acceptance gap they were admitted on, never a fabricated failure.
+No authoring-family skill executes direct migration. Return exactly one
+`CREATED`, `BLOCKED`, `REFUSED`, or `RECOVERY_REQUIRED` receipt naming the
+starting revision/state, evidence and skill paths/hashes, invocation class,
+complete mutation set, checks with nonzero counts, and recovery artifacts. No
+commit, push, external action, or partial evidence/skill/wiring publication.
 Report every check skipped.

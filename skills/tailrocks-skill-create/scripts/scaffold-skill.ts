@@ -46,6 +46,11 @@ const modelDescription = `  <Exact model trigger only: the artifact, language, f
   or explicit intent already in scope; include the do-not-use boundary.
   Never a workflow summary.>`;
 const receiptSchema = "tailrocks.skill-scaffold/v1";
+const retiredSkillNames = new Set([
+  "tailrocks-skill-evaluate",
+  "tailrocks-skill-migrate",
+  "tailrocks-skill-migration-plan",
+]);
 
 function inside(root: string, target: string): boolean {
   const relative = path.relative(root, target);
@@ -116,6 +121,7 @@ export async function scaffoldSkill(
   if (invocationClass !== "MANUAL_ONLY" && invocationClass !== "MODEL_POLICY") {
     throw new Error(`unsupported invocation class: ${String(invocationClass)}`);
   }
+  if (retiredSkillNames.has(name)) throw new Error(`retired skill name is forbidden: ${name}`);
   const resolvedRoot = await realpath(path.resolve(root));
   const resolvedPolicy = path.resolve(resolvedRoot, policyPath);
   if (!inside(resolvedRoot, resolvedPolicy))
@@ -421,9 +427,7 @@ if (import.meta.main) {
     );
   } catch (error) {
     const detail = error instanceof Error ? error.message : String(error);
-    const namedRecovery = [...detail.matchAll(/\S+\.scaffold-recovery-[^\s]+/g)].map(
-      (match) => match[0],
-    );
+    const namedRecovery = [...detail.matchAll(/\S+\.scaffold-recovery-[^\s]+/g)].map((match) => match[0]);
     console.log(
       JSON.stringify({
         schema: receiptSchema,
