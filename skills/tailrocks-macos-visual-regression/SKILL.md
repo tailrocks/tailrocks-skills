@@ -21,7 +21,8 @@ captures and diffs live only in a newly created external temporary directory.
 Read [`runtime-trust.md`](references/runtime-trust.md),
 [`harness-contract.md`](references/harness-contract.md),
 [`missing-project-policy.md`](references/missing-project-policy.md), and
-[`regression.md`](references/regression.md).
+[`regression.md`](references/regression.md), then apply the region oracle in
+[`match-policy.md`](references/match-policy.md).
 
 ## Compare transaction
 

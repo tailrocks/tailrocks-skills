@@ -1107,9 +1107,27 @@ all terminal checks pass, and the final literal marker is changed to
     `rtk mise run migration-check` passed 400 tests/2,725 assertions across 54
     selected non-protected files. Fresh subagent verdict: PASS. Protected paths
     unchanged; no evals run.
-- [ ] [IN_PROGRESS] P07.06 Preserve human blessing, owned-process capture, appearance
+- [x] [COMPLETED] P07.06 Preserve human blessing, owned-process capture, appearance
   restoration, wrong-server refusal, and region-specific conformance rules.
-- [ ] [TODO] P07.GATE Prove the exact eleven-skill model-policy set, manual
+  - Evidence receipt (2026-08-23): added one cross-family executable invariant
+    contract over both split visual stacks. Human blessing remains external:
+    both baselines consume the canonical user-only design pipeline; macOS
+    `SIGNOFF.md` now binds prototype revision/package hash and the independent
+    acceptance-review path/hash/PASS/reviewer/live-session identity; the web
+    manifest binds revision, component/fixture/registry hashes, and the complete
+    state/theme/viewport matrix. macOS capture still binds the real executable,
+    launch token, exact PID, and exact window ID; the six-key typed appearance
+    transaction preserves Auto, detects restore conflicts, and restores on every
+    exit. Web capture behaviorally refuses occupied and stale servers plus a
+    replaced post-Playwright guard before baseline publication. Both macOS
+    baseline/regression routers now explicitly consume the generated region
+    oracle: native/native-composed regions are structural; custom/content
+    regions are pixel-budgeted. Web masks and budgets remain recorded contract
+    fields. Focused proof passed 57 tests/445 assertions; final
+    `rtk mise run migration-check` passed 407 tests/2,781 assertions across 55
+    selected non-protected files. Fresh subagent verdict: PASS. Protected paths
+    unchanged; no evals run.
+- [ ] [IN_PROGRESS] P07.GATE Prove the exact eleven-skill model-policy set, manual
   descendant and visual-verification routing, one taste owner per medium, and
   `rtk mise run migration-check`.
   Evidence: pending.

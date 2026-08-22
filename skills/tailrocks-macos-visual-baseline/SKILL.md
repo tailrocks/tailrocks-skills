@@ -18,7 +18,8 @@ or bless a design.
 
 Read [`runtime-trust.md`](references/runtime-trust.md),
 [`harness-contract.md`](references/harness-contract.md), and
-[`missing-project-policy.md`](references/missing-project-policy.md).
+[`missing-project-policy.md`](references/missing-project-policy.md), then apply
+the region oracle in [`match-policy.md`](references/match-policy.md).
 
 ## Authority and preconditions
 

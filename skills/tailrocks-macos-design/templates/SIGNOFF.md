@@ -8,5 +8,8 @@
   real-settings states>
 - **Not proven live**: <hover under automation, VoiceOver, keyboard
   paths — routed where>
+- **Prototype identity**: <Git revision> — <package-tree SHA-256>
+- **Acceptance review**: <DesignReview.md path> — SHA-256 <digest> — `PASS`
+  by <reviewer> in <live session identity>
 - **Blessed**: <YYYY-MM-DD> by <user> — <one line on what was approved,
   reviewed running>

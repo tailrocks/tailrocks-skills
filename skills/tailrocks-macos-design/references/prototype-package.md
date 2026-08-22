@@ -131,12 +131,16 @@ Two consequences worth holding:
   real-settings states>
 - **Not proven live**: <hover under automation, VoiceOver, keyboard
   paths — routed where>
+- **Prototype identity**: <Git revision> — <package-tree SHA-256>
+- **Acceptance review**: <DesignReview.md path> — SHA-256 <digest> — `PASS`
+  by <reviewer> in <live session identity>
 - **Blessed**: <YYYY-MM-DD> by <user> — <one line on what was approved,
   reviewed running>
 ```
 
-An unfilled `Blessed` row means draft: the prototype binds nobody, and no
-downstream document may cite it as settled design. After sign-off the
+An unfilled identity, acceptance-review `PASS`, or `Blessed` row means draft:
+the prototype binds nobody, and no downstream document may cite it as settled
+design. After sign-off the
 design is frozen; a change to the prototype's rendering means a recorded
 re-blessing, and any already-frozen baseline is re-captured by the
 visual-baseline lane, never edited in place.

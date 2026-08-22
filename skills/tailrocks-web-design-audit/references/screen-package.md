@@ -36,11 +36,16 @@ reason:
 - **Components**: <installed components composed; any custom region with
   the alternatives evaluated>
 - **Copy**: <where the blessed strings live — the fixture module>
+- **Revision**: <40-hex Git revision>
+- **Component hash**: <screen component path> — SHA-256 <digest>
+- **Fixture hash**: <fixture module path> — SHA-256 <digest>
+- **Registry hash**: src/design/registry.ts — SHA-256 <digest>
+- **Blessed matrix**: <every state> × `light|dark` × <every viewport WxH>
 - **Blessed**: <YYYY-MM-DD> by <user> — <one line on what was approved>
 ```
 
-An unfilled `Blessed` row means the screen is a draft: the routes still
-render, but no downstream document may cite the design as settled, and
+An unfilled identity, matrix, or `Blessed` row means the screen is a draft: the
+routes still render, but no downstream document may cite the design as settled, and
 `tailrocks-web-visual-baseline` must refuse to freeze baselines from it.
 
 ## Delivery wiring

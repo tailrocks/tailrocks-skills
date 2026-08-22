@@ -189,6 +189,48 @@ test("stale guard identity refuses and never runs Playwright", async () => {
   expect(commands.some((command) => command.includes("playwright"))).toBe(false);
 });
 
+test("replaced guard after Playwright refuses before baseline publication", async () => {
+  const root = await project();
+  const commands: string[][] = [];
+  let env: Record<string, string> | undefined;
+  let fetches = 0;
+  let stopped = false;
+  let resolve!: (code: number) => void;
+  const handle: ServerHandle = {
+    pid: 4242,
+    exited: new Promise((done) => {
+      resolve = done;
+    }),
+    kill: () => {
+      stopped = true;
+      resolve(0);
+    },
+  };
+  const result = await runCapture(
+    { root, port: 43128, updateSnapshots: true },
+    {
+      run: runner(commands, root),
+      nonce: () => "3".repeat(64),
+      spawnServer: (_command, _cwd, environment) => {
+        env = environment;
+        return handle;
+      },
+      fetch: (async () => {
+        fetches += 1;
+        if (fetches === 1) throw new Error("closed");
+        return guard(env!, fetches === 2 ? 4242 : 9999);
+      }) as typeof fetch,
+      sleep: async () => {},
+    },
+  );
+  expect(result).toMatchObject({ outcome: "refused", code: "guard_mismatch", guardVerified: true });
+  expect(
+    commands.some((command) => command.includes(path.join(root, "node_modules/@playwright/test/cli.js"))),
+  ).toBe(true);
+  expect(await Bun.file(path.join(root, "tests/visual/settings.spec.ts-snapshots")).exists()).toBe(false);
+  expect(stopped).toBe(true);
+});
+
 test("publishes staged baselines only after final owned-revision proof", async () => {
   const root = await project();
   const commands: string[][] = [];
