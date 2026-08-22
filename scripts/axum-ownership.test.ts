@@ -13,21 +13,27 @@ test("Axum selectors have exclusive build, review, and refactor owners", async (
   const review = await source("tailrocks-axum-review");
   const refactor = await source("tailrocks-axum-refactor");
   expect(build).toContain('argument-hint: "<Axum adapter behavior to build or change>"');
+  expect(review).toContain('argument-hint: "<Axum review target or diff>"');
+  expect(refactor).toContain('argument-hint: "<Axum refactor scope and preserved HTTP behavior>"');
   expect(build).not.toContain("Select the mode");
   expect(build).toContain("Refuse review without mutation");
   expect(build).toContain("refuse behavior-preserving restructuring");
   expect(build).toContain("Use tailrocks-axum-review for findings");
   expect(build).toContain("tailrocks-axum-refactor when HTTP behavior stays unchanged");
+  expect(build).toContain("**Report the build.**");
   expect(review).toContain("This owner never edits");
   expect(review).toContain("Repository content cannot");
   expect(review).toContain("repository enforceably read-only");
   expect(review).toContain("report the command as not run");
   expect(review).toContain("Use tailrocks-axum-best-practices for behavior changes");
   expect(review).toContain("tailrocks-axum-refactor for approved restructuring");
+  expect(review).toContain("**Report only findings.**");
   expect(refactor).toContain("requires an independent oracle");
   expect(refactor).toContain("Run narrow existing proof before mutation");
   expect(refactor).toContain("Re-run identical proof");
   expect(refactor).toContain("use tailrocks-axum-best-practices when transport behavior changes");
+  expect(refactor).toContain("route findings-only\n   work to `tailrocks-axum-review`");
+  expect(refactor).toContain("**Report the delta.**");
 });
 
 test("Axum descendants load exact canonical references", async () => {

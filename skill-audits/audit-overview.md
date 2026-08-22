@@ -1296,9 +1296,19 @@ all terminal checks pass, and the final literal marker is changed to
     passed 426 tests/5,067 assertions and every static/generated check; only the
     unrelated two macOS GUI activation cases failed, deferred to P09.15. No evals
     run or inspected.
-- [ ] [IN_PROGRESS] P09.02 `tailrocks-axum-best-practices`: unique build/review/refactor
+- [x] [COMPLETED] P09.02 `tailrocks-axum-best-practices`: unique build/review/refactor
   routes, outputs, refusals, invocation, and argument hints.
-- [ ] [TODO] P09.03 `tailrocks-brainstorm`: deterministic DRAFT/SHAPING and
+  - Evidence receipt (2026-08-23): the MODEL_POLICY build owner, MANUAL_ONLY
+    read-only review owner, and MANUAL_ONLY behavior-preserving refactor owner
+    already hold exclusive contracts and byte-identical canonical Axum references.
+    Strengthened family proof now locks every exact argument hint, the distinct
+    build/findings/delta output, both invalid-selector handoffs per owner,
+    refactor's findings-only refusal, registry classes, PR-review routing, and
+    generated-reference topology. Focused proof passed 9 tests/189 assertions;
+    validator passed 84 skills; references checked 88 sources/258 byte-identical
+    destinations; docs checked 256 files; fresh subagent verdict: PASS. No evals
+    run or inspected.
+- [ ] [IN_PROGRESS] P09.03 `tailrocks-brainstorm`: deterministic DRAFT/SHAPING and
   interactive/batch frontier transitions using temporary item trees.
 - [ ] [TODO] P09.04 Checkout command: temporary repositories and mocked
   hosting/Git receipts through the deterministic script; no public skill alias.
