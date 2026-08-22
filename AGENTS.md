@@ -191,13 +191,34 @@ Skill definition: `skills/tailrocks-typescript-best-practices/SKILL.md`
 
 ### tailrocks-tanstack-project-setup
 
-Scaffold, migrate, and enforce strict Bun-only TanStack Start applications with
-TypeScript 7, Vite, Oxc, React, Router, Query, shadcn/ui, Tailwind CSS v4,
-validated server/client boundaries, Bun tests, exact versions, and CI gates.
-Copy-ready configuration lives under
+Scaffold new strict Bun-only TanStack Start applications with TypeScript 7,
+Vite, Oxc, React, Router, Query, shadcn/ui, Tailwind CSS v4, validated
+server/client boundaries, Bun tests, exact versions, and CI gates. Refuses
+existing applications. Copy-ready configuration lives under
 `skills/tailrocks-tanstack-project-setup/templates/`.
 
 Skill definition: `skills/tailrocks-tanstack-project-setup/SKILL.md`
+
+### tailrocks-tanstack-project-audit
+
+Audit an existing TanStack application against the same baseline without
+mutation. Emits the fixed TANSTACK gap ledger; never installs or edits.
+
+Skill definition: `skills/tailrocks-tanstack-project-audit/SKILL.md`
+
+### tailrocks-tanstack-project-migrate
+
+Migrate a foreign or materially older frontend to the Bun/TanStack baseline in
+never-broken slices while preserving behavior and accessibility.
+
+Skill definition: `skills/tailrocks-tanstack-project-migrate/SKILL.md`
+
+### tailrocks-tanstack-project-remediate
+
+Close exact approved TANSTACK audit gaps in an existing house-stack application.
+Refuses scaffolding, discovery, and broad stack migration.
+
+Skill definition: `skills/tailrocks-tanstack-project-remediate/SKILL.md`
 
 ### The macOS family — the Swift implementation stack
 

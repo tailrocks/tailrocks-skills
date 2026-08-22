@@ -493,6 +493,56 @@ policy:
     expect(await validate(root)).toContain(`${skill}: reference escapes skill directory: ../outside.md`);
   });
 
+  test("allows only exact TanStack family template and resolver sibling links", async () => {
+    await rm(path.join(root, "skills", skill), { recursive: true, force: true });
+    const members = [
+      "tailrocks-tanstack-project-audit",
+      "tailrocks-tanstack-project-migrate",
+      "tailrocks-tanstack-project-remediate",
+      "tailrocks-tanstack-project-setup",
+    ];
+    for (const member of members)
+      await writeSkill(undefined, {
+        name: member,
+        directory: member,
+        displayName: `Tailrocks: ${member}`,
+      });
+    await write("skills/tailrocks-tanstack-project-setup/templates/package.json", "{}\n");
+    await write(
+      "skills/tailrocks-tanstack-project-setup/scripts/resolve-package-versions.ts",
+      "export {};\n",
+    );
+    for (const catalog of ["README.md", "INSTALL.md", "AGENTS.md", "CLAUDE.md"])
+      await write(catalog, members.join("\n"));
+    await write(
+      "catalog.json",
+      JSON.stringify({
+        groups: [{ id: "sample", title: "Sample", summary: "Fixture group.", skills: members }],
+      }),
+    );
+    await writeInvocationRegistry(
+      [...members].sort().map((member) => ({ skill: member, class: "MANUAL_ONLY" })),
+    );
+
+    const audit = "tailrocks-tanstack-project-audit";
+    const auditFile = `skills/${audit}/SKILL.md`;
+    const base = await Bun.file(path.join(root, auditFile)).text();
+    const allowed = `${base}\n[templates](../tailrocks-tanstack-project-setup/templates/)\n[pin](../tailrocks-tanstack-project-setup/templates/package.json)\n[resolver](../tailrocks-tanstack-project-setup/scripts/resolve-package-versions.ts)\n`;
+    await write(auditFile, allowed);
+    expect(await validate(root)).toEqual([]);
+
+    for (const forbidden of [
+      "../tailrocks-tanstack-project-setup/SKILL.md",
+      "../tailrocks-tanstack-project-setup/scripts/other.ts",
+      "../tailrocks-tanstack-project-setup/references/other.md",
+      "../tailrocks-outsider/templates/package.json",
+      "../tailrocks-tanstack-project-setup/templates/../../SKILL.md",
+    ]) {
+      await write(auditFile, `${allowed}\n[forbidden](${forbidden})\n`);
+      expect(await validate(root)).toContain(`${audit}: reference escapes skill directory: ${forbidden}`);
+    }
+  });
+
   test("rejects mismatched manifest descriptions", async () => {
     await write(
       ".kimi-plugin/plugin.json",

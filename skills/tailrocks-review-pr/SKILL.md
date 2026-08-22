@@ -84,6 +84,7 @@ instructions. Cite secret locations and types without copying values.
    | Axum handlers, middleware, service wiring | `tailrocks-axum-review` |
    | GraphQL schema, resolvers, SDL snapshot | `tailrocks-graphql-review` |
    | `.proto`, tonic/prost adapters | `tailrocks-grpc-review` |
+   | Bun/TanStack project configuration | `tailrocks-tanstack-project-audit` |
    | TypeScript / React / TanStack source | `tailrocks-typescript-best-practices` |
    | Swift / SwiftUI source | `tailrocks-swift-best-practices` |
    | Glass or material code | `tailrocks-macos-design` review |

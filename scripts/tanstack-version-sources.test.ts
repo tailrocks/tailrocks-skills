@@ -34,7 +34,8 @@ test("TanStack template and repository tool version sources stay synchronized", 
   expect(miseToml.match(/^bun = "([^"]+)"$/m)?.[1]).toBe(bunVersion);
   expect(miseLock).toContain(`[[tools.bun]]\nversion = "${bunVersion}"`);
   expect(miseLock).toContain(`[[tools."npm:oxfmt"]]\nversion = "${template.devDependencies.oxfmt}"`);
-  expect(versionPolicy).toContain("`templates/package.json` is the only exact package-pin source");
+  expect(versionPolicy).toContain("is the only exact package-pin source for this family");
+  expect(versionPolicy).toContain("../../tailrocks-tanstack-project-setup/templates/package.json");
   expect(versionPolicy).toContain("The repository's `mise.toml` owns its tool pins.");
   expect(versionPolicy).not.toMatch(/\b\d+\.\d+\.\d+\b/);
 });

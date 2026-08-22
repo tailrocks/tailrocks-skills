@@ -127,16 +127,36 @@ async function scanLinks(
     const raw = match[1].split("#", 1)[0];
     if (!raw || /^(?:https?:|mailto:)/.test(raw)) continue;
     const target = path.resolve(path.dirname(file), raw);
-    const setupRoot = path.resolve(path.dirname(skillDir), "tailrocks-rust-project-setup");
-    const setupTemplates = path.join(setupRoot, "templates");
-    const setupResolver = path.join(setupRoot, "scripts/resolve-crate-versions.ts");
-    const allowedSetupLink =
-      [
-        "tailrocks-rust-project-setup",
-        "tailrocks-rust-project-audit",
-        "tailrocks-rust-project-remediate",
-      ].includes(directory) &&
-      (target === setupResolver || target === setupTemplates || !outside(setupTemplates, target));
+    const setupFamilies = [
+      {
+        members: [
+          "tailrocks-rust-project-setup",
+          "tailrocks-rust-project-audit",
+          "tailrocks-rust-project-remediate",
+        ],
+        owner: "tailrocks-rust-project-setup",
+        resolver: "resolve-crate-versions.ts",
+      },
+      {
+        members: [
+          "tailrocks-tanstack-project-setup",
+          "tailrocks-tanstack-project-audit",
+          "tailrocks-tanstack-project-migrate",
+          "tailrocks-tanstack-project-remediate",
+        ],
+        owner: "tailrocks-tanstack-project-setup",
+        resolver: "resolve-package-versions.ts",
+      },
+    ] as const;
+    const allowedSetupLink = setupFamilies.some((family) => {
+      const setupRoot = path.resolve(path.dirname(skillDir), family.owner);
+      const setupTemplates = path.join(setupRoot, "templates");
+      const setupResolver = path.join(setupRoot, "scripts", family.resolver);
+      return (
+        family.members.includes(directory as (typeof family.members)[number]) &&
+        (target === setupResolver || target === setupTemplates || !outside(setupTemplates, target))
+      );
+    });
     if ((raw.startsWith("../") || outside(skillDir, target)) && !allowedSetupLink) {
       errors.push(`${directory}: reference escapes skill directory: ${raw}`);
     } else if (!(await exists(target))) {

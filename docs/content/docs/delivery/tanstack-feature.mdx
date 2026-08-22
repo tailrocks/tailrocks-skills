@@ -217,7 +217,11 @@ the proven build, test, and lint commands instead of standing up new ones. Where
 the existing baseline is doubtful, the audit belongs to the setup skills before
 planning, not inside it:
 
-<Invoke skill="tailrocks-tanstack-project-setup" args="audit this app and remediate every baseline violation" />
+<Invoke skill="tailrocks-tanstack-project-audit" args="audit this application baseline read-only" />
+
+After the user approves the exact `GAP` rows and path scope:
+
+<Invoke skill="tailrocks-tanstack-project-remediate" args="close the exact approved TANSTACK gap rows" />
 
 Recorded is not the same as trusted. Each gate enters `goal/START.md` as
 `<command> ||| <proof>`, where the proof prints how many units the command

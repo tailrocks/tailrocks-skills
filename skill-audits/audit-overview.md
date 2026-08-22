@@ -746,8 +746,27 @@ all terminal checks pass, and the final literal marker is changed to
     `rtk mise run migration-check` passed 287 tests/1,472 assertions across 37
     selected non-protected files with all gates green. Fresh subagent verdict:
     PASS. No evals run.
-- [ ] [IN_PROGRESS] P05.06 TanStack project setup → setup, audit, migrate, remediate.
-- [ ] [TODO] P05.07 TypeScript best practices → write, review, refactor, migrate;
+- [x] [COMPLETED] P05.06 TanStack project setup → setup, audit, migrate, remediate.
+  - Evidence receipt (2026-08-23): made
+    `tailrocks-tanstack-project-setup` scaffold-only with an empty-destination,
+    bounded staging, parent-identity, compare-and-swap publication contract; added
+    manual-only read-only audit, never-broken direct migration, and exact-approved
+    gap remediation owners. Audit emits 15 stable `TANSTACK-*` rows and forbids
+    installs, resolution, shared mutating guidance, networked target execution,
+    and restoration; migration preserves routes, loaders/actions, cache,
+    accessibility, and rendered behavior without producing a migration-plan
+    artifact. Moved the checklist byte-identically only to migration. Generated
+    five canonical TanStack references plus shared runtime/version policy to all
+    owners; all 36 sources produce 138 byte-identical destinations. Version
+    policy is copy-safe and authority-aware. Exact catalog/registry, PR routing,
+    install/choosing/delivery docs, and context counts agree on 55 skills (44
+    manual, 11 model-policy). Validator family-link proof admits only setup
+    templates/resolver and rejects five adversarial boundaries. Focused proof
+    passed 53 tests/225 assertions; final `rtk mise run migration-check` passed
+    292 tests/1,559 assertions across 38 selected non-protected files with all
+    protected-path, generator, validator, documentation, formatting, and
+    plan-state gates green. Fresh subagent verdict: PASS. No evals run.
+- [ ] [IN_PROGRESS] P05.07 TypeScript best practices → write, review, refactor, migrate;
   retain `MODEL_POLICY` only on the existing named owner pending descendant
   approval, and keep project tooling with setup.
 - [ ] [TODO] P05.08 Swift best practices → write, review, refactor, Rust-core

@@ -27,6 +27,9 @@
       "summary": "The Bun-only application baseline and strict TypeScript policy.",
       "skills": [
         "tailrocks-tanstack-project-setup",
+        "tailrocks-tanstack-project-audit",
+        "tailrocks-tanstack-project-migrate",
+        "tailrocks-tanstack-project-remediate",
         "tailrocks-typescript-best-practices"
       ]
     },

@@ -80,6 +80,9 @@
         "skills/tailrocks-skill-update/references/runtime-trust.md",
         "skills/tailrocks-swift-best-practices/references/runtime-trust.md",
         "skills/tailrocks-swift-project-setup/references/runtime-trust.md",
+        "skills/tailrocks-tanstack-project-audit/references/runtime-trust.md",
+        "skills/tailrocks-tanstack-project-migrate/references/runtime-trust.md",
+        "skills/tailrocks-tanstack-project-remediate/references/runtime-trust.md",
         "skills/tailrocks-tanstack-project-setup/references/runtime-trust.md",
         "skills/tailrocks-tui-design/references/runtime-trust.md",
         "skills/tailrocks-typescript-best-practices/references/runtime-trust.md",
@@ -95,6 +98,9 @@
         "skills/tailrocks-rust-project-remediate/references/shared-version-policy.md",
         "skills/tailrocks-rust-project-setup/references/shared-version-policy.md",
         "skills/tailrocks-swift-project-setup/references/shared-version-policy.md",
+        "skills/tailrocks-tanstack-project-audit/references/shared-version-policy.md",
+        "skills/tailrocks-tanstack-project-migrate/references/shared-version-policy.md",
+        "skills/tailrocks-tanstack-project-remediate/references/shared-version-policy.md",
         "skills/tailrocks-tanstack-project-setup/references/shared-version-policy.md"
       ]
     },
@@ -270,6 +276,46 @@
       "destinations": [
         "skills/tailrocks-rust-project-audit/references/workspace-and-layout.md",
         "skills/tailrocks-rust-project-remediate/references/workspace-and-layout.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/boundaries-and-data.md",
+      "destinations": [
+        "skills/tailrocks-tanstack-project-audit/references/boundaries-and-data.md",
+        "skills/tailrocks-tanstack-project-migrate/references/boundaries-and-data.md",
+        "skills/tailrocks-tanstack-project-remediate/references/boundaries-and-data.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/shadcn-ui.md",
+      "destinations": [
+        "skills/tailrocks-tanstack-project-audit/references/shadcn-ui.md",
+        "skills/tailrocks-tanstack-project-migrate/references/shadcn-ui.md",
+        "skills/tailrocks-tanstack-project-remediate/references/shadcn-ui.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/stack-and-layout.md",
+      "destinations": [
+        "skills/tailrocks-tanstack-project-audit/references/stack-and-layout.md",
+        "skills/tailrocks-tanstack-project-migrate/references/stack-and-layout.md",
+        "skills/tailrocks-tanstack-project-remediate/references/stack-and-layout.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/tooling-and-quality.md",
+      "destinations": [
+        "skills/tailrocks-tanstack-project-audit/references/tooling-and-quality.md",
+        "skills/tailrocks-tanstack-project-migrate/references/tooling-and-quality.md",
+        "skills/tailrocks-tanstack-project-remediate/references/tooling-and-quality.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/version-policy.md",
+      "destinations": [
+        "skills/tailrocks-tanstack-project-audit/references/version-policy.md",
+        "skills/tailrocks-tanstack-project-migrate/references/version-policy.md",
+        "skills/tailrocks-tanstack-project-remediate/references/version-policy.md"
       ]
     }
   ]

@@ -74,7 +74,10 @@ The Bun-only application baseline and strict TypeScript policy.
 
 | Skill | What it does | Invocation |
 |---|---|---|
-| [`tailrocks-tanstack-project-setup`](skills/tailrocks-tanstack-project-setup/README.md) | Scaffold, migrate, audit, or remediate the Tailrocks Bun/TanStack Start application baseline. | Manual only |
+| [`tailrocks-tanstack-project-setup`](skills/tailrocks-tanstack-project-setup/README.md) | Scaffold a new Bun-only TanStack Start application with TypeScript 7, Oxc, Router/Query, shadcn/ui, Tailwind CSS v4, tests, and CI. | Manual only |
+| [`tailrocks-tanstack-project-audit`](skills/tailrocks-tanstack-project-audit/README.md) | Audit an existing Bun/TanStack Start application baseline read-only: layout, versions, tooling, boundaries, Router/Query ownership, shadcn/Tailwind, tests, and CI. | Manual only |
+| [`tailrocks-tanstack-project-migrate`](skills/tailrocks-tanstack-project-migrate/README.md) | Migrate an existing frontend application to the Bun-only TanStack Start baseline in never-broken, rollback-safe slices while preserving observable behavior. | Manual only |
+| [`tailrocks-tanstack-project-remediate`](skills/tailrocks-tanstack-project-remediate/README.md) | Close exact approved TANSTACK gap-ledger rows in an existing house-stack application, using canonical references and templates in verified transactional slices. | Manual only |
 | [`tailrocks-typescript-best-practices`](skills/tailrocks-typescript-best-practices/README.md) | Apply strict TypeScript 7 language/UI policy when in-scope work touches TypeScript, TSX, React state, runtime validation, typed failure, readonly APIs, async ownership, or their tests. | Model policy |
 
 ### Native macOS

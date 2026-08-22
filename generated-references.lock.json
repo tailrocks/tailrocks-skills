@@ -547,6 +547,111 @@
       "sha256": "48ae188d631f007a458e8da80541ba9fa6f464ff9ec35cc7908c566f3bd890cf"
     },
     {
+      "source": "skills/tailrocks-tanstack-project-setup/references/boundaries-and-data.md",
+      "destination": "skills/tailrocks-tanstack-project-audit/references/boundaries-and-data.md",
+      "sha256": "d6733731fdbd1e826eaaadaa787fd249523608c9f0decfa843aa2a9454087300"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-tanstack-project-audit/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/shadcn-ui.md",
+      "destination": "skills/tailrocks-tanstack-project-audit/references/shadcn-ui.md",
+      "sha256": "89a98b174e67e279fd9165d376ab09b82f64b69c7f5ee7a47ff9f8ae62bba32e"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-tanstack-project-audit/references/shared-version-policy.md",
+      "sha256": "48ae188d631f007a458e8da80541ba9fa6f464ff9ec35cc7908c566f3bd890cf"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/stack-and-layout.md",
+      "destination": "skills/tailrocks-tanstack-project-audit/references/stack-and-layout.md",
+      "sha256": "bd6227c81ce8be8e155b80235ad086ce12911aabb01ace24dc21c66144f98fb4"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/tooling-and-quality.md",
+      "destination": "skills/tailrocks-tanstack-project-audit/references/tooling-and-quality.md",
+      "sha256": "d663fac10bc2c2ed68deafcd442c0197a4a0ac0e7bdd3638754e8e460c1479a9"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/version-policy.md",
+      "destination": "skills/tailrocks-tanstack-project-audit/references/version-policy.md",
+      "sha256": "0aec57c6a979a596691c61d9ef68c31200ff47765eaafff565406c1103e85fc6"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/boundaries-and-data.md",
+      "destination": "skills/tailrocks-tanstack-project-migrate/references/boundaries-and-data.md",
+      "sha256": "d6733731fdbd1e826eaaadaa787fd249523608c9f0decfa843aa2a9454087300"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-tanstack-project-migrate/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/shadcn-ui.md",
+      "destination": "skills/tailrocks-tanstack-project-migrate/references/shadcn-ui.md",
+      "sha256": "89a98b174e67e279fd9165d376ab09b82f64b69c7f5ee7a47ff9f8ae62bba32e"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-tanstack-project-migrate/references/shared-version-policy.md",
+      "sha256": "48ae188d631f007a458e8da80541ba9fa6f464ff9ec35cc7908c566f3bd890cf"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/stack-and-layout.md",
+      "destination": "skills/tailrocks-tanstack-project-migrate/references/stack-and-layout.md",
+      "sha256": "bd6227c81ce8be8e155b80235ad086ce12911aabb01ace24dc21c66144f98fb4"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/tooling-and-quality.md",
+      "destination": "skills/tailrocks-tanstack-project-migrate/references/tooling-and-quality.md",
+      "sha256": "d663fac10bc2c2ed68deafcd442c0197a4a0ac0e7bdd3638754e8e460c1479a9"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/version-policy.md",
+      "destination": "skills/tailrocks-tanstack-project-migrate/references/version-policy.md",
+      "sha256": "0aec57c6a979a596691c61d9ef68c31200ff47765eaafff565406c1103e85fc6"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/boundaries-and-data.md",
+      "destination": "skills/tailrocks-tanstack-project-remediate/references/boundaries-and-data.md",
+      "sha256": "d6733731fdbd1e826eaaadaa787fd249523608c9f0decfa843aa2a9454087300"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-tanstack-project-remediate/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/shadcn-ui.md",
+      "destination": "skills/tailrocks-tanstack-project-remediate/references/shadcn-ui.md",
+      "sha256": "89a98b174e67e279fd9165d376ab09b82f64b69c7f5ee7a47ff9f8ae62bba32e"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-tanstack-project-remediate/references/shared-version-policy.md",
+      "sha256": "48ae188d631f007a458e8da80541ba9fa6f464ff9ec35cc7908c566f3bd890cf"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/stack-and-layout.md",
+      "destination": "skills/tailrocks-tanstack-project-remediate/references/stack-and-layout.md",
+      "sha256": "bd6227c81ce8be8e155b80235ad086ce12911aabb01ace24dc21c66144f98fb4"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/tooling-and-quality.md",
+      "destination": "skills/tailrocks-tanstack-project-remediate/references/tooling-and-quality.md",
+      "sha256": "d663fac10bc2c2ed68deafcd442c0197a4a0ac0e7bdd3638754e8e460c1479a9"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/version-policy.md",
+      "destination": "skills/tailrocks-tanstack-project-remediate/references/version-policy.md",
+      "sha256": "0aec57c6a979a596691c61d9ef68c31200ff47765eaafff565406c1103e85fc6"
+    },
+    {
       "source": "shared/references/runtime-trust.md",
       "destination": "skills/tailrocks-tanstack-project-setup/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"

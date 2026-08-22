@@ -22,6 +22,10 @@ function manifest(): Record<string, unknown> {
           "skills/tailrocks-rust-project-audit/references/runtime-trust.md",
           "skills/tailrocks-rust-project-remediate/references/runtime-trust.md",
           "skills/tailrocks-rust-project-setup/references/runtime-trust.md",
+          "skills/tailrocks-tanstack-project-audit/references/runtime-trust.md",
+          "skills/tailrocks-tanstack-project-migrate/references/runtime-trust.md",
+          "skills/tailrocks-tanstack-project-remediate/references/runtime-trust.md",
+          "skills/tailrocks-tanstack-project-setup/references/runtime-trust.md",
           "skills/tailrocks-two/references/runtime-trust.md",
         ],
       },
@@ -42,6 +46,20 @@ function manifest(): Record<string, unknown> {
           `skills/tailrocks-rust-project-remediate/references/${name}`,
         ],
       })),
+      ...[
+        "boundaries-and-data.md",
+        "shadcn-ui.md",
+        "stack-and-layout.md",
+        "tooling-and-quality.md",
+        "version-policy.md",
+      ].map((name) => ({
+        source: `skills/tailrocks-tanstack-project-setup/references/${name}`,
+        destinations: [
+          `skills/tailrocks-tanstack-project-audit/references/${name}`,
+          `skills/tailrocks-tanstack-project-migrate/references/${name}`,
+          `skills/tailrocks-tanstack-project-remediate/references/${name}`,
+        ],
+      })),
     ],
   };
 }
@@ -56,6 +74,10 @@ async function fixture(): Promise<string> {
     "tailrocks-rust-project-audit",
     "tailrocks-rust-project-remediate",
     "tailrocks-rust-project-setup",
+    "tailrocks-tanstack-project-audit",
+    "tailrocks-tanstack-project-migrate",
+    "tailrocks-tanstack-project-remediate",
+    "tailrocks-tanstack-project-setup",
   ])
     await write(root, `skills/${skill}/SKILL.md`);
   for (const name of [
@@ -66,6 +88,14 @@ async function fixture(): Promise<string> {
     "workspace-and-layout.md",
   ])
     await write(root, `skills/tailrocks-rust-project-setup/references/${name}`, `${name}\n`);
+  for (const name of [
+    "boundaries-and-data.md",
+    "shadcn-ui.md",
+    "stack-and-layout.md",
+    "tooling-and-quality.md",
+    "version-policy.md",
+  ])
+    await write(root, `skills/tailrocks-tanstack-project-setup/references/${name}`, `${name}\n`);
   await write(root, "generated-references.json", `${JSON.stringify(manifest(), null, 2)}\n`);
   return root;
 }
@@ -76,17 +106,17 @@ test("writes every destination atomically and then proves byte equality", async 
   expect(written).toMatchObject({
     schema: "tailrocks.generated-references-receipt/v1",
     mode: "write",
-    sources: 7,
-    destinations: 16,
-    byte_identical: 16,
-    written: 16,
+    sources: 12,
+    destinations: 35,
+    byte_identical: 35,
+    written: 35,
   });
-  expect(written.mutations).toHaveLength(17);
+  expect(written.mutations).toHaveLength(36);
   expect(written.mutations).toContain("generated-references.lock.json");
   expect(await readFile(path.join(root, "skills/tailrocks-two/references/runtime-trust.md"), "utf8")).toBe(
     "runtime\n",
   );
-  expect((await generateReferences(root, "check")).byte_identical).toBe(16);
+  expect((await generateReferences(root, "check")).byte_identical).toBe(35);
   expect((await generateReferences(root, "write")).written).toBe(0);
   expect(await readFile(path.join(root, "generated-references.lock.json"), "utf8")).toContain(
     "tailrocks.generated-references-lock/v1",
@@ -108,7 +138,7 @@ test("copies and validates canonical bytes without text normalization", async ()
   await generateReferences(root, "write");
   const destination = await readFile(path.join(root, "skills/tailrocks-one/references/runtime-trust.md"));
   expect(destination.equals(bytes)).toBe(true);
-  expect((await generateReferences(root, "check")).byte_identical).toBe(16);
+  expect((await generateReferences(root, "check")).byte_identical).toBe(35);
 });
 
 test("manifest exactly covers canonical sources and every current skill runtime copy", async () => {
@@ -125,7 +155,7 @@ test("manifest exactly covers canonical sources and every current skill runtime 
 
 test("admits only declared owner-family reference sources and counts them", async () => {
   const root = await fixture();
-  expect((await generateReferences(root, "write")).sources).toBe(7);
+  expect((await generateReferences(root, "write")).sources).toBe(12);
 
   const source = manifest();
   const entries = source.entries as Array<{ source: string; destinations: string[] }>;

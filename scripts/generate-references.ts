@@ -68,6 +68,21 @@ const generatedFamilies = [
     ],
     destinations: ["tailrocks-rust-project-audit", "tailrocks-rust-project-remediate"],
   },
+  {
+    owner: "tailrocks-tanstack-project-setup",
+    references: [
+      "boundaries-and-data.md",
+      "shadcn-ui.md",
+      "stack-and-layout.md",
+      "tooling-and-quality.md",
+      "version-policy.md",
+    ],
+    destinations: [
+      "tailrocks-tanstack-project-audit",
+      "tailrocks-tanstack-project-migrate",
+      "tailrocks-tanstack-project-remediate",
+    ],
+  },
 ] as const;
 const familySources = generatedFamilies.flatMap((family) =>
   family.references.map((name) => `skills/${family.owner}/references/${name}`),
