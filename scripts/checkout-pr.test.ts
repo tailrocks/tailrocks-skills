@@ -1,9 +1,15 @@
 import { expect, test } from "bun:test";
-import { lstat, mkdtemp, realpath } from "node:fs/promises";
+import { chmod, lstat, mkdir, mkdtemp, readFile, realpath, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
-import { checkoutPr, checkoutSchema, type CommandResult, type CommandRunner } from "./checkout-pr";
+import {
+  checkoutPr,
+  checkoutSchema,
+  type CheckoutReceipt,
+  type CommandResult,
+  type CommandRunner,
+} from "./checkout-pr";
 
 interface Pr {
   number: number;
@@ -94,6 +100,154 @@ function ok(stdout = ""): CommandResult {
 function fail(stderr: string, code = 1): CommandResult {
   return { code, stdout: "", stderr };
 }
+
+async function run(
+  command: readonly string[],
+  cwd: string,
+): Promise<{ code: number; stdout: string; stderr: string }> {
+  const child = Bun.spawn(command, { cwd, stdout: "pipe", stderr: "pipe" });
+  const [code, stdout, stderr] = await Promise.all([
+    child.exited,
+    new Response(child.stdout).text(),
+    new Response(child.stderr).text(),
+  ]);
+  return { code, stdout, stderr };
+}
+
+interface CliFixture {
+  readonly root: string;
+  readonly bin: string;
+  readonly log: string;
+  readonly realGit: string;
+  readonly pr: Pr;
+}
+
+async function cliFixture(): Promise<CliFixture> {
+  const root = await repository();
+  const realGit = Bun.which("git");
+  if (!realGit) throw new Error("git is required for checkout fixture");
+  const git = async (...args: string[]) => {
+    const result = await run([realGit, ...args], root);
+    if (result.code !== 0) throw new Error(result.stderr || `git ${args.join(" ")} failed`);
+    return result.stdout.trim();
+  };
+  await git("init", "-b", "main");
+  await writeFile(path.join(root, "fixture.txt"), "main\n");
+  await git("add", "fixture.txt");
+  await git("-c", "user.name=Fixture", "-c", "user.email=fixture@example.test", "commit", "-m", "main");
+  await git("switch", "-c", "feature/work");
+  await writeFile(path.join(root, "fixture.txt"), "feature\n");
+  await git("add", "fixture.txt");
+  await git("-c", "user.name=Fixture", "-c", "user.email=fixture@example.test", "commit", "-m", "feature");
+  const oid = await git("rev-parse", "HEAD");
+  await git("switch", "main");
+
+  const harness = await realpath(await mkdtemp(path.join(tmpdir(), "checkout-pr-mocks-")));
+  const bin = path.join(harness, "bin");
+  const log = path.join(harness, "commands.jsonl");
+  await mkdir(bin);
+  const gitMock = `#!/usr/bin/env bun
+import { appendFileSync } from "node:fs";
+appendFileSync(process.env.MOCK_COMMAND_LOG, JSON.stringify(["git", ...process.argv.slice(2)]) + "\\n");
+const result = Bun.spawnSync([process.env.REAL_GIT, ...process.argv.slice(2)], { cwd: process.cwd(), stdout: "pipe", stderr: "pipe" });
+process.stdout.write(result.stdout); process.stderr.write(result.stderr); process.exit(result.exitCode);
+`;
+  const ghMock = `#!/usr/bin/env bun
+import { appendFileSync } from "node:fs";
+const args=process.argv.slice(2), state=JSON.parse(process.env.MOCK_PR_STATE);
+appendFileSync(process.env.MOCK_COMMAND_LOG, JSON.stringify(["gh", ...args]) + "\\n");
+if(args[0]!=="pr") process.exit(9);
+if(args[1]==="view") { process.stdout.write(JSON.stringify(state.view)); process.exit(0); }
+if(args[1]==="list") { process.stdout.write(JSON.stringify(state.list)); process.exit(0); }
+if(args[1]==="checkout") {
+ const result=Bun.spawnSync([process.env.REAL_GIT,"switch","--",state.view.headRefName],{cwd:process.cwd(),stdout:"pipe",stderr:"pipe"});
+ process.stdout.write(result.stdout); process.stderr.write(result.stderr); process.exit(result.exitCode);
+}
+process.exit(9);
+`;
+  await writeFile(path.join(bin, "git"), gitMock);
+  await writeFile(path.join(bin, "gh"), ghMock);
+  await Promise.all([chmod(path.join(bin, "git"), 0o755), chmod(path.join(bin, "gh"), 0o755)]);
+  return { root, bin, log, realGit, pr: { ...openPr(7, "feature/work"), headRefOid: oid } };
+}
+
+async function runCheckoutCli(
+  fixture: CliFixture,
+  input: string,
+  state: { readonly view: Pr; readonly list: readonly Pr[] } = { view: fixture.pr, list: [fixture.pr] },
+): Promise<{ readonly code: number; readonly receipt: CheckoutReceipt; readonly commands: string[][] }> {
+  const script = path.resolve(import.meta.dir, "checkout-pr.ts");
+  const child = Bun.spawn([process.execPath, script, "--root", fixture.root, input], {
+    cwd: fixture.root,
+    env: {
+      ...process.env,
+      PATH: `${fixture.bin}${path.delimiter}${process.env.PATH ?? ""}`,
+      REAL_GIT: fixture.realGit,
+      MOCK_COMMAND_LOG: fixture.log,
+      MOCK_PR_STATE: JSON.stringify(state),
+    },
+    stdout: "pipe",
+    stderr: "pipe",
+  });
+  const [code, stdout, stderr] = await Promise.all([
+    child.exited,
+    new Response(child.stdout).text(),
+    new Response(child.stderr).text(),
+  ]);
+  expect(stderr).toBe("");
+  const commands = (await Bun.file(fixture.log).exists())
+    ? (await readFile(fixture.log, "utf8"))
+        .trim()
+        .split("\n")
+        .filter(Boolean)
+        .map((line) => JSON.parse(line) as string[])
+    : [];
+  return { code, receipt: JSON.parse(stdout) as CheckoutReceipt, commands };
+}
+
+test("CLI switches a real temporary repository through mocked Git and hosting receipts", async () => {
+  const fixture = await cliFixture();
+  const result = await runCheckoutCli(fixture, "7");
+  expect(result.code).toBe(0);
+  expect(result.receipt).toMatchObject({
+    schema: checkoutSchema,
+    outcome: "success",
+    code: "switched",
+    after: { branch: "feature/work", head: fixture.pr.headRefOid },
+  });
+  expect(result.commands.filter((command) => command.slice(0, 3).join(" ") === "gh pr checkout")).toEqual([
+    ["gh", "pr", "checkout", "7"],
+  ]);
+  expect((await run([fixture.realGit, "branch", "--show-current"], fixture.root)).stdout.trim()).toBe(
+    "feature/work",
+  );
+  expect((await run([fixture.realGit, "rev-parse", "HEAD"], fixture.root)).stdout.trim()).toBe(
+    fixture.pr.headRefOid,
+  );
+});
+
+test("CLI dirty-tree refusal reaches no mocked hosting and preserves real Git state", async () => {
+  const fixture = await cliFixture();
+  const before = (await run([fixture.realGit, "rev-parse", "HEAD"], fixture.root)).stdout.trim();
+  await writeFile(path.join(fixture.root, "untracked.txt"), "dirty\n");
+  const result = await runCheckoutCli(fixture, "7");
+  expect(result.code).toBe(2);
+  expect(result.receipt).toMatchObject({ outcome: "refused", code: "dirty_tree" });
+  expect(result.commands.some((command) => command[0] === "gh")).toBe(false);
+  expect((await run([fixture.realGit, "branch", "--show-current"], fixture.root)).stdout.trim()).toBe("main");
+  expect((await run([fixture.realGit, "rev-parse", "HEAD"], fixture.root)).stdout.trim()).toBe(before);
+});
+
+test("CLI no-match performs no checkout and preserves a real temporary repository", async () => {
+  const fixture = await cliFixture();
+  const before = (await run([fixture.realGit, "rev-parse", "HEAD"], fixture.root)).stdout.trim();
+  const result = await runCheckoutCli(fixture, "missing", { view: fixture.pr, list: [] });
+  expect(result.code).toBe(2);
+  expect(result.receipt).toMatchObject({ outcome: "refused", code: "no_match", candidates: [] });
+  expect(result.commands.filter((command) => command.slice(0, 3).join(" ") === "gh pr checkout")).toEqual([]);
+  expect((await run([fixture.realGit, "branch", "--show-current"], fixture.root)).stdout.trim()).toBe("main");
+  expect((await run([fixture.realGit, "rev-parse", "HEAD"], fixture.root)).stdout.trim()).toBe(before);
+});
 
 test("number switches once and proves the exact branch", async () => {
   const root = await repository();

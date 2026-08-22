@@ -717,6 +717,16 @@ policy:
     expect(await validate(root)).toContain(`${retired}: retired skill name is forbidden`);
   });
 
+  test("rejects resurrection of the retired checkout owner and route", async () => {
+    const retired = "tailrocks-checkout-pr";
+    await write("README.md", `${skill}\n${retired}\n`);
+    expect(await validate(root)).toContain(`README.md: retired skill route is forbidden: ${retired}`);
+    await cp(path.join(root, "skills", skill), path.join(root, "skills", retired), { recursive: true });
+    const file = path.join(root, "skills", retired, "SKILL.md");
+    await writeFile(file, (await readFile(file, "utf8")).replaceAll(skill, retired));
+    expect(await validate(root)).toContain(`${retired}: retired skill name is forbidden`);
+  });
+
   test("rejects a retired audit route from every active skill package directory", async () => {
     for (const relative of ["references/routing.md", "scripts/resurrect.ts"]) {
       await write(`skills/${skill}/${relative}`, "Route to tailrocks-audit.\n");

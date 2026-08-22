@@ -45,7 +45,12 @@ describe("scaffoldSkill", () => {
   test("rejects retired public skill names before mutation", async () => {
     const root = await fixture();
     try {
-      for (const name of ["tailrocks-audit", "tailrocks-skill-migrate", "tailrocks-web-visual-qa"]) {
+      for (const name of [
+        "tailrocks-audit",
+        "tailrocks-checkout-pr",
+        "tailrocks-skill-migrate",
+        "tailrocks-web-visual-qa",
+      ]) {
         await expect(scaffoldSkill(root, name)).rejects.toThrow("retired skill name is forbidden");
       }
       expect(await readdir(path.join(root, ".agent-skills")).catch(() => [])).toEqual([]);

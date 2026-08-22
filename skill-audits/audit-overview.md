@@ -1328,9 +1328,23 @@ all terminal checks pass, and the final literal marker is changed to
     442 tests/5,166 assertions and every static/generated check; only the same
     two unrelated macOS GUI activation cases failed, owned by P09.15. No evals
     run or inspected.
-- [ ] [IN_PROGRESS] P09.04 Checkout command: temporary repositories and mocked
+- [x] [COMPLETED] P09.04 Checkout command: temporary repositories and mocked
   hosting/Git receipts through the deterministic script; no public skill alias.
-- [ ] [TODO] P09.05 `tailrocks-code-health`: machine-owned version and ratchet
+  - Evidence receipt (2026-08-23): CLI/default-runner fixtures now create real
+    temporary Git repositories with committed main and pull-request branches,
+    then route exact argv through executable mocked Git and hosting commands.
+    Success proves one checkout plus the real final branch/OID; dirty-tree and
+    no-match receipts prove zero hosting mutation and preserve the real branch
+    and HEAD. The retired checkout owner remains eval-only and inactive, while
+    the centralized retired-name set now prevents its public owner or route from
+    being recreated through validation or scaffolding. Focused proof passed 89
+    tests/397 assertions; validator passed 84 skills; references checked 88
+    sources/258 byte-identical destinations; docs checked 256 files; fresh
+    subagent verdict: PASS. The non-eval migration gate passed 446 tests/5,187
+    assertions and every static/generated check; only the same two unrelated
+    macOS GUI activation cases failed, owned by P09.15. No evals run or
+    inspected.
+- [ ] [IN_PROGRESS] P09.05 `tailrocks-code-health`: machine-owned version and ratchet
   predicates plus unique owner hints.
 - [ ] [TODO] P09.06 `tailrocks-contribute`: five stage scripts with temporary
   repository state and mocked external receipts.
