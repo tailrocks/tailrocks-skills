@@ -157,6 +157,26 @@
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
     },
     {
+      "source": "skills/tailrocks-grpc-best-practices/references/operations.md",
+      "destination": "skills/tailrocks-grpc-review/references/operations.md",
+      "sha256": "f2a67376304402eac79f2a1320887b53487afe5a1088477924c65cd6607a9828"
+    },
+    {
+      "source": "skills/tailrocks-grpc-best-practices/references/proto-contracts.md",
+      "destination": "skills/tailrocks-grpc-review/references/proto-contracts.md",
+      "sha256": "8211782391cc1587e4f8a6160b8a32286cb24784131d1c578ae2e592786790ed"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-grpc-review/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-grpc-best-practices/references/tonic-server-client.md",
+      "destination": "skills/tailrocks-grpc-review/references/tonic-server-client.md",
+      "sha256": "cedc95776dbd06b67a5940313e1046554714f5d80f9ff3dc2d1ab726c1b31e6f"
+    },
+    {
       "source": "shared/references/runtime-trust.md",
       "destination": "skills/tailrocks-idea/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"

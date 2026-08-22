@@ -4,7 +4,7 @@
 
 `tailrocks-grpc-best-practices` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-grpc-best-practices)
 
-Apply cross-service gRPC policy when in-scope work touches proto or Buf contracts, tonic/prost services, status mapping, deadlines, streaming, health, or wire tests. Not for public API surfaces; those are GraphQL.
+Apply cross-service gRPC policy when in-scope work evolves proto or Buf contracts, tonic/prost services, status mapping, deadlines, streaming, health, or wire tests. Use tailrocks-grpc-review for findings. Not for public APIs; those are GraphQL.
 
 ## Invocation
 
@@ -13,6 +13,8 @@ matches work already in scope. Selection grants no authority beyond the
 active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-grpc-best-practices` …
+
+Arguments: `<cross-service gRPC contract evolution>`
 
 ## Skill definition
 

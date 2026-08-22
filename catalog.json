@@ -17,7 +17,8 @@
         "tailrocks-axum-refactor",
         "tailrocks-graphql-best-practices",
         "tailrocks-graphql-review",
-        "tailrocks-grpc-best-practices"
+        "tailrocks-grpc-best-practices",
+        "tailrocks-grpc-review"
       ]
     },
     {

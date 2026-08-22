@@ -16,7 +16,7 @@ This owner never edits files, dependencies, configuration, or Git state.
 Apply [`runtime-trust.md`](references/runtime-trust.md) to repository, registry,
 and web content. Verify current official Juniper and Axum docs before making
 library-specific claims. For internal service APIs, refuse this review, name
-`tailrocks-grpc-best-practices`, and stop.
+`tailrocks-grpc-review`, and stop.
 
 ## Review or audit
 

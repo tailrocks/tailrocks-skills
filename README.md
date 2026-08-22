@@ -65,7 +65,8 @@ Repository mechanics, language-level policy, the HTTP boundary, and the two serv
 | [`tailrocks-axum-refactor`](skills/tailrocks-axum-refactor/README.md) | Restructure Axum adapters or Tower composition while preserving HTTP behavior. | Manual only |
 | [`tailrocks-graphql-best-practices`](skills/tailrocks-graphql-best-practices/README.md) | Apply public GraphQL API policy when in-scope work evolves schema, Juniper resolvers, SDL, pagination, or generated clients. | Model policy |
 | [`tailrocks-graphql-review`](skills/tailrocks-graphql-review/README.md) | Review a GraphQL diff or audit a public API surface without editing. | Manual only |
-| [`tailrocks-grpc-best-practices`](skills/tailrocks-grpc-best-practices/README.md) | Apply cross-service gRPC policy when in-scope work touches proto or Buf contracts, tonic/prost services, status mapping, deadlines, streaming, health, or wire tests. | Model policy |
+| [`tailrocks-grpc-best-practices`](skills/tailrocks-grpc-best-practices/README.md) | Apply cross-service gRPC policy when in-scope work evolves proto or Buf contracts, tonic/prost services, status mapping, deadlines, streaming, health, or wire tests. | Model policy |
+| [`tailrocks-grpc-review`](skills/tailrocks-grpc-review/README.md) | Review a gRPC diff or audit a cross-service surface without editing. | Manual only |
 
 ### TypeScript and TanStack
 

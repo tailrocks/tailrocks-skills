@@ -727,10 +727,26 @@ all terminal checks pass, and the final literal marker is changed to
     assertions across 36 selected non-protected files with all protection,
     formatting, generator, validator, and plan-state gates green. Fresh subagent
     verdict: PASS. No evals run.
-- [ ] [IN_PROGRESS] P05.05 gRPC best practices → service-contract evolution and review;
+- [x] [COMPLETED] P05.05 gRPC best practices → service-contract evolution and review;
   retain `MODEL_POLICY` only on the existing named owner pending descendant
   approval.
-- [ ] [TODO] P05.06 TanStack project setup → setup, audit, migrate, remediate.
+  - Evidence receipt (2026-08-23): made
+    `tailrocks-grpc-best-practices` the cross-service contract evolution-only
+    owner with hard review/audit and public-GraphQL refusals while retaining its
+    existing `MODEL_POLICY`; added manual-only `tailrocks-grpc-review` for diff
+    review and whole-surface audit. Review binds exact revisions, proto and
+    compiled descriptors, field-number history, and immutable Buf comparison
+    commits; execution requires explicit authority, read-only bytes, scrubbed
+    secrets, disabled network, bounded external caches/output, and controlled
+    loopback, with installs/codegen and moving baselines refused. Generated three
+    canonical gRPC references to review; all 31 sources produce 117 byte-identical
+    destinations. Exact selectors, GraphQL/PR routes, catalog/registry,
+    install/choosing docs, and counts agree on 52 skills (41 manual, 11
+    model-policy). Focused proof passed 53 tests/189 assertions; final
+    `rtk mise run migration-check` passed 287 tests/1,472 assertions across 37
+    selected non-protected files with all gates green. Fresh subagent verdict:
+    PASS. No evals run.
+- [ ] [IN_PROGRESS] P05.06 TanStack project setup → setup, audit, migrate, remediate.
 - [ ] [TODO] P05.07 TypeScript best practices → write, review, refactor, migrate;
   retain `MODEL_POLICY` only on the existing named owner pending descendant
   approval, and keep project tooling with setup.

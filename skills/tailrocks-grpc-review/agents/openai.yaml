@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: gRPC Review"
+  short_description: "Review cross-service gRPC contracts read-only"
+  default_prompt: "Use $tailrocks-grpc-review to review this gRPC diff or service surface read-only and report only verified proto, Buf, tonic/prost, operations, and wire-contract findings."
+policy:
+  allow_implicit_invocation: false

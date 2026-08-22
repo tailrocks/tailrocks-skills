@@ -33,7 +33,8 @@ never starts a neighboring workflow or makes a human decision.
 | [`tailrocks-axum-refactor`](/docs/skills/tailrocks-axum-refactor) | Axum or Tower structure must change while routes, HTTP contracts, policy order, and lifecycle remain frozen. |
 | [`tailrocks-graphql-best-practices`](/docs/skills/tailrocks-graphql-best-practices) | A public GraphQL API must evolve: schema design, committed SDL, breaking-change gates, Juniper server, generated web client. |
 | [`tailrocks-graphql-review`](/docs/skills/tailrocks-graphql-review) | A GraphQL diff or whole public API surface needs read-only schema, server, SDL-gate, and generated-client findings. |
-| [`tailrocks-grpc-best-practices`](/docs/skills/tailrocks-grpc-best-practices) | Rust services talk to each other: proto contracts under buf gates, tonic adapters, deadlines, status mapping. |
+| [`tailrocks-grpc-best-practices`](/docs/skills/tailrocks-grpc-best-practices) | A cross-service gRPC contract must evolve: proto under Buf gates, tonic adapters, deadlines, statuses, and wire tests. |
+| [`tailrocks-grpc-review`](/docs/skills/tailrocks-grpc-review) | A gRPC diff or whole service surface needs read-only proto, adapter, operations, and wire-contract findings. |
 
 Axum best practices apply only where there is an HTTP adapter. Domain logic
 behind it belongs to the Rust write, review, or refactor owner matching the task.

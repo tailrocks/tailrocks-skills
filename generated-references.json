@@ -49,6 +49,7 @@
         "skills/tailrocks-graphql-review/references/runtime-trust.md",
         "skills/tailrocks-grilling/references/runtime-trust.md",
         "skills/tailrocks-grpc-best-practices/references/runtime-trust.md",
+        "skills/tailrocks-grpc-review/references/runtime-trust.md",
         "skills/tailrocks-idea/references/runtime-trust.md",
         "skills/tailrocks-improve/references/runtime-trust.md",
         "skills/tailrocks-macos-design/references/runtime-trust.md",
@@ -181,6 +182,24 @@
       "source": "skills/tailrocks-graphql-best-practices/references/server-rust.md",
       "destinations": [
         "skills/tailrocks-graphql-review/references/server-rust.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-grpc-best-practices/references/operations.md",
+      "destinations": [
+        "skills/tailrocks-grpc-review/references/operations.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-grpc-best-practices/references/proto-contracts.md",
+      "destinations": [
+        "skills/tailrocks-grpc-review/references/proto-contracts.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-grpc-best-practices/references/tonic-server-client.md",
+      "destinations": [
+        "skills/tailrocks-grpc-review/references/tonic-server-client.md"
       ]
     },
     {

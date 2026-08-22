@@ -164,7 +164,7 @@ Skill definition: `skills/tailrocks-graphql-review/SKILL.md`
 
 ### tailrocks-grpc-best-practices
 
-Design, build, and review gRPC contracts and services for cross-service
+Evolve gRPC contracts and services for cross-service
 communication between Rust services — the only cross-service protocol in the
 doctrine. Contract-first: `.proto` files under buf lint and breaking gates,
 tonic and prost adapters that keep generated types out of the domain, canonical
@@ -172,6 +172,13 @@ status-code mapping, mandatory deadlines, health and reflection wiring, and
 wire-level contract tests. Never the public API surface — that is GraphQL.
 
 Skill definition: `skills/tailrocks-grpc-best-practices/SKILL.md`
+
+### tailrocks-grpc-review
+
+Review a gRPC diff or audit a whole cross-service surface without mutation,
+covering proto compatibility, tonic/prost boundaries, operations, and wire proof.
+
+Skill definition: `skills/tailrocks-grpc-review/SKILL.md`
 
 ### tailrocks-typescript-best-practices
 

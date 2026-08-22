@@ -42,6 +42,11 @@ const generatedFamilies = [
     destinations: ["tailrocks-graphql-review"],
   },
   {
+    owner: "tailrocks-grpc-best-practices",
+    references: ["operations.md", "proto-contracts.md", "tonic-server-client.md"],
+    destinations: ["tailrocks-grpc-review"],
+  },
+  {
     owner: "tailrocks-rust-best-practices",
     references: [
       "api-design.md",

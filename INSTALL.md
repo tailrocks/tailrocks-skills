@@ -28,7 +28,7 @@ one shared directory:
   `tailrocks-axum-best-practices`, `tailrocks-axum-review`,
   `tailrocks-axum-refactor`, `tailrocks-graphql-best-practices`,
   `tailrocks-graphql-review`,
-  `tailrocks-grpc-best-practices`
+  `tailrocks-grpc-best-practices`, `tailrocks-grpc-review`
 - **TypeScript:** `tailrocks-typescript-best-practices`,
   `tailrocks-tanstack-project-setup`
 - **macOS (native):** `tailrocks-swift-best-practices`,
@@ -59,7 +59,7 @@ The registry classifies 11 skills as `MODEL_POLICY`: `tailrocks-agents-md`,
 `tailrocks-macos-design`, `tailrocks-rust-best-practices`,
 `tailrocks-swift-best-practices`, `tailrocks-tui-design`,
 `tailrocks-typescript-best-practices`, and `tailrocks-web-design`. They may load
-only under their exact description trigger. The other 40 skills are
+only under their exact description trigger. The other 41 skills are
 `MANUAL_ONLY` and require an explicit request.
 
 Model selection grants no mutation, tool, blessing, commit, push, release,
