@@ -487,9 +487,29 @@ all terminal checks pass, and the final literal marker is changed to
     covered 4 patterns/183 frozen source paths with zero violations. Fresh
     subagent verdict: PASS after descriptor anchoring and completion-state fixes.
     No evals run.
-- [ ] [IN_PROGRESS] P04.03 Add `scripts/checkout-pr.ts` with validated number/URL/branch,
+- [x] [COMPLETED] P04.03 Add `scripts/checkout-pr.ts` with validated number/URL/branch,
   dirty-tree refusal, closed/no-match handling, and exact switch verification.
-- [ ] [TODO] P04.04 Add `scripts/post-pr-review.ts`; require fresh posting
+  - Evidence receipt (2026-08-22): added the typed bounded checkout state
+    machine, command README, `pr:checkout` task, and a zero-logic compatibility
+    alias that invokes the verified installed script. Number, exact HTTPS URL,
+    and Git-valid branch inputs resolve without shell interpolation; branch
+    lookup prefers one exact open match and refuses zero, multiple, or saturated
+    results. Closed confirmation is freshly re-queried and bound to the resolved
+    PR number. Two clean-state guards precede one checkout call; success requires
+    exact `headRefName` and `headRefOid`. Failed mutations recover a different
+    branch normally or a same-name branch through detach plus CAS `update-ref`,
+    then re-prove clean branch and HEAD; concurrent ref movement is never
+    overwritten. Focused proof passed 22 tests/55 assertions across success,
+    no-op, validation, ambiguity, truncation, dirty/raced state, closed authority,
+    malformed hosting data, wrong branch/OID, typed CLI exits, and recovery.
+    `rtk mise run migration-check` passed 186 tests/962 assertions across 20
+    selected non-protected files, validated 44 skills, checked 136 generated
+    files, and passed formatting and diff checks. Protection proof covered 4
+    patterns/183 frozen source paths with zero violations. Fresh subagent
+    verdict: PASS after exact commit proof, direct installed-script routing,
+    saturated lookup refusal, typed CLI errors, and CAS same-branch recovery.
+    No evals run.
+- [ ] [IN_PROGRESS] P04.04 Add `scripts/post-pr-review.ts`; require fresh posting
   authority, verify current HEAD, and deduplicate repeated receipts.
 - [ ] [TODO] P04.05 Add `scripts/merge-preflight.ts`; use bounded polling,
   terminal pending output, machine-owned delivery/documentation predicates, and

@@ -132,7 +132,7 @@ Open, refresh, check out, and merge pull requests in any repository, extended by
 |---|---|---|
 | [`tailrocks-create-pr`](skills/tailrocks-create-pr/README.md) | Open a pull request for the current change in any repository: branch, commit in the repo's convention, body from its template, render check. | Manual only |
 | [`tailrocks-refresh-pr`](skills/tailrocks-refresh-pr/README.md) | Reconcile an open pull request's title and body against the current diff: drifted prose rewritten, accurate prose kept verbatim, template sections re-selected. | Manual only |
-| [`tailrocks-checkout-pr`](skills/tailrocks-checkout-pr/README.md) | Switch the working repository onto a pull request's branch via gh pr checkout, guarding a dirty working tree first. | Manual only |
+| [`tailrocks-checkout-pr`](skills/tailrocks-checkout-pr/README.md) | Compatibility alias for the deterministic pull-request checkout command. | Manual only |
 | [`tailrocks-review-pr`](skills/tailrocks-review-pr/README.md) | Review a pull request, branch, or diff and report verified findings: adversarially validated bugs, structural regressions, content-triggered specialist lanes, house-skill routing. | Manual only |
 | [`tailrocks-merge-pr`](skills/tailrocks-merge-pr/README.md) | Merge a pull request fail-closed in any repository: CI and documentation gates, blast-radius confirm, metadata reconcile, repo-selected merge method, the repo's pre-merge worklist from .tailrocks/pr.md. | Manual only |
 | [`tailrocks-document`](skills/tailrocks-document/README.md) | Before a pull request merges, make the repository's own documentation the final source of truth for everything the diff changed — rewritten pages and new structures, never a changelog. | Manual only |

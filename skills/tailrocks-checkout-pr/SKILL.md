@@ -1,39 +1,39 @@
 ---
 name: tailrocks-checkout-pr
 description: >-
-  Use only when the user explicitly requests this skill. Switch the working repository onto a pull request's branch via gh pr checkout, guarding a dirty working tree first. Accepts a PR number, URL, or branch name. Do not use to create, refresh, or merge a PR.
-argument-hint: "<PR number | URL | branch>"
+  Use only when the user explicitly requests this skill. Compatibility alias for
+  the deterministic pull-request checkout command. Do not use to create,
+  refresh, review, merge, or otherwise mutate pull requests.
+argument-hint: "<PR number | URL | branch> [--confirm-closed <number>]"
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
 ---
 
-# Checkout PR
+# Checkout PR Compatibility Alias
 
-Switch the working repository onto a PR's branch via `gh pr checkout`. Works
-in any repository with an authenticated `gh`; needs nothing from
-`.tailrocks/pr.md`.
+This name is deprecated during the compatibility window. It contains no checkout
+logic. Read [`runtime-trust.md`](references/runtime-trust.md), then route exactly
+once to the collection-owned command.
 
-## Steps
+Resolve the real path of this installed `SKILL.md`; its collection root is two
+directories above its containing directory. Resolve the checkout-pr TypeScript
+entrypoint under that root's scripts directory, require the joined path itself
+to be non-symlink and the resolved entrypoint to be regular, then run:
 
-1. **Resolve to a PR.** Number or URL → pass to `gh pr checkout` directly.
-   Branch name → query `gh pr list --head <branch> --state all` for number,
-   state, and head repository. Prefer one exact open match. Zero or multiple
-   matches → STOP and list candidates; never select `.[0]`. A closed or merged
-   match still requires step 3 confirmation. Never fall back to raw `git checkout` — the
-   point of the skill is landing on the PR, not on a similarly named branch.
+```sh
+bun "$CHECKOUT_SCRIPT" --root "$TARGET_REPOSITORY" <arguments>
+```
 
-2. **Guard the working tree.** `git status --porcelain` — if dirty, STOP and
-   ask the operator to commit, stash, or discard first. Never auto-stash:
-   a stash the operator does not know about is where work goes to die. Note
-   `git branch --show-current` — the way back.
+Set `TARGET_REPOSITORY` to the real repository root. Forward the user's one
+identifier unchanged. Forward `--confirm-closed <number>` only after the user
+explicitly confirms the exact number reported by a
+`closed_confirmation_required` receipt. Never infer or carry confirmation.
 
-3. **Check the PR is open.** `gh pr view <N> --json state,headRefName`.
-   `MERGED` or `CLOSED` → warn that the branch may be stale or deleted and
-   confirm before proceeding.
+Return the command's typed receipt verbatim. Exit 0 is success; exit 2 is a
+state refusal requiring operator action; exit 1 is a command, verification, or
+recovery failure. Never run `gh pr checkout`, `git checkout`, `git switch`, or
+auto-stash outside the command.
 
-4. **Switch.** `gh pr checkout <N>`. Verify `git branch --show-current`
-   matches `headRefName`.
-
-5. **Report.** Switched from `<old>` to `<headRefName>` (PR #N). Way back:
-   `git switch <old>`.
+**Complete when:** the command returns `switched` or `already_current`. Any
+other code is terminal for this invocation.
