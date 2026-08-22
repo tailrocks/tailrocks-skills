@@ -23,7 +23,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - run: bun run scripts/validate-skills.ts
       - run: bun run scripts/generate-docs.ts --check
-      - run: bun test scripts/
+      - run: mise run test
       # Freshness against the live registry is a fact about the day, not about
       # the diff, so it runs on main and on a schedule. What a pull request can
       # be held to is that the pins and the documents quoting them agree.
@@ -37,7 +37,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Parse Swift templates
-        run: find skills -path '*/templates/*.swift' -print0 | xargs -0 -n1 swiftc -parse
+        run: find skills -type d -name evals -prune -o -path '*/templates/*.swift' -type f -print0 | xargs -0 -n1 swiftc -parse
       - name: Verify capture refuses a missing application
         run: |
           set +e

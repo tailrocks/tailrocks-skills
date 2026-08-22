@@ -4,13 +4,15 @@
 
 `tailrocks-tanstack-project-setup` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-tanstack-project-setup)
 
-Scaffold, migrate, audit, or remediate the Tailrocks Bun/TanStack Start application baseline. Use for project layout, exact versions, Router and Query ownership, server boundaries, shadcn, Tailwind, Oxc, tests, and CI; audit mode is read-only.
+Scaffold a new Bun-only TanStack Start application with TypeScript 7, Oxc, Router/Query, shadcn/ui, Tailwind CSS v4, tests, and CI. Refuse existing apps; use the audit, migrate, or remediate owner instead.
 
 ## Invocation
 
 This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-tanstack-project-setup` …
+
+Arguments: `<new application destination and requirements>`
 
 ## Skill definition
 
@@ -20,8 +22,9 @@ file. They are not copied here — one source, and no chance of the two drifting
 ## References
 
 - [`boundaries-and-data.md`](references/boundaries-and-data.md)
-- [`migration-checklist.md`](references/migration-checklist.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`shadcn-ui.md`](references/shadcn-ui.md)
+- [`shared-version-policy.md`](references/shared-version-policy.md)
 - [`stack-and-layout.md`](references/stack-and-layout.md)
 - [`tooling-and-quality.md`](references/tooling-and-quality.md)
 - [`version-policy.md`](references/version-policy.md)

@@ -4,7 +4,7 @@
 
 `tailrocks-skill-refactor` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-skill-refactor)
 
-Change skill architecture or public contracts by splitting, merging, renaming, extracting, replacing, deprecating, or migrating responsibilities.
+Restructure skill ownership while preserving observable behavior and public contracts. Do not use for semantic edits or contract-breaking migration.
 
 ## Invocation
 
@@ -19,3 +19,9 @@ Arguments: `<skill or skill family> <transformation>`
 The instructions this skill loads live in [`SKILL.md`](SKILL.md), beside this
 file. They are not copied here — one source, and no chance of the two drifting.
 
+## References
+
+- [`house-wiring.md`](references/house-wiring.md)
+- [`operational-contract.md`](references/operational-contract.md)
+- [`responsibility-topology.md`](references/responsibility-topology.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

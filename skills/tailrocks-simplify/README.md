@@ -22,4 +22,5 @@ file. They are not copied here — one source, and no chance of the two drifting
 ## References
 
 - [`behavior-preservation.md`](references/behavior-preservation.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`simplification-ladder.md`](references/simplification-ladder.md)

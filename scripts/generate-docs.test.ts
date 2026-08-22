@@ -8,6 +8,9 @@ import {
   groupSkills,
   mapProse,
   readCatalog,
+  renderReadme,
+  renderSkillIndex,
+  renderSkillOverview,
   replaceRootList,
   strayMarkdown,
   textDiagrams,
@@ -21,6 +24,7 @@ const skill = (name: string) => ({
   description: "",
   argumentHint: undefined,
   defaultPrompt: undefined,
+  invocationClass: "MANUAL_ONLY" as const,
   body: "",
   references: [],
   templates: [],
@@ -67,6 +71,24 @@ test("grouping preserves catalog order and rejects an incomplete catalog", () =>
   expect(() =>
     groupSkills([...groups, { id: "h", title: "H", summary: "s", skills: ["a"] }], [skill("a"), skill("b")]),
   ).toThrow(/more than one group/);
+});
+
+test("renders manual and model-policy invocation classes distinctly", () => {
+  const manual = skill("tailrocks-manual");
+  const model = { ...skill("tailrocks-model"), invocationClass: "MODEL_POLICY" as const };
+  expect(renderReadme(manual)).toContain("never activates on its own");
+  expect(renderReadme(model)).toContain("may load automatically only when its exact trigger");
+  expect(renderReadme(model)).toContain("Selection grants no authority");
+  expect(renderSkillOverview(model)).toContain("may load automatically only when its exact trigger");
+  const index = renderSkillIndex([
+    {
+      group: { id: "g", title: "G", summary: "s", skills: [manual.name, model.name] },
+      skills: [manual, model],
+    },
+  ]);
+  expect(index).toContain("Manual only");
+  expect(index).toContain("Model policy");
+  expect(index).not.toContain("Every skill is manual-only");
 });
 
 test("the catalog groups every skill in the tree", async () => {
@@ -160,4 +182,9 @@ test("generates a README and a documentation page for every skill", async () => 
   expect(skillReadme!.content.length).toBeLessThan(definition!.content.length);
   // Skill bodies link to their own references; the site cannot serve those paths.
   expect(page?.content).not.toContain("](references/");
+
+  const createReadme = generated.find(
+    (entry) => entry.file === path.join("skills", "tailrocks-skill-create", "README.md"),
+  );
+  expect(createReadme?.content).not.toContain("skill/evals/");
 });

@@ -22,3 +22,4 @@ file. They are not copied here — one source, and no chance of the two drifting
 ## References
 
 - [`readiness-and-grilling.md`](references/readiness-and-grilling.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

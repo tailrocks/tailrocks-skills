@@ -23,6 +23,8 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`pr-body.md`](references/pr-body.md)
 - [`repo-conventions.md`](references/repo-conventions.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
+- [`shared-pr-conventions.md`](references/shared-pr-conventions.md)
 
 ## Templates
 

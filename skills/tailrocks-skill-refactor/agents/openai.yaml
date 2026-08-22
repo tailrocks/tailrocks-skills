@@ -1,6 +1,6 @@
 interface:
   display_name: "Tailrocks: Skill Refactor"
-  short_description: "Change skill contracts or responsibility topology"
-  default_prompt: "Use $tailrocks-skill-refactor on the named skill family and transformation."
+  short_description: "Restructure skill ownership without behavior change"
+  default_prompt: "Use $tailrocks-skill-refactor for this behavior-preserving structural change."
 policy:
   allow_implicit_invocation: false

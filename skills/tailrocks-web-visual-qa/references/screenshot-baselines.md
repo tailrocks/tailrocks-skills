@@ -30,8 +30,9 @@ for (const state of registry.settings.states) {
 ```
 
 Baselines land beside the spec in Playwright's snapshot directory and are
-committed. The suite runs as its own task (`test:visual`), separate from
-the unit gate, because it needs a browser.
+committed. The suite runs through the owned-server supervisor as its own task,
+separate from the unit gate, because it needs a browser. Raw Playwright
+invocation lacks revision/guard proof and is not a valid capture.
 
 ## Determinism
 

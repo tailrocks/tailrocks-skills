@@ -1,30 +1,29 @@
-# Architecture and Documentation Gates
+<!-- tailrocks-code-health-audit:start -->
+# Architecture and Documentation Criteria
 
-Declare an inward dependency DAG before checking it.
+The measurable contract starts with an inward dependency DAG. Every crate or
+module has a tier, allowed dependencies, public entry points, owner, and narrow
+verification command. Foundational domain code has no HTTP, UI, process, test,
+generated, or adapter dependency.
 
-For Rust, derive the crate graph from `cargo metadata`; assign every crate a tier
-and allowed dependencies. Foundational domain crates depend on no HTTP/UI/process
-adapter. Axum and binaries sit outward. Expose implementation through each
-crate/module entry point; keep tests and generated/lint crates outside production
-edges.
+For Rust, `cargo metadata` supplies the crate graph. For TypeScript, the selected
+architecture provider exposes cycles, unresolved imports, reverse layer edges,
+inward route dependencies, product-to-primitive inversions, production-to-test
+imports, and feature implementation subpaths. Known violations have stable
+repository-relative identities.
 
-For TypeScript, use Dependency Cruiser with TS7 paths to reject cycles,
-unresolved imports, reverse layer edges, route imports from inward modules,
-product dependencies from shadcn primitives, production-to-test imports, and
-feature implementation subpaths. Use its baseline reporter for known brownfield
-violations and ratchet them.
+Every bounded module's local documentation states purpose, tier, allowed edges,
+public surface, layout, and verification. Secondary indexes derive from those
+sources. A code-to-doc map covers externally visible behavior; documented
+commands, internal links, flags, routes, fields, and module paths remain current.
 
-Each bounded module/crate owns a concise README or equivalent containing purpose,
-tier, allowed dependencies, public entry points, layout, and verification command.
-A structural change updates that source in the same commit. Generate secondary
-indexes from these local sources rather than duplicating prose.
+Generated files name their generator and reproduce cleanly from owned inputs.
+The audit treats an unclassified edge, duplicated source of truth, stale doc
+mapping, or edited generated output as a gap.
+<!-- tailrocks-code-health-audit:end -->
 
-Maintain a code-to-doc map for externally visible behavior. Execute or parse
-documented commands in CI, check internal links, and fail stale references to
-removed flags, routes, config fields, or modules.
+## Mutation adapter
 
-Generated files declare their generator and are checked for clean regeneration.
-Agents edit inputs, never generated outputs.
-
-**Completion:** every dependency edge and structural/doc ownership rule is
-machine-checkable, produces file-level diagnostics, and points to its narrow fix.
+Establish writes the approved DAG, current presence baseline, and one provider
+gate. Tighten only deletes resolved violations or narrows the approved surface;
+it never reclassifies a forbidden edge to absorb a regression.

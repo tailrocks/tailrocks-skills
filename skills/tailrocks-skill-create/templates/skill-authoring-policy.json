@@ -1,0 +1,12 @@
+{
+  "schema": "skill-authoring/v1",
+  "skill_root": "<repository-relative skill directory>",
+  "name_pattern": "<anchored regular expression>",
+  "template": "<repository-relative template directory>",
+  "display_name_prefix": "<optional client display-name prefix>",
+  "invocation_registry": "<optional repository-relative invocation registry JSON>",
+  "catalog": {
+    "path": "<repository-relative catalog JSON>",
+    "group_id": "<target group id>"
+  }
+}

@@ -7,10 +7,18 @@
       "summary": "Repository mechanics, language-level policy, the HTTP boundary, and the two service contracts.",
       "skills": [
         "tailrocks-rust-project-setup",
+        "tailrocks-rust-project-audit",
+        "tailrocks-rust-project-remediate",
         "tailrocks-rust-best-practices",
+        "tailrocks-rust-review",
+        "tailrocks-rust-refactor",
         "tailrocks-axum-best-practices",
+        "tailrocks-axum-review",
+        "tailrocks-axum-refactor",
         "tailrocks-graphql-best-practices",
-        "tailrocks-grpc-best-practices"
+        "tailrocks-graphql-review",
+        "tailrocks-grpc-best-practices",
+        "tailrocks-grpc-review"
       ]
     },
     {
@@ -19,7 +27,13 @@
       "summary": "The Bun-only application baseline and strict TypeScript policy.",
       "skills": [
         "tailrocks-tanstack-project-setup",
-        "tailrocks-typescript-best-practices"
+        "tailrocks-tanstack-project-audit",
+        "tailrocks-tanstack-project-migrate",
+        "tailrocks-tanstack-project-remediate",
+        "tailrocks-typescript-best-practices",
+        "tailrocks-typescript-review",
+        "tailrocks-typescript-refactor",
+        "tailrocks-typescript-migrate"
       ]
     },
     {
@@ -28,7 +42,14 @@
       "summary": "The Swift implementation stack: code-level policy and the agent-drivable project baseline.",
       "skills": [
         "tailrocks-swift-best-practices",
-        "tailrocks-swift-project-setup"
+        "tailrocks-swift-review",
+        "tailrocks-swift-refactor",
+        "tailrocks-swift-rust-core-boundary",
+        "tailrocks-swift-project-setup",
+        "tailrocks-swift-project-audit",
+        "tailrocks-swift-project-remediate",
+        "tailrocks-swift-agent-integration",
+        "tailrocks-swift-rust-core-setup"
       ]
     },
     {
@@ -49,7 +70,13 @@
       "summary": "Debt that shrinks, defects that stop recurring, skills that improve from field evidence, and work on repositories you do not own.",
       "skills": [
         "tailrocks-code-health",
+        "tailrocks-code-health-audit",
         "tailrocks-improve",
+        "tailrocks-improve-deep",
+        "tailrocks-improve-security",
+        "tailrocks-improve-plan",
+        "tailrocks-improve-execution",
+        "tailrocks-improve-reconcile",
         "tailrocks-agents-md",
         "tailrocks-retrospect",
         "tailrocks-simplify",
@@ -59,9 +86,17 @@
       ]
     },
     {
+      "id": "decision-support",
+      "title": "Decision support",
+      "summary": "Conversation-only challenge before action, with facts retrieved and choices left to the user.",
+      "skills": [
+        "tailrocks-grilling"
+      ]
+    },
+    {
       "id": "skill-authoring",
       "title": "Skill authoring",
-      "summary": "Create, update, audit, and refactor agent skills under the observed-failure law and the context-window budget.",
+      "summary": "Create skills from target repository policy, update behavior under a frozen contract, audit read-only, and refactor structure without behavior change.",
       "skills": [
         "tailrocks-skill-create",
         "tailrocks-skill-update",
@@ -89,6 +124,7 @@
       "summary": "An idea through shaping, planning, autonomous execution, and back to verified truth.",
       "skills": [
         "tailrocks-audit",
+        "tailrocks-seed-roadmap",
         "tailrocks-idea",
         "tailrocks-brainstorm",
         "tailrocks-research",

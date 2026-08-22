@@ -217,7 +217,11 @@ the proven build, test, and lint commands instead of standing up new ones. Where
 the existing baseline is doubtful, the audit belongs to the setup skills before
 planning, not inside it:
 
-<Invoke skill="tailrocks-tanstack-project-setup" args="audit this app and remediate every baseline violation" />
+<Invoke skill="tailrocks-tanstack-project-audit" args="audit this application baseline read-only" />
+
+After the user approves the exact `GAP` rows and path scope:
+
+<Invoke skill="tailrocks-tanstack-project-remediate" args="close the exact approved TANSTACK gap rows" />
 
 Recorded is not the same as trusted. Each gate enters `goal/START.md` as
 `<command> ||| <proof>`, where the proof prints how many units the command
@@ -325,7 +329,7 @@ Slice 002 is browser-only, and its screens already exist and are blessed, so the
 work is putting real state behind the components the design routes render.
 Slices 003 to 005 put the HTTP and socket surface behind Axum:
 
-<Invoke skill="tailrocks-typescript-best-practices" args="review the offline queue and local replica in src/inspection: async ownership, readonly boundaries, rollback on failure. Do not edit." />
+<Invoke skill="tailrocks-typescript-review" args="review the offline queue and local replica in src/inspection: async ownership, readonly boundaries, rollback on failure. Do not edit." />
 
 <Invoke skill="tailrocks-axum-best-practices" args="implement the sync WebSocket and the resumable upload resource: typed state, ordered middleware, body limits, graceful shutdown" />
 

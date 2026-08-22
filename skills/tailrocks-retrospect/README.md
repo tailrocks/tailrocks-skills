@@ -23,6 +23,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`divergence-detectors.md`](references/divergence-detectors.md)
 - [`patch-shape.md`](references/patch-shape.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`subagent-fanout.md`](references/subagent-fanout.md)
 
 ## Templates

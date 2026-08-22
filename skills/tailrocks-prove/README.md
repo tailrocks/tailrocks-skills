@@ -23,6 +23,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`execution-evidence.md`](references/execution-evidence.md)
 - [`report-format.md`](references/report-format.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`subagent-fanout.md`](references/subagent-fanout.md)
 - [`surface-inventory.md`](references/surface-inventory.md)
 

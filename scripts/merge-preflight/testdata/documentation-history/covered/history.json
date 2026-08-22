@@ -1,0 +1,18 @@
+{
+  "commits": [
+    {
+      "sha": "1111111111111111111111111111111111111111",
+      "paths": ["src/app.ts"],
+      "message": "feat: behavior",
+      "parents": []
+    },
+    {
+      "sha": "2222222222222222222222222222222222222222",
+      "paths": ["docs/app.md"],
+      "message": "docs: cover\n\nTailrocks-Skill: tailrocks-document\n",
+      "parents": ["1111111111111111111111111111111111111111"]
+    }
+  ],
+  "head": "2222222222222222222222222222222222222222",
+  "expected": true
+}

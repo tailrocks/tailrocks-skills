@@ -1,6 +1,6 @@
 interface:
   display_name: "Tailrocks: Agents Instructions"
   short_description: "Place agent rules in the file that owns them; AGENTS.md is the source"
-  default_prompt: "Use $tailrocks-agents-md to place this rule in the AGENTS.md of the directory that owns it — creating that file and its CLAUDE.md symlink when it does not exist — and keep the rule only if a competent agent would get it wrong without it."
+  default_prompt: "Use $tailrocks-agents-md to assess instruction-file topology and rule placement for work already in scope. Stay read-only unless the active task explicitly authorizes add or sync mutation."
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

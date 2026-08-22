@@ -4,13 +4,17 @@
 
 `tailrocks-axum-best-practices` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-axum-best-practices)
 
-Apply production Axum HTTP-adapter practices when building, reviewing, or refactoring routers, handlers, extractors, Tower middleware, lifecycle, and transport tests. Do not use for Rust code without an HTTP boundary.
+Apply Axum policy when in-scope work builds or changes HTTP adapters, routers, handlers, extractors, Tower layers, lifecycle, or transport tests. Use tailrocks-axum-review for findings and tailrocks-axum-refactor when HTTP behavior stays unchanged.
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This model-policy skill may load automatically only when its exact trigger
+matches work already in scope. Selection grants no authority beyond the
+active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-axum-best-practices` …
+
+Arguments: `<Axum adapter behavior to build or change>`
 
 ## Skill definition
 
@@ -23,3 +27,4 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`extractors-and-errors.md`](references/extractors-and-errors.md)
 - [`lifecycle-and-testing.md`](references/lifecycle-and-testing.md)
 - [`middleware-and-security.md`](references/middleware-and-security.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

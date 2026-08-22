@@ -4,13 +4,15 @@
 
 `tailrocks-swift-project-setup` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-swift-project-setup)
 
-Scaffold, audit, or remediate a strict native macOS Swift baseline: project generation, deployment targets and SDK lanes, local signing, format and lint gates, test wiring, mise tooling, Xcode agent integration. Audits are read-only.
+Scaffold a new strict native macOS Swift baseline: declarative generation, deployment and SDK lanes, local signing, strict format/lint gates, tests, and mise-owned command parity. Existing projects route to audit or remediate.
 
 ## Invocation
 
 This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-swift-project-setup` …
+
+Arguments: `<new macOS project requirements>`
 
 ## Skill definition
 
@@ -19,10 +21,10 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 ## References
 
-- [`agent-integration.md`](references/agent-integration.md)
 - [`lint-and-format.md`](references/lint-and-format.md)
 - [`project-generation.md`](references/project-generation.md)
-- [`rust-core.md`](references/rust-core.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
+- [`shared-version-policy.md`](references/shared-version-policy.md)
 - [`testing.md`](references/testing.md)
 - [`toolchain.md`](references/toolchain.md)
 

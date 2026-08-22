@@ -6,5 +6,5 @@
   "singleQuote": false,
   "trailingComma": "all",
   "sortImports": true,
-  "ignorePatterns": ["**/*.gen.ts"]
+  "ignorePatterns": ["**/*.gen.ts", "scripts/run-evals.ts", "scripts/run-evals.test.ts"]
 }

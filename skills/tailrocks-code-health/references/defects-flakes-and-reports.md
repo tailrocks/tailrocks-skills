@@ -1,22 +1,14 @@
-# Defects, Flakes, and Gate Reports
+<!-- tailrocks-code-health-audit:start -->
+# Defect, Flake, and Report Criteria
 
-## Defect to gate
+Every escaped defect has a dated identity, symptom, architectural enabling
+condition, characterization proof, and permanent gate or a reason no gate fits.
+A symptom-only fix retains an explicit root-cause item.
 
-Record every escaped defect with date, symptom, architectural enabling condition,
-characterization test, and permanent gate/lint/budget adopted. If no gate is
-appropriate, record why. Review the ledger when choosing the next enforcement
-investment. Fixing one symptom without removing its enabling condition leaves an
-explicit root-cause item.
-
-## Flakes
-
-Retries reveal flakes; they do not forgive them. Configure nextest/Bun reporting
-so pass-on-retry remains visible. An unlisted flaky test fails. Quarantine entries
-contain exact test identity, owner, reason, issue, and since date. The ledger is a
-presence ratchet: new names fail, fixed names are deleted, and stale entries fail.
-Store JUnit/machine-readable artifacts for trend and runtime analysis.
-
-## Reports
+Retries expose flakes; they never forgive them. Pass-on-retry stays visible. An
+owned presence ledger records exact test identity, owner, reason, issue, and
+since date. Unlisted flakes and stale resolved entries fail. Machine-readable
+test artifacts retain trend, count, and runtime evidence.
 
 Every project-owned gate emits one semantic violation model:
 
@@ -24,10 +16,13 @@ Every project-owned gate emits one semantic violation model:
 schema, gate, ok, rule, file, line?, why, fix, rerun
 ```
 
-Render it as human prose, versioned JSON, or CI annotations. Format changes never
-change pass/fail. Human mode stays actionable; JSON stays deterministic; CI mode
-escapes control characters and retains readable logs. A non-empty violation set
-exits nonzero after emission.
+Human, versioned JSON, and CI renderers preserve identical pass/fail semantics.
+Non-empty violations exit nonzero, escape control characters, and name the
+narrowest correction and rerun command.
+<!-- tailrocks-code-health-audit:end -->
 
-**Completion:** each failure says what rule failed, why it matters, the exact
-clearing action, and the narrowest rerun command.
+## Mutation adapter
+
+Establish may add the approved defect ledger, exact flake presence baseline, and
+renderer contract. Tighten only removes proved-resolved identities; it never
+adds a quarantine entry merely to make a failing run green.

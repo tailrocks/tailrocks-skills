@@ -1,32 +1,25 @@
-# Verification Lanes
+<!-- tailrocks-code-health-audit:start -->
+# Verification Lane Criteria
 
-Partition by feedback cost, not importance.
+Checks are placed by measured feedback cost:
 
-## PR blocking
+- **PR blocking:** formatting, compile/typecheck, strict lint, normal tests,
+  architecture, unused dependency/code, lock integrity, supply-chain, docs, and
+  short risk-earned parser fuzz smoke.
+- **Merge readiness:** full workspace/build, doctests, feature powerset,
+  production/SSR, semver, and environment-backed integration.
+- **Scheduled advisory:** beta/nightly canaries, interpreters, careful execution,
+  concurrency models, sanitizers/fuzzing, mutation/coverage trends, performance,
+  custom rules, and dependency rehearsals.
 
-Formatting, compile/typecheck, strict lints, focused/full normal tests,
-architecture, unused dependency/code checks, lockfile integrity, supply-chain
-policy, docs links/commands, and a short parser fuzz smoke where risk justifies it.
+Every lane has pinned tools/actions, timeout, local core command, structured
+artifact/summary, owner, and correction path. Advisory failures remain visible.
+Promotion or demotion requires measured runtime, near-zero false positives, a
+named failure class, and an owner. Benchmark/profiling profiles never masquerade
+as shipped behavior; nightly-dependent tools stay isolated from stable PR gates.
+<!-- tailrocks-code-health-audit:end -->
 
-## Merge readiness
+## Mutation adapter
 
-Full workspace/build, doctests, feature powerset, production build/SSR tests,
-semver checks for published libraries, and environment-backed integration tests.
-
-## Scheduled advisory
-
-Latest beta/nightly compiler canaries, Miri, cargo-careful, Loom models,
-sanitizer fuzzing, longer corpora, mutation testing, coverage trends, cold-start
-and build-time benchmarks, Dylint, and dependency update rehearsals.
-
-Each lane pins toolchain/actions, sets timeout, stores structured output/artifacts,
-and has a local core command. Advisory failures stay visible and owned. Promotion
-requires stable runtime, near-zero false positives, a named failure class, and a
-documented correction path. Demotion requires the same evidence and an owner.
-
-Use separate profiles for release, profiling, fast local tests, and minimal-size
-experiments only when measurements show different compiler settings serve real
-goals. Never let a benchmark profile masquerade as shipped behavior.
-
-Custom Dylint/Oxc/architecture rules begin advisory with specification tests.
-Nightly-dependent tools use dated pins and stay isolated from the stable PR path.
+Establish places only the approved selected gate. Tighten may promote it only
+after the required evidence; cadence changes never hide a current failure.

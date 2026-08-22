@@ -6,14 +6,14 @@ description: "How the collection learns from work that actually shipped — incl
 A skill that never changes after shipping decays. A skill that changes on
 opinion thrashes. The loop here accepts exactly one currency: an observed
 failure with the commit that proves it, converted into a patch, applied under
-an eval re-run. Two skills own it, and neither does the other's job.
+deterministic acceptance proof. Two skills own it, and neither does the other's job.
 
 ```mermaid
 flowchart LR
   field["shipped item, any repository"] --> retro["tailrocks-retrospect"]
   retro --> record["retrospectives/source-slug.md"]
   record --> author["tailrocks-skill-update"]
-  author --> evals["evals updated, CI re-runs"]
+  author --> checks["acceptance checks rerun"]
 ```
 
 ## The evidence side — `tailrocks-retrospect`
@@ -85,18 +85,18 @@ observed-failure law — no behavioral edit without a failure observed first.
 Applying a patch means: decide placement before writing (a mechanically
 checkable rule belongs in a gate, a repo-specific one in an `AGENTS.md`),
 match the guidance form to the failure type, stay inside the router budget
-with new depth in references, and update the target skill's **full** eval
-set. Execution of those evals is CI's job; the pull request records the
-expected red-before and green-after.
+with new depth in references, and rerun every affected deterministic
+acceptance check outside the frozen legacy eval tree. The pull request records
+the expected red-before and green-after.
 
 Every proposed patch arrives in the same six-field anchor — target, shape,
-anchor point, exact text, the eval case IDs at risk, and what it replaces —
+anchor point, exact text, acceptance-check IDs at risk, and what it replaces —
 so applying one is a decision, not a drafting exercise.
 
 ## What the loop refuses
 
 - **Applying a patch inside the retrospective.** Retrospect proposes;
-  skill-update applies. A patch landed without the eval update is an
+  skill-update applies. A patch landed without acceptance proof is an
   untested behavior change.
 - **Findings about the executor.** A well-signposted rule that was ignored is
   recorded as non-conformance, honestly, with no patch.

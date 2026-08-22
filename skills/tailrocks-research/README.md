@@ -22,3 +22,4 @@ file. They are not copied here — one source, and no chance of the two drifting
 ## References
 
 - [`research-playbook.md`](references/research-playbook.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

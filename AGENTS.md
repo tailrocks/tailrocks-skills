@@ -45,14 +45,20 @@ latest stable major available at execution time; older majors are unsupported.
 Documentation sites are Fumadocs on TanStack Start with Bun — no other
 documentation framework, runtime, or package manager.
 
-Skills are manual-only where the client supports per-skill policy. Claude
-Code, Grok Build, and Kimi Code honor `disable-model-invocation: true`
-(`user-invocable: true` documents the explicit-invocation intent for clients
-that read it); Codex uses `agents/openai.yaml` with
-`policy.allow_implicit_invocation: false`. OpenCode, Amp, and the Antigravity
-CLI ignore those fields — there the explicit-request guard sentence at the
-start of every `description` is the control, and OpenCode users can enforce
-it with `permission.skill` config.
+Invocation class is registry-owned. `MANUAL_ONLY` skills use
+`disable-model-invocation: true`, `user-invocable: true`, Codex
+`policy.allow_implicit_invocation: false`, and the exact explicit-request guard
+at the start of the description. `MODEL_POLICY` skills omit the Claude disable
+flag, retain `user-invocable: true`, set Codex implicit invocation true, and use
+an exact content/intent trigger; selection grants no authority beyond the
+active task. Clients that ignore these fields rely on the description, and
+OpenCode users may additionally enforce `permission.skill` config.
+
+The confirmed `MODEL_POLICY` set is exact: `tailrocks-agents-md`, the Axum,
+GraphQL, gRPC, Rust, Swift, and TypeScript best-practice owners,
+`tailrocks-grilling`, and the macOS, web, and terminal design owners. Every
+other skill is `MANUAL_ONLY`; new skills and split descendants default manual
+until an exact trigger is separately confirmed.
 
 **Token usage is a design criterion.** Skills stay lean: scale effort (subagents,
 depth) to the task, prefer pointers (`file:line`/URL) over copied blocks, skip
@@ -70,11 +76,25 @@ can judge.
 
 ### tailrocks-rust-best-practices
 
-Write, review, or refactor Rust code. Covers ownership and borrowing, public API
-design, error and panic policy, tests and doc tests, unsafe and thread-safety
-review, performance discipline, and readability.
+Write new Rust behavior. Covers ownership and borrowing, public API design,
+error and panic policy, tests and doc tests, unsafe contracts, measured
+performance, and readability.
 
 Skill definition: `skills/tailrocks-rust-best-practices/SKILL.md`
+
+### tailrocks-rust-review
+
+Review Rust source, APIs, unsafe code, tests, and performance evidence without
+mutation; report only verified, actionable findings.
+
+Skill definition: `skills/tailrocks-rust-review/SKILL.md`
+
+### tailrocks-rust-refactor
+
+Restructure Rust code under an explicit preservation oracle, keeping observable
+behavior and public contracts unchanged.
+
+Skill definition: `skills/tailrocks-rust-refactor/SKILL.md`
 
 ### tailrocks-rust-project-setup
 
@@ -86,17 +106,46 @@ rustfmt, `rust-toolchain.toml`, mise-managed tooling, and the cargo-deny / audit
 
 Skill definition: `skills/tailrocks-rust-project-setup/SKILL.md`
 
+### tailrocks-rust-project-audit
+
+Audit an existing Rust workspace against the strict project baseline and report
+exact layout, policy, toolchain, dependency, and gate gaps without changing
+files or installing tools.
+
+Skill definition: `skills/tailrocks-rust-project-audit/SKILL.md`
+
+### tailrocks-rust-project-remediate
+
+Close explicitly approved Rust workspace baseline gaps in coherent, reversible,
+verified slices while preserving stronger compatible local policy.
+
+Skill definition: `skills/tailrocks-rust-project-remediate/SKILL.md`
+
 ### tailrocks-axum-best-practices
 
-Build and review production Axum services with typed state and extractors,
-stable error responses, ordered Tower middleware, security limits, tracing,
-graceful shutdown, async task ownership, and contract tests.
+Build or change production Axum HTTP behavior with typed state and extractors,
+stable errors, ordered Tower policy, security limits, tracing, graceful
+shutdown, owned tasks, and transport contract tests.
 
 Skill definition: `skills/tailrocks-axum-best-practices/SKILL.md`
 
+### tailrocks-axum-review
+
+Review Axum adapters, extractors, Tower policy, lifecycle, and transport tests
+without mutation; report only verified HTTP-boundary findings.
+
+Skill definition: `skills/tailrocks-axum-review/SKILL.md`
+
+### tailrocks-axum-refactor
+
+Restructure Axum adapters or Tower composition under an independent oracle while
+preserving observable HTTP behavior and lifecycle contracts.
+
+Skill definition: `skills/tailrocks-axum-refactor/SKILL.md`
+
 ### tailrocks-graphql-best-practices
 
-Design, build, and review the GraphQL public API of public backend services —
+Evolve the GraphQL public API of public backend services —
 the only public API surface in the doctrine. Contract-first: Juniper on Axum
 serves it (Juniper is the only sanctioned GraphQL library for Rust), the
 committed SDL snapshot is the contract, a breaking-change gate blocks silent
@@ -106,9 +155,16 @@ communication — that is gRPC.
 
 Skill definition: `skills/tailrocks-graphql-best-practices/SKILL.md`
 
+### tailrocks-graphql-review
+
+Review a GraphQL diff or audit a whole public API surface without mutation,
+covering schema shape, Juniper boundaries, SDL gates, and generated clients.
+
+Skill definition: `skills/tailrocks-graphql-review/SKILL.md`
+
 ### tailrocks-grpc-best-practices
 
-Design, build, and review gRPC contracts and services for cross-service
+Evolve gRPC contracts and services for cross-service
 communication between Rust services — the only cross-service protocol in the
 doctrine. Contract-first: `.proto` files under buf lint and breaking gates,
 tonic and prost adapters that keep generated types out of the domain, canonical
@@ -117,24 +173,73 @@ wire-level contract tests. Never the public API surface — that is GraphQL.
 
 Skill definition: `skills/tailrocks-grpc-best-practices/SKILL.md`
 
+### tailrocks-grpc-review
+
+Review a gRPC diff or audit a whole cross-service surface without mutation,
+covering proto compatibility, tonic/prost boundaries, operations, and wire proof.
+
+Skill definition: `skills/tailrocks-grpc-review/SKILL.md`
+
 ### tailrocks-typescript-best-practices
 
-Write, review, or refactor strict Rust-inspired TypeScript 7 and React code with
-Bun-owned tooling:
-exhaustive state, typed failure, runtime validation, domain values, readonly
-mutation boundaries, async correctness, React rules, and tests.
+Write strict Rust-inspired TypeScript 7 and React behavior: exhaustive state,
+typed failure, runtime validation, domain values, readonly mutation boundaries,
+async correctness, React rules, and tests. Project tooling stays with the
+TanStack project family.
 
 Skill definition: `skills/tailrocks-typescript-best-practices/SKILL.md`
 
+### tailrocks-typescript-review
+
+Review TypeScript 7 and React code read-only for verified language-contract,
+React ownership, async, trust-boundary, and Rust-domain-duplication defects.
+
+Skill definition: `skills/tailrocks-typescript-review/SKILL.md`
+
+### tailrocks-typescript-refactor
+
+Restructure TypeScript/React code under an explicit preservation oracle without
+changing public types, serialized behavior, rendering, effects, or errors.
+
+Skill definition: `skills/tailrocks-typescript-refactor/SKILL.md`
+
+### tailrocks-typescript-migrate
+
+Migrate JavaScript/TypeScript source semantics to strict TypeScript 7 contracts
+after the TanStack project baseline exists. Never owns project configuration.
+
+Skill definition: `skills/tailrocks-typescript-migrate/SKILL.md`
+
 ### tailrocks-tanstack-project-setup
 
-Scaffold, migrate, and enforce strict Bun-only TanStack Start applications with
-TypeScript 7, Vite, Oxc, React, Router, Query, shadcn/ui, Tailwind CSS v4,
-validated server/client boundaries, Bun tests, exact versions, and CI gates.
-Copy-ready configuration lives under
+Scaffold new strict Bun-only TanStack Start applications with TypeScript 7,
+Vite, Oxc, React, Router, Query, shadcn/ui, Tailwind CSS v4, validated
+server/client boundaries, Bun tests, exact versions, and CI gates. Refuses
+existing applications. Copy-ready configuration lives under
 `skills/tailrocks-tanstack-project-setup/templates/`.
 
 Skill definition: `skills/tailrocks-tanstack-project-setup/SKILL.md`
+
+### tailrocks-tanstack-project-audit
+
+Audit an existing TanStack application against the same baseline without
+mutation. Emits the fixed TANSTACK gap ledger; never installs or edits.
+
+Skill definition: `skills/tailrocks-tanstack-project-audit/SKILL.md`
+
+### tailrocks-tanstack-project-migrate
+
+Migrate a foreign or materially older frontend to the Bun/TanStack baseline in
+never-broken slices while preserving behavior and accessibility.
+
+Skill definition: `skills/tailrocks-tanstack-project-migrate/SKILL.md`
+
+### tailrocks-tanstack-project-remediate
+
+Close exact approved TANSTACK audit gaps in an existing house-stack application.
+Refuses scaffolding, discovery, and broad stack migration.
+
+Skill definition: `skills/tailrocks-tanstack-project-remediate/SKILL.md`
 
 ### The macOS family — the Swift implementation stack
 
@@ -144,17 +249,35 @@ verification of macOS interfaces live in the design family below:
 Glass material authority; `tailrocks-macos-visual-qa` owns capture and
 verification.
 
-- **tailrocks-swift-best-practices** — code-level policy. Actor isolation as a
-  design decision, state ownership and view identity, work kept out of `body`,
-  narrow AppKit interop boundaries, typed failure, availability guards with
-  decided fallbacks, accessibility as a code obligation. Definition:
+- **tailrocks-swift-best-practices** — write-only code policy. Actor isolation as
+  a design decision, state ownership and view identity, work kept out of `body`,
+  narrow AppKit interop, typed failure, guarded availability, accessibility.
+  Definition:
   `skills/tailrocks-swift-best-practices/SKILL.md`
-- **tailrocks-swift-project-setup** — the baseline an agent can drive from a
-  terminal. Declarative project generation with a synchronized source folder, the
-  three target values, a decided fallback behavior, and two SDK lanes, ad-hoc local signing, strict
-  format and lint gates, test wiring, mise-pinned tooling, and Xcode agent
-  integration with a one-owner-per-responsibility skill policy. Definition:
+- **tailrocks-swift-review** — read-only verified Swift/SwiftUI code findings.
+  Definition: `skills/tailrocks-swift-review/SKILL.md`
+- **tailrocks-swift-refactor** — preservation-oracle Swift/SwiftUI restructuring.
+  Definition: `skills/tailrocks-swift-refactor/SKILL.md`
+- **tailrocks-swift-rust-core-boundary** — the thin SwiftUI platform shell over
+  the Rust application runtime, generated FFI, one store, and durable Apple
+  effect protocol. Definition:
+  `skills/tailrocks-swift-rust-core-boundary/SKILL.md`
+- **tailrocks-swift-project-setup** — scaffold-only native macOS baseline:
+  synchronized declarative generation, exact toolchain/SDK lanes, signing,
+  strict gates, non-vacuous tests, and mise command parity. Definition:
   `skills/tailrocks-swift-project-setup/SKILL.md`
+- **tailrocks-swift-project-audit** — read-only fixed-ledger inspection of an
+  existing Swift/Xcode baseline. Definition:
+  `skills/tailrocks-swift-project-audit/SKILL.md`
+- **tailrocks-swift-project-remediate** — transactional closure of exact
+  approved Swift project audit rows. Definition:
+  `skills/tailrocks-swift-project-remediate/SKILL.md`
+- **tailrocks-swift-agent-integration** — Xcode bridge, pinned read-only agent
+  knowledge, and one-owner-per-responsibility wiring. Definition:
+  `skills/tailrocks-swift-agent-integration/SKILL.md`
+- **tailrocks-swift-rust-core-setup** — project-level generated bridge/package
+  lane, binding drift, and shared Swift/Rust gates. Definition:
+  `skills/tailrocks-swift-rust-core-setup/SKILL.md`
 
 ### The design family — blessed targets before implementation
 
@@ -271,31 +394,49 @@ the running app.
 
 ### tailrocks-code-health
 
-Turn code quality into executable, monotonic contracts across the house stack:
-architecture DAGs, measured baselines, shrink-only debt budgets, flake quarantine,
-defect-to-gate learning, structured gate output, tiered verification, and
-automated latest-version enforcement.
+Establish or tighten one explicitly approved executable monotonic contract:
+architecture DAG, measured shrink-only debt, flake quarantine, defect-to-gate
+learning, structured output, tiered verification, or latest-version enforcement.
 
 Skill definition: `skills/tailrocks-code-health/SKILL.md`
 
+### tailrocks-code-health-audit
+
+Measure one code-health debt class read-only, inventory its gates and exceptions,
+and emit fixed-ID evidence without installing, editing, or authorizing a ratchet.
+
+Skill definition: `skills/tailrocks-code-health-audit/SKILL.md`
+
 ### tailrocks-improve
 
-Audit any repository — no roadmap or pipeline required — and turn verified
-findings into standalone, executor-ready implementation plans under
-`plans/`. Parallel read-only investigator subagents run the audit lanes;
-every finding's evidence is re-read by the planner before it may be
-reported; ranking is leverage discounted by confidence and fix-risk; each
-plan is self-contained for a zero-context executor, stamped with the
-commit it was planned at, drift-checked against that SHA, and gated on
-verification commands that were run during recon rather than guessed. It
-never implements, never writes outside `plans/`, and reconciles its
-backlog on reruns instead of duplicating plans. When the repository runs
-the delivery pipeline and the findings should become roadmap items, that
-is tailrocks-audit's job — improve owns the pipeline-free lane. One
-carve-out: in a repository whose product is agent skills, the skills
-themselves are judged by tailrocks-skill-audit, not by improve's lanes.
+Audit any repository through bounded non-security read-only lanes, re-read every
+candidate, rank correctness-first, and return one verified report. It writes
+nothing. `tailrocks-improve-deep` owns exhaustive lane-by-package coverage and
+fresh refutation; `tailrocks-improve-security` owns threat analysis and
+secret-safe security evidence. `tailrocks-improve-plan` writes one standalone
+`plans/` plan and index row; `tailrocks-improve-execution` executes one approved
+plan only in an isolated worktree; `tailrocks-improve-reconcile` updates only the
+standalone plan index; `tailrocks-seed-roadmap` alone converts verified evidence
+into one DRAFT delivery item. All seven are manual-only and one output owns each
+selector.
 
 Skill definition: `skills/tailrocks-improve/SKILL.md`
+
+- Deep audit: `skills/tailrocks-improve-deep/SKILL.md`
+- Security audit: `skills/tailrocks-improve-security/SKILL.md`
+- Standalone planning: `skills/tailrocks-improve-plan/SKILL.md`
+- Isolated execution: `skills/tailrocks-improve-execution/SKILL.md`
+- Standalone reconciliation: `skills/tailrocks-improve-reconcile/SKILL.md`
+- Delivery seeding: `skills/tailrocks-seed-roadmap/SKILL.md`
+
+### tailrocks-grilling
+
+Stress-test an idea, plan, or decision before action through dependency-ordered
+frontier rounds. It retrieves lookupable facts, recommends an answer with every
+question, leaves every choice to the user, requires explicit confirmation, and
+ends without writing or executing.
+
+Skill definition: `skills/tailrocks-grilling/SKILL.md`
 
 ### The delivery family — roadmap-driven pipeline
 
@@ -501,12 +642,15 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
   design, comment accuracy), stack-lane dispatch to the house
   best-practices skills per changed file, and per-finding routing —
   behavior-frozen removals to tailrocks-simplify, proven defect classes to
-  tailrocks-remediate. Read-only; posts comments only under `--comment`;
-  never approves or merges. Definition: `skills/tailrocks-review-pr/SKILL.md`
+  tailrocks-remediate. Unconditionally read-only; never posts, approves, or
+  merges. Definition: `skills/tailrocks-review-pr/SKILL.md`
 - **tailrocks-merge-pr** — merge fail-closed: CI gate with named-check-only
   admin bypass, blast-radius confirm, the repository's pre-merge worklist,
   metadata reconcile before the squash title enters history, repo-selected
-  merge method. Authorization never carries forward between sessions.
+  merge method. Its read-only machine preflight binds the exact PR/head/base,
+  bounds required-check polling to 30 samples/300 seconds, and owns the raw
+  delivery and documentation predicates without granting merge authority.
+  Authorization never carries forward between sessions.
   Its **delivery-artifact check** fires only when the pull request's diff
   touches `roadmap/`, and is read-only about every artifact it reads: it
   blocks on an item saying `DONE` while its folder is still present, on a
@@ -515,12 +659,13 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
   and routing to `tailrocks-reconcile` (or `tailrocks-prove` when what is
   missing is a clean round). It never writes a delivery artifact.
   Its **documentation gate** fires on every pull request: doc-worthy commits
-  (observable behavior, not tests/CI/chores/delivery artifacts) must be
-  covered by a newer `Tailrocks-Skill: tailrocks-document` commit, or the
-  merge stops and routes to `tailrocks-document`; a stale trailer that later
-  behavior commits supersede does not count.
+  (observable behavior, not tests/CI/delivery-only artifacts; commit labels do
+  not suppress path evidence) trigger the gate. Then every doc-worthy and
+  documentation-surface commit must be covered by a descendant
+  `Tailrocks-Skill: tailrocks-document` commit, or the merge stops and routes to
+  `tailrocks-document`. No doc-worthy commit yields `not_needed`.
   Definition: `skills/tailrocks-merge-pr/SKILL.md`
-- **tailrocks-document** — the last content commit before a merge: locate
+- **tailrocks-document** — the last documentation-obligation commit before a merge: locate
   the repository's documentation surfaces and their own rules, inventory
   the diff against the merge base, and make the docs the final source of
   truth for what shipped — rewriting the prose the change makes wrong,
@@ -624,7 +769,7 @@ This repository is its own first customer: every instruction file is an
 
 Four skills carry the two authoring laws: no new skill and no behavioral edit
 without the failure observed first (the baseline run is the red bar, and a
-skill whose evals pass without it is dead weight), and the context window is a
+skill whose acceptance check passes without it is dead weight), and the context window is a
 public good (trigger-only descriptions that never summarize workflow, lean
 routers, depth in references routed by when-to-read). Guidance form is matched
 to the failure type — prohibitions plus rationalization counters for
@@ -633,28 +778,37 @@ slots for omissions, predicate-keyed conditionals for context-dependent
 behavior — because the wrong form measurably backfires. Exactly one skill owns
 each phase of a skill's life.
 
+Contract-breaking migration is outside these four executors. Update and
+refactor stop with the tree unchanged and name the exact delta, compatibility,
+and rollback obligations. The operator may perform a direct migration only
+under a separately scoped explicit authorization for the named branch and pull
+request; no migration-plan artifact or product skill mediates that authority.
+
 - **tailrocks-skill-create** — a new skill from an observed failure: baseline
   captured verbatim (a retrospective field record with commit-level evidence
   is the strongest form), placement decided before writing (gates beat prose,
   the owning `AGENTS.md` beats a skill, extending a neighbor beats forking a
-  rival), the copy-ready skeleton under `templates/skill/`, baselined eval
-  cases, full repository wiring.
+  rival), the copy-ready skeleton under `templates/skill/`, deterministic
+  policy-driven scaffold, durable evidence contract and acceptance cases, full
+  target-repository wiring. Metadata comes from target policy, never this tree by
+  default.
   Definition: `skills/tailrocks-skill-create/SKILL.md`
-- **tailrocks-skill-update** — an in-place edit that preserves the invocation
-  contract: eval-pinned lines checked before a gate is reworded, strengthen
-  over append, replace past the router budget, and the full eval set updated
-  for CI — eval execution never happens locally here.
+- **tailrocks-skill-update** — an in-place semantic edit that preserves every
+  public-contract field: evidence-pinned lines checked before a gate is
+  reworded, strengthen over append, replace past the router budget, and rerun
+  deterministic acceptance checks outside the frozen legacy eval tree.
   Definition: `skills/tailrocks-skill-update/SKILL.md`
 - **tailrocks-skill-audit** — the doctrine authority and the read-only judge:
   audits one skill or sweeps the tree with one read-only subagent per skill,
   vets every finding against its own reads, and writes the layered report —
-  description, router, references, evals, wiring, overlap — to
+  description, router, references, evidence, wiring, overlap — to
   `skill-audits/<skill>.md` with stable finding IDs and named fixes. Never
   edits. Definition: `skills/tailrocks-skill-audit/SKILL.md`
-- **tailrocks-skill-refactor** — applies user-selected finding IDs from a
-  report: no report, no refactor; nothing beyond the selection; the
-  invocation contract untouched; the pass ends in an independent re-audit —
-  the implementer never self-verifies.
+- **tailrocks-skill-refactor** — behavior-preserving structural ownership change.
+  It never performs semantic edits or contract-breaking migration. A contract
+  delta leaves the tree unchanged and names the explicit direct-migration
+  authorization required; verification is a precise manual audit handoff,
+  never automatic invocation.
   Definition: `skills/tailrocks-skill-refactor/SKILL.md`
 
 tailrocks-agents-md owns instruction files; the family owns skills — a rule
@@ -688,7 +842,7 @@ reconstructed). The skill writes one file, its record under
 Skill definition: `skills/tailrocks-retrospect/SKILL.md`
 
 tailrocks-retrospect produces the observed failure; tailrocks-skill-update
-consumes it and owns the edit, the router budget, and the eval re-run. A
+consumes it and owns the edit, the router budget, and deterministic acceptance proof. A
 skill change with neither a baseline run nor a retrospective finding behind
 it has no evidence at all.
 
@@ -709,22 +863,23 @@ subagent fan-out, then hands approved patches to
 
 ## Adding a Skill
 
-1. Create `skills/<name>/SKILL.md` with `name`, `license: Apache-2.0`, a
-   trigger-rich, agent-neutral `description` starting exactly with “Use only
-   when the user explicitly requests this skill.”, `disable-model-invocation:
-   true`, and `user-invocable: true` in the frontmatter. Evidence belongs in
-   artifacts and references, never disguised as instructions.
-2. Add `agents/openai.yaml` with `policy.allow_implicit_invocation: false`.
-3. Add `evals/evals.json` with realistic normal, boundary, and safety cases. Audit/review-shaped cases should reference fixtures under `evals/fixtures/<case>/`; refusal cases may stay fixture-free.
-4. Put deep material under `skills/<name>/references/` and copy-ready assets under
+1. Create `skills/<name>/SKILL.md` with `name`, `license: Apache-2.0`,
+   `user-invocable: true`, and the registry-matched invocation profile.
+   Creation defaults fail-closed to `MANUAL_ONLY`: exact explicit-request
+   guard plus `disable-model-invocation: true`. A separately confirmed exact
+   trigger may use `MODEL_POLICY`: no guard and no disable flag. Evidence
+   belongs in artifacts and references, never disguised as instructions.
+2. Add `agents/openai.yaml` with registry-matched
+   `policy.allow_implicit_invocation`: false for manual, true for model policy.
+3. Put deep material under `skills/<name>/references/` and copy-ready assets under
    `skills/<name>/templates/`; keep `SKILL.md` a concise router.
-5. Every plugin manifest auto-discovers the new skill from `skills/` — no
+4. Every plugin manifest auto-discovers the new skill from `skills/` — no
    manifest edit needed. Place the skill in a `catalog.json` group; validation
    fails until exactly one group contains it. Run `mise run docs` to generate the skill's
    `README.md`, its documentation page, and the root `README.md` row; then add
    it by hand to `INSTALL.md`, this file, and — when it needs a boundary
    against a neighbouring skill — `docs/content/docs/choosing.mdx`.
-6. Bump `version` in lockstep across `.claude-plugin/plugin.json`,
+5. Bump `version` in lockstep across `.claude-plugin/plugin.json`,
    `.codex-plugin/plugin.json`, `.kimi-plugin/plugin.json`, and the
    `.claude-plugin/marketplace.json` entry, and tag the release so installs
    can pin.
@@ -788,14 +943,12 @@ Load the plugin locally in Claude Code:
 claude --plugin-dir .
 ```
 
-**Evals are authored here and executed in CI, never locally.** Every skill
-ships `evals/evals.json`, and keeping those cases honest is part of every
-change — but `mise run evals` needs the `claude` CLI and spends real budget,
-so no gate in this repository runs it and no instruction in this repository
-may require it. Record the expected red-before / green-after in the pull
-request and let the CI lane own execution once it lands. This does not
-weaken the observed-failure law: the red bar is watching the behavior fail
-in a session, which is a manual observation and needs no harness.
+**Frozen legacy eval infrastructure is outside ordinary work.** Validation,
+authoring, scaffolding, documentation generation, and release work never
+inspect, require, modify, move, execute, or certify the paths listed in
+`skill-audits/protected-paths.txt`. Behavioral evidence lives in non-protected
+records and deterministic checks. A manual observation may establish the red
+bar; it never authorizes touching the frozen tree.
 
 ## Documentation
 
@@ -874,7 +1027,5 @@ footer in the body.
    and refresh its verified date.
 7. Re-verify macOS platform baselines against Apple DocC availability data and
    `gdmf.apple.com/v2/pmv`, and refresh their verification stamps. Use
-   `examples/macos-screen/` as the rendered regression corpus. **Eval
-   execution is not a release step** — `mise run evals` is a CI/CD concern
-   in this repository, never run locally; update the affected `evals.json`
-   cases in the release change and let CI own the run.
+   `examples/macos-screen/` as the rendered regression corpus. Frozen legacy
+   eval infrastructure is not a release input and remains untouched.

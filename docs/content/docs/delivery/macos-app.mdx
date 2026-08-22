@@ -209,7 +209,7 @@ The slice list is the part worth studying:
 | Slice | What it stands up | Executed under |
 |---|---|---|
 | — | Not a slice: the signed-off prototype and its `Regions.md`, standing before READY | `tailrocks-macos-design` |
-| 001 | Verification baseline: workspace, empty Rust crate, empty app target, one task runner, all gates green | `tailrocks-rust-project-setup`, `tailrocks-swift-project-setup` |
+| 001 | Verification baseline: workspace, empty Rust crate, empty app target, Rust-core bridge lane, one task runner, all gates green | `tailrocks-rust-project-setup`, `tailrocks-swift-project-setup`, `tailrocks-swift-rust-core-setup` |
 | 002 | Tracer bullet: Rust returns a hardcoded snapshot, Swift renders it, gates still green | `tailrocks-rust-best-practices`, `tailrocks-swift-best-practices` |
 | 003 | Real parser and index behind the same snapshot type | `tailrocks-rust-best-practices` |
 | 004 | Timeline and results surface: the prototype's view layer over real snapshots, with its Liquid Glass chrome | `tailrocks-macos-design`, `tailrocks-swift-best-practices` |
@@ -300,7 +300,7 @@ longer hashes to the fingerprint in the hub.
 The stack skills are invoked *inside* execution, named by the slice. Slice 003
 is Rust, so the executor works under the Rust skills:
 
-<Invoke skill="tailrocks-rust-best-practices" args="review crates/sift-core: ownership across the index, error and panic policy, and the unsafe boundary. Do not edit." />
+<Invoke skill="tailrocks-rust-review" args="review crates/sift-core: ownership across the index, error and panic policy, and the unsafe boundary. Do not edit." />
 
 Slice 004 is the interface, and it starts from code that already exists: the
 prototype's view layer, lifted verbatim. Two skills own different halves of what

@@ -21,9 +21,6 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 ## References
 
+- [`harness-contract.md`](references/harness-contract.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`screenshot-baselines.md`](references/screenshot-baselines.md)
-
-## Templates
-
-- [`playwright.config.ts`](templates/playwright.config.ts)
-- [`tests/visual/settings.spec.ts`](templates/tests/visual/settings.spec.ts)

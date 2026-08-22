@@ -4,8 +4,10 @@ A feature is not visually complete because its default light appearance looks
 good at one window size.
 
 **These commands change the user's real system settings.** Reach every automated
-row through `templates/state.sh`, whose `with` mode
-snapshots and trap-restores on every exit. Report explicitly if restore fails.
+row through the installed macOS visual-QA state script, whose `with` mode
+snapshots and trap-restores on every exit. Forced light or dark disables Auto
+only inside that transaction; restoration writes both original appearance keys
+back exactly. Report explicitly if restore fails and retain its recovery file.
 
 ## Appearance
 
@@ -29,10 +31,12 @@ defaults write com.apple.universalaccess reduceMotion -bool true
 defaults write com.apple.universalaccess differentiateWithoutColor -bool true
 ```
 
-Never use a bare restore recipe. `state.sh snapshot FILE` records each original
-value or `ABSENT`; `restore FILE` uses `defaults delete` only for an `ABSENT`
-record and writes every present original value back. Both apply and restore
-read back every key.
+Never use a bare mutation or restore recipe. The with transaction records each
+original value or `ABSENT`, records the applied state, and compare-checks the
+current six-key registry before restoring. A concurrent change refuses instead
+of being overwritten, and both owner-only recovery files remain for the recover
+command. Every snapshot has a fixed schema, owner, mode, order, key, and type;
+extra or duplicate preference rows refuse. Apply and restore read back every key.
 
 Caveats:
 

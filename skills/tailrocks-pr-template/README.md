@@ -22,3 +22,5 @@ file. They are not copied here — one source, and no chance of the two drifting
 ## References
 
 - [`PULL_REQUEST_TEMPLATE.md`](references/PULL_REQUEST_TEMPLATE.md)
+- [`pr-conventions.md`](references/pr-conventions.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

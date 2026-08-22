@@ -19,3 +19,7 @@ Arguments: `[PR]`
 The instructions this skill loads live in [`SKILL.md`](SKILL.md), beside this
 file. They are not copied here — one source, and no chance of the two drifting.
 
+## References
+
+- [`pr-conventions.md`](references/pr-conventions.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

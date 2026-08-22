@@ -4,11 +4,13 @@
 
 `tailrocks-macos-design` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-macos-design)
 
-Design a macOS feature and bless it as a running Liquid Glass prototype: experience brief, native component map, structural alternatives, scored rubric, fixed launch contract, live sign-off. The Liquid Glass material authority.
+Apply macOS visual-design and Liquid Glass policy when in-scope work touches native screen structure, material, component mapping, prototypes, or design review. Selection alone never authorizes blessing, capture, or mutation.
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This model-policy skill may load automatically only when its exact trigger
+matches work already in scope. Selection grants no authority beyond the
+active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-macos-design` …
 
@@ -27,6 +29,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`archetypes.md`](references/archetypes.md)
 - [`custom-component-contract.md`](references/custom-component-contract.md)
 - [`custom-renderers.md`](references/custom-renderers.md)
+- [`design-pipeline.md`](references/design-pipeline.md)
 - [`design-principles.md`](references/design-principles.md)
 - [`exemplars.md`](references/exemplars.md)
 - [`experience-brief.md`](references/experience-brief.md)
@@ -42,6 +45,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`reference-corpus.md`](references/reference-corpus.md)
 - [`review-mode.md`](references/review-mode.md)
 - [`rubric.md`](references/rubric.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`swiftui-api.md`](references/swiftui-api.md)
 - [`verification.md`](references/verification.md)
 

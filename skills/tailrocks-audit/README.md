@@ -24,3 +24,4 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`audit-lanes.md`](references/audit-lanes.md)
 - [`execution-loop.md`](references/execution-loop.md)
 - [`plan-seeding.md`](references/plan-seeding.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

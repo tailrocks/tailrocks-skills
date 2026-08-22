@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Improve Reconcile"
+  short_description: "Truth-sync the standalone plan index"
+  default_prompt: "Use $tailrocks-improve-reconcile to reverify the standalone plans backlog and update only plans/README.md to current truth."
+policy:
+  allow_implicit_invocation: false

@@ -20,14 +20,8 @@ file. They are not copied here — one source, and no chance of the two drifting
 ## References
 
 - [`build-and-launch.md`](references/build-and-launch.md)
+- [`harness-contract.md`](references/harness-contract.md)
 - [`interaction.md`](references/interaction.md)
 - [`regression.md`](references/regression.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`state-matrix.md`](references/state-matrix.md)
-
-## Templates
-
-- [`AuditTests.swift`](templates/AuditTests.swift)
-- [`ax-drive.swift`](templates/ax-drive.swift)
-- [`capture.sh`](templates/capture.sh)
-- [`state.sh`](templates/state.sh)
-- [`window-id.swift`](templates/window-id.swift)

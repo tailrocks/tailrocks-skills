@@ -4,13 +4,17 @@
 
 `tailrocks-graphql-best-practices` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-graphql-best-practices)
 
-Design, build, review, or audit the public GraphQL API of a backend service: schema and pagination shape, Juniper on Axum, generated TanStack clients, and committed-SDL contract gates. Not for service-to-service APIs — those are gRPC.
+Apply public GraphQL API policy when in-scope work evolves schema, Juniper resolvers, SDL, pagination, or generated clients. Use tailrocks-graphql-review for read-only findings. Not for cross-service communication; that is gRPC.
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This model-policy skill may load automatically only when its exact trigger
+matches work already in scope. Selection grants no authority beyond the
+active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-graphql-best-practices` …
+
+Arguments: `<public GraphQL API evolution>`
 
 ## Skill definition
 
@@ -21,5 +25,6 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`client-tanstack.md`](references/client-tanstack.md)
 - [`contract-gates.md`](references/contract-gates.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`schema-design.md`](references/schema-design.md)
 - [`server-rust.md`](references/server-rust.md)

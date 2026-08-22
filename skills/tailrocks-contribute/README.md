@@ -24,4 +24,5 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`etiquette-and-hard-stops.md`](references/etiquette-and-hard-stops.md)
 - [`project-contract.md`](references/project-contract.md)
 - [`review-response.md`](references/review-response.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`submission-gate.md`](references/submission-gate.md)

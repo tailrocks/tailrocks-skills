@@ -26,6 +26,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`goal-handoff.md`](references/goal-handoff.md)
 - [`plan-template.md`](references/plan-template.md)
 - [`research-shape.md`](references/research-shape.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`spec-format.md`](references/spec-format.md)
 
 ## Templates

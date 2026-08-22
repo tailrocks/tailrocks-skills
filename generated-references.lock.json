@@ -1,0 +1,960 @@
+{
+  "$schema": "tailrocks.generated-references-lock/v1",
+  "copies": [
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-agents-md/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-audit/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-axum-best-practices/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/architecture-and-state.md",
+      "destination": "skills/tailrocks-axum-refactor/references/architecture-and-state.md",
+      "sha256": "5315a991539d30b395c6347aa9c06de28a1b029c43cc4cc4f39eb596f54e1837"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/extractors-and-errors.md",
+      "destination": "skills/tailrocks-axum-refactor/references/extractors-and-errors.md",
+      "sha256": "fdcbb761f9d5110e7d8774867b174b5dfe329f2a756088124f6113a66cf53c6b"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/lifecycle-and-testing.md",
+      "destination": "skills/tailrocks-axum-refactor/references/lifecycle-and-testing.md",
+      "sha256": "77843f06192798ca09da10181fca8f1122692ea4fc02762e3cbe9855a286e658"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/middleware-and-security.md",
+      "destination": "skills/tailrocks-axum-refactor/references/middleware-and-security.md",
+      "sha256": "6c04d5346275e6f54a403eec801cbc29d2e628b20ef7eb0b3a893bcc7584e0b9"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-axum-refactor/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/architecture-and-state.md",
+      "destination": "skills/tailrocks-axum-review/references/architecture-and-state.md",
+      "sha256": "5315a991539d30b395c6347aa9c06de28a1b029c43cc4cc4f39eb596f54e1837"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/extractors-and-errors.md",
+      "destination": "skills/tailrocks-axum-review/references/extractors-and-errors.md",
+      "sha256": "fdcbb761f9d5110e7d8774867b174b5dfe329f2a756088124f6113a66cf53c6b"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/lifecycle-and-testing.md",
+      "destination": "skills/tailrocks-axum-review/references/lifecycle-and-testing.md",
+      "sha256": "77843f06192798ca09da10181fca8f1122692ea4fc02762e3cbe9855a286e658"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/middleware-and-security.md",
+      "destination": "skills/tailrocks-axum-review/references/middleware-and-security.md",
+      "sha256": "6c04d5346275e6f54a403eec801cbc29d2e628b20ef7eb0b3a893bcc7584e0b9"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-axum-review/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-brainstorm/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-checkout-pr/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-code-health/references/architecture-and-docs.md",
+      "destination": "skills/tailrocks-code-health-audit/references/architecture-and-docs.md",
+      "sha256": "05f471eb5ebac1ccbcdb0495a02df84ecf433e33248012b0a8cfcce104b2ecf9"
+    },
+    {
+      "source": "skills/tailrocks-code-health/references/defects-flakes-and-reports.md",
+      "destination": "skills/tailrocks-code-health-audit/references/defects-flakes-and-reports.md",
+      "sha256": "ca8823db480547679dff820cdad46b06824bd11fc09b078826f653301c3c19b6"
+    },
+    {
+      "source": "skills/tailrocks-code-health/references/ratchets-and-baselines.md",
+      "destination": "skills/tailrocks-code-health-audit/references/ratchets-and-baselines.md",
+      "sha256": "d2d90424c633595a48c4b199245ce1cb2308ee2bbafabb5e4544ad90ea856ddc"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-code-health-audit/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-code-health-audit/references/shared-version-policy.md",
+      "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
+    },
+    {
+      "source": "skills/tailrocks-code-health/references/verification-lanes.md",
+      "destination": "skills/tailrocks-code-health-audit/references/verification-lanes.md",
+      "sha256": "9aff9bd0e3d688dd66c38150a85dbd7ccbaa255339d4186a6c52e32eee01abe0"
+    },
+    {
+      "source": "skills/tailrocks-code-health/references/versions-and-dependencies.md",
+      "destination": "skills/tailrocks-code-health-audit/references/versions-and-dependencies.md",
+      "sha256": "0ebdab25a2315cb1c1a7d00c0014d2ea1095c35a832a6e888cbb616b2bd064f8"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-code-health/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-code-health/references/shared-version-policy.md",
+      "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-contribute/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-create-pr/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/pr-conventions.md",
+      "destination": "skills/tailrocks-create-pr/references/shared-pr-conventions.md",
+      "sha256": "78643e955c056d9ee5478004a414df51e34c3ca133998ef471ec2007b4012fc1"
+    },
+    {
+      "source": "shared/references/pr-conventions.md",
+      "destination": "skills/tailrocks-document/references/pr-conventions.md",
+      "sha256": "78643e955c056d9ee5478004a414df51e34c3ca133998ef471ec2007b4012fc1"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-document/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-finalize/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-graphql-best-practices/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-graphql-best-practices/references/client-tanstack.md",
+      "destination": "skills/tailrocks-graphql-review/references/client-tanstack.md",
+      "sha256": "46b5e6b6c03b9442f6115c3254bc3205de7127cf6485010c00f34b08c0cc8764"
+    },
+    {
+      "source": "skills/tailrocks-graphql-best-practices/references/contract-gates.md",
+      "destination": "skills/tailrocks-graphql-review/references/contract-gates.md",
+      "sha256": "e661f07695d5c0e257708c1af84c08541c97f29291f9d4ce9d179286e5d9157b"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-graphql-review/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-graphql-best-practices/references/schema-design.md",
+      "destination": "skills/tailrocks-graphql-review/references/schema-design.md",
+      "sha256": "c08b3cb493d63f5448c6dc813808c7c42aa38d6c9a5e0de1b493d33beb56597f"
+    },
+    {
+      "source": "skills/tailrocks-graphql-best-practices/references/server-rust.md",
+      "destination": "skills/tailrocks-graphql-review/references/server-rust.md",
+      "sha256": "101be17dbbda3f52e67b4c805bef504d096d04b3a843bb5104d9bcde1f2c7f06"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-grilling/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-grpc-best-practices/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-grpc-best-practices/references/operations.md",
+      "destination": "skills/tailrocks-grpc-review/references/operations.md",
+      "sha256": "f2a67376304402eac79f2a1320887b53487afe5a1088477924c65cd6607a9828"
+    },
+    {
+      "source": "skills/tailrocks-grpc-best-practices/references/proto-contracts.md",
+      "destination": "skills/tailrocks-grpc-review/references/proto-contracts.md",
+      "sha256": "8211782391cc1587e4f8a6160b8a32286cb24784131d1c578ae2e592786790ed"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-grpc-review/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-grpc-best-practices/references/tonic-server-client.md",
+      "destination": "skills/tailrocks-grpc-review/references/tonic-server-client.md",
+      "sha256": "cedc95776dbd06b67a5940313e1046554714f5d80f9ff3dc2d1ab726c1b31e6f"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-idea/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/repository-audit-lanes.md",
+      "destination": "skills/tailrocks-improve-deep/references/repository-audit-lanes.md",
+      "sha256": "630c6ef1462769f0654a41f5c920da1cd7c52260d8fdb5114492b51a09fa63b6"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-improve-deep/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-improve-execution/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-improve-plan/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-improve-reconcile/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-improve-security/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/repository-audit-lanes.md",
+      "destination": "skills/tailrocks-improve/references/repository-audit-lanes.md",
+      "sha256": "630c6ef1462769f0654a41f5c920da1cd7c52260d8fdb5114492b51a09fa63b6"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-improve/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/design-pipeline.md",
+      "destination": "skills/tailrocks-macos-design/references/design-pipeline.md",
+      "sha256": "00bbf16de54860b26445c91e75b408b1536a5025c698923aee7241f7ab6e3de9"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-macos-design/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-macos-visual-qa/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/pr-conventions.md",
+      "destination": "skills/tailrocks-merge-pr/references/pr-conventions.md",
+      "sha256": "78643e955c056d9ee5478004a414df51e34c3ca133998ef471ec2007b4012fc1"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-merge-pr/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-plan/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/pr-conventions.md",
+      "destination": "skills/tailrocks-pr-template/references/pr-conventions.md",
+      "sha256": "78643e955c056d9ee5478004a414df51e34c3ca133998ef471ec2007b4012fc1"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-pr-template/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-prove/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-reconcile/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-record-decision/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-record-feedback/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/pr-conventions.md",
+      "destination": "skills/tailrocks-refresh-pr/references/pr-conventions.md",
+      "sha256": "78643e955c056d9ee5478004a414df51e34c3ca133998ef471ec2007b4012fc1"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-refresh-pr/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-remediate/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-research/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-rethink/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-retrospect/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/pr-conventions.md",
+      "destination": "skills/tailrocks-review-pr/references/pr-conventions.md",
+      "sha256": "78643e955c056d9ee5478004a414df51e34c3ca133998ef471ec2007b4012fc1"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-review-pr/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-rust-best-practices/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/lints-clippy-rustfmt.md",
+      "destination": "skills/tailrocks-rust-project-audit/references/lints-clippy-rustfmt.md",
+      "sha256": "6c31c7e50c8cc989097d1d1f4703041fac9b2cd7aa951ec81e51e24b1d1eb12a"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-rust-project-audit/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-rust-project-audit/references/shared-version-policy.md",
+      "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/supply-chain-and-testing.md",
+      "destination": "skills/tailrocks-rust-project-audit/references/supply-chain-and-testing.md",
+      "sha256": "309786e33902726dfe9abaa2cb33cb858e049a467a985ddb41ae0a7e592a2b25"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/toolchain-and-mise.md",
+      "destination": "skills/tailrocks-rust-project-audit/references/toolchain-and-mise.md",
+      "sha256": "3c8656fa0735692d11426a99089eaa82876ea830a9c6e4c6c4bd4f61c0635763"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/version-policy.md",
+      "destination": "skills/tailrocks-rust-project-audit/references/version-policy.md",
+      "sha256": "44bdca0a253d099597ce90cf2e992ea6c7edae0cc89fa734347e17aea25de85d"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/workspace-and-layout.md",
+      "destination": "skills/tailrocks-rust-project-audit/references/workspace-and-layout.md",
+      "sha256": "9c346132d45f8c4b95b316082ada3e4ff551e7408dc445b1adc3c19f35691aae"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/lints-clippy-rustfmt.md",
+      "destination": "skills/tailrocks-rust-project-remediate/references/lints-clippy-rustfmt.md",
+      "sha256": "6c31c7e50c8cc989097d1d1f4703041fac9b2cd7aa951ec81e51e24b1d1eb12a"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-rust-project-remediate/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-rust-project-remediate/references/shared-version-policy.md",
+      "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/supply-chain-and-testing.md",
+      "destination": "skills/tailrocks-rust-project-remediate/references/supply-chain-and-testing.md",
+      "sha256": "309786e33902726dfe9abaa2cb33cb858e049a467a985ddb41ae0a7e592a2b25"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/toolchain-and-mise.md",
+      "destination": "skills/tailrocks-rust-project-remediate/references/toolchain-and-mise.md",
+      "sha256": "3c8656fa0735692d11426a99089eaa82876ea830a9c6e4c6c4bd4f61c0635763"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/version-policy.md",
+      "destination": "skills/tailrocks-rust-project-remediate/references/version-policy.md",
+      "sha256": "44bdca0a253d099597ce90cf2e992ea6c7edae0cc89fa734347e17aea25de85d"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/workspace-and-layout.md",
+      "destination": "skills/tailrocks-rust-project-remediate/references/workspace-and-layout.md",
+      "sha256": "9c346132d45f8c4b95b316082ada3e4ff551e7408dc445b1adc3c19f35691aae"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-rust-project-setup/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-rust-project-setup/references/shared-version-policy.md",
+      "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/api-design.md",
+      "destination": "skills/tailrocks-rust-refactor/references/api-design.md",
+      "sha256": "0203695838abab8e20627a5a17b7f34a3916bad25bdd12c8988821e649cfca15"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/errors-testing-docs.md",
+      "destination": "skills/tailrocks-rust-refactor/references/errors-testing-docs.md",
+      "sha256": "597accdb31564c66957a7d91b24bedfeef689dc5b38560acb355ffa61c46b9cf"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/ownership-performance.md",
+      "destination": "skills/tailrocks-rust-refactor/references/ownership-performance.md",
+      "sha256": "78a79484fdde46a72c55a32d213aa167ac584e14df1b4b4aa1eb5618516e5eb4"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/readability-style-architecture.md",
+      "destination": "skills/tailrocks-rust-refactor/references/readability-style-architecture.md",
+      "sha256": "47eaae1b952685bb1efd4a8b9333e1c3dafdc04680ca95c94df69f11ffd466df"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-rust-refactor/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/tooling-lints.md",
+      "destination": "skills/tailrocks-rust-refactor/references/tooling-lints.md",
+      "sha256": "422358a383d646f3029da7f30ad5b50b3977a709be09224770fac3cc6e948c8c"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/api-design.md",
+      "destination": "skills/tailrocks-rust-review/references/api-design.md",
+      "sha256": "0203695838abab8e20627a5a17b7f34a3916bad25bdd12c8988821e649cfca15"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/errors-testing-docs.md",
+      "destination": "skills/tailrocks-rust-review/references/errors-testing-docs.md",
+      "sha256": "597accdb31564c66957a7d91b24bedfeef689dc5b38560acb355ffa61c46b9cf"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/ownership-performance.md",
+      "destination": "skills/tailrocks-rust-review/references/ownership-performance.md",
+      "sha256": "78a79484fdde46a72c55a32d213aa167ac584e14df1b4b4aa1eb5618516e5eb4"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/readability-style-architecture.md",
+      "destination": "skills/tailrocks-rust-review/references/readability-style-architecture.md",
+      "sha256": "47eaae1b952685bb1efd4a8b9333e1c3dafdc04680ca95c94df69f11ffd466df"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-rust-review/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/tooling-lints.md",
+      "destination": "skills/tailrocks-rust-review/references/tooling-lints.md",
+      "sha256": "422358a383d646f3029da7f30ad5b50b3977a709be09224770fac3cc6e948c8c"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-seed-roadmap/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-simplify/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skill-authoring/references/context-routing.md",
+      "destination": "skills/tailrocks-skill-audit/references/context-routing.md",
+      "sha256": "8ea74ad520c11e798233c194b896881822f0c07c27c00fa2540a52e7cb900402"
+    },
+    {
+      "source": "skill-authoring/references/operational-contract.md",
+      "destination": "skills/tailrocks-skill-audit/references/operational-contract.md",
+      "sha256": "c38a078af3995cab2d917e5e9c32d3bf2a534a47de971ba00d2ad3dcdc832094"
+    },
+    {
+      "source": "skill-authoring/references/responsibility-topology.md",
+      "destination": "skills/tailrocks-skill-audit/references/responsibility-topology.md",
+      "sha256": "a7d8c8ce71b7e2df93cb7f379642a3d21dddefca8caf6fb0d58f19102e195087"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-skill-audit/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skill-authoring/references/context-routing.md",
+      "destination": "skills/tailrocks-skill-create/references/context-routing.md",
+      "sha256": "8ea74ad520c11e798233c194b896881822f0c07c27c00fa2540a52e7cb900402"
+    },
+    {
+      "source": "skill-authoring/references/house-wiring.md",
+      "destination": "skills/tailrocks-skill-create/references/house-wiring.md",
+      "sha256": "624dfe030b7dc24624a45d2d53d802cd296406f2329f3f514cb78c6c2dc642e5"
+    },
+    {
+      "source": "skill-authoring/references/operational-contract.md",
+      "destination": "skills/tailrocks-skill-create/references/operational-contract.md",
+      "sha256": "c38a078af3995cab2d917e5e9c32d3bf2a534a47de971ba00d2ad3dcdc832094"
+    },
+    {
+      "source": "skill-authoring/references/responsibility-topology.md",
+      "destination": "skills/tailrocks-skill-create/references/responsibility-topology.md",
+      "sha256": "a7d8c8ce71b7e2df93cb7f379642a3d21dddefca8caf6fb0d58f19102e195087"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-skill-create/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skill-authoring/references/house-wiring.md",
+      "destination": "skills/tailrocks-skill-refactor/references/house-wiring.md",
+      "sha256": "624dfe030b7dc24624a45d2d53d802cd296406f2329f3f514cb78c6c2dc642e5"
+    },
+    {
+      "source": "skill-authoring/references/operational-contract.md",
+      "destination": "skills/tailrocks-skill-refactor/references/operational-contract.md",
+      "sha256": "c38a078af3995cab2d917e5e9c32d3bf2a534a47de971ba00d2ad3dcdc832094"
+    },
+    {
+      "source": "skill-authoring/references/responsibility-topology.md",
+      "destination": "skills/tailrocks-skill-refactor/references/responsibility-topology.md",
+      "sha256": "a7d8c8ce71b7e2df93cb7f379642a3d21dddefca8caf6fb0d58f19102e195087"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-skill-refactor/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skill-authoring/references/context-routing.md",
+      "destination": "skills/tailrocks-skill-update/references/context-routing.md",
+      "sha256": "8ea74ad520c11e798233c194b896881822f0c07c27c00fa2540a52e7cb900402"
+    },
+    {
+      "source": "skill-authoring/references/house-wiring.md",
+      "destination": "skills/tailrocks-skill-update/references/house-wiring.md",
+      "sha256": "624dfe030b7dc24624a45d2d53d802cd296406f2329f3f514cb78c6c2dc642e5"
+    },
+    {
+      "source": "skill-authoring/references/operational-contract.md",
+      "destination": "skills/tailrocks-skill-update/references/operational-contract.md",
+      "sha256": "c38a078af3995cab2d917e5e9c32d3bf2a534a47de971ba00d2ad3dcdc832094"
+    },
+    {
+      "source": "skill-authoring/references/responsibility-topology.md",
+      "destination": "skills/tailrocks-skill-update/references/responsibility-topology.md",
+      "sha256": "a7d8c8ce71b7e2df93cb7f379642a3d21dddefca8caf6fb0d58f19102e195087"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-skill-update/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-agent-integration/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-best-practices/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/lint-and-format.md",
+      "destination": "skills/tailrocks-swift-project-audit/references/lint-and-format.md",
+      "sha256": "c7514c0b6a34190ec4ddde9fd1213dc2a757c48705cdb12b5e3216306752144b"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/project-generation.md",
+      "destination": "skills/tailrocks-swift-project-audit/references/project-generation.md",
+      "sha256": "82ddd318517d39038799b6b1714e036ac8e29403b9e59fb08f45e675e8071853"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-project-audit/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-swift-project-audit/references/shared-version-policy.md",
+      "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/testing.md",
+      "destination": "skills/tailrocks-swift-project-audit/references/testing.md",
+      "sha256": "9ea1639ae7e49921b5ecfc00dbcffcdb3871e629b613f540b4eab2e0d4d496e9"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/toolchain.md",
+      "destination": "skills/tailrocks-swift-project-audit/references/toolchain.md",
+      "sha256": "e8b33bd9bb46a77185ade674e693505ee76c125d7a29c2ab586f795e4f86170e"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/lint-and-format.md",
+      "destination": "skills/tailrocks-swift-project-remediate/references/lint-and-format.md",
+      "sha256": "c7514c0b6a34190ec4ddde9fd1213dc2a757c48705cdb12b5e3216306752144b"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/project-generation.md",
+      "destination": "skills/tailrocks-swift-project-remediate/references/project-generation.md",
+      "sha256": "82ddd318517d39038799b6b1714e036ac8e29403b9e59fb08f45e675e8071853"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-project-remediate/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-swift-project-remediate/references/shared-version-policy.md",
+      "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/testing.md",
+      "destination": "skills/tailrocks-swift-project-remediate/references/testing.md",
+      "sha256": "9ea1639ae7e49921b5ecfc00dbcffcdb3871e629b613f540b4eab2e0d4d496e9"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/toolchain.md",
+      "destination": "skills/tailrocks-swift-project-remediate/references/toolchain.md",
+      "sha256": "e8b33bd9bb46a77185ade674e693505ee76c125d7a29c2ab586f795e4f86170e"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-project-setup/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-swift-project-setup/references/shared-version-policy.md",
+      "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/accessibility.md",
+      "destination": "skills/tailrocks-swift-refactor/references/accessibility.md",
+      "sha256": "dd88b9c13523e1777f0d02cc712a30e5ce882cedd4ad9c87b97be944a06359d9"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/appkit-interop.md",
+      "destination": "skills/tailrocks-swift-refactor/references/appkit-interop.md",
+      "sha256": "0a17010c4358cdf39ed2cccacadd1ff6097e302d354388a9ab8043b40d632da9"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/concurrency.md",
+      "destination": "skills/tailrocks-swift-refactor/references/concurrency.md",
+      "sha256": "f20e6f75848ff3d3d3b293f0f362c29fa600e83dd61673eb8f4ca8f374994d55"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/errors-and-api.md",
+      "destination": "skills/tailrocks-swift-refactor/references/errors-and-api.md",
+      "sha256": "e21382c58b017044437ab1a34d345224736ce9ef181266b44ea1543163ab4b29"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-refactor/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/swiftui.md",
+      "destination": "skills/tailrocks-swift-refactor/references/swiftui.md",
+      "sha256": "7bc15182dd86b56d827a3e5b4d994bea337239bcc54472888882889136da8ab1"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/accessibility.md",
+      "destination": "skills/tailrocks-swift-review/references/accessibility.md",
+      "sha256": "dd88b9c13523e1777f0d02cc712a30e5ce882cedd4ad9c87b97be944a06359d9"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/appkit-interop.md",
+      "destination": "skills/tailrocks-swift-review/references/appkit-interop.md",
+      "sha256": "0a17010c4358cdf39ed2cccacadd1ff6097e302d354388a9ab8043b40d632da9"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/concurrency.md",
+      "destination": "skills/tailrocks-swift-review/references/concurrency.md",
+      "sha256": "f20e6f75848ff3d3d3b293f0f362c29fa600e83dd61673eb8f4ca8f374994d55"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/errors-and-api.md",
+      "destination": "skills/tailrocks-swift-review/references/errors-and-api.md",
+      "sha256": "e21382c58b017044437ab1a34d345224736ce9ef181266b44ea1543163ab4b29"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-review/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/swiftui.md",
+      "destination": "skills/tailrocks-swift-review/references/swiftui.md",
+      "sha256": "7bc15182dd86b56d827a3e5b4d994bea337239bcc54472888882889136da8ab1"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-rust-core-boundary/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-rust-core-setup/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-swift-rust-core-setup/references/shared-version-policy.md",
+      "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/boundaries-and-data.md",
+      "destination": "skills/tailrocks-tanstack-project-audit/references/boundaries-and-data.md",
+      "sha256": "d6733731fdbd1e826eaaadaa787fd249523608c9f0decfa843aa2a9454087300"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-tanstack-project-audit/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/shadcn-ui.md",
+      "destination": "skills/tailrocks-tanstack-project-audit/references/shadcn-ui.md",
+      "sha256": "89a98b174e67e279fd9165d376ab09b82f64b69c7f5ee7a47ff9f8ae62bba32e"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-tanstack-project-audit/references/shared-version-policy.md",
+      "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/stack-and-layout.md",
+      "destination": "skills/tailrocks-tanstack-project-audit/references/stack-and-layout.md",
+      "sha256": "bd6227c81ce8be8e155b80235ad086ce12911aabb01ace24dc21c66144f98fb4"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/tooling-and-quality.md",
+      "destination": "skills/tailrocks-tanstack-project-audit/references/tooling-and-quality.md",
+      "sha256": "a13e78b6facac13b9e588037928d4e5b52e2e57d54f72568506ef72af277818b"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/version-policy.md",
+      "destination": "skills/tailrocks-tanstack-project-audit/references/version-policy.md",
+      "sha256": "0aec57c6a979a596691c61d9ef68c31200ff47765eaafff565406c1103e85fc6"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/boundaries-and-data.md",
+      "destination": "skills/tailrocks-tanstack-project-migrate/references/boundaries-and-data.md",
+      "sha256": "d6733731fdbd1e826eaaadaa787fd249523608c9f0decfa843aa2a9454087300"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-tanstack-project-migrate/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/shadcn-ui.md",
+      "destination": "skills/tailrocks-tanstack-project-migrate/references/shadcn-ui.md",
+      "sha256": "89a98b174e67e279fd9165d376ab09b82f64b69c7f5ee7a47ff9f8ae62bba32e"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-tanstack-project-migrate/references/shared-version-policy.md",
+      "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/stack-and-layout.md",
+      "destination": "skills/tailrocks-tanstack-project-migrate/references/stack-and-layout.md",
+      "sha256": "bd6227c81ce8be8e155b80235ad086ce12911aabb01ace24dc21c66144f98fb4"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/tooling-and-quality.md",
+      "destination": "skills/tailrocks-tanstack-project-migrate/references/tooling-and-quality.md",
+      "sha256": "a13e78b6facac13b9e588037928d4e5b52e2e57d54f72568506ef72af277818b"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/version-policy.md",
+      "destination": "skills/tailrocks-tanstack-project-migrate/references/version-policy.md",
+      "sha256": "0aec57c6a979a596691c61d9ef68c31200ff47765eaafff565406c1103e85fc6"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/boundaries-and-data.md",
+      "destination": "skills/tailrocks-tanstack-project-remediate/references/boundaries-and-data.md",
+      "sha256": "d6733731fdbd1e826eaaadaa787fd249523608c9f0decfa843aa2a9454087300"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-tanstack-project-remediate/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/shadcn-ui.md",
+      "destination": "skills/tailrocks-tanstack-project-remediate/references/shadcn-ui.md",
+      "sha256": "89a98b174e67e279fd9165d376ab09b82f64b69c7f5ee7a47ff9f8ae62bba32e"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-tanstack-project-remediate/references/shared-version-policy.md",
+      "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/stack-and-layout.md",
+      "destination": "skills/tailrocks-tanstack-project-remediate/references/stack-and-layout.md",
+      "sha256": "bd6227c81ce8be8e155b80235ad086ce12911aabb01ace24dc21c66144f98fb4"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/tooling-and-quality.md",
+      "destination": "skills/tailrocks-tanstack-project-remediate/references/tooling-and-quality.md",
+      "sha256": "a13e78b6facac13b9e588037928d4e5b52e2e57d54f72568506ef72af277818b"
+    },
+    {
+      "source": "skills/tailrocks-tanstack-project-setup/references/version-policy.md",
+      "destination": "skills/tailrocks-tanstack-project-remediate/references/version-policy.md",
+      "sha256": "0aec57c6a979a596691c61d9ef68c31200ff47765eaafff565406c1103e85fc6"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-tanstack-project-setup/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-tanstack-project-setup/references/shared-version-policy.md",
+      "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
+    },
+    {
+      "source": "shared/references/design-pipeline.md",
+      "destination": "skills/tailrocks-tui-design/references/design-pipeline.md",
+      "sha256": "00bbf16de54860b26445c91e75b408b1536a5025c698923aee7241f7ab6e3de9"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-tui-design/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-typescript-best-practices/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-typescript-migrate/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/boundaries-and-domain-values.md",
+      "destination": "skills/tailrocks-typescript-refactor/references/boundaries-and-domain-values.md",
+      "sha256": "9dd6857056d05f7b86ec3dd8268c0a9739ace0aafabb8045bec56d7f5ac61969"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/mutation-and-api-safety.md",
+      "destination": "skills/tailrocks-typescript-refactor/references/mutation-and-api-safety.md",
+      "sha256": "08ab00fccd7c576d565f41ca23969a47f9489cad5c75491964a104d0b7af98ea"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/react-and-async.md",
+      "destination": "skills/tailrocks-typescript-refactor/references/react-and-async.md",
+      "sha256": "4dfe1bab25d3f02451fe8aa7f8ad172c2228df5b399af5ad71ed2cbef67cfd28"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-typescript-refactor/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/state-and-errors.md",
+      "destination": "skills/tailrocks-typescript-refactor/references/state-and-errors.md",
+      "sha256": "e4fb011fc953eb302a783882265f657157371ab6ae0aa59883342d310a7e02aa"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/boundaries-and-domain-values.md",
+      "destination": "skills/tailrocks-typescript-review/references/boundaries-and-domain-values.md",
+      "sha256": "9dd6857056d05f7b86ec3dd8268c0a9739ace0aafabb8045bec56d7f5ac61969"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/mutation-and-api-safety.md",
+      "destination": "skills/tailrocks-typescript-review/references/mutation-and-api-safety.md",
+      "sha256": "08ab00fccd7c576d565f41ca23969a47f9489cad5c75491964a104d0b7af98ea"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/react-and-async.md",
+      "destination": "skills/tailrocks-typescript-review/references/react-and-async.md",
+      "sha256": "4dfe1bab25d3f02451fe8aa7f8ad172c2228df5b399af5ad71ed2cbef67cfd28"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-typescript-review/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/state-and-errors.md",
+      "destination": "skills/tailrocks-typescript-review/references/state-and-errors.md",
+      "sha256": "e4fb011fc953eb302a783882265f657157371ab6ae0aa59883342d310a7e02aa"
+    },
+    {
+      "source": "shared/references/design-pipeline.md",
+      "destination": "skills/tailrocks-web-design/references/design-pipeline.md",
+      "sha256": "00bbf16de54860b26445c91e75b408b1536a5025c698923aee7241f7ab6e3de9"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-web-design/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-web-visual-qa/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    }
+  ]
+}

@@ -4,13 +4,17 @@
 
 `tailrocks-swift-best-practices` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-swift-best-practices)
 
-Write, review, or refactor native macOS and iOS Swift or SwiftUI: strict concurrency, state ownership, platform interop boundaries, typed failure, availability, accessibility, and tests.
+Apply Swift code policy when writing in-scope Swift, SwiftUI, concurrency, state ownership, accessibility, availability, or narrow AppKit bridges. Not review, refactoring, project setup, Rust-core boundary architecture, or visual-design authority.
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This model-policy skill may load automatically only when its exact trigger
+matches work already in scope. Selection grants no authority beyond the
+active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-swift-best-practices` …
+
+Arguments: `<Swift or SwiftUI writing task>`
 
 ## Skill definition
 
@@ -21,8 +25,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`accessibility.md`](references/accessibility.md)
 - [`appkit-interop.md`](references/appkit-interop.md)
-- [`apple-platform-shell.md`](references/apple-platform-shell.md)
 - [`concurrency.md`](references/concurrency.md)
 - [`errors-and-api.md`](references/errors-and-api.md)
-- [`rust-core-boundary.md`](references/rust-core-boundary.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`swiftui.md`](references/swiftui.md)

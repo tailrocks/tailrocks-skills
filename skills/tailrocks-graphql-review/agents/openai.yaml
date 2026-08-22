@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: GraphQL Review"
+  short_description: "Review public GraphQL contracts without mutation"
+  default_prompt: "Use $tailrocks-graphql-review to review this GraphQL diff or public API surface read-only and report only verified schema, server, contract-gate, and generated-client findings."
+policy:
+  allow_implicit_invocation: false

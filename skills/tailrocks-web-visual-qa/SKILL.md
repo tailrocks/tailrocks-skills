@@ -52,10 +52,10 @@ blessing as the owed precondition.
 
 ## The capture matrix
 
-Read [`screenshot-baselines.md`](references/screenshot-baselines.md); copy
-[`templates/playwright.config.ts`](templates/playwright.config.ts) and the
-spec shape from [`templates/tests/visual/`](templates/tests/visual/) rather
-than deriving them. One baseline per screen × state × viewport × theme,
+Read [`screenshot-baselines.md`](references/screenshot-baselines.md) and
+[`harness-contract.md`](references/harness-contract.md); install and run the
+shared owned-server harness rather than deriving Playwright configuration. One
+baseline per screen × state × viewport × theme,
 walked from the design package's registry — a state missing from the
 registry is a state the suite silently skips, so the registry is the
 enumeration of record. Every capture and its constraints land in the
@@ -80,8 +80,8 @@ regeneration.
 
 Never freeze a baseline from a screen whose design manifest carries no
 recorded blessing. Never update baselines to silence a red suite. Never
-capture through anything but the pinned Playwright environment the record
-names. Never mask a region without recording the mask and its reason —
+capture through anything but the pinned Playwright environment and
+revision-bound owned server the record names. Never mask a region without recording the mask and its reason —
 a masked region is an unverified region. Never present a green diff as
 design approval: a pixel match answers "did it change", not "is it right".
 Report every skipped check.
