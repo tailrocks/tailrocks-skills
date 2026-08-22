@@ -4,7 +4,7 @@
 
 `tailrocks-skill-update` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-skill-update)
 
-Update an existing skill in place without changing its invocation contract: baseline the failure, check its eval set before touching load-bearing lines, strengthen over append, update the full eval set for CI. Never runs evals locally.
+Improve an existing skill in place while preserving its responsibility and public contract. Includes applying selected audit findings; excludes split, merge, rename, and migration.
 
 ## Invocation
 

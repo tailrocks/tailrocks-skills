@@ -36,7 +36,7 @@ The Swift implementation stack: code-level policy and the agent-drivable project
 
 | Skill | What it does |
 |---|---|
-| [`tailrocks-swift-best-practices`](/docs/skills/tailrocks-swift-best-practices) | Write, review, or refactor Swift and SwiftUI for macOS: strict concurrency and actor isolation, state ownership and view identity, AppKit interop boundaries, typed failure, availability guards, accessibility, and tests. |
+| [`tailrocks-swift-best-practices`](/docs/skills/tailrocks-swift-best-practices) | Write, review, or refactor native macOS and iOS Swift or SwiftUI: strict concurrency, state ownership, platform interop boundaries, typed failure, availability, accessibility, and tests. |
 | [`tailrocks-swift-project-setup`](/docs/skills/tailrocks-swift-project-setup) | Scaffold, audit, or remediate a strict native macOS Swift baseline: project generation, deployment targets and SDK lanes, local signing, format and lint gates, test wiring, mise tooling, Xcode agent integration. |
 
 ### Design and prototypes
@@ -72,10 +72,10 @@ Create, update, audit, and refactor agent skills under the observed-failure law 
 
 | Skill | What it does |
 |---|---|
-| [`tailrocks-skill-create`](/docs/skills/tailrocks-skill-create) | Create a new agent skill from an observed failure: baseline first, placement decided before writing, guidance form matched to the failure type, lean router with deep references, trigger-only description, baselined eval cases, full repository wiring. |
-| [`tailrocks-skill-update`](/docs/skills/tailrocks-skill-update) | Update an existing skill in place without changing its invocation contract: baseline the failure, check its eval set before touching load-bearing lines, strengthen over append, update the full eval set for CI. |
-| [`tailrocks-skill-audit`](/docs/skills/tailrocks-skill-audit) | Audit one skill or every skill in the repository against the authoring doctrine. |
-| [`tailrocks-skill-refactor`](/docs/skills/tailrocks-skill-refactor) | Apply user-selected findings, by ID, from a skill-audit report to a skill: fix descriptions, routers, references, and evals per doctrine while preserving the invocation contract. |
+| [`tailrocks-skill-create`](/docs/skills/tailrocks-skill-create) | Create a new skill when a recurring agent responsibility has no existing owner. |
+| [`tailrocks-skill-update`](/docs/skills/tailrocks-skill-update) | Improve an existing skill in place while preserving its responsibility and public contract. |
+| [`tailrocks-skill-audit`](/docs/skills/tailrocks-skill-audit) | Inspect one skill or the portfolio and report behavioral, structural, efficiency, portability, security, evaluation, and overlap defects. |
+| [`tailrocks-skill-refactor`](/docs/skills/tailrocks-skill-refactor) | Change skill architecture or public contracts by splitting, merging, renaming, extracting, replacing, deprecating, or migrating responsibilities. |
 
 ### Pull request lifecycle
 

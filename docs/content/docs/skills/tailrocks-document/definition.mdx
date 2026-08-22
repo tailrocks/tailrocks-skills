@@ -47,7 +47,9 @@ never assumed.
    references, wikis — and read the rules that govern each: an `AGENTS.md`
    in the documentation subtree, contribution docs, generation and
    validation commands (`mise` tasks, package scripts, make targets).
-   A repository with no docs project has one surface: its README set.
+   A repository with no docs project has one surface: its README set. External
+   or hosted documentation is a report-only obligation unless the user supplies
+   an explicitly in-scope repository-backed checkout; never mutate it here.
    **Complete when:** every surface is named with its owning rules, its
    generation command, and its validation gate.
 2. **Inventory the change from the diff.** Read the full diff against the

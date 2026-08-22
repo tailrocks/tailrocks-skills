@@ -4,7 +4,7 @@
 
 `tailrocks-skill-create` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-skill-create)
 
-Create a new agent skill from an observed failure: baseline first, placement decided before writing, guidance form matched to the failure type, lean router with deep references, trigger-only description, baselined eval cases, full repository wiring.
+Create a new skill when a recurring agent responsibility has no existing owner. Do not use for edits, repository-only conventions, or mechanically enforceable rules.
 
 ## Invocation
 

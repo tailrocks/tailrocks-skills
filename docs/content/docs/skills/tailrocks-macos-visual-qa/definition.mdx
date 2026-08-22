@@ -87,10 +87,10 @@ Use a UI test when real application lifecycle management is required, and note
 that UI automation still requires the older test framework — the newer testing
 framework replaces it for unit tests only.
 
-`performAccessibilityAudit` is macOS-native and is **the only automated design
-gate that exists**. No Liquid Glass linter and no HIG linter exists, from Apple
-or anyone. Run it for contrast, element detection, hit region, and sufficient
-element description.
+`performAccessibilityAudit` is the Apple-native automated accessibility gate;
+pixel regression separately detects rendered change but does not judge design
+quality. No Liquid Glass linter and no HIG linter exists. Run the audit for
+contrast, element detection, hit region, and sufficient element description.
 
 ## The state matrix
 

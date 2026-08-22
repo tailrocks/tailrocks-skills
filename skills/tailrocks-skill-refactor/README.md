@@ -4,7 +4,7 @@
 
 `tailrocks-skill-refactor` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-skill-refactor)
 
-Apply user-selected findings, by ID, from a skill-audit report to a skill: fix descriptions, routers, references, and evals per doctrine while preserving the invocation contract. Refuses work without a report basis; ends in an independent re-audit.
+Change skill architecture or public contracts by splitting, merging, renaming, extracting, replacing, deprecating, or migrating responsibilities.
 
 ## Invocation
 
@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-skill-refactor` …
 
-Arguments: `<skill name> <finding IDs>`
+Arguments: `<skill or skill family> <transformation>`
 
 ## Skill definition
 

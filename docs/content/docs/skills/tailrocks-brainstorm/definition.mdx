@@ -24,7 +24,8 @@ answer lands in `roadmap/<slug>/README.md` the moment it resolves.
 - Write only `roadmap/<slug>/README.md`, that folder's assets, and the item's
   index row. Never its `plan/`, `verification/`, or `goal/` siblings — other
   skills own them, and `goal/check.sh` fingerprints the frozen ones. Keep
-  source, configuration, dependencies, and Git state unchanged.
+  source, configuration, and dependencies unchanged. Git changes are limited to
+  the delivery commit, push, and PR-status update defined below.
 - Ask one question at a time and wait; with `--batch`, one numbered frontier
   round at a time. Every question carries a recommended answer.
 - Put only decisions to the user. Facts findable in the repository, the web,

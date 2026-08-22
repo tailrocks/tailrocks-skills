@@ -67,6 +67,10 @@ settings, and this skill's defaults govern.
 4. **Pre-merge worklist.** Run the repository's `## Before merge` items —
    changelog entry, docs updates, version checks, whatever the file names —
    committing and pushing what they change. No file → nothing to do.
+   Classify each item before execution. Ordinary branch-local validation and
+   documentation edits are in scope. Deployment, release, data mutation,
+   external publication, or another irreversible effect requires explicit
+   authorization immediately before that item.
 
    **Delivery-artifact check.** Fires **only when this PR's diff touches
    `roadmap/`**; otherwise do nothing and say nothing. Read-only: it blocks,

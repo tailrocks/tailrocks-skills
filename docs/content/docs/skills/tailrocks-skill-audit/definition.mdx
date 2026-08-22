@@ -15,7 +15,7 @@ testing, and house-wiring doctrine in its references — to one skill or a
 whole tree and produces the defect report. The report is the product: it
 is the evidence a fix is applied from, and
 [`report-format.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-skill-audit/references/report-format.md) makes it consumable by
-`tailrocks-skill-refactor` one finding ID at a time.
+`tailrocks-skill-update` or `tailrocks-skill-refactor` by finding identity.
 
 Read-only on everything audited. The single write is the report file
 under `skill-audits/`; never edit a skill, an eval, or a wire — a defect
@@ -24,18 +24,18 @@ present does not imply permission to remove it.
 ## Modes
 
 - `<skill name>`: audit one skill.
-- `all`: sweep every skill in the tree. Fan the reads out — one read-only
-  investigator subagent per skill, fresh context each, carrying the
-  doctrine pointers, the report format, and the hard rules verbatim —
-  then vet in your own context. Investigators never hold the whole tree.
+- `all`: run deterministic prechecks first, then fan semantic reads into
+  bounded fresh-context per-skill batches plus cross-cutting portfolio lanes
+  for routing, overlap, duplication, portability, security, and topology.
 
 ## Steps
 
 1. **Inventory.** Locate the skill: `SKILL.md`, `references/`,
    `templates/`, client metadata, `evals/evals.json` and its fixtures,
    plus the tree's wiring surface (catalog, generated docs, install and
-   index documents, version pins). In `all` mode, enumerate the tree's
-   skill directories first; every one gets an investigator.
+   index documents, version pins). Read the previous report before assigning
+   finding identities. In `all` mode, enumerate the tree and run static gates
+   before sending only semantic questions to investigators.
    **Complete when:** every in-scope skill has its full file surface
    named.
 
@@ -44,13 +44,18 @@ present does not imply permission to remove it.
    router, reference, and output-contract defects;
    [`testing-doctrine.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-skill-audit/references/testing-doctrine.md) for eval
    defects; [`house-wiring.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-skill-audit/references/house-wiring.md) for wiring
-   gaps. Judge overlap last: two skills owning one responsibility is a
+   gaps. Inspect recorded evidence for contract coherence, trigger precision,
+   task outcomes, repeated-output variance, loaded context, tool use, security
+   boundaries, client portability, eval freshness, and split/merge topology.
+   Mark each dimension `MEASURED`, `NOT MEASURED` with missing evidence, or
+   `NOT APPLICABLE`; never launch behavioral repetitions from audit. Judge overlap
+   last: two skills owning one responsibility is a
    defect even when both are internally clean. Judge against the working
    repository's own skill-tree conventions first when it carries them (a
    `skills/AGENTS.md`, a validator, an eval runner); this doctrine fills
    what those do not cover.
-   **Complete when:** each layer of each skill is judged or explicitly
-   clean.
+   **Complete when:** each layer is judged or clean and each dimension has one
+   of the three evidence states.
 
 3. **Vet against your own reads.** Re-open every cited line yourself.
    Kill by-design behavior, mis-attributed evidence, and duplicates with
@@ -59,7 +64,10 @@ present does not imply permission to remove it.
    **Complete when:** every surviving finding carries evidence you
    opened, and every killed one carries its reason.
 
-4. **Write the report.** One report file per skill under `skill-audits/`
+4. **Reconcile identities and write the report.** Build each finding's identity
+   tuple exactly as the report format defines. Reuse the previous ID only when
+   the tuple matches; retired IDs stay retired
+   and new IDs increase monotonically. One report file per skill under `skill-audits/`
    at the audited repository's root, per
    [`report-format.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-skill-audit/references/report-format.md): findings by layer
    with stable IDs and named fixes, clean layers stated, killed findings
@@ -74,18 +82,20 @@ present does not imply permission to remove it.
 Audits skill authoring only. Repository code defects route to
 `tailrocks-improve` (pipeline-free repositories) or `tailrocks-audit`
 (repositories running the delivery pipeline). Applying report findings
-is `tailrocks-skill-refactor`, by ID, after the user selects.
+is `tailrocks-skill-update` when the public contract stays fixed;
+contract or responsibility-topology changes route to
+`tailrocks-skill-refactor`.
 Authoring a new skill is `tailrocks-skill-create`; an in-place edit is
 `tailrocks-skill-update`. For any of those, name the route and stop.
 
 ## Red flags — STOP
 
-- "Fix it while you're in there" — the audit never edits; application
-  is the refactor skill's job, on user-selected IDs.
+- "Fix it while you're in there" — the audit never edits; route each finding
+  by change shape.
 - A finding reported without re-opening its evidence — evidence or
   silence.
-- One agent sweeping the whole tree alone — investigators per skill,
-  fresh contexts, verdicts in the main context.
+- One semantic pass sweeping the whole tree alone — use bounded isolated and
+  cross-cutting lanes after deterministic prechecks.
 - A finding with no ID or no named fix — a report that cannot be
   consumed is trivia.
 - Treating a clean-by-design choice as a defect — the kill list exists

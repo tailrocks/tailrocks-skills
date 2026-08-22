@@ -17,9 +17,10 @@ in any repository with an authenticated `gh`; needs nothing from
 ## Steps
 
 1. **Resolve to a PR.** Number or URL → pass to `gh pr checkout` directly.
-   Branch name →
-   `gh pr list --head <branch> --state all --json number -q '.[0].number'`;
-   no match → STOP and say so. Never fall back to raw `git checkout` — the
+   Branch name → query `gh pr list --head <branch> --state all` for number,
+   state, and head repository. Prefer one exact open match. Zero or multiple
+   matches → STOP and list candidates; never select `.[0]`. A closed or merged
+   match still requires step 3 confirmation. Never fall back to raw `git checkout` — the
    point of the skill is landing on the PR, not on a similarly named branch.
 
 2. **Guard the working tree.** `git status --porcelain` — if dirty, STOP and

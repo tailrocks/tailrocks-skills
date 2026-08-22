@@ -29,9 +29,8 @@ One item, one folder: `roadmap/<slug>/plan/` (hub, plans, `spec/`,
   capture reported defects and prove shipped work. Source, configuration, and
   dependencies stay unchanged; Git moves only per the delivery git contract
   below. Never implement — the package is the deliverable.
-- Require `READY`. On anything less, name the missing stage and stop; the
-  user may override explicitly, and the override plus the skipped gaps are
-  recorded in the handoff commit message and the plan hub.
+- Require `READY`; otherwise name the missing stage and stop. Record deferrals
+  through the owning shaping skill, then retry only after it grants `READY`.
 - The item's Decisions, Vocabulary, and Must not are fixed constraints;
   repository reality contradicting them is surfaced, never silently resolved.
 - Evidence standard everywhere: URL, `file:line`, or method. Commands written

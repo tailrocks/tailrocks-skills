@@ -18,8 +18,8 @@ govern everything: **a correctness finding must be verified, and a
 structural finding must name what disappears.** "Could be cleaner" and
 "might break" are both below the bar.
 
-This skill is **read-only on source and on the PR's state**: it never edits
-files, never merges, never approves, and posts to GitHub only when
+This skill is **read-only on source and review or merge decisions**: it never
+edits files, merges, or approves, and adds review comments only when
 `--comment` was given. Fixing is a separate invocation of the routed skill.
 
 Repository conventions come from `.tailrocks/pr.md` when present (format

@@ -80,6 +80,9 @@ writing one.
    reads as arbitrary without it.
    **Complete when:** no sentence can lose a word without losing meaning.
 
+In `audit`, report the changes steps 6–8 would make without performing them,
+then run step 9 read-only. Only `add` and `sync` may mutate files.
+
 6. **Place it, creating the file when the owning directory has none.** A new
    `AGENTS.md` plus its `CLAUDE.md` symlink is the expected outcome, not an
    escalation. Never redirect a rule to an existing file merely because that
