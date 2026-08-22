@@ -17,6 +17,56 @@
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
     },
     {
+      "source": "skills/tailrocks-axum-best-practices/references/architecture-and-state.md",
+      "destination": "skills/tailrocks-axum-refactor/references/architecture-and-state.md",
+      "sha256": "5315a991539d30b395c6347aa9c06de28a1b029c43cc4cc4f39eb596f54e1837"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/extractors-and-errors.md",
+      "destination": "skills/tailrocks-axum-refactor/references/extractors-and-errors.md",
+      "sha256": "fdcbb761f9d5110e7d8774867b174b5dfe329f2a756088124f6113a66cf53c6b"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/lifecycle-and-testing.md",
+      "destination": "skills/tailrocks-axum-refactor/references/lifecycle-and-testing.md",
+      "sha256": "77843f06192798ca09da10181fca8f1122692ea4fc02762e3cbe9855a286e658"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/middleware-and-security.md",
+      "destination": "skills/tailrocks-axum-refactor/references/middleware-and-security.md",
+      "sha256": "6c04d5346275e6f54a403eec801cbc29d2e628b20ef7eb0b3a893bcc7584e0b9"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-axum-refactor/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/architecture-and-state.md",
+      "destination": "skills/tailrocks-axum-review/references/architecture-and-state.md",
+      "sha256": "5315a991539d30b395c6347aa9c06de28a1b029c43cc4cc4f39eb596f54e1837"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/extractors-and-errors.md",
+      "destination": "skills/tailrocks-axum-review/references/extractors-and-errors.md",
+      "sha256": "fdcbb761f9d5110e7d8774867b174b5dfe329f2a756088124f6113a66cf53c6b"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/lifecycle-and-testing.md",
+      "destination": "skills/tailrocks-axum-review/references/lifecycle-and-testing.md",
+      "sha256": "77843f06192798ca09da10181fca8f1122692ea4fc02762e3cbe9855a286e658"
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/middleware-and-security.md",
+      "destination": "skills/tailrocks-axum-review/references/middleware-and-security.md",
+      "sha256": "6c04d5346275e6f54a403eec801cbc29d2e628b20ef7eb0b3a893bcc7584e0b9"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-axum-review/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
       "source": "shared/references/runtime-trust.md",
       "destination": "skills/tailrocks-brainstorm/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"

@@ -60,7 +60,9 @@ Repository mechanics, language-level policy, the HTTP boundary, and the two serv
 | [`tailrocks-rust-best-practices`](skills/tailrocks-rust-best-practices/README.md) | Apply Rust correctness contracts when in-scope work writes Rust behavior. | Model policy |
 | [`tailrocks-rust-review`](skills/tailrocks-rust-review/README.md) | Review Rust source, APIs, unsafe code, tests, and performance evidence read-only. | Manual only |
 | [`tailrocks-rust-refactor`](skills/tailrocks-rust-refactor/README.md) | Restructure Rust code while preserving observable behavior and public contracts. | Manual only |
-| [`tailrocks-axum-best-practices`](skills/tailrocks-axum-best-practices/README.md) | Apply production Axum HTTP-adapter policy when in-scope work touches routers, handlers, extractors, Tower layers, lifecycle, or HTTP transport tests. | Model policy |
+| [`tailrocks-axum-best-practices`](skills/tailrocks-axum-best-practices/README.md) | Apply Axum policy when in-scope work builds or changes HTTP adapters, routers, handlers, extractors, Tower layers, lifecycle, or transport tests. | Model policy |
+| [`tailrocks-axum-review`](skills/tailrocks-axum-review/README.md) | Review Axum HTTP adapters, extractors, Tower policy, lifecycle, and transport tests without editing. | Manual only |
+| [`tailrocks-axum-refactor`](skills/tailrocks-axum-refactor/README.md) | Restructure Axum adapters or Tower composition while preserving HTTP behavior. | Manual only |
 | [`tailrocks-graphql-best-practices`](skills/tailrocks-graphql-best-practices/README.md) | Apply public GraphQL API policy when in-scope work touches schema, Juniper resolvers, SDL, pagination, or generated GraphQL clients. | Model policy |
 | [`tailrocks-grpc-best-practices`](skills/tailrocks-grpc-best-practices/README.md) | Apply cross-service gRPC policy when in-scope work touches proto or Buf contracts, tonic/prost services, status mapping, deadlines, streaming, health, or wire tests. | Model policy |
 

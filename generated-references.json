@@ -36,6 +36,8 @@
         "skills/tailrocks-agents-md/references/runtime-trust.md",
         "skills/tailrocks-audit/references/runtime-trust.md",
         "skills/tailrocks-axum-best-practices/references/runtime-trust.md",
+        "skills/tailrocks-axum-refactor/references/runtime-trust.md",
+        "skills/tailrocks-axum-review/references/runtime-trust.md",
         "skills/tailrocks-brainstorm/references/runtime-trust.md",
         "skills/tailrocks-checkout-pr/references/runtime-trust.md",
         "skills/tailrocks-code-health/references/runtime-trust.md",
@@ -126,6 +128,34 @@
         "skills/tailrocks-skill-create/references/responsibility-topology.md",
         "skills/tailrocks-skill-refactor/references/responsibility-topology.md",
         "skills/tailrocks-skill-update/references/responsibility-topology.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/architecture-and-state.md",
+      "destinations": [
+        "skills/tailrocks-axum-refactor/references/architecture-and-state.md",
+        "skills/tailrocks-axum-review/references/architecture-and-state.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/extractors-and-errors.md",
+      "destinations": [
+        "skills/tailrocks-axum-refactor/references/extractors-and-errors.md",
+        "skills/tailrocks-axum-review/references/extractors-and-errors.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/lifecycle-and-testing.md",
+      "destinations": [
+        "skills/tailrocks-axum-refactor/references/lifecycle-and-testing.md",
+        "skills/tailrocks-axum-review/references/lifecycle-and-testing.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-axum-best-practices/references/middleware-and-security.md",
+      "destinations": [
+        "skills/tailrocks-axum-refactor/references/middleware-and-security.md",
+        "skills/tailrocks-axum-review/references/middleware-and-security.md"
       ]
     },
     {

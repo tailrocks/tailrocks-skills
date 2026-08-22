@@ -10,6 +10,8 @@
     "tailrocks-rust-review",
     "tailrocks-rust-refactor",
     "tailrocks-axum-best-practices",
+    "tailrocks-axum-review",
+    "tailrocks-axum-refactor",
     "tailrocks-graphql-best-practices",
     "tailrocks-grpc-best-practices",
     "---TypeScript and TanStack---",

@@ -27,6 +27,16 @@ const lockSchema = "tailrocks.generated-references-lock/v1";
 const rootSourcePattern = /^(?:shared|skill-authoring)\/references\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/;
 const generatedFamilies = [
   {
+    owner: "tailrocks-axum-best-practices",
+    references: [
+      "architecture-and-state.md",
+      "extractors-and-errors.md",
+      "lifecycle-and-testing.md",
+      "middleware-and-security.md",
+    ],
+    destinations: ["tailrocks-axum-refactor", "tailrocks-axum-review"],
+  },
+  {
     owner: "tailrocks-rust-best-practices",
     references: [
       "api-design.md",

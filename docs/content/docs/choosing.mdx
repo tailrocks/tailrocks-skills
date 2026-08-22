@@ -28,12 +28,16 @@ never starts a neighboring workflow or makes a human decision.
 | [`tailrocks-rust-best-practices`](/docs/skills/tailrocks-rust-best-practices) | New Rust behavior needs explicit ownership, API, failure, unsafe, test, and performance contracts. |
 | [`tailrocks-rust-review`](/docs/skills/tailrocks-rust-review) | Rust source or a Rust diff needs a focused read-only correctness review; use `tailrocks-review-pr` for whole-PR orchestration. |
 | [`tailrocks-rust-refactor`](/docs/skills/tailrocks-rust-refactor) | Rust structure must change while observable behavior and public contracts remain frozen by an oracle. |
-| [`tailrocks-axum-best-practices`](/docs/skills/tailrocks-axum-best-practices) | An HTTP boundary exists: routers, extractors, Tower middleware order, lifecycle, transport tests. |
+| [`tailrocks-axum-best-practices`](/docs/skills/tailrocks-axum-best-practices) | Axum HTTP behavior must be built or changed: routers, extractors, Tower policy, lifecycle, and transport tests. |
+| [`tailrocks-axum-review`](/docs/skills/tailrocks-axum-review) | Axum adapters or a diff need focused read-only review; use `tailrocks-review-pr` for whole-PR orchestration. |
+| [`tailrocks-axum-refactor`](/docs/skills/tailrocks-axum-refactor) | Axum or Tower structure must change while routes, HTTP contracts, policy order, and lifecycle remain frozen. |
 | [`tailrocks-graphql-best-practices`](/docs/skills/tailrocks-graphql-best-practices) | A public backend service exposes its public API: schema design, the committed SDL contract, breaking-change gates, the typed web client. |
 | [`tailrocks-grpc-best-practices`](/docs/skills/tailrocks-grpc-best-practices) | Rust services talk to each other: proto contracts under buf gates, tonic adapters, deadlines, status mapping. |
 
 Axum best practices apply only where there is an HTTP adapter. Domain logic
 behind it belongs to the Rust write, review, or refactor owner matching the task.
+Axum review/refactor may therefore run beside the corresponding Rust owner when
+the same changed hunk crosses both language and HTTP-adapter contracts.
 
 ### The protocol doctrine
 

@@ -4,7 +4,7 @@
 
 `tailrocks-axum-best-practices` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-axum-best-practices)
 
-Apply production Axum HTTP-adapter policy when in-scope work touches routers, handlers, extractors, Tower layers, lifecycle, or HTTP transport tests. Do not load for Rust work without an Axum HTTP boundary.
+Apply Axum policy when in-scope work builds or changes HTTP adapters, routers, handlers, extractors, Tower layers, lifecycle, or transport tests. Use tailrocks-axum-review for findings and tailrocks-axum-refactor when HTTP behavior stays unchanged.
 
 ## Invocation
 
@@ -13,6 +13,8 @@ matches work already in scope. Selection grants no authority beyond the
 active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-axum-best-practices` …
+
+Arguments: `<Axum adapter behavior to build or change>`
 
 ## Skill definition
 

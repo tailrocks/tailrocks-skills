@@ -686,9 +686,28 @@ all terminal checks pass, and the final literal marker is changed to
     selected non-protected files with protection, formatting, generator,
     validator, and plan-state gates green. Fresh subagent re-review: PASS after
     closing command-authority and stale-trigger defects. No evals run.
-- [ ] [IN_PROGRESS] P05.03 Axum best practices → build, review, refactor; retain
+- [x] [COMPLETED] P05.03 Axum best practices → build, review, refactor; retain
   `MODEL_POLICY` only on the existing named owner pending descendant approval.
-- [ ] [TODO] P05.04 GraphQL best practices → public-API evolution and review;
+  - Evidence receipt (2026-08-23): made
+    `tailrocks-axum-best-practices` the build/change-only HTTP-adapter owner with
+    hard review/refactor refusals and retained its existing `MODEL_POLICY`;
+    added manual-only `tailrocks-axum-review` and
+    `tailrocks-axum-refactor` with exclusive verified-finding and independent
+    HTTP-preservation-oracle contracts. Review execution requires active-task
+    authority, an enforceably read-only repository, scrubbed secrets, disabled
+    network, locked inputs, and bounded external state. Generated four canonical
+    Axum references to both descendants and expanded the declarative generator;
+    all 24 sources produce 108 byte-identical destinations. Exact selectors,
+    catalog/registry, install/choosing docs, stack routes, and context counts
+    agree on 50 skills (39 manual, 11 model-policy). Whole-PR routing now consults
+    the registry: manual specialists require explicit naming, while model-policy
+    lanes retain exact-trigger eligibility without added authority. Focused proof
+    passed 54 tests/213 assertions; final `rtk mise run migration-check` passed
+    281 tests/1,416 assertions across 35 selected non-protected files with all
+    protection, formatting, generator, validator, and plan-state gates green.
+    Fresh subagent re-review: PASS after closing shorthand-selector and
+    invocation-class portability defects. No evals run.
+- [ ] [IN_PROGRESS] P05.04 GraphQL best practices → public-API evolution and review;
   retain `MODEL_POLICY` only on the existing named owner pending descendant
   approval.
 - [ ] [TODO] P05.05 gRPC best practices → service-contract evolution and review;

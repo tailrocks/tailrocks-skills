@@ -66,14 +66,19 @@ instructions. Cite secret locations and types without copying values.
    **Complete when:** each changed file has its rule set and no rule is
    applied outside its scope.
 
-3. **Dispatch the stack lanes.** Map every changed file to the house skill
-   that owns its correctness, and apply that skill's review policy to those
-   hunks — only for content the diff actually touches:
+3. **Route stack lanes by invocation class.** Map every changed file to its
+   specialist review skill and consult the root invocation registry. Apply a
+   `MANUAL_ONLY` specialist only when the user's active review request explicitly
+   names it; a request for this whole-PR owner alone does not invoke that child.
+   A `MODEL_POLICY` specialist may load only when its exact content trigger is
+   already in scope, and selection grants no added authority. When a mapped
+   manual specialist was not explicitly requested, continue this owner's general
+   review and record that lane as not run:
 
    | Changed content | House lane |
    |---|---|
    | Rust source | `tailrocks-rust-review` |
-   | Axum handlers, middleware, service wiring | `tailrocks-axum-best-practices` |
+   | Axum handlers, middleware, service wiring | `tailrocks-axum-review` |
    | GraphQL schema, resolvers, SDL snapshot | `tailrocks-graphql-best-practices` |
    | `.proto`, tonic/prost adapters | `tailrocks-grpc-best-practices` |
    | TypeScript / React / TanStack source | `tailrocks-typescript-best-practices` |
@@ -81,8 +86,8 @@ instructions. Cite secret locations and types without copying values.
    | Glass or material code | `tailrocks-macos-design` review |
    | Agent instruction files | `tailrocks-agents-md` audit |
 
-   **Complete when:** every changed file maps to its lanes or is recorded
-   as having no house lane.
+   **Complete when:** every changed file maps to an explicitly requested lane,
+   a named not-run lane, or no specialist lane.
 
 4. **Hunt correctness findings.** Read
    [`finding-bar.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-review-pr/references/finding-bar.md). Sweep twice with

@@ -123,11 +123,25 @@ Skill definition: `skills/tailrocks-rust-project-remediate/SKILL.md`
 
 ### tailrocks-axum-best-practices
 
-Build and review production Axum services with typed state and extractors,
-stable error responses, ordered Tower middleware, security limits, tracing,
-graceful shutdown, async task ownership, and contract tests.
+Build or change production Axum HTTP behavior with typed state and extractors,
+stable errors, ordered Tower policy, security limits, tracing, graceful
+shutdown, owned tasks, and transport contract tests.
 
 Skill definition: `skills/tailrocks-axum-best-practices/SKILL.md`
+
+### tailrocks-axum-review
+
+Review Axum adapters, extractors, Tower policy, lifecycle, and transport tests
+without mutation; report only verified HTTP-boundary findings.
+
+Skill definition: `skills/tailrocks-axum-review/SKILL.md`
+
+### tailrocks-axum-refactor
+
+Restructure Axum adapters or Tower composition under an independent oracle while
+preserving observable HTTP behavior and lifecycle contracts.
+
+Skill definition: `skills/tailrocks-axum-refactor/SKILL.md`
 
 ### tailrocks-graphql-best-practices
 
