@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-improve-execution` …
 
-Arguments: `<plans/NNN-name.md> [--deep]`
+Arguments: `<plans/NNN-name.md> [--deep] [--batch]`
 
 ## Skill definition
 

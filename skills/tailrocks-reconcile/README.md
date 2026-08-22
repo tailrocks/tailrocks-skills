@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-reconcile` …
 
-Arguments: `<roadmap-slug>`
+Arguments: `<roadmap-slug> [--deep] [--batch]`
 
 ## Skill definition
 

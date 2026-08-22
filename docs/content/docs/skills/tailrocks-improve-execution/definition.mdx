@@ -15,6 +15,14 @@ Own one approved standalone plan's implementation transaction. Apply
 [`execution-loop.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-improve-execution/references/execution-loop.md). Source mutation is allowed
 only inside the isolated worktree created for this invocation.
 
+Pass the standalone plan path directly; a retained `execute` selector is
+invalid. `--deep` requires the second independent diff review in step 4. `--batch`
+makes executor gap handling deterministic and non-interactive while preserving
+all ambiguity, drift, STOP, isolation, scope, proof, retry, review, and worktree
+gates. Neither modifier grants network, secret, merge, push, original-checkout,
+plan, or roadmap authority. Invoke this owner directly; no routing skill
+dispatches it.
+
 ## Execute
 
 1. Bind one plan, its planned-at SHA, repository identity, exact scope, done

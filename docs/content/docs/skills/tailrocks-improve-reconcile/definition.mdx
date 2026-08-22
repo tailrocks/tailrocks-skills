@@ -15,6 +15,13 @@ Synchronize standalone plan status with repository truth. Apply
 [`reconciliation.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-improve-reconcile/references/reconciliation.md). The sole writable output is
 `plans/README.md`.
 
+Pass only the optional repository path and modifiers; a retained `sweep`
+selector is invalid. `--deep` re-verifies every indexed row without sampling. `--batch` makes status
+selection deterministic and non-interactive while preserving every evidence,
+command, compare-and-swap, and no-change rule. Neither modifier grants plan-body,
+source, roadmap, Git, or remote authority. Invoke this owner directly; no
+routing skill dispatches it.
+
 ## Reconcile
 
 1. Bind root, revision, dirty state, index bytes, and every indexed plan. Refuse

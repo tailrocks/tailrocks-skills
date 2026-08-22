@@ -1193,9 +1193,22 @@ all terminal checks pass, and the final literal marker is changed to
     PASS. The non-eval migration gate passed all changed/schema/generated checks
     but the unrelated macOS GUI lane retained the host activation failure (414
     pass, 2 fail), deferred to P09.15. Protected paths unchanged; no evals run.
-- [ ] [IN_PROGRESS] P08.04 Route plan, seed, execute, plan-sweep, and roadmap-sweep to
+- [x] [COMPLETED] P08.04 Route plan, seed, execute, plan-sweep, and roadmap-sweep to
   their exclusive owners, preserving deep and batch modifiers.
-- [ ] [TODO] P08.05 Refuse `quick --deep`, malformed modes, and multiple primary
+  - Evidence receipt (2026-08-23): plan, roadmap seed, isolated execution,
+    standalone-plan reconciliation, and roadmap reconciliation now accept their
+    subjects directly and reject the retired selector tokens. Batch removes
+    interaction without weakening evidence, CAS, authorization, isolation,
+    frozen-contract, output, or retirement gates. Deep plan and execution add
+    their second independent reviewers; deep plan sweep re-verifies every index
+    row; deep roadmap sweep re-verifies every row, criterion, blocker, and
+    assumption without sampling or unchanged/empty-diff shortcuts. Seed has no
+    deep route. Generated READMEs/docs agree. Focused proof passed 16 tests/466
+    assertions; fresh subagent verdict: PASS. The non-eval migration gate passed
+    all changed/schema/generated checks but the unrelated macOS GUI lane retained
+    the host activation failure (415 pass, 2 fail), deferred to P09.15. Protected
+    paths unchanged; no evals run.
+- [ ] [IN_PROGRESS] P08.05 Refuse `quick --deep`, malformed modes, and multiple primary
   modes deterministically.
 - [ ] [TODO] P08.06 Convert pipeline-free planning to `plans/`; remove roadmap
   goal/fingerprint mechanics from improve-plan and avoid empty rejection commits.

@@ -242,3 +242,48 @@ test("branch research and design-conformance routes preserve depth batch and aut
   );
   for (const contract of [review, research]) expect(contract).not.toContain("tailrocks-audit");
 });
+
+test("plan seed execution and both reconcile scopes route to exclusive owners", async () => {
+  const expected = [
+    ["plan", "tailrocks-improve-plan", ["<description>"], null],
+    ["plan-deep", "tailrocks-improve-plan", ["<description>", "--deep"], "second-cold-plan-review"],
+    ["seed", "tailrocks-seed-roadmap", ["<finding>"], null],
+    ["execute", "tailrocks-improve-execution", ["<plan>"], null],
+    ["execute-deep", "tailrocks-improve-execution", ["<plan>", "--deep"], "second-independent-diff-review"],
+    ["plans-sweep", "tailrocks-improve-reconcile", [], null],
+    ["plans-sweep-deep", "tailrocks-improve-reconcile", ["--deep"], "reverify-every-row"],
+    ["roadmap-sweep", "tailrocks-reconcile", ["<slug>"], null],
+    ["roadmap-sweep-deep", "tailrocks-reconcile", ["<slug>", "--deep"], "reverify-every-row"],
+  ] as const;
+  for (const [id, target, targetArguments, deepOperation] of expected) {
+    const route = IMPROVE_ROUTES.find((candidate) => candidate.id === id);
+    expect(route?.target).toBe(target);
+    expect(route?.targetArguments).toEqual(targetArguments);
+    expect(route?.deepOperation ?? null).toBe(deepOperation);
+    expect(route?.batchForward).toBe(true);
+    expect(route?.batchEffect).toBe("non-interactive-selection");
+    expect(route?.authority).toBe("target-only");
+  }
+
+  const [plan, seed, execution, planSweep, roadmapSweep] = await Promise.all([
+    source("tailrocks-improve-plan"),
+    source("tailrocks-seed-roadmap"),
+    source("tailrocks-improve-execution"),
+    source("tailrocks-improve-reconcile"),
+    source("tailrocks-reconcile"),
+  ]);
+  expect(plan).toContain("second independent cold review");
+  expect(execution).toContain("second independent diff review");
+  expect(planSweep).toContain("re-verifies every indexed row without sampling");
+  expect(roadmapSweep.replace(/\s+/g, " ")).toContain(
+    "re-verifies every row, applicable criterion, blocker, and assumption regardless of claimed status",
+  );
+  expect(seed.replace(/\s+/g, " ")).toContain("`--deep` is not a valid seed modifier");
+  for (const contract of [plan, seed, execution, planSweep, roadmapSweep]) {
+    const normalized = contract.replace(/\s+/g, " ");
+    expect(contract).toContain("`--batch`");
+    expect(normalized).toContain("deterministic and non-interactive");
+    expect(normalized).toMatch(/Invoke (this owner )?directly; no routing skill dispatches it/);
+    expect(contract).not.toContain("tailrocks-audit");
+  }
+});

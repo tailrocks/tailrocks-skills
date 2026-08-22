@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-seed-roadmap` …
 
-Arguments: `<verified finding or plans/NNN-name.md>`
+Arguments: `<verified finding or plans/NNN-name.md> [--batch]`
 
 ## Skill definition
 

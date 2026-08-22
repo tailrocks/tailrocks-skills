@@ -2,7 +2,7 @@
 name: tailrocks-improve-plan
 description: >-
   Use only when the user explicitly requests this skill. Convert one selected verified finding or described change into one standalone executor-ready plan under plans/ and its index row. Never implements, seeds roadmap work, commits, or pushes.
-argument-hint: "<finding or change> [--deep]"
+argument-hint: "<finding or change> [--deep] [--batch]"
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
@@ -15,6 +15,15 @@ Write one self-contained pipeline-free plan under `plans/`. Apply
 [`artifact-boundary.md`](references/artifact-boundary.md),
 [`eligibility.md`](references/eligibility.md), and
 [`plan-format.md`](references/plan-format.md).
+
+Pass the finding or change directly; a retained `plan` selector is invalid.
+`--deep` requires the second independent cold review in step 5. `--batch`
+makes every in-owner selection deterministic and non-interactive while
+preserving eligibility, evidence, command-proof, cold-review, and atomic-write
+requirements; ambiguity, an open decision, or an unproven command still blocks.
+Neither modifier grants implementation, roadmap, Git, remote, or writes beyond
+the plan-and-index transaction. Invoke this owner directly; no routing skill
+dispatches it.
 
 ## Plan
 

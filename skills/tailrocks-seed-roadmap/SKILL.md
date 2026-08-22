@@ -2,7 +2,7 @@
 name: tailrocks-seed-roadmap
 description: >-
   Use only when the user explicitly requests this skill. Convert one already-verified finding or approved standalone plan into one roadmap DRAFT item on its delivery branch and pull request. Writes roadmap artifacts only; never implements.
-argument-hint: "<verified finding or plans/NNN-name.md>"
+argument-hint: "<verified finding or plans/NNN-name.md> [--batch]"
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
@@ -16,6 +16,16 @@ Apply [`runtime-trust.md`](references/runtime-trust.md),
 [`eligibility.md`](references/eligibility.md),
 [`duplicate-guard.md`](references/duplicate-guard.md), and
 [`item-seeding.md`](references/item-seeding.md).
+
+Pass the verified finding or approved plan path directly; a retained `seed`
+selector is invalid. `--batch` makes duplicate handling and item-field selection
+deterministic and non-interactive. It preserves every verification, eligibility,
+branch, pull request, commit, and fresh-authorization gate and grants no
+implementation or write authority beyond this owner's exact roadmap
+transaction. It cannot approve unverified evidence, decide contradictory product
+evidence, waive outward authorization, widen roadmap paths, or create a second
+pull request. `--deep` is not a valid seed modifier. Invoke this owner directly;
+no routing skill dispatches it.
 
 ## Seed
 

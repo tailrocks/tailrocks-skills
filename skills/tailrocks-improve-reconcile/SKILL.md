@@ -2,7 +2,7 @@
 name: tailrocks-improve-reconcile
 description: >-
   Use only when the user explicitly requests this skill. Reconcile the standalone plans/ backlog against current repository truth, optionally re-verifying every row, and update only plans/README.md. Never edits plans, source, or roadmap items.
-argument-hint: "[--deep] [repository path]"
+argument-hint: "[--deep] [--batch] [repository path]"
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
@@ -14,6 +14,13 @@ Synchronize standalone plan status with repository truth. Apply
 [`runtime-trust.md`](references/runtime-trust.md) and
 [`reconciliation.md`](references/reconciliation.md). The sole writable output is
 `plans/README.md`.
+
+Pass only the optional repository path and modifiers; a retained `sweep`
+selector is invalid. `--deep` re-verifies every indexed row without sampling. `--batch` makes status
+selection deterministic and non-interactive while preserving every evidence,
+command, compare-and-swap, and no-change rule. Neither modifier grants plan-body,
+source, roadmap, Git, or remote authority. Invoke this owner directly; no
+routing skill dispatches it.
 
 ## Reconcile
 

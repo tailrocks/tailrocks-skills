@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-improve-reconcile` …
 
-Arguments: `[--deep] [repository path]`
+Arguments: `[--deep] [--batch] [repository path]`
 
 ## Skill definition
 

@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-improve-plan` …
 
-Arguments: `<finding or change> [--deep]`
+Arguments: `<finding or change> [--deep] [--batch]`
 
 ## Skill definition
 

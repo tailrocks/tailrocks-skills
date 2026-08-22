@@ -2,7 +2,7 @@
 name: tailrocks-improve-execution
 description: >-
   Use only when the user explicitly requests this skill. Execute one approved standalone plans/ file in an isolated disposable worktree, re-run its criteria, independently review the diff, and return one verdict. Never merges or pushes.
-argument-hint: "<plans/NNN-name.md> [--deep]"
+argument-hint: "<plans/NNN-name.md> [--deep] [--batch]"
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
@@ -14,6 +14,14 @@ Own one approved standalone plan's implementation transaction. Apply
 [`runtime-trust.md`](references/runtime-trust.md) and
 [`execution-loop.md`](references/execution-loop.md). Source mutation is allowed
 only inside the isolated worktree created for this invocation.
+
+Pass the standalone plan path directly; a retained `execute` selector is
+invalid. `--deep` requires the second independent diff review in step 4. `--batch`
+makes executor gap handling deterministic and non-interactive while preserving
+all ambiguity, drift, STOP, isolation, scope, proof, retry, review, and worktree
+gates. Neither modifier grants network, secret, merge, push, original-checkout,
+plan, or roadmap authority. Invoke this owner directly; no routing skill
+dispatches it.
 
 ## Execute
 
