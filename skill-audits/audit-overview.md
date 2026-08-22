@@ -1285,9 +1285,17 @@ all terminal checks pass, and the final literal marker is changed to
     client parity, exact same-directory link creation, expected-target repair,
     stale and non-symlink refusal, CAS ownership, rollback/recovery artifacts,
     concurrent replacement, parent swap/escape, and typed CLI/nonzero verify
-    receipts. Focused proof passed 21 tests/108 assertions; validator passed 84
+    receipts. A late fresh review exposed the final-cleanup race: repair now uses
+    a post-cleanup identity check as its success linearization point and recreates
+    the original restore artifact when an unowned client replacement forces
+    refusal. The adversarial boundary test preserves both the foreign client and
+    original raw-target recovery evidence. Focused proof passed 22 tests/112
+    assertions; validator passed 84
     skills; references checked 88 sources/258 byte-identical destinations; docs
-    checked 256 files; fresh subagent verdict: PASS. No evals run or inspected.
+    checked 256 files; fresh subagent verdict: PASS. The non-eval migration gate
+    passed 426 tests/5,067 assertions and every static/generated check; only the
+    unrelated two macOS GUI activation cases failed, deferred to P09.15. No evals
+    run or inspected.
 - [ ] [IN_PROGRESS] P09.02 `tailrocks-axum-best-practices`: unique build/review/refactor
   routes, outputs, refusals, invocation, and argument hints.
 - [ ] [TODO] P09.03 `tailrocks-brainstorm`: deterministic DRAFT/SHAPING and

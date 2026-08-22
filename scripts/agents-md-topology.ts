@@ -523,6 +523,7 @@ export async function repairClientLink(
   const restoreIdentity = (await anchored(context, "create", restoreName, expectedTarget, "unused", io))!;
   let removedOriginal = false;
   let installed = false;
+  let restorePresent = true;
   let installedIdentity: FileIdentity | undefined;
   try {
     await io.afterOperation?.("create");
@@ -553,7 +554,10 @@ export async function repairClientLink(
       `${restoreName}.quarantine`,
       io,
     );
+    restorePresent = false;
     await io.afterOperation?.("remove");
+    await requireMutationContext(context);
+    await requireIdentity(context.destination, installedIdentity, "installed client after cleanup");
     removedOriginal = false;
     return receipt;
   } catch (error) {
@@ -588,7 +592,7 @@ export async function repairClientLink(
         rollbackErrors.push(rollbackError);
       }
     }
-    if (!removedOriginal) {
+    if (!removedOriginal && restorePresent) {
       try {
         await anchored(
           context,
@@ -598,9 +602,20 @@ export async function repairClientLink(
           `${restoreName}.quarantine`,
           io,
         );
+        restorePresent = false;
         await io.afterOperation?.("remove");
       } catch (cleanupError) {
         rollbackErrors.push(cleanupError);
+      }
+    }
+    if (removedOriginal && !restorePresent) {
+      try {
+        restorePresent = Boolean(
+          await anchored(context, "create", restoreName, expectedTarget, "unused", io),
+        );
+        await io.afterOperation?.("create");
+      } catch (recoveryError) {
+        rollbackErrors.push(recoveryError);
       }
     }
     if (rollbackErrors.length > 0) {

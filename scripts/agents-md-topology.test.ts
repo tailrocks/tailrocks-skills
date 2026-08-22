@@ -304,6 +304,28 @@ test("repair never deletes a concurrently replaced canonical destination", async
   expect(recovery[0]).toMatchObject({ kind: "symlink", value: "old.md" });
 });
 
+test("repair refuses final-cleanup replacement and recreates original recovery evidence", async () => {
+  const directory = await root();
+  await agents(directory);
+  await symlink("old.md", path.join(directory, "CLAUDE.md"));
+  let removes = 0;
+  const io: TopologyIO = {
+    beforeOperation: async (operation) => {
+      if (operation !== "remove" || ++removes !== 2) return;
+      const client = path.join(directory, "CLAUDE.md");
+      await unlink(client);
+      await symlink("foreign.md", client);
+    },
+  };
+  await expect(repairClientLink(directory, ".", "CLAUDE.md", "old.md", io)).rejects.toThrow(
+    "recovery artifact may remain",
+  );
+  expect(await readlink(path.join(directory, "CLAUDE.md"))).toBe("foreign.md");
+  const recovery = (await snapshot(directory)).filter((entry) => entry.path.endsWith(".restore"));
+  expect(recovery).toHaveLength(1);
+  expect(recovery[0]).toMatchObject({ kind: "symlink", value: "old.md" });
+});
+
 test("create refuses a swapped parent before any outside-root mutation", async () => {
   const directory = await root();
   const app = path.join(directory, "app");
