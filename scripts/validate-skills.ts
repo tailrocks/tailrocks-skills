@@ -28,6 +28,45 @@ async function filesUnder(directory: string): Promise<string[]> {
   return output;
 }
 
+async function validateDurableContracts(root: string, errors: string[]): Promise<void> {
+  const contracts = [
+    {
+      directory: "skill-evidence",
+      schema: "tailrocks.skill-evidence/v1",
+      fields: ["Skill", "Source SHA", "Recorded date", "Provenance"],
+    },
+    {
+      directory: "skill-migrations",
+      schema: "tailrocks.skill-migration/v1",
+      fields: ["Migration", "Source SHA", "Recorded date", "Provenance", "Authority"],
+    },
+  ];
+  for (const contract of contracts) {
+    for (const file of await filesUnder(path.join(root, contract.directory))) {
+      if (!file.endsWith(".md")) {
+        errors.push(`${path.relative(root, file)}: durable contract must be Markdown`);
+        continue;
+      }
+      const source = await readFile(file, "utf8");
+      const label = path.relative(root, file);
+      if (!source.includes(`Schema: \`${contract.schema}\``)) {
+        errors.push(`${label}: missing schema ${contract.schema}`);
+      }
+      for (const field of contract.fields) {
+        if (!new RegExp("^- " + field + ": `[^<>\\n]+`$", "m").test(source)) {
+          errors.push(`${label}: missing or placeholder ${field}`);
+        }
+      }
+      if (!/^- Source SHA: `[0-9a-f]{40}`$/m.test(source)) {
+        errors.push(`${label}: Source SHA must be a 40-character lowercase commit SHA`);
+      }
+      if (!/^- Recorded date: `\d{4}-\d{2}-\d{2}`$/m.test(source)) {
+        errors.push(`${label}: Recorded date must be YYYY-MM-DD`);
+      }
+    }
+  }
+}
+
 function outside(base: string, target: string): boolean {
   const relative = path.relative(base, target);
   return relative === ".." || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative);
@@ -87,6 +126,15 @@ async function scanLinks(
       errors.push(`${directory}: reference escapes skill directory: ${raw}`);
     } else if (!(await exists(target))) {
       errors.push(`${directory}: broken reference ${raw}`);
+    }
+  }
+  for (const match of proseWithoutFences(source).matchAll(
+    /`(skills\/tailrocks-skill-audit\/references\/([^\s`]+\.md))`/g,
+  )) {
+    const allowed = new Set(["design-doctrine.md", "testing-doctrine.md", "house-wiring.md"]);
+    const target = path.resolve(path.dirname(skillDir), "..", match[1]);
+    if (!allowed.has(match[2]) || !(await exists(target))) {
+      errors.push(`${directory}: invalid shared authoring doctrine path: ${match[1]}`);
     }
   }
 }
@@ -186,6 +234,7 @@ function scanBannedTerms(source: string, directory: string, label: string, error
 
 export async function validate(root: string): Promise<string[]> {
   const errors: string[] = [];
+  await validateDurableContracts(root, errors);
   const skillsRoot = path.join(root, "skills");
   if (!(await exists(skillsRoot))) return ["missing skills directory"];
   const entries = (await readdir(skillsRoot, { withFileTypes: true }))

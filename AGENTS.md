@@ -633,15 +633,21 @@ slots for omissions, predicate-keyed conditionals for context-dependent
 behavior — because the wrong form measurably backfires. Exactly one skill owns
 each phase of a skill's life.
 
+Contract-breaking migration is outside these four executors. Operator owns that
+separately approved workflow from a versioned `skill-migrations/<slug>.md`
+contract; refactor may produce the handoff but never executes it.
+
 - **tailrocks-skill-create** — a new skill from an observed failure: baseline
   captured verbatim (a retrospective field record with commit-level evidence
   is the strongest form), placement decided before writing (gates beat prose,
   the owning `AGENTS.md` beats a skill, extending a neighbor beats forking a
   rival), the copy-ready skeleton under `templates/skill/`, baselined eval
-  cases, full repository wiring.
+  cases, deterministic policy-driven scaffold, durable evidence contract, full
+  target-repository wiring. Metadata comes from target policy, never this tree by
+  default.
   Definition: `skills/tailrocks-skill-create/SKILL.md`
-- **tailrocks-skill-update** — an in-place edit that preserves the invocation
-  contract: eval-pinned lines checked before a gate is reworded, strengthen
+- **tailrocks-skill-update** — an in-place semantic edit that preserves every
+  public-contract field: eval-pinned lines checked before a gate is reworded, strengthen
   over append, replace past the router budget, and the full eval set updated
   for CI — eval execution never happens locally here.
   Definition: `skills/tailrocks-skill-update/SKILL.md`
@@ -651,10 +657,10 @@ each phase of a skill's life.
   description, router, references, evals, wiring, overlap — to
   `skill-audits/<skill>.md` with stable finding IDs and named fixes. Never
   edits. Definition: `skills/tailrocks-skill-audit/SKILL.md`
-- **tailrocks-skill-refactor** — applies user-selected finding IDs from a
-  report: no report, no refactor; nothing beyond the selection; the
-  invocation contract untouched; the pass ends in an independent re-audit —
-  the implementer never self-verifies.
+- **tailrocks-skill-refactor** — behavior-preserving structural ownership change.
+  It never performs semantic edits or contract-breaking migration. A contract
+  delta produces a durable migration handoff and stops; verification is a
+  precise manual audit handoff, never automatic invocation.
   Definition: `skills/tailrocks-skill-refactor/SKILL.md`
 
 tailrocks-agents-md owns instruction files; the family owns skills — a rule

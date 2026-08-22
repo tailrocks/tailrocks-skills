@@ -106,14 +106,14 @@ Debt that shrinks, defects that stop recurring, skills that improve from field e
 
 ### Skill authoring
 
-Create, update, audit, and refactor agent skills under the observed-failure law and the context-window budget.
+Create skills from target repository policy, update behavior under a frozen contract, audit read-only, and refactor structure without behavior change.
 
 | Skill | What it does |
 |---|---|
-| [`tailrocks-skill-create`](skills/tailrocks-skill-create/README.md) | Create a new skill when a recurring agent responsibility has no existing owner. |
+| [`tailrocks-skill-create`](skills/tailrocks-skill-create/README.md) | Create a new agent skill for an evidenced responsibility with no owner, using the target repository's policy. |
 | [`tailrocks-skill-update`](skills/tailrocks-skill-update/README.md) | Improve an existing skill in place while preserving its responsibility and public contract. |
 | [`tailrocks-skill-audit`](skills/tailrocks-skill-audit/README.md) | Inspect one skill or the portfolio and report behavioral, structural, efficiency, portability, security, evaluation, and overlap defects. |
-| [`tailrocks-skill-refactor`](skills/tailrocks-skill-refactor/README.md) | Change skill architecture or public contracts by splitting, merging, renaming, extracting, replacing, deprecating, or migrating responsibilities. |
+| [`tailrocks-skill-refactor`](skills/tailrocks-skill-refactor/README.md) | Restructure skill ownership while preserving observable behavior and public contracts. |
 
 ### Pull request lifecycle
 

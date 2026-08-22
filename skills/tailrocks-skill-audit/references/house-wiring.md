@@ -1,9 +1,11 @@
 # House wiring
 
-What a finished skill touches beyond its own directory. In the tailrocks
-tree these are exact obligations enforced by the validator and CI; in
-another repository, map each row to that tree's equivalent and skip what
-has no counterpart — but never skip the eval files or the validator run.
+What a finished skill touches beyond its own directory. Target repository policy
+governs. Detect it from instruction files, existing skill siblings, validators,
+manifests, catalogs, and generation commands. Persist discovered mechanical
+policy in `.skill-authoring.json`; if evidence conflicts or required policy is
+missing, stop without mutation. Never project this repository's metadata onto a
+different tree.
 
 ## The skill directory
 
@@ -18,7 +20,7 @@ skills/<name>/
     └── fixtures/<id>/  # seeded artifacts for audit-shaped cases
 ```
 
-Frontmatter in this tree: `name`, `license: Apache-2.0`, a description
+Tailrocks profile uses: `name`, `license: Apache-2.0`, a description
 starting exactly with the guard sentence ("Use only when the user
 explicitly requests this skill.") with **250 characters of budget after
 it**, `disable-model-invocation: true`, `user-invocable: true`, and an
@@ -36,7 +38,20 @@ router, `audit`-style modes read-only with mutation never inferred from
 findings, every step carrying a **Complete when**, and a final gate of
 refusals.
 
+## Shared references
+
+Skill-authoring doctrine has one source under
+`skills/tailrocks-skill-audit/references/`. Create, update, and refactor name the
+exact repository path at the step that loads it. Validator allowlists and checks
+only `design-doctrine.md`, `testing-doctrine.md`, and `house-wiring.md` across
+that boundary. Never copy or paraphrase these rules into sibling routers.
+
 ## The repository files
+
+Rows below define Tailrocks profile. Another repository maps only artifacts its
+observed policy supports; absent client or catalog surfaces stay absent. Its
+`.skill-authoring.json` names skill root, anchored name pattern, template, optional
+display prefix, and optional catalog wiring.
 
 | Artifact | Obligation |
 |---|---|
@@ -54,6 +69,11 @@ mise run docs        # regenerate derived pages
 mise run lint        # skill + manifest validator (description budget, catalog, lockstep)
 mise run docs:check  # generated files not stale
 ```
+
+Run each once. Validator repair permits at most two matched, in-scope passes.
+Stop immediately for an unmatched error, unavailable tool, or exhausted bound;
+preserve current state, report exact failure and prior mutations, and never
+claim completion.
 
 Eval runs use the tree's runner:
 `mise run evals -- --skill <name> --case <id> --runs 2`. It needs the

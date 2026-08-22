@@ -4,7 +4,7 @@
 
 `tailrocks-skill-create` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-skill-create)
 
-Create a new skill when a recurring agent responsibility has no existing owner. Do not use for edits, repository-only conventions, or mechanically enforceable rules.
+Create a new agent skill for an evidenced responsibility with no owner, using the target repository's policy. Do not use for existing skills or mechanical gates.
 
 ## Invocation
 
@@ -21,6 +21,8 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 ## Templates
 
+- [`evidence-contract.md`](templates/evidence-contract.md)
+- [`skill-authoring-policy.json`](templates/skill-authoring-policy.json)
 - [`skill/SKILL.md`](templates/skill/SKILL.md)
 - [`skill/agents/openai.yaml`](templates/skill/agents/openai.yaml)
 - [`skill/evals/evals.json`](templates/skill/evals/evals.json)

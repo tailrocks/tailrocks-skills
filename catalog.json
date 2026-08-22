@@ -61,7 +61,7 @@
     {
       "id": "skill-authoring",
       "title": "Skill authoring",
-      "summary": "Create, update, audit, and refactor agent skills under the observed-failure law and the context-window budget.",
+      "summary": "Create skills from target repository policy, update behavior under a frozen contract, audit read-only, and refactor structure without behavior change.",
       "skills": [
         "tailrocks-skill-create",
         "tailrocks-skill-update",

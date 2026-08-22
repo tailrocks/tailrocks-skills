@@ -201,12 +201,16 @@ Four skills carry the authoring laws — no new skill and no behavioral edit
 without the failure observed first, and the context window is a public good —
 and exactly one owns each phase of a skill's life.
 
+Contract-breaking migration is a separate, operator-approved workflow recorded
+in `skill-migrations/<slug>.md`. Refactor may write that handoff, then stops; no
+authoring skill executes it.
+
 | Skill | Reach for it when |
 |---|---|
-| [`tailrocks-skill-create`](/docs/skills/tailrocks-skill-create) | A capability needs a new skill — baseline the observed failure, decide placement, match the guidance form, wire the repository. |
-| [`tailrocks-skill-update`](/docs/skills/tailrocks-skill-update) | An existing skill's behavior must change in place — eval-pinned lines protected, the invocation contract untouched. |
+| [`tailrocks-skill-create`](/docs/skills/tailrocks-skill-create) | Any repository needs a new skill — record durable evidence, derive target policy, scaffold deterministically from its template, and wire its supported surfaces. |
+| [`tailrocks-skill-update`](/docs/skills/tailrocks-skill-update) | Existing behavior must change in place while every public-contract field and independently invokable responsibility stays fixed. |
 | [`tailrocks-skill-audit`](/docs/skills/tailrocks-skill-audit) | One skill or the whole tree must be judged against the doctrine — read-only, a report with stable finding IDs under `skill-audits/`. |
-| [`tailrocks-skill-refactor`](/docs/skills/tailrocks-skill-refactor) | Selected findings from an audit report must be applied — by ID, nothing beyond the selection, verified by an independent re-audit. |
+| [`tailrocks-skill-refactor`](/docs/skills/tailrocks-skill-refactor) | Ownership structure must change while behavior and public contracts stay frozen. Contract-breaking work gets a durable migration handoff; audit remains a separate manual invocation. |
 
 ### agents-md or the authoring family
 
