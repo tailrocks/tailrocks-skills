@@ -11,6 +11,8 @@ async function project(): Promise<string> {
   await writeFile(path.join(root, "app.ts"), "export const app = true;\n");
   await mkdir(path.join(root, "node_modules/vite/bin"), { recursive: true });
   await writeFile(path.join(root, "node_modules/vite/bin/vite.js"), "// vite\n");
+  await mkdir(path.join(root, "node_modules/@playwright/test"), { recursive: true });
+  await writeFile(path.join(root, "node_modules/@playwright/test/cli.js"), "// playwright\n");
   return root;
 }
 function ok(stdout = ""): CommandResult {
@@ -23,7 +25,7 @@ function runner(commands: string[][], root: string): Runner {
     if (key === "git rev-parse --show-toplevel") return ok(`${root}\n`);
     if (key === "git rev-parse HEAD") return ok(`${head}\n`);
     if (key === "git ls-files -z --cached --others --exclude-standard") return ok("app.ts\0");
-    if (key.startsWith("bun x playwright test")) return ok();
+    if (key.includes("node_modules/@playwright/test/cli.js test")) return ok();
     return { code: 127, stdout: "", stderr: `unexpected ${key}` };
   };
 }
@@ -82,7 +84,9 @@ test("exact guard runs Playwright and bounds owned cleanup", async () => {
     guardVerified: true,
     serverPid: 4242,
   });
-  expect(commands.some((command) => command.join(" ").startsWith("bun x playwright test"))).toBe(true);
+  expect(
+    commands.some((command) => command.includes(path.join(root, "node_modules/@playwright/test/cli.js"))),
+  ).toBe(true);
   expect(stopped).toBe(true);
   expect(JSON.stringify(result)).not.toContain("b".repeat(64));
 });
@@ -200,7 +204,7 @@ test("publishes staged baselines only after final owned-revision proof", async (
   };
   const base = runner(commands, root);
   const run: Runner = async (command, cwd, environment) => {
-    if (command.join(" ").startsWith("bun x playwright test")) {
+    if (command.includes(path.join(root, "node_modules/@playwright/test/cli.js"))) {
       commands.push([...command]);
       const staging = environment?.TAILROCKS_VISUAL_QA_SNAPSHOT_STAGING;
       expect(staging).toBeTruthy();
@@ -252,7 +256,7 @@ test("snapshot publication race refuses without deleting concurrent replacement"
   };
   const base = runner(commands, root);
   const run: Runner = async (command, cwd, environment) => {
-    if (command.join(" ").startsWith("bun x playwright test")) {
+    if (command.includes(path.join(root, "node_modules/@playwright/test/cli.js"))) {
       commands.push([...command]);
       const directory = path.join(
         environment!.TAILROCKS_VISUAL_QA_SNAPSHOT_STAGING!,
@@ -335,7 +339,9 @@ test("HEAD drift after Playwright refuses staged publication", async () => {
     },
   );
   expect(result).toMatchObject({ outcome: "refused", code: "guard_mismatch" });
-  expect(commands.some((command) => command.join(" ").startsWith("bun x playwright test"))).toBe(true);
+  expect(
+    commands.some((command) => command.includes(path.join(root, "node_modules/@playwright/test/cli.js"))),
+  ).toBe(true);
 });
 
 test("bounded command runner kills a child that ignores SIGTERM", async () => {
@@ -353,7 +359,14 @@ test("bounded command runner kills a child that ignores SIGTERM", async () => {
 });
 
 test("capture CLI rejects unknown, duplicate, and trailing arguments with one receipt", async () => {
-  for (const args of [["--unknown"], ["--root", "/tmp", "--root", "/tmp"], ["--root"]]) {
+  for (const args of [
+    ["--unknown"],
+    ["freeze", "--root", "/tmp"],
+    ["harness", "--root", "/tmp"],
+    ["baseline", "--root", "/tmp", "--update-snapshots"],
+    ["regress", "--root", "/tmp", "--root", "/tmp"],
+    ["regress", "--root"],
+  ]) {
     const result = await runChild(["bun", "capture.ts", ...args], import.meta.dir, undefined, 2_000, 100);
     expect(result.code).toBe(2);
     expect(result.stderr).toBe("");

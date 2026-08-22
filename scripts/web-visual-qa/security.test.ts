@@ -35,6 +35,9 @@ test("every visual test proves guard before and after and checks origin", async 
 test("supervisor uses exact Vite, strict loopback, source digest, and bounded cleanup", async () => {
   const source = await readFile(path.join(import.meta.dir, "capture.ts"), "utf8");
   expect(source).toContain("node_modules/vite/bin/vite.js");
+  expect(source).toContain("node_modules/@playwright/test/cli.js");
+  expect(source).toContain("realpath(process.execPath)");
+  expect(source).not.toContain('"bun",\n      "x"');
   expect(source).toContain('"--strictPort"');
   expect(source).toContain('"ls-files"');
   expect(source).toContain('createHash("sha256")');

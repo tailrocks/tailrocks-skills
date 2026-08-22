@@ -10,6 +10,7 @@ const retiredSkillNames = new Set([
   "tailrocks-skill-evaluate",
   "tailrocks-skill-migrate",
   "tailrocks-skill-migration-plan",
+  "tailrocks-web-visual-qa",
 ]);
 
 async function exists(file: string): Promise<boolean> {

@@ -91,7 +91,8 @@ test("instruction and design policy selection preserves mutation and human autho
     "tailrocks-macos-visual-baseline",
     "tailrocks-macos-visual-qa",
     "tailrocks-macos-visual-regression",
-    "tailrocks-web-visual-qa",
+    "tailrocks-web-visual-baseline",
+    "tailrocks-web-visual-regression",
   ]) {
     const source = await readFile(path.join(root, "skills", name, "SKILL.md"), "utf8");
     const metadata = Bun.YAML.parse(source.match(/^---\n([\s\S]*?)\n---/)![1]) as Record<string, unknown>;

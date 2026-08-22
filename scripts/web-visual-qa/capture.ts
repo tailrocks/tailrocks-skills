@@ -1,5 +1,17 @@
 import { createHash, randomBytes } from "node:crypto";
-import { link, lstat, mkdir, mkdtemp, readFile, readdir, realpath, rename, rm } from "node:fs/promises";
+import {
+  chmod,
+  link,
+  lstat,
+  mkdir,
+  mkdtemp,
+  readFile,
+  readdir,
+  realpath,
+  rename,
+  rm,
+} from "node:fs/promises";
+import { tmpdir } from "node:os";
 import path from "node:path";
 
 import { runBoundedCommand } from "../bounded-command";
@@ -64,20 +76,46 @@ export async function runChild(
   env: Record<string, string> | undefined,
   timeoutMilliseconds: number,
   killGraceMilliseconds = 5_000,
+  inheritEnvironment = true,
 ): Promise<CommandResult> {
-  return runBoundedCommand({ command, cwd, env, timeoutMilliseconds, killGraceMilliseconds });
+  return runBoundedCommand({
+    command,
+    cwd,
+    env,
+    timeoutMilliseconds,
+    killGraceMilliseconds,
+    inheritEnvironment,
+  });
 }
 const defaultRunner: Runner = (command, cwd, env) =>
-  runChild(command, cwd, env, command.includes("playwright") ? 300_000 : 30_000);
+  runChild(command, cwd, env, command.includes("playwright") ? 300_000 : 30_000, 5_000, false);
 const defaultSpawn = (command: readonly string[], cwd: string, env: Record<string, string>): ServerHandle => {
   const child = Bun.spawn(command, {
     cwd,
-    env: { ...process.env, ...env },
+    env: {
+      PATH: "/usr/bin:/bin:/usr/sbin:/sbin",
+      HOME: process.env.HOME ?? "",
+      USER: process.env.USER ?? "",
+      LOGNAME: process.env.LOGNAME ?? "",
+      TMPDIR: process.env.TMPDIR ?? tmpdir(),
+      ...env,
+    },
+    detached: true,
     stdin: "ignore",
     stdout: "ignore",
     stderr: "ignore",
   });
-  return { pid: child.pid, exited: child.exited, kill: (signal) => child.kill(signal) };
+  return {
+    pid: child.pid,
+    exited: child.exited,
+    kill: (signal) => {
+      try {
+        process.kill(-child.pid, signal);
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error;
+      }
+    },
+  };
 };
 
 async function safeRoot(input: string): Promise<string> {
@@ -111,13 +149,18 @@ async function boundedStop(
   for (let attempt = 0; attempt < 20 && !exited; attempt += 1) await sleep(100);
   return exited;
 }
-async function probe(fetcher: typeof fetch, url: string, nonce: string): Promise<Response | undefined> {
+async function probe(
+  fetcher: typeof fetch,
+  url: string,
+  nonce: string,
+  timeoutMilliseconds = 500,
+): Promise<Response | undefined> {
   try {
     return await fetcher(url, {
       cache: "no-store",
       redirect: "manual",
       headers: { "X-Tailrocks-Visual-Session": nonce },
-      signal: AbortSignal.timeout(500),
+      signal: AbortSignal.timeout(timeoutMilliseconds),
     });
   } catch {
     return undefined;
@@ -197,6 +240,7 @@ async function publishSnapshots(
   root: string,
   staging: string,
   afterPublish?: (source: string, target: string, index: number) => Promise<void>,
+  finalProof?: () => Promise<boolean>,
 ): Promise<number> {
   const files = await pngFiles(staging);
   if (files.length === 0 || files.length > 2_000) throw new Error("staged screenshot count invalid");
@@ -249,12 +293,14 @@ async function publishSnapshots(
         if (backup) await link(backup, target).catch(() => undefined);
         throw error;
       }
+      const publishedIdentity = await lstat(target);
+      published.push({ target, dev: publishedIdentity.dev, ino: publishedIdentity.ino, backup });
       await afterPublish?.(source, target, index);
       const identity = await lstat(target);
       if (identity.dev !== sourceIdentity.dev || identity.ino !== sourceIdentity.ino)
         throw new Error("baseline changed during publication");
-      published.push({ target, dev: identity.dev, ino: identity.ino, backup });
     }
+    if (finalProof && !(await finalProof())) throw new Error("source changed after snapshot publication");
     return files.length;
   } catch (error) {
     for (const item of published.reverse()) {
@@ -364,9 +410,21 @@ export async function runCapture(
       port: options.port,
     };
   const vite = path.join(root, "node_modules/vite/bin/vite.js");
+  const playwright = path.join(root, "node_modules/@playwright/test/cli.js");
+  let bunExecutable: string;
   try {
     const info = await lstat(vite);
     if (!info.isFile() || info.isSymbolicLink() || (await realpath(vite)) !== vite) throw new Error();
+    const playwrightInfo = await lstat(playwright);
+    if (
+      !playwrightInfo.isFile() ||
+      playwrightInfo.isSymbolicLink() ||
+      (await realpath(playwright)) !== playwright
+    )
+      throw new Error();
+    bunExecutable = await realpath(process.execPath);
+    const bunInfo = await lstat(bunExecutable);
+    if (!bunInfo.isFile() || bunInfo.isSymbolicLink()) throw new Error();
   } catch {
     return {
       ...receipt(
@@ -374,37 +432,45 @@ export async function runCapture(
         "refused",
         options.updateSnapshots,
         commands,
-        "project-local Vite entrypoint missing or unsafe",
+        "Bun, project-local Vite, or project-local Playwright entrypoint missing or unsafe",
       ),
       root,
       revision,
       port: options.port,
     };
   }
+  const outputDirectory = await realpath(await mkdtemp(path.join(tmpdir(), "tailrocks-web-visual-output-")));
+  await chmod(outputDirectory, 0o700);
+  const runtimeHome = path.join(outputDirectory, "home");
+  const runtimeTemp = path.join(outputDirectory, "tmp");
+  const runtimeCache = path.join(outputDirectory, "cache");
+  await Promise.all([
+    mkdir(runtimeHome, { mode: 0o700 }),
+    mkdir(runtimeTemp, { mode: 0o700 }),
+    mkdir(runtimeCache, { mode: 0o700 }),
+  ]);
   const environment: Record<string, string> = {
+    PATH: "/usr/bin:/bin:/usr/sbin:/sbin",
+    HOME: runtimeHome,
+    USER: process.env.USER ?? "",
+    LOGNAME: process.env.LOGNAME ?? "",
+    TMPDIR: runtimeTemp,
+    XDG_CACHE_HOME: runtimeCache,
     TAILROCKS_VISUAL_QA: "1",
     TAILROCKS_VISUAL_QA_BASE_URL: baseURL,
     TAILROCKS_VISUAL_QA_REVISION: revision,
     TAILROCKS_VISUAL_QA_NONCE: nonce,
     VITE_DESIGN_ROUTES: "1",
   };
+  environment.TAILROCKS_VISUAL_QA_OUTPUT_DIR = outputDirectory;
   let staging: string | undefined;
   let keepStaging = false;
   if (options.updateSnapshots) {
-    const resultsRoot = path.join(root, "test-results");
-    await mkdir(resultsRoot, { recursive: true });
-    if ((await realpath(resultsRoot)) !== resultsRoot)
-      return {
-        ...receipt("invalid_root", "refused", true, commands, "test-results root is unsafe"),
-        root,
-        revision,
-        port: options.port,
-      };
-    staging = await mkdtemp(path.join(resultsRoot, ".tailrocks-freeze-"));
+    staging = await realpath(await mkdtemp(path.join(tmpdir(), "tailrocks-web-visual-baseline-")));
     environment.TAILROCKS_VISUAL_QA_SNAPSHOT_STAGING = staging;
   }
   const serverCommand = [
-    "bun",
+    bunExecutable,
     vite,
     "--host",
     "127.0.0.1",
@@ -418,6 +484,7 @@ export async function runCapture(
     server = spawn(serverCommand, root, environment);
   } catch (error) {
     if (staging) await rm(staging, { recursive: true, force: true });
+    await rm(outputDirectory, { recursive: true, force: true });
     return {
       ...receipt("launch_failed", "failed", options.updateSnapshots, commands, String(error)),
       root,
@@ -436,8 +503,14 @@ export async function runCapture(
       designRoutes: true,
     };
     let verified = false;
-    for (let attempt = 0; attempt < 100; attempt += 1) {
-      const response = await probe(fetcher, `${baseURL}/api/tailrocks-visual-qa`, nonce);
+    const readinessDeadline = Date.now() + 10_000;
+    for (let attempt = 0; attempt < 100 && Date.now() < readinessDeadline; attempt += 1) {
+      const response = await probe(
+        fetcher,
+        `${baseURL}/api/tailrocks-visual-qa`,
+        nonce,
+        Math.max(1, Math.min(500, readinessDeadline - Date.now())),
+      );
       if (response) {
         if (
           !response.ok ||
@@ -484,7 +557,10 @@ export async function runCapture(
       }
       const state = await Promise.race([
         server.exited.then((code) => ({ exited: true, code })),
-        sleep(100).then(() => ({ exited: false, code: 0 })),
+        sleep(Math.max(1, Math.min(100, readinessDeadline - Date.now()))).then(() => ({
+          exited: false,
+          code: 0,
+        })),
       ]);
       if (state.exited)
         return {
@@ -530,17 +606,16 @@ export async function runCapture(
         serverPid: server.pid,
         guardVerified: true,
       };
-    const playwright = [
-      "bun",
-      "x",
-      "playwright",
+    const playwrightCommand = [
+      bunExecutable,
+      playwright,
       "test",
       "--config",
       "playwright.visual.config.ts",
       ...(options.updateSnapshots ? ["--update-snapshots"] : []),
     ];
-    commands.push(playwright);
-    const result = await run(playwright, root, environment);
+    commands.push(playwrightCommand);
+    const result = await run(playwrightCommand, root, environment);
     if (result.code !== 0)
       return {
         ...receipt(
@@ -590,7 +665,7 @@ export async function runCapture(
     if (staging) {
       try {
         keepStaging = true;
-        await publishSnapshots(root, staging, runtime.afterSnapshotPublish);
+        await publishSnapshots(root, staging, runtime.afterSnapshotPublish, sourceUnchanged);
         keepStaging = false;
       } catch (error) {
         return {
@@ -620,6 +695,7 @@ export async function runCapture(
   } finally {
     cleanup = await boundedStop(server, sleep);
     if (staging && !keepStaging) await rm(staging, { recursive: true, force: true });
+    await rm(outputDirectory, { recursive: true, force: true });
     if (!cleanup)
       return {
         ...receipt(
@@ -639,14 +715,14 @@ export async function runCapture(
 
 if (import.meta.main) {
   const args = Bun.argv.slice(2);
+  const operation = args.shift();
   let root: string | undefined;
   let port: string | undefined;
-  let updateSnapshots = false;
-  let valid = true;
+  const updateSnapshots = operation === "baseline";
+  let valid = operation === "baseline" || operation === "regress";
   for (let index = 0; index < args.length; index += 1) {
     const flag = args[index];
-    if (flag === "--update-snapshots" && !updateSnapshots) updateSnapshots = true;
-    else if ((flag === "--root" || flag === "--port") && args[index + 1]) {
+    if ((flag === "--root" || flag === "--port") && args[index + 1]) {
       if (flag === "--root" ? root !== undefined : port !== undefined) {
         valid = false;
         break;
@@ -671,7 +747,7 @@ if (import.meta.main) {
           "refused",
           updateSnapshots,
           [],
-          "usage: bun capture.ts --root PATH [--port N] [--update-snapshots]",
+          "usage: bun capture.ts baseline|regress --root PATH [--port N]",
         );
   console.log(JSON.stringify(result));
   process.exit(result.outcome === "captured" ? 0 : result.outcome === "refused" ? 2 : 1);

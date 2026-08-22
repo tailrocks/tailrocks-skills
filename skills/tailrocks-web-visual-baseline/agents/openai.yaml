@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Web Visual Baseline"
+  short_description: "Freeze blessed web screenshot baselines"
+  default_prompt: "Use $tailrocks-web-visual-baseline only for the explicit baseline request. Require the installed canonical harness and bind the recorded human blessing and full matrix; never install, compare regressions, design, bless, or silently update a red baseline."
+policy:
+  allow_implicit_invocation: false

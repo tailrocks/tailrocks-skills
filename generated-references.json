@@ -14,6 +14,17 @@
       }
     },
     {
+      "source": "scripts/web-visual-qa/README.md",
+      "destinations": [
+        "skills/tailrocks-web-visual-baseline/references/harness-contract.md",
+        "skills/tailrocks-web-visual-regression/references/harness-contract.md"
+      ],
+      "slice": {
+        "start": "<!-- tailrocks-web-harness-contract:start -->\n",
+        "end": "<!-- tailrocks-web-harness-contract:end -->"
+      }
+    },
+    {
       "source": "shared/references/contribution-handoff.md",
       "destinations": [
         "skills/tailrocks-contribute-prepare/references/contribution-handoff.md",
@@ -29,7 +40,8 @@
         "skills/tailrocks-macos-design/references/design-pipeline.md",
         "skills/tailrocks-macos-visual-baseline/references/design-pipeline.md",
         "skills/tailrocks-tui-design/references/design-pipeline.md",
-        "skills/tailrocks-web-design/references/design-pipeline.md"
+        "skills/tailrocks-web-design/references/design-pipeline.md",
+        "skills/tailrocks-web-visual-baseline/references/design-pipeline.md"
       ]
     },
     {
@@ -136,7 +148,8 @@
         "skills/tailrocks-typescript-review/references/runtime-trust.md",
         "skills/tailrocks-web-design-audit/references/runtime-trust.md",
         "skills/tailrocks-web-design/references/runtime-trust.md",
-        "skills/tailrocks-web-visual-qa/references/runtime-trust.md"
+        "skills/tailrocks-web-visual-baseline/references/runtime-trust.md",
+        "skills/tailrocks-web-visual-regression/references/runtime-trust.md"
       ]
     },
     {
@@ -642,6 +655,16 @@
     {
       "source": "skills/tailrocks-web-design/references/web-screen-craft.md",
       "destinations": ["skills/tailrocks-web-design-audit/references/web-screen-craft.md"]
+    },
+    {
+      "source": "skills/tailrocks-web-visual-baseline/references/screenshot-baselines.md",
+      "destinations": [
+        "skills/tailrocks-web-visual-regression/references/screenshot-baselines.md"
+      ],
+      "slice": {
+        "start": "<!-- tailrocks-web-visual-shared:start -->\n",
+        "end": "<!-- tailrocks-web-visual-shared:end -->"
+      }
     }
   ]
 }

@@ -1249,7 +1249,7 @@
     {
       "source": "skills/tailrocks-web-design/references/screen-package.md",
       "destination": "skills/tailrocks-web-design-audit/references/screen-package.md",
-      "sha256": "3ddf521599ad00d83f5ada2fb0ada30f6808c99ff2e3b5eb73f807c2a2a18ea7"
+      "sha256": "9d173c9db7d310b7d064a0331416ac6e4258fdf345839fef00240709a1dc6c21"
     },
     {
       "source": "skills/tailrocks-web-design/references/web-screen-craft.md",
@@ -1267,9 +1267,34 @@
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
     },
     {
+      "source": "shared/references/design-pipeline.md",
+      "destination": "skills/tailrocks-web-visual-baseline/references/design-pipeline.md",
+      "sha256": "00bbf16de54860b26445c91e75b408b1536a5025c698923aee7241f7ab6e3de9"
+    },
+    {
+      "source": "scripts/web-visual-qa/README.md",
+      "destination": "skills/tailrocks-web-visual-baseline/references/harness-contract.md",
+      "sha256": "fb9b7cc36ce17b6b5006e5c94e8dfb32d4ba3553e269d900d2aa94395344b2a8"
+    },
+    {
       "source": "shared/references/runtime-trust.md",
-      "destination": "skills/tailrocks-web-visual-qa/references/runtime-trust.md",
+      "destination": "skills/tailrocks-web-visual-baseline/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "scripts/web-visual-qa/README.md",
+      "destination": "skills/tailrocks-web-visual-regression/references/harness-contract.md",
+      "sha256": "fb9b7cc36ce17b6b5006e5c94e8dfb32d4ba3553e269d900d2aa94395344b2a8"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-web-visual-regression/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-web-visual-baseline/references/screenshot-baselines.md",
+      "destination": "skills/tailrocks-web-visual-regression/references/screenshot-baselines.md",
+      "sha256": "feeb9849bdc93098e46f293c310e2813729ede90e9f560e69b50c74183d3725a"
     }
   ]
 }

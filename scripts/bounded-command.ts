@@ -8,6 +8,7 @@ export interface BoundedCommandOptions {
   readonly timeoutMilliseconds?: number;
   readonly killGraceMilliseconds?: number;
   readonly maximumOutputBytes?: number;
+  readonly inheritEnvironment?: boolean;
 }
 
 export interface BoundedCommandResult {
@@ -26,6 +27,7 @@ export async function runBoundedCommand({
   timeoutMilliseconds = 30_000,
   killGraceMilliseconds = 5_000,
   maximumOutputBytes = 10_000_000,
+  inheritEnvironment = true,
 }: BoundedCommandOptions): Promise<BoundedCommandResult> {
   if (
     command.length === 0 ||
@@ -34,13 +36,14 @@ export async function runBoundedCommand({
     !Number.isSafeInteger(killGraceMilliseconds) ||
     killGraceMilliseconds < 1 ||
     !Number.isSafeInteger(maximumOutputBytes) ||
-    maximumOutputBytes < 1
+    maximumOutputBytes < 1 ||
+    typeof inheritEnvironment !== "boolean"
   )
     throw new Error("bounded command options are invalid");
 
   const child = spawn(command[0]!, [...command.slice(1)], {
     cwd,
-    env: env ? { ...process.env, ...env } : process.env,
+    env: inheritEnvironment ? (env ? { ...process.env, ...env } : process.env) : env,
     detached: process.platform !== "win32",
     stdio: [stdin === undefined ? "ignore" : "pipe", "pipe", "pipe"],
   });

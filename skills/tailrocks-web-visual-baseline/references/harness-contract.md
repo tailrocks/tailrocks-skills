@@ -1,5 +1,3 @@
-<!-- tailrocks-web-harness-contract:start -->
-
 # Web visual-QA harness contract
 
 Resolve the installed skill and canonical harness without searching or trusting
@@ -32,4 +30,3 @@ checks only after the final guard and source proofs pass. The command bounds
 readiness, child commands, and TERM/KILL cleanup. Its JSON receipt omits the
 private nonce.
 
-<!-- tailrocks-web-harness-contract:end -->

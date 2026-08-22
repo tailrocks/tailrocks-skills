@@ -115,7 +115,8 @@ One design skill per platform — macOS, web, terminal — each producing a bles
 | [`tailrocks-macos-visual-baseline`](skills/tailrocks-macos-visual-baseline/README.md) | Freeze or explicitly re-freeze one blessed native macOS prototype into a reproducible full-matrix baseline package. | Manual only |
 | [`tailrocks-macos-visual-qa`](skills/tailrocks-macos-visual-qa/README.md) | Verify a native macOS app's current render through owned window-ID capture, accessibility-tree interaction, the restored state matrix, and app-scoped accessibility audit. | Manual only |
 | [`tailrocks-macos-visual-regression`](skills/tailrocks-macos-visual-regression/README.md) | Compare current native macOS running-window captures against one approved baseline package with environment, structural-region, and pixel-budget gates. | Manual only |
-| [`tailrocks-web-visual-qa`](skills/tailrocks-web-visual-qa/README.md) | Freeze and regress Playwright screenshot baselines for TanStack design routes and pages: the capture matrix per state, theme, and viewport — only from a finalized, blessed design. | Manual only |
+| [`tailrocks-web-visual-baseline`](skills/tailrocks-web-visual-baseline/README.md) | Freeze an explicitly blessed TanStack design-route matrix as durable Playwright screenshot baselines. | Manual only |
+| [`tailrocks-web-visual-regression`](skills/tailrocks-web-visual-regression/README.md) | Compare a TanStack screen matrix against its blessed Playwright screenshot baselines through the revision-bound owned server. | Manual only |
 
 ### Code quality and contribution
 

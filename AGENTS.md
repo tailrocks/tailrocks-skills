@@ -311,7 +311,7 @@ baseline), **audit** (implementation against the blessed reference).
 | Medium   | Stack                            | design                 | bless                           | freeze                    | audit                         |
 | -------- | -------------------------------- | ---------------------- | ------------------------------- | ------------------------- | ----------------------------- |
 | Terminal | Rust, ratatui, crossterm         | tailrocks-tui-design   | same                            | same — the golden test    | tailrocks-tui-design-audit    |
-| Web      | TanStack Start, React, shadcn/ui | tailrocks-web-design   | same                            | tailrocks-web-visual-qa   | tailrocks-web-design-audit    |
+| Web      | TanStack Start, React, shadcn/ui | tailrocks-web-design   | same                            | tailrocks-web-visual-baseline | tailrocks-web-design-audit    |
 | macOS    | Swift, SwiftUI, Liquid Glass     | tailrocks-macos-design | same — on the running prototype | tailrocks-macos-visual-baseline | tailrocks-macos-visual-regression |
 
 macOS keeps design and bless in one skill because the material only exists at
@@ -412,12 +412,15 @@ a name list cannot.
   structural native-region and budgeted custom-region oracles; green means no
   regression, never design approval. Definition:
   `skills/tailrocks-macos-visual-regression/SKILL.md`
-- **tailrocks-web-visual-qa** — the freeze that follows finalization:
-  Playwright screenshot baselines per state, theme, and viewport, captured
-  from a blessed design's routes only — a missing blessing blocks the
-  freeze — with the determinism rules, the baseline record, and re-freeze
-  only under a recorded re-blessing.
-  Definition: `skills/tailrocks-web-visual-qa/SKILL.md`
+- **tailrocks-web-visual-baseline** — the sole web freeze owner: Playwright
+  baselines per blessed design-route state, theme, and viewport, with a bound
+  baseline record and re-baseline only after recorded human re-blessing. It
+  requires but never installs the canonical harness. Definition:
+  `skills/tailrocks-web-visual-baseline/SKILL.md`
+- **tailrocks-web-visual-regression** — read-only comparison through the
+  revision-bound owned server. Candidate output stays outside the subject;
+  green means pixel conformance, never blessing. Definition:
+  `skills/tailrocks-web-visual-regression/SKILL.md`
 
 Two findings shape the macOS end of the family and are worth stating up
 front. **No design file is authoritative for Liquid Glass; the operating

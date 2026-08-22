@@ -45,7 +45,7 @@ one shared directory:
   `tailrocks-web-design-audit`, `tailrocks-tui-design`,
   `tailrocks-tui-design-audit`, `tailrocks-macos-visual-baseline`,
   `tailrocks-macos-visual-qa`, `tailrocks-macos-visual-regression`,
-  `tailrocks-web-visual-qa`
+  `tailrocks-web-visual-baseline`, `tailrocks-web-visual-regression`
 - **Code quality:** `tailrocks-code-health`, `tailrocks-code-health-audit`, `tailrocks-improve`,
   `tailrocks-improve-deep`, `tailrocks-improve-security`,
   `tailrocks-improve-plan`, `tailrocks-improve-execution`,
@@ -77,7 +77,7 @@ The registry classifies 11 skills as `MODEL_POLICY`: `tailrocks-agents-md`,
 `tailrocks-macos-design`, `tailrocks-rust-best-practices`,
 `tailrocks-swift-best-practices`, `tailrocks-tui-design`,
 `tailrocks-typescript-best-practices`, and `tailrocks-web-design`. They may load
-only under their exact description trigger. The other 73 skills are
+only under their exact description trigger. The other 74 skills are
 `MANUAL_ONLY` and require an explicit request.
 
 Model selection grants no mutation, tool, blessing, commit, push, release,

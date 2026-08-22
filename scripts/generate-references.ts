@@ -213,6 +213,25 @@ const generatedProjections = [
       end: "<!-- tailrocks-macos-baseline-metadata:end -->",
     },
   },
+  {
+    source: "scripts/web-visual-qa/README.md",
+    destinations: [
+      "skills/tailrocks-web-visual-baseline/references/harness-contract.md",
+      "skills/tailrocks-web-visual-regression/references/harness-contract.md",
+    ],
+    slice: {
+      start: "<!-- tailrocks-web-harness-contract:start -->\n",
+      end: "<!-- tailrocks-web-harness-contract:end -->",
+    },
+  },
+  {
+    source: "skills/tailrocks-web-visual-baseline/references/screenshot-baselines.md",
+    destinations: ["skills/tailrocks-web-visual-regression/references/screenshot-baselines.md"],
+    slice: {
+      start: "<!-- tailrocks-web-visual-shared:start -->\n",
+      end: "<!-- tailrocks-web-visual-shared:end -->",
+    },
+  },
 ] as const;
 const familySources = generatedFamilies.flatMap((family) =>
   family.references.map((name) => `skills/${family.owner}/references/${name}`),

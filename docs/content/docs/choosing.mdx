@@ -123,7 +123,7 @@ refuses a screen contract that cites none.
 | Medium   | Stack                            | design                                                          | bless                           | freeze                                                                            | audit                                                                                 |
 | -------- | -------------------------------- | --------------------------------------------------------------- | ------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | Terminal | Rust, ratatui, crossterm         | [`tailrocks-tui-design`](/docs/skills/tailrocks-tui-design)     | same                            | same — the golden test                                                            | [`tailrocks-tui-design-audit`](/docs/skills/tailrocks-tui-design-audit)               |
-| Web      | TanStack Start, React, shadcn/ui | [`tailrocks-web-design`](/docs/skills/tailrocks-web-design)     | same                            | [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa)                 | [`tailrocks-web-design-audit`](/docs/skills/tailrocks-web-design-audit)               |
+| Web      | TanStack Start, React, shadcn/ui | [`tailrocks-web-design`](/docs/skills/tailrocks-web-design)     | same                            | [`tailrocks-web-visual-baseline`](/docs/skills/tailrocks-web-visual-baseline)     | [`tailrocks-web-design-audit`](/docs/skills/tailrocks-web-design-audit)               |
 | macOS    | Swift, SwiftUI, Liquid Glass     | [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | same — on the running prototype | [`tailrocks-macos-visual-baseline`](/docs/skills/tailrocks-macos-visual-baseline) | [`tailrocks-macos-visual-regression`](/docs/skills/tailrocks-macos-visual-regression) |
 
 macOS keeps design and bless in one skill because the material only exists at
@@ -138,7 +138,8 @@ prototype stages consult.
 | [`tailrocks-tui-design-audit`](/docs/skills/tailrocks-tui-design-audit)               | Existing gallery packages or shipped terminal screens need read-only verification against blessed golden frames, registry coverage, style checks, states, and sizes.                                      |
 | [`tailrocks-web-design`](/docs/skills/tailrocks-web-design)                           | A TanStack screen needs its look agreed before implementation: guarded design routes over the installed shadcn/ui components, blessed live in the browser. Captures nothing.                              |
 | [`tailrocks-web-design-audit`](/docs/skills/tailrocks-web-design-audit)               | Existing design routes or shipped web screens need read-only verification against their blessed component, state, theme, viewport, and accessibility contract.                                            |
-| [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa)                     | A finalized web design needs its baselines frozen, or an existing visual suite needs a regress run: Playwright screenshot matrix, determinism rules, the baseline record — refused for unblessed screens. |
+| [`tailrocks-web-visual-baseline`](/docs/skills/tailrocks-web-visual-baseline)         | Freeze an explicitly blessed web design-route matrix into durable Playwright baselines; never installs the harness or compares regression. |
+| [`tailrocks-web-visual-regression`](/docs/skills/tailrocks-web-visual-regression)     | Compare the current web matrix to one exact baseline read-only; never updates snapshots or approves design. |
 | [`tailrocks-macos-visual-baseline`](/docs/skills/tailrocks-macos-visual-baseline)     | A finalized, independently accepted, user-blessed macOS prototype needs its complete signed-off matrix frozen reproducibly.                                                                               |
 | [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa)                 | The current running macOS implementation needs visual, behavioral, state-matrix, and accessibility inspection without touching baselines.                                                                 |
 | [`tailrocks-macos-visual-regression`](/docs/skills/tailrocks-macos-visual-regression) | Current macOS renders need mechanical structural/pixel comparison against one exact approved baseline.                                                                                                    |
@@ -153,7 +154,7 @@ prototype stage is their runnable-reference producer — an HTML prototype is
 never a design source for native macOS. Design skills iterate live and
 capture nothing:
 screenshots are frozen only after finalization, by
-[`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa) for web
+[`tailrocks-web-visual-baseline`](/docs/skills/tailrocks-web-visual-baseline) for web
 screens and
 [`tailrocks-macos-visual-baseline`](/docs/skills/tailrocks-macos-visual-baseline) for
 macOS windows. The shared shape is

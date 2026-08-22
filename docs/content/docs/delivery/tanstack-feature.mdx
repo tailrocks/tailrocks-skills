@@ -186,12 +186,12 @@ Anything still open at the end is resolved, deferred with a reason, or
 reclassified as researchable. READY is granted only when the whole checklist
 passes.
 
-## 7. Freeze the reference — `tailrocks-web-visual-qa`
+## 7. Freeze the reference — `tailrocks-web-visual-baseline`
 
 READY is the point where the design stops moving, and that is the only point at
 which a screenshot baseline is worth keeping.
 
-<Invoke skill="tailrocks-web-visual-qa" args="freeze offline-inspection: every screen, state, viewport, and theme from the design routes" />
+<Invoke skill="tailrocks-web-visual-baseline" args="baseline offline-inspection: every screen, state, viewport, and theme from the design routes" />
 
 One baseline per screen × state × viewport × theme, walked from the design
 registry rather than from the route parameters — a state that exists only as a
@@ -259,7 +259,7 @@ The slices, in dependency order:
 
 | Slice | Ships | Executed under |
 |---|---|---|
-| — | Not a slice: the design routes blessed before READY and the baseline frozen from them the moment it was granted | `tailrocks-web-design`, `tailrocks-web-visual-qa` |
+| — | Not a slice: the design routes blessed before READY and the baseline frozen from them the moment it was granted | `tailrocks-web-design`, `tailrocks-web-visual-baseline` |
 | 001 | Document model, wire types, validation core in Rust with a conformance vector suite the TypeScript validator must also pass | `tailrocks-rust-best-practices`, `tailrocks-typescript-best-practices` |
 | 002 | Offline runner, local only: local replica, persistence, storage telemetry, capture UI, photo staging | `tailrocks-typescript-best-practices` |
 | 003 | Sync channel: WebSocket endpoint, server replica, state-vector backfill, dual-timestamp acks | `tailrocks-axum-best-practices`, `tailrocks-rust-best-practices` |

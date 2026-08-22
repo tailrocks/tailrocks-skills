@@ -16,7 +16,7 @@ src/routes/design/…                          # guarded design route group
 
 No `design/` folder at the repository root, no sidecar HTML, no captured
 images: the app renders, the manifest explains, and the frozen baselines —
-produced by `tailrocks-web-visual-qa` once the design is finalized — live
+produced by `tailrocks-web-visual-baseline` once the design is finalized — live
 with that skill's suite, not here.
 
 ## MANIFEST.md — the human contract
@@ -41,7 +41,7 @@ reason:
 
 An unfilled `Blessed` row means the screen is a draft: the routes still
 render, but no downstream document may cite the design as settled, and
-`tailrocks-web-visual-qa` must refuse to freeze baselines from it.
+`tailrocks-web-visual-baseline` must refuse to freeze baselines from it.
 
 ## Delivery wiring
 
@@ -58,7 +58,7 @@ When the work belongs to a roadmap item:
 - Blessing before READY: an item whose screens have unblessed design
   routes is still SHAPING ground — say so rather than letting a draft
   ride into planning.
-- After finalization, `tailrocks-web-visual-qa` freezes the screenshot
+- After finalization, `tailrocks-web-visual-baseline` freezes the screenshot
   baselines from these routes; planning then cites the manifest section
   and that suite as the screen's observable check.
 

@@ -695,6 +695,13 @@ policy:
     );
   });
 
+  test("rejects the retired combined web visual route", async () => {
+    await write("README.md", `${skill}\ntailrocks-web-visual-qa\n`);
+    expect(await validate(root)).toContain(
+      "README.md: retired skill route is forbidden: tailrocks-web-visual-qa",
+    );
+  });
+
   test("rejects stale release pins", async () => {
     await write("INSTALL.md", `${skill}\nv0.9.0\n`);
     expect(await validate(root)).toContain("INSTALL.md: release pin v0.9.0 must equal v1.0.0");

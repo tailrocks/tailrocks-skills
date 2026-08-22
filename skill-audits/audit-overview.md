@@ -1083,9 +1083,31 @@ all terminal checks pass, and the final literal marker is changed to
     `rtk mise run migration-check` passed 394 tests/2,662 assertions across 53
     selected non-protected files. Fresh subagent verdict: PASS. Protected paths
     unchanged; no evals run.
-- [ ] [IN_PROGRESS] P07.05 Web visual verification → baseline and regression; both
+- [x] [COMPLETED] P07.05 Web visual verification → baseline and regression; both
   remain `MANUAL_ONLY`.
-- [ ] [TODO] P07.06 Preserve human blessing, owned-process capture, appearance
+  - Evidence receipt (2026-08-23): replaced the combined web visual owner with
+    exclusive manual baseline and read-only regression owners. Removed the old
+    skill, generated documentation, catalog/registry entry, selectors, and
+    published routes immediately with no alias or redirect; the validator now
+    forbids resurrection while frozen legacy bytes remain inactive. Baseline
+    accepts only `baseline`, requires but never installs the canonical harness,
+    and owns durable blessed-matrix publication. Regression accepts only
+    `regress` and owns no source, baseline, blessing, or update authority. The
+    baseline-owned matrix contract projects byte-identically to regression;
+    the script-owned harness contract projects to both; runtime trust reaches
+    both; design-pipeline doctrine reaches baseline only. The deterministic
+    supervisor exposes exact `baseline|regress` operations, resolves pinned
+    local Bun/Vite/Playwright entrypoints, strips ambient child state, uses
+    external regression output, owns the server process group, applies an
+    absolute readiness deadline, and rechecks source identity after baseline
+    publication. Registry and docs cover 85 skills (74 manual, 11 model-policy),
+    21,790 total description characters, and 17,720 capped characters; 88
+    sources produced 259 byte-identical destinations and 259 generated docs
+    checked. Focused proof passed 103 tests/774 assertions; final
+    `rtk mise run migration-check` passed 400 tests/2,725 assertions across 54
+    selected non-protected files. Fresh subagent verdict: PASS. Protected paths
+    unchanged; no evals run.
+- [ ] [IN_PROGRESS] P07.06 Preserve human blessing, owned-process capture, appearance
   restoration, wrong-server refusal, and region-specific conformance rules.
 - [ ] [TODO] P07.GATE Prove the exact eleven-skill model-policy set, manual
   descendant and visual-verification routing, one taste owner per medium, and
