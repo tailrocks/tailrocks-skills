@@ -21,6 +21,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 ## References
 
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`screenshot-baselines.md`](references/screenshot-baselines.md)
 
 ## Templates

@@ -24,4 +24,5 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`ownership-performance.md`](references/ownership-performance.md)
 - [`readability-style-architecture.md`](references/readability-style-architecture.md)
 - [`review-checklist.md`](references/review-checklist.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`tooling-lints.md`](references/tooling-lints.md)

@@ -21,5 +21,6 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`client-tanstack.md`](references/client-tanstack.md)
 - [`contract-gates.md`](references/contract-gates.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`schema-design.md`](references/schema-design.md)
 - [`server-rust.md`](references/server-rust.md)

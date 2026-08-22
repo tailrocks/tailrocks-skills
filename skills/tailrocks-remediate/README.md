@@ -22,3 +22,4 @@ file. They are not copied here — one source, and no chance of the two drifting
 ## References
 
 - [`principles-and-evidence.md`](references/principles-and-evidence.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

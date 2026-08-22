@@ -1,6 +1,8 @@
 import { access, readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
+import { generateReferences } from "./generate-references";
+
 const guard = "Use only when the user explicitly requests this skill.";
 const descriptionBudget = 250;
 const invocationRegistrySchema = "tailrocks.skill-invocation/v1";
@@ -285,9 +287,60 @@ function scanBannedTerms(source: string, directory: string, label: string, error
   }
 }
 
+async function generatedReferenceDestinations(root: string, errors: string[]): Promise<Set<string>> {
+  const file = path.join(root, "generated-references.json");
+  if (!(await exists(file))) return new Set();
+  try {
+    await generateReferences(root, "check");
+    const manifest = JSON.parse(await readFile(file, "utf8")) as {
+      $schema?: unknown;
+      entries?: unknown;
+    };
+    if (
+      typeof manifest !== "object" ||
+      manifest === null ||
+      Array.isArray(manifest) ||
+      Object.keys(manifest).sort().join(",") !== "$schema,entries" ||
+      manifest.$schema !== "tailrocks.generated-references/v1" ||
+      !Array.isArray(manifest.entries) ||
+      manifest.entries.length === 0
+    )
+      throw new Error();
+    const destinations: string[] = [];
+    for (const entry of manifest.entries) {
+      if (
+        typeof entry !== "object" ||
+        entry === null ||
+        Array.isArray(entry) ||
+        Object.keys(entry).sort().join(",") !== "destinations,source" ||
+        typeof (entry as { source?: unknown }).source !== "string" ||
+        !/^(?:shared|skill-authoring)\/references\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/.test(
+          (entry as { source: string }).source,
+        ) ||
+        !Array.isArray((entry as { destinations?: unknown }).destinations) ||
+        (entry as { destinations: unknown[] }).destinations.some(
+          (destination) =>
+            typeof destination !== "string" ||
+            !/^skills\/tailrocks-[a-z0-9]+(?:-[a-z0-9]+)*\/references\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/.test(
+              destination,
+            ),
+        )
+      )
+        throw new Error();
+      destinations.push(...(entry as { destinations: string[] }).destinations);
+    }
+    if (new Set(destinations).size !== destinations.length) throw new Error();
+    return new Set(destinations);
+  } catch {
+    errors.push("generated-references.json: invalid generated-reference manifest");
+    return new Set();
+  }
+}
+
 export async function validate(root: string): Promise<string[]> {
   const errors: string[] = [];
   await validateDurableContracts(root, errors);
+  const generatedReferences = await generatedReferenceDestinations(root, errors);
   const skillsRoot = path.join(root, "skills");
   if (!(await exists(skillsRoot))) return ["missing skills directory"];
   const entries = (await readdir(skillsRoot, { withFileTypes: true }))
@@ -444,7 +497,7 @@ export async function validate(root: string): Promise<string[]> {
         errors,
       );
       const relative = path.relative(skillDir, referenceFile).split(path.sep).join("/");
-      if (!source.includes(relative)) {
+      if (!source.includes(relative) && !generatedReferences.has(`skills/${directory}/${relative}`)) {
         errors.push(`${directory}: reference must be linked directly from SKILL.md: ${relative}`);
       }
       for (const line of packageManagerCommands(fencedCode(reference))) {

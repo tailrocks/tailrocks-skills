@@ -20,6 +20,8 @@ file. They are not copied here — one source, and no chance of the two drifting
 ## References
 
 - [`lints-clippy-rustfmt.md`](references/lints-clippy-rustfmt.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
+- [`shared-version-policy.md`](references/shared-version-policy.md)
 - [`supply-chain-and-testing.md`](references/supply-chain-and-testing.md)
 - [`toolchain-and-mise.md`](references/toolchain-and-mise.md)
 - [`version-policy.md`](references/version-policy.md)

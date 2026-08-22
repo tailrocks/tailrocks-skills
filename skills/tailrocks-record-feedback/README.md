@@ -19,6 +19,10 @@ Arguments: `<roadmap-slug>`
 The instructions this skill loads live in [`SKILL.md`](SKILL.md), beside this
 file. They are not copied here — one source, and no chance of the two drifting.
 
+## References
+
+- [`runtime-trust.md`](references/runtime-trust.md)
+
 ## Templates
 
 - [`feedback.md`](templates/feedback.md)

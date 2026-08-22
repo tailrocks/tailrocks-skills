@@ -22,6 +22,8 @@ file. They are not copied here — one source, and no chance of the two drifting
 ## References
 
 - [`finding-bar.md`](references/finding-bar.md)
+- [`pr-conventions.md`](references/pr-conventions.md)
 - [`reporting.md`](references/reporting.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`specialist-lanes.md`](references/specialist-lanes.md)
 - [`structural-review.md`](references/structural-review.md)

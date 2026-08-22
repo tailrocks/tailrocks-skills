@@ -23,3 +23,4 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`delivery-git-contract.md`](references/delivery-git-contract.md)
 - [`roadmap-item-format.md`](references/roadmap-item-format.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

@@ -23,3 +23,5 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`audit-playbook.md`](references/audit-playbook.md)
 - [`plan-format.md`](references/plan-format.md)
+- [`repository-audit-lanes.md`](references/repository-audit-lanes.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

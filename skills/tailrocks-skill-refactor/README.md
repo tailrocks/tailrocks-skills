@@ -19,6 +19,13 @@ Arguments: `<skill or skill family> <transformation>`
 The instructions this skill loads live in [`SKILL.md`](SKILL.md), beside this
 file. They are not copied here — one source, and no chance of the two drifting.
 
+## References
+
+- [`house-wiring.md`](references/house-wiring.md)
+- [`operational-contract.md`](references/operational-contract.md)
+- [`responsibility-topology.md`](references/responsibility-topology.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
+
 ## Templates
 
 - [`migration-contract.md`](templates/migration-contract.md)

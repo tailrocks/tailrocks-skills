@@ -24,5 +24,6 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`apple-platform-shell.md`](references/apple-platform-shell.md)
 - [`concurrency.md`](references/concurrency.md)
 - [`errors-and-api.md`](references/errors-and-api.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`rust-core-boundary.md`](references/rust-core-boundary.md)
 - [`swiftui.md`](references/swiftui.md)

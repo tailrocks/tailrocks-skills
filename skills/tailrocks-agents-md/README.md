@@ -23,3 +23,4 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`placement-and-topology.md`](references/placement-and-topology.md)
 - [`rule-writing.md`](references/rule-writing.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

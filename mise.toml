@@ -7,7 +7,7 @@ bun = "1.4.0"
 
 [tasks.lint]
 description = "Validate every skill, manifest, catalog group, and reverse catalog"
-run = "bun run scripts/validate-skills.ts"
+run = "bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts"
 
 [tasks."protected-paths:check"]
 description = "Fail when any frozen audit-migration path differs from its source SHA"
@@ -27,11 +27,11 @@ run = "oxfmt scripts docs/src docs/scripts docs/vite.config.ts docs/source.confi
 
 [tasks."migration-check"]
 description = "Prove audit-migration safety, ownership, generated docs, formatting, and deterministic tests"
-run = "bun run scripts/check-protected-paths.ts && bun run scripts/check-audit-plan-state.ts --mode progress && bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && oxfmt --check scripts docs/src docs/scripts docs/vite.config.ts docs/source.config.ts && bun run scripts/run-migration-tests.ts"
+run = "bun run scripts/check-protected-paths.ts && bun run scripts/check-audit-plan-state.ts --mode progress && bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && oxfmt --check scripts docs/src docs/scripts docs/vite.config.ts docs/source.config.ts && bun run scripts/run-migration-tests.ts"
 
 [tasks.ci]
 description = "Everything CI runs: lint, generated-file drift check, script tests"
-run = "bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && bun run scripts/run-migration-tests.ts"
+run = "bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && bun run scripts/run-migration-tests.ts"
 
 [tasks.test]
 description = "Run the script test suite"
@@ -39,11 +39,11 @@ run = "bun run scripts/run-migration-tests.ts"
 
 [tasks.docs]
 description = "Regenerate skill READMEs and documentation pages from SKILL.md"
-run = "bun run scripts/generate-docs.ts"
+run = "bun run scripts/generate-references.ts --write && bun run scripts/generate-docs.ts"
 
 [tasks."docs:check"]
 description = "Fail when a generated README or documentation page is out of date"
-run = "bun run scripts/generate-docs.ts --check"
+run = "bun run scripts/generate-references.ts --check && bun run scripts/generate-docs.ts --check"
 
 [tasks."docs:dev"]
 description = "Run the documentation site locally with hot reload"

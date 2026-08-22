@@ -23,4 +23,5 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`compiler-lint-testing.md`](references/compiler-lint-testing.md)
 - [`mutation-and-api-safety.md`](references/mutation-and-api-safety.md)
 - [`react-and-async.md`](references/react-and-async.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`state-and-errors.md`](references/state-and-errors.md)

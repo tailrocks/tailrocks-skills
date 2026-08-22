@@ -21,4 +21,5 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`operations.md`](references/operations.md)
 - [`proto-contracts.md`](references/proto-contracts.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`tonic-server-client.md`](references/tonic-server-client.md)

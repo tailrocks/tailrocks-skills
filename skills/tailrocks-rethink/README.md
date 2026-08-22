@@ -23,3 +23,4 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`concept-corpus.md`](references/concept-corpus.md)
 - [`redesign-discipline.md`](references/redesign-discipline.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

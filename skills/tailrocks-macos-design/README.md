@@ -27,6 +27,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`archetypes.md`](references/archetypes.md)
 - [`custom-component-contract.md`](references/custom-component-contract.md)
 - [`custom-renderers.md`](references/custom-renderers.md)
+- [`design-pipeline.md`](references/design-pipeline.md)
 - [`design-principles.md`](references/design-principles.md)
 - [`exemplars.md`](references/exemplars.md)
 - [`experience-brief.md`](references/experience-brief.md)
@@ -42,6 +43,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`reference-corpus.md`](references/reference-corpus.md)
 - [`review-mode.md`](references/review-mode.md)
 - [`rubric.md`](references/rubric.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`swiftui-api.md`](references/swiftui-api.md)
 - [`verification.md`](references/verification.md)
 

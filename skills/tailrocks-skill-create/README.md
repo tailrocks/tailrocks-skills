@@ -19,6 +19,14 @@ Arguments: `<capability or observed failure>`
 The instructions this skill loads live in [`SKILL.md`](SKILL.md), beside this
 file. They are not copied here — one source, and no chance of the two drifting.
 
+## References
+
+- [`context-routing.md`](references/context-routing.md)
+- [`house-wiring.md`](references/house-wiring.md)
+- [`operational-contract.md`](references/operational-contract.md)
+- [`responsibility-topology.md`](references/responsibility-topology.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
+
 ## Templates
 
 - [`evidence-contract.md`](templates/evidence-contract.md)

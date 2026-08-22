@@ -22,6 +22,8 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`architecture-and-docs.md`](references/architecture-and-docs.md)
 - [`defects-flakes-and-reports.md`](references/defects-flakes-and-reports.md)
 - [`ratchets-and-baselines.md`](references/ratchets-and-baselines.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
+- [`shared-version-policy.md`](references/shared-version-policy.md)
 - [`verification-lanes.md`](references/verification-lanes.md)
 - [`versions-and-dependencies.md`](references/versions-and-dependencies.md)
 

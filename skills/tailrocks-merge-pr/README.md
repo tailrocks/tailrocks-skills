@@ -22,3 +22,5 @@ file. They are not copied here — one source, and no chance of the two drifting
 ## References
 
 - [`delivery-artifacts.md`](references/delivery-artifacts.md)
+- [`pr-conventions.md`](references/pr-conventions.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

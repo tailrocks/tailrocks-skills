@@ -21,7 +21,9 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`boundaries-and-data.md`](references/boundaries-and-data.md)
 - [`migration-checklist.md`](references/migration-checklist.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`shadcn-ui.md`](references/shadcn-ui.md)
+- [`shared-version-policy.md`](references/shared-version-policy.md)
 - [`stack-and-layout.md`](references/stack-and-layout.md)
 - [`tooling-and-quality.md`](references/tooling-and-quality.md)
 - [`version-policy.md`](references/version-policy.md)

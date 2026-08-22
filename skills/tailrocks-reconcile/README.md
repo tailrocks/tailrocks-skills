@@ -25,3 +25,4 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`remaining.md`](references/remaining.md)
 - [`retirement.md`](references/retirement.md)
 - [`row-verification.md`](references/row-verification.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

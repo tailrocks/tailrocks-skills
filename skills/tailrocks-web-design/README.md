@@ -21,7 +21,9 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 ## References
 
+- [`design-pipeline.md`](references/design-pipeline.md)
 - [`design-routes.md`](references/design-routes.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`screen-package.md`](references/screen-package.md)
 - [`web-screen-craft.md`](references/web-screen-craft.md)
 

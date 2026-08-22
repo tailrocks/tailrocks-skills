@@ -272,9 +272,22 @@ all terminal checks pass, and the final literal marker is changed to
     133 generated files, and checked 36 formatted files. Protection proof
     covered 4 patterns and 183 frozen source paths with zero violations; diff
     check passed. Fresh subagent scope/preservation verdict: PASS. No evals run.
-- [ ] [TODO] P02.05 Add a generator manifest for every skill-local packaged copy
+- [x] [COMPLETED] P02.05 Add a generator manifest for every skill-local packaged copy
   and byte-validate each destination against its canonical source.
-- [ ] [TODO] P02.06 Make skill creation decide placement before durable writes;
+  - Evidence receipt (2026-08-22): added a strict 10-source manifest, ownership
+    lock, and atomic generator/checker for 71 current skill-local destinations;
+    raw-byte proof reported 71 byte-identical copies. Silent destination
+    removal, malformed/case-colliding/escaping paths, symlinks, drift, partial
+    installs, failed rollback, and failed cleanup are fail-closed with retained
+    recovery backups. Generated-reference ownership now requires the full check
+    before an unlinked packaged copy is accepted. Documentation generation and
+    mandatory gates run the checker first. `rtk mise run migration-check`
+    passed 120 tests with 556 assertions across 13 non-protected test files,
+    validated 43 skills, checked 133 generated files, and checked 38 formatted
+    files. Protection proof covered 4 patterns and 183 frozen source paths with
+    zero violations; diff check passed. Fresh subagent verdict after blocker
+    fixes: PASS. No evals run.
+- [ ] [IN_PROGRESS] P02.06 Make skill creation decide placement before durable writes;
   make skill updates inspect sibling ownership; keep refactor behavior-preserving
   and route future contract deltas to an explicitly authorized direct migration.
 - [ ] [TODO] P02.GATE Run `rtk mise run migration-check`; prove every canonical

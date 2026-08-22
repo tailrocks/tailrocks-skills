@@ -21,7 +21,11 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 ## References
 
+- [`context-routing.md`](references/context-routing.md)
 - [`design-doctrine.md`](references/design-doctrine.md)
 - [`house-wiring.md`](references/house-wiring.md)
+- [`operational-contract.md`](references/operational-contract.md)
 - [`report-format.md`](references/report-format.md)
+- [`responsibility-topology.md`](references/responsibility-topology.md)
+- [`runtime-trust.md`](references/runtime-trust.md)
 - [`testing-doctrine.md`](references/testing-doctrine.md)

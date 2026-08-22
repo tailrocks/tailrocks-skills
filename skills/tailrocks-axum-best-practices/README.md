@@ -23,3 +23,4 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`extractors-and-errors.md`](references/extractors-and-errors.md)
 - [`lifecycle-and-testing.md`](references/lifecycle-and-testing.md)
 - [`middleware-and-security.md`](references/middleware-and-security.md)
+- [`runtime-trust.md`](references/runtime-trust.md)

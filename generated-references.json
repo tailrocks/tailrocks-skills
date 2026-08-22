@@ -1,0 +1,125 @@
+{
+  "$schema": "tailrocks.generated-references/v1",
+  "entries": [
+    {
+      "source": "shared/references/contribution-handoff.md",
+      "destinations": []
+    },
+    {
+      "source": "shared/references/design-pipeline.md",
+      "destinations": [
+        "skills/tailrocks-macos-design/references/design-pipeline.md",
+        "skills/tailrocks-tui-design/references/design-pipeline.md",
+        "skills/tailrocks-web-design/references/design-pipeline.md"
+      ]
+    },
+    {
+      "source": "shared/references/pr-conventions.md",
+      "destinations": [
+        "skills/tailrocks-create-pr/references/shared-pr-conventions.md",
+        "skills/tailrocks-document/references/pr-conventions.md",
+        "skills/tailrocks-merge-pr/references/pr-conventions.md",
+        "skills/tailrocks-pr-template/references/pr-conventions.md",
+        "skills/tailrocks-refresh-pr/references/pr-conventions.md",
+        "skills/tailrocks-review-pr/references/pr-conventions.md"
+      ]
+    },
+    {
+      "source": "shared/references/repository-audit-lanes.md",
+      "destinations": [
+        "skills/tailrocks-improve/references/repository-audit-lanes.md"
+      ]
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destinations": [
+        "skills/tailrocks-agents-md/references/runtime-trust.md",
+        "skills/tailrocks-audit/references/runtime-trust.md",
+        "skills/tailrocks-axum-best-practices/references/runtime-trust.md",
+        "skills/tailrocks-brainstorm/references/runtime-trust.md",
+        "skills/tailrocks-checkout-pr/references/runtime-trust.md",
+        "skills/tailrocks-code-health/references/runtime-trust.md",
+        "skills/tailrocks-contribute/references/runtime-trust.md",
+        "skills/tailrocks-create-pr/references/runtime-trust.md",
+        "skills/tailrocks-document/references/runtime-trust.md",
+        "skills/tailrocks-finalize/references/runtime-trust.md",
+        "skills/tailrocks-graphql-best-practices/references/runtime-trust.md",
+        "skills/tailrocks-grpc-best-practices/references/runtime-trust.md",
+        "skills/tailrocks-idea/references/runtime-trust.md",
+        "skills/tailrocks-improve/references/runtime-trust.md",
+        "skills/tailrocks-macos-design/references/runtime-trust.md",
+        "skills/tailrocks-macos-visual-qa/references/runtime-trust.md",
+        "skills/tailrocks-merge-pr/references/runtime-trust.md",
+        "skills/tailrocks-plan/references/runtime-trust.md",
+        "skills/tailrocks-pr-template/references/runtime-trust.md",
+        "skills/tailrocks-prove/references/runtime-trust.md",
+        "skills/tailrocks-reconcile/references/runtime-trust.md",
+        "skills/tailrocks-record-decision/references/runtime-trust.md",
+        "skills/tailrocks-record-feedback/references/runtime-trust.md",
+        "skills/tailrocks-refresh-pr/references/runtime-trust.md",
+        "skills/tailrocks-remediate/references/runtime-trust.md",
+        "skills/tailrocks-research/references/runtime-trust.md",
+        "skills/tailrocks-rethink/references/runtime-trust.md",
+        "skills/tailrocks-retrospect/references/runtime-trust.md",
+        "skills/tailrocks-review-pr/references/runtime-trust.md",
+        "skills/tailrocks-rust-best-practices/references/runtime-trust.md",
+        "skills/tailrocks-rust-project-setup/references/runtime-trust.md",
+        "skills/tailrocks-simplify/references/runtime-trust.md",
+        "skills/tailrocks-skill-audit/references/runtime-trust.md",
+        "skills/tailrocks-skill-create/references/runtime-trust.md",
+        "skills/tailrocks-skill-refactor/references/runtime-trust.md",
+        "skills/tailrocks-skill-update/references/runtime-trust.md",
+        "skills/tailrocks-swift-best-practices/references/runtime-trust.md",
+        "skills/tailrocks-swift-project-setup/references/runtime-trust.md",
+        "skills/tailrocks-tanstack-project-setup/references/runtime-trust.md",
+        "skills/tailrocks-tui-design/references/runtime-trust.md",
+        "skills/tailrocks-typescript-best-practices/references/runtime-trust.md",
+        "skills/tailrocks-web-design/references/runtime-trust.md",
+        "skills/tailrocks-web-visual-qa/references/runtime-trust.md"
+      ]
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destinations": [
+        "skills/tailrocks-code-health/references/shared-version-policy.md",
+        "skills/tailrocks-rust-project-setup/references/shared-version-policy.md",
+        "skills/tailrocks-swift-project-setup/references/shared-version-policy.md",
+        "skills/tailrocks-tanstack-project-setup/references/shared-version-policy.md"
+      ]
+    },
+    {
+      "source": "skill-authoring/references/context-routing.md",
+      "destinations": [
+        "skills/tailrocks-skill-audit/references/context-routing.md",
+        "skills/tailrocks-skill-create/references/context-routing.md",
+        "skills/tailrocks-skill-update/references/context-routing.md"
+      ]
+    },
+    {
+      "source": "skill-authoring/references/house-wiring.md",
+      "destinations": [
+        "skills/tailrocks-skill-create/references/house-wiring.md",
+        "skills/tailrocks-skill-refactor/references/house-wiring.md",
+        "skills/tailrocks-skill-update/references/house-wiring.md"
+      ]
+    },
+    {
+      "source": "skill-authoring/references/operational-contract.md",
+      "destinations": [
+        "skills/tailrocks-skill-audit/references/operational-contract.md",
+        "skills/tailrocks-skill-create/references/operational-contract.md",
+        "skills/tailrocks-skill-refactor/references/operational-contract.md",
+        "skills/tailrocks-skill-update/references/operational-contract.md"
+      ]
+    },
+    {
+      "source": "skill-authoring/references/responsibility-topology.md",
+      "destinations": [
+        "skills/tailrocks-skill-audit/references/responsibility-topology.md",
+        "skills/tailrocks-skill-create/references/responsibility-topology.md",
+        "skills/tailrocks-skill-refactor/references/responsibility-topology.md",
+        "skills/tailrocks-skill-update/references/responsibility-topology.md"
+      ]
+    }
+  ]
+}

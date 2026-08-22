@@ -3,6 +3,7 @@ import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
+import { generateReferences } from "./generate-references";
 import { validate } from "./validate-skills";
 
 const skill = "tailrocks-sample-skill";
@@ -507,6 +508,51 @@ policy:
       `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[Guide](references/guide.md)\n`,
     );
     expect(await validate(root)).toContain(`${skill}: broken reference templates/missing.md`);
+  });
+
+  test("allows only manifest-owned packaged references to remain unlinked", async () => {
+    const destination = `skills/${skill}/references/generated-policy.md`;
+    await write(destination, "# Generated policy\n");
+    expect(await validate(root)).toContain(
+      `${skill}: reference must be linked directly from SKILL.md: references/generated-policy.md`,
+    );
+
+    await write(
+      "generated-references.json",
+      JSON.stringify({
+        $schema: "tailrocks.generated-references/v1",
+        entries: [
+          {
+            source: "shared/references/runtime-trust.md",
+            destinations: [destination],
+          },
+        ],
+      }),
+    );
+    await mkdir(path.join(root, "skill-authoring/references"), { recursive: true });
+    await write("shared/references/runtime-trust.md", "# Generated policy\n");
+    await generateReferences(root, "write");
+    expect(await validate(root)).toEqual([]);
+
+    await write(destination, "# Drifted policy\n");
+    let errors = await validate(root);
+    expect(errors).toContain("generated-references.json: invalid generated-reference manifest");
+    expect(errors).toContain(
+      `${skill}: reference must be linked directly from SKILL.md: references/generated-policy.md`,
+    );
+
+    await write(
+      "generated-references.json",
+      JSON.stringify({
+        $schema: "tailrocks.generated-references/v1",
+        entries: [{ source: "outside.md", destinations: [destination] }],
+      }),
+    );
+    errors = await validate(root);
+    expect(errors).toContain("generated-references.json: invalid generated-reference manifest");
+    expect(errors).toContain(
+      `${skill}: reference must be linked directly from SKILL.md: references/generated-policy.md`,
+    );
   });
 
   test("rejects unknown reverse-catalog entries", async () => {
