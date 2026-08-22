@@ -182,12 +182,33 @@ Skill definition: `skills/tailrocks-grpc-review/SKILL.md`
 
 ### tailrocks-typescript-best-practices
 
-Write, review, or refactor strict Rust-inspired TypeScript 7 and React code with
-Bun-owned tooling:
-exhaustive state, typed failure, runtime validation, domain values, readonly
-mutation boundaries, async correctness, React rules, and tests.
+Write strict Rust-inspired TypeScript 7 and React behavior: exhaustive state,
+typed failure, runtime validation, domain values, readonly mutation boundaries,
+async correctness, React rules, and tests. Project tooling stays with the
+TanStack project family.
 
 Skill definition: `skills/tailrocks-typescript-best-practices/SKILL.md`
+
+### tailrocks-typescript-review
+
+Review TypeScript 7 and React code read-only for verified language-contract,
+React ownership, async, trust-boundary, and Rust-domain-duplication defects.
+
+Skill definition: `skills/tailrocks-typescript-review/SKILL.md`
+
+### tailrocks-typescript-refactor
+
+Restructure TypeScript/React code under an explicit preservation oracle without
+changing public types, serialized behavior, rendering, effects, or errors.
+
+Skill definition: `skills/tailrocks-typescript-refactor/SKILL.md`
+
+### tailrocks-typescript-migrate
+
+Migrate JavaScript/TypeScript source semantics to strict TypeScript 7 contracts
+after the TanStack project baseline exists. Never owns project configuration.
+
+Skill definition: `skills/tailrocks-typescript-migrate/SKILL.md`
 
 ### tailrocks-tanstack-project-setup
 

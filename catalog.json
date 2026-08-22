@@ -30,7 +30,10 @@
         "tailrocks-tanstack-project-audit",
         "tailrocks-tanstack-project-migrate",
         "tailrocks-tanstack-project-remediate",
-        "tailrocks-typescript-best-practices"
+        "tailrocks-typescript-best-practices",
+        "tailrocks-typescript-review",
+        "tailrocks-typescript-refactor",
+        "tailrocks-typescript-migrate"
       ]
     },
     {

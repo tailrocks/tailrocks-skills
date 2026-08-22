@@ -27,6 +27,10 @@ function manifest(): Record<string, unknown> {
           "skills/tailrocks-tanstack-project-remediate/references/runtime-trust.md",
           "skills/tailrocks-tanstack-project-setup/references/runtime-trust.md",
           "skills/tailrocks-two/references/runtime-trust.md",
+          "skills/tailrocks-typescript-best-practices/references/runtime-trust.md",
+          "skills/tailrocks-typescript-migrate/references/runtime-trust.md",
+          "skills/tailrocks-typescript-refactor/references/runtime-trust.md",
+          "skills/tailrocks-typescript-review/references/runtime-trust.md",
         ],
       },
       {
@@ -60,6 +64,18 @@ function manifest(): Record<string, unknown> {
           `skills/tailrocks-tanstack-project-remediate/references/${name}`,
         ],
       })),
+      ...[
+        "boundaries-and-domain-values.md",
+        "mutation-and-api-safety.md",
+        "react-and-async.md",
+        "state-and-errors.md",
+      ].map((name) => ({
+        source: `skills/tailrocks-typescript-best-practices/references/${name}`,
+        destinations: [
+          `skills/tailrocks-typescript-refactor/references/${name}`,
+          `skills/tailrocks-typescript-review/references/${name}`,
+        ],
+      })),
     ],
   };
 }
@@ -78,6 +94,10 @@ async function fixture(): Promise<string> {
     "tailrocks-tanstack-project-migrate",
     "tailrocks-tanstack-project-remediate",
     "tailrocks-tanstack-project-setup",
+    "tailrocks-typescript-migrate",
+    "tailrocks-typescript-best-practices",
+    "tailrocks-typescript-refactor",
+    "tailrocks-typescript-review",
   ])
     await write(root, `skills/${skill}/SKILL.md`);
   for (const name of [
@@ -96,6 +116,13 @@ async function fixture(): Promise<string> {
     "version-policy.md",
   ])
     await write(root, `skills/tailrocks-tanstack-project-setup/references/${name}`, `${name}\n`);
+  for (const name of [
+    "boundaries-and-domain-values.md",
+    "mutation-and-api-safety.md",
+    "react-and-async.md",
+    "state-and-errors.md",
+  ])
+    await write(root, `skills/tailrocks-typescript-best-practices/references/${name}`, `${name}\n`);
   await write(root, "generated-references.json", `${JSON.stringify(manifest(), null, 2)}\n`);
   return root;
 }
@@ -106,17 +133,17 @@ test("writes every destination atomically and then proves byte equality", async 
   expect(written).toMatchObject({
     schema: "tailrocks.generated-references-receipt/v1",
     mode: "write",
-    sources: 12,
-    destinations: 35,
-    byte_identical: 35,
-    written: 35,
+    sources: 16,
+    destinations: 47,
+    byte_identical: 47,
+    written: 47,
   });
-  expect(written.mutations).toHaveLength(36);
+  expect(written.mutations).toHaveLength(48);
   expect(written.mutations).toContain("generated-references.lock.json");
   expect(await readFile(path.join(root, "skills/tailrocks-two/references/runtime-trust.md"), "utf8")).toBe(
     "runtime\n",
   );
-  expect((await generateReferences(root, "check")).byte_identical).toBe(35);
+  expect((await generateReferences(root, "check")).byte_identical).toBe(47);
   expect((await generateReferences(root, "write")).written).toBe(0);
   expect(await readFile(path.join(root, "generated-references.lock.json"), "utf8")).toContain(
     "tailrocks.generated-references-lock/v1",
@@ -138,7 +165,7 @@ test("copies and validates canonical bytes without text normalization", async ()
   await generateReferences(root, "write");
   const destination = await readFile(path.join(root, "skills/tailrocks-one/references/runtime-trust.md"));
   expect(destination.equals(bytes)).toBe(true);
-  expect((await generateReferences(root, "check")).byte_identical).toBe(35);
+  expect((await generateReferences(root, "check")).byte_identical).toBe(47);
 });
 
 test("manifest exactly covers canonical sources and every current skill runtime copy", async () => {
@@ -155,7 +182,7 @@ test("manifest exactly covers canonical sources and every current skill runtime 
 
 test("admits only declared owner-family reference sources and counts them", async () => {
   const root = await fixture();
-  expect((await generateReferences(root, "write")).sources).toBe(12);
+  expect((await generateReferences(root, "write")).sources).toBe(16);
 
   const source = manifest();
   const entries = source.entries as Array<{ source: string; destinations: string[] }>;

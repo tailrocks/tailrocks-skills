@@ -83,6 +83,16 @@ const generatedFamilies = [
       "tailrocks-tanstack-project-remediate",
     ],
   },
+  {
+    owner: "tailrocks-typescript-best-practices",
+    references: [
+      "boundaries-and-domain-values.md",
+      "mutation-and-api-safety.md",
+      "react-and-async.md",
+      "state-and-errors.md",
+    ],
+    destinations: ["tailrocks-typescript-refactor", "tailrocks-typescript-review"],
+  },
 ] as const;
 const familySources = generatedFamilies.flatMap((family) =>
   family.references.map((name) => `skills/${family.owner}/references/${name}`),

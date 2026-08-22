@@ -13,9 +13,17 @@
 
 ## TypeScript and Oxc
 
-TypeScript 7 owns type checking. Use bundler resolution, explicit Bun/Vite global
-types, relative path aliases, `skipLibCheck: false`, and the strict options in the
-template. Remove `baseUrl` and TypeScript 6 aliases.
+TypeScript 7 is the only compiler. It provides native `tsc`, uses bundler
+resolution, removes `baseUrl`, and defaults `types` to empty. The canonical
+template explicitly owns `target: ESNext`, `module: Preserve`,
+`moduleResolution: Bundler`, forced module detection, `react-jsx`, `strict`,
+`noEmit`, verbatim modules, TypeScript-extension imports, erasable syntax,
+side-effect import checking, unchecked-index protection, exact optional fields,
+implicit-return/fallthrough/override checks, index-signature access, unknown
+catch variables, `skipLibCheck: false`, and Bun/Vite global types. Paths are
+relative to the config; set `rootDir` explicitly only when emission or layout
+requires it. TypeScript 7 has no compiler API; use Oxc and API-independent tools,
+never a hidden TypeScript 6 alias.
 
 Oxc owns lint/format. Enable type-aware TypeScript, promises, React hooks,
 accessibility, import, and unsafe-flow checks. CI denies warnings. Oxfmt writes

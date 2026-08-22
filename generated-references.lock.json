@@ -574,7 +574,7 @@
     {
       "source": "skills/tailrocks-tanstack-project-setup/references/tooling-and-quality.md",
       "destination": "skills/tailrocks-tanstack-project-audit/references/tooling-and-quality.md",
-      "sha256": "d663fac10bc2c2ed68deafcd442c0197a4a0ac0e7bdd3638754e8e460c1479a9"
+      "sha256": "73523079f3240180cc8f66431be8a47c32d253389c38aef2060a0b9aafef4df0"
     },
     {
       "source": "skills/tailrocks-tanstack-project-setup/references/version-policy.md",
@@ -609,7 +609,7 @@
     {
       "source": "skills/tailrocks-tanstack-project-setup/references/tooling-and-quality.md",
       "destination": "skills/tailrocks-tanstack-project-migrate/references/tooling-and-quality.md",
-      "sha256": "d663fac10bc2c2ed68deafcd442c0197a4a0ac0e7bdd3638754e8e460c1479a9"
+      "sha256": "73523079f3240180cc8f66431be8a47c32d253389c38aef2060a0b9aafef4df0"
     },
     {
       "source": "skills/tailrocks-tanstack-project-setup/references/version-policy.md",
@@ -644,7 +644,7 @@
     {
       "source": "skills/tailrocks-tanstack-project-setup/references/tooling-and-quality.md",
       "destination": "skills/tailrocks-tanstack-project-remediate/references/tooling-and-quality.md",
-      "sha256": "d663fac10bc2c2ed68deafcd442c0197a4a0ac0e7bdd3638754e8e460c1479a9"
+      "sha256": "73523079f3240180cc8f66431be8a47c32d253389c38aef2060a0b9aafef4df0"
     },
     {
       "source": "skills/tailrocks-tanstack-project-setup/references/version-policy.md",
@@ -675,6 +675,61 @@
       "source": "shared/references/runtime-trust.md",
       "destination": "skills/tailrocks-typescript-best-practices/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-typescript-migrate/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/boundaries-and-domain-values.md",
+      "destination": "skills/tailrocks-typescript-refactor/references/boundaries-and-domain-values.md",
+      "sha256": "9dd6857056d05f7b86ec3dd8268c0a9739ace0aafabb8045bec56d7f5ac61969"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/mutation-and-api-safety.md",
+      "destination": "skills/tailrocks-typescript-refactor/references/mutation-and-api-safety.md",
+      "sha256": "08ab00fccd7c576d565f41ca23969a47f9489cad5c75491964a104d0b7af98ea"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/react-and-async.md",
+      "destination": "skills/tailrocks-typescript-refactor/references/react-and-async.md",
+      "sha256": "4dfe1bab25d3f02451fe8aa7f8ad172c2228df5b399af5ad71ed2cbef67cfd28"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-typescript-refactor/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/state-and-errors.md",
+      "destination": "skills/tailrocks-typescript-refactor/references/state-and-errors.md",
+      "sha256": "e4fb011fc953eb302a783882265f657157371ab6ae0aa59883342d310a7e02aa"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/boundaries-and-domain-values.md",
+      "destination": "skills/tailrocks-typescript-review/references/boundaries-and-domain-values.md",
+      "sha256": "9dd6857056d05f7b86ec3dd8268c0a9739ace0aafabb8045bec56d7f5ac61969"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/mutation-and-api-safety.md",
+      "destination": "skills/tailrocks-typescript-review/references/mutation-and-api-safety.md",
+      "sha256": "08ab00fccd7c576d565f41ca23969a47f9489cad5c75491964a104d0b7af98ea"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/react-and-async.md",
+      "destination": "skills/tailrocks-typescript-review/references/react-and-async.md",
+      "sha256": "4dfe1bab25d3f02451fe8aa7f8ad172c2228df5b399af5ad71ed2cbef67cfd28"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-typescript-review/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/state-and-errors.md",
+      "destination": "skills/tailrocks-typescript-review/references/state-and-errors.md",
+      "sha256": "e4fb011fc953eb302a783882265f657157371ab6ae0aa59883342d310a7e02aa"
     },
     {
       "source": "shared/references/design-pipeline.md",

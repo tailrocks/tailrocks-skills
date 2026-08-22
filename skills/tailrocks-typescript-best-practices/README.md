@@ -4,7 +4,7 @@
 
 `tailrocks-typescript-best-practices` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-typescript-best-practices)
 
-Apply strict TypeScript 7 language/UI policy when in-scope work touches TypeScript, TSX, React state, runtime validation, typed failure, readonly APIs, async ownership, or their tests. Not project scaffolding or backend business logic.
+Apply strict TypeScript 7 and React language/UI policy when writing in-scope code involving state, runtime validation, typed failure, readonly APIs, or async ownership. Not review, refactoring, migration, project tooling, or backend business logic.
 
 ## Invocation
 
@@ -14,6 +14,8 @@ active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-typescript-best-practices` …
 
+Arguments: `<TypeScript or React writing task>`
+
 ## Skill definition
 
 The instructions this skill loads live in [`SKILL.md`](SKILL.md), beside this
@@ -22,8 +24,8 @@ file. They are not copied here — one source, and no chance of the two drifting
 ## References
 
 - [`boundaries-and-domain-values.md`](references/boundaries-and-domain-values.md)
-- [`compiler-lint-testing.md`](references/compiler-lint-testing.md)
 - [`mutation-and-api-safety.md`](references/mutation-and-api-safety.md)
 - [`react-and-async.md`](references/react-and-async.md)
 - [`runtime-trust.md`](references/runtime-trust.md)
 - [`state-and-errors.md`](references/state-and-errors.md)
+- [`testing.md`](references/testing.md)

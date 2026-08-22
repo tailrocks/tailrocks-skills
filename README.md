@@ -21,7 +21,7 @@ Documentation: **<https://skills.tailrocks.com>**
    already in scope; selection adds no authority:
 
 ```text
-Use tailrocks-typescript-best-practices in review mode on src/auth/.
+Use tailrocks-typescript-review on src/auth/.
 Focus on runtime validation, typed failure, and async ownership. Do not edit.
 ```
 
@@ -78,7 +78,10 @@ The Bun-only application baseline and strict TypeScript policy.
 | [`tailrocks-tanstack-project-audit`](skills/tailrocks-tanstack-project-audit/README.md) | Audit an existing Bun/TanStack Start application baseline read-only: layout, versions, tooling, boundaries, Router/Query ownership, shadcn/Tailwind, tests, and CI. | Manual only |
 | [`tailrocks-tanstack-project-migrate`](skills/tailrocks-tanstack-project-migrate/README.md) | Migrate an existing frontend application to the Bun-only TanStack Start baseline in never-broken, rollback-safe slices while preserving observable behavior. | Manual only |
 | [`tailrocks-tanstack-project-remediate`](skills/tailrocks-tanstack-project-remediate/README.md) | Close exact approved TANSTACK gap-ledger rows in an existing house-stack application, using canonical references and templates in verified transactional slices. | Manual only |
-| [`tailrocks-typescript-best-practices`](skills/tailrocks-typescript-best-practices/README.md) | Apply strict TypeScript 7 language/UI policy when in-scope work touches TypeScript, TSX, React state, runtime validation, typed failure, readonly APIs, async ownership, or their tests. | Model policy |
+| [`tailrocks-typescript-best-practices`](skills/tailrocks-typescript-best-practices/README.md) | Apply strict TypeScript 7 and React language/UI policy when writing in-scope code involving state, runtime validation, typed failure, readonly APIs, or async ownership. | Model policy |
+| [`tailrocks-typescript-review`](skills/tailrocks-typescript-review/README.md) | Review TypeScript 7 and React code read-only for invalid state, unvalidated input, hidden failure, unsafe mutation, async leaks, React contract defects, and duplicated Rust business logic. | Manual only |
+| [`tailrocks-typescript-refactor`](skills/tailrocks-typescript-refactor/README.md) | Refactor TypeScript 7 and React code while preserving observable behavior, public types, errors, state transitions, rendering, accessibility, async effects, and Rust/GraphQL boundaries. | Manual only |
+| [`tailrocks-typescript-migrate`](skills/tailrocks-typescript-migrate/README.md) | Migrate TypeScript or JavaScript source contracts to strict TypeScript 7 semantics in compatibility-safe slices after Bun/TanStack project tooling is established. | Manual only |
 
 ### Native macOS
 

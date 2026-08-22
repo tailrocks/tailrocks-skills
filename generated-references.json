@@ -86,6 +86,9 @@
         "skills/tailrocks-tanstack-project-setup/references/runtime-trust.md",
         "skills/tailrocks-tui-design/references/runtime-trust.md",
         "skills/tailrocks-typescript-best-practices/references/runtime-trust.md",
+        "skills/tailrocks-typescript-migrate/references/runtime-trust.md",
+        "skills/tailrocks-typescript-refactor/references/runtime-trust.md",
+        "skills/tailrocks-typescript-review/references/runtime-trust.md",
         "skills/tailrocks-web-design/references/runtime-trust.md",
         "skills/tailrocks-web-visual-qa/references/runtime-trust.md"
       ]
@@ -316,6 +319,34 @@
         "skills/tailrocks-tanstack-project-audit/references/version-policy.md",
         "skills/tailrocks-tanstack-project-migrate/references/version-policy.md",
         "skills/tailrocks-tanstack-project-remediate/references/version-policy.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/boundaries-and-domain-values.md",
+      "destinations": [
+        "skills/tailrocks-typescript-refactor/references/boundaries-and-domain-values.md",
+        "skills/tailrocks-typescript-review/references/boundaries-and-domain-values.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/mutation-and-api-safety.md",
+      "destinations": [
+        "skills/tailrocks-typescript-refactor/references/mutation-and-api-safety.md",
+        "skills/tailrocks-typescript-review/references/mutation-and-api-safety.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/react-and-async.md",
+      "destinations": [
+        "skills/tailrocks-typescript-refactor/references/react-and-async.md",
+        "skills/tailrocks-typescript-review/references/react-and-async.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-typescript-best-practices/references/state-and-errors.md",
+      "destinations": [
+        "skills/tailrocks-typescript-refactor/references/state-and-errors.md",
+        "skills/tailrocks-typescript-review/references/state-and-errors.md"
       ]
     }
   ]

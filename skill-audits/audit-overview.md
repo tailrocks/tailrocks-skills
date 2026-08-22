@@ -766,10 +766,29 @@ all terminal checks pass, and the final literal marker is changed to
     292 tests/1,559 assertions across 38 selected non-protected files with all
     protected-path, generator, validator, documentation, formatting, and
     plan-state gates green. Fresh subagent verdict: PASS. No evals run.
-- [ ] [IN_PROGRESS] P05.07 TypeScript best practices → write, review, refactor, migrate;
+- [x] [COMPLETED] P05.07 TypeScript best practices → write, review, refactor, migrate;
   retain `MODEL_POLICY` only on the existing named owner pending descendant
   approval, and keep project tooling with setup.
-- [ ] [TODO] P05.08 Swift best practices → write, review, refactor, Rust-core
+  - Evidence receipt (2026-08-23): made
+    `tailrocks-typescript-best-practices` a write-only language/UI owner that
+    retains the sole family `MODEL_POLICY` without gaining mutation authority;
+    added manual-only read-only review, preservation-oracle refactor, and direct
+    compatibility-safe source migration owners. Source migration produces code
+    and proof, never a migration-plan artifact, and routes package manager,
+    compiler/lint configuration, pins, locks, CI, and layout to the TanStack
+    project family. Moved testing semantics to writer-local `testing.md`,
+    source-only migration semantics to migrate-local `migration.md`, merged exact
+    project tooling policy into the canonical TanStack reference, and deleted the
+    competing compiler/tooling reference. Generated four semantic references only
+    to review/refactor plus runtime trust to all owners; all 40 sources produce
+    149 byte-identical destinations. Replaced secret-bearing exhaustive-value
+    stringification with a constant diagnostic. Catalog/registry, PR routing,
+    install/choosing/delivery docs, and context counts agree on 58 skills (47
+    manual, 11 model-policy). Focused proof passed 20 tests/296 assertions; final
+    `rtk mise run migration-check` passed 296 tests/1,659 assertions across 39
+    selected non-protected files with all gates green. Fresh subagent verdict:
+    PASS, reconfirmed after final authority strengthening. No evals run.
+- [ ] [IN_PROGRESS] P05.08 Swift best practices → write, review, refactor, Rust-core
   boundary; retain `MODEL_POLICY` only on the existing named owner pending
   descendant approval.
 - [ ] [TODO] P05.09 Swift project setup → setup, audit, remediate, agent
