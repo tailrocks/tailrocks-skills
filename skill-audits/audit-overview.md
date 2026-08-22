@@ -247,8 +247,19 @@ all terminal checks pass, and the final literal marker is changed to
     created. User verdict: direct execution required. Fresh subagent verdict:
     PASS; strict next row is P02.03. Protected paths remained unchanged; no
     evals run.
-- [ ] [TODO] P02.03 Create canonical authoring sources for operational contracts,
+- [x] [COMPLETED] P02.03 Create canonical authoring sources for operational contracts,
   responsibility topology, context routing, and house wiring.
+  - Evidence receipt (2026-08-22): added the four authored authorities under
+    `skill-authoring/references/` and changed the audit-local
+    `design-doctrine.md` and `house-wiring.md` ownership claims to compatibility
+    bundles without rewiring consumers early. Exact source sections preserve
+    297 substantive doctrine lines across operational contract, responsibility
+    topology, context routing, and house wiring. `rtk mise run migration-check`
+    passed 108 tests with 493 assertions across 11 non-protected test files,
+    validated 43 skills, checked 133 generated files, and checked 35 formatted
+    files. Protection proof covered 4 patterns and 183 frozen source paths with
+    zero violations; diff check passed. Fresh subagent preservation verdict:
+    PASS with no blocking finding. No evals run.
 - [ ] [TODO] P02.04 Create canonical shared sources for runtime trust, version
   policy, repository-audit lanes, design pipeline, contribution handoff, and
   pull-request conventions.
