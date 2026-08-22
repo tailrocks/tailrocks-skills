@@ -225,14 +225,28 @@ all terminal checks pass, and the final literal marker is changed to
     PASS with no blocking architecture or receipt finding. Protected paths
     remained unchanged; no evals run.
 
-## P02 — Add migration ownership and canonical doctrine
+## P02 — Establish direct migration authority and canonical doctrine
 
-- [ ] [TODO] P02.01 Add `tailrocks-skill-migration-plan` for approved
-  contract-breaking migration design: forward path, compatibility window,
-  rollback, removal gate, and authority.
-- [ ] [TODO] P02.02 Add `tailrocks-skill-migrate` to execute one approved plan
-  with idempotent checkpoints, route proof, rollback, and partial-failure
-  receipts.
+- [x] [COMPLETED] P02.01 Keep migration planning inside this execution plan; do
+  not add a `tailrocks-skill-migration-plan` product skill.
+  - Evidence receipt (2026-08-22): the user explicitly directed that every skill
+    be migrated directly in this branch and pull request without a migration-plan
+    skill. The uncommitted planner router, template, checker, evidence record,
+    catalog/registry entry, and generated surfaces were removed; affected paths
+    returned to the pushed P01 state. User verdict: direct migration required.
+    Progress validation parsed 121 rows with 10 completed receipts and zero
+    active rows after both direct-migration decisions. Fresh subagent verdict:
+    PASS. Protected paths remained unchanged; no evals run.
+- [x] [COMPLETED] P02.02 Keep migration execution in the ordered P02-P10 rows; do
+  not add a `tailrocks-skill-migrate` product skill.
+  - Evidence receipt (2026-08-22): the same explicit user direction authorizes
+    this plan's primary agent to implement the listed skill migrations directly
+    in the current branch and pull request. Strict row ordering, package gates,
+    compatibility aliases, rollback-safe patches, receipts, commits, and pushes
+    remain mandatory; no separate executor skill or migration artifact is
+    created. User verdict: direct execution required. Fresh subagent verdict:
+    PASS; strict next row is P02.03. Protected paths remained unchanged; no
+    evals run.
 - [ ] [TODO] P02.03 Create canonical authoring sources for operational contracts,
   responsibility topology, context routing, and house wiring.
 - [ ] [TODO] P02.04 Create canonical shared sources for runtime trust, version
@@ -242,7 +256,7 @@ all terminal checks pass, and the final literal marker is changed to
   and byte-validate each destination against its canonical source.
 - [ ] [TODO] P02.06 Make skill creation decide placement before durable writes;
   make skill updates inspect sibling ownership; keep refactor behavior-preserving
-  and route contract deltas through the migration owners.
+  and route future contract deltas to an explicitly authorized direct migration.
 - [ ] [TODO] P02.GATE Run `rtk mise run migration-check`; prove every canonical
   source has one owner and every generated copy is byte-identical. Evidence:
   pending.
@@ -335,7 +349,7 @@ all terminal checks pass, and the final literal marker is changed to
 - [ ] [TODO] P06.05 Contribute → recon, propose, prepare, submit, respond; keep
   fresh external-action approval at every outward boundary.
 - [ ] [TODO] P06.06 Preserve skill-create as one evidence-to-wired-skill
-  transaction; keep update, refactor, migration-plan, and migrate exclusive.
+  transaction; keep update and refactor exclusive from direct migration work.
 - [ ] [TODO] P06.GATE Prove every selector has one owner, no implicit invocation
   adds authority, and `rtk mise run migration-check` passes. Evidence: pending.
 
