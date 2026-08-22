@@ -1257,12 +1257,25 @@ all terminal checks pass, and the final literal marker is changed to
     passed 424 tests and every static/generated/protected-path check; only the
     unrelated two macOS GUI activation cases failed, deferred to P09.15. Frozen
     bytes unchanged and unrouteable; no evals run or inspected.
-- [ ] [IN_PROGRESS] P08.GATE Table-test every route and refusal, synchronize generated
-  surfaces, and run `rtk mise run migration-check`. Evidence: pending.
+- [x] [COMPLETED] P08.GATE Table-test every route and refusal, synchronize generated
+  surfaces, and run `rtk mise run migration-check`.
+  - Evidence receipt (2026-08-23): the pure resolver now table-tests every valid
+    schema route with and without batch, both orders for deep+batch, and canonical
+    target argv. Every refusal code crosses its applicable empty/batch/deep/both
+    modifier vectors; multiple primaries, quick/deep, seed/deep, duplicate
+    batch/deep pairs and triples, unknown-plus-valid precedence, malformed
+    bounded inputs, and mutation-free determinism are explicit. Focused route
+    proof passed 23 tests/2,389 assertions; fresh subagent verdict: PASS.
+    Generated references checked 88 sources/258 byte-identical destinations;
+    generated docs checked 256 files; validator passed 84 skills; protected-path
+    check passed all 183 frozen paths with zero changes. The full non-eval
+    migration gate passed 425 tests/5,063 assertions and every static/generated
+    check; only the unrelated two macOS GUI activation cases failed, deferred to
+    P09.15. No evals run or inspected.
 
 ## P09 — Repair every retained public contract
 
-- [ ] [TODO] P09.01 `tailrocks-agents-md`: deterministic add/audit/sync ownership
+- [ ] [IN_PROGRESS] P09.01 `tailrocks-agents-md`: deterministic add/audit/sync ownership
   and symlink parity tests.
 - [ ] [TODO] P09.02 `tailrocks-axum-best-practices`: unique build/review/refactor
   routes, outputs, refusals, invocation, and argument hints.

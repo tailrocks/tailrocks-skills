@@ -181,7 +181,7 @@ function resolveImproveRouteUnchecked(input: unknown): ImproveRouteResolution {
     return refused("malformed-invocation");
   if (!Array.isArray(input.primaries) || !Array.isArray(input.modifiers))
     return refused("malformed-invocation");
-  if (input.modifiers.length > 2) return refused("malformed-invocation");
+  if (input.modifiers.length > 3) return refused("malformed-invocation");
   if (!dense(input.modifiers)) return refused("malformed-invocation");
   if (input.modifiers.some((modifier) => !text(modifier) || !["--deep", "--batch"].includes(modifier)))
     return refused("unknown-modifier");

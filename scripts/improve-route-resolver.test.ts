@@ -180,8 +180,13 @@ test("every valid base route resolves with and without batch", () => {
   });
 
   for (const expected of cases) {
-    for (const batch of [false, true]) {
-      const modifiers = [...(expected.modifiers ?? []), ...(batch ? ["--batch"] : [])];
+    const baseModifiers = [...(expected.modifiers ?? [])];
+    const modifierVectors = [
+      { modifiers: baseModifiers, batch: false },
+      { modifiers: [...baseModifiers, "--batch"], batch: true },
+      ...(baseModifiers.includes("--deep") ? [{ modifiers: ["--batch", "--deep"], batch: true }] : []),
+    ];
+    for (const { modifiers, batch } of modifierVectors) {
       expectResolved(
         resolveImproveRoute(request(expected.primary, expected.context, modifiers)),
         expected,
@@ -293,6 +298,103 @@ test("refusal precedence is stable and every result is mutation-free", () => {
       code: "malformed-invocation",
     },
   );
+});
+
+test("modifier vectors preserve exact refusal precedence across semantic failures", () => {
+  const validModifierVectors = [[], ["--batch"], ["--deep"], ["--deep", "--batch"], ["--batch", "--deep"]];
+  const semanticCases: Array<{
+    readonly primary: Record<string, unknown>;
+    readonly context: Record<string, unknown>;
+    readonly code: string;
+  }> = [
+    { primary: { kind: "unknown" }, context: repository, code: "malformed-invocation" },
+    { primary: { kind: "ask", question: "why" }, context: plans, code: "context-mismatch" },
+    { primary: { kind: "category", category: "Security" }, context: repository, code: "unknown-category" },
+    { primary: { kind: "branch" }, context: { kind: "branch" }, code: "missing-branch-range" },
+    { primary: { kind: "ask", question: "" }, context: repository, code: "missing-payload" },
+    {
+      primary: { kind: "design-conformance", subject: "screen" },
+      context: repository,
+      code: "missing-design-medium",
+    },
+    {
+      primary: { kind: "design-conformance", medium: "ios", subject: "screen" },
+      context: repository,
+      code: "unknown-design-medium",
+    },
+    {
+      primary: { kind: "design-conformance", medium: "web", subject: "" },
+      context: repository,
+      code: "missing-design-subject",
+    },
+    { primary: { kind: "sweep" }, context: repository, code: "missing-sweep-context" },
+    { primary: { kind: "sweep" }, context: { kind: "roadmap" }, code: "missing-roadmap-slug" },
+    {
+      primary: { kind: "sweep" },
+      context: { kind: "roadmap", slug: "Bad/slug" },
+      code: "invalid-roadmap-slug",
+    },
+  ];
+  for (const { primary, context, code } of semanticCases) {
+    for (const modifiers of validModifierVectors) {
+      expect(resolveImproveRoute(request(primary, context, modifiers))).toEqual({
+        outcome: "refused",
+        code,
+        detail: code,
+        target: null,
+        targetArguments: [],
+        mutations: [],
+      });
+    }
+  }
+
+  for (const modifiers of validModifierVectors) {
+    expect(
+      resolveImproveRoute({
+        primaries: [{ kind: "ask", question: "why" }, { kind: "next" }],
+        modifiers,
+        context: repository,
+      }),
+    ).toMatchObject({ outcome: "refused", code: "multiple-primary-selectors", targetArguments: [] });
+  }
+
+  for (const modifiers of [["--deep"], ["--deep", "--batch"], ["--batch", "--deep"]]) {
+    expect(resolveImproveRoute(request({ kind: "quick" }, repository, modifiers))).toMatchObject({
+      outcome: "refused",
+      code: "mutually-exclusive-depth",
+      alternatives: ["tailrocks-improve quick", "tailrocks-improve-deep"],
+      targetArguments: [],
+    });
+    expect(resolveImproveRoute(request({ kind: "seed", finding: "F-1" }, roadmap, modifiers))).toMatchObject({
+      outcome: "refused",
+      code: "unsupported-modifier",
+      targetArguments: [],
+    });
+  }
+
+  for (const modifiers of [
+    ["--batch", "--batch"],
+    ["--deep", "--deep"],
+    ["--deep", "--batch", "--deep"],
+    ["--batch", "--deep", "--batch"],
+  ]) {
+    expect(resolveImproveRoute(request(null, repository, modifiers))).toMatchObject({
+      outcome: "refused",
+      code: "duplicate-modifier",
+      targetArguments: [],
+    });
+  }
+  for (const modifiers of [
+    ["--other", "--batch"],
+    ["--deep", "--other"],
+    ["--deep", "--other", "--deep"],
+  ]) {
+    expect(resolveImproveRoute(request(null, repository, modifiers))).toMatchObject({
+      outcome: "refused",
+      code: "unknown-modifier",
+      targetArguments: [],
+    });
+  }
 });
 
 test("all primary pairs refuse and resolution is deterministic without input mutation", () => {
