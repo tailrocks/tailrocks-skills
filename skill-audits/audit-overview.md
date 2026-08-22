@@ -984,12 +984,21 @@ all terminal checks pass, and the final literal marker is changed to
     passed 74 tests/403 assertions; final `rtk mise run migration-check` passed
     362 tests/2,312 assertions across 48 selected non-protected files. Fresh
     subagent verdict: PASS. No migration-plan artifact added; no evals run.
-- [ ] [IN_PROGRESS] P06.GATE Prove every selector has one owner, no implicit invocation
-  adds authority, and `rtk mise run migration-check` passes. Evidence: pending.
+- [x] [COMPLETED] P06.GATE Prove every selector has one owner, no implicit invocation
+  adds authority, and `rtk mise run migration-check` passes.
+  - Evidence receipt (2026-08-23): focused ownership and invocation proof passed
+    83 tests/1,009 assertions across 19 non-protected files, covering exclusive
+    selectors, exhaustive registry ownership, the exact two-class invocation
+    matrix, manual transaction owners, and zero authority gain for the eleven
+    model-policy owners. The final family gate `rtk mise run migration-check`
+    passed 362 tests/2,312 assertions across all 48 selected non-protected files,
+    with 78 skills validated, 54 canonical sources generating 202 byte-identical
+    destinations, and 238 generated docs current. Protected paths remained
+    unchanged. No evals run.
 
 ## P07 — Split design and visual verification ownership
 
-- [ ] [TODO] P07.01 macOS design → design/prototype/blessing, design review, and
+- [ ] [IN_PROGRESS] P07.01 macOS design → design/prototype/blessing, design review, and
   systematize; retain `MODEL_POLICY` only on the existing named owner pending
   descendant approval.
 - [ ] [TODO] P07.02 Web design → design/blessing and design audit; retain
