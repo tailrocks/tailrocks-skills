@@ -1,0 +1,12 @@
+{
+  "commits": [
+    {
+      "sha": "1111111111111111111111111111111111111111",
+      "paths": ["docs/wording.md"],
+      "message": "docs: wording only",
+      "parents": []
+    }
+  ],
+  "head": "1111111111111111111111111111111111111111",
+  "expected": true
+}

@@ -531,10 +531,37 @@ all terminal checks pass, and the final literal marker is changed to
     Protection proof covered 4 patterns/183 frozen source paths with zero
     violations. Fresh subagent verdict: PASS after closing root-instruction,
     schema-documentation, exact-expiry, and response-proof gaps. No evals run.
-- [ ] [IN_PROGRESS] P04.05 Add `scripts/merge-preflight.ts`; use bounded polling,
+- [x] [COMPLETED] P04.05 Add `scripts/merge-preflight.ts`; use bounded polling,
   terminal pending output, machine-owned delivery/documentation predicates, and
   no merge authority.
-- [ ] [TODO] P04.06 Add macOS launch/window/capture/accessibility/appearance
+  - Evidence receipt (2026-08-22): added a read-only typed preflight and shared
+    documentation subcommand, command/contract documentation, four delivery
+    fixtures, four commit-history fixtures, and the `pr:merge-preflight` task.
+    The command binds the live repository, PR, local/remote head, base, and
+    computed merge base; samples strict required-check identities at most 30
+    times, exactly 10 seconds apart under a 300-second monotonic cap; returns
+    terminal pending; and final-reverifies identity. Machine code now owns all
+    six delivery contradictions and one ancestry-based documentation predicate
+    shared by merge and document skills. Unknown paths stay doc-worthy, commit
+    labels cannot suppress obligations, exact final trailers cover the whole
+    required ancestry, docs-only history is `not_needed`, and later source or
+    documentation stales coverage while later tests/CI/delivery artifacts do
+    not. Raw blockers remain visible under policy waivers. The merge skill keeps
+    fresh blast/admin/waiver/merge judgment, requires final preflight after all
+    branch mutations, and atomically passes the receipt head through
+    `--match-head-commit`; the script exposes no merge or metadata mutation.
+    Focused proof passed 18 tests/48 assertions across green/fail/cancel/pending,
+    exact polling/wall bounds, drift, static-waiver observation, all six
+    contradictions, deletion preimages, malformed tables/indexes/checks,
+    ancestry forks and stale docs, live documentation binding, and typed CLI
+    exits. `rtk mise run migration-check` passed 223 tests/1,069 assertions
+    across 22 selected non-protected files, validated 44 skills, checked 136
+    generated files, and passed formatting and diff checks. Protection proof
+    covered 4 patterns/183 frozen source paths with zero violations. Fresh
+    subagent verdict: PASS after fixing docs-only semantics, live PR binding,
+    receipt invalidation, atomic match-head merge, zero-path commits, required
+    history fixtures, and generated Markdown integrity. No evals run.
+- [ ] [IN_PROGRESS] P04.06 Add macOS launch/window/capture/accessibility/appearance
   scripts with exact process ownership, ambiguity refusal, bounded recovery, and
   runnable local test applications.
 - [ ] [TODO] P04.07 Add web capture scripts that prove owned server revision and

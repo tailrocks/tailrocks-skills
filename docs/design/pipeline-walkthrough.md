@@ -295,7 +295,8 @@ while `roadmap/<slug>/` still exists in the merge result, a folder deleted
 while its newest round still carried a blocking defect, a manifest that
 disagrees with its round, a `DONE` with no round at all, or an index and a tree
 that disagree. Each finding names the files and routes to the skill that
-resolves it, in the same pull request.
+resolves it, in the same pull request. A sixth blocks retirement that deletes
+the item folder without adding its surviving `delivery/<slug>.md` report.
 
 ## 13. Re-plan after changed intent
 

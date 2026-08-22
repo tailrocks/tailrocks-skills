@@ -1,0 +1,11 @@
+{
+  "changed": [{ "status": "M", "path": "roadmap/item/verification/01-report.md" }],
+  "baseFiles": {},
+  "headFiles": {
+    "roadmap/README.md": "| Item | Status |\n|---|---|\n| [item](item/README.md) | IN EXECUTION |\n",
+    "roadmap/item/README.md": "# Item\n\n- **Status**: IN EXECUTION\n\n## Remaining\n\n- Broken\n",
+    "roadmap/item/plan/README.md": "| ID | Status |\n|---|---|\n| 001 | DONE |\n",
+    "roadmap/item/verification/01-report.md": "## Blocking defects\n\n### B2 — broken\n"
+  },
+  "expected": [3]
+}

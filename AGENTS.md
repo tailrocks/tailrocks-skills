@@ -521,7 +521,10 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
 - **tailrocks-merge-pr** — merge fail-closed: CI gate with named-check-only
   admin bypass, blast-radius confirm, the repository's pre-merge worklist,
   metadata reconcile before the squash title enters history, repo-selected
-  merge method. Authorization never carries forward between sessions.
+  merge method. Its read-only machine preflight binds the exact PR/head/base,
+  bounds required-check polling to 30 samples/300 seconds, and owns the raw
+  delivery and documentation predicates without granting merge authority.
+  Authorization never carries forward between sessions.
   Its **delivery-artifact check** fires only when the pull request's diff
   touches `roadmap/`, and is read-only about every artifact it reads: it
   blocks on an item saying `DONE` while its folder is still present, on a
@@ -530,12 +533,13 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
   and routing to `tailrocks-reconcile` (or `tailrocks-prove` when what is
   missing is a clean round). It never writes a delivery artifact.
   Its **documentation gate** fires on every pull request: doc-worthy commits
-  (observable behavior, not tests/CI/chores/delivery artifacts) must be
-  covered by a newer `Tailrocks-Skill: tailrocks-document` commit, or the
-  merge stops and routes to `tailrocks-document`; a stale trailer that later
-  behavior commits supersede does not count.
+  (observable behavior, not tests/CI/delivery-only artifacts; commit labels do
+  not suppress path evidence) trigger the gate. Then every doc-worthy and
+  documentation-surface commit must be covered by a descendant
+  `Tailrocks-Skill: tailrocks-document` commit, or the merge stops and routes to
+  `tailrocks-document`. No doc-worthy commit yields `not_needed`.
   Definition: `skills/tailrocks-merge-pr/SKILL.md`
-- **tailrocks-document** — the last content commit before a merge: locate
+- **tailrocks-document** — the last documentation-obligation commit before a merge: locate
   the repository's documentation surfaces and their own rules, inventory
   the diff against the merge base, and make the docs the final source of
   truth for what shipped — rewriting the prose the change makes wrong,

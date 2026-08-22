@@ -418,11 +418,12 @@ owns the delivery artifacts: it earns the statuses, rewrites Remaining, and
 performs the retirement.
 [`tailrocks-merge-pr`](/docs/skills/tailrocks-merge-pr) owns the last
 checkpoint and is read-only about all of it — when a pull request's diff
-touches `roadmap/`, its delivery-artifact check reads that diff for five
+touches `roadmap/`, its machine preflight reads that diff for six
 contradictions and blocks on any of them, naming the files that disagree and
 routing the fix. The two that this rule creates: an item saying `DONE` while
 its folder is still present, and a folder deleted while its latest
-verification round still carried a blocking defect. It never edits, deletes,
+verification round still carried a blocking defect, and a retired folder with
+no diff-added delivery report. It never edits, deletes,
 or commits a delivery artifact — it sends you back to reconcile (or to
 [`tailrocks-prove`](/docs/skills/tailrocks-prove), when what is missing is a
 clean round). In a repository with no `roadmap/`, the check does nothing and
