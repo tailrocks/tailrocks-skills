@@ -1275,9 +1275,20 @@ all terminal checks pass, and the final literal marker is changed to
 
 ## P09 — Repair every retained public contract
 
-- [ ] [IN_PROGRESS] P09.01 `tailrocks-agents-md`: deterministic add/audit/sync ownership
+- [x] [COMPLETED] P09.01 `tailrocks-agents-md`: deterministic add/audit/sync ownership
   and symlink parity tests.
-- [ ] [TODO] P09.02 `tailrocks-axum-best-practices`: unique build/review/refactor
+  - Evidence receipt (2026-08-23): existing migrated contracts already satisfy
+    the row without source churn. The MODEL_POLICY owner adds one authorized rule;
+    manual audit is read-only; manual sync applies one approved repair. All three
+    resolve the installed topology script by loader identity. Deterministic tests
+    cover sorted discovery without mutation, missing/regular/wrong/broken/looped
+    client parity, exact same-directory link creation, expected-target repair,
+    stale and non-symlink refusal, CAS ownership, rollback/recovery artifacts,
+    concurrent replacement, parent swap/escape, and typed CLI/nonzero verify
+    receipts. Focused proof passed 21 tests/108 assertions; validator passed 84
+    skills; references checked 88 sources/258 byte-identical destinations; docs
+    checked 256 files; fresh subagent verdict: PASS. No evals run or inspected.
+- [ ] [IN_PROGRESS] P09.02 `tailrocks-axum-best-practices`: unique build/review/refactor
   routes, outputs, refusals, invocation, and argument hints.
 - [ ] [TODO] P09.03 `tailrocks-brainstorm`: deterministic DRAFT/SHAPING and
   interactive/batch frontier transitions using temporary item trees.
