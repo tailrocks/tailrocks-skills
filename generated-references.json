@@ -3,7 +3,13 @@
   "entries": [
     {
       "source": "shared/references/contribution-handoff.md",
-      "destinations": []
+      "destinations": [
+        "skills/tailrocks-contribute-prepare/references/contribution-handoff.md",
+        "skills/tailrocks-contribute-propose/references/contribution-handoff.md",
+        "skills/tailrocks-contribute-recon/references/contribution-handoff.md",
+        "skills/tailrocks-contribute-respond/references/contribution-handoff.md",
+        "skills/tailrocks-contribute-submit/references/contribution-handoff.md"
+      ]
     },
     {
       "source": "shared/references/design-pipeline.md",
@@ -44,7 +50,11 @@
         "skills/tailrocks-brainstorm/references/runtime-trust.md",
         "skills/tailrocks-code-health-audit/references/runtime-trust.md",
         "skills/tailrocks-code-health/references/runtime-trust.md",
-        "skills/tailrocks-contribute/references/runtime-trust.md",
+        "skills/tailrocks-contribute-prepare/references/runtime-trust.md",
+        "skills/tailrocks-contribute-propose/references/runtime-trust.md",
+        "skills/tailrocks-contribute-recon/references/runtime-trust.md",
+        "skills/tailrocks-contribute-respond/references/runtime-trust.md",
+        "skills/tailrocks-contribute-submit/references/runtime-trust.md",
         "skills/tailrocks-create-pr/references/runtime-trust.md",
         "skills/tailrocks-document/references/runtime-trust.md",
         "skills/tailrocks-finalize/references/runtime-trust.md",

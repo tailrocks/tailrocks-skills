@@ -133,7 +133,11 @@ Debt that shrinks, defects that stop recurring, skills that improve from field e
 | [`tailrocks-simplify-audit`](skills/tailrocks-simplify-audit/README.md) | Audit one pull request, branch, or diff read-only for measured code removals whose observable behavior can be preserved. | Manual only |
 | [`tailrocks-root-cause`](skills/tailrocks-root-cause/README.md) | Diagnose one proven defect, reported friction, or failed guarantee read-only; derive the bounded causal class and strongest feasible corrective design. | Manual only |
 | [`tailrocks-remediate`](skills/tailrocks-remediate/README.md) | Apply one explicitly approved root-cause correction while preserving every unapproved behavior and proving instance and defect-class prevention. | Manual only |
-| [`tailrocks-contribute`](skills/tailrocks-contribute/README.md) | Contribute to an external open-source project: discover its contribution contract, prepare a minimal evidenced change, and submit only after explicit human approval. | Manual only |
+| [`tailrocks-contribute-recon`](skills/tailrocks-contribute-recon/README.md) | Reconnoiter one external open-source project and write a current local contribution contract. | Manual only |
+| [`tailrocks-contribute-propose`](skills/tailrocks-contribute-propose/README.md) | Turn one current contribution recon into a locally stored venue proposal or hard-stop redirect. | Manual only |
+| [`tailrocks-contribute-prepare`](skills/tailrocks-contribute-prepare/README.md) | Implement one approved external contribution in the user's dedicated fork clone and produce a local submission package. | Manual only |
+| [`tailrocks-contribute-submit`](skills/tailrocks-contribute-submit/README.md) | Submit one current prepared external contribution through exact separately approved legal, push, and PR actions. | Manual only |
+| [`tailrocks-contribute-respond`](skills/tailrocks-contribute-respond/README.md) | Handle one submitted contribution's current review round through approved local fixes and separately approved remote actions. | Manual only |
 
 ### Decision support
 

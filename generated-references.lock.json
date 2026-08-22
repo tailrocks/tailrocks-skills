@@ -127,8 +127,53 @@
       "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
     },
     {
+      "source": "shared/references/contribution-handoff.md",
+      "destination": "skills/tailrocks-contribute-prepare/references/contribution-handoff.md",
+      "sha256": "65497015d8c174e7c67d4730739dbd7e556c9b89d3d600bc963d67633f917970"
+    },
+    {
       "source": "shared/references/runtime-trust.md",
-      "destination": "skills/tailrocks-contribute/references/runtime-trust.md",
+      "destination": "skills/tailrocks-contribute-prepare/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/contribution-handoff.md",
+      "destination": "skills/tailrocks-contribute-propose/references/contribution-handoff.md",
+      "sha256": "65497015d8c174e7c67d4730739dbd7e556c9b89d3d600bc963d67633f917970"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-contribute-propose/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/contribution-handoff.md",
+      "destination": "skills/tailrocks-contribute-recon/references/contribution-handoff.md",
+      "sha256": "65497015d8c174e7c67d4730739dbd7e556c9b89d3d600bc963d67633f917970"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-contribute-recon/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/contribution-handoff.md",
+      "destination": "skills/tailrocks-contribute-respond/references/contribution-handoff.md",
+      "sha256": "65497015d8c174e7c67d4730739dbd7e556c9b89d3d600bc963d67633f917970"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-contribute-respond/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/contribution-handoff.md",
+      "destination": "skills/tailrocks-contribute-submit/references/contribution-handoff.md",
+      "sha256": "65497015d8c174e7c67d4730739dbd7e556c9b89d3d600bc963d67633f917970"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-contribute-submit/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
     },
     {

@@ -693,13 +693,23 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
   writes the file only, never commits.
   Definition: `skills/tailrocks-pr-template/SKILL.md`
 
-### tailrocks-contribute
+### The contribution family
 
-Contribute to external open-source projects through project-contract recon,
-hard-stop-aware proposal, gated preparation, explicit per-contribution
-submission approval, and human-approved review response.
+Five manual-only owners handle external open-source contributions without
+transferring authority between stages: `tailrocks-contribute-recon` discovers
+one current project contract; `tailrocks-contribute-propose` writes one local
+venue proposal or hard-stop redirect; `tailrocks-contribute-prepare` implements
+an approved proposal only in the user's fork and never pushes;
+`tailrocks-contribute-submit` revalidates and separately approves legal, push,
+and PR actions; `tailrocks-contribute-respond` handles one current review round
+with fresh approval for every network fetch and remote mutation. The old combined
+public owner is removed. All five share one generated durable handoff contract.
 
-Skill definition: `skills/tailrocks-contribute/SKILL.md`
+Definitions: `skills/tailrocks-contribute-recon/SKILL.md`,
+`skills/tailrocks-contribute-propose/SKILL.md`,
+`skills/tailrocks-contribute-prepare/SKILL.md`,
+`skills/tailrocks-contribute-submit/SKILL.md`, and
+`skills/tailrocks-contribute-respond/SKILL.md`.
 
 ### tailrocks-root-cause and tailrocks-remediate
 

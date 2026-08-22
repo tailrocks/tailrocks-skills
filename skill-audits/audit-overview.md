@@ -940,9 +940,31 @@ all terminal checks pass, and the final literal marker is changed to
     338 tests/2,104 assertions across 46 selected non-protected files. Fresh
     subagent verdict: PASS after removing the stale checkout catalog promise.
     No migration-plan artifact added; no evals run.
-- [ ] [IN_PROGRESS] P06.05 Contribute → recon, propose, prepare, submit, respond; keep
+- [x] [COMPLETED] P06.05 Contribute → recon, propose, prepare, submit, respond; keep
   fresh external-action approval at every outward boundary.
-- [ ] [TODO] P06.06 Preserve skill-create as one evidence-to-wired-skill
+  - Evidence receipt (2026-08-23): replaced the combined public contribution
+    owner with five manual-only stage owners and removed its deprecated public
+    skill, metadata, references, script, docs, catalog, registry, and routes;
+    frozen eval bytes remain inactive and untouched. Recon is read-only and now
+    uses a zero-network plan receipt whose SHA-256 binds canonical input, exact
+    ordered GET endpoints, fixed host/method, and installed entrypoint plus
+    bounded-runner identities; execution requires that approved hash and
+    rechecks it immediately before the first GET. Public-repository preflight,
+    bounded failure semantics, allowlisted/redacted response projection, and
+    per-endpoint receipts fail closed. Propose drafts only; prepare permits only
+    unsigned local fork commits with per-path CAS and owned rollback; submit and
+    respond each require fresh action-specific approval for every legal or
+    outward mutation. A canonical handoff contract generates byte-identically
+    to all five owners. Registry/docs agree on 78 skills (67 manual, 11
+    model-policy), 20,060 total description characters, and 16,375 capped
+    characters; 54 sources produced 202 byte-identical destinations and 238
+    generated docs checked. Focused final proof passed 18 tests/152 assertions;
+    final `rtk mise run migration-check` passed 356 tests/2,268 assertions
+    across 48 selected non-protected files. Fresh subagent verdict: PASS after
+    local-only prepare, public-target, failure/redaction, endpoint-approval, and
+    plan/runtime TOCTOU corrections. No migration-plan artifact added; no evals
+    run.
+- [ ] [IN_PROGRESS] P06.06 Preserve skill-create as one evidence-to-wired-skill
   transaction; keep update and refactor exclusive from direct migration work.
 - [ ] [TODO] P06.GATE Prove every selector has one owner, no implicit invocation
   adds authority, and `rtk mise run migration-check` passes. Evidence: pending.

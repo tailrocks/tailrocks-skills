@@ -168,7 +168,11 @@ implementation to it afterward.
 | [`tailrocks-simplify`](/docs/skills/tailrocks-simplify) | One exact audited removal set has explicit approval and a proven preservation oracle. |
 | [`tailrocks-root-cause`](/docs/skills/tailrocks-root-cause) | A proven defect or concrete friction needs read-only causal diagnosis and corrective design. |
 | [`tailrocks-remediate`](/docs/skills/tailrocks-remediate) | One current root-cause design has explicit approval and must be applied exactly. |
-| [`tailrocks-contribute`](/docs/skills/tailrocks-contribute) | The repository belongs to someone else. |
+| [`tailrocks-contribute-recon`](/docs/skills/tailrocks-contribute-recon) | One external project needs a current local contribution contract. |
+| [`tailrocks-contribute-propose`](/docs/skills/tailrocks-contribute-propose) | Current recon must become one local venue proposal or hard-stop redirect. |
+| [`tailrocks-contribute-prepare`](/docs/skills/tailrocks-contribute-prepare) | An approved proposal must be implemented locally in the user's fork without pushing. |
+| [`tailrocks-contribute-submit`](/docs/skills/tailrocks-contribute-submit) | One prepared contribution is ready for separately approved legal, push, and PR actions. |
+| [`tailrocks-contribute-respond`](/docs/skills/tailrocks-contribute-respond) | One submitted contribution needs a current review round handled under per-action approval. |
 
 ### retrospect or audit
 
@@ -233,6 +237,19 @@ oracle. No third compatibility owner or routing alias remains.
 
 Use ordinary best-practice skills for routine implementation. Neither of these
 is a substitute for them.
+
+### contribution stages
+
+External contribution authority never carries between stages.
+`tailrocks-contribute-recon` fetches only after exact network approval and
+writes the current project contract. `tailrocks-contribute-propose` uses that
+contract offline to draft one venue decision or redirect.
+`tailrocks-contribute-prepare` mutates only the authorized fork paths and stops
+with local commits plus a submission package. `tailrocks-contribute-submit`
+separately approves legal attestation, push, and PR creation.
+`tailrocks-contribute-respond` handles one current review round; every fetch,
+push, reply, retest, close, or withdrawal needs its own fresh approval. Naming a
+handoff invokes nothing.
 
 ## Decision support
 
@@ -361,11 +378,11 @@ causal design. Only the approved resulting contract reaches
 [`tailrocks-remediate`](/docs/skills/tailrocks-remediate). Review reports;
 root-cause designs; remediate acts.
 
-### create-pr or contribute
+### create-pr or contribute-submit
 
-Both end in `gh pr create`. [`tailrocks-contribute`](/docs/skills/tailrocks-contribute)
-is for repositories that belong to someone else: it adds contract recon,
-hard stops, and per-contribution human approval before anything outward.
+Both may end in PR creation. [`tailrocks-contribute-submit`](/docs/skills/tailrocks-contribute-submit)
+is for repositories that belong to someone else and requires current recon,
+proposal, preparation, and fresh per-action approval before anything outward.
 `tailrocks-create-pr` is for repositories the user works in as their own —
 invoking it authorizes the push and the PR.
 

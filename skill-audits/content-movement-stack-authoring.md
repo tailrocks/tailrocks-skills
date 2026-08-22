@@ -214,7 +214,7 @@
 
 | Current surface | Op | Exact target | Gate |
 |---|---:|---|---|
-| Frontmatter name and argument dispatcher | KEEP | Temporary `skills/tailrocks-contribute/SKILL.md` alias | Split description/argument phrases into target frontmatter; alias only prints exact replacement command. |
+| Frontmatter name and argument dispatcher | DELETE | Remove the old public owner | Split description/argument phrases into target frontmatter; no alias or deprecated route. |
 | Introduction lines 11-15 and shared durable-handoff/trust boundary | MOVE | Authored `shared/references/contribution-handoff.md` | `C-ref`; no sibling-private links. |
 | Shared contribution handoff | COPY | `skills/tailrocks-contribute-recon/references/contribution-handoff.md`, `skills/tailrocks-contribute-propose/references/contribution-handoff.md`, `skills/tailrocks-contribute-prepare/references/contribution-handoff.md`, `skills/tailrocks-contribute-submit/references/contribution-handoff.md`, `skills/tailrocks-contribute-respond/references/contribution-handoff.md` | Generate and byte-check against shared source. |
 | `recon`; `project-contract.md`; `scripts/gh-recon.ts`; final-gate “recon is current” | MOVE | `skills/tailrocks-contribute-recon/SKILL.md`, `skills/tailrocks-contribute-recon/references/project-contract.md`, `skills/tailrocks-contribute-recon/scripts/gh-recon.ts` | Old selector until `C-retire`. |
@@ -227,7 +227,7 @@
 | Eval IDs `5,7` | MOVE | `skills/tailrocks-contribute-submit/evals/evals.json` | `C-retire`. |
 | Eval ID `6` | MOVE | `skills/tailrocks-contribute-prepare/evals/evals.json` | `C-retire`. |
 | Eval ID `8` + fixture `8/review.json` | MOVE | `skills/tailrocks-contribute-respond/evals/evals.json` + `skills/tailrocks-contribute-respond/evals/fixtures/8/review.json` | `C-retire`. |
-| `skills/tailrocks-contribute/{SKILL.md,agents/openai.yaml,README.md,evals/evals.json}` and old catalog/docs rows | DELETE | Remove those exact surfaces after `C-retire` | Compatibility dispatcher only. |
+| `skills/tailrocks-contribute/{SKILL.md,agents/openai.yaml,README.md}` and old catalog/docs rows | DELETE | Remove public surfaces now; frozen eval bytes stay untouched and undiscoverable | No compatibility dispatcher. |
 
 ## `tailrocks-skill-refactor`
 
