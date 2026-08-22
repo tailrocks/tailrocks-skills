@@ -1208,9 +1208,23 @@ all terminal checks pass, and the final literal marker is changed to
     all changed/schema/generated checks but the unrelated macOS GUI lane retained
     the host activation failure (415 pass, 2 fail), deferred to P09.15. Protected
     paths unchanged; no evals run.
-- [ ] [IN_PROGRESS] P08.05 Refuse `quick --deep`, malformed modes, and multiple primary
+- [x] [COMPLETED] P08.05 Refuse `quick --deep`, malformed modes, and multiple primary
   modes deterministically.
-- [ ] [TODO] P08.06 Convert pipeline-free planning to `plans/`; remove roadmap
+  - Evidence receipt (2026-08-23): added a pure internal strict resolver from
+    structured historical intent to one exact current owner/argv receipt. It
+    covers every valid base/deep/batch composition and returns typed refusals for
+    unknown or duplicate modifiers, multiple primaries, quick/deep conflict,
+    context mismatches, unknown categories/media, missing or flag-shaped
+    payloads, unsupported depth, invalid immutable ranges, and invalid roadmap
+    slugs. Own-key, dense-array, cardinality, prototype, revoked-proxy, inherited
+    field, and billion-length sparse-array guards make untrusted input total and
+    bounded. Resolutions contain no placeholders, invoke nothing, mutate nothing,
+    and preserve target-only authority. Focused proof passed 11 tests/1,616
+    assertions; fresh subagent verdict: PASS. The non-eval migration gate passed
+    all changed/schema/generated checks but the unrelated macOS GUI lane retained
+    the host activation failure (419 pass, 2 fail), deferred to P09.15. Protected
+    paths unchanged; no evals run.
+- [ ] [IN_PROGRESS] P08.06 Convert pipeline-free planning to `plans/`; remove roadmap
   goal/fingerprint mechanics from improve-plan and avoid empty rejection commits.
 - [ ] [TODO] P08.07 Remove retired public skill and mode surfaces; keep any
   frozen protected bytes untouched but undiscoverable and unrouteable.
