@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Swift Project Remediate"
+  short_description: "Close approved Swift baseline gaps"
+  default_prompt: "Use $tailrocks-swift-project-remediate to close only these approved SWIFT-PROJECT gaps in transactional buildable slices."
+policy:
+  allow_implicit_invocation: false

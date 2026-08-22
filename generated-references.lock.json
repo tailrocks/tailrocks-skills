@@ -533,8 +533,73 @@
     },
     {
       "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-agent-integration/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
       "destination": "skills/tailrocks-swift-best-practices/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/lint-and-format.md",
+      "destination": "skills/tailrocks-swift-project-audit/references/lint-and-format.md",
+      "sha256": "c7514c0b6a34190ec4ddde9fd1213dc2a757c48705cdb12b5e3216306752144b"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/project-generation.md",
+      "destination": "skills/tailrocks-swift-project-audit/references/project-generation.md",
+      "sha256": "82ddd318517d39038799b6b1714e036ac8e29403b9e59fb08f45e675e8071853"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-project-audit/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-swift-project-audit/references/shared-version-policy.md",
+      "sha256": "48ae188d631f007a458e8da80541ba9fa6f464ff9ec35cc7908c566f3bd890cf"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/testing.md",
+      "destination": "skills/tailrocks-swift-project-audit/references/testing.md",
+      "sha256": "9ea1639ae7e49921b5ecfc00dbcffcdb3871e629b613f540b4eab2e0d4d496e9"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/toolchain.md",
+      "destination": "skills/tailrocks-swift-project-audit/references/toolchain.md",
+      "sha256": "e8b33bd9bb46a77185ade674e693505ee76c125d7a29c2ab586f795e4f86170e"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/lint-and-format.md",
+      "destination": "skills/tailrocks-swift-project-remediate/references/lint-and-format.md",
+      "sha256": "c7514c0b6a34190ec4ddde9fd1213dc2a757c48705cdb12b5e3216306752144b"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/project-generation.md",
+      "destination": "skills/tailrocks-swift-project-remediate/references/project-generation.md",
+      "sha256": "82ddd318517d39038799b6b1714e036ac8e29403b9e59fb08f45e675e8071853"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-project-remediate/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-swift-project-remediate/references/shared-version-policy.md",
+      "sha256": "48ae188d631f007a458e8da80541ba9fa6f464ff9ec35cc7908c566f3bd890cf"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/testing.md",
+      "destination": "skills/tailrocks-swift-project-remediate/references/testing.md",
+      "sha256": "9ea1639ae7e49921b5ecfc00dbcffcdb3871e629b613f540b4eab2e0d4d496e9"
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/toolchain.md",
+      "destination": "skills/tailrocks-swift-project-remediate/references/toolchain.md",
+      "sha256": "e8b33bd9bb46a77185ade674e693505ee76c125d7a29c2ab586f795e4f86170e"
     },
     {
       "source": "shared/references/runtime-trust.md",
@@ -610,6 +675,16 @@
       "source": "shared/references/runtime-trust.md",
       "destination": "skills/tailrocks-swift-rust-core-boundary/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-rust-core-setup/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-swift-rust-core-setup/references/shared-version-policy.md",
+      "sha256": "48ae188d631f007a458e8da80541ba9fa6f464ff9ec35cc7908c566f3bd890cf"
     },
     {
       "source": "skills/tailrocks-tanstack-project-setup/references/boundaries-and-data.md",

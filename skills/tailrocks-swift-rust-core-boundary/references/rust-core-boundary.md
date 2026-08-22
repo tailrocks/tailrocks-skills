@@ -351,7 +351,7 @@ copied, and large collections of string-bearing records dominate call cost.
 
 Verified 2026-08-16; bridge generators move fast — re-verify at execution
 time and pin exactly (toolchain, bridge crate, bridge CLI; see
-`tailrocks-swift-project-setup`'s Rust-core lane for the pins, the split
+`tailrocks-swift-rust-core-setup` for the pins, the split
 package layout, and the binding-drift gate).
 
 - **BoltFFI** — first choice: attribute-driven exports (`#[data]`,

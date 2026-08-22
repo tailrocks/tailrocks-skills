@@ -56,6 +56,7 @@ explicitly invoked:
 | Material policy, visual direction, and acceptance rubric | `tailrocks-macos-design` |
 | Rendering and verification | `tailrocks-macos-visual-qa` |
 | Project mechanics | `tailrocks-swift-project-setup` |
+| Agent integration | `tailrocks-swift-agent-integration` |
 README's family ownership table is canonical.
 
 Never run two skills that both encode aesthetic taste. They conflict, and the

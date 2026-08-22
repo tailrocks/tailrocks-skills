@@ -45,7 +45,11 @@
         "tailrocks-swift-review",
         "tailrocks-swift-refactor",
         "tailrocks-swift-rust-core-boundary",
-        "tailrocks-swift-project-setup"
+        "tailrocks-swift-project-setup",
+        "tailrocks-swift-project-audit",
+        "tailrocks-swift-project-remediate",
+        "tailrocks-swift-agent-integration",
+        "tailrocks-swift-rust-core-setup"
       ]
     },
     {

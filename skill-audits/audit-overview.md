@@ -811,9 +811,25 @@ all terminal checks pass, and the final literal marker is changed to
     `rtk mise run migration-check` passed 300 tests/1,720 assertions across 40
     selected non-protected files with all gates green. Fresh subagent verdict:
     PASS after boundary authority/sandbox correction. No evals run.
-- [ ] [IN_PROGRESS] P05.09 Swift project setup → setup, audit, remediate, agent
+- [x] [COMPLETED] P05.09 Swift project setup → setup, audit, remediate, agent
   integration, Rust-core setup.
-- [ ] [TODO] P05.10 Code health → approved ratchet mutation and read-only audit;
+  - Evidence receipt (2026-08-23): narrowed
+    `tailrocks-swift-project-setup` to new-project scaffolding with absent-target
+    CAS publication; added manual-only fixed-ledger read-only audit, exact-approved
+    transactional remediation, human-authorized Xcode/agent integration, and
+    add-only Rust-core project-lane owners. Moved `agent-integration.md` and
+    `rust-core.md` exclusively to their specialist owners; retained four
+    canonical setup references and generated eight byte-identical audit/remediate
+    copies. All 49 sources produce 177 byte-identical destinations. Added
+    supply-chain execution sandboxes, canonical-template sibling-link and symlink
+    enforcement, fixed 16-row audit IDs, routes, catalogs, and generated docs.
+    Registry/docs agree on 65 skills (54 manual, 11 model-policy), 16,958 total
+    description characters, and 13,988 capped characters. Focused proof passed
+    73 tests/596 assertions; final `rtk mise run migration-check` passed 306
+    tests/1,794 assertions across 41 selected non-protected files. Fresh subagent
+    verdict: PASS after verify-selector and generator-sandbox corrections. No
+    migration-plan artifact added; no evals run.
+- [ ] [IN_PROGRESS] P05.10 Code health → approved ratchet mutation and read-only audit;
   remove minimum-release-age policy while retaining latest-stable and
   vulnerability policy.
 - [ ] [TODO] P05.GATE Prove one owner per old selector, exact compatibility

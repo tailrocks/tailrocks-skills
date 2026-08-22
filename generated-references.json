@@ -78,11 +78,15 @@
         "skills/tailrocks-skill-create/references/runtime-trust.md",
         "skills/tailrocks-skill-refactor/references/runtime-trust.md",
         "skills/tailrocks-skill-update/references/runtime-trust.md",
+        "skills/tailrocks-swift-agent-integration/references/runtime-trust.md",
         "skills/tailrocks-swift-best-practices/references/runtime-trust.md",
+        "skills/tailrocks-swift-project-audit/references/runtime-trust.md",
+        "skills/tailrocks-swift-project-remediate/references/runtime-trust.md",
         "skills/tailrocks-swift-project-setup/references/runtime-trust.md",
         "skills/tailrocks-swift-refactor/references/runtime-trust.md",
         "skills/tailrocks-swift-review/references/runtime-trust.md",
         "skills/tailrocks-swift-rust-core-boundary/references/runtime-trust.md",
+        "skills/tailrocks-swift-rust-core-setup/references/runtime-trust.md",
         "skills/tailrocks-tanstack-project-audit/references/runtime-trust.md",
         "skills/tailrocks-tanstack-project-migrate/references/runtime-trust.md",
         "skills/tailrocks-tanstack-project-remediate/references/runtime-trust.md",
@@ -103,7 +107,10 @@
         "skills/tailrocks-rust-project-audit/references/shared-version-policy.md",
         "skills/tailrocks-rust-project-remediate/references/shared-version-policy.md",
         "skills/tailrocks-rust-project-setup/references/shared-version-policy.md",
+        "skills/tailrocks-swift-project-audit/references/shared-version-policy.md",
+        "skills/tailrocks-swift-project-remediate/references/shared-version-policy.md",
         "skills/tailrocks-swift-project-setup/references/shared-version-policy.md",
+        "skills/tailrocks-swift-rust-core-setup/references/shared-version-policy.md",
         "skills/tailrocks-tanstack-project-audit/references/shared-version-policy.md",
         "skills/tailrocks-tanstack-project-migrate/references/shared-version-policy.md",
         "skills/tailrocks-tanstack-project-remediate/references/shared-version-policy.md",
@@ -317,6 +324,34 @@
       "destinations": [
         "skills/tailrocks-swift-refactor/references/swiftui.md",
         "skills/tailrocks-swift-review/references/swiftui.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/lint-and-format.md",
+      "destinations": [
+        "skills/tailrocks-swift-project-audit/references/lint-and-format.md",
+        "skills/tailrocks-swift-project-remediate/references/lint-and-format.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/project-generation.md",
+      "destinations": [
+        "skills/tailrocks-swift-project-audit/references/project-generation.md",
+        "skills/tailrocks-swift-project-remediate/references/project-generation.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/testing.md",
+      "destinations": [
+        "skills/tailrocks-swift-project-audit/references/testing.md",
+        "skills/tailrocks-swift-project-remediate/references/testing.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-swift-project-setup/references/toolchain.md",
+      "destinations": [
+        "skills/tailrocks-swift-project-audit/references/toolchain.md",
+        "skills/tailrocks-swift-project-remediate/references/toolchain.md"
       ]
     },
     {

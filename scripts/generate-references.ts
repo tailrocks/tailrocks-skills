@@ -80,6 +80,11 @@ const generatedFamilies = [
     destinations: ["tailrocks-swift-refactor", "tailrocks-swift-review"],
   },
   {
+    owner: "tailrocks-swift-project-setup",
+    references: ["lint-and-format.md", "project-generation.md", "testing.md", "toolchain.md"],
+    destinations: ["tailrocks-swift-project-audit", "tailrocks-swift-project-remediate"],
+  },
+  {
     owner: "tailrocks-tanstack-project-setup",
     references: [
       "boundaries-and-data.md",

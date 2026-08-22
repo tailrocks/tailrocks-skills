@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -541,6 +541,60 @@ policy:
       await write(auditFile, `${allowed}\n[forbidden](${forbidden})\n`);
       expect(await validate(root)).toContain(`${audit}: reference escapes skill directory: ${forbidden}`);
     }
+  });
+
+  test("allows only exact Swift project family template sibling links", async () => {
+    await rm(path.join(root, "skills", skill), { recursive: true, force: true });
+    const members = [
+      "tailrocks-swift-project-audit",
+      "tailrocks-swift-project-remediate",
+      "tailrocks-swift-project-setup",
+    ];
+    for (const member of members)
+      await writeSkill(undefined, {
+        name: member,
+        directory: member,
+        displayName: `Tailrocks: ${member}`,
+      });
+    await write("skills/tailrocks-swift-project-setup/templates/project.yml", "name: App\n");
+    for (const catalog of ["README.md", "INSTALL.md", "AGENTS.md", "CLAUDE.md"])
+      await write(catalog, members.join("\n"));
+    await write(
+      "catalog.json",
+      JSON.stringify({ groups: [{ id: "sample", title: "Sample", summary: "Fixture.", skills: members }] }),
+    );
+    await writeInvocationRegistry(
+      [...members].sort().map((member) => ({ skill: member, class: "MANUAL_ONLY" })),
+    );
+
+    const audit = "tailrocks-swift-project-audit";
+    const auditFile = `skills/${audit}/SKILL.md`;
+    const base = await Bun.file(path.join(root, auditFile)).text();
+    const allowed = `${base}\n[templates](../tailrocks-swift-project-setup/templates/)\n[project](../tailrocks-swift-project-setup/templates/project.yml)\n`;
+    await write(auditFile, allowed);
+    expect(await validate(root)).toEqual([]);
+
+    for (const forbidden of [
+      "../tailrocks-swift-project-setup/SKILL.md",
+      "../tailrocks-swift-project-setup/scripts/tool.ts",
+      "../tailrocks-swift-project-setup/references/toolchain.md",
+      "../tailrocks-swift-agent-integration/references/agent-integration.md",
+      "../tailrocks-swift-rust-core-setup/references/rust-core.md",
+      "../tailrocks-swift-project-setup/templates/../../SKILL.md",
+    ]) {
+      await write(auditFile, `${allowed}\n[forbidden](${forbidden})\n`);
+      expect(await validate(root)).toContain(`${audit}: reference escapes skill directory: ${forbidden}`);
+    }
+
+    await write(auditFile, allowed);
+    await rm(path.join(root, "skills/tailrocks-swift-project-setup/templates/project.yml"));
+    await symlink(
+      path.join(root, "skills/tailrocks-swift-project-setup/SKILL.md"),
+      path.join(root, "skills/tailrocks-swift-project-setup/templates/project.yml"),
+    );
+    expect(await validate(root)).toContain(
+      `${audit}: reference escapes skill directory: ../tailrocks-swift-project-setup/templates/project.yml`,
+    );
   });
 
   test("rejects mismatched manifest descriptions", async () => {

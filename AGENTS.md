@@ -262,12 +262,22 @@ verification.
   the Rust application runtime, generated FFI, one store, and durable Apple
   effect protocol. Definition:
   `skills/tailrocks-swift-rust-core-boundary/SKILL.md`
-- **tailrocks-swift-project-setup** — the baseline an agent can drive from a
-  terminal. Declarative project generation with a synchronized source folder, the
-  three target values, a decided fallback behavior, and two SDK lanes, ad-hoc local signing, strict
-  format and lint gates, test wiring, mise-pinned tooling, and Xcode agent
-  integration with a one-owner-per-responsibility skill policy. Definition:
+- **tailrocks-swift-project-setup** — scaffold-only native macOS baseline:
+  synchronized declarative generation, exact toolchain/SDK lanes, signing,
+  strict gates, non-vacuous tests, and mise command parity. Definition:
   `skills/tailrocks-swift-project-setup/SKILL.md`
+- **tailrocks-swift-project-audit** — read-only fixed-ledger inspection of an
+  existing Swift/Xcode baseline. Definition:
+  `skills/tailrocks-swift-project-audit/SKILL.md`
+- **tailrocks-swift-project-remediate** — transactional closure of exact
+  approved Swift project audit rows. Definition:
+  `skills/tailrocks-swift-project-remediate/SKILL.md`
+- **tailrocks-swift-agent-integration** — Xcode bridge, pinned read-only agent
+  knowledge, and one-owner-per-responsibility wiring. Definition:
+  `skills/tailrocks-swift-agent-integration/SKILL.md`
+- **tailrocks-swift-rust-core-setup** — project-level generated bridge/package
+  lane, binding drift, and shared Swift/Rust gates. Definition:
+  `skills/tailrocks-swift-rust-core-setup/SKILL.md`
 
 ### The design family — blessed targets before implementation
 

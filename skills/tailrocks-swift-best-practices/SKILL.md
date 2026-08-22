@@ -13,7 +13,8 @@ Write native macOS/iOS Swift behavior for the active task. SwiftUI on Apple's
 modern rendering stack is the default; AppKit is a narrow capability bridge.
 Selection supplies policy, never mutation or tool authority.
 
-Project tooling belongs to `tailrocks-swift-project-setup`; visual/material
+Project tooling routes by outcome to the `tailrocks-swift-project-*` family;
+visual/material
 policy belongs to `tailrocks-macos-design`; Rust-core and Apple-platform effect
 architecture belongs to `tailrocks-swift-rust-core-boundary`. Refuse findings-only
 review and behavior-preserving refactor requests; route them to

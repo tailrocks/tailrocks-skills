@@ -209,7 +209,7 @@ The slice list is the part worth studying:
 | Slice | What it stands up | Executed under |
 |---|---|---|
 | — | Not a slice: the signed-off prototype and its `Regions.md`, standing before READY | `tailrocks-macos-design` |
-| 001 | Verification baseline: workspace, empty Rust crate, empty app target, one task runner, all gates green | `tailrocks-rust-project-setup`, `tailrocks-swift-project-setup` |
+| 001 | Verification baseline: workspace, empty Rust crate, empty app target, Rust-core bridge lane, one task runner, all gates green | `tailrocks-rust-project-setup`, `tailrocks-swift-project-setup`, `tailrocks-swift-rust-core-setup` |
 | 002 | Tracer bullet: Rust returns a hardcoded snapshot, Swift renders it, gates still green | `tailrocks-rust-best-practices`, `tailrocks-swift-best-practices` |
 | 003 | Real parser and index behind the same snapshot type | `tailrocks-rust-best-practices` |
 | 004 | Timeline and results surface: the prototype's view layer over real snapshots, with its Liquid Glass chrome | `tailrocks-macos-design`, `tailrocks-swift-best-practices` |

@@ -1,4 +1,4 @@
-import { access, readdir, readFile } from "node:fs/promises";
+import { access, lstat, readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
 import { generateReferences, isGeneratedReferenceSource } from "./generate-references";
@@ -14,6 +14,22 @@ async function exists(file: string): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+async function pathContainsSymlink(root: string, target: string): Promise<boolean> {
+  const relative = path.relative(root, target);
+  if (!relative || outside(root, target)) return false;
+  let current = root;
+  for (const segment of relative.split(path.sep)) {
+    current = path.join(current, segment);
+    try {
+      if ((await lstat(current)).isSymbolicLink()) return true;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === "ENOENT") return false;
+      throw error;
+    }
+  }
+  return false;
 }
 
 async function filesUnder(directory: string): Promise<string[]> {
@@ -147,17 +163,35 @@ async function scanLinks(
         owner: "tailrocks-tanstack-project-setup",
         resolver: "resolve-package-versions.ts",
       },
+      {
+        members: [
+          "tailrocks-swift-project-setup",
+          "tailrocks-swift-project-audit",
+          "tailrocks-swift-project-remediate",
+        ],
+        owner: "tailrocks-swift-project-setup",
+      },
     ] as const;
-    const allowedSetupLink = setupFamilies.some((family) => {
+    let allowedSetupRoot: string | undefined;
+    for (const family of setupFamilies) {
       const setupRoot = path.resolve(path.dirname(skillDir), family.owner);
       const setupTemplates = path.join(setupRoot, "templates");
-      const setupResolver = path.join(setupRoot, "scripts", family.resolver);
-      return (
+      const setupResolver =
+        "resolver" in family ? path.join(setupRoot, "scripts", family.resolver) : undefined;
+      if (
         family.members.includes(directory as (typeof family.members)[number]) &&
         (target === setupResolver || target === setupTemplates || !outside(setupTemplates, target))
-      );
-    });
-    if ((raw.startsWith("../") || outside(skillDir, target)) && !allowedSetupLink) {
+      ) {
+        allowedSetupRoot = setupRoot;
+        break;
+      }
+    }
+    const unsafeSetupLink =
+      allowedSetupRoot !== undefined && (await pathContainsSymlink(allowedSetupRoot, target));
+    if (
+      ((raw.startsWith("../") || outside(skillDir, target)) && allowedSetupRoot === undefined) ||
+      unsafeSetupLink
+    ) {
       errors.push(`${directory}: reference escapes skill directory: ${raw}`);
     } else if (!(await exists(target))) {
       errors.push(`${directory}: broken reference ${raw}`);

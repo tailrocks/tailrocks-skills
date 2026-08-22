@@ -2,15 +2,15 @@
 
 Applies when the application keeps its behavior in a Rust core behind the
 SwiftUI shell (the boundary contract itself is
-`tailrocks-swift-best-practices`'s Rust core boundary; Rust workspace
+`tailrocks-swift-rust-core-boundary`'s; Rust workspace
 mechanics are `tailrocks-rust-project-setup`'s). This lane adds what the
 Apple baseline must additionally pin, generate, and gate.
 
 ## Layout
 
 The Rust workspace and the Apple projects live in one repository; app
-projects stay generated and uncommitted exactly as in
-`project-generation.md`:
+projects stay generated and uncommitted exactly as required by
+`tailrocks-swift-project-setup`'s project-generation policy:
 
 ```text
 app/
@@ -116,5 +116,6 @@ Additions to the baseline gate set:
   Xcode lane, then the critical UI smoke tests. Archive the XCFramework
   symbols and app dSYMs from release builds.
 - **Beta lane is nonblocking.** The forward-validation Xcode lane from
-  `toolchain.md` also builds this stack, and its failures never gate the
+  `tailrocks-swift-project-setup`'s toolchain policy also builds this stack,
+  and its failures never gate the
   shipping pipeline.
