@@ -1149,9 +1149,21 @@ all terminal checks pass, and the final literal marker is changed to
 
 ## P08 — Rehome repository audit and preserve compatibility
 
-- [ ] [IN_PROGRESS] P08.01 Encode every invocation row and modifier from
+- [x] [COMPLETED] P08.01 Encode every invocation row and modifier from
   `content-movement-audit-retirement.md` in a deterministic route schema.
-- [ ] [TODO] P08.02 Route default/quick/category/batch to standard improve;
+  - Evidence receipt (2026-08-23): added one ordered typed route schema covering
+    all 28 exact current-target rows, the closed 13-category vocabulary,
+    disjoint standard/security/platform-design partitions, explicit design
+    media and sweep contexts, target argument templates, distinct preserved
+    deep-operation clauses, and target-only non-interactive `--batch` semantics
+    on every valid route. The schema contains no deprecated target or bare
+    `deep` spelling. Focused proof passed 7 tests/142 assertions; fresh subagent
+    verdict: PASS. The non-eval migration gate passed every schema and ownership
+    check but its unrelated macOS GUI integration lane repeatedly stopped at
+    host application activation (412 pass, 2 fail); P08.GATE retains the clean
+    full-gate obligation and P09.15 owns that harness. Protected paths unchanged;
+    no evals run.
+- [ ] [IN_PROGRESS] P08.02 Route default/quick/category/batch to standard improve;
   whole-repository deep to improve-deep; security to improve-security.
 - [ ] [TODO] P08.03 Route branch variants to PR review; next/ask variants to
   research; visual-conformance questions to the matching design owner.
