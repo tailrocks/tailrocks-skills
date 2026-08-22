@@ -119,7 +119,12 @@ Debt that shrinks, defects that stop recurring, skills that improve from field e
 |---|---|---|
 | [`tailrocks-code-health`](skills/tailrocks-code-health/README.md) | Establish or tighten one explicitly approved shrink-only code-health ratchet for architecture, lint, dependency, flake, defect, documentation, or verification debt. | Manual only |
 | [`tailrocks-code-health-audit`](skills/tailrocks-code-health-audit/README.md) | Audit one code-health debt class read-only: inventory gates and exceptions, measure the baseline, evaluate shrink-only enforcement and verification placement, and emit fixed-ID evidence without installing or editing. | Manual only |
-| [`tailrocks-improve`](skills/tailrocks-improve/README.md) | Audit any repository through parallel read-only investigators and turn verified findings into standalone, executor-ready implementation plans under plans/ — no roadmap required. | Manual only |
+| [`tailrocks-improve`](skills/tailrocks-improve/README.md) | Audit a repository read-only with bounded parallel non-security lanes, adversarially verify every candidate, and return one evidence-ranked report. | Manual only |
+| [`tailrocks-improve-deep`](skills/tailrocks-improve-deep/README.md) | Audit a whole repository or one non-security category exhaustively through read-only lanes and fresh independent refutation, returning one verified report and no artifacts. | Manual only |
+| [`tailrocks-improve-security`](skills/tailrocks-improve-security/README.md) | Perform one read-only repository security audit with bounded threat analysis, secret-safe evidence, adversarial verification, and an optional deep fresh refutation pass. | Manual only |
+| [`tailrocks-improve-plan`](skills/tailrocks-improve-plan/README.md) | Convert one selected verified finding or described change into one standalone executor-ready plan under plans/ and its index row. | Manual only |
+| [`tailrocks-improve-execution`](skills/tailrocks-improve-execution/README.md) | Execute one approved standalone plans/ file in an isolated disposable worktree, re-run its criteria, independently review the diff, and return one verdict. | Manual only |
+| [`tailrocks-improve-reconcile`](skills/tailrocks-improve-reconcile/README.md) | Reconcile the standalone plans/ backlog against current repository truth, optionally re-verifying every row, and update only plans/README.md. | Manual only |
 | [`tailrocks-agents-md`](skills/tailrocks-agents-md/README.md) | Apply agent-instruction topology policy when in-scope work touches AGENTS.md, client symlinks, instruction rules, or rule placement. | Model policy |
 | [`tailrocks-retrospect`](skills/tailrocks-retrospect/README.md) | After a roadmap item ships, rebuild which skills ran from commit trailers, diff that against its Decisions, Must not, spec IDs, and verification rounds, and propose patches to the skills at fault. | Manual only |
 | [`tailrocks-simplify`](skills/tailrocks-simplify/README.md) | Review a pull request or diff and remove code without changing behavior: dead paths, hand-rolled utilities the platform provides, indirection, needless branching. | Manual only |
@@ -167,6 +172,7 @@ An idea through shaping, planning, autonomous execution, and back to verified tr
 | Skill | What it does | Invocation |
 |---|---|---|
 | [`tailrocks-audit`](skills/tailrocks-audit/README.md) | Cold-start audit of a repository or branch with no backlog yet: verified findings, prioritized, seeded as roadmap items or plans. | Manual only |
+| [`tailrocks-seed-roadmap`](skills/tailrocks-seed-roadmap/README.md) | Convert one already-verified finding or approved standalone plan into one roadmap DRAFT item on its delivery branch and pull request. | Manual only |
 | [`tailrocks-idea`](skills/tailrocks-idea/README.md) | Capture a raw product or feature idea as a new DRAFT roadmap item under roadmap/<slug>/ and register it in the index. | Manual only |
 | [`tailrocks-brainstorm`](skills/tailrocks-brainstorm/README.md) | Shape a DRAFT or SHAPING roadmap item through a one-question-at-a-time interview, writing every answer into the item as it resolves. | Manual only |
 | [`tailrocks-research`](skills/tailrocks-research/README.md) | Run deep, sourced research into a reusable topic under research/, for a question or to extend a roadmap item, using parallel investigators. | Manual only |

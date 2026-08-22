@@ -4,7 +4,7 @@
 
 `tailrocks-improve` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-improve)
 
-Audit any repository through parallel read-only investigators and turn verified findings into standalone, executor-ready implementation plans under plans/ — no roadmap required. Also specs one described change directly. Never implements.
+Audit a repository read-only with bounded parallel non-security lanes, adversarially verify every candidate, and return one evidence-ranked report. Never plans, implements, reconciles, or seeds delivery work.
 
 ## Invocation
 
@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-improve` …
 
-Arguments: `[quick|deep|<focus>|plan <change>|reconcile]`
+Arguments: `[quick|<non-security focus>] [--batch] [repository path]`
 
 ## Skill definition
 
@@ -21,7 +21,6 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 ## References
 
-- [`audit-playbook.md`](references/audit-playbook.md)
-- [`plan-format.md`](references/plan-format.md)
+- [`finding-routing.md`](references/finding-routing.md)
 - [`repository-audit-lanes.md`](references/repository-audit-lanes.md)
 - [`runtime-trust.md`](references/runtime-trust.md)

@@ -27,6 +27,7 @@
     {
       "source": "shared/references/repository-audit-lanes.md",
       "destinations": [
+        "skills/tailrocks-improve-deep/references/repository-audit-lanes.md",
         "skills/tailrocks-improve/references/repository-audit-lanes.md"
       ]
     },
@@ -52,6 +53,11 @@
         "skills/tailrocks-grpc-best-practices/references/runtime-trust.md",
         "skills/tailrocks-grpc-review/references/runtime-trust.md",
         "skills/tailrocks-idea/references/runtime-trust.md",
+        "skills/tailrocks-improve-deep/references/runtime-trust.md",
+        "skills/tailrocks-improve-execution/references/runtime-trust.md",
+        "skills/tailrocks-improve-plan/references/runtime-trust.md",
+        "skills/tailrocks-improve-reconcile/references/runtime-trust.md",
+        "skills/tailrocks-improve-security/references/runtime-trust.md",
         "skills/tailrocks-improve/references/runtime-trust.md",
         "skills/tailrocks-macos-design/references/runtime-trust.md",
         "skills/tailrocks-macos-visual-qa/references/runtime-trust.md",
@@ -74,6 +80,7 @@
         "skills/tailrocks-rust-project-setup/references/runtime-trust.md",
         "skills/tailrocks-rust-refactor/references/runtime-trust.md",
         "skills/tailrocks-rust-review/references/runtime-trust.md",
+        "skills/tailrocks-seed-roadmap/references/runtime-trust.md",
         "skills/tailrocks-simplify/references/runtime-trust.md",
         "skills/tailrocks-skill-audit/references/runtime-trust.md",
         "skills/tailrocks-skill-create/references/runtime-trust.md",

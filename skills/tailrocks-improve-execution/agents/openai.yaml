@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Improve Execution"
+  short_description: "Execute one standalone plan in a worktree"
+  default_prompt: "Use $tailrocks-improve-execution to execute this approved standalone plan in an isolated worktree and return a reviewed diff verdict without merging or pushing."
+policy:
+  allow_implicit_invocation: false

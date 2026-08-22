@@ -153,6 +153,13 @@ implementation to it afterward.
 |---|---|
 | [`tailrocks-code-health`](/docs/skills/tailrocks-code-health) | One explicitly approved debt class must become or tighten a standing shrink-only contract. |
 | [`tailrocks-code-health-audit`](/docs/skills/tailrocks-code-health-audit) | One debt class needs read-only measurement and fixed-ID evidence before any ratchet is authorized. |
+| [`tailrocks-improve`](/docs/skills/tailrocks-improve) | A repository needs a bounded non-security audit and one verified read-only report. |
+| [`tailrocks-improve-deep`](/docs/skills/tailrocks-improve-deep) | Every applicable non-security lane and package needs exhaustive coverage plus fresh refutation. |
+| [`tailrocks-improve-security`](/docs/skills/tailrocks-improve-security) | A repository needs a security-only threat audit with secret-safe evidence. |
+| [`tailrocks-improve-plan`](/docs/skills/tailrocks-improve-plan) | One verified finding or described change needs one standalone `plans/` plan. |
+| [`tailrocks-improve-execution`](/docs/skills/tailrocks-improve-execution) | One approved standalone plan should run in an isolated worktree and return a reviewed verdict. |
+| [`tailrocks-improve-reconcile`](/docs/skills/tailrocks-improve-reconcile) | The standalone `plans/` index must be synchronized with repository truth. |
+| [`tailrocks-seed-roadmap`](/docs/skills/tailrocks-seed-roadmap) | One verified finding or approved plan must enter the roadmap delivery pipeline as a DRAFT item. |
 | [`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) | A rule must be recorded for coding agents, or the instruction files have grown, drifted, or landed in the wrong directory. |
 | [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) | A roadmap item has shipped and its delivery history should say which skills let it diverge from its own plan. |
 | [`tailrocks-simplify`](/docs/skills/tailrocks-simplify) | A pull request works and should carry less code, with behavior frozen. |
@@ -173,20 +180,16 @@ skills** that produced it, proposing patches against their definitions.
 Audit needs no roadmap item and produces them; retrospect needs exactly one
 and produces none. If there is no item to point at, the answer is audit.
 
-### audit or improve
+### improve report, plan, execute, reconcile, or seed
 
-Both cold-start a repository and end in plans; they differ in what the
-findings become. [`tailrocks-audit`](/docs/skills/tailrocks-audit) seeds
-this collection's own pipeline — findings land as DRAFT roadmap items or as
-direct `roadmap/<slug>/plan/` packages, judged against the house stack, and
-stay inside that repository's delivery loop.
-[`tailrocks-improve`](/docs/skills/tailrocks-improve) owns the
-pipeline-free lane: the same fan-out, the same evidence vetting, but the
-output is a standalone `plans/` backlog of zero-context executor plans in a
-repository that adopts nothing else — judged against the repository's own
-contracts, and never implementing what it plans. Choose audit when the
-repository runs (or should run) the roadmap pipeline; choose improve when
-it does not.
+The improve family separates judgment from every mutation. `tailrocks-improve`
+returns one bounded read-only report; `tailrocks-improve-deep` adds exhaustive
+lane-by-package coverage and fresh refutation; `tailrocks-improve-security`
+owns the security-only oracle. A separately requested `tailrocks-improve-plan`
+writes one standalone plan under `plans/`; `tailrocks-improve-execution` runs
+one approved plan only in an isolated worktree; `tailrocks-improve-reconcile`
+updates only `plans/README.md`. `tailrocks-seed-roadmap` is the sole bridge from
+verified evidence to one DRAFT roadmap item. Naming a handoff invokes nothing.
 
 ### retrospect or reconcile
 
@@ -306,7 +309,8 @@ Both audit, at different subjects.
 against the authoring doctrine, and its report feeds
 [`tailrocks-skill-refactor`](/docs/skills/tailrocks-skill-refactor).
 [`tailrocks-improve`](/docs/skills/tailrocks-improve) judges the repository's
-**code** and turns verified findings into executor-ready plans under `plans/`.
+**code** and returns verified findings without writing. Selected findings reach
+`plans/` only through [`tailrocks-improve-plan`](/docs/skills/tailrocks-improve-plan).
 A repository whose product is agent skills gets its `SKILL.md` files audited
 by skill-audit and its tooling by improve — the two never overlap.
 

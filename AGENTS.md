@@ -409,22 +409,25 @@ Skill definition: `skills/tailrocks-code-health-audit/SKILL.md`
 
 ### tailrocks-improve
 
-Audit any repository — no roadmap or pipeline required — and turn verified
-findings into standalone, executor-ready implementation plans under
-`plans/`. Parallel read-only investigator subagents run the audit lanes;
-every finding's evidence is re-read by the planner before it may be
-reported; ranking is leverage discounted by confidence and fix-risk; each
-plan is self-contained for a zero-context executor, stamped with the
-commit it was planned at, drift-checked against that SHA, and gated on
-verification commands that were run during recon rather than guessed. It
-never implements, never writes outside `plans/`, and reconciles its
-backlog on reruns instead of duplicating plans. When the repository runs
-the delivery pipeline and the findings should become roadmap items, that
-is tailrocks-audit's job — improve owns the pipeline-free lane. One
-carve-out: in a repository whose product is agent skills, the skills
-themselves are judged by tailrocks-skill-audit, not by improve's lanes.
+Audit any repository through bounded non-security read-only lanes, re-read every
+candidate, rank correctness-first, and return one verified report. It writes
+nothing. `tailrocks-improve-deep` owns exhaustive lane-by-package coverage and
+fresh refutation; `tailrocks-improve-security` owns threat analysis and
+secret-safe security evidence. `tailrocks-improve-plan` writes one standalone
+`plans/` plan and index row; `tailrocks-improve-execution` executes one approved
+plan only in an isolated worktree; `tailrocks-improve-reconcile` updates only the
+standalone plan index; `tailrocks-seed-roadmap` alone converts verified evidence
+into one DRAFT delivery item. All seven are manual-only and one output owns each
+selector.
 
 Skill definition: `skills/tailrocks-improve/SKILL.md`
+
+- Deep audit: `skills/tailrocks-improve-deep/SKILL.md`
+- Security audit: `skills/tailrocks-improve-security/SKILL.md`
+- Standalone planning: `skills/tailrocks-improve-plan/SKILL.md`
+- Isolated execution: `skills/tailrocks-improve-execution/SKILL.md`
+- Standalone reconciliation: `skills/tailrocks-improve-reconcile/SKILL.md`
+- Delivery seeding: `skills/tailrocks-seed-roadmap/SKILL.md`
 
 ### tailrocks-grilling
 

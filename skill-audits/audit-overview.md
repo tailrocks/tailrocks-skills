@@ -861,9 +861,24 @@ all terminal checks pass, and the final literal marker is changed to
 
 ## P06 — Split improvement, instruction, and contribution ownership
 
-- [ ] [IN_PROGRESS] P06.01 Improve → standard, deep, security, plan, execution,
+- [x] [COMPLETED] P06.01 Improve → standard, deep, security, plan, execution,
   reconcile, and seed-roadmap owners with exclusive outputs.
-- [ ] [TODO] P06.02 Agents MD → add, audit, sync; retain `MODEL_POLICY` only on
+  - Evidence receipt (2026-08-23): split repository improvement into seven
+    manual-only owners with exclusive report, exhaustive report, security
+    report, standalone plan/index, isolated worktree diff, plan-index truth, and
+    DRAFT roadmap outputs. Moved common audit policy to the generated canonical
+    source, made ranking correctness-first, preserved the full standalone plan
+    schema, and added immutable command sandboxes, atomic CAS write boundaries,
+    bounded executor supervision, secret safety, duplicate history, and outward
+    authority guards. Registry/docs agree on 72 skills (61 manual, 11
+    model-policy), 18,662 total description characters, and 15,307 capped
+    characters. Focused ownership/docs/reference proof passed 18 tests/160
+    assertions; 54 sources produced 191 byte-identical destinations and 220
+    generated docs checked. Final `rtk mise run migration-check` passed 321
+    tests/1,963 assertions across 43 selected non-protected files. Fresh
+    subagent verdict: PASS after plan-schema, planner-sandbox, and bounded
+    execution corrections. No migration-plan artifact added; no evals run.
+- [ ] [IN_PROGRESS] P06.02 Agents MD → add, audit, sync; retain `MODEL_POLICY` only on
   the existing named owner pending descendant approval, while mutation remains
   task-authorized only.
 - [ ] [TODO] P06.03 Simplify → read-only audit and approved apply owner.

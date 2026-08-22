@@ -218,8 +218,38 @@
     },
     {
       "source": "shared/references/repository-audit-lanes.md",
+      "destination": "skills/tailrocks-improve-deep/references/repository-audit-lanes.md",
+      "sha256": "630c6ef1462769f0654a41f5c920da1cd7c52260d8fdb5114492b51a09fa63b6"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-improve-deep/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-improve-execution/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-improve-plan/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-improve-reconcile/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-improve-security/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/repository-audit-lanes.md",
       "destination": "skills/tailrocks-improve/references/repository-audit-lanes.md",
-      "sha256": "d7ed822bbb65d2b870ca31b190684a0b21518eb07a095bb423a99e4cb9457573"
+      "sha256": "630c6ef1462769f0654a41f5c920da1cd7c52260d8fdb5114492b51a09fa63b6"
     },
     {
       "source": "shared/references/runtime-trust.md",
@@ -470,6 +500,11 @@
       "source": "skills/tailrocks-rust-best-practices/references/tooling-lints.md",
       "destination": "skills/tailrocks-rust-review/references/tooling-lints.md",
       "sha256": "422358a383d646f3029da7f30ad5b50b3977a709be09224770fac3cc6e948c8c"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-seed-roadmap/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
     },
     {
       "source": "shared/references/runtime-trust.md",

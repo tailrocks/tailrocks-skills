@@ -99,10 +99,10 @@ for re-reading.
 
 ## Prioritization
 
-Rank verified defects by leverage: impact divided by effort, weighted by
-confidence and discounted by fix risk. Correctness and consistency are hard
-constraints; low effort, low leverage, or competitor behavior never excuses a
-known-wrong state.
+Rank verified defects first by correctness, consistency, goal fit, severity,
+confidence, and fix risk. Effort is planning metadata and a tiebreaker only;
+low effort, low leverage, or competitor behavior never excuses a known-wrong
+state.
 
 Report direction separately, ranked by the same evidence, effort, confidence,
 and risk dimensions. Preserve rejected-candidate reasons in the invocation's
