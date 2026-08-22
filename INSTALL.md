@@ -199,16 +199,18 @@ codex plugin marketplace add tailrocks/tailrocks-skills@v0.27.0
   `.codex-plugin/`).
 - Per-skill metadata: `skills/<name>/agents/openai.yaml` —
   `interface.display_name`, `interface.short_description`,
-  `interface.default_prompt`, and `policy.allow_implicit_invocation: false`
-  (defaults to `true`; `false` makes the skill explicit-only).
+  `interface.default_prompt`, and registry-matched
+  `policy.allow_implicit_invocation`: `false` for `MANUAL_ONLY`, `true` for
+  `MODEL_POLICY` (the client default is `true`).
 - Canonical skill IDs and invocations remain `tailrocks-*`; Codex display
   labels use `Tailrocks: <label>`. Validation rejects unbranded names and
   labels.
-- Invocation: type `$` and pick `$<skill-name>`, or run `/skills`. Because
-  every tailrocks skill ships `policy.allow_implicit_invocation: false`, the
-  skills do not appear in the model-visible implicit skill list (verified via
-  `codex debug prompt-input`) — they are reachable through explicit `$`
-  invocation only. That is the intended manual-only behavior.
+- Invocation: type `$` and pick `$<skill-name>`, or run `/skills`.
+  `MANUAL_ONLY` owners stay outside the model-visible implicit skill list;
+  `MODEL_POLICY` owners enter it under their exact description trigger.
+  Selection grants no mutation, tool, or external authority beyond the active
+  task. Direct-command visibility for model-policy owners is best-effort across
+  clients.
 - Duplicate semantics: Codex dedupes by SKILL.md **path**, never by name —
   a plugin install plus a `~/.agents/skills/` copy shows the skill twice.
   Keep the plugin as the only channel. (`~/.codex/skills/` still loads but
@@ -404,10 +406,10 @@ installed here, and a row nobody executed should say so rather than inherit
 a date it did not earn.
 
 
-| Client | Install channel | Manifest read | Explicit invocation | `disable-model-invocation` | Duplicate semantics |
+| Client | Install channel | Manifest read | Explicit invocation | Invocation-class control | Duplicate semantics |
 |---|---|---|---|---|---|
-| Claude Code | marketplace plugin | `.claude-plugin/plugin.json` | `/tailrocks-skills:<name>` | honored | plugin skills namespaced; a skills-dir copy would ALSO list |
-| Codex CLI | marketplace plugin | `.codex-plugin/plugin.json` (+ Claude-format marketplace) | `$<name>`, `/skills` | via `agents/openai.yaml` `policy.allow_implicit_invocation: false` | path-dedupe only — never dual-install |
+| Claude Code | marketplace plugin | `.claude-plugin/plugin.json` | `/tailrocks-skills:<name>` | `disable-model-invocation: true` manual; omitted for model policy | plugin skills namespaced; a skills-dir copy would ALSO list |
+| Codex CLI | marketplace plugin | `.codex-plugin/plugin.json` (+ Claude-format marketplace) | `$<name>`, `/skills` | `agents/openai.yaml` implicit `false` manual; `true` model policy | path-dedupe only — never dual-install |
 | OpenCode | `~/.config/opencode/skills/` copy | none (skills only) | ask for skill by name (`skill` tool) | ignored — use `permission.skill` | warning + last-write-wins |
 | Grok Build | Claude plugin auto-ingest, or `grok plugin install` | `.grok-plugin/` then `.claude-plugin/plugin.json` | `/<name>`, `/tailrocks-skills:<name>` | honored | name-dedupe by priority; plugins namespaced |
 | Kimi Code | `/plugins install <github-url>` | `.kimi-plugin/plugin.json` (or root `kimi.plugin.json`) | `/skill:<name>`, `/<name>` | honored (alias) | first-registration-wins by name |
@@ -440,9 +442,10 @@ extensions above safe to ship in one shared file.
 4. **Name = directory.** `name` frontmatter must equal the skill directory
    name (spec requirement; OpenCode and Amp enforce it, Kimi requires
    explicit `name`).
-5. **Descriptions are the trigger surface.** ≤1024 chars, and because Amp,
-   OpenCode, Antigravity, and Gemini cannot hard-disable model invocation,
-   every description starts with the explicit-request guard sentence.
+5. **Descriptions are the trigger surface.** ≤1024 chars. `MANUAL_ONLY`
+   descriptions start with the exact explicit-request guard because some
+   clients ignore policy metadata. `MODEL_POLICY` descriptions instead state
+   the exact content/intent predicate and the neighboring boundary.
 6. **Version in lockstep.** `version` must match across all three versioned
    manifests and the marketplace entry (enforced by the validator). Tag
    releases (`vX.Y.Z`) so Grok/Kimi/Codex installs can pin.

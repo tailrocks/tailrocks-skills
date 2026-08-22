@@ -45,14 +45,14 @@ latest stable major available at execution time; older majors are unsupported.
 Documentation sites are Fumadocs on TanStack Start with Bun — no other
 documentation framework, runtime, or package manager.
 
-Skills are manual-only where the client supports per-skill policy. Claude
-Code, Grok Build, and Kimi Code honor `disable-model-invocation: true`
-(`user-invocable: true` documents the explicit-invocation intent for clients
-that read it); Codex uses `agents/openai.yaml` with
-`policy.allow_implicit_invocation: false`. OpenCode, Amp, and the Antigravity
-CLI ignore those fields — there the explicit-request guard sentence at the
-start of every `description` is the control, and OpenCode users can enforce
-it with `permission.skill` config.
+Invocation class is registry-owned. `MANUAL_ONLY` skills use
+`disable-model-invocation: true`, `user-invocable: true`, Codex
+`policy.allow_implicit_invocation: false`, and the exact explicit-request guard
+at the start of the description. `MODEL_POLICY` skills omit the Claude disable
+flag, retain `user-invocable: true`, set Codex implicit invocation true, and use
+an exact content/intent trigger; selection grants no authority beyond the
+active task. Clients that ignore these fields rely on the description, and
+OpenCode users may additionally enforce `permission.skill` config.
 
 **Token usage is a design criterion.** Skills stay lean: scale effort (subagents,
 depth) to the task, prefer pointers (`file:line`/URL) over copied blocks, skip
@@ -718,12 +718,14 @@ subagent fan-out, then hands approved patches to
 
 ## Adding a Skill
 
-1. Create `skills/<name>/SKILL.md` with `name`, `license: Apache-2.0`, a
-   trigger-rich, agent-neutral `description` starting exactly with “Use only
-   when the user explicitly requests this skill.”, `disable-model-invocation:
-   true`, and `user-invocable: true` in the frontmatter. Evidence belongs in
-   artifacts and references, never disguised as instructions.
-2. Add `agents/openai.yaml` with `policy.allow_implicit_invocation: false`.
+1. Create `skills/<name>/SKILL.md` with `name`, `license: Apache-2.0`,
+   `user-invocable: true`, and the registry-matched invocation profile.
+   Creation defaults fail-closed to `MANUAL_ONLY`: exact explicit-request
+   guard plus `disable-model-invocation: true`. A separately confirmed exact
+   trigger may use `MODEL_POLICY`: no guard and no disable flag. Evidence
+   belongs in artifacts and references, never disguised as instructions.
+2. Add `agents/openai.yaml` with registry-matched
+   `policy.allow_implicit_invocation`: false for manual, true for model policy.
 3. Put deep material under `skills/<name>/references/` and copy-ready assets under
    `skills/<name>/templates/`; keep `SKILL.md` a concise router.
 4. Every plugin manifest auto-discovers the new skill from `skills/` — no

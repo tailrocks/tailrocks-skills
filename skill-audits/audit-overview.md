@@ -324,9 +324,26 @@ all terminal checks pass, and the final literal marker is changed to
 
 ## P03 — Ship the confirmed model-policy layer
 
-- [ ] [IN_PROGRESS] P03.01 Encode the confirmed invocation matrix in the registry,
+- [x] [COMPLETED] P03.01 Encode the confirmed invocation matrix in the registry,
   validator, generator, docs, installation matrix, templates, and tests.
-- [ ] [TODO] P03.02 Migrate the six confirmed best-practice owners to precise
+  - Evidence receipt (2026-08-22): retained the strict exhaustive v1 registry
+    as the sole effective-state authority and added one shared parser consumed
+    by validation and documentation generation. Generated README/site/index
+    surfaces and installation/client doctrine now distinguish `MANUAL_ONLY`
+    from `MODEL_POLICY`, state exact-trigger and zero-authority semantics, and
+    retain direct invocation as best-effort. The scaffold/template path remains
+    fail-closed manual by default and converts to the canonical model-policy
+    tuple only under an explicit invocation-class request. No pending or dual
+    registry state was introduced: all 43 effective rows remain manual until
+    P03.02/P03.03 atomically change registry plus metadata, and P03.04 adds the
+    eleventh owner. Focused parser, validator, generator, and scaffold proof
+    passed 60 tests with 407 assertions. `rtk mise run migration-check` passed
+    129 tests with 608 assertions across 15 non-protected files, validated 43
+    skills, checked 133 generated files, and checked 41 formatted files.
+    Protection proof covered 4 patterns and 183 frozen paths with zero
+    violations; diff check passed. Fresh subagent verdict: PASS. Migration
+    discipline preserved a reversible atomic owner-flip path. No evals run.
+- [ ] [IN_PROGRESS] P03.02 Migrate the six confirmed best-practice owners to precise
   model-visible descriptions and matching Claude/Codex/OpenCode metadata.
 - [ ] [TODO] P03.03 Migrate `tailrocks-agents-md` and the macOS/web/terminal
   design owners to `MODEL_POLICY`; preserve their human-authority boundaries.
