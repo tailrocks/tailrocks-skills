@@ -58,7 +58,7 @@ test("planning and reconciliation own CAS-safe narrow paths", async () => {
     expect(text).toContain("symlinked or escaping paths");
     expect(text).toContain("compare-and-swap");
   }
-  expect(plan).toContain("two-file set atomically");
+  expect(plan).toContain("plan-and-index set atomically");
   expect(plan.replace(/\s+/g, " ")).toContain(
     "immutable read-only target using frozen existing inputs, scrubbed secrets, disabled network",
   );
@@ -88,6 +88,57 @@ test("plan schema and execution supervision preserve the migrated contract", asy
   expect(execution).toContain("If that route cannot\n   be selected or isolated, refuse");
   expect(execution).toContain("TERM then KILL");
   expect(loop).toContain("Each command declares time, retry, output, and process-tree bounds");
+});
+
+test("pipeline-free planning has exact plans index rejection and pre-publication review contracts", async () => {
+  const [plan, boundary, format, reconciliation] = await Promise.all([
+    source("tailrocks-improve-plan"),
+    source("tailrocks-improve-plan", "references/artifact-boundary.md"),
+    source("tailrocks-improve-plan", "references/plan-format.md"),
+    source("tailrocks-improve-reconcile", "references/reconciliation.md"),
+  ]);
+  const contract = [plan, boundary, format].join("\n");
+  expect(plan).toContain("one rejected-finding index update");
+  expect(plan).toContain("Atomically compare-and-swap only\n   the index");
+  expect(boundary).toContain(
+    '`{ outcome: "no_change", code: "already_rejected", mutations: [], commit: null }`',
+  );
+  expect(format).toContain("## Rejected findings");
+  expect(format).toContain("## Review receipts");
+  expect(format).toContain("Every correction invalidates all receipts and restarts review");
+  expect(format).toContain("lowercase SHA-256 over the exact UTF-8 byte prefix");
+  expect(format).toContain("Do not\nnormalize line endings, whitespace, or encoding");
+  expect(format).toContain("stale_rejection_evidence");
+  expect(format).toContain("| Plan | Title | Priority | Status | Planned at | Dependencies | Evidence |");
+  expect(format).toContain("| Finding | Reason | Evidence | Observed at | Next owner |");
+  expect(format).toContain("stable\nsecret-safe finding ID");
+  expect(reconciliation).toContain("Preserve the canonical `## Rejected findings` table");
+  expect(reconciliation).toContain("stale_rejection_evidence");
+  expect(reconciliation).not.toContain("superseded evidence updates");
+  expect(plan.indexOf("stage one new numbered")).toBeLessThan(plan.indexOf("Cold-review the staged plan"));
+  expect(plan.indexOf("Cold-review the staged plan")).toBeLessThan(plan.indexOf("publish the final"));
+  expect(plan).toContain("After every correction, restart the required review set");
+  expect(plan).toContain("one exact `## Review receipts\\n` heading");
+  expect(plan.replace(/\s+/g, " ")).toContain("two independent PASS receipts bound to the same digest");
+  expect(plan).toContain("Recompute the review digest");
+  expect(plan).toContain("On drift, return a zero-mutation refusal");
+  expect(contract).toContain("`plans/NNN-*.md`");
+  expect(contract).toContain("`plans/README.md`");
+  for (const retiredMechanic of [
+    "roadmap/<slug>/plan",
+    "goal/check.sh",
+    "goal/START.md",
+    "goal/RESUME.md",
+    "Frozen contract fingerprint",
+    "Tailrocks-Skill: tailrocks-improve-plan",
+  ]) {
+    expect(contract).not.toContain(retiredMechanic);
+  }
+  expect(boundary).toContain("Never create a roadmap item");
+  expect(boundary).toContain("frozen-contract\nfingerprint");
+  expect(boundary.replace(/\s+/g, " ")).toContain(
+    "Never create a plan file/row, separate log, branch, or empty commit",
+  );
 });
 
 test("common audit policy is canonical and correctness-first", async () => {

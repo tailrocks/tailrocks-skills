@@ -1224,9 +1224,23 @@ all terminal checks pass, and the final literal marker is changed to
     all changed/schema/generated checks but the unrelated macOS GUI lane retained
     the host activation failure (419 pass, 2 fail), deferred to P09.15. Protected
     paths unchanged; no evals run.
-- [ ] [IN_PROGRESS] P08.06 Convert pipeline-free planning to `plans/`; remove roadmap
+- [x] [COMPLETED] P08.06 Convert pipeline-free planning to `plans/`; remove roadmap
   goal/fingerprint mechanics from improve-plan and avoid empty rejection commits.
-- [ ] [TODO] P08.07 Remove retired public skill and mode surfaces; keep any
+  - Evidence receipt (2026-08-23): `tailrocks-improve-plan` now stages exactly one
+    standalone `plans/NNN-*.md` plus canonical `plans/README.md` row, cold-reviews
+    final bytes before an atomic CAS publication, and binds normal/deep PASS
+    receipts to one exact unnormalized UTF-8 SHA-256 prefix. Rejections update
+    only the canonical rejected-findings ledger or return typed no-change; changed
+    bound evidence fails closed without rewriting history. Roadmap items, goals,
+    handoffs, statuses, fingerprints, branches, and empty commits are forbidden.
+    Reconciliation preserves and revalidates the rejection ledger. Changed paths:
+    improve-plan skill/reference/generated definition, improve-reconcile reference,
+    and ownership tests. Focused proof passed 10 tests/339 assertions; validator
+    passed 85 skills; fresh subagent verdict: PASS. The non-eval migration gate
+    passed 420 tests and all static/generated checks; only the unrelated two macOS
+    GUI activation cases failed, deferred to P09.15. Protected paths unchanged;
+    no evals run or inspected.
+- [ ] [IN_PROGRESS] P08.07 Remove retired public skill and mode surfaces; keep any
   frozen protected bytes untouched but undiscoverable and unrouteable.
 - [ ] [TODO] P08.GATE Table-test every route and refusal, synchronize generated
   surfaces, and run `rtk mise run migration-check`. Evidence: pending.

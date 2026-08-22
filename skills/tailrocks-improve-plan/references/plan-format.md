@@ -78,18 +78,51 @@ oracle that cannot distinguish zero work.
 
 Interactions, reviewer focus, and deliberately deferred follow-ups.
 
-## Cold-review receipt
+## Review receipts
 
-Reviewer identity, reviewed SHA, verdict, and corrected gaps. `--deep` carries a
-second independent receipt.
+Reviewer identity, verdict, and the digest of all final candidate bytes outside
+this section. Every correction invalidates all receipts and restarts review;
+`--deep` carries two independent PASS receipts over the same digest.
+
+The digest algorithm is lowercase SHA-256 over the exact UTF-8 byte prefix that
+ends immediately before the one exact `## Review receipts\n` heading. Do not
+normalize line endings, whitespace, or encoding. The heading occurs exactly once
+and is the final section; malformed or repeated boundaries refuse publication.
 ```
 
 ## Index
 
-`plans/README.md` has one row per plan: number, title, priority, status, planned
-SHA, dependencies, and evidence state. Status is `TODO`, `IN_PROGRESS`,
-`BLOCKED`, `STALE`, or `RETIRED`; the index is the only status surface.
+Create `plans/README.md` with this exact initial shape when it is absent:
+
+```markdown
+# Improvement plans
+
+## Plans
+
+| Plan | Title | Priority | Status | Planned at | Dependencies | Evidence |
+|---|---|---|---|---|---|---|
+
+## Rejected findings
+
+| Finding | Reason | Evidence | Observed at | Next owner |
+|---|---|---|---|---|
+```
+
+Each plan row uses the canonical relative plan path, title, `P1`/`P2`/`P3`, one
+closed status, full planned SHA, comma-separated plan numbers or `none`, and a
+concise evidence state. Status is `TODO`, `IN_PROGRESS`, `BLOCKED`, `STALE`, or
+`RETIRED`; the index is the only status surface. Each rejection row uses a stable
+secret-safe finding ID, reason, evidence locators, full observed SHA plus date,
+and exact next owner. Re-read existing rejection identities before adding one;
+identical means no change, while one identity bound to different evidence is a
+conflict. Changed evidence never rewrites an existing rejection: reconciliation
+returns a typed `stale_rejection_evidence` refusal, and only planning may add a
+new stable identity after re-deriving the finding.
 
 Numbering is monotonic and never recycled. A changed approach uses a new number;
 the prior row becomes `RETIRED` and points at the replacement. Reconciliation
-never edits a plan body. Rejected input creates no plan, row, or empty commit.
+never edits a plan body. Create the directory/index only through a bound safe
+parent; reject symlinks, escapes, malformed headings/tables, duplicate numbers,
+and noncanonical rows. Preserve unrelated rows and publish against the expected
+index preimage. Rejected input creates no plan row/file or empty commit; its
+index-only CAS and typed no-change receipt are defined by `artifact-boundary.md`.

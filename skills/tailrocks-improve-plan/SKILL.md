@@ -40,19 +40,35 @@ dispatches it.
 3. Refuse work with an open product decision, direction choice, unresolved
    security boundary, cross-session scope, or non-LOW fix risk; route it to
    `tailrocks-seed-roadmap`. Low confidence becomes an investigation plan, not
-   a fix plan.
-4. Write one new numbered `plans/NNN-<slug>.md` and one matching
-   `plans/README.md` row. Never overwrite a distinct plan or log a rejected
-   finding through an empty commit. Reject symlinked or escaping paths, bind
-   preimage hashes, and publish the two-file set atomically with compare-and-swap
-   and owned-byte rollback. Stamp the planned-at SHA and exact scope.
-5. Cold-review the plan with a fresh-context reader that receives only the plan
-   and repository. Under `--deep`, require a second independent cold reviewer.
-   Correct the plan only from re-read evidence; never implement it.
+   a fix plan. Record the rejected finding in `plans/README.md`'s canonical
+   rejected-findings table by stable secret-safe identity, or return typed
+   no-change when that exact row already exists. Atomically compare-and-swap only
+   the index; create no plan file/row, branch, or commit.
+4. From bound preimages, stage one new numbered `plans/NNN-<slug>.md` and its
+   matching index row outside the destination. Never overwrite a distinct plan.
+   Reject symlinked or escaping paths and noncanonical indexes. Stamp the planned-at
+   SHA and exact scope, but publish nothing yet.
+5. Cold-review the staged plan with a fresh-context reader that receives only
+   the candidate and repository. Under `--deep`, require a second independent
+   cold reviewer. After every correction, restart the required review set over
+   the final candidate bytes excluding `## Review receipts`. The review digest is
+   lowercase SHA-256 of the exact UTF-8 byte prefix ending immediately before the
+   one exact `## Review receipts\n` heading; normalization is forbidden, and that
+   heading must occur once as the final section. A PASS binds that digest; deep
+   mode requires two independent PASS receipts bound to the same digest. Then
+   append only those receipts and verify their digests; no other byte may change.
+   Never implement or mutate a published plan.
+6. Recheck HEAD, index preimage, plan-target absence, and destination parents.
+   Recompute the review digest and require every final receipt still binds it.
+   On drift, return a zero-mutation refusal. Otherwise publish the final
+   plan-and-index set atomically with compare-and-swap and owned-byte rollback.
 
 ## Final gate
 
-Output is exactly one plan plus its index row. Source, roadmap, issues, comments,
-branches, commits, and remotes are unchanged. The plan contains evidence,
-ordered steps, per-step non-vacuous proof commands, done criteria, out-of-scope,
-STOP conditions, drift handling, and review receipts.
+Output is exactly one plan plus its index row, one rejected-finding index update,
+or one typed no-change/refusal receipt. Source, roadmap, issues, comments,
+branches, commits, and remotes are unchanged. No delivery item, item-local
+`plan/`, `goal/`, handoff, status machine, or fingerprint exists in this package.
+A created plan contains evidence, ordered steps, per-step non-vacuous proof
+commands, done criteria, out-of-scope, STOP conditions, drift handling, and
+review receipts.
