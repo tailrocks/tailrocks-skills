@@ -307,13 +307,24 @@ all terminal checks pass, and the final literal marker is changed to
     subagent verdict after two boundary corrections: PASS. Skill-creator kept
     routers lean and routed shared doctrine; safe-refactor kept observable
     contracts frozen. No evals run.
-- [ ] [IN_PROGRESS] P02.GATE Run `rtk mise run migration-check`; prove every canonical
+- [x] [COMPLETED] P02.GATE Run `rtk mise run migration-check`; prove every canonical
   source has one owner and every generated copy is byte-identical. Evidence:
-  pending.
+  - Evidence receipt (2026-08-22): focused ownership proof passed 16 tests with
+    93 assertions. `rtk mise run migration-check` passed 126 tests with 593
+    assertions across 14 non-protected test files; validated 43 skills, checked
+    133 generated files, and checked 39 formatted files. Independent fresh
+    review proved 10 canonical files equal 10 unique manifest sources with exact
+    inventory coverage, plus 71 unique destinations and 71 byte-identical
+    copies. The manifest/generator reject duplicate or case-colliding ownership,
+    source/destination drift, symlinks, unsafe paths, silent removals, and
+    incomplete runtime-trust coverage. Direct migration remains separately
+    authorized in the named branch/pull request with no planner/executor product
+    skill or artifact. Protection proof covered 4 patterns and 183 frozen source
+    paths with zero violations. Fresh subagent verdict: PASS. No evals run.
 
 ## P03 — Ship the confirmed model-policy layer
 
-- [ ] [TODO] P03.01 Encode the confirmed invocation matrix in the registry,
+- [ ] [IN_PROGRESS] P03.01 Encode the confirmed invocation matrix in the registry,
   validator, generator, docs, installation matrix, templates, and tests.
 - [ ] [TODO] P03.02 Migrate the six confirmed best-practice owners to precise
   model-visible descriptions and matching Claude/Codex/OpenCode metadata.
