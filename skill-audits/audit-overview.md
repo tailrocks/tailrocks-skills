@@ -899,8 +899,26 @@ all terminal checks pass, and the final literal marker is changed to
     subagent verdict: PASS after recovery-receipt, sequential-publication, and
     installed-entrypoint identity corrections. No migration-plan artifact added;
     no evals run.
-- [ ] [IN_PROGRESS] P06.03 Simplify → read-only audit and approved apply owner.
-- [ ] [TODO] P06.04 Remediate → root-cause diagnosis/design and approved
+- [x] [COMPLETED] P06.03 Simplify → read-only audit and approved apply owner.
+  - Evidence receipt (2026-08-23): split simplification into a manual-only,
+    read-only audit owner and an exact-approved-set apply owner. Moved the
+    simplification ladder byte-identically to audit while retaining behavior
+    preservation solely with apply; legacy default/audit use on the old name
+    routes without mutation. Apply now requires a pre-edit oracle, sequential
+    per-path expected-preimage-to-owned-postimage CAS with receipts, bounded
+    immutable proof commands, owned rollback, and an explicit
+    `RECOVERY_REQUIRED` terminal state for surviving mutations. Review and
+    improvement routes distinguish discovery from approved application.
+    Registry/docs agree on 75 skills (64 manual, 11 model-policy), 19,306 total
+    description characters, and 15,786 capped characters. Focused ownership,
+    invocation, reference, documentation, and validation proof passed 71
+    tests/489 assertions; 54 sources produced 194 byte-identical destinations
+    and 229 generated docs checked. Final `rtk mise run migration-check` passed
+    332 tests/2,051 assertions across 45 selected non-protected files. Fresh
+    subagent verdict: PASS after production-path CAS, rollback-state,
+    preservation-reference, and routing-copy corrections. No migration-plan
+    artifact added; no evals run.
+- [ ] [IN_PROGRESS] P06.04 Remediate → root-cause diagnosis/design and approved
   correction; merge rethink analysis and keep the old name route-only.
 - [ ] [TODO] P06.05 Contribute → recon, propose, prepare, submit, respond; keep
   fresh external-action approval at every outward boundary.

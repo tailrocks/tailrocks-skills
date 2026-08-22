@@ -1,6 +1,6 @@
 interface:
   display_name: "Tailrocks: Simplify"
-  short_description: "Remove code from a diff without changing behavior"
-  default_prompt: "Use $tailrocks-simplify on this pull request: walk each added hunk down the ladder — does it need to exist, does the repository, language, platform, or an installed dependency already do it — and report only removals that carry a measured delta and a behavior-preservation argument."
+  short_description: "Apply approved behavior-preserving removals"
+  default_prompt: "Use $tailrocks-simplify apply to perform only this explicitly approved removal set under a proven behavior oracle, with per-removal rollback and no scope expansion."
 policy:
   allow_implicit_invocation: false

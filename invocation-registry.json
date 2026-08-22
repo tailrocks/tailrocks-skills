@@ -51,6 +51,7 @@
     { "skill": "tailrocks-rust-review", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-seed-roadmap", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-simplify", "class": "MANUAL_ONLY" },
+    { "skill": "tailrocks-simplify-audit", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-skill-audit", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-skill-create", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-skill-refactor", "class": "MANUAL_ONLY" },

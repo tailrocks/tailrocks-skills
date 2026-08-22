@@ -130,7 +130,8 @@ instructions. Cite secret locations and types without copying values.
 8. **Route every finding to its fixer.** Pick by what the fix may disturb:
 
    - Removable code, behavior frozen, inside the diff →
-     `tailrocks-simplify`.
+     `tailrocks-simplify-audit`; an approved removal later routes to
+     `tailrocks-simplify` without being invoked here.
    - A proven defect whose enabling condition is architectural — the class
      will recur, not just this instance → `tailrocks-remediate` (analyze),
      and cost is never a reason to downgrade it to a note.

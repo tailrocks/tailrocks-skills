@@ -55,6 +55,7 @@
     "tailrocks-agents-md-sync",
     "tailrocks-retrospect",
     "tailrocks-simplify",
+    "tailrocks-simplify-audit",
     "tailrocks-remediate",
     "tailrocks-rethink",
     "tailrocks-contribute",

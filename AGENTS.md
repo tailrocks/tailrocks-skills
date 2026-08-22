@@ -654,7 +654,8 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
   content-triggered specialist lanes (test coverage, silent failures, type
   design, comment accuracy), stack-lane dispatch to the house
   best-practices skills per changed file, and per-finding routing —
-  behavior-frozen removals to tailrocks-simplify, proven defect classes to
+  behavior-frozen removal candidates to tailrocks-simplify-audit and approved
+  removals to tailrocks-simplify, proven defect classes to
   tailrocks-remediate. Unconditionally read-only; never posts, approves, or
   merges. Definition: `skills/tailrocks-review-pr/SKILL.md`
 - **tailrocks-merge-pr** — merge fail-closed: CI gate with named-check-only
@@ -715,21 +716,19 @@ Skill definition: `skills/tailrocks-remediate/SKILL.md`
 
 ### tailrocks-simplify
 
-Review a pull request or working diff and remove code from it without changing
-behavior. Scope is the diff; untouched code stays untouched. Each added hunk
-walks a ladder — need to exist, repository already does it, language does it,
-platform does it, installed dependency does it, one expression — and every
-finding carries a counted delta and a preservation argument. Protected
-constructs (trust-boundary validation, authorization, failure paths, durability
-and concurrency handling, accessibility, security limits) are never removed as
-redundancy, and single-use extractions, two-occurrence abstractions, and
-renames for taste are rejected by name.
+Apply one explicitly approved set of measured removals inside a bound diff under
+a pre-existing behavior oracle. It discovers nothing, changes no behavior, and
+publishes each path by CAS with owned rollback. `tailrocks-simplify-audit` owns
+the read-only ladder pass: protected constructs, measured deltas, preservation
+arguments, rejected candidates, and behavior-changing near-misses.
 
 Skill definition: `skills/tailrocks-simplify/SKILL.md`
 
-The ladder also works as a discipline applied before code is written; this
-skill applies it to code that already exists in a diff and adds the
-obligation that nothing observable may change.
+Read-only audit: `skills/tailrocks-simplify-audit/SKILL.md`
+
+The ladder also works before code is written; the audit owner applies it to a
+current diff, and the apply owner begins only after the exact removals are
+approved.
 
 ### tailrocks-rethink
 
@@ -744,8 +743,9 @@ constraint.
 Skill definition: `skills/tailrocks-rethink/SKILL.md`
 
 Three skills change existing code, ordered by how much they are allowed to
-disturb. **tailrocks-simplify** changes nothing observable and stays inside the
-diff. **tailrocks-remediate** corrects a proven defect while the system keeps
+disturb. **tailrocks-simplify-audit** finds removals without editing;
+**tailrocks-simplify** applies only approved ones, changes nothing observable,
+and stays inside the diff. **tailrocks-remediate** corrects a proven defect while the system keeps
 its promises. **tailrocks-rethink** treats the current shape as the subject and
 expects to break things. Pick by what the change may disturb, not by how large
 it feels.

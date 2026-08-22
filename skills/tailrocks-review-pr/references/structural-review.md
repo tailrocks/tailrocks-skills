@@ -73,8 +73,9 @@ Structural findings route by what the fix may disturb, mirroring the house
 three-skill order:
 
 - The fix removes code from this diff with behavior frozen →
-  `tailrocks-simplify` (its ladder, protected constructs, and measured
-  deltas govern; do not duplicate its analysis here).
+  `tailrocks-simplify-audit` (its ladder, protected constructs, and measured
+  deltas govern; do not duplicate its analysis here). Only an already approved
+  removal routes onward to `tailrocks-simplify`.
 - The finding is a proven defect class — the structure *caused* wrongness
   and will again → `tailrocks-remediate`, which refuses cost as a
   counter-argument.

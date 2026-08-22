@@ -164,7 +164,8 @@ implementation to it afterward.
 | [`tailrocks-agents-md-audit`](/docs/skills/tailrocks-agents-md-audit) | Instruction placement, deletion evidence, topology, and load cost need one read-only report. |
 | [`tailrocks-agents-md-sync`](/docs/skills/tailrocks-agents-md-sync) | One current audit repair set has explicit approval and must be applied exactly. |
 | [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) | A roadmap item has shipped and its delivery history should say which skills let it diverge from its own plan. |
-| [`tailrocks-simplify`](/docs/skills/tailrocks-simplify) | A pull request works and should carry less code, with behavior frozen. |
+| [`tailrocks-simplify-audit`](/docs/skills/tailrocks-simplify-audit) | One diff needs a read-only search for measured removals with behavior frozen. |
+| [`tailrocks-simplify`](/docs/skills/tailrocks-simplify) | One exact audited removal set has explicit approval and a proven preservation oracle. |
 | [`tailrocks-remediate`](/docs/skills/tailrocks-remediate) | A defect is proven and the system must keep its promises while being corrected. |
 | [`tailrocks-rethink`](/docs/skills/tailrocks-rethink) | The current shape itself is under review and breaking it is acceptable. |
 | [`tailrocks-contribute`](/docs/skills/tailrocks-contribute) | The repository belongs to someone else. |
@@ -205,12 +206,12 @@ settled.
 
 ### simplify, remediate, or rethink
 
-Three skills change existing code. Pick by how much the change may disturb, not
-by how large it feels.
+Four owners govern three existing-code change classes. Pick by how much the
+change may disturb, not by how large it feels.
 
-`tailrocks-simplify` disturbs nothing observable. Scope is the diff, behavior is
-frozen, and the only accepted findings are removals with a counted delta.
-Reach for it on a pull request that works and should be smaller.
+`tailrocks-simplify-audit` reports measured removals without editing. Scope is
+the diff and behavior is frozen. An explicitly approved set then routes to
+`tailrocks-simplify`, which applies only those removals under the proven oracle.
 
 `tailrocks-remediate` corrects a proven defect while the system keeps its
 promises. `tailrocks-rethink` treats the current shape as the subject and
@@ -354,9 +355,10 @@ document describes the system to readers.
 verdict and never edits: every correctness finding is re-derived from the
 code before it may be reported, every structural finding names its
 restructure, and each finding is routed to the skill that fixes its
-class. [`tailrocks-simplify`](/docs/skills/tailrocks-simplify) is one of
-those routes — it removes code from the diff with behavior frozen, and it
-does apply changes in its `apply` mode.
+class. [`tailrocks-simplify-audit`](/docs/skills/tailrocks-simplify-audit) is one
+of those routes — it reports removable code with behavior frozen. An explicitly
+approved report then routes to [`tailrocks-simplify`](/docs/skills/tailrocks-simplify),
+which applies only that set.
 [`tailrocks-remediate`](/docs/skills/tailrocks-remediate) is another — a
 review finding becomes its input when the defect is proven and its
 enabling condition is architectural, so the class stops recurring instead
@@ -380,7 +382,7 @@ findings go to the roadmap/plan pipeline, or straight to a
 get wrong — and to a fixer skill instead when the finding's shape says
 so: `tailrocks-remediate` when the defect class will recur,
 `tailrocks-rethink` when nothing failed but the shape keeps producing
-near-misses, `tailrocks-simplify` for redundancy inside a diff.
+near-misses, `tailrocks-simplify-audit` for redundancy inside a diff.
 [`tailrocks-code-health-audit`](/docs/skills/tailrocks-code-health-audit) owns
 one-off read-only debt measurement. [`tailrocks-code-health`](/docs/skills/tailrocks-code-health)
 owns only an explicitly approved standing ratchet mutation that keeps a named
