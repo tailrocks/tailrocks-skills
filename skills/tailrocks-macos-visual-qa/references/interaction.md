@@ -7,8 +7,8 @@ identifier on the element. An agent can find an element by identifier and send i
 a press action, then read state back out of the same tree — no test target, no
 rebuild, no test host.
 
-Compile and use `templates/ax-drive.swift`:
-`ax-drive <pid|owner> find|press|read <AXIdentifier>`. AppleScript `System
+Install and compile the repository macOS visual-QA AX driver:
+`ax-drive <exact-pid> find|press|read <AXIdentifier>`. AppleScript `System
 Events` cannot match `AXIdentifier`; this purpose-built AXUIElement tool can.
 
 This is a far tighter cycle than a full UI-test run, and it is the correct default
@@ -60,6 +60,8 @@ nothing. Assert on the executed-test count, not on the exit status alone.
 ## The only automated design gate
 
 ```swift
+let owned = [app] + app.descendants(matching: .any)
+    .allElementsBoundByAccessibilityElement
 try app.performAccessibilityAudit(for: [
     .contrast,
     .elementDetection,
@@ -68,10 +70,8 @@ try app.performAccessibilityAudit(for: [
 ]) { issue in
     // The audit walks the whole session, including the system menu bar and
     // screen containers the app cannot label; unscoped, it fails on any app.
-    // App-owned elements all carry accessibility identifiers, so scope by
-    // that and let system-owned issues pass through.
     guard let element = issue.element else { return true }
-    return element.identifier.isEmpty
+    return !owned.contains(element)
 }
 ```
 
@@ -86,7 +86,7 @@ contrast from pixels.
 
 It runs through the test action, so it needs a graphical session like everything
 else here.
-Harness mode installs `templates/AuditTests.swift`
+Harness mode installs the repository macOS visual-QA AuditTests.swift
 when the project has no UI-test target.
 
 **No accessibility inspector command-line tool exists. No HIG linter exists. No

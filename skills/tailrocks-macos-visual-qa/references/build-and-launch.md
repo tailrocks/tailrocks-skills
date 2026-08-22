@@ -55,9 +55,11 @@ ENABLE_HARDENED_RUNTIME = NO
 State does not survive reliably between separate agent tool calls. Run kill,
 launch, wait, act, and capture as **one** invocation.
 
-Use `templates/capture.sh`: canonicalize and guard
-the app path, kill, launch, wait, re-activate, resolve the current window ID,
-capture by ID, then verify file size and dimensions.
+Use the installed macOS visual-QA capture script: canonicalize and guard
+the app path and real executable, terminate only exact executable owners, launch,
+wait with a fixed bound, re-activate the exact PID, resolve its current window
+ID, capture by ID, then verify file size and dimensions. Similar process names
+and paths are not ownership evidence.
 
 `-x` suppresses the capture sound, `-o` omits the window shadow, `-l` selects by
 window ID.
@@ -67,14 +69,16 @@ its window will never regain one, so the kill is mandatory, not defensive.
 
 ## Resolving the window ID
 
-A short helper is the whole harness. Enumerate every window, match owner name and
-window title, print the ID. Do not filter on the on-screen flag.
+A short helper is the whole harness. Enumerate every window, match the exact
+owner PID and optional exact window title, and require exactly one result. Two
+matches are a hard refusal, never a warning followed by first-match selection.
+Do not filter on the on-screen flag.
 
-Copy `templates/window-id.swift` from this skill. Compile it once and keep the
+Install the repository macOS visual-QA window-id.swift. Compile it once and keep the
 binary in the project's scripts directory:
 
 ```sh
-swiftc -O Scripts/window-id.swift -o Scripts/window-id
+swiftc -O Scripts/TailrocksVisualQA/window-id.swift -o Scripts/TailrocksVisualQA/window-id
 ```
 
 ## Why not the alternatives

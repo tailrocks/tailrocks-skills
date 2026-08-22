@@ -1,0 +1,101 @@
+#!/bin/sh
+set -eu
+
+APP=${1:?app bundle path required}; OUT=${2:?output path required}; shift 2
+WINDOW_NAME=""
+if [ "${1:-}" = --window-title ]; then WINDOW_NAME=${2:?window title required}; shift 2; fi
+[ "${1:-}" = -- ] && shift
+HERE=$(cd "$(dirname "$0")" && pwd -P)
+APP_PARENT=$(cd "$(dirname "$APP")" 2>/dev/null && pwd -P) || { echo "app parent missing" >&2; exit 2; }
+APP="$APP_PARENT/$(basename "$APP")"
+case "$APP" in /tmp/*|/private/tmp/*|/var/folders/*|/private/var/folders/*) echo "temporary app refused" >&2; exit 2 ;; esac
+[ ! -L "$APP" ] || { echo "symlink app bundle refused" >&2; exit 2; }
+APP=$(cd "$APP" && pwd -P)
+CONTENTS="$APP/Contents"; [ -d "$CONTENTS" ] && [ ! -L "$CONTENTS" ] || { echo "invalid Contents directory" >&2; exit 2; }
+CONTENTS=$(cd "$CONTENTS" && pwd -P); case "$CONTENTS" in "$APP"/*) ;; *) echo "Contents escaped app bundle" >&2; exit 2 ;; esac
+MACOS="$CONTENTS/MacOS"; [ -d "$MACOS" ] && [ ! -L "$MACOS" ] || { echo "invalid MacOS directory" >&2; exit 2; }
+MACOS=$(cd "$MACOS" && pwd -P)
+case "$MACOS" in "$CONTENTS"/*) ;; *) echo "MacOS escaped Contents" >&2; exit 2 ;; esac
+EXECUTABLE_NAME=$(plutil -extract CFBundleExecutable raw "$APP/Contents/Info.plist")
+case "$EXECUTABLE_NAME" in ''|*[!A-Za-z0-9._-]*) echo "unsafe CFBundleExecutable" >&2; exit 2 ;; esac
+EXECUTABLE="$MACOS/$EXECUTABLE_NAME"
+[ -f "$EXECUTABLE" ] && [ ! -L "$EXECUTABLE" ] && [ -x "$EXECUTABLE" ] || { echo "bundle executable must be regular, non-symlink, executable" >&2; exit 2; }
+EXECUTABLE_REAL=$(cd "$(dirname "$EXECUTABLE")" && pwd -P)/$(basename "$EXECUTABLE")
+case "$EXECUTABLE_REAL" in "$MACOS"/*) ;; *) echo "bundle executable escaped MacOS" >&2; exit 2 ;; esac
+
+OUT_PARENT_INPUT=$(dirname "$OUT"); [ ! -L "$OUT_PARENT_INPUT" ] || { echo "symlink output parent refused" >&2; exit 2; }
+OUT_PARENT=$(cd "$OUT_PARENT_INPUT" 2>/dev/null && pwd -P) || { echo "output parent must already exist" >&2; exit 2; }
+OUT="$OUT_PARENT/$(basename "$OUT")"; SIDECAR="$OUT.json"
+[ ! -e "$OUT" ] && [ ! -L "$OUT" ] && [ ! -e "$SIDECAR" ] && [ ! -L "$SIDECAR" ] || { echo "output exists" >&2; exit 2; }
+
+TOOLS=$(mktemp -d "${TMPDIR:-/tmp}/tailrocks-visual-qa-tools.XXXXXX"); chmod 700 "$TOOLS"
+PROCESS_TOOL="$TOOLS/process-owner"; WINDOW_TOOL="$TOOLS/window-id"
+TMP_OUT=""; PRE_JSON=""; POST_JSON=""; PUBLISHED_SIDECAR=0; IDENTITY=""; SUCCESS=0
+cleanup() {
+  if [ "$SUCCESS" -eq 0 ] && [ -n "$IDENTITY" ] && [ -x "$PROCESS_TOOL" ]; then
+    cleanup_pid=${IDENTITY%%|*}; cleanup_token=${IDENTITY#*|}
+    "$PROCESS_TOOL" terminate "$EXECUTABLE_REAL" "$cleanup_pid" "$cleanup_token" >/dev/null 2>&1 || true
+    cleanup_attempt=0
+    while "$PROCESS_TOOL" verify "$EXECUTABLE_REAL" "$cleanup_pid" "$cleanup_token" >/dev/null 2>&1 && [ "$cleanup_attempt" -lt 20 ]; do sleep 0.25; cleanup_attempt=$((cleanup_attempt + 1)); done
+    "$PROCESS_TOOL" verify "$EXECUTABLE_REAL" "$cleanup_pid" "$cleanup_token" >/dev/null 2>&1 && "$PROCESS_TOOL" force-terminate "$EXECUTABLE_REAL" "$cleanup_pid" "$cleanup_token" >/dev/null 2>&1 || true
+  fi
+  [ -n "$TMP_OUT" ] && rm -f "$TMP_OUT"
+  [ -n "$PRE_JSON" ] && rm -f "$PRE_JSON"
+  [ -n "$POST_JSON" ] && rm -f "$POST_JSON"
+  [ "$PUBLISHED_SIDECAR" -eq 1 ] && [ ! -e "$OUT" ] && rm -f "$SIDECAR"
+  rm -f "$PROCESS_TOOL" "$WINDOW_TOOL" "$TOOLS/window-error"; rmdir "$TOOLS" 2>/dev/null || true
+}
+trap cleanup EXIT INT TERM
+swiftc -O "$HERE/process-owner.swift" -o "$PROCESS_TOOL"; swiftc -O "$HERE/window-id.swift" -o "$WINDOW_TOOL"
+
+owned() { "$PROCESS_TOOL" list "$EXECUTABLE_REAL"; }
+for row in $(owned); do pid=${row%%|*}; token=${row#*|}; "$PROCESS_TOOL" terminate "$EXECUTABLE_REAL" "$pid" "$token"; done
+attempt=0
+while [ -n "$(owned)" ] && [ "$attempt" -lt 20 ]; do sleep 0.25; attempt=$((attempt + 1)); done
+for row in $(owned); do pid=${row%%|*}; token=${row#*|}; "$PROCESS_TOOL" force-terminate "$EXECUTABLE_REAL" "$pid" "$token"; done
+attempt=0
+while [ -n "$(owned)" ] && [ "$attempt" -lt 20 ]; do sleep 0.25; attempt=$((attempt + 1)); done
+[ -z "$(owned)" ] || { echo "owned process survived bounded recovery" >&2; exit 1; }
+
+open -n "$APP" --args "$@"
+attempt=0
+while [ "$attempt" -lt 40 ]; do
+  rows=$(owned); count=$(printf '%s\n' "$rows" | awk 'NF { n++ } END { print n+0 }')
+  [ "$count" -gt 1 ] && { echo "ambiguous exact-owned processes" >&2; exit 4; }
+  [ "$count" -eq 1 ] && { IDENTITY=$rows; break; }
+  sleep 0.25; attempt=$((attempt + 1))
+done
+[ -n "$IDENTITY" ] || { echo "launch timed out after 10 seconds" >&2; exit 1; }
+PID=${IDENTITY%%|*}; TOKEN=${IDENTITY#*|}
+"$PROCESS_TOOL" activate "$EXECUTABLE_REAL" "$PID" "$TOKEN"
+
+PRE_JSON=$(mktemp "$OUT_PARENT/.tailrocks-window-pre.XXXXXX")
+attempt=0; code=1
+while [ "$attempt" -lt 40 ]; do
+  set +e
+  if [ -n "$WINDOW_NAME" ]; then "$WINDOW_TOOL" "$PID" "$WINDOW_NAME" --json > "$PRE_JSON" 2>"$TOOLS/window-error"; code=$?
+  else "$WINDOW_TOOL" "$PID" --json > "$PRE_JSON" 2>"$TOOLS/window-error"; code=$?; fi
+  set -e
+  [ "$code" -eq 4 ] && { cat "$TOOLS/window-error" >&2; exit 4; }
+  [ "$code" -eq 0 ] && break
+  sleep 0.25; attempt=$((attempt + 1))
+done
+[ "$code" -eq 0 ] || { echo "window resolution timed out after 10 seconds" >&2; exit 1; }
+WID=$(plutil -extract windowID raw "$PRE_JSON"); case "$WID" in ''|*[!0-9]*) echo "invalid window identity" >&2; exit 1 ;; esac
+"$PROCESS_TOOL" verify "$EXECUTABLE_REAL" "$PID" "$TOKEN"
+
+TMP_OUT=$(mktemp "$OUT_PARENT/.tailrocks-capture.XXXXXX")
+screencapture -x -o -l "$WID" "$TMP_OUT"
+[ -f "$TMP_OUT" ] && [ ! -L "$TMP_OUT" ] && [ "$(wc -c < "$TMP_OUT")" -ge 8192 ] || { echo "capture invalid" >&2; exit 1; }
+dims=$(sips -g pixelWidth -g pixelHeight "$TMP_OUT" 2>/dev/null)
+pixel_width=$(printf '%s\n' "$dims" | awk '/pixelWidth:/ { print $2 }'); pixel_height=$(printf '%s\n' "$dims" | awk '/pixelHeight:/ { print $2 }')
+case "$pixel_width:$pixel_height" in *[!0-9:]*|0:*|*:0|:) echo "capture dimensions invalid" >&2; exit 1 ;; esac
+POST_JSON=$(mktemp "$OUT_PARENT/.tailrocks-window-post.XXXXXX")
+if [ -n "$WINDOW_NAME" ]; then "$WINDOW_TOOL" "$PID" "$WINDOW_NAME" --json > "$POST_JSON"; else "$WINDOW_TOOL" "$PID" --json > "$POST_JSON"; fi
+cmp -s "$PRE_JSON" "$POST_JSON" || { echo "window identity changed during capture" >&2; exit 1; }
+"$PROCESS_TOOL" verify "$EXECUTABLE_REAL" "$PID" "$TOKEN"
+plutil -replace pixelDimensions -json "{\"width\":$pixel_width,\"height\":$pixel_height}" "$PRE_JSON"
+ln "$PRE_JSON" "$SIDECAR" || { echo "sidecar publication raced" >&2; exit 2; }; PUBLISHED_SIDECAR=1
+ln "$TMP_OUT" "$OUT" || { echo "capture publication raced" >&2; exit 2; }
+rm -f "$TMP_OUT"; TMP_OUT=""; PUBLISHED_SIDECAR=0; SUCCESS=1
+plutil -convert json -o - "$SIDECAR"

@@ -58,10 +58,11 @@ window state does not survive reliably between separate tool calls.
 pkill → open → wait → re-activate → resolve window ID → screencapture -l
 ```
 
-Copy the harness rather than reconstructing it:
-[`capture.sh`](templates/capture.sh) drives the loop and refuses to launch from a
-temporary directory; [`window-id.swift`](templates/window-id.swift) resolves the
-window ID and is the whole reason the capture is trustworthy.
+Install the repository harness rather than reconstructing it. Read
+[`harness-contract.md`](references/harness-contract.md); its installer copies the
+hardened capture, process, window, accessibility, and appearance tools. The
+capture binds the real bundle executable to one PID, binds the window to that
+PID, and refuses every ambiguous match.
 
 Three empirical rules that cost hours when violated:
 
@@ -107,7 +108,7 @@ could not be produced.
 
 **Blocked-run state report:** if no runnable project exists, do not flip real
 settings purposelessly. Still enumerate the snapshot command, every dark-mode
-and accessibility flip through `state.sh`, the manual-only Liquid Glass
+and accessibility flip through the installed `state.sh`, the manual-only Liquid Glass
 appearance flip, the restore command, and each skipped state with its reason;
 label the whole record unexecuted rather than silently omitting the procedure.
 When the user reports a completed run outcome, treat that report as evidence:

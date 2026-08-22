@@ -561,10 +561,35 @@ all terminal checks pass, and the final literal marker is changed to
     subagent verdict: PASS after fixing docs-only semantics, live PR binding,
     receipt invalidation, atomic match-head merge, zero-path commits, required
     history fixtures, and generated Markdown integrity. No evals run.
-- [ ] [IN_PROGRESS] P04.06 Add macOS launch/window/capture/accessibility/appearance
+- [x] [COMPLETED] P04.06 Add macOS launch/window/capture/accessibility/appearance
   scripts with exact process ownership, ambiguity refusal, bounded recovery, and
   runnable local test applications.
-- [ ] [TODO] P04.07 Add web capture scripts that prove owned server revision and
+  - Evidence receipt (2026-08-22): moved the five legacy harness templates into
+    a shared script package and added an atomic installer, exact process-owner
+    helper, hardened capture/state/AX/audit templates, harness contract, and two
+    runnable native fixture bundles. Capture canonicalizes every app-bundle
+    boundary, binds actions to real executable plus PID plus launch token,
+    bounds TERM/KILL/launch/window recovery, accepts scenario argv, refuses
+    multiple exact-PID windows, captures by ID, compares pre/post window
+    identity, and publishes through exclusive same-directory hard links. AX is
+    PID-only, traversal-bounded, and identifier-unique; the audit scopes issues
+    against actual app descendants. Appearance mutation exists only inside a
+    strict owner-only six-key typed transaction: Auto is preserved, forged
+    registries refuse, concurrent values conflict, retries resume partial
+    restores, and failed recovery retains both snapshots. Focused proof passed
+    9 tests/55 assertions, including real decoy survival, real two-window
+    refusal with no output, launched-process cleanup, exact typed preference
+    restoration, transient partial-restore convergence, and forged recovery
+    refusal; shell syntax and four Swift compiler checks also passed.
+    `rtk mise run migration-check` passed 232 tests/1,124 assertions across 25
+    selected non-protected files, validated 44 skills, checked 136 generated
+    files, and passed formatting and diff checks. Protection proof covered 4
+    patterns/183 frozen source paths with zero violations. Fresh
+    security-focused subagent verdict: PASS after closing canonical containment,
+    PID-reuse, no-replace publication, post-capture identity, launch-argv,
+    registry-forgery, partial-restore, audit-scope, and executable-proof gaps.
+    No evals run.
+- [ ] [IN_PROGRESS] P04.07 Add web capture scripts that prove owned server revision and
   guard endpoint before capture; reject wrong-server reuse.
 - [ ] [TODO] P04.08 Require every script to reject unmatched state, bound retries,
   restore recoverable state, and emit machine-readable receipts.
