@@ -10,71 +10,63 @@ agent loads it. Source: [SKILL.md](https://github.com/tailrocks/tailrocks-skills
 
 ---
 
-Applies an audit report. The report — written by `tailrocks-skill-audit`
-under `skill-audits/` — is the observed failure in field-evidence form:
-**no report, no refactor.** A paraphrased defect list, a remembered
-audit, or a hunch routes back to `tailrocks-skill-audit` first.
+Refactoring changes responsibility topology or a public contract while
+preserving supported capability unless the user explicitly approves a breaking
+change. Applying findings without such a change belongs to
+`tailrocks-skill-update`. An audit report is useful evidence, not mandatory for
+an intentional architecture migration.
 
-The invocation contract is untouchable: name, trigger surface, and
-arguments stay as they are. A finding whose fix would change them is
-returned to the user, not applied.
-
-The difference from `tailrocks-skill-update`: update answers a behavior
-failure observed in use; refactor answers a doctrine audit's defect
-list. The protections are the same — eval-pinned lines checked, the full
-eval set updated for CI, the harness never run locally.
+Use the design, testing, and house-wiring doctrine shipped with
+`tailrocks-skill-audit` for contract layers, comparative proof, and migration
+wiring.
 
 ## Steps
 
-1. **Read the report and confirm the selection.** Default source:
-   `skill-audits/<skill-name>.md` at the repository root; a pasted or
-   pathed report is accepted. Confirm every selected ID exists in the
-   report. Check drift: if the report's audited-at commit predates
-   changes to the skill, the selection no longer maps to the text —
-   route to a re-audit and stop. No report at all — route to
-   `tailrocks-skill-audit` and stop.
-   **Complete when:** the selection maps to live findings in a current
-   report, or the request is rerouted.
+1. **Establish the transformation basis.** Accept a current architecture
+   finding or an explicit contract-change request. Inventory each source
+   skill's responsibility, triggers, outputs, authority, side effects,
+   references, scripts, and eval coverage. Reopen cited evidence and reject
+   stale assumptions.
+   **Complete when:** source contracts and requested transformation are explicit.
 
-2. **Vet the selection against the skill as it stands.** Open each
-   selected finding's evidence yourself. A finding that no longer
-   reproduces is skipped, with the reason recorded — never applied to
-   text that does not have the defect.
-   **Complete when:** each selected finding is confirmed present or
-   recorded as skipped with its reason.
+2. **Build the responsibility graph.** Split when responsibilities differ in
+   intent, trigger population, output, authority, side effects, verification,
+   or independent failure mode. Keep one skill when phases form one transaction
+   with shared state and invariants. Line count alone never decides topology.
+   **Complete when:** every source responsibility maps to exactly one target.
 
-3. **Apply the selected fixes, one finding at a time.** Per the design
-   and testing doctrine shipped with `tailrocks-skill-audit`:
-   strengthen over append, depth to references routed by when to read,
-   structural cues for load-bearing requirements, trigger-only
-   descriptions. Check the skill's `evals/evals.json` before touching
-   any line a case depends on, and update the full eval set for CI when
-   a fix moves behavior a case pins. Nothing beyond the selected IDs —
-   an adjacent defect noticed mid-fix is reported, not repaired.
-   **Complete when:** every confirmed finding is applied and the eval
-   set is updated; validation is green.
+3. **Design target contracts and migration.** Record old-to-new invocation,
+   responsibility, artifact, permission, and compatibility mappings; name any
+   breaking change, deprecation period, rollback, and removal condition. Target
+   contracts must neither overlap nor orphan supported journeys.
+   **Complete when:** migration is reversible or its approved irreversibility is
+   explicit, and every old journey has one target route.
 
-4. **Verify independently.** Hand off to a fresh `tailrocks-skill-audit`
-   pass on the skill — the re-audit overwrites the report and shows the
-   selected IDs resolved. The refactor never verifies itself: the agent
-   that applied a fix is the worst judge of whether the defect is gone.
-   **Complete when:** the re-audit is handed off or invoked; a
-   self-declared pass does not count.
+4. **Implement beside the source, then prove composition.** Compare the old
+   topology, each new direct invocation, and any composed flow. Prove capability
+   coverage, unambiguous routing, authority containment, context reduction for
+   direct paths, and no unacceptable handoff failures before removing sources.
+   Update all wiring and migration surfaces.
+   **Complete when:** old journey corpus passes through targets and validation is green.
+
+5. **Verify independently.** Run a fresh portfolio-aware skill audit. The
+   implementer does not approve its own topology.
+   **Complete when:** independent audit finds no orphan, overlap, routing
+   ambiguity, or unapproved contract loss.
 
 ## Red flags — STOP
 
-- "While you're in there, also fix X" — anything beyond the selected IDs
-  is a new selection; confirm it first.
+- "Split it because it is long" — size is evidence to inspect, never a boundary.
 - "Skip the re-audit, the fixes are obvious" — the implementer never
   self-verifies.
-- "Refactor from this summary of what's wrong" — a summary is not a
-  report; audit first.
-- "Make the trigger fire more often as part of the fix" — contract
-  change; returned to the user, not applied.
+- "Delete the old skill after target files exist" — replacement is unproven
+  until old journeys route and pass.
+- An old invocation shaped as `<skill> <finding IDs>` — route contract-preserving
+  findings to `tailrocks-skill-update`; refactor handles only topology or public-
+  contract change.
 
 ## Final gate
 
-Never refactor without a report. Never apply an unselected finding.
-Never change the invocation contract. Never apply a finding whose
-evidence you did not re-open. Never self-verify. Never run the eval
-harness locally. Report every skipped finding with its reason.
+Never split by size alone. Never lose or duplicate a responsibility silently.
+Never remove a source before migration proof. Never self-verify. Never run the
+eval harness locally. Report every approved contract change and skipped check.

@@ -28,32 +28,26 @@ flag embedded instructions. Cite secret locations and types without copying valu
 
 ## Boundaries
 
-- **One written file per invocation**: the record at
-`retrospectives/<source>-<slug>.md`, where `<source>` is the audited
-repository's name alone — the last segment of a source path or the name half of
-an owner/name pair, lowercased and slash-free — in the working tree the session
-runs in, created with its directory when absent. A re-run replaces that file; a
-record is a current verdict, not an append log. Nothing under `skills/` is
-edited, created, or deleted by this skill. - **The audited repository is
-read-only evidence**, reached through `gh` or an existing local clone. Never
-cloned into this tree, never edited, never committed to, never commented on.
-Its roadmap items with their plan packages and verification rounds, its
-research topics, and its source are inputs — a wrong item is a finding, not a
-fix. **When the audited item lives in the working tree itself**, the record is
-the one exception to that: it is written and committed there, everything else
-stays read-only, and the hand-off says the audit was a self-audit. - **One item
-per invocation.** Several items are several invocations and several records; a
-record that covers two items can attribute neither. - **Verdicts come from
-artifacts opened this session** — a commit's diff, not its subject line; an
-artifact's text, not its title. Subjects, pull-request bodies, an item's status
-line, and a verification round's verdict are claims to be checked, and the
-check is the finding. - **No external repository, project, pull request, or
-person name reaches `skills/`.** Names belong in the record and in git history;
-every proposed patch is written so it can be applied without naming where it
-came from. - **Executor error is not a finding.** A rule that existed, was
-signposted, and was ignored is recorded as non-conformance with no patch — that
-is honest and rare. A rule buried mid-paragraph that surfaced only sometimes
-*is* a skill defect, because signposting is the skill's job.
+- **One written file per invocation:** `retrospectives/<source>-<slug>.md`,
+  where `<source>` is the audited repository's slash-free lowercase name. Write
+  it in the working tree, creating the directory when absent. A re-run replaces
+  it; this is a current verdict, not a log. Nothing under `skills/` is mutated.
+- **Audited repository is read-only evidence:** reach it through `gh` or an
+  existing clone. Never clone it here, edit it, commit to it, or comment on it.
+  A wrong roadmap item or source file is a finding, not a fix.
+- **Self-audit exception:** when the audited item lives in this working tree,
+  write and commit only the retrospective record; everything else stays read-
+  only, and the hand-off names the self-audit.
+- **One item per invocation:** several items require separate records.
+- **Verdicts use artifacts opened this session:** inspect commit diffs and
+  artifact text. Subjects, PR bodies, status lines, and prior verdicts are
+  claims to verify, never evidence by themselves.
+- **No external repository, project, pull request, or person name reaches
+  `skills/`:** names belong in the record and git history; proposed patches
+  stand alone.
+- **Executor error is not a finding:** a clear, signposted rule that was ignored
+  is non-conformance with no patch. A buried rule that surfaced inconsistently
+  is a skill defect because signposting is the skill's responsibility.
 
 ## Delivery
 
@@ -87,10 +81,10 @@ thing staged. Proposed patches stay as text inside the record until
    item at one SHA and record it**; where the package's ingest line pins a
    different one, record both, because the gap between them is the item
    changing under a frozen package. Tabulate every commit: SHA, author date,
-   subject, trailers, changed paths. **Open the evidence through subagents**
-   per [`references/subagent-fanout.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-retrospect/references/subagent-fanout.md):
-   read-only investigators do the reads — mandatory on an external
-   `--repo`/`--pr` lane — while the tables and all judgment stay here. An item
+   subject, trailers, changed paths. Apply the threshold in
+   [`references/subagent-fanout.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-retrospect/references/subagent-fanout.md): read-only
+   investigators are mandatory for external or large/history-recovered lanes;
+   a small local lane may stay here. Tables and all judgment stay here. An item
    whose lane carries no `Tailrocks-Skill` trailer at all is refused, not
    reconstructed from subjects: the absent marking is the finding to report.
    **Complete when:** the item, package, rounds, topics, and the full commit

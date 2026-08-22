@@ -53,11 +53,12 @@ command whose stdout is the fresh skeleton for the current diff.
    - In the fresh selection but missing from the body → add it, filled for
      this PR.
    - In the body but no longer earned → remove it.
-   - In both → **keep the author's fill verbatim.** Never overwrite a kept
-     section with a placeholder.
+   - In both → keep the author's fill provisionally; never overwrite it with a
+     placeholder. Step 4 decides whether that prose remains accurate.
 
    **Complete when:** the body's section set matches what the current diff
-   earns, and every kept section retains its authored content.
+   earns, and every kept section retains its authored content pending the
+   accuracy pass.
 
 4. **Reconcile the prose.** For each remaining prose section: still accurate
    → leave untouched; drifted → rewrite to match the current diff; a shipped

@@ -14,6 +14,9 @@ Fan out: one agent per surface row, each blind to the others.
   build, so a difference between two surfaces is a difference in the product,
   not in the compiler flags.
 - The configuration or data directory to run against.
+- The authorized target, isolated data, and allowed side effects. Production,
+  external, or irreversible effects require explicit authorization; otherwise
+  return `NOT EXECUTED` without attempting them.
 - The claims to test: the item's statements about this surface, and any `U#`
   from the feedback round that names it.
 - The blessed reference for a visual surface, by path.

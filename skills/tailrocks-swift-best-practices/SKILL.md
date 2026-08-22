@@ -1,7 +1,7 @@
 ---
 name: tailrocks-swift-best-practices
 description: >-
-  Use only when the user explicitly requests this skill. Write, review, or refactor Swift and SwiftUI for macOS: strict concurrency and actor isolation, state ownership and view identity, AppKit interop boundaries, typed failure, availability guards, accessibility, and tests.
+  Use only when the user explicitly requests this skill. Write, review, or refactor native macOS and iOS Swift or SwiftUI: strict concurrency, state ownership, platform interop boundaries, typed failure, availability, accessibility, and tests.
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
@@ -9,7 +9,7 @@ user-invocable: true
 
 # Swift Best Practices
 
-Code-level policy for a native macOS application: correctness first, then
+Code-level policy for native macOS and iOS applications: correctness first, then
 clarity, then performance. Project structure and tooling belong to
 `tailrocks-swift-project-setup`. Material and layout policy belong to
 `tailrocks-macos-design`.

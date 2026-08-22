@@ -73,8 +73,8 @@ spec defines an artifact mechanism, so a repo-resident Markdown file —
 pointed to from where the next reader starts — is the only handoff that
 crosses sessions and agents. Persist when the output is:
 
-- consumed by another agent or a later session — an audit report a
-  refactor skill applies by ID, a plan a zero-context executor runs;
+- consumed by another agent or a later session — an audit report whose IDs
+  route to update or refactor by change shape, a plan a zero-context executor runs;
 - substantial — a report, a plan, a research result. The conversation
   gets the path and the verdict line, never the content;
 - exact — evidence tables, snapshots, anything summarization corrupts;

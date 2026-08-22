@@ -38,9 +38,13 @@ records the user's blessing, re-taken only under a recorded re-blessing.
 ## Modes
 
 - `harness`: install the Playwright config, the visual suite, and the
-  baseline record in a project.
-- `freeze`: capture the baseline matrix from a finalized design's routes.
-- `regress`: run the suite against current renders and report drift.
+  baseline record in the explicitly approved project scope.
+- `freeze`: capture and write the baseline matrix from a finalized design's
+  routes in the approved scope.
+- `regress`: read-only on project source and baselines; disposable test output
+  only while reporting drift.
+
+Never infer `harness` or `freeze` mutation permission from a `regress` request.
 
 A missing blessing blocks `freeze`, never policy questions: asked how a
 suite should verify a screen, answer with the capture rules and name the

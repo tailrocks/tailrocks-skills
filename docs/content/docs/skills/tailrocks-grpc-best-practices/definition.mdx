@@ -22,9 +22,9 @@ familiarity.
 ## Steps
 
 1. **Select the mode.** Classify as `write`, `review`, or `audit`. `write`
-   mutates the approved scope; `review` reports prioritized findings and
-   mutates only what the user approves; `audit` is strictly read-only and
-   cites findings by file and line.
+   mutates the approved scope; `review` and `audit` are strictly read-only and
+   cite prioritized findings by file and line. A later fix request is a new
+   `write` invocation, never permission inferred from review.
    **Complete when:** mutation permission and expected output are explicit.
 
 2. **Map the contract surface.** Locate the proto module and `buf.yaml`, the

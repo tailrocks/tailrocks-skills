@@ -72,13 +72,13 @@ response itself. **Complete when:** every visible region carries a
 classification, every `CUSTOM` region a completed contract, every `NATIVE`
 region its exact API and placement.
 
-**3 — Structural alternatives and selection.** Six to ten alternatives
-differing **structurally** — hierarchy, action placement, chrome, density —
-never color, radius, blur, or spacing; `references/motion.md` before any
-animation. **Fixture artifact now:** write `Fixtures.md` with concrete
-records, strings, counts, errors, denied/offline/loading values, and
-destructive-pending data used by every named schematic preview; deferring
-fixtures is incomplete. **A person selects; the agent never approves its own
+**3 — Structural alternatives and selection.** Produce two to four credible,
+**structurally** different alternatives — hierarchy, action placement, chrome,
+density — never cosmetic variants. Use six to ten only when credible; stop when
+another adds no structural decision. Read `references/motion.md` before motion.
+**Fixture artifact now:** write `Fixtures.md` with concrete records, strings,
+counts, errors, denied/offline/loading values, and destructive-pending data for
+each preview; deferring fixtures is incomplete. **A person selects; the agent never approves its own
 design.** Record why the winner won, why each loser lost, and which risks
 remain before implementation.
 

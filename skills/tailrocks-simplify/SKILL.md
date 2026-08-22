@@ -21,6 +21,9 @@ move on. One hat at a time.
 **Scope is the diff.** Only lines the change touched, and code the change made
 dead. Untouched code stays untouched however bad it looks — reviewing it here
 buries the actual change under unrelated edits.
+Focused characterization tests needed to pin a touched production path are the
+only scope exception; they authorize no production edit outside the diff or its
+newly dead-code reach.
 
 **Removal is the only real simplification.** Reorganizing, renaming, and
 extracting are not. If a finding does not reduce a counted measure — lines,
@@ -109,7 +112,8 @@ Report:
 
 ## Final gate
 
-Never change behavior to make code smaller. Never touch code the diff did not.
+Never change behavior to make code smaller. Never touch production code the
+diff did not, except newly dead-code reach.
 Never remove a guard whose purpose you could not state. Never count an
 extraction, a rename, or a reorganization as simplification. Never abstract two
 occurrences. Never refactor an unpinned path. Never report a diff as verified

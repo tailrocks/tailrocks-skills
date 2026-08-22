@@ -112,14 +112,14 @@ merging stays the user's call.
    **Complete when:** every listed finding survived re-derivation and every
    drop is named.
 
-4. **Prioritize.** Order surviving findings by leverage — impact over
-   effort, weighted by confidence — into one table: finding, category,
-   evidence, impact, effort, confidence, fix risk. Ask the user which
+4. **Prioritize.** Order surviving findings by correctness, consistency, goal
+   fit, severity, confidence, and fix risk — into one table: finding, category,
+   evidence, impact, effort, confidence, fix risk. Effort is planning metadata,
+   never an excuse for known wrongness. Ask the user which
    findings become work; `next` mode's suggestions get their own table,
    never merged with defect findings.
    **Complete when:** the table is delivered and the user's selection is
    captured — or, under `--batch`, the default selection is stated.
-
    **`--batch` makes this step non-interactive** for a headless or `/goal`
    run: instead of asking, select every finding the size test would seed
    directly and report the selection and its rule as part of the table.
