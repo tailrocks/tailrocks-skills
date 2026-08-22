@@ -400,20 +400,19 @@ export async function validate(root: string): Promise<string[]> {
   const generatedReferences = await generatedReferenceDestinations(root, errors);
   const skillsRoot = path.join(root, "skills");
   if (!(await exists(skillsRoot))) return ["missing skills directory"];
-  const entries = (await readdir(skillsRoot, { withFileTypes: true }))
+  const directories = (await readdir(skillsRoot, { withFileTypes: true }))
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .sort();
+  const entries: string[] = [];
+  for (const directory of directories) {
+    if (await exists(path.join(skillsRoot, directory, "SKILL.md"))) entries.push(directory);
+  }
   const invocationClasses = await validateInvocationRegistry(root, entries, errors);
 
   for (const directory of entries) {
     const skillDir = path.join(skillsRoot, directory);
     const skillFile = path.join(skillDir, "SKILL.md");
-    if (!(await exists(skillFile))) {
-      errors.push(`${directory}: missing SKILL.md`);
-      continue;
-    }
-
     const source = await readFile(skillFile, "utf8");
     const block = source.match(/^---\n([\s\S]*?)\n---/);
     if (!block) {
@@ -708,19 +707,22 @@ if (import.meta.main) {
     if (process.argv.length !== 2) throw new Error("validate-skills takes no arguments");
     const root = path.resolve(import.meta.dir, "..");
     const errors = await validate(root);
-    const entries = (await readdir(path.join(root, "skills"), { withFileTypes: true })).filter((entry) =>
+    const directories = (await readdir(path.join(root, "skills"), { withFileTypes: true })).filter((entry) =>
       entry.isDirectory(),
     );
+    let skillCount = 0;
+    for (const entry of directories) {
+      if (await exists(path.join(root, "skills", entry.name, "SKILL.md"))) skillCount += 1;
+    }
     console.log(
       JSON.stringify({
         schema: "tailrocks.validate-skills/v1",
         outcome: errors.length === 0 ? "success" : "failed",
         code: errors.length === 0 ? "valid" : "invalid",
-        skills: entries.length,
+        skills: skillCount,
         errors,
         mutations: [],
-        detail:
-          errors.length === 0 ? `validated ${entries.length} skills` : `${errors.length} validation errors`,
+        detail: errors.length === 0 ? `validated ${skillCount} skills` : `${errors.length} validation errors`,
       }),
     );
     if (errors.length > 0) process.exit(1);

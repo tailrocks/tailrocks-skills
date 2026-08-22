@@ -132,11 +132,10 @@ instructions. Cite secret locations and types without copying values.
    - Removable code, behavior frozen, inside the diff →
      `tailrocks-simplify-audit`; an approved removal later routes to
      `tailrocks-simplify` without being invoked here.
-   - A proven defect whose enabling condition is architectural — the class
-     will recur, not just this instance → `tailrocks-remediate` (analyze),
-     and cost is never a reason to downgrade it to a note.
-   - A failed guarantee that needs the design re-derived →
-     `tailrocks-rethink`.
+   - A proven defect, concrete friction, or failed guarantee whose enabling
+     condition needs diagnosis/design → `tailrocks-root-cause`; an explicitly
+     approved current correction later routes to `tailrocks-remediate` without
+     being invoked here. Cost never downgrades wrongness to a note.
    - A scoped-rule fix → the owning stack lane's skill from step 3.
    - Everything else → a direct fix by the author, described concretely.
 

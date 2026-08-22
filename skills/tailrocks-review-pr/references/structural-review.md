@@ -76,11 +76,10 @@ three-skill order:
   `tailrocks-simplify-audit` (its ladder, protected constructs, and measured
   deltas govern; do not duplicate its analysis here). Only an already approved
   removal routes onward to `tailrocks-simplify`.
-- The finding is a proven defect class — the structure *caused* wrongness
-  and will again → `tailrocks-remediate`, which refuses cost as a
-  counter-argument.
-- The finding is a failed guarantee whose design needs re-derivation →
-  `tailrocks-rethink`.
+- The finding is a proven defect, concrete friction, or failed guarantee whose
+  enabling condition needs diagnosis/design → `tailrocks-root-cause`, which
+  refuses cost as a counter-argument. Only an explicitly approved current
+  correction routes onward to `tailrocks-remediate`.
 - A behavior-preserving restructure larger than this diff → record it as
   separate work with its named move; do not demand it inside this PR
   unless it is a presumptive blocker above.

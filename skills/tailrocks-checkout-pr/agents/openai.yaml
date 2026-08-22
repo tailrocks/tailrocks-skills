@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Checkout PR"
-  short_description: "Switch onto a pull request's branch, guarding the tree"
-  default_prompt: "Use $tailrocks-checkout-pr to switch this repository onto the pull request's branch."
-policy:
-  allow_implicit_invocation: false

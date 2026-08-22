@@ -1,7 +1,7 @@
 # Repository PR conventions — `.tailrocks/pr.md`
 
 The PR skills (`tailrocks-create-pr`, `tailrocks-refresh-pr`,
-`tailrocks-checkout-pr`, `tailrocks-merge-pr`, `tailrocks-pr-template`) are
+`tailrocks-merge-pr`, `tailrocks-pr-template`) are
 generic: they work in any
 repository with `git` and an authenticated `gh`. Everything repo-specific
 lives in one optional markdown file at the target repository's root:
@@ -47,7 +47,6 @@ listed here is still binding prose for the stage it names.
 | `## Before merge` | merge | Repo-specific worklist at merge time: changelog entry, docs retirement, version checks. A line reading `Delivery-artifact check: off — <reason>` switches off `tailrocks-merge-pr`'s roadmap-consistency gate for this repository; `Documentation gate: off — <reason>` switches off its tailrocks-document coverage gate. |
 | `## Merge` | merge | Merge method, squash-title format, merge-commit body rules, post-merge steps. |
 
-`tailrocks-checkout-pr` needs nothing from this file.
 `tailrocks-pr-template` reads `## Body` and `## Checks` so the template it
 generates agrees with them.
 

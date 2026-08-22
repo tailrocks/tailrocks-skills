@@ -82,11 +82,6 @@
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
     },
     {
-      "source": "shared/references/runtime-trust.md",
-      "destination": "skills/tailrocks-checkout-pr/references/runtime-trust.md",
-      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
-    },
-    {
       "source": "skills/tailrocks-code-health/references/architecture-and-docs.md",
       "destination": "skills/tailrocks-code-health-audit/references/architecture-and-docs.md",
       "sha256": "05f471eb5ebac1ccbcdb0495a02df84ecf433e33248012b0a8cfcce104b2ecf9"
@@ -348,11 +343,6 @@
     },
     {
       "source": "shared/references/runtime-trust.md",
-      "destination": "skills/tailrocks-rethink/references/runtime-trust.md",
-      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
-    },
-    {
-      "source": "shared/references/runtime-trust.md",
       "destination": "skills/tailrocks-retrospect/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
     },
@@ -364,6 +354,11 @@
     {
       "source": "shared/references/runtime-trust.md",
       "destination": "skills/tailrocks-review-pr/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-root-cause/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
     },
     {

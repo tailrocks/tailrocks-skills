@@ -131,8 +131,8 @@ Debt that shrinks, defects that stop recurring, skills that improve from field e
 | [`tailrocks-retrospect`](skills/tailrocks-retrospect/README.md) | After a roadmap item ships, rebuild which skills ran from commit trailers, diff that against its Decisions, Must not, spec IDs, and verification rounds, and propose patches to the skills at fault. | Manual only |
 | [`tailrocks-simplify`](skills/tailrocks-simplify/README.md) | Apply one explicitly approved set of measured code removals within a bound diff while preserving every observable behavior. | Manual only |
 | [`tailrocks-simplify-audit`](skills/tailrocks-simplify-audit/README.md) | Audit one pull request, branch, or diff read-only for measured code removals whose observable behavior can be preserved. | Manual only |
-| [`tailrocks-remediate`](skills/tailrocks-remediate/README.md) | Analyze or remediate a proven defect through correctness-first architectural redesign. | Manual only |
-| [`tailrocks-rethink`](skills/tailrocks-rethink/README.md) | Re-derive the design behind a reported bug or friction instead of patching it; restructuring and breaking changes are expected and cost is excluded from the decision. | Manual only |
+| [`tailrocks-root-cause`](skills/tailrocks-root-cause/README.md) | Diagnose one proven defect, reported friction, or failed guarantee read-only; derive the bounded causal class and strongest feasible corrective design. | Manual only |
+| [`tailrocks-remediate`](skills/tailrocks-remediate/README.md) | Apply one explicitly approved root-cause correction while preserving every unapproved behavior and proving instance and defect-class prevention. | Manual only |
 | [`tailrocks-contribute`](skills/tailrocks-contribute/README.md) | Contribute to an external open-source project: discover its contribution contract, prepare a minimal evidenced change, and submit only after explicit human approval. | Manual only |
 
 ### Decision support
@@ -156,13 +156,12 @@ Create skills from target repository policy, update behavior under a frozen cont
 
 ### Pull request lifecycle
 
-Open, refresh, check out, and merge pull requests in any repository, extended by its .tailrocks/pr.md.
+Open, refresh, review, document, and merge pull requests in any repository, extended by its .tailrocks/pr.md.
 
 | Skill | What it does | Invocation |
 |---|---|---|
 | [`tailrocks-create-pr`](skills/tailrocks-create-pr/README.md) | Open a pull request for the current change in any repository: branch, commit in the repo's convention, body from its template, render check. | Manual only |
 | [`tailrocks-refresh-pr`](skills/tailrocks-refresh-pr/README.md) | Reconcile an open pull request's title and body against the current diff: drifted prose rewritten, accurate prose kept verbatim, template sections re-selected. | Manual only |
-| [`tailrocks-checkout-pr`](skills/tailrocks-checkout-pr/README.md) | Compatibility alias for the deterministic pull-request checkout command. | Manual only |
 | [`tailrocks-review-pr`](skills/tailrocks-review-pr/README.md) | Review a pull request, branch, or diff and report verified findings: adversarially validated bugs, structural regressions, triggered specialist lanes, and fixer routes. | Manual only |
 | [`tailrocks-merge-pr`](skills/tailrocks-merge-pr/README.md) | Merge a pull request fail-closed in any repository: CI and documentation gates, blast-radius confirm, metadata reconcile, repo-selected merge method, the repo's pre-merge worklist from .tailrocks/pr.md. | Manual only |
 | [`tailrocks-document`](skills/tailrocks-document/README.md) | Before a pull request merges, make the repository's own documentation the final source of truth for everything the diff changed — rewritten pages and new structures, never a changelog. | Manual only |

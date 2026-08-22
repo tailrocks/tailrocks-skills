@@ -76,7 +76,8 @@ pattern out of it.
 |---|---|---|
 | `tailrocks-review-pr` | one diff, verified findings, comments | audit starts from a cold repository; `branch` mode overlaps by design and stops at seeding, never comments on a PR |
 | `tailrocks-code-health` | measured baselines and shrink-only ratchets | may cite a ratchet's findings; never establishes or tightens one |
-| `tailrocks-remediate` | proven defect, class-eliminating fix | routes proven defects there; never diagnoses deeply or fixes |
+| `tailrocks-root-cause` | proven defect or concrete friction, causal design | routes diagnosis there; never diagnoses deeply or fixes |
+| `tailrocks-remediate` | one approved causal correction | never grants approval or applies it from audit |
 | `tailrocks-research` | sourced `research/` topics | may seed an open question; never writes `research/` |
 | `tailrocks-idea` | capture of the user's own words | audit items are evidence-derived and marked with their source |
 | `tailrocks-plan` | READY item to plan package | audit seeds a package directly only when the finding is small, mechanical, and free of open product questions |

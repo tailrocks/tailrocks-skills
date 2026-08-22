@@ -83,8 +83,8 @@
         "tailrocks-retrospect",
         "tailrocks-simplify",
         "tailrocks-simplify-audit",
+        "tailrocks-root-cause",
         "tailrocks-remediate",
-        "tailrocks-rethink",
         "tailrocks-contribute"
       ]
     },
@@ -110,11 +110,10 @@
     {
       "id": "pull-requests",
       "title": "Pull request lifecycle",
-      "summary": "Open, refresh, check out, and merge pull requests in any repository, extended by its .tailrocks/pr.md.",
+      "summary": "Open, refresh, review, document, and merge pull requests in any repository, extended by its .tailrocks/pr.md.",
       "skills": [
         "tailrocks-create-pr",
         "tailrocks-refresh-pr",
-        "tailrocks-checkout-pr",
         "tailrocks-review-pr",
         "tailrocks-merge-pr",
         "tailrocks-document",

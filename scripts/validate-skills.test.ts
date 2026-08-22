@@ -146,6 +146,11 @@ describe("validate", () => {
     expect(await validate(root)).toEqual([]);
   });
 
+  test("a retired directory without SKILL.md is not a published skill", async () => {
+    await write("skills/tailrocks-retired/frozen.bin", "opaque protected bytes\n");
+    expect(await validate(root)).toEqual([]);
+  });
+
   test("rejects a skill name without the tailrocks prefix", async () => {
     const unbranded = "sample-skill";
     await writeSkill(description, {

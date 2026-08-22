@@ -185,13 +185,12 @@ Not every finding wants the roadmap pipeline. Name the owning skill as the
 item's next command when the finding's shape says so, or the class comes
 back as another one-session plan:
 
-- **The defect class will recur** — the finding is one instance of an
-  enabling condition still present in the architecture → `tailrocks-remediate`.
-- **Nothing failed, but the shape is wrong** — friction, an awkward
-  implementation, a design that keeps producing near-misses →
-  `tailrocks-rethink`.
+- **The defect class will recur, or concrete friction exposes a failed
+  guarantee** — the enabling condition needs diagnosis/design →
+  `tailrocks-root-cause`. An approved correction later routes to
+  `tailrocks-remediate`.
 - **The finding is redundancy inside a diff** with no behavior to change →
-  `tailrocks-simplify`, scoped to that diff.
+  `tailrocks-simplify-audit`, scoped to that diff.
 - **A blessed screen or a glass surface is the subject** → back to
   `tailrocks-web-design` or `tailrocks-macos-design`; this skill never
   re-blesses taste.

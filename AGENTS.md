@@ -621,7 +621,7 @@ skills hand work to the stack skills.
 
 ### The pull-request family — lifecycle on any repository
 
-Seven skills run the pull-request lifecycle in whatever repository the session
+Six skills run the pull-request lifecycle in whatever repository the session
 works in — not this one specifically. They are generic by construction:
 everything repo-specific lives in one optional markdown file at the target
 repository's root, `.tailrocks/pr.md` — base branch, branch naming, commit
@@ -643,10 +643,6 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
   the current diff: re-select template sections, rewrite drifted prose, keep
   accurate authored prose verbatim. Operator-triggered, never
   commit-triggered. Definition: `skills/tailrocks-refresh-pr/SKILL.md`
-- **tailrocks-checkout-pr** — switch onto a PR's branch via
-  `gh pr checkout`, guarding a dirty working tree (never auto-stash) and
-  refusing raw `git checkout` fallbacks.
-  Definition: `skills/tailrocks-checkout-pr/SKILL.md`
 - **tailrocks-review-pr** — review a PR, branch, or diff with verified,
   high-signal findings: every correctness finding adversarially re-derived
   from the code before it may be reported, a structural pass where each
@@ -656,7 +652,8 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
   best-practices skills per changed file, and per-finding routing —
   behavior-frozen removal candidates to tailrocks-simplify-audit and approved
   removals to tailrocks-simplify, proven defect classes to
-  tailrocks-remediate. Unconditionally read-only; never posts, approves, or
+  tailrocks-root-cause and approved corrections to tailrocks-remediate.
+  Unconditionally read-only; never posts, approves, or
   merges. Definition: `skills/tailrocks-review-pr/SKILL.md`
 - **tailrocks-merge-pr** — merge fail-closed: CI gate with named-check-only
   admin bypass, blast-radius confirm, the repository's pre-merge worklist,
@@ -704,15 +701,20 @@ submission approval, and human-approved review response.
 
 Skill definition: `skills/tailrocks-contribute/SKILL.md`
 
-### tailrocks-remediate
+### tailrocks-root-cause and tailrocks-remediate
 
-Analyze or remediate a proven defect, inconsistency, violated invariant, or
-known-wrong state. Derives a greenfield architecture that prevents the complete
-defect class and pursues that result without considering price, duration, effort,
-implementation size, ROI, or sunk cost. Rejects speculative generality and
-permits urgent containment without calling it complete remediation.
+`tailrocks-root-cause` diagnoses one proven defect, concrete friction, or failed
+guarantee read-only. It proves occurrence and escape, bounds the defect class,
+derives the strongest feasible greenfield design, inventories breaks, and returns
+an approval-ready contract that grants no mutation authority.
 
-Skill definition: `skills/tailrocks-remediate/SKILL.md`
+`tailrocks-remediate` applies one exact current root-cause contract only after
+explicit user approval. It preserves every unapproved behavior, executes
+never-broken migration slices with per-path CAS, requires fresh approval at each
+irreversible boundary, and proves both the instance and the bounded class.
+
+Definitions: `skills/tailrocks-root-cause/SKILL.md` and
+`skills/tailrocks-remediate/SKILL.md`
 
 ### tailrocks-simplify
 
@@ -730,35 +732,12 @@ The ladder also works before code is written; the audit owner applies it to a
 current diff, and the apply owner begins only after the exact removals are
 approved.
 
-### tailrocks-rethink
-
-Conceptually re-derive the design behind a reported bug, friction, or awkward
-implementation. Derives two independent ideal designs before reading the
-existing one, matches the problem shape to an established, externally sourced
-engineering concept, and requires the reported failure to become
-unrepresentable rather than guarded. Heavy restructuring, reimplementation, and
-breaking changes are ordinary outcomes; internal compatibility is work, not a
-constraint.
-
-Skill definition: `skills/tailrocks-rethink/SKILL.md`
-
-Three skills change existing code, ordered by how much they are allowed to
-disturb. **tailrocks-simplify-audit** finds removals without editing;
-**tailrocks-simplify** applies only approved ones, changes nothing observable,
-and stays inside the diff. **tailrocks-remediate** corrects a proven defect while the system keeps
-its promises. **tailrocks-rethink** treats the current shape as the subject and
-expects to break things. Pick by what the change may disturb, not by how large
-it feels.
-
-tailrocks-remediate and tailrocks-rethink both refuse to price the answer, and
-own different jobs. Remediate requires a proven defect, keeps compatibility as a
-correctness constraint, and reaches the target through never-broken migration
-slices. Rethink accepts a reported symptom or friction, treats internal
-compatibility as work to be scheduled, and expects the destination to break
-things. Two guards keep rethink from becoming licensed churn: it refuses a
-request with no failed guarantee behind it, and it rejects a target design that
-adds capability instead of subtracting a structural measure. Design notes, the
-research basis, and the extension model: `docs/design/rethink-design.md`.
+Four owners cover two existing-code change classes. `tailrocks-simplify-audit`
+finds removals without editing and `tailrocks-simplify` applies only approved
+behavior-preserving removals. `tailrocks-root-cause` diagnoses and designs
+without editing; `tailrocks-remediate` applies only an approved current design,
+including explicitly approved breaking changes. Pick by the behavior contract,
+not change size. No third compatibility owner or routing alias remains.
 
 ### tailrocks-agents-md
 

@@ -918,9 +918,29 @@ all terminal checks pass, and the final literal marker is changed to
     subagent verdict: PASS after production-path CAS, rollback-state,
     preservation-reference, and routing-copy corrections. No migration-plan
     artifact added; no evals run.
-- [ ] [IN_PROGRESS] P06.04 Remediate → root-cause diagnosis/design and approved
-  correction; merge rethink analysis and keep the old name route-only.
-- [ ] [TODO] P06.05 Contribute → recon, propose, prepare, submit, respond; keep
+- [x] [COMPLETED] P06.04 Remediate → root-cause diagnosis/design and approved
+  correction; merge rethink analysis and remove the old public name.
+  - Evidence receipt (2026-08-23): created manual-only `tailrocks-root-cause`
+    as the sole read-only owner of failed-guarantee proof, occurrence/escape
+    causality, bounded sibling analysis, greenfield alternatives, structural
+    measures, recovered purpose, break inventory, and approval-ready design.
+    Narrowed `tailrocks-remediate` to one exact current user-approved correction
+    with pre-edit instance/class oracles, bounded commands, sequential per-path
+    CAS, fresh irreversible-action approval, resumable data migration, owned
+    recovery, and honest partial state. Moved and distilled all diagnosis/design
+    doctrine into the new owner without external-source references. Removed the
+    public rethink skill and, per the user's no-deprecated-route rule, the prior
+    checkout compatibility skill; their frozen eval bytes remain untouched and
+    tooling now discovers only directories containing `SKILL.md`. Registry/docs
+    agree on 74 skills (63 manual, 11 model-policy), 19,075 total description
+    characters, and 15,610 capped characters. Focused ownership, checkout-command,
+    invocation, reference, documentation, and validation proof passed 100
+    tests/698 assertions; 54 sources produced 193 byte-identical destinations
+    and 226 generated docs checked. Final `rtk mise run migration-check` passed
+    338 tests/2,104 assertions across 46 selected non-protected files. Fresh
+    subagent verdict: PASS after removing the stale checkout catalog promise.
+    No migration-plan artifact added; no evals run.
+- [ ] [IN_PROGRESS] P06.05 Contribute → recon, propose, prepare, submit, respond; keep
   fresh external-action approval at every outward boundary.
 - [ ] [TODO] P06.06 Preserve skill-create as one evidence-to-wired-skill
   transaction; keep update and refactor exclusive from direct migration work.
@@ -962,9 +982,8 @@ all terminal checks pass, and the final literal marker is changed to
   modes deterministically.
 - [ ] [TODO] P08.06 Convert pipeline-free planning to `plans/`; remove roadmap
   goal/fingerprint mechanics from improve-plan and avoid empty rejection commits.
-- [ ] [TODO] P08.07 Keep `tailrocks-audit`, `tailrocks-checkout-pr`, review
-  posting mode, and other protected-directory retirements as zero-mutation
-  route-only aliases for this goal.
+- [ ] [TODO] P08.07 Remove retired public skill and mode surfaces; keep any
+  frozen protected bytes untouched but undiscoverable and unrouteable.
 - [ ] [TODO] P08.GATE Table-test every route and refusal, synchronize generated
   surfaces, and run `rtk mise run migration-check`. Evidence: pending.
 
@@ -976,8 +995,8 @@ all terminal checks pass, and the final literal marker is changed to
   routes, outputs, refusals, invocation, and argument hints.
 - [ ] [TODO] P09.03 `tailrocks-brainstorm`: deterministic DRAFT/SHAPING and
   interactive/batch frontier transitions using temporary item trees.
-- [ ] [TODO] P09.04 `tailrocks-checkout-pr`: temporary repositories and mocked
-  hosting/Git receipts through the deterministic script.
+- [ ] [TODO] P09.04 Checkout command: temporary repositories and mocked
+  hosting/Git receipts through the deterministic script; no public skill alias.
 - [ ] [TODO] P09.05 `tailrocks-code-health`: machine-owned version and ratchet
   predicates plus unique owner hints.
 - [ ] [TODO] P09.06 `tailrocks-contribute`: five stage scripts with temporary
@@ -1016,8 +1035,8 @@ all terminal checks pass, and the final literal marker is changed to
   excluded-explanation contract.
 - [ ] [TODO] P09.23 `tailrocks-refresh-pr`: deterministic command values,
   temporary-file lifecycle, prior-outcome checks, and recovery receipts.
-- [ ] [TODO] P09.24 `tailrocks-remediate`/`tailrocks-rethink`: exclusive
-  diagnosis versus approved correction, with rethink route-only.
+- [ ] [TODO] P09.24 `tailrocks-root-cause`/`tailrocks-remediate`: exclusive
+  diagnosis versus approved correction, with no deprecated public route.
 - [ ] [TODO] P09.25 `tailrocks-research`: static question/sweep routing, chapter
   schema, and deterministic assembly against a local source corpus.
 - [ ] [TODO] P09.26 `tailrocks-retrospect`: one closed patch-shape enum and
@@ -1052,8 +1071,8 @@ all terminal checks pass, and the final literal marker is changed to
   MODEL_POLICY metadata, and rejection of screenshot ownership.
 - [ ] [TODO] P09.41 `tailrocks-web-visual-qa`: owned-server baseline/regression
   harness and wrong-server refusal.
-- [ ] [TODO] P09.42 `tailrocks-audit`: complete route-only compatibility matrix
-  with no residual implementation ownership.
+- [ ] [TODO] P09.42 `tailrocks-audit`: remove the retired public owner and prove
+  any frozen protected bytes are undiscoverable.
 - [ ] [TODO] P09.43 `tailrocks-grilling`: exact natural-language trigger,
   dependency frontier, recommendations, fact/decision boundary, confirmation,
   and no-action authority.
@@ -1077,9 +1096,8 @@ all terminal checks pass, and the final literal marker is changed to
   every client sidecar inside each owning package.
 - [ ] [TODO] P10.05 Prepare lockstep `v0.28.0` manifest versions and pinned
   documentation examples without tagging, publishing, pushing, or opening a PR.
-- [ ] [TODO] P10.06 Keep protected-directory legacy names as documented
-  route-only aliases; record their later removal prerequisite without adding it
-  as work in this goal.
+- [ ] [TODO] P10.06 Prove retired public names and routes are absent while frozen
+  protected bytes remain untouched and undiscoverable.
 - [ ] [TODO] P10.GATE Prove every in-scope movement row has one successful
   receipt, every generated surface is synchronized, and `rtk mise run
   migration-check` passes. Evidence: pending.

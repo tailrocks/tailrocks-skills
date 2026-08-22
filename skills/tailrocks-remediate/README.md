@@ -4,7 +4,7 @@
 
 `tailrocks-remediate` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-remediate)
 
-Analyze or remediate a proven defect through correctness-first architectural redesign. Use when cost, effort, or sunk investment is being used to defend a symptom patch; derive the design that prevents the whole class. Needs proven wrongness.
+Apply one explicitly approved root-cause correction while preserving every unapproved behavior and proving instance and defect-class prevention. Requires a current diagnosis contract; never diagnoses, chooses, or approves the design.
 
 ## Invocation
 
@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-remediate` …
 
-Arguments: `[analyze|fix] <known defect or inconsistency>`
+Arguments: `fix <approved root-cause report and target>`
 
 ## Skill definition
 
@@ -21,5 +21,4 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 ## References
 
-- [`principles-and-evidence.md`](references/principles-and-evidence.md)
 - [`runtime-trust.md`](references/runtime-trust.md)

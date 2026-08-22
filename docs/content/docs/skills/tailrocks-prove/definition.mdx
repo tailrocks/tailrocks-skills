@@ -129,8 +129,8 @@ status, `tailrocks-retrospect` turns the round into skill patches.
 ## What this refuses
 
 - **Fixing.** Source is never edited, not even a one-line fix for a defect
-  just proven. The round is the deliverable; `tailrocks-remediate` or a new
-  execution round does the work.
+  just proven. The round is the deliverable; `tailrocks-root-cause` diagnoses
+  the class, and only an approved correction reaches `tailrocks-remediate`.
 - **Writing status.** `Remaining`, the item's status, and plan rows belong to
   `tailrocks-reconcile`. A round that rewrote them would be judging its own
   evidence.

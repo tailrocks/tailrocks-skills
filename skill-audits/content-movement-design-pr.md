@@ -97,9 +97,9 @@
 
 | Current surface | Op | Exact target | Compatibility/removal |
 |---|---:|---|---|
-| Entire `SKILL.md` | MOVE | `scripts/checkout-pr.ts` and `scripts/checkout-pr/README.md` | Deprecated stub invokes `mise run pr:checkout -- <arg>` through `v0.28.x`; remove in `v1.0.0`. |
+| Entire `SKILL.md` | MOVE | `scripts/checkout-pr.ts` and `scripts/checkout-pr/README.md` | Deterministic command owns the operation directly; no public skill alias. |
 | Eval IDs `1-3` | MOVE | `scripts/checkout-pr.test.ts` | Add mocked `gh`/Git fixtures; cover success, dirty tree, and no match. |
-| Deprecated `skills/tailrocks-checkout-pr/{SKILL.md,evals/evals.json,agents/openai.yaml,README.md}` and old catalog/docs row | DELETE | Remove in `v1.0.0` after script confirmation handling, integration tests, and replacement docs exist | Remove alias and surfaces together. |
+| `skills/tailrocks-checkout-pr/{SKILL.md,agents/openai.yaml,README.md}` and old catalog/docs row | DELETE | Remove public surfaces now; frozen eval bytes remain untouched and undiscoverable | No alias or route remains. |
 
 ## Shared PR convention extraction
 

@@ -166,8 +166,8 @@ implementation to it afterward.
 | [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) | A roadmap item has shipped and its delivery history should say which skills let it diverge from its own plan. |
 | [`tailrocks-simplify-audit`](/docs/skills/tailrocks-simplify-audit) | One diff needs a read-only search for measured removals with behavior frozen. |
 | [`tailrocks-simplify`](/docs/skills/tailrocks-simplify) | One exact audited removal set has explicit approval and a proven preservation oracle. |
-| [`tailrocks-remediate`](/docs/skills/tailrocks-remediate) | A defect is proven and the system must keep its promises while being corrected. |
-| [`tailrocks-rethink`](/docs/skills/tailrocks-rethink) | The current shape itself is under review and breaking it is acceptable. |
+| [`tailrocks-root-cause`](/docs/skills/tailrocks-root-cause) | A proven defect or concrete friction needs read-only causal diagnosis and corrective design. |
+| [`tailrocks-remediate`](/docs/skills/tailrocks-remediate) | One current root-cause design has explicit approval and must be applied exactly. |
 | [`tailrocks-contribute`](/docs/skills/tailrocks-contribute) | The repository belongs to someone else. |
 
 ### retrospect or audit
@@ -204,35 +204,32 @@ there — the item is evidence — and its subject is the *skills*, not the
 work. Reconcile when the statuses are suspect; retrospect after they are
 settled.
 
-### simplify, remediate, or rethink
+### simplify, root-cause, or remediate
 
-Four owners govern three existing-code change classes. Pick by how much the
-change may disturb, not by how large it feels.
+Four owners govern two existing-code change classes. Pick by the behavior
+contract, not by how large the change feels.
 
 `tailrocks-simplify-audit` reports measured removals without editing. Scope is
 the diff and behavior is frozen. An explicitly approved set then routes to
 `tailrocks-simplify`, which applies only those removals under the proven oracle.
 
-`tailrocks-remediate` corrects a proven defect while the system keeps its
-promises. `tailrocks-rethink` treats the current shape as the subject and
-expects to break things.
+`tailrocks-root-cause` diagnoses and designs without editing. An explicitly
+approved current report routes to `tailrocks-remediate`, which applies only its
+named correction and breaks only the contracts the user approved.
 
-### remediate or rethink
+### root-cause or remediate
 
-Both refuse to price the answer: no ROI, effort, duration, or sunk cost enters
-either decision. They differ in what the decision may reach.
+Both refuse to price the answer. They differ in authority and output.
 
-`tailrocks-remediate` requires a proven defect — a falsifiable expected state
-and an observed contradiction. It treats compatibility promises as correctness
-constraints and reaches the target through never-broken migration slices, and
-it bounds the redesign to the proven defect class.
+`tailrocks-root-cause` accepts a proven defect or concrete friction that can be
+restated as a failed guarantee. It proves occurrence and escape, derives ideal
+alternatives, bounds the class, inventories compatibility breaks, and returns a
+read-only contract. The report authorizes nothing.
 
-`tailrocks-rethink` accepts a reported symptom or friction. It derives the ideal
-design before reading the existing one, treats internal compatibility as work
-rather than a constraint, and expects breaking changes. Two guards keep it from
-becoming licensed churn: it refuses a request with no failed guarantee behind
-it, and it rejects a target design that adds capability instead of subtracting a
-structural measure.
+`tailrocks-remediate` accepts only that current contract plus exact user
+approval. It applies never-broken slices, requires fresh approval at destructive
+or irreversible boundaries, and proves both the instance and class-prevention
+oracle. No third compatibility owner or routing alias remains.
 
 Use ordinary best-practice skills for routine implementation. Neither of these
 is a substitute for them.
@@ -332,7 +329,6 @@ the repository's own conventions and fall back to their defaults.
 |---|---|
 | [`tailrocks-create-pr`](/docs/skills/tailrocks-create-pr) | A self-contained change needs a branch, a commit in the repo's convention, and an opened PR. |
 | [`tailrocks-refresh-pr`](/docs/skills/tailrocks-refresh-pr) | An open PR's title or body no longer describes what the branch ships. |
-| [`tailrocks-checkout-pr`](/docs/skills/tailrocks-checkout-pr) | The working repository must land on a PR's branch, with the tree guarded. |
 | [`tailrocks-review-pr`](/docs/skills/tailrocks-review-pr) | A PR, branch, or diff needs a review verdict: verified bugs, structural regressions, routed fixes. |
 | [`tailrocks-merge-pr`](/docs/skills/tailrocks-merge-pr) | A PR is merge-ready and the gates must run fail-closed before it lands — including the read-only delivery-artifact check when the diff touches `roadmap/` and the documentation gate that stops an undocumented merge. |
 | [`tailrocks-document`](/docs/skills/tailrocks-document) | The last content commit before a merge: the repository's own docs rewritten into the final source of truth for what the PR shipped — never a changelog page. |
@@ -359,10 +355,11 @@ class. [`tailrocks-simplify-audit`](/docs/skills/tailrocks-simplify-audit) is on
 of those routes — it reports removable code with behavior frozen. An explicitly
 approved report then routes to [`tailrocks-simplify`](/docs/skills/tailrocks-simplify),
 which applies only that set.
-[`tailrocks-remediate`](/docs/skills/tailrocks-remediate) is another — a
-review finding becomes its input when the defect is proven and its
-enabling condition is architectural, so the class stops recurring instead
-of the instance getting patched. Review reports; the routed skills act.
+[`tailrocks-root-cause`](/docs/skills/tailrocks-root-cause) is another — a
+review finding becomes its read-only input when the failed guarantee needs
+causal design. Only the approved resulting contract reaches
+[`tailrocks-remediate`](/docs/skills/tailrocks-remediate). Review reports;
+root-cause designs; remediate acts.
 
 ### create-pr or contribute
 
@@ -380,9 +377,9 @@ that needs a first pass to find out what is worth doing. Selected
 findings go to the roadmap/plan pipeline, or straight to a
 `bounded-executor` when the finding is small, certain, and low-risk to
 get wrong — and to a fixer skill instead when the finding's shape says
-so: `tailrocks-remediate` when the defect class will recur,
-`tailrocks-rethink` when nothing failed but the shape keeps producing
-near-misses, `tailrocks-simplify-audit` for redundancy inside a diff.
+so: `tailrocks-root-cause` when a defect class will recur or concrete friction
+reveals a failed guarantee, `tailrocks-remediate` only for an approved causal
+contract, and `tailrocks-simplify-audit` for redundancy inside a diff.
 [`tailrocks-code-health-audit`](/docs/skills/tailrocks-code-health-audit) owns
 one-off read-only debt measurement. [`tailrocks-code-health`](/docs/skills/tailrocks-code-health)
 owns only an explicitly approved standing ratchet mutation that keeps a named

@@ -206,9 +206,9 @@
 | Remediate fix mode, containment/execution/verification/gate | KEEP | `skills/tailrocks-remediate/SKILL.md` | Base becomes approved correction executor. |
 | Remediate eval IDs `1-2,5` + fixture `1/**` | MOVE | `skills/tailrocks-root-cause/evals/evals.json` + `skills/tailrocks-root-cause/evals/fixtures/1/**` | `C-mode`. |
 | Remediate eval IDs `3-4` | KEEP | `skills/tailrocks-remediate/evals/evals.json` | Fix cases. |
-| Rethink frontmatter/introduction, audit mode, steps 1-7, audit half of step 8, audit output rows, final-gate lines 123-127, both references, eval IDs `1-3,5` + fixture `1/**` | MOVE | `skills/tailrocks-root-cause/SKILL.md`, same filenames under its `references/`, and `skills/tailrocks-root-cause/evals/` | Whole old skill aliases root-cause/remediate until `C-retire`. |
-| Rethink rebuild argument/mode, authorization lines 41-46, rebuild half of step 8/output, final-gate line 128, eval ID `4` | MOVE | `skills/tailrocks-remediate/SKILL.md` + `skills/tailrocks-remediate/evals/evals.json` | Explicit rebuild redirect until `C-retire`. |
-| `skills/tailrocks-rethink/{SKILL.md,agents/openai.yaml,README.md,evals/evals.json}` and old catalog/docs rows | DELETE | Remove those exact surfaces after `C-retire` | Alias package only during window. |
+| Rethink frontmatter/introduction, audit mode, steps 1-7, audit half of step 8, audit output rows, final-gate lines 123-127, both references, eval IDs `1-3,5` + fixture `1/**` | MOVE | `skills/tailrocks-root-cause/SKILL.md`, same filenames under its `references/`, and `skills/tailrocks-root-cause/evals/` | Public analysis ownership moves directly; no alias. |
+| Rethink rebuild argument/mode, authorization lines 41-46, rebuild half of step 8/output, final-gate line 128, eval ID `4` | MOVE | `skills/tailrocks-remediate/SKILL.md` + `skills/tailrocks-remediate/evals/evals.json` | Public correction ownership moves directly; no redirect. |
+| `skills/tailrocks-rethink/{SKILL.md,agents/openai.yaml,README.md}` and old catalog/docs rows | DELETE | Remove those exact public surfaces now | Frozen eval bytes remain untouched and undiscoverable until separate authorization. |
 
 ## `tailrocks-contribute`
 
@@ -245,4 +245,4 @@
 
 ## Generated surfaces
 
-For every section above, retain the base metadata/generated README/catalog entry when the base remains. Generate each new skill's `agents/openai.yaml`, README/docs page, catalog/installation/choosing entry, and eval manifest. Remove old mode metadata only at `C-mode`; remove retired-skill surfaces only at `C-retire`.
+For every section above, retain the base metadata/generated README/catalog entry when the base remains. Generate each new skill's `agents/openai.yaml`, README/docs page, catalog/installation/choosing entry, and eval manifest. Remove old mode metadata only at `C-mode`; retired public skill surfaces do not remain as deprecated routes.

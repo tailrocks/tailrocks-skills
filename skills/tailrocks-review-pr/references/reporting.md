@@ -32,7 +32,7 @@ The verdict is one of three sentences, each earned:
   as judged by its owners.
 - **Blocked.** Name each blocker and its route. A blocker plus "but the
   author says fixing it is expensive" is still blocked — cost arguments
-  route to `tailrocks-remediate`'s doctrine, they do not lower the bar.
+  route to `tailrocks-root-cause`'s doctrine; they do not lower the bar.
 
 The verdict is advisory: this skill never clicks approve, never posts, and never
 merges (`tailrocks-merge-pr` owns that gate). Its output authorizes nothing by

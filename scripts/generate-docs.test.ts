@@ -148,37 +148,40 @@ test("generates a README and a documentation page for every skill", async () => 
   const generated = await generate(root);
   const files = generated.map((entry) => entry.file);
 
-  expect(files).toContain(path.join("skills", "tailrocks-rethink", "README.md"));
-  expect(files).toContain(path.join("docs", "content", "docs", "skills", "tailrocks-rethink", "index.mdx"));
+  expect(files.some((file) => file.includes("tailrocks-rethink"))).toBe(false);
+  expect(files).toContain(path.join("skills", "tailrocks-root-cause", "README.md"));
   expect(files).toContain(
-    path.join("docs", "content", "docs", "skills", "tailrocks-rethink", "definition.mdx"),
+    path.join("docs", "content", "docs", "skills", "tailrocks-root-cause", "index.mdx"),
+  );
+  expect(files).toContain(
+    path.join("docs", "content", "docs", "skills", "tailrocks-root-cause", "definition.mdx"),
   );
   expect(files).toContain("README.md");
 
   const readme = generated.find((entry) => entry.file === "README.md");
-  expect(readme?.content).toContain("skills/tailrocks-rethink/README.md");
+  expect(readme?.content).toContain("skills/tailrocks-root-cause/README.md");
 
-  const page = generated.find((entry) => entry.file.endsWith(path.join("tailrocks-rethink", "index.mdx")));
+  const page = generated.find((entry) => entry.file.endsWith(path.join("tailrocks-root-cause", "index.mdx")));
   const definition = generated.find((entry) =>
-    entry.file.endsWith(path.join("tailrocks-rethink", "definition.mdx")),
+    entry.file.endsWith(path.join("tailrocks-root-cause", "definition.mdx")),
   );
   // The overview stays short: the body it would otherwise inline lives one page deeper.
   expect(page?.content.length).toBeLessThan(definition?.content.length ?? 0);
-  expect(page?.content).toContain("/docs/skills/tailrocks-rethink/definition");
-  expect(definition?.content).toContain("Cost is never a criterion.");
-  expect(page?.content).toStartWith('---\ntitle: "Tailrocks: Rethink"\n');
-  expect(definition?.content).toStartWith('---\ntitle: "Tailrocks: Rethink — Skill definition"\n');
+  expect(page?.content).toContain("/docs/skills/tailrocks-root-cause/definition");
+  expect(definition?.content).toContain("This owner is read-only.");
+  expect(page?.content).toStartWith('---\ntitle: "Tailrocks: Root Cause"\n');
+  expect(definition?.content).toStartWith('---\ntitle: "Tailrocks: Root Cause — Skill definition"\n');
   // The site writes invocations in the reader's own client syntax; the README cannot.
-  expect(page?.content).toContain('<Invoke skill="tailrocks-rethink"');
+  expect(page?.content).toContain('<Invoke skill="tailrocks-root-cause"');
   expect(page?.content).not.toContain("<AgentPicker");
   const skillReadme = generated.find(
-    (entry) => entry.file === path.join("skills", "tailrocks-rethink", "README.md"),
+    (entry) => entry.file === path.join("skills", "tailrocks-root-cause", "README.md"),
   );
   expect(skillReadme?.content).not.toContain("<Invoke");
   // The skill README sits beside SKILL.md, so it links to the body instead of copying it.
   expect(skillReadme?.content).toContain("[`SKILL.md`](SKILL.md)");
-  expect(skillReadme?.content).not.toContain("Cost is never a criterion.");
-  expect(skillReadme?.content).toContain("# Tailrocks: Rethink");
+  expect(skillReadme?.content).not.toContain("This owner is read-only.");
+  expect(skillReadme?.content).toContain("# Tailrocks: Root Cause");
   expect(skillReadme!.content.length).toBeLessThan(definition!.content.length);
   // Skill bodies link to their own references; the site cannot serve those paths.
   expect(page?.content).not.toContain("](references/");
