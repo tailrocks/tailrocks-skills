@@ -4,7 +4,7 @@
 
 `tailrocks-review-pr` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-review-pr)
 
-Review a pull request, branch, or diff and report verified findings: adversarially validated bugs, structural regressions, content-triggered specialist lanes, house-skill routing. Read-only; posts comments only on request; never merges or approves.
+Review a pull request, branch, or diff and report verified findings: adversarially validated bugs, structural regressions, triggered specialist lanes, and fixer routes. Always read-only; never posts, merges, or approves.
 
 ## Invocation
 
@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-review-pr` …
 
-Arguments: `[PR | branch | range] [--comment] [aspects]`
+Arguments: `[PR | branch | range] [aspects]`
 
 ## Skill definition
 

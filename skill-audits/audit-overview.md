@@ -509,9 +509,29 @@ all terminal checks pass, and the final literal marker is changed to
     verdict: PASS after exact commit proof, direct installed-script routing,
     saturated lookup refusal, typed CLI errors, and CAS same-branch recovery.
     No evals run.
-- [ ] [IN_PROGRESS] P04.04 Add `scripts/post-pr-review.ts`; require fresh posting
+- [x] [COMPLETED] P04.04 Add `scripts/post-pr-review.ts`; require fresh posting
   authority, verify current HEAD, and deduplicate repeated receipts.
-- [ ] [TODO] P04.05 Add `scripts/merge-preflight.ts`; use bounded polling,
+  - Evidence receipt (2026-08-22): added a strict typed prepare/post state
+    machine, command README, `pr:post-review` task, and migrated
+    `tailrocks-review-pr` plus the root catalog to unconditional read-only
+    review. Prepare binds an exact report digest to repository, PR, current
+    40-character local/remote HEAD, open state, actor, and a five-minute
+    owner-only one-use challenge without outward mutation. Post atomically
+    claims authority, rechecks actor/target/HEAD/expiry immediately before each
+    mutation, posts exact inline or clean payloads, proves API response body,
+    HTTPS permalink, commit and full location, and re-verifies afterward.
+    Same-actor deterministic markers make partial/uncertain runs resumable;
+    other actors cannot suppress findings and saturated lookups refuse.
+    Focused proof passed 19 tests/59 assertions across expiry equality and
+    mid-flight expiry, replay/tamper, actor/target/head drift, schema and payload
+    proof, multiline ranges, dedupe spoofing, partial resume, uncertain results,
+    and typed CLI exits. `rtk mise run migration-check` passed 205 tests/1,021
+    assertions across 21 selected non-protected files, validated 44 skills,
+    checked 136 generated files, and passed formatting and diff checks.
+    Protection proof covered 4 patterns/183 frozen source paths with zero
+    violations. Fresh subagent verdict: PASS after closing root-instruction,
+    schema-documentation, exact-expiry, and response-proof gaps. No evals run.
+- [ ] [IN_PROGRESS] P04.05 Add `scripts/merge-preflight.ts`; use bounded polling,
   terminal pending output, machine-owned delivery/documentation predicates, and
   no merge authority.
 - [ ] [TODO] P04.06 Add macOS launch/window/capture/accessibility/appearance

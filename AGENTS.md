@@ -516,8 +516,8 @@ copy-ready `.tailrocks/pr.md` template ship with tailrocks-create-pr.
   design, comment accuracy), stack-lane dispatch to the house
   best-practices skills per changed file, and per-finding routing —
   behavior-frozen removals to tailrocks-simplify, proven defect classes to
-  tailrocks-remediate. Read-only; posts comments only under `--comment`;
-  never approves or merges. Definition: `skills/tailrocks-review-pr/SKILL.md`
+  tailrocks-remediate. Unconditionally read-only; never posts, approves, or
+  merges. Definition: `skills/tailrocks-review-pr/SKILL.md`
 - **tailrocks-merge-pr** — merge fail-closed: CI gate with named-check-only
   admin bypass, blast-radius confirm, the repository's pre-merge worklist,
   metadata reconcile before the squash title enters history, repo-selected

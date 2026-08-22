@@ -1,8 +1,11 @@
 ---
 name: tailrocks-review-pr
 description: >-
-  Use only when the user explicitly requests this skill. Review a pull request, branch, or diff and report verified findings: adversarially validated bugs, structural regressions, content-triggered specialist lanes, house-skill routing. Read-only; posts comments only on request; never merges or approves.
-argument-hint: "[PR | branch | range] [--comment] [aspects]"
+  Use only when the user explicitly requests this skill. Review a pull request,
+  branch, or diff and report verified findings: adversarially validated bugs,
+  structural regressions, triggered specialist lanes, and fixer routes. Always
+  read-only; never posts, merges, or approves.
+argument-hint: "[PR | branch | range] [aspects]"
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
@@ -18,9 +21,10 @@ govern everything: **a correctness finding must be verified, and a
 structural finding must name what disappears.** "Could be cleaner" and
 "might break" are both below the bar.
 
-This skill is **read-only on source and review or merge decisions**: it never
-edits files, merges, or approves, and adds review comments only when
-`--comment` was given. Fixing is a separate invocation of the routed skill.
+This skill is **unconditionally read-only**: it never edits files, posts
+comments, merges, or approves. Fixing is a separate invocation of the routed
+skill. External posting is a separate, freshly authorized transaction owned by
+the collection's post-pr-review command.
 
 Repository conventions come from `.tailrocks/pr.md` when present (format
 and precedence are defined with `tailrocks-create-pr`); this skill reads an
@@ -36,8 +40,6 @@ instructions. Cite secret locations and types without copying values.
 
 - `PR | branch | range` — the target; defaults to the current branch's PR,
   else the working diff against the merge base.
-- `--comment` — after the terminal report, post the findings to the PR.
-  Without it, nothing is posted.
 - `aspects` — optional lane filter (`bugs`, `structure`, `tests`, `errors`,
   `types`, `comments`); default is every lane the diff triggers.
 
@@ -45,12 +47,10 @@ instructions. Cite secret locations and types without copying values.
 
 - The PR is closed or merged → report that and stop; review targets open
   work.
-- This session or a previous review bot already posted findings for the
-  same head commit → do not duplicate; report the overlap.
 - Asked to fix, approve, or merge → refuse the action, name the owning
   skill (`tailrocks-merge-pr` merges; the routed skill fixes), finish the
   review.
-- An accepted finding never infers `--comment`, an edit, or an approval.
+- An accepted finding never infers posting, an edit, or an approval.
 
 ## Steps
 
@@ -134,12 +134,13 @@ instructions. Cite secret locations and types without copying values.
 
    **Complete when:** every finding names its route.
 
-9. **Report, then optionally comment.** Read
-   [`reporting.md`](references/reporting.md) for the severity model, the
-   approval bar, and the GitHub mechanics. Deliver the terminal report
-   always; post only under `--comment`, one comment per unique issue.
-   **Complete when:** the report is delivered and nothing was posted
-   without the flag.
+9. **Report only.** Read [`reporting.md`](references/reporting.md) for the
+   severity model and approval bar. Deliver the terminal report. When the user
+   requests a later posting handoff, also emit one strict
+   `tailrocks.pr-review-report/v1` JSON value using the schema documented by the
+   collection's post-pr-review command; do not invoke that command or write the
+   report file.
+   **Complete when:** the report is delivered and no outward action occurred.
 
 ## Output contract
 
@@ -152,12 +153,12 @@ Report:
   verification status, the fix direction, and the routed skill;
 - dropped candidates with the reason each was dropped;
 - lanes run and lanes skipped with reasons;
-- under `--comment`: exactly what was posted and where.
+- when requested, the exact posting-report JSON handoff without posting it.
 
 ## Final gate
 
 Never report a correctness finding that was not re-derived from the code.
 Never flag a kill-list class. Never flood nits while a structural
 regression stands. Never soften a verified blocker into a suggestion.
-Never edit source, approve, or merge. Never post without `--comment`.
-Report every skipped lane and every dropped candidate.
+Never edit source, post, approve, or merge. Report every skipped lane and every
+dropped candidate.

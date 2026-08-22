@@ -41,6 +41,10 @@ run = "bun run scripts/run-migration-tests.ts"
 description = "Resolve, guard, switch, and verify one pull request checkout"
 run = "bun run scripts/checkout-pr.ts"
 
+[tasks."pr:post-review"]
+description = "Prepare or consume a separately authorized PR review posting challenge"
+run = "bun run scripts/post-pr-review.ts"
+
 [tasks.docs]
 description = "Regenerate skill READMEs and documentation pages from SKILL.md"
 run = "bun run scripts/generate-references.ts --write && bun run scripts/generate-docs.ts"
