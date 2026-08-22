@@ -63,7 +63,11 @@ convention discovery, never an error.
    repository's scheme (default: `fix/` / `feat/` / `docs/` / `chore/` /
    `refactor/` prefix). Suggest and confirm unless `--auto-branch` or
    `--branch` was given.
-   **Complete when:** `git branch --show-current` is not the base branch.
+   Before continuing on an existing branch, query pull requests for its exact
+   head and confirm remote ownership. An existing PR routes to
+   `tailrocks-refresh-pr`; a foreign-owned branch stops for user direction.
+   **Complete when:** the current branch is not the base, belongs to this work,
+   and backs no existing PR.
 
 3. **Commit and push.** Uncommitted changes → commit inline: subject in the
    repository's convention, sign-off (`git commit -s`) when the repository

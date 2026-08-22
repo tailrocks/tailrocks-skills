@@ -13,9 +13,8 @@ user-invocable: true
 Audit a repository, verify every finding against its evidence, and write
 plans a fresh executor can run with zero context beyond the plan file and
 the repo. The plan is the product: judgment stays here, execution is
-someone else's job. This skill never edits source, never mutates the
-working tree, never commits, merges, or pushes. It writes only under
-`plans/`.
+someone else's job. This skill never edits outside `plans/`, and never commits,
+merges, or pushes.
 
 Works on any repository — no `roadmap/`, no pipeline, no house stack
 assumed. When the repository runs the tailrocks delivery pipeline and the
@@ -68,11 +67,12 @@ Never infer implementation permission from a plan being ready.
    **Complete when:** every surviving finding's evidence was re-read in
    this context.
 
-4. **Prioritize and confirm.** Rank by the playbook's rubric — leverage
-   discounted by confidence and fix-risk — and present the table. Ask which
+4. **Prioritize and confirm.** Rank first by correctness, consistency, goal fit,
+   severity, confidence, and fix risk. Keep effort only as planning metadata,
+   never as a reason to accept known wrongness. Ask which
    findings to plan; unattended, take the top three to five. Direction
    findings are options presented separately, never ranked against defects.
-   "Not worth doing" is a valid verdict and is recorded, not dropped.
+   Deferral needs an explicit non-effort reason and remains visible.
    **Complete when:** the user selected findings or the default selection
    is stated.
 

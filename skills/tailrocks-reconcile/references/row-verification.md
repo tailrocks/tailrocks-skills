@@ -69,11 +69,10 @@ writing — one targeted re-run, not a second full pass.
 
 ## `VACUOUS` — exited 0, executed nothing
 
-A done criterion that succeeds without running anything re-confirms its row
-DONE for as long as the row exists. This is the failure mode that made the
-verdict necessary: an item's ledger listed seven proof commands, four of
-them collected zero tests, one named a package that does not resolve, and
-every row still read DONE.
+A done criterion that succeeds without running anything does not confirm DONE;
+report `VACUOUS`. This is the failure mode that made the verdict necessary: an
+item's ledger listed seven proof commands, four collected zero tests, one named
+a package that did not resolve, and every row still read DONE.
 
 `VACUOUS` is reported when the command exited 0 and the count of executed
 units is zero or absent. Its signals:

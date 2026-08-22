@@ -7,13 +7,15 @@ and closing loopholes is the refactor.
 
 ## The iron law
 
-**No new skill and no behavioral edit without a failing test first.**
-The baseline run — the agent attempting the task *without* the skill (or
-with the pre-edit version) — is not optional ceremony: it is the only
-evidence that the skill teaches something the agent would not do anyway,
-and its transcript is the raw material the skill is written from.
-Document the baseline verbatim: the exact wrong choice, the exact
-rationalization. A skill written before its baseline is deleted and
+**No new skill and no behavioral edit without discriminating evidence first.**
+For a claimed agent-behavior correction, the baseline run — the agent attempting
+the task *without* the skill or with the pre-edit version — must fail for the
+claimed reason. For an external-contract change or preventive security rule,
+the red bar is a failing executable contract or security check plus an
+irrelevant control; never fabricate an agent failure merely to satisfy form.
+These are the evidence that the skill changes an outcome rather than adding prose.
+For behavior evidence, document the baseline verbatim: exact wrong choice and
+rationalization. A skill written before its evidence is deleted and
 restarted, not retrofitted — "keeping it as reference" while writing the
 test is the violation with extra steps. If the baseline does **not**
 fail, stop: there is nothing to fix, and the skill would be dead weight.
@@ -26,11 +28,11 @@ costs more than its test).
 
 ## Two different things wear the word *run*
 
-**The baseline observation is manual and stays here. The eval harness
-defers to CI.** Watching a fresh agent attempt the task without the skill
-is an ordinary session, costs a few minutes, and is what the iron law
-demands — deferring the harness never excuses skipping it, and a skill
-whose failure was never seen does not ship. `mise run evals`, the graded
+**The evidence observation is manual and stays here. The eval harness defers to
+CI.** Watching a fresh agent attempt a behavior task, or running the executable
+contract/security check for a preventive task, is an ordinary session and what
+the evidence law demands. Deferral never excuses skipping the applicable red
+bar. `mise run evals`, the graded
 suite over `evals/evals.json`, is the other thing: authored here,
 executed in CI — a lane this repository has not wired yet — and never
 invoked locally. Every "run", "re-test", and "repetition" below that is

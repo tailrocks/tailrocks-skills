@@ -21,7 +21,8 @@ else.
 - Write only `roadmap/<slug>/README.md`, that folder's assets, and the item's
   index row. Never its `plan/`, `verification/`, or `goal/` siblings — other
   skills own them, and `goal/check.sh` fingerprints the frozen ones. Keep
-  source, configuration, dependencies, and Git state unchanged.
+  source, configuration, and dependencies unchanged. Git changes are limited to
+  the delivery commit, push, and PR-status update defined below.
 - Ask one question at a time and wait; with `--batch`, one numbered frontier
   round at a time. Every question carries a recommended answer.
 - Put only decisions to the user; look up facts under the house evidence
@@ -57,7 +58,8 @@ carries the reason.
 1. **Load and assess.** Read `roadmap/<slug>/README.md` fully and
    [`references/readiness-and-grilling.md`](references/readiness-and-grilling.md).
    Never re-ask settled ground (Decisions, Vocabulary, Must not). If the
-   item is `DRAFT`-thin, say so and route to `tailrocks-brainstorm` first.
+   item is `DRAFT`, stop and route to `tailrocks-brainstorm`; content richness
+   never bypasses status ownership.
    **Complete when:** the gap between the item and the readiness checklist
    is mapped into a decision tree.
 

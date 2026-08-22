@@ -1,6 +1,6 @@
 interface:
   display_name: "Tailrocks: Skill Refactor"
-  short_description: "Apply selected skill-audit findings by ID, verified by an independent re-audit"
-  default_prompt: "Use $tailrocks-skill-refactor on the named skill: read the audit report, confirm the selected finding IDs against the skill as it stands, apply only those fixes per doctrine while preserving the invocation contract, update the eval set for CI, and end with an independent re-audit — never self-verify."
+  short_description: "Change skill contracts or responsibility topology"
+  default_prompt: "Use $tailrocks-skill-refactor on the named skill family and transformation."
 policy:
   allow_implicit_invocation: false

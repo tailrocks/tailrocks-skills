@@ -16,7 +16,7 @@ git history holds the old ones. The directory carries no index.
 
 ## Layers and finding IDs
 
-Six layers, each with its own ID prefix, numbered in report order:
+Each layer has its own monotonic ID prefix:
 
 | Layer | Prefix | Covers |
 |---|---|---|
@@ -26,6 +26,12 @@ Six layers, each with its own ID prefix, numbered in report order:
 | Evals | `EVAL-n` | Missing baseline evidence, unrealistic prompts, no refusal case, missing fixtures |
 | Wiring | `WIRE-n` | Catalog, client metadata, generated docs, install/index documents, version lockstep |
 | Overlap | `OVL-n` | Two skills owning one responsibility |
+
+Prefix names the artifact layer that owns the fix. Add one or more dimensions:
+`contract`, `behavior`, `predictability`, `efficiency`, `topology`,
+`portability`, `security`. Dimensions never allocate IDs. Example: an unsafe
+router instruction is `RTR-n` with `contract` and `security`; missing outcome
+proof is `EVAL-n` with `behavior`.
 
 ## Finding shape
 
@@ -37,15 +43,24 @@ Six layers, each with its own ID prefix, numbered in report order:
   never relayed from an investigator unread.
 - **Fix:** the named correction — strengthen this section, move this to a
   reference, rewrite the description trigger-only.
+- **Dimensions:** one or more typed dimensions from the list above.
+- **Identity tuple:** layer; doctrine rule; concise defect; owned
+  responsibility; evidence path, nearest heading or symbol, and normalized
+  quote. Normalize prose by trimming, lowercasing, and collapsing whitespace;
+  preserve identifiers exactly. Compare tuple fields structurally — no invented
+  digest or line number.
+- **Action:** `update`, `refactor`, `validator`, `instruction`, or `delete`.
+- **Acceptance:** observable check that proves the defect resolved.
 ```
 
 ## Rules
 
 - Every finding carries an ID, evidence, and a named fix. A defect with
   no fix is not yet understood; investigate or drop it with a reason.
-- IDs are stable within the report and numbered per layer. They are how
-  `tailrocks-skill-refactor` selects work — never reuse an ID for a
-  different defect in a re-audit; retired IDs stay retired.
+- Before assigning IDs, read the previous report. Preserve an ID only when its
+  identity tuple matches. Allocate new IDs above that layer's historical maximum;
+  never reuse retired IDs. IDs select work for `tailrocks-skill-update` or
+  `tailrocks-skill-refactor` according to the finding's action.
 - A clean layer is stated as `None` — silence reads as unexamined.
 - Killed findings (by-design, mis-attributed, duplicate) are listed at
   the end with their one-line reasons.

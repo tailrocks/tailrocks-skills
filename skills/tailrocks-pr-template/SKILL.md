@@ -50,9 +50,11 @@ its structure, its real gates, and how its merged PRs are actually written.
    then read a representative sample of bodies — largest, smallest, most
    discussed. What sections do authors actually write? What do reviewers
    ask for in comments that a template section would have answered? What
-   verify commands recur in bodies or review threads? A section nobody has
-   ever needed is dropped; a recurring ad-hoc section is promoted into the
-   template. Few or no merged PRs → say so and derive from structure alone.
+   verify commands recur in bodies or review threads? A section unsupported by
+   both repository structure and sampled history is dropped; structure-required
+   preventive sections remain even when history has not exercised them. A
+   recurring ad-hoc section is promoted into the template. Few or no merged PRs
+   → say so and derive from structure alone.
    **Complete when:** each kept, dropped, or added section has a reason
    from the history or the structure.
 

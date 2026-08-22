@@ -75,6 +75,11 @@ status, `tailrocks-retrospect` turns the round into skill patches.
    **Complete when:** the artifacts exist and the build commands and their
    output are recorded.
 
+   Before executing surfaces, inventory their side effects. Use a user-
+   authorized non-production target or isolated reversible data. Production,
+   external, or irreversible effects require explicit authorization immediately
+   before execution; without it, record that surface as `NOT EXECUTED`.
+
 4. **Fan out, one subagent per surface.** Read
    [`references/subagent-fanout.md`](references/subagent-fanout.md). Each
    agent executes its surface and returns the evidence contract from

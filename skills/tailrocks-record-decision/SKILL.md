@@ -23,8 +23,9 @@ record, then reconcile.
   and Git state unchanged.
 - The decision is the user's; the consistency check is yours. Never soften,
   reinterpret, or extend it; never record a decision they did not state.
-- One invocation, one decision. A message carrying several distinct
-  decisions gets recorded as several dated entries, each propagated.
+- One invocation, one decision. When a message carries several distinct
+  decisions, ask which one to record first; later decisions require separate
+  invocations so each propagation and commit stays atomic.
 - A falsified planning assumption reported by an executor or reconcile is
   recorded like a decision reversal: date it, strike its premise wherever
   the item relied on it, propagate through step 3, and mark plans listing
@@ -79,8 +80,9 @@ deriving from unresearched facts) are unaffected and proceed normally.
    explicit.
 
 3. **Propagate.** Reconcile every section the decision touches:
-   capabilities, screens, flows, must-nots, quality bar, vocabulary. Remove
-   or rewrite what it invalidates; add what it directly implies (implies —
+   capabilities, screens, flows, must-nots, quality bar, vocabulary. Strike
+   invalidated content with a pointer to the new decision, or rewrite it while
+   preserving explicit supersedence; never silently remove it. Add what it directly implies (implies —
    not "would be nice with"). Strike answered Open questions. New questions
    it raises join Open questions (decisions) or Open research questions
    (facts).

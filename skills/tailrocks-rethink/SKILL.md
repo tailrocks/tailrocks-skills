@@ -55,10 +55,11 @@ contract — need explicit approval even in `rebuild`.
 
 2. **Derive the ideal design before studying the current one.** Design the
    capability from nothing, as if the repository did not exist, so the reported
-   failure has no expression in it. Produce two structurally different ideal
-   designs and select between them; a single candidate is an anchored one.
-   **Complete when:** two independent designs exist, neither derived by editing
-   the current structure, and one is selected on structural grounds.
+   failure has no expression in it. Produce two structurally different viable
+   designs when the design frontier has two. If a hard constraint collapses the
+   frontier to one, record that constraint instead of inventing a loser.
+   **Complete when:** viable independent designs exist and one is selected, or
+   the constraint proving only one viable structure is recorded.
 
 3. **Name the concept.** Read
    [`concept-corpus.md`](references/concept-corpus.md). Match the problem shape
