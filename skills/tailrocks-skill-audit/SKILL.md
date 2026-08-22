@@ -91,8 +91,10 @@ Audits skill authoring only. Repository code defects route to
 (repositories running the delivery pipeline). Applying report findings is
 `tailrocks-skill-update` when behavior changes within a fixed public contract.
 Behavior-preserving responsibility topology routes to
-`tailrocks-skill-refactor`. Contract-breaking work requires a separately
-approved migration contract and has no authoring-family executor in this task.
+`tailrocks-skill-refactor`. Contract-breaking work requires a separately scoped
+explicit authorization for direct migration in the named branch and pull
+request and has no authoring-family executor in this task. Do not create a
+migration plan, migration artifact, or migration product skill.
 Authoring a new skill is `tailrocks-skill-create`; an in-place edit is
 `tailrocks-skill-update`. For any of those, name the route and stop.
 

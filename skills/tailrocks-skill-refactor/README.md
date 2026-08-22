@@ -25,7 +25,3 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`operational-contract.md`](references/operational-contract.md)
 - [`responsibility-topology.md`](references/responsibility-topology.md)
 - [`runtime-trust.md`](references/runtime-trust.md)
-
-## Templates
-
-- [`migration-contract.md`](templates/migration-contract.md)

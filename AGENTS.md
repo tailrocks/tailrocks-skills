@@ -633,9 +633,11 @@ slots for omissions, predicate-keyed conditionals for context-dependent
 behavior — because the wrong form measurably backfires. Exactly one skill owns
 each phase of a skill's life.
 
-Contract-breaking migration is outside these four executors. Operator owns that
-separately approved workflow from a versioned `skill-migrations/<slug>.md`
-contract; refactor may produce the handoff but never executes it.
+Contract-breaking migration is outside these four executors. Update and
+refactor stop with the tree unchanged and name the exact delta, compatibility,
+and rollback obligations. The operator may perform a direct migration only
+under a separately scoped explicit authorization for the named branch and pull
+request; no migration-plan artifact or product skill mediates that authority.
 
 - **tailrocks-skill-create** — a new skill from an observed failure: baseline
   captured verbatim (a retrospective field record with commit-level evidence
@@ -659,8 +661,9 @@ contract; refactor may produce the handoff but never executes it.
   edits. Definition: `skills/tailrocks-skill-audit/SKILL.md`
 - **tailrocks-skill-refactor** — behavior-preserving structural ownership change.
   It never performs semantic edits or contract-breaking migration. A contract
-  delta produces a durable migration handoff and stops; verification is a
-  precise manual audit handoff, never automatic invocation.
+  delta leaves the tree unchanged and names the explicit direct-migration
+  authorization required; verification is a precise manual audit handoff,
+  never automatic invocation.
   Definition: `skills/tailrocks-skill-refactor/SKILL.md`
 
 tailrocks-agents-md owns instruction files; the family owns skills — a rule

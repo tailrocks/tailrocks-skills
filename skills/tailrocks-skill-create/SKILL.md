@@ -29,46 +29,31 @@ prompts, or artifacts; cite location and type only.
 
 ## Steps
 
-1. **Establish evidence.** Copy
-   `templates/evidence-contract.md` to
-   `skill-evidence/<skill-name>.md`. Fill its source SHA/date, provenance,
-   baseline, acceptance checks, operational contract, and recovery. Write only
-   this evidence file before placement is accepted. It contains its source,
-   observed or predicted failure mechanism, required behavior, environment,
-   and reproducible acceptance check. Accept a field transcript with artifact
-   evidence, a controlled task-only baseline, an executable acceptance gap, a
-   changed external contract, or a preventive security obligation. A request
-   containing only a desired title or vague capability is refused.
-   **Complete when:** evidence and acceptance check exist, or refusal names
-   what evidence is missing.
+1. **Decide placement before any durable write.** Qualify evidence from a field
+   transcript tied to an artifact, a controlled task-only baseline, an
+   executable acceptance gap, a changed external contract, or a preventive
+   security obligation. A title or vague capability is not evidence. Read
+   [`references/responsibility-topology.md`](references/responsibility-topology.md),
+   then inspect target instructions, validators, catalogs, registries, and
+   sibling skill descriptions. A mechanical rule belongs in a gate, a local
+   convention in its instruction file, a one-off nowhere, and an existing
+   responsibility with its current owner. Do not create any file before this
+   placement accepts a new, unowned skill responsibility.
+   **Complete when:** accepted placement names the new owner and rejected
+   alternatives, or refusal leaves the repository byte-for-byte unchanged.
 
-2. **Decide placement before writing.** Not every failure earns a skill:
-   a mechanically checkable rule goes to a gate or validator; a
-   repo-specific convention goes to the owning instruction file; a
-   one-off belongs nowhere; an overlap with an existing skill extends
-   that skill through `tailrocks-skill-update` instead of forking a
-   rival. Exactly one skill owns each responsibility.
-   **Complete when:** the destination is named and every rejected
-   alternative has its reason.
+2. **Freeze and publish the creation transaction.** Read
+   [`references/operational-contract.md`](references/operational-contract.md).
+   Copy `templates/evidence-contract.md` to
+   `skill-evidence/<skill-name>.md` and fill every applicable field from the
+   accepted evidence, using `NOT APPLICABLE` only with a reason. This is the
+   first durable write. From here through repository wiring, creation is one
+   transaction: on any failure, restore every created or modified path so no
+   evidence-only or skill-only partial result remains.
+   **Complete when:** the evidence record has source SHA/date, provenance,
+   baseline, acceptance checks, operational contract, and recovery.
 
-3. **Design the contract.** Read canonical
-   `skills/tailrocks-skill-audit/references/design-doctrine.md` directly.
-   Complete every applicable operational-contract field in the evidence record.
-   Match the guidance form to the failure type —
-   prohibitions for discipline violations, a positive recipe for
-   wrong-shaped output, a required slot for omissions, a predicate-keyed
-   conditional for context-dependent behavior; the wrong form measurably
-   backfires. Split content by cost: the router carries triggers, mode
-   gates, and the rules an agent must hold while working; depth defaults
-   to references, routed by _when to read_, never summarized. The
-   contract also names the deliverable's destination — the conversation
-   or a file in the repository; the doctrine's output-contract section
-   owns that choice.
-   **Complete when:** each evidenced failure maps to a form, each
-   section to a layer, every contract field has observable proof or a justified
-   `NOT APPLICABLE`, and the deliverable has a named destination.
-
-4. **Freeze acceptance, then scaffold.** Read canonical
+3. **Freeze acceptance, then scaffold.** Read canonical
    `skills/tailrocks-skill-audit/references/testing-doctrine.md` directly.
    Freeze baseline/control, normal, boundary, refusal, and checker intent in the
    non-protected evidence record before router prose. Frozen legacy eval
@@ -97,11 +82,18 @@ prompts, or artifacts; cite location and type only.
    bullet, heading), never a mid-paragraph clause. Explain why a rule
    exists instead of stacking capitalized musts; one excellent example
    beats many.
-   **Complete when:** the draft passes the repository's validator and
-   every design-doctrine anti-pattern check.
+   **Complete when:** the scaffold transaction reports only allowlisted writes.
 
-5. **Wire the repository.** Read canonical
-   `skills/tailrocks-skill-audit/references/house-wiring.md` directly for the full artifact list — client metadata,
+4. **Author the smallest effective contract.** Read
+   [`references/context-routing.md`](references/context-routing.md) when
+   writing the router and references. Map each evidenced failure to its proper
+   guidance form, keep shared depth out of the router, and fill only semantic
+   placeholders in the target-owned scaffold.
+   **Complete when:** each surviving instruction maps to the baseline and the
+   router passes the reference's anti-pattern checklist.
+
+5. **Wire the repository.** Read
+   [`references/house-wiring.md`](references/house-wiring.md) for the full artifact list — client metadata,
    deterministic acceptance checks, catalog grouping, generated docs, install and index
    documents, version lockstep. Run `mise run docs`, `mise run lint`, and
    `mise run docs:check` once. Repair only matched failures in files created or

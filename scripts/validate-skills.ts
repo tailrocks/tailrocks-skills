@@ -104,11 +104,6 @@ async function validateDurableContracts(root: string, errors: string[]): Promise
       schema: "tailrocks.skill-evidence/v1",
       fields: ["Skill", "Source SHA", "Recorded date", "Provenance"],
     },
-    {
-      directory: "skill-migrations",
-      schema: "tailrocks.skill-migration/v1",
-      fields: ["Migration", "Source SHA", "Recorded date", "Provenance", "Authority"],
-    },
   ];
   for (const contract of contracts) {
     for (const file of await filesUnder(path.join(root, contract.directory))) {
@@ -133,6 +128,11 @@ async function validateDurableContracts(root: string, errors: string[]): Promise
         errors.push(`${label}: Recorded date must be YYYY-MM-DD`);
       }
     }
+  }
+  for (const file of await filesUnder(path.join(root, "skill-migrations"))) {
+    errors.push(
+      `${path.relative(root, file)}: migration-plan artifacts are forbidden; use an explicitly authorized direct migration`,
+    );
   }
 }
 

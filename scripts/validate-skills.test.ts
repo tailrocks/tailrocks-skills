@@ -560,6 +560,13 @@ policy:
     expect(await validate(root)).toContain("INSTALL.md: unknown skill tailrocks-retired-skill");
   });
 
+  test("rejects obsolete migration-plan artifacts", async () => {
+    await write("skill-migrations/rename.md", "# Migration plan\n");
+    expect(await validate(root)).toContain(
+      "skill-migrations/rename.md: migration-plan artifacts are forbidden; use an explicitly authorized direct migration",
+    );
+  });
+
   test("rejects stale release pins", async () => {
     await write("INSTALL.md", `${skill}\nv0.9.0\n`);
     expect(await validate(root)).toContain("INSTALL.md: release pin v0.9.0 must equal v1.0.0");

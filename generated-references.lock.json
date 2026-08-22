@@ -224,7 +224,7 @@
     {
       "source": "skill-authoring/references/responsibility-topology.md",
       "destination": "skills/tailrocks-skill-audit/references/responsibility-topology.md",
-      "sha256": "f296076868d054228b86c70a7c8c9af28bc5c7b0cd7934b22f0c873d1982b397"
+      "sha256": "a7d8c8ce71b7e2df93cb7f379642a3d21dddefca8caf6fb0d58f19102e195087"
     },
     {
       "source": "shared/references/runtime-trust.md",
@@ -249,7 +249,7 @@
     {
       "source": "skill-authoring/references/responsibility-topology.md",
       "destination": "skills/tailrocks-skill-create/references/responsibility-topology.md",
-      "sha256": "f296076868d054228b86c70a7c8c9af28bc5c7b0cd7934b22f0c873d1982b397"
+      "sha256": "a7d8c8ce71b7e2df93cb7f379642a3d21dddefca8caf6fb0d58f19102e195087"
     },
     {
       "source": "shared/references/runtime-trust.md",
@@ -269,7 +269,7 @@
     {
       "source": "skill-authoring/references/responsibility-topology.md",
       "destination": "skills/tailrocks-skill-refactor/references/responsibility-topology.md",
-      "sha256": "f296076868d054228b86c70a7c8c9af28bc5c7b0cd7934b22f0c873d1982b397"
+      "sha256": "a7d8c8ce71b7e2df93cb7f379642a3d21dddefca8caf6fb0d58f19102e195087"
     },
     {
       "source": "shared/references/runtime-trust.md",
@@ -294,7 +294,7 @@
     {
       "source": "skill-authoring/references/responsibility-topology.md",
       "destination": "skills/tailrocks-skill-update/references/responsibility-topology.md",
-      "sha256": "f296076868d054228b86c70a7c8c9af28bc5c7b0cd7934b22f0c873d1982b397"
+      "sha256": "a7d8c8ce71b7e2df93cb7f379642a3d21dddefca8caf6fb0d58f19102e195087"
     },
     {
       "source": "shared/references/runtime-trust.md",

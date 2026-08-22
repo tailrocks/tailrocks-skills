@@ -287,10 +287,27 @@ all terminal checks pass, and the final literal marker is changed to
     files. Protection proof covered 4 patterns and 183 frozen source paths with
     zero violations; diff check passed. Fresh subagent verdict after blocker
     fixes: PASS. No evals run.
-- [ ] [IN_PROGRESS] P02.06 Make skill creation decide placement before durable writes;
+- [x] [COMPLETED] P02.06 Make skill creation decide placement before durable writes;
   make skill updates inspect sibling ownership; keep refactor behavior-preserving
   and route future contract deltas to an explicitly authorized direct migration.
-- [ ] [TODO] P02.GATE Run `rtk mise run migration-check`; prove every canonical
+  - Evidence receipt (2026-08-22): canonical topology now requires read-only
+    placement before create's first durable write, sibling-owner inventory
+    before update mutation, and unchanged-tree refusal before contract-breaking
+    work. Create, update, refactor, audit, root doctrine, and the choosing guide
+    route future deltas only to separately scoped explicit direct migration in
+    the named branch and pull request. Removed the obsolete migration-contract
+    template; the validator rejects migration-plan artifacts. Five focused
+    structural tests prove sequencing, ownership routing, preserved refactor
+    contracts, packaged canonical references, and published direct-migration
+    boundaries. `rtk mise run migration-check` passed 126 tests with 593
+    assertions across 14 non-protected test files, validated 43 skills, checked
+    10 canonical sources/71 byte-identical destinations, checked 133 generated
+    files, and checked 39 formatted files. Protection proof covered 4 patterns
+    and 183 frozen source paths with zero violations; diff check passed. Fresh
+    subagent verdict after two boundary corrections: PASS. Skill-creator kept
+    routers lean and routed shared doctrine; safe-refactor kept observable
+    contracts frozen. No evals run.
+- [ ] [IN_PROGRESS] P02.GATE Run `rtk mise run migration-check`; prove every canonical
   source has one owner and every generated copy is byte-identical. Evidence:
   pending.
 
