@@ -4,11 +4,13 @@
 
 `tailrocks-web-design` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-web-design)
 
-Design TanStack screens as blessed in-app design routes: installed shadcn/ui components with fixtures, states and themes, iterated live. Baselines belong to tailrocks-web-visual-qa; terminal screens to tailrocks-tui-design.
+Apply web visual-design policy when in-scope work touches TanStack screens, design routes, shadcn/ui composition, visual fixtures, or design review. Selection alone never authorizes blessing, baseline freeze, capture, or mutation.
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This model-policy skill may load automatically only when its exact trigger
+matches work already in scope. Selection grants no authority beyond the
+active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-web-design` …
 

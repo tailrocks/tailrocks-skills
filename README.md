@@ -84,9 +84,9 @@ One design skill per platform — macOS, web, terminal — each producing a bles
 
 | Skill | What it does | Invocation |
 |---|---|---|
-| [`tailrocks-macos-design`](skills/tailrocks-macos-design/README.md) | Design a macOS feature and bless it as a running Liquid Glass prototype: experience brief, native component map, structural alternatives, scored rubric, fixed launch contract, live sign-off. | Manual only |
-| [`tailrocks-web-design`](skills/tailrocks-web-design/README.md) | Design TanStack screens as blessed in-app design routes: installed shadcn/ui components with fixtures, states and themes, iterated live. | Manual only |
-| [`tailrocks-tui-design`](skills/tailrocks-tui-design/README.md) | Design terminal UI screens for Rust ratatui apps as blessed golden frames: fixture-rendered gallery crate, byte-exact frame contract, screen states, TUI craft. | Manual only |
+| [`tailrocks-macos-design`](skills/tailrocks-macos-design/README.md) | Apply macOS visual-design and Liquid Glass policy when in-scope work touches native screen structure, material, component mapping, prototypes, or design review. | Model policy |
+| [`tailrocks-web-design`](skills/tailrocks-web-design/README.md) | Apply web visual-design policy when in-scope work touches TanStack screens, design routes, shadcn/ui composition, visual fixtures, or design review. | Model policy |
+| [`tailrocks-tui-design`](skills/tailrocks-tui-design/README.md) | Apply terminal visual-design policy when in-scope work touches ratatui screens, terminal UX, fixture galleries, golden frames, or design review. | Model policy |
 | [`tailrocks-macos-visual-qa`](skills/tailrocks-macos-visual-qa/README.md) | Build, launch, capture, drive, and verify a native macOS app so an agent can see its own interface: window-ID capture, accessibility-tree driving, appearance and accessibility state matrix, audits, and pixel regression. | Manual only |
 | [`tailrocks-web-visual-qa`](skills/tailrocks-web-visual-qa/README.md) | Freeze and regress Playwright screenshot baselines for TanStack design routes and pages: the capture matrix per state, theme, and viewport — only from a finalized, blessed design. | Manual only |
 
@@ -98,7 +98,7 @@ Debt that shrinks, defects that stop recurring, skills that improve from field e
 |---|---|---|
 | [`tailrocks-code-health`](skills/tailrocks-code-health/README.md) | Establish, audit, or tighten measurable shrink-only code-health ratchets for architecture, lint, dependency, flake, defect, documentation, or verification debt. | Manual only |
 | [`tailrocks-improve`](skills/tailrocks-improve/README.md) | Audit any repository through parallel read-only investigators and turn verified findings into standalone, executor-ready implementation plans under plans/ — no roadmap required. | Manual only |
-| [`tailrocks-agents-md`](skills/tailrocks-agents-md/README.md) | Add, place, audit, or repair agent instruction files. | Manual only |
+| [`tailrocks-agents-md`](skills/tailrocks-agents-md/README.md) | Apply agent-instruction topology policy when in-scope work touches AGENTS.md, client symlinks, instruction rules, or rule placement. | Model policy |
 | [`tailrocks-retrospect`](skills/tailrocks-retrospect/README.md) | After a roadmap item ships, rebuild which skills ran from commit trailers, diff that against its Decisions, Must not, spec IDs, and verification rounds, and propose patches to the skills at fault. | Manual only |
 | [`tailrocks-simplify`](skills/tailrocks-simplify/README.md) | Review a pull request or diff and remove code without changing behavior: dead paths, hand-rolled utilities the platform provides, indirection, needless branching. | Manual only |
 | [`tailrocks-remediate`](skills/tailrocks-remediate/README.md) | Analyze or remediate a proven defect through correctness-first architectural redesign. | Manual only |

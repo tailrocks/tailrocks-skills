@@ -1,14 +1,20 @@
 ---
 name: tailrocks-macos-design
 description: >-
-  Use only when the user explicitly requests this skill. Design a macOS feature and bless it as a running Liquid Glass prototype: experience brief, native component map, structural alternatives, scored rubric, fixed launch contract, live sign-off. The Liquid Glass material authority.
+  Apply macOS visual-design and Liquid Glass policy when in-scope work touches
+  native screen structure, material, component mapping, prototypes, or design
+  review. Selection alone never authorizes blessing, capture, or mutation.
 argument-hint: "[design|prototype|review|systematize] <feature or screen>"
-disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
 ---
 
 # macOS Design
+
+**Selection boundary.** Automatic selection supplies design and material policy
+only. Prototype or artifact writes need task authorization; blessing requires
+the user's live sign-off. Freeze, capture, and production mutation remain
+separately authorized work owned by their corresponding stages.
 
 Agent output fails on macOS when the interface is styled before it is
 structured, and **no design file is authoritative for Liquid Glass — the

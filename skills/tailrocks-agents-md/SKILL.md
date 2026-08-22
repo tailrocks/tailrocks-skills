@@ -1,14 +1,19 @@
 ---
 name: tailrocks-agents-md
 description: >-
-  Use only when the user explicitly requests this skill. Add, place, audit, or repair agent instruction files. AGENTS.md is the source; CLAUDE.md and other client names are symlinks. Places each rule in the directory that owns it, not the root. Do not use for rules a linter or gate can enforce.
+  Apply agent-instruction topology policy when in-scope work touches AGENTS.md,
+  client symlinks, instruction rules, or rule placement. Selection alone never
+  authorizes add or sync mutation; mechanical rules belong in gates.
 argument-hint: "[add|audit|sync] <rule, path, or repository>"
-disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
 ---
 
 # Agents Instructions
+
+**Selection boundary.** Automatic selection applies instruction topology as
+policy. It does not choose a mode or authorize file mutation. Add and sync need
+task authorization; without it, remain read-only and report what should change.
 
 Two rules govern every action here.
 

@@ -4,11 +4,13 @@
 
 `tailrocks-macos-design` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-macos-design)
 
-Design a macOS feature and bless it as a running Liquid Glass prototype: experience brief, native component map, structural alternatives, scored rubric, fixed launch contract, live sign-off. The Liquid Glass material authority.
+Apply macOS visual-design and Liquid Glass policy when in-scope work touches native screen structure, material, component mapping, prototypes, or design review. Selection alone never authorizes blessing, capture, or mutation.
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This model-policy skill may load automatically only when its exact trigger
+matches work already in scope. Selection grants no authority beyond the
+active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-macos-design` …
 

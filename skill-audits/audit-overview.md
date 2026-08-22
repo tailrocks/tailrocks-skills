@@ -359,9 +359,23 @@ all terminal checks pass, and the final literal marker is changed to
     checked 133 generated files, and checked 42 formatted files. Protection
     proof covered 4 patterns and 183 frozen paths with zero violations; diff
     check passed. Fresh subagent verdict: PASS. No evals run.
-- [ ] [IN_PROGRESS] P03.03 Migrate `tailrocks-agents-md` and the macOS/web/terminal
+- [x] [COMPLETED] P03.03 Migrate `tailrocks-agents-md` and the macOS/web/terminal
   design owners to `MODEL_POLICY`; preserve their human-authority boundaries.
-- [ ] [TODO] P03.04 Create `tailrocks-grilling` from its recorded baseline:
+  - Evidence receipt (2026-08-22): atomically migrated instruction topology and
+    macOS/web/terminal visual-design owners to the registry-matched model-policy
+    tuple. Exact descriptions scope selection to instruction files or matching
+    visual media. Structural selection boundaries and safe default prompts
+    withhold add/sync and artifact writes, user blessing, freeze, capture, and
+    production mutation unless the active task separately authorizes them;
+    macOS/web visual-QA owners remain manual. Removed a stale web prompt and
+    short description that claimed screenshot-baseline ownership. Exact matrix,
+    zero-authority, prompt, human-decision, and representative-manual proof
+    passed 4 tests with 109 assertions. `rtk mise run migration-check` passed
+    133 tests with 717 assertions across 16 non-protected files, validated 43
+    skills, checked 133 generated files, and checked 42 formatted files.
+    Protection proof covered 4 patterns and 183 frozen paths with zero
+    violations; diff check passed. Fresh subagent verdict: PASS. No evals run.
+- [ ] [IN_PROGRESS] P03.04 Create `tailrocks-grilling` from its recorded baseline:
   dependency-ordered frontier rounds, recommendation per question, agent-owned
   fact retrieval, user-owned decisions, explicit confirmation, no execution.
 - [ ] [TODO] P03.05 Give `tailrocks-grilling` exclusive boundaries against

@@ -4,11 +4,13 @@
 
 `tailrocks-tui-design` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-tui-design)
 
-Design terminal UI screens for Rust ratatui apps as blessed golden frames: fixture-rendered gallery crate, byte-exact frame contract, screen states, TUI craft. Web pages belong to tailrocks-web-design; macOS windows to tailrocks-macos-design.
+Apply terminal visual-design policy when in-scope work touches ratatui screens, terminal UX, fixture galleries, golden frames, or design review. Selection alone never authorizes blessing, golden freeze, capture, or mutation.
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This model-policy skill may load automatically only when its exact trigger
+matches work already in scope. Selection grants no authority beyond the
+active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-tui-design` …
 

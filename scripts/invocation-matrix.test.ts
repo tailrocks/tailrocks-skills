@@ -6,12 +6,16 @@ import { parseInvocationRegistry } from "./invocation-registry";
 
 const root = path.resolve(import.meta.dir, "..");
 const modelPolicy = [
+  "tailrocks-agents-md",
   "tailrocks-axum-best-practices",
   "tailrocks-graphql-best-practices",
   "tailrocks-grpc-best-practices",
+  "tailrocks-macos-design",
   "tailrocks-rust-best-practices",
   "tailrocks-swift-best-practices",
+  "tailrocks-tui-design",
   "tailrocks-typescript-best-practices",
+  "tailrocks-web-design",
 ];
 
 test("effective invocation matrix has only the confirmed migrated owners", async () => {
@@ -59,4 +63,32 @@ test("representative transaction owner remains manual-only and absent from impli
     await readFile(path.join(root, "skills", name, "agents/openai.yaml"), "utf8"),
   ) as { policy?: { allow_implicit_invocation?: unknown } };
   expect(openai.policy?.allow_implicit_invocation).toBe(false);
+});
+
+test("instruction and design policy selection preserves mutation and human authority", async () => {
+  const boundaries = new Map([
+    ["tailrocks-agents-md", ["never authorizes add or sync mutation", "Add and sync need"]],
+    ["tailrocks-macos-design", ["never authorizes blessing, capture, or mutation", "live sign-off"]],
+    [
+      "tailrocks-web-design",
+      ["never authorizes blessing, baseline freeze, capture, or mutation", "user decision"],
+    ],
+    [
+      "tailrocks-tui-design",
+      ["never authorizes blessing, golden freeze, capture, or mutation", "user decision"],
+    ],
+  ]);
+  for (const [name, phrases] of boundaries) {
+    const source = (await readFile(path.join(root, "skills", name, "SKILL.md"), "utf8")).replace(/\s+/g, " ");
+    for (const phrase of phrases) expect(source).toContain(phrase);
+    const openai = Bun.YAML.parse(
+      await readFile(path.join(root, "skills", name, "agents/openai.yaml"), "utf8"),
+    ) as { interface?: { default_prompt?: unknown } };
+    expect(openai.interface?.default_prompt).toMatch(/Stay read-only|Do not .*mutat/);
+  }
+  for (const name of ["tailrocks-macos-visual-qa", "tailrocks-web-visual-qa"]) {
+    const source = await readFile(path.join(root, "skills", name, "SKILL.md"), "utf8");
+    const metadata = Bun.YAML.parse(source.match(/^---\n([\s\S]*?)\n---/)![1]) as Record<string, unknown>;
+    expect(metadata["disable-model-invocation"]).toBe(true);
+  }
 });

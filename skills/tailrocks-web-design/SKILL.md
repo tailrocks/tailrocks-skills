@@ -1,14 +1,20 @@
 ---
 name: tailrocks-web-design
 description: >-
-  Use only when the user explicitly requests this skill. Design TanStack screens as blessed in-app design routes: installed shadcn/ui components with fixtures, states and themes, iterated live. Baselines belong to tailrocks-web-visual-qa; terminal screens to tailrocks-tui-design.
+  Apply web visual-design policy when in-scope work touches TanStack screens,
+  design routes, shadcn/ui composition, visual fixtures, or design review.
+  Selection alone never authorizes blessing, baseline freeze, capture, or mutation.
 argument-hint: "[design|audit] <feature or screens>"
-disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
 ---
 
 # Web Design
+
+**Selection boundary.** Automatic selection supplies web design policy only.
+Design-route or component writes need task authorization, and blessing remains
+a user decision. Baseline freeze, capture, and production mutation are
+separately authorized work.
 
 A web screen designed outside the application is a picture of a design; a
 screen rendered by the application is the design. This skill produces the

@@ -4,11 +4,13 @@
 
 `tailrocks-agents-md` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-agents-md)
 
-Add, place, audit, or repair agent instruction files. AGENTS.md is the source; CLAUDE.md and other client names are symlinks. Places each rule in the directory that owns it, not the root. Do not use for rules a linter or gate can enforce.
+Apply agent-instruction topology policy when in-scope work touches AGENTS.md, client symlinks, instruction rules, or rule placement. Selection alone never authorizes add or sync mutation; mechanical rules belong in gates.
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This model-policy skill may load automatically only when its exact trigger
+matches work already in scope. Selection grants no authority beyond the
+active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-agents-md` …
 

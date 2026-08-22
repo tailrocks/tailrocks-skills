@@ -1,14 +1,20 @@
 ---
 name: tailrocks-tui-design
 description: >-
-  Use only when the user explicitly requests this skill. Design terminal UI screens for Rust ratatui apps as blessed golden frames: fixture-rendered gallery crate, byte-exact frame contract, screen states, TUI craft. Web pages belong to tailrocks-web-design; macOS windows to tailrocks-macos-design.
+  Apply terminal visual-design policy when in-scope work touches ratatui
+  screens, terminal UX, fixture galleries, golden frames, or design review.
+  Selection alone never authorizes blessing, golden freeze, capture, or mutation.
 argument-hint: "[design|audit] <feature or screens>"
-disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
 ---
 
 # TUI Design
+
+**Selection boundary.** Automatic selection supplies terminal design policy
+only. Gallery, view, fixture, or golden writes need task authorization, and
+blessing remains a user decision. Freeze, capture, and production mutation are
+separately authorized work.
 
 A terminal interface is a character grid, which makes it the one medium where
 a design reference can be exact: the design is a rendered frame, the
