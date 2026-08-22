@@ -4,7 +4,7 @@
 
 `tailrocks-rust-best-practices` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-rust-best-practices)
 
-Apply Rust correctness contracts when in-scope work writes, reviews, or refactors Rust source, APIs, or domain behavior. Covers ownership, failure, unsafe, tests, readability, and measured performance; not workspace setup or transport policy.
+Apply Rust correctness contracts when in-scope work writes Rust behavior. Covers ownership, failure, unsafe, tests, readability, and measured performance; use rust-review for findings and rust-refactor for behavior-preserving restructuring.
 
 ## Invocation
 
@@ -13,6 +13,8 @@ matches work already in scope. Selection grants no authority beyond the
 active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-rust-best-practices` …
+
+Arguments: `<Rust writing task or target>`
 
 ## Skill definition
 
@@ -25,6 +27,5 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`errors-testing-docs.md`](references/errors-testing-docs.md)
 - [`ownership-performance.md`](references/ownership-performance.md)
 - [`readability-style-architecture.md`](references/readability-style-architecture.md)
-- [`review-checklist.md`](references/review-checklist.md)
 - [`runtime-trust.md`](references/runtime-trust.md)
 - [`tooling-lints.md`](references/tooling-lints.md)

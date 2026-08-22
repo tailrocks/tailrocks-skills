@@ -35,6 +35,8 @@
     { "skill": "tailrocks-rust-project-audit", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-rust-project-remediate", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-rust-project-setup", "class": "MANUAL_ONLY" },
+    { "skill": "tailrocks-rust-refactor", "class": "MANUAL_ONLY" },
+    { "skill": "tailrocks-rust-review", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-simplify", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-skill-audit", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-skill-create", "class": "MANUAL_ONLY" },

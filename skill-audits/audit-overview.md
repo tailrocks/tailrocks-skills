@@ -666,9 +666,27 @@ all terminal checks pass, and the final literal marker is changed to
     plan-state, and protected-path gates green. Fresh subagent verdict: PASS
     after closing selector, stable-ID, read-only command, template ownership,
     generated-source completeness, and exact grammar defects. No evals run.
-- [ ] [IN_PROGRESS] P05.02 Rust best practices → write, review, refactor; retain
+- [x] [COMPLETED] P05.02 Rust best practices → write, review, refactor; retain
   `MODEL_POLICY` only on the existing named owner pending descendant approval.
-- [ ] [TODO] P05.03 Axum best practices → build, review, refactor; retain
+  - Evidence receipt (2026-08-22): made
+    `tailrocks-rust-best-practices` the write-only Rust behavior owner with hard
+    review/refactor refusals and retained its existing `MODEL_POLICY`; added
+    manual-only `tailrocks-rust-review` and `tailrocks-rust-refactor` with
+    exclusive read-only finding and preservation-oracle contracts. Review
+    command execution now requires active-task authority plus an enforceable
+    read-only repository, scrubbed secrets, disabled network, and bounded
+    external state; repository policy cannot grant execution. Moved the review
+    checklist byte-identically, generated five canonical language references to
+    both descendants, and generalized the reference generator to declared owner
+    families; all 20 sources produce 98 byte-identical destinations. Catalog,
+    invocation registry, stack dispatch, install/choosing examples, generated
+    docs, and context counts agree on 48 skills (37 manual, 11 model-policy).
+    Focused proof passed 54 tests/201 assertions; final
+    `rtk mise run migration-check` passed 278 tests/1,373 assertions across 34
+    selected non-protected files with protection, formatting, generator,
+    validator, and plan-state gates green. Fresh subagent re-review: PASS after
+    closing command-authority and stale-trigger defects. No evals run.
+- [ ] [IN_PROGRESS] P05.03 Axum best practices → build, review, refactor; retain
   `MODEL_POLICY` only on the existing named owner pending descendant approval.
 - [ ] [TODO] P05.04 GraphQL best practices → public-API evolution and review;
   retain `MODEL_POLICY` only on the existing named owner pending descendant

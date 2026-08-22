@@ -76,11 +76,25 @@ can judge.
 
 ### tailrocks-rust-best-practices
 
-Write, review, or refactor Rust code. Covers ownership and borrowing, public API
-design, error and panic policy, tests and doc tests, unsafe and thread-safety
-review, performance discipline, and readability.
+Write new Rust behavior. Covers ownership and borrowing, public API design,
+error and panic policy, tests and doc tests, unsafe contracts, measured
+performance, and readability.
 
 Skill definition: `skills/tailrocks-rust-best-practices/SKILL.md`
+
+### tailrocks-rust-review
+
+Review Rust source, APIs, unsafe code, tests, and performance evidence without
+mutation; report only verified, actionable findings.
+
+Skill definition: `skills/tailrocks-rust-review/SKILL.md`
+
+### tailrocks-rust-refactor
+
+Restructure Rust code under an explicit preservation oracle, keeping observable
+behavior and public contracts unchanged.
+
+Skill definition: `skills/tailrocks-rust-refactor/SKILL.md`
 
 ### tailrocks-rust-project-setup
 

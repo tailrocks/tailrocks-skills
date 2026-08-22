@@ -3,7 +3,7 @@
 - Status: **CONFIRMED AND IMPLEMENTED**
 - Audited source SHA: `2626d51827747c3b3e0e76cd20a7d38363c82648`
 - Reconciled: `2026-08-22`
-- Scope: all 46 published skills
+- Scope: all 48 published skills
 
 `invocation-registry.json` is the executable authority. It has exactly two
 classes and exactly one sorted row for every skill:
@@ -27,7 +27,7 @@ menus. There is no pending, dual, or inherited invocation class.
 | `tailrocks-grilling` | The user asks to be grilled, challenged, interrogated, or stress-tested before action. |
 | `tailrocks-grpc-best-practices` | A cross-service proto, Buf contract, tonic/prost adapter, deadline, streaming, health, or wire test is already in scope. |
 | `tailrocks-macos-design` | Native macOS screen structure, material, component mapping, prototype, or design review is already in scope. |
-| `tailrocks-rust-best-practices` | Rust source, APIs, or domain behavior is already in scope. |
+| `tailrocks-rust-best-practices` | Writing new or changing existing Rust behavior is already in scope. |
 | `tailrocks-swift-best-practices` | Swift, SwiftUI, concurrency, accessibility, or a narrow AppKit bridge is already in scope. |
 | `tailrocks-tui-design` | Ratatui screens, terminal UX, fixture galleries, golden frames, or terminal design review are already in scope. |
 | `tailrocks-typescript-best-practices` | TypeScript, TSX, React state, validation, async ownership, or API work is already in scope. |

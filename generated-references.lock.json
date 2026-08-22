@@ -282,6 +282,66 @@
       "sha256": "48ae188d631f007a458e8da80541ba9fa6f464ff9ec35cc7908c566f3bd890cf"
     },
     {
+      "source": "skills/tailrocks-rust-best-practices/references/api-design.md",
+      "destination": "skills/tailrocks-rust-refactor/references/api-design.md",
+      "sha256": "0203695838abab8e20627a5a17b7f34a3916bad25bdd12c8988821e649cfca15"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/errors-testing-docs.md",
+      "destination": "skills/tailrocks-rust-refactor/references/errors-testing-docs.md",
+      "sha256": "597accdb31564c66957a7d91b24bedfeef689dc5b38560acb355ffa61c46b9cf"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/ownership-performance.md",
+      "destination": "skills/tailrocks-rust-refactor/references/ownership-performance.md",
+      "sha256": "78a79484fdde46a72c55a32d213aa167ac584e14df1b4b4aa1eb5618516e5eb4"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/readability-style-architecture.md",
+      "destination": "skills/tailrocks-rust-refactor/references/readability-style-architecture.md",
+      "sha256": "47eaae1b952685bb1efd4a8b9333e1c3dafdc04680ca95c94df69f11ffd466df"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-rust-refactor/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/tooling-lints.md",
+      "destination": "skills/tailrocks-rust-refactor/references/tooling-lints.md",
+      "sha256": "422358a383d646f3029da7f30ad5b50b3977a709be09224770fac3cc6e948c8c"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/api-design.md",
+      "destination": "skills/tailrocks-rust-review/references/api-design.md",
+      "sha256": "0203695838abab8e20627a5a17b7f34a3916bad25bdd12c8988821e649cfca15"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/errors-testing-docs.md",
+      "destination": "skills/tailrocks-rust-review/references/errors-testing-docs.md",
+      "sha256": "597accdb31564c66957a7d91b24bedfeef689dc5b38560acb355ffa61c46b9cf"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/ownership-performance.md",
+      "destination": "skills/tailrocks-rust-review/references/ownership-performance.md",
+      "sha256": "78a79484fdde46a72c55a32d213aa167ac584e14df1b4b4aa1eb5618516e5eb4"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/readability-style-architecture.md",
+      "destination": "skills/tailrocks-rust-review/references/readability-style-architecture.md",
+      "sha256": "47eaae1b952685bb1efd4a8b9333e1c3dafdc04680ca95c94df69f11ffd466df"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-rust-review/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/tooling-lints.md",
+      "destination": "skills/tailrocks-rust-review/references/tooling-lints.md",
+      "sha256": "422358a383d646f3029da7f30ad5b50b3977a709be09224770fac3cc6e948c8c"
+    },
+    {
       "source": "shared/references/runtime-trust.md",
       "destination": "skills/tailrocks-simplify/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"

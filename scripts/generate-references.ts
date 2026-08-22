@@ -24,21 +24,37 @@ export type GeneratorReceipt = {
 const manifestSchema = "tailrocks.generated-references/v1";
 const receiptSchema = "tailrocks.generated-references-receipt/v1";
 const lockSchema = "tailrocks.generated-references-lock/v1";
-const sourcePattern =
-  /^(?:(?:shared|skill-authoring)\/references\/[a-z0-9]+(?:-[a-z0-9]+)*|skills\/tailrocks-rust-project-setup\/references\/(?:lints-clippy-rustfmt|supply-chain-and-testing|toolchain-and-mise|version-policy|workspace-and-layout))\.md$/;
-export function isGeneratedReferenceSource(source: string): boolean {
-  return sourcePattern.test(source);
-}
-const rustProjectOwnerReferences = [
-  "lints-clippy-rustfmt.md",
-  "supply-chain-and-testing.md",
-  "toolchain-and-mise.md",
-  "version-policy.md",
-  "workspace-and-layout.md",
+const rootSourcePattern = /^(?:shared|skill-authoring)\/references\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/;
+const generatedFamilies = [
+  {
+    owner: "tailrocks-rust-best-practices",
+    references: [
+      "api-design.md",
+      "errors-testing-docs.md",
+      "ownership-performance.md",
+      "readability-style-architecture.md",
+      "tooling-lints.md",
+    ],
+    destinations: ["tailrocks-rust-refactor", "tailrocks-rust-review"],
+  },
+  {
+    owner: "tailrocks-rust-project-setup",
+    references: [
+      "lints-clippy-rustfmt.md",
+      "supply-chain-and-testing.md",
+      "toolchain-and-mise.md",
+      "version-policy.md",
+      "workspace-and-layout.md",
+    ],
+    destinations: ["tailrocks-rust-project-audit", "tailrocks-rust-project-remediate"],
+  },
 ] as const;
-const rustProjectOwnerSources = rustProjectOwnerReferences.map(
-  (name) => `skills/tailrocks-rust-project-setup/references/${name}`,
+const familySources = generatedFamilies.flatMap((family) =>
+  family.references.map((name) => `skills/${family.owner}/references/${name}`),
 );
+export function isGeneratedReferenceSource(source: string): boolean {
+  return rootSourcePattern.test(source) || familySources.includes(source);
+}
 const destinationPattern =
   /^skills\/tailrocks-[a-z0-9]+(?:-[a-z0-9]+)*\/references\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/;
 
@@ -90,7 +106,7 @@ function parseLock(source: string): ReferenceLock {
     exactKeys(copy, ["destination", "sha256", "source"], `lock.copies[${index}]`);
     if (
       typeof copy.source !== "string" ||
-      !sourcePattern.test(copy.source) ||
+      !isGeneratedReferenceSource(copy.source) ||
       typeof copy.destination !== "string" ||
       !destinationPattern.test(copy.destination) ||
       typeof copy.sha256 !== "string" ||
@@ -202,21 +218,26 @@ async function loadPlan(
   if (rootSources.join("\n") !== discoveredSources.join("\n"))
     throw new Error("manifest sources must exactly cover canonical reference files");
   const ownerSources = sources.filter((source) => source.startsWith("skills/"));
-  const rustOwnerPresent = await exists(path.join(root, "skills/tailrocks-rust-project-setup/SKILL.md"));
-  if (rustOwnerPresent && ownerSources.join("\n") !== rustProjectOwnerSources.join("\n"))
-    throw new Error("manifest must exactly cover the five Rust project owner references");
-  if (!rustOwnerPresent && ownerSources.length > 0)
-    throw new Error("generated-reference source owner is missing: tailrocks-rust-project-setup");
-  for (const source of rustOwnerPresent ? rustProjectOwnerSources : []) {
-    const name = path.posix.basename(source);
-    const expected = [
-      `skills/tailrocks-rust-project-audit/references/${name}`,
-      `skills/tailrocks-rust-project-remediate/references/${name}`,
-    ];
-    const actual = manifest.entries.find((entry) => entry.source === source)!.destinations;
-    if (actual.join("\n") !== expected.join("\n"))
-      throw new Error(`${source} must copy exactly to Rust project audit and remediation`);
+  const expectedOwnerSources: string[] = [];
+  for (const family of generatedFamilies) {
+    const ownerPresent = await exists(path.join(root, "skills", family.owner, "SKILL.md"));
+    if (!ownerPresent) {
+      if (ownerSources.some((source) => source.startsWith(`skills/${family.owner}/`)))
+        throw new Error(`generated-reference source owner is missing: ${family.owner}`);
+      continue;
+    }
+    for (const name of family.references) {
+      const source = `skills/${family.owner}/references/${name}`;
+      expectedOwnerSources.push(source);
+      const expected = family.destinations.map((destination) => `skills/${destination}/references/${name}`);
+      const actual = manifest.entries.find((entry) => entry.source === source)?.destinations;
+      if (actual?.join("\n") !== expected.join("\n"))
+        throw new Error(`${source} must copy exactly to ${family.destinations.join(" and ")}`);
+    }
   }
+  expectedOwnerSources.sort(compareCodeUnits);
+  if (ownerSources.join("\n") !== expectedOwnerSources.join("\n"))
+    throw new Error("manifest must exactly cover active generated-reference owner families");
 
   const destinations = manifest.entries.flatMap((entry) => entry.destinations);
   if (new Set(destinations).size !== destinations.length)

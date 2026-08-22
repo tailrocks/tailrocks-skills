@@ -10,6 +10,8 @@
         "tailrocks-rust-project-audit",
         "tailrocks-rust-project-remediate",
         "tailrocks-rust-best-practices",
+        "tailrocks-rust-review",
+        "tailrocks-rust-refactor",
         "tailrocks-axum-best-practices",
         "tailrocks-graphql-best-practices",
         "tailrocks-grpc-best-practices"

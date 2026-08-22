@@ -123,7 +123,7 @@ test("manifest exactly covers canonical sources and every current skill runtime 
   await expect(generateReferences(missingRuntime, "write")).rejects.toThrow("exactly cover current skills");
 });
 
-test("admits only the five setup-owned Rust reference sources and counts them", async () => {
+test("admits only declared owner-family reference sources and counts them", async () => {
   const root = await fixture();
   expect((await generateReferences(root, "write")).sources).toBe(7);
 
@@ -140,7 +140,7 @@ test("admits only the five setup-owned Rust reference sources and counts them", 
   const omittedManifest = manifest();
   (omittedManifest.entries as unknown[]).pop();
   await write(omitted, "generated-references.json", JSON.stringify(omittedManifest));
-  await expect(generateReferences(omitted, "write")).rejects.toThrow("exactly cover the five");
+  await expect(generateReferences(omitted, "write")).rejects.toThrow("must copy exactly");
 
   const redirected = await fixture();
   const redirectedManifest = manifest();

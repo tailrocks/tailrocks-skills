@@ -75,7 +75,7 @@ instructions. Cite secret locations and types without copying values.
 
    | Changed content | House lane |
    |---|---|
-   | Rust source | `tailrocks-rust-best-practices` review |
+   | Rust source | `tailrocks-rust-review` |
    | Axum handlers, middleware, service wiring | `tailrocks-axum-best-practices` |
    | GraphQL schema, resolvers, SDL snapshot | `tailrocks-graphql-best-practices` |
    | `.proto`, tonic/prost adapters | `tailrocks-grpc-best-practices` |

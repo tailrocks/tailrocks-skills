@@ -25,13 +25,15 @@ never starts a neighboring workflow or makes a human decision.
 | [`tailrocks-rust-project-setup`](/docs/skills/tailrocks-rust-project-setup) | A new Rust workspace needs its strict layout, toolchain, lint, dependency, and gate baseline scaffolded. |
 | [`tailrocks-rust-project-audit`](/docs/skills/tailrocks-rust-project-audit) | An existing Rust workspace needs a read-only, evidence-backed baseline gap report. |
 | [`tailrocks-rust-project-remediate`](/docs/skills/tailrocks-rust-project-remediate) | The user has approved exact Rust workspace baseline gaps to close in verified slices. |
-| [`tailrocks-rust-best-practices`](/docs/skills/tailrocks-rust-best-practices) | The question is language-level policy: ownership, API design, error and panic policy, unsafe review, tests. |
+| [`tailrocks-rust-best-practices`](/docs/skills/tailrocks-rust-best-practices) | New Rust behavior needs explicit ownership, API, failure, unsafe, test, and performance contracts. |
+| [`tailrocks-rust-review`](/docs/skills/tailrocks-rust-review) | Rust source or a Rust diff needs a focused read-only correctness review; use `tailrocks-review-pr` for whole-PR orchestration. |
+| [`tailrocks-rust-refactor`](/docs/skills/tailrocks-rust-refactor) | Rust structure must change while observable behavior and public contracts remain frozen by an oracle. |
 | [`tailrocks-axum-best-practices`](/docs/skills/tailrocks-axum-best-practices) | An HTTP boundary exists: routers, extractors, Tower middleware order, lifecycle, transport tests. |
 | [`tailrocks-graphql-best-practices`](/docs/skills/tailrocks-graphql-best-practices) | A public backend service exposes its public API: schema design, the committed SDL contract, breaking-change gates, the typed web client. |
 | [`tailrocks-grpc-best-practices`](/docs/skills/tailrocks-grpc-best-practices) | Rust services talk to each other: proto contracts under buf gates, tonic adapters, deadlines, status mapping. |
 
 Axum best practices apply only where there is an HTTP adapter. Domain logic
-behind it belongs to the Rust best-practices skill.
+behind it belongs to the Rust write, review, or refactor owner matching the task.
 
 ### The protocol doctrine
 

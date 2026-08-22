@@ -67,6 +67,8 @@
         "skills/tailrocks-rust-project-audit/references/runtime-trust.md",
         "skills/tailrocks-rust-project-remediate/references/runtime-trust.md",
         "skills/tailrocks-rust-project-setup/references/runtime-trust.md",
+        "skills/tailrocks-rust-refactor/references/runtime-trust.md",
+        "skills/tailrocks-rust-review/references/runtime-trust.md",
         "skills/tailrocks-simplify/references/runtime-trust.md",
         "skills/tailrocks-skill-audit/references/runtime-trust.md",
         "skills/tailrocks-skill-create/references/runtime-trust.md",
@@ -124,6 +126,41 @@
         "skills/tailrocks-skill-create/references/responsibility-topology.md",
         "skills/tailrocks-skill-refactor/references/responsibility-topology.md",
         "skills/tailrocks-skill-update/references/responsibility-topology.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/api-design.md",
+      "destinations": [
+        "skills/tailrocks-rust-refactor/references/api-design.md",
+        "skills/tailrocks-rust-review/references/api-design.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/errors-testing-docs.md",
+      "destinations": [
+        "skills/tailrocks-rust-refactor/references/errors-testing-docs.md",
+        "skills/tailrocks-rust-review/references/errors-testing-docs.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/ownership-performance.md",
+      "destinations": [
+        "skills/tailrocks-rust-refactor/references/ownership-performance.md",
+        "skills/tailrocks-rust-review/references/ownership-performance.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/readability-style-architecture.md",
+      "destinations": [
+        "skills/tailrocks-rust-refactor/references/readability-style-architecture.md",
+        "skills/tailrocks-rust-review/references/readability-style-architecture.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-rust-best-practices/references/tooling-lints.md",
+      "destinations": [
+        "skills/tailrocks-rust-refactor/references/tooling-lints.md",
+        "skills/tailrocks-rust-review/references/tooling-lints.md"
       ]
     },
     {
