@@ -393,10 +393,24 @@ all terminal checks pass, and the final literal marker is changed to
     files. Protection proof covered 4 patterns and 183 frozen source paths with
     zero violations; diff check passed. Fresh subagent verdict: PASS after its
     numbered-round blocker was fixed and statically guarded. No evals run.
-- [ ] [IN_PROGRESS] P03.05 Give `tailrocks-grilling` exclusive boundaries against
+- [x] [COMPLETED] P03.05 Give `tailrocks-grilling` exclusive boundaries against
   roadmap shaping/readiness, reusable research, implementation planning, and
   medium-specific design.
-- [ ] [TODO] P03.06 Reconcile `invocation-policy.md`, root doctrine, install
+  - Evidence receipt (2026-08-22): added one exclusive ownership router to
+    `tailrocks-grilling`: live conversation remains local; persisted roadmap
+    shaping routes to `tailrocks-brainstorm`; only `tailrocks-finalize` grants
+    READY; reusable sourced artifacts route to `tailrocks-research`; `plan/`
+    and `goal/` packages route to `tailrocks-plan`; and platform design plus
+    blessing route to the macOS, web, or terminal design owner. A handoff now
+    explicitly grants neither invocation nor authority. Neighbor contracts
+    already held those exclusive outputs, so none changed. Focused proof
+    passed 6 tests with 143 assertions. `rtk mise run migration-check` passed
+    135 tests with 754 assertions across 16 non-protected files, validated 44
+    skills, checked 136 generated files and 72 byte-identical shared-reference
+    destinations, and checked 42 formatted files. Protection proof covered 4
+    patterns and 183 frozen source paths with zero violations; diff check
+    passed. Fresh subagent verdict: PASS. No evals run.
+- [ ] [IN_PROGRESS] P03.06 Reconcile `invocation-policy.md`, root doctrine, install
   guidance, choosing guide, context-budget decision, catalog, and generated
   skill pages with the confirmed matrix.
 - [ ] [TODO] P03.GATE Run `rtk mise run migration-check`; prove the exact

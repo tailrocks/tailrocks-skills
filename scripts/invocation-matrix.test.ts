@@ -116,3 +116,29 @@ test("grilling policy is conversation-only and preserves user decision authority
   expect(openai.interface?.default_prompt).toMatch(/leave every decision to me/);
   expect(openai.interface?.default_prompt).toMatch(/do not execute/);
 });
+
+test("grilling has exclusive routes to durable roadmap, research, planning, and design owners", async () => {
+  const source = (await readFile(path.join(root, "skills/tailrocks-grilling/SKILL.md"), "utf8")).replace(
+    /\s+/g,
+    " ",
+  );
+  for (const phrase of [
+    "tailrocks-brainstorm",
+    "tailrocks-finalize",
+    "Only `tailrocks-finalize` grants `READY`",
+    "never writes an item or changes lifecycle state",
+    "tailrocks-research",
+    "leaves no research artifact",
+    "tailrocks-plan",
+    "under `plan/`",
+    "under `goal/`",
+    "never authors or revises an implementation package",
+    "tailrocks-macos-design",
+    "tailrocks-web-design",
+    "tailrocks-tui-design",
+    "never designs, renders, or blesses a screen",
+    "never invokes that owner or grants its authority",
+  ]) {
+    expect(source).toContain(phrase);
+  }
+});

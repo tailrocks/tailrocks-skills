@@ -30,6 +30,29 @@ skill writes no artifact and starts no execution.
 Read [`references/runtime-trust.md`](references/runtime-trust.md) before using
 repository, tool, or web evidence.
 
+## Ownership routes
+
+This skill owns only the pre-action conversation. Route work that needs a
+durable product artifact to its exclusive owner:
+
+- A DRAFT or SHAPING roadmap item whose answers must be recorded belongs to
+  `tailrocks-brainstorm`; its closing readiness interview belongs to
+  `tailrocks-finalize`. Only `tailrocks-finalize` grants `READY`; grilling
+  never writes an item or changes lifecycle state.
+- Deep sourced findings meant to outlive this conversation belong under
+  `research/` through `tailrocks-research`. Grilling retrieves only the facts
+  needed to support the current questions and leaves no research artifact.
+- A READY item becoming specs, coverage, executor plans under `plan/`, or a
+  handoff under `goal/` belongs to `tailrocks-plan`. Grilling may challenge an
+  existing plan but never authors or revises an implementation package.
+- Screen structure, visual taste, runnable design references, prototypes, or
+  blessing belong to the matching `tailrocks-macos-design`,
+  `tailrocks-web-design`, or `tailrocks-tui-design` owner. Grilling may settle
+  upstream choices but never designs, renders, or blesses a screen.
+
+A handoff names the owner; it never invokes that owner or grants its authority.
+Later artifact or execution work needs its own request and authority.
+
 ## Method
 
 1. **Identify the subject.** Use the stated subject or a readable artifact. If
