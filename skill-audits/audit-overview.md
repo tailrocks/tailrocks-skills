@@ -589,9 +589,29 @@ all terminal checks pass, and the final literal marker is changed to
     PID-reuse, no-replace publication, post-capture identity, launch-argv,
     registry-forgery, partial-restore, audit-scope, and executable-proof gaps.
     No evals run.
-- [ ] [IN_PROGRESS] P04.07 Add web capture scripts that prove owned server revision and
+- [x] [COMPLETED] P04.07 Add web capture scripts that prove owned server revision and
   guard endpoint before capture; reject wrong-server reuse.
-- [ ] [TODO] P04.08 Require every script to reject unmatched state, bound retries,
+  - Evidence receipt (2026-08-22): replaced the reusable-server templates with a
+    shared transactional installer and owned-server capture supervisor. Capture
+    binds the canonical Git root, HEAD plus every Git-visible source byte, exact
+    project-local Vite entrypoint, strict loopback port, private 256-bit session,
+    spawned PID, design-route flag, and exact no-cache guard schema. Existing or
+    stale HTTP refuses before spawn; every test and the suite recheck guard and
+    origin, source/HEAD drift refuses, service workers are blocked, and all child
+    commands and TERM/KILL cleanup are bounded. Snapshot updates stage privately
+    and publish only after final identity proof using stable source and target
+    inode checks; concurrent replacement is preserved on refusal. Installer
+    rollback likewise removes only inode-identical owned files. Focused proof
+    passed 15 tests/54 assertions, including live stale-server refusal, HEAD
+    drift, hung-child kill, staged publication, and adversarial installer and
+    screenshot publication races. `rtk mise run migration-check` passed 247
+    tests/1,178 assertions across 28 selected non-protected files, validated 44
+    skills, checked 136 generated files, and passed formatting and diff checks.
+    Protection proof covered 4 patterns/183 frozen source paths with zero
+    violations. Fresh security-focused subagent verdict: PASS after closing
+    repeated-HEAD, direct-baseline, CAS rollback, stale-server, hung-child, and
+    staged-source publication-race gaps. No evals run.
+- [ ] [IN_PROGRESS] P04.08 Require every script to reject unmatched state, bound retries,
   restore recoverable state, and emit machine-readable receipts.
 - [ ] [TODO] P04.GATE Run `rtk mise run migration-check`; record nonzero tests
   for every new script and a fresh security-focused subagent review. Evidence:
