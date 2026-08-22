@@ -260,9 +260,18 @@ all terminal checks pass, and the final literal marker is changed to
     files. Protection proof covered 4 patterns and 183 frozen source paths with
     zero violations; diff check passed. Fresh subagent preservation verdict:
     PASS with no blocking finding. No evals run.
-- [ ] [TODO] P02.04 Create canonical shared sources for runtime trust, version
+- [x] [COMPLETED] P02.04 Create canonical shared sources for runtime trust, version
   policy, repository-audit lanes, design pipeline, contribution handoff, and
   pull-request conventions.
+  - Evidence receipt (2026-08-22): added six authored policy sources under
+    `shared/references/` with common policy separated from ecosystem, security,
+    platform, stage, and owner-relative adapters. Added a deterministic source
+    inventory/source-neutrality test; focused proof passed 3 tests with 33
+    assertions. `rtk mise run migration-check` passed 111 tests with 526
+    assertions across 12 non-protected test files, validated 43 skills, checked
+    133 generated files, and checked 36 formatted files. Protection proof
+    covered 4 patterns and 183 frozen source paths with zero violations; diff
+    check passed. Fresh subagent scope/preservation verdict: PASS. No evals run.
 - [ ] [TODO] P02.05 Add a generator manifest for every skill-local packaged copy
   and byte-validate each destination against its canonical source.
 - [ ] [TODO] P02.06 Make skill creation decide placement before durable writes;
