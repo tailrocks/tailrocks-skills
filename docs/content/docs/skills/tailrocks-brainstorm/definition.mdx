@@ -58,7 +58,18 @@ commit and its trailer are the record that the session happened.
 
 ## Steps
 
-1. **Load the item.** Read `roadmap/<slug>/README.md` fully — its Decisions,
+1. **Enter SHAPING deterministically.** Obtain the loader-provided absolute path
+   of this installed `SKILL.md`; ignore ambient path variables. Before any
+   `realpath`, `lstat` the skill file, each of its two parents, their scripts
+   child directory, and its brainstorm-state.ts entrypoint; refuse a symlink component or
+   non-regular entrypoint. Run that exact installed entrypoint as `bun
+&lt;installed-plugin>/scripts/brainstorm-state.ts &lt;roadmap-slug> [--batch]` —
+   never a target-repository lookalike — with exactly the invocation arguments. The helper
+   transactionally changes matching item and index `DRAFT` states to `SHAPING`,
+   preserves matching `SHAPING` bytes, and refuses missing, malformed,
+   mismatched, or `READY`-and-later state without mutation. It never grants
+   `READY`; only `tailrocks-finalize` owns that transition. Then read
+   `roadmap/<slug>/README.md` fully — its Decisions,
    Vocabulary, and Must not are settled ground you never re-ask. If the slug
    does not exist, list available items and stop. If status is `READY` or
    later, say the item is past brainstorming and point at
@@ -76,9 +87,19 @@ commit and its trailer are the record that the session happened.
    **Complete when:** every gap in the item is a tree node or a fact being
    looked up.
 
-3. **Grill.** Walk the frontier per the Boundaries contract, each question
+3. **Grill.** Send one closed `tailrocks.brainstorm-turn/v1` JSON object on
+   stdin to the same helper command. It contains `nodes` (stable `id`,
+   `question`, `recommendation`, optional `dependsOn` and `answer`) and, after
+   the user responds, `answers` (`id`, `decision`, `reason`, ISO `date`). The
+   typed receipt's `frontier` is the only set to present. Use the helper's deterministic frontier contract: sort ready
+   nodes by stable question ID; interactive mode presents exactly the first
+   ready node, while `--batch` presents the entire current ready frontier.
+   A node is ready only after every dependency has an answer. Recompute only
+   after the presented round is recorded, so answers cannot pull dependent
+   questions into the same round. Walk that frontier per the Boundaries contract, each question
    carrying a recommended answer grounded in the looked-up facts. Write each resolved answer into
-   its item section immediately. New branches an answer spawns join the
+   its item section immediately through the helper's transactional answer publication;
+   the answers must cover exactly the presented frontier. New branches an answer spawns join the
    tree; do not chase them mid-question.
    **Complete when:** the frontier is empty or the user steers out — and a
    steered exit recorded every open decision in the item.

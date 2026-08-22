@@ -1308,9 +1308,27 @@ all terminal checks pass, and the final literal marker is changed to
     validator passed 84 skills; references checked 88 sources/258 byte-identical
     destinations; docs checked 256 files; fresh subagent verdict: PASS. No evals
     run or inspected.
-- [ ] [IN_PROGRESS] P09.03 `tailrocks-brainstorm`: deterministic DRAFT/SHAPING and
+- [x] [COMPLETED] P09.03 `tailrocks-brainstorm`: deterministic DRAFT/SHAPING and
   interactive/batch frontier transitions using temporary item trees.
-- [ ] [TODO] P09.04 Checkout command: temporary repositories and mocked
+  - Evidence receipt (2026-08-23): added the installed `brainstorm-state.ts`
+    state/frontier owner with exact `<roadmap-slug> [--batch]` parsing,
+    canonical four-column roadmap-index parity, transactional DRAFT-to-SHAPING
+    publication, SHAPING preservation, and zero-mutation refusal for missing,
+    malformed, mismatched, READY-and-later, symlinked, raced, or deep-invalid
+    input. Its closed typed turn protocol selects one stable ready node
+    interactively or the whole current frontier in batch, defers dependencies
+    until the next recorded round, publishes exact ordered answers against an
+    item/index CAS read-set, rejects structural injection and invalid calendar
+    dates, and never grants READY. Directory-identity-anchored reads, parent-swap
+    tests, and a staged installed-layout entrypoint proof bind execution to the
+    loader-derived non-symlink script rather than a repository lookalike.
+    Focused proof passed 22 tests/239 assertions; validator passed 84 skills;
+    references checked 88 sources/258 byte-identical destinations; docs checked
+    256 files; fresh subagent verdict: PASS. The non-eval migration gate passed
+    442 tests/5,166 assertions and every static/generated check; only the same
+    two unrelated macOS GUI activation cases failed, owned by P09.15. No evals
+    run or inspected.
+- [ ] [IN_PROGRESS] P09.04 Checkout command: temporary repositories and mocked
   hosting/Git receipts through the deterministic script; no public skill alias.
 - [ ] [TODO] P09.05 `tailrocks-code-health`: machine-owned version and ratchet
   predicates plus unique owner hints.
