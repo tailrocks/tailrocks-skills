@@ -146,6 +146,11 @@ describe("validate", () => {
     expect(await validate(root)).toEqual([]);
   });
 
+  test("an eval-only retired audit directory stays inactive without reading frozen bytes", async () => {
+    await write("skills/tailrocks-audit/evals/evals.json", "not json and deliberately ignored\n");
+    expect(await validate(root)).toEqual([]);
+  });
+
   test("a retired directory without SKILL.md is not a published skill", async () => {
     await write("skills/tailrocks-retired/frozen.bin", "opaque protected bytes\n");
     expect(await validate(root)).toEqual([]);
@@ -700,6 +705,25 @@ policy:
     expect(await validate(root)).toContain(
       "README.md: retired skill route is forbidden: tailrocks-web-visual-qa",
     );
+  });
+
+  test("rejects the retired audit owner and route", async () => {
+    await write("README.md", `${skill}\ntailrocks-audit\n`);
+    expect(await validate(root)).toContain("README.md: retired skill route is forbidden: tailrocks-audit");
+    const retired = "tailrocks-audit";
+    await cp(path.join(root, "skills", skill), path.join(root, "skills", retired), { recursive: true });
+    const file = path.join(root, "skills", retired, "SKILL.md");
+    await writeFile(file, (await readFile(file, "utf8")).replaceAll(skill, retired));
+    expect(await validate(root)).toContain(`${retired}: retired skill name is forbidden`);
+  });
+
+  test("rejects a retired audit route from every active skill package directory", async () => {
+    for (const relative of ["references/routing.md", "scripts/resurrect.ts"]) {
+      await write(`skills/${skill}/${relative}`, "Route to tailrocks-audit.\n");
+      expect(await validate(root)).toContain(
+        `skills/${skill}/${relative}: retired skill route is forbidden: tailrocks-audit`,
+      );
+    }
   });
 
   test("rejects stale release pins", async () => {

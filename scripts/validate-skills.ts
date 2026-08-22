@@ -3,15 +3,11 @@ import path from "node:path";
 
 import { generateReferences, isGeneratedReferenceSource } from "./generate-references";
 import { parseInvocationRegistry, type InvocationClass } from "./invocation-registry";
+import { RETIRED_SKILL_NAMES } from "./retired-skill-names";
 
 const guard = "Use only when the user explicitly requests this skill.";
 const descriptionBudget = 250;
-const retiredSkillNames = new Set([
-  "tailrocks-skill-evaluate",
-  "tailrocks-skill-migrate",
-  "tailrocks-skill-migration-plan",
-  "tailrocks-web-visual-qa",
-]);
+const retiredSkillNames = RETIRED_SKILL_NAMES;
 
 async function exists(file: string): Promise<boolean> {
   try {
@@ -106,15 +102,51 @@ async function validateDurableContracts(root: string, errors: string[]): Promise
 }
 
 async function validateRetiredRoutes(root: string, errors: string[]): Promise<void> {
-  const surfaces = [
+  const surfaces = new Set([
     "AGENTS.md",
+    "CLAUDE.md",
     "INSTALL.md",
     "README.md",
     "catalog.json",
+    "generated-references.json",
     "invocation-registry.json",
-    "docs/content/docs/choosing.mdx",
-    "docs/content/docs/skills/meta.json",
-  ];
+  ]);
+  for (const directory of ["docs/content", "docs/design"]) {
+    for (const file of await filesUnder(path.join(root, directory))) {
+      const relative = path.relative(root, file);
+      if (relative === "docs/design/eval-runner-design.md") continue;
+      surfaces.add(relative);
+    }
+  }
+
+  const skillsRoot = path.join(root, "skills");
+  if (await exists(skillsRoot)) {
+    for (const entry of await readdir(skillsRoot, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const skillRoot = path.join(skillsRoot, entry.name);
+      if (retiredSkillNames.has(entry.name)) {
+        for (const residue of await readdir(skillRoot, { withFileTypes: true })) {
+          if (residue.isDirectory() && residue.name === "evals") continue;
+          if (residue.isDirectory() && (await filesUnder(path.join(skillRoot, residue.name))).length === 0)
+            continue;
+          errors.push(
+            `${path.relative(root, path.join(skillRoot, residue.name))}: retired skill residue is forbidden`,
+          );
+        }
+        continue;
+      }
+      if (!(await exists(path.join(skillRoot, "SKILL.md")))) continue;
+      for (const packageEntry of await readdir(skillRoot, { withFileTypes: true })) {
+        if (packageEntry.isDirectory() && packageEntry.name === "evals") continue;
+        const packagePath = path.join(skillRoot, packageEntry.name);
+        if (packageEntry.isDirectory()) {
+          for (const file of await filesUnder(packagePath)) surfaces.add(path.relative(root, file));
+        } else {
+          surfaces.add(path.relative(root, packagePath));
+        }
+      }
+    }
+  }
   for (const relative of surfaces) {
     const file = path.join(root, relative);
     if (!(await exists(file))) continue;
@@ -126,7 +158,11 @@ async function validateRetiredRoutes(root: string, errors: string[]): Promise<vo
   const docsRoot = path.join(root, "docs/content/docs/skills");
   if (!(await exists(docsRoot))) return;
   for (const entry of await readdir(docsRoot, { withFileTypes: true })) {
-    if (entry.isDirectory() && retiredSkillNames.has(entry.name)) {
+    if (
+      entry.isDirectory() &&
+      retiredSkillNames.has(entry.name) &&
+      (await filesUnder(path.join(docsRoot, entry.name))).length > 0
+    ) {
       errors.push(`docs/content/docs/skills/${entry.name}: retired skill route is forbidden`);
     }
   }

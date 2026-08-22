@@ -12,32 +12,34 @@ work is finished, the folder is deleted and git carries the record.
 
 ```mermaid
 flowchart LR
-  audit --> idea --> brainstorm --> finalize --> design["design stage"] --> plan --> exec["/goal execution"]
+  seed["seed-roadmap"] --> brainstorm --> finalize --> design["design stage"] --> plan --> exec["/goal execution"]
   exec --> feedback["record-feedback"] --> prove --> reconcile
   reconcile -->|Remaining not empty| exec
   reconcile -->|Remaining empty| done["DONE"] --> retire["retired — report kept at delivery/<slug>.md, folder deleted"]
-  audit -.-> plan
   brainstorm <--> research
   brainstorm <--> decision["record-decision"]
 ```
 
-## 0. Cold start with tailrocks-audit (only when there is no thought yet)
+## 0. Cold start from verified evidence (only when there is no thought yet)
 
 This walkthrough begins with a raw thought, so it skips step 0. Start here
 instead when the input is a repository rather than an idea: invoke
-tailrocks-audit — bare, or scoped to one lane (`security`, `perf`, `ux`,
-`tui`, `liquid-glass`, `agent-legibility`), or as `branch` before a pull
-request, with `deep` composing over any of them. It fans out category
-subagents, re-derives every candidate from its cited `file:line`, and
-prioritizes the survivors. Selected findings that still carry an open product
-question enter at step 1 as pre-filled DRAFT items; findings that carry none
-skip to step 6 as `roadmap/<slug>/plan/` packages written directly on the base
-branch.
+`tailrocks-improve`, `tailrocks-improve-deep`, or
+`tailrocks-improve-security`, or use `tailrocks-review-pr` for a branch diff.
+These owners re-derive every candidate from cited evidence and return read-only
+reports. Select one finding explicitly. LOW-risk work without an open product
+decision routes to `tailrocks-improve-plan` under `plans/`; high-risk work or an
+open product decision routes through `tailrocks-seed-roadmap` into step 1 as a
+pre-filled DRAFT item on its own branch and pull request.
 
 ```text
-+ roadmap/<slug>/README.md   Status: DRAFT, pre-filled with audit evidence
-+ roadmap/<slug>/plan/       for findings with no open question
-~ roadmap/README.md          index rows
++ plans/NNN-<slug>.md        selected low-risk standalone work
++ plans/README.md            standalone index row
+
+or
+
++ roadmap/<slug>/README.md   Status: DRAFT, pre-filled with verified evidence
+~ roadmap/README.md          item index row
 ```
 
 ## 1. Capture with tailrocks-idea

@@ -189,18 +189,19 @@ implementation to it afterward.
 | [`tailrocks-contribute-submit`](/docs/skills/tailrocks-contribute-submit)   | One prepared contribution is ready for separately approved legal, push, and PR actions.                       |
 | [`tailrocks-contribute-respond`](/docs/skills/tailrocks-contribute-respond) | One submitted contribution needs a current review round handled under per-action approval.                    |
 
-### retrospect or audit
+### retrospect or improve
 
 Both end in prioritized findings, and their subjects do not overlap.
-[`tailrocks-audit`](/docs/skills/tailrocks-audit) reads a repository or a
-branch and finds what is wrong with **the code**, seeding the result as
-roadmap items or plans — it is the cold-start skill for a codebase with no
-backlog yet. [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) reads
+[`tailrocks-improve`](/docs/skills/tailrocks-improve) reads a repository and
+finds what is wrong with **the code**, returning a verified read-only report.
+[`tailrocks-review-pr`](/docs/skills/tailrocks-review-pr) owns a branch or diff.
+[`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) reads
 one shipped item's delivery history and finds what is wrong with **the
 skills** that produced it, proposing patches against their definitions.
 
-Audit needs no roadmap item and produces them; retrospect needs exactly one
-and produces none. If there is no item to point at, the answer is audit.
+Improve needs no roadmap item and writes none; retrospect needs exactly one.
+Selected improve findings route separately to standalone planning or roadmap
+seeding.
 
 ### improve report, plan, execute, reconcile, or seed
 
@@ -403,24 +404,21 @@ proposal, preparation, and fresh per-action approval before anything outward.
 `tailrocks-create-pr` is for repositories the user works in as their own —
 invoking it authorizes the push and the PR.
 
-### audit, code-health, or review-pr
+### improve, code-health, or review-pr
 
-[`tailrocks-audit`](/docs/skills/tailrocks-audit) is the cold-start
-entry: no idea captured yet, no PR open, just a repository or a branch
-that needs a first pass to find out what is worth doing. Selected
-findings go to the roadmap/plan pipeline, or straight to a
-`bounded-executor` when the finding is small, certain, and low-risk to
-get wrong — and to a fixer skill instead when the finding's shape says
-so: `tailrocks-root-cause` when a defect class will recur or concrete friction
-reveals a failed guarantee, `tailrocks-remediate` only for an approved causal
-contract, and `tailrocks-simplify-audit` for redundancy inside a diff.
+[`tailrocks-improve`](/docs/skills/tailrocks-improve) is the cold repository
+entry; deep and security owners add their exact read-only proofs. A selected
+LOW-risk closed finding routes to `tailrocks-improve-plan`; high-risk work or an
+open product decision routes to `tailrocks-seed-roadmap`. `tailrocks-root-cause`
+owns recurring defect diagnosis, `tailrocks-remediate` applies only an approved
+causal contract, and `tailrocks-simplify-audit` finds redundancy inside a diff.
 [`tailrocks-code-health-audit`](/docs/skills/tailrocks-code-health-audit) owns
 one-off read-only debt measurement. [`tailrocks-code-health`](/docs/skills/tailrocks-code-health)
 owns only an explicitly approved standing ratchet mutation that keeps a named
 class from growing once wired into CI.
-[`tailrocks-review-pr`](/docs/skills/tailrocks-review-pr) never runs cold:
-it reviews one open PR, branch, or diff against author intent, and never
-seeds roadmap items or plans. Run `tailrocks-audit` to find work, wire
+[`tailrocks-review-pr`](/docs/skills/tailrocks-review-pr) reviews one open PR,
+branch, or diff against author intent and never seeds work. Run
+`tailrocks-improve` to find repository work, wire
 `tailrocks-code-health` to keep a fixed debt class from regressing, and
 run `tailrocks-review-pr` once that work becomes a PR.
 
@@ -428,19 +426,17 @@ run `tailrocks-review-pr` once that work becomes a PR.
 
 ```mermaid
 flowchart LR
-  audit --> idea --> brainstorm --> finalize --> plan --> exec["/goal execution"]
+  seed["seed-roadmap"] --> brainstorm --> finalize --> plan --> exec["/goal execution"]
   exec --> feedback["record-feedback"] --> prove --> reconcile
   reconcile -->|Remaining not empty| exec
   reconcile -->|Remaining empty| done["DONE"] --> retire["retired — folder deleted"]
-  audit --> plan
-  audit --> sweep["audit sweep"]
   brainstorm <--> research
   finalize <--> decision["record-decision"]
 ```
 
 | Skill                                                                 | Reach for it when                                                                                                                                                                 |
 | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`tailrocks-audit`](/docs/skills/tailrocks-audit)                     | Nothing is captured yet — audit a repository or branch cold and turn findings into items or plans.                                                                                |
+| [`tailrocks-seed-roadmap`](/docs/skills/tailrocks-seed-roadmap)       | One verified high-risk finding or open product decision must become a DRAFT item.                                                                                                 |
 | [`tailrocks-idea`](/docs/skills/tailrocks-idea)                       | Capturing a raw idea as a DRAFT item without inventing missing detail.                                                                                                            |
 | [`tailrocks-brainstorm`](/docs/skills/tailrocks-brainstorm)           | Shaping a DRAFT or SHAPING item through a one-question-at-a-time interview.                                                                                                       |
 | [`tailrocks-research`](/docs/skills/tailrocks-research)               | A question or an item needs deep sourced research saved as a reusable topic.                                                                                                      |

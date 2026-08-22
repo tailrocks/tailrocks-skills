@@ -18,11 +18,6 @@
     },
     {
       "source": "shared/references/runtime-trust.md",
-      "destination": "skills/tailrocks-audit/references/runtime-trust.md",
-      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
-    },
-    {
-      "source": "shared/references/runtime-trust.md",
       "destination": "skills/tailrocks-axum-best-practices/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
     },

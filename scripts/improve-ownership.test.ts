@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 
 import { IMPROVE_CATEGORIES, IMPROVE_ROUTES } from "./improve-route-schema";
@@ -18,6 +18,56 @@ const owners = [
 async function source(skill: string, relative = "SKILL.md"): Promise<string> {
   return readFile(path.join(root, "skills", skill, relative), "utf8");
 }
+
+test("retired combined audit owner is absent from every public surface", async () => {
+  for (const relative of [
+    "skills/tailrocks-audit/SKILL.md",
+    "skills/tailrocks-audit/README.md",
+    "skills/tailrocks-audit/agents/openai.yaml",
+    "skills/tailrocks-audit/references/audit-lanes.md",
+    "skills/tailrocks-audit/references/execution-loop.md",
+    "skills/tailrocks-audit/references/plan-seeding.md",
+    "skills/tailrocks-audit/references/runtime-trust.md",
+    "docs/content/docs/skills/tailrocks-audit/index.mdx",
+    "docs/content/docs/skills/tailrocks-audit/definition.mdx",
+  ]) {
+    await expect(access(path.join(root, relative))).rejects.toThrow();
+  }
+  const registry = JSON.parse(await readFile(path.join(root, "invocation-registry.json"), "utf8")) as {
+    owners: Array<{ skill: string; class: string }>;
+  };
+  expect(registry.owners).toHaveLength(84);
+  expect(
+    registry.owners.filter(({ class: invocationClass }) => invocationClass === "MANUAL_ONLY"),
+  ).toHaveLength(73);
+  expect(registry.owners.some(({ skill }) => skill === "tailrocks-audit")).toBe(false);
+  const catalog = JSON.parse(await readFile(path.join(root, "catalog.json"), "utf8")) as {
+    groups: Array<{ id: string; skills: string[] }>;
+  };
+  expect(catalog.groups.find(({ id }) => id === "delivery")?.skills).toHaveLength(10);
+  const generated = JSON.parse(await readFile(path.join(root, "generated-references.json"), "utf8")) as {
+    entries: Array<{ destinations: string[] }>;
+  };
+  expect(generated.entries).toHaveLength(88);
+  expect(generated.entries.reduce((count, { destinations }) => count + destinations.length, 0)).toBe(258);
+  for (const relative of [
+    "AGENTS.md",
+    "INSTALL.md",
+    "README.md",
+    "catalog.json",
+    "generated-references.json",
+    "invocation-registry.json",
+    "docs/content/docs/choosing.mdx",
+    "docs/content/docs/delivery/index.mdx",
+    "docs/content/docs/install.mdx",
+    "docs/content/docs/skills/index.mdx",
+    "docs/content/docs/skills/meta.json",
+    "docs/design/improve-family-design.md",
+    "docs/design/pipeline-walkthrough.md",
+  ]) {
+    expect(await readFile(path.join(root, relative), "utf8")).not.toContain("tailrocks-audit");
+  }
+});
 
 test("improve selectors have seven exclusive outputs", async () => {
   const [standard, deep, security, plan, execution, reconcile, seed] = await Promise.all(

@@ -558,19 +558,11 @@ request for an item that already has one. No artifact carries a log: the commit
 series is the item's history (the contract lives in tailrocks-idea's
 `delivery-git-contract.md` reference).
 
-- **tailrocks-audit** — the cold-start entry: fan out parallel audit lanes
-  (correctness, security, performance, UX, Liquid Glass, agent
-  legibility — including whether the repository's languages and tools stay
-  inside the house stack — tests, tech debt, dependencies, DX, docs,
-  direction) over a repository or a branch diff, verify every
-  finding by re-reading its evidence, prioritize by leverage, and seed
-  either a direct `roadmap/<slug>/plan/` package (small, mechanical, no open
-  product question) or a DRAFT roadmap item pre-filled with evidence. Also
-  runs the `execute` loop — a `bounded-executor` in an isolated worktree,
-  reviewed on the `frontier-judgment` route, never the reverse — and
-  `sweep`, which reconciles the backlog it seeded. Every lane and mode
-  takes `--deep`; `--batch` makes a run non-interactive. Definition:
-  `skills/tailrocks-audit/SKILL.md`
+- **tailrocks-seed-roadmap** — bridge one verified high-risk finding or open
+  product decision into a DRAFT roadmap item and its single item branch and pull
+  request. Pipeline-free low-risk work stays under `plans/` through
+  `tailrocks-improve-plan`; discovery stays with the read-only improve owners.
+  Definition: `skills/tailrocks-seed-roadmap/SKILL.md`
 - **tailrocks-idea** — capture a raw idea as a DRAFT item with a
   content-derived slug and an index row. Capture only; gaps stay visibly
   empty. Definition: `skills/tailrocks-idea/SKILL.md`
@@ -645,13 +637,12 @@ A `TAILROCKS GOAL: PASS` proves the work ran and the contract is unedited; it
 is never a `DONE` claim.
 
 All ten write only their own artifacts (`roadmap/`, `research/`) and never
-touch source — `tailrocks-audit`'s `execute` mode is the one exception, and
-even there only inside a disposable worktree it never merges.
+touch source.
 After an item ships, `tailrocks-retrospect` reads that marked history back and
 turns what diverged into proposed skill patches.
-Mechanical walkthrough: `docs/design/pipeline-walkthrough.md`; why the audit
-is one lane-bearing skill rather than six "improve X" skills, and how it routes
-judgment and bounded execution: `docs/design/audit-design.md`. The published
+Mechanical walkthrough: `docs/design/pipeline-walkthrough.md`; how the improve
+family separates discovery, planning, seeding, execution, and reconciliation:
+`docs/design/improve-family-design.md`. The published
 guide — why each stage exists, what it refuses, and two features taken end to
 end (a native macOS app with a Rust core, and a TanStack feature on an Axum
 backend) — lives in `docs/content/docs/delivery/` and explains how the delivery

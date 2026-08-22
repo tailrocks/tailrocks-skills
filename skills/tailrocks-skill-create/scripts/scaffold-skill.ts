@@ -13,6 +13,8 @@ import {
 } from "node:fs/promises";
 import path from "node:path";
 
+import { RETIRED_SKILL_NAMES } from "../../../scripts/retired-skill-names";
+
 import {
   atomicRecoveryArtifacts,
   atomicWriteFiles,
@@ -46,11 +48,7 @@ const modelDescription = `  <Exact model trigger only: the artifact, language, f
   or explicit intent already in scope; include the do-not-use boundary.
   Never a workflow summary.>`;
 const receiptSchema = "tailrocks.skill-scaffold/v1";
-const retiredSkillNames = new Set([
-  "tailrocks-skill-evaluate",
-  "tailrocks-skill-migrate",
-  "tailrocks-skill-migration-plan",
-]);
+const retiredSkillNames = RETIRED_SKILL_NAMES;
 
 function inside(root: string, target: string): boolean {
   const relative = path.relative(root, target);

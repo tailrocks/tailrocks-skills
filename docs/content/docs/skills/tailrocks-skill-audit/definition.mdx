@@ -92,9 +92,10 @@ present does not imply permission to remove it.
 
 ## Boundaries
 
-Audits skill authoring only. Repository code defects route to
-`tailrocks-improve` (pipeline-free repositories) or `tailrocks-audit`
-(repositories running the delivery pipeline). Applying report findings is
+Audits skill authoring only. Repository code defects route to the read-only
+`tailrocks-improve` family. A selected low-risk finding routes to
+`tailrocks-improve-plan`; high-risk work or an open product decision routes to
+`tailrocks-seed-roadmap`. Applying report findings is
 `tailrocks-skill-update` when behavior changes within a fixed public contract.
 Behavior-preserving responsibility topology routes to
 `tailrocks-skill-refactor`. Contract-breaking work requires a separately scoped

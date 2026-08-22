@@ -1240,9 +1240,24 @@ all terminal checks pass, and the final literal marker is changed to
     passed 420 tests and all static/generated checks; only the unrelated two macOS
     GUI activation cases failed, deferred to P09.15. Protected paths unchanged;
     no evals run or inspected.
-- [ ] [IN_PROGRESS] P08.07 Remove retired public skill and mode surfaces; keep any
+- [x] [COMPLETED] P08.07 Remove retired public skill and mode surfaces; keep any
   frozen protected bytes untouched but undiscoverable and unrouteable.
-- [ ] [TODO] P08.GATE Table-test every route and refusal, synchronize generated
+  - Evidence receipt (2026-08-23): deleted all seven non-eval package files and
+    both generated pages for the retired combined audit owner; removed its
+    catalog, invocation, generated-reference, root, install, design, choosing,
+    delivery, and retained-skill routes. Current public paths route directly to
+    the improve, review, plan, seed, execution, and reconciliation owners. Active
+    counts are 84 skills: 73 MANUAL_ONLY and 11 MODEL_POLICY; delivery has 10;
+    generated references have 88 sources/258 destinations; docs check has 256
+    destinations. One canonical retired-name set now blocks validation and
+    scaffolding, recursively scans every active package surface while skipping
+    only top-level frozen `evals/`, and permits an eval-only retired remnant
+    without reading it. Focused proof passed 93 tests/903 assertions; validator
+    passed 84 skills; fresh subagent verdict: PASS. The non-eval migration gate
+    passed 424 tests and every static/generated/protected-path check; only the
+    unrelated two macOS GUI activation cases failed, deferred to P09.15. Frozen
+    bytes unchanged and unrouteable; no evals run or inspected.
+- [ ] [IN_PROGRESS] P08.GATE Table-test every route and refusal, synchronize generated
   surfaces, and run `rtk mise run migration-check`. Evidence: pending.
 
 ## P09 — Repair every retained public contract

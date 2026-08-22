@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Audit"
-  short_description: "Cold-start repository audit into executable findings"
-  default_prompt: "Use $tailrocks-audit to audit this repository and turn selected findings into roadmap items or plans."
-policy:
-  allow_implicit_invocation: false

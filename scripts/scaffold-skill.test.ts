@@ -42,12 +42,12 @@ async function fixture(): Promise<string> {
 }
 
 describe("scaffoldSkill", () => {
-  test("rejects retired migration product names before mutation", async () => {
+  test("rejects retired public skill names before mutation", async () => {
     const root = await fixture();
     try {
-      await expect(scaffoldSkill(root, "tailrocks-skill-migrate")).rejects.toThrow(
-        "retired skill name is forbidden",
-      );
+      for (const name of ["tailrocks-audit", "tailrocks-skill-migrate", "tailrocks-web-visual-qa"]) {
+        await expect(scaffoldSkill(root, name)).rejects.toThrow("retired skill name is forbidden");
+      }
       expect(await readdir(path.join(root, ".agent-skills")).catch(() => [])).toEqual([]);
     } finally {
       await rm(root, { recursive: true, force: true });

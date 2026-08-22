@@ -1,15 +1,14 @@
 # The delivery git contract
 
-Every delivery-family skill (`tailrocks-audit`, `tailrocks-idea`,
+Every delivery-family skill (`tailrocks-seed-roadmap`, `tailrocks-idea`,
 `tailrocks-brainstorm`, `tailrocks-research`, `tailrocks-record-decision`,
 `tailrocks-finalize`, `tailrocks-plan`, `tailrocks-record-feedback`,
 `tailrocks-prove`, `tailrocks-reconcile`) ends each invocation with a marked
 commit, so an item's pull request becomes a legible record of which skill
-produced what. `tailrocks-audit` is the one that can write without an item: a
-directly-seeded `roadmap/<slug>/plan/` package commits on the base branch
-under the same trailer, with no item branch and no draft pull request to open.
-That record is what a later field audit reads to judge each skill's output and
-improve it.
+produced what. `tailrocks-seed-roadmap` creates or reuses the one item lane for
+verified evidence; no delivery skill writes a parentless plan or commits item
+work directly on the base branch. That record is what a later field audit reads
+to judge each skill's output and improve it.
 
 **The commit history is the history.** No artifact carries a log of what
 happened to it — not the item, not the plan hub, not a verification round.

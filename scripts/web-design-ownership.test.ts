@@ -77,9 +77,8 @@ test("published web conformance routes name the audit owner without old aliases"
     "AGENTS.md",
     "docs/content/docs/choosing.mdx",
     "docs/content/docs/delivery/index.mdx",
-    "docs/design/audit-design.md",
-    "skills/tailrocks-audit/SKILL.md",
-    "skills/tailrocks-audit/references/audit-lanes.md",
+    "docs/design/improve-family-design.md",
+    "skills/tailrocks-improve-deep/SKILL.md",
     "skills/tailrocks-review-pr/SKILL.md",
   ]) {
     const source = await read(relative);

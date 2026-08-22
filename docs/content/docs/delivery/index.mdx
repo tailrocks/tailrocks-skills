@@ -19,11 +19,10 @@ choice follows you across the documentation.
 
 ```mermaid
 flowchart LR
-  audit --> idea --> brainstorm --> finalize --> design["design stage"] --> plan --> exec["/goal execution"]
+  seed["seed-roadmap"] --> brainstorm --> finalize --> design["design stage"] --> plan --> exec["/goal execution"]
   exec --> feedback["record-feedback"] --> prove --> reconcile
   reconcile -->|Remaining not empty| exec
   reconcile -->|Remaining empty| done["DONE"] --> retire["retired — report kept at delivery/<slug>.md, folder deleted"]
-  audit -.-> plan
   brainstorm <--> research
   finalize <--> decision["record-decision"]
 ```
@@ -44,11 +43,11 @@ resting place: the same reconcile invocation that writes it deletes the
 item's folder and its index row. The healthy steady state of `roadmap/` is
 empty — [delivered work leaves the tree](#delivered-work-leaves-the-tree).
 
-Audit sits before the line rather than on it. You reach for it when there is no
-idea to capture yet — a repository you inherited, a branch about to become a
-pull request — and it seeds the line at one of two points: a DRAFT item when
-the finding still has an open product question, or a `roadmap/<slug>/plan/`
-package directly when it does not (the dotted edge).
+Read-only improve owners sit before the line. Use them on a repository with no
+backlog; use `tailrocks-review-pr` on a branch diff. A selected LOW-risk finding
+without an open product decision becomes a standalone `plans/` plan through
+`tailrocks-improve-plan`. High-risk work or an open product decision enters this
+line through `tailrocks-seed-roadmap` as a DRAFT item.
 
 ## One item, one folder
 
@@ -162,7 +161,7 @@ decided, pixels undecided is the other way an implementer ends up guessing.
 
 | Skill                                                                 | Owns                          | Refuses                                         | Writes                                                                                                                                                                              |
 | --------------------------------------------------------------------- | ----------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`tailrocks-audit`](/docs/skills/tailrocks-audit)                     | Cold start                    | Editing source; reporting an unverified finding | DRAFT items pre-filled with evidence, or `roadmap/<slug>/plan/` directly                                                                                                            |
+| [`tailrocks-seed-roadmap`](/docs/skills/tailrocks-seed-roadmap)       | Verified-evidence bridge      | Low-risk standalone planning; implementation    | One DRAFT item and index row on its item lane                                                                                                                                       |
 | [`tailrocks-idea`](/docs/skills/tailrocks-idea)                       | Capture                       | Interviewing, researching, planning             | `roadmap/<slug>/README.md` in DRAFT, index row                                                                                                                                      |
 | [`tailrocks-brainstorm`](/docs/skills/tailrocks-brainstorm)           | Expansion                     | Granting READY; running without a human         | Decisions, Vocabulary, Screens, Flows, Must-not                                                                                                                                     |
 | [`tailrocks-research`](/docs/skills/tailrocks-research)               | Facts                         | Deciding anything; questions one lookup answers | `research/<topic>/`, reusable and indexed                                                                                                                                           |
@@ -175,34 +174,19 @@ decided, pixels undecided is the other way an implementer ends up guessing.
 
 ### Find the work before there is a backlog
 
-Every other skill on this page assumes you already know what you want. When you
-do not — a repository you inherited, a quarter with no plan, a branch you are
-about to open a pull request from — `tailrocks-audit` fans out one subagent per
-category, then re-opens every candidate's cited `file:line` itself before the
-finding is allowed onto the table. Subagents over-report; the re-derivation is
-what makes the output worth reading, and every dropped candidate is reported
-with its reason so it does not resurface next run.
+Every delivery skill on this page assumes you already know what you want. When
+you do not, `tailrocks-improve` returns a verified read-only report;
+`tailrocks-improve-deep` adds exhaustive independent refutation;
+`tailrocks-improve-security` owns secret-safe threat analysis; and
+`tailrocks-review-pr` owns branch-diff review. Design-conformance routes use
+`tailrocks-web-design-audit`, `tailrocks-tui-design-audit`, or
+`tailrocks-macos-design-review`, so discovery never invents taste.
 
-Its lanes are addressable one at a time — `security`, `perf`, `ux`, `tui`,
-`liquid-glass`, `agent-legibility` — and `--deep` is a modifier rather than a
-mode, so it composes with any of them. The taste lanes carry no taste of their
-own: `ux` uses `tailrocks-web-design-audit` to judge against
-`tailrocks-web-design`'s blessed screens, `tui` uses
-`tailrocks-tui-design-audit` against `tailrocks-tui-design`'s golden frames,
-and `liquid-glass` against
-`tailrocks-macos-design`'s acceptance gate. Blessing-dependent checks skip
-where nothing is blessed; objective defects still run wherever that interface
-ships.
-
-<Invoke skill="tailrocks-audit" args="security --deep" />
-
-Two modes sit outside the fan-out. `ask <question>` runs recon plus one targeted
-investigation under the same citation discipline, and answers rather than
-forcing an artifact. `execute <slug>` hands a `roadmap/<slug>/plan/` package — from a
-PLANNED item, or seeded directly with no parent item — to a `bounded-executor`
-in a throwaway worktree, then reviews the diff on the `frontier-judgment` route
-against the plan's own done criteria. The plan is the product, the diff is a
-proposal, and merging stays your call.
+After explicit selection, route one LOW-risk closed finding to
+`tailrocks-improve-plan`, then optionally execute its standalone plan through
+`tailrocks-improve-execution`. Route high-risk work or an open product decision
+to `tailrocks-seed-roadmap`; the DRAFT item continues below. No combined mode
+dispatches another manual skill, and no parentless delivery package exists.
 
 ### Capture without inventing
 
@@ -478,7 +462,8 @@ Three worked examples follow the whole route:
 
 | You have                                                                                            | Reach for                   |
 | --------------------------------------------------------------------------------------------------- | --------------------------- |
-| A repository and no backlog, or a branch about to become a PR                                       | `tailrocks-audit`           |
+| A repository and no backlog                                                                         | `tailrocks-improve`         |
+| A branch about to become a PR                                                                        | `tailrocks-review-pr`       |
 | A thought you do not want to lose                                                                   | `tailrocks-idea`            |
 | A DRAFT and half an hour                                                                            | `tailrocks-brainstorm`      |
 | A question with a factual answer                                                                    | `tailrocks-research`        |

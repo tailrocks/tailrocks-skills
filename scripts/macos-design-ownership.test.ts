@@ -106,9 +106,8 @@ test("published macOS review routes use the new owner without aliases", async ()
 
   for (const relative of [
     "skills/tailrocks-review-pr/SKILL.md",
-    "skills/tailrocks-audit/SKILL.md",
-    "skills/tailrocks-audit/references/audit-lanes.md",
-    "docs/design/audit-design.md",
+    "skills/tailrocks-improve-deep/SKILL.md",
+    "docs/design/improve-family-design.md",
     "docs/content/docs/delivery/macos-app.mdx",
   ]) {
     const source = await read(relative);

@@ -184,7 +184,6 @@ An idea through shaping, planning, autonomous execution, and back to verified tr
 
 | Skill | What it does | Invocation |
 |---|---|---|
-| [`tailrocks-audit`](skills/tailrocks-audit/README.md) | Cold-start audit of a repository or branch with no backlog yet: verified findings, prioritized, seeded as roadmap items or plans. | Manual only |
 | [`tailrocks-seed-roadmap`](skills/tailrocks-seed-roadmap/README.md) | Convert one already-verified finding or approved standalone plan into one roadmap DRAFT item on its delivery branch and pull request. | Manual only |
 | [`tailrocks-idea`](skills/tailrocks-idea/README.md) | Capture a raw product or feature idea as a new DRAFT roadmap item under roadmap/<slug>/ and register it in the index. | Manual only |
 | [`tailrocks-brainstorm`](skills/tailrocks-brainstorm/README.md) | Shape a DRAFT or SHAPING roadmap item through a one-question-at-a-time interview, writing every answer into the item as it resolves. | Manual only |

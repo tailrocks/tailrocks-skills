@@ -4,7 +4,6 @@
     { "skill": "tailrocks-agents-md", "class": "MODEL_POLICY" },
     { "skill": "tailrocks-agents-md-audit", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-agents-md-sync", "class": "MANUAL_ONLY" },
-    { "skill": "tailrocks-audit", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-axum-best-practices", "class": "MODEL_POLICY" },
     { "skill": "tailrocks-axum-refactor", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-axum-review", "class": "MANUAL_ONLY" },

@@ -24,7 +24,7 @@ test("invocation policy records the exact effective two-class matrix", async () 
     .filter(([, invocationClass]) => invocationClass === "MODEL_POLICY")
     .map(([name]) => name);
   expect(modelPolicy).toHaveLength(11);
-  expect(skills).toHaveLength(85);
+  expect(skills).toHaveLength(84);
 
   const policy = await compact("skill-audits/invocation-policy.md");
   expect(policy).toContain("CONFIRMED AND IMPLEMENTED");
@@ -40,7 +40,7 @@ test("root, install, choosing, and context doctrine agree on counts and authorit
 
   const install = await compact("INSTALL.md");
   expect(install).toContain("classifies 11 skills as `MODEL_POLICY`");
-  expect(install).toContain("other 74 skills are");
+  expect(install).toContain("other 73 skills are");
   expect(install).toContain("Model selection grants no mutation");
 
   const choosing = await compact("docs/content/docs/choosing.mdx");
@@ -49,12 +49,12 @@ test("root, install, choosing, and context doctrine agree on counts and authorit
   expect(choosing).toContain("Naming a route invokes nothing and grants no authority");
 
   const budget = await compact("docs/design/skill-context-budget.md");
-  expect(budget).toContain("current 74 manual-only skills");
+  expect(budget).toContain("current 73 manual-only skills");
   expect(budget).toContain("11 model-policy descriptions");
-  expect(budget).toContain("all 85 descriptions");
-  expect(budget).toContain("3,996 across the 74 manual owners");
-  expect(budget).toContain("current 85 descriptions total 21,790 characters");
-  expect(budget).toContain("17,720 count against the per-skill caps");
+  expect(budget).toContain("all 84 descriptions");
+  expect(budget).toContain("3,942 across the 73 manual owners");
+  expect(budget).toContain("current 84 descriptions total 21,545 characters");
+  expect(budget).toContain("17,530 count against the per-skill caps");
   expect(budget).toContain("model-policy owners, which have no guard, are measured in full");
   expect(budget).not.toContain("Every skill is manual-only");
 });

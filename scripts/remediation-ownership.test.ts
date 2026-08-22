@@ -58,10 +58,9 @@ test("routing sends diagnosis to root-cause and approved application to remediat
     "skills/tailrocks-review-pr/SKILL.md",
     "skills/tailrocks-review-pr/references/structural-review.md",
     "skills/tailrocks-review-pr/references/specialist-lanes.md",
-    "skills/tailrocks-audit/references/plan-seeding.md",
     "skills/tailrocks-prove/SKILL.md",
     "skills/tailrocks-macos-design/SKILL.md",
-    "docs/design/audit-design.md",
+    "docs/design/improve-family-design.md",
   ];
   for (const file of files) {
     const text = await readFile(path.join(root, file), "utf8");
