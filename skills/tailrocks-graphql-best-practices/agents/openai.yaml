@@ -3,4 +3,4 @@ interface:
   short_description: "Public GraphQL APIs: schema shape, Juniper on Axum, typed clients, contract gates"
   default_prompt: "Use $tailrocks-graphql-best-practices to design, build, review, or audit this service's public GraphQL API."
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

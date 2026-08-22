@@ -1,8 +1,9 @@
 ---
 name: tailrocks-grpc-best-practices
 description: >-
-  Use only when the user explicitly requests this skill. Apply cross-service gRPC practices for Rust services: buf-governed proto contracts, tonic servers and clients, status mapping, deadlines, streaming, health, and wire contract tests. Do not use for public API surfaces — those are GraphQL.
-disable-model-invocation: true
+  Apply cross-service gRPC policy when in-scope work touches proto or Buf
+  contracts, tonic/prost services, status mapping, deadlines, streaming,
+  health, or wire tests. Not for public API surfaces; those are GraphQL.
 license: Apache-2.0
 user-invocable: true
 ---

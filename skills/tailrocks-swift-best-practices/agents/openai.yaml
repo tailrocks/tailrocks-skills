@@ -3,4 +3,4 @@ interface:
   short_description: "Write and review Swift and SwiftUI for a native macOS app"
   default_prompt: "Use $tailrocks-swift-best-practices to review or write this macOS Swift code for actor isolation, state ownership and view identity, work kept out of body, AppKit interop boundaries, typed failure, availability guards, and accessibility semantics."
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

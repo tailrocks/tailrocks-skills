@@ -343,9 +343,23 @@ all terminal checks pass, and the final literal marker is changed to
     Protection proof covered 4 patterns and 183 frozen paths with zero
     violations; diff check passed. Fresh subagent verdict: PASS. Migration
     discipline preserved a reversible atomic owner-flip path. No evals run.
-- [ ] [IN_PROGRESS] P03.02 Migrate the six confirmed best-practice owners to precise
+- [x] [COMPLETED] P03.02 Migrate the six confirmed best-practice owners to precise
   model-visible descriptions and matching Claude/Codex/OpenCode metadata.
-- [ ] [TODO] P03.03 Migrate `tailrocks-agents-md` and the macOS/web/terminal
+  - Evidence receipt (2026-08-22): atomically migrated Rust, Axum, GraphQL,
+    gRPC, TypeScript, and Swift best-practice owners to `MODEL_POLICY` in the
+    registry, exact trigger-only descriptions, omitted Claude manual-disable
+    metadata, retained explicit user invocation, and Codex implicit=true.
+    Triggers are content-scoped and exclude workspace/project setup, unrelated
+    Rust, cross-service/public protocol, backend business logic, or visual
+    design as appropriate. No unsupported OpenCode discovery metadata or
+    authority-bearing tools/hooks/dynamic commands were added. Exact-set and
+    tuple proof passed 3 tests with 59 assertions, including a representative
+    manual transaction owner. `rtk mise run migration-check` passed 132 tests
+    with 667 assertions across 16 non-protected files, validated 43 skills,
+    checked 133 generated files, and checked 42 formatted files. Protection
+    proof covered 4 patterns and 183 frozen paths with zero violations; diff
+    check passed. Fresh subagent verdict: PASS. No evals run.
+- [ ] [IN_PROGRESS] P03.03 Migrate `tailrocks-agents-md` and the macOS/web/terminal
   design owners to `MODEL_POLICY`; preserve their human-authority boundaries.
 - [ ] [TODO] P03.04 Create `tailrocks-grilling` from its recorded baseline:
   dependency-ordered frontier rounds, recommendation per question, agent-owned

@@ -4,11 +4,13 @@
 
 `tailrocks-rust-best-practices` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-rust-best-practices)
 
-Apply strict idiomatic Rust contracts when writing, reviewing, or refactoring Rust code. Use for ownership, API, failure, unsafe, test, readability, and measured-performance decisions; not for workspace scaffolding or HTTP-specific policy.
+Apply Rust correctness contracts when in-scope work writes, reviews, or refactors Rust source, APIs, or domain behavior. Covers ownership, failure, unsafe, tests, readability, and measured performance; not workspace setup or transport policy.
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This model-policy skill may load automatically only when its exact trigger
+matches work already in scope. Selection grants no authority beyond the
+active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-rust-best-practices` …
 

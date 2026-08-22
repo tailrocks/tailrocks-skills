@@ -4,11 +4,13 @@
 
 `tailrocks-grpc-best-practices` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-grpc-best-practices)
 
-Apply cross-service gRPC practices for Rust services: buf-governed proto contracts, tonic servers and clients, status mapping, deadlines, streaming, health, and wire contract tests. Do not use for public API surfaces — those are GraphQL.
+Apply cross-service gRPC policy when in-scope work touches proto or Buf contracts, tonic/prost services, status mapping, deadlines, streaming, health, or wire tests. Not for public API surfaces; those are GraphQL.
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This model-policy skill may load automatically only when its exact trigger
+matches work already in scope. Selection grants no authority beyond the
+active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-grpc-best-practices` …
 

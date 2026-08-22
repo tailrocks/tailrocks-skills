@@ -1,11 +1,9 @@
 ---
 name: tailrocks-graphql-best-practices
 description: >-
-  Use only when the user explicitly requests this skill. Design, build, review,
-  or audit the public GraphQL API of a backend service: schema and pagination
-  shape, Juniper on Axum, generated TanStack clients, and committed-SDL
-  contract gates. Not for service-to-service APIs — those are gRPC.
-disable-model-invocation: true
+  Apply public GraphQL API policy when in-scope work touches schema, Juniper
+  resolvers, SDL, pagination, or generated GraphQL clients. Not for cross-service
+  communication; that is gRPC.
 license: Apache-2.0
 user-invocable: true
 ---

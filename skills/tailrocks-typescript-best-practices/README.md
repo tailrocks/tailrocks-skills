@@ -4,11 +4,13 @@
 
 `tailrocks-typescript-best-practices` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-typescript-best-practices)
 
-Apply strict Rust-inspired TypeScript 7 contracts when writing, reviewing, refactoring, or migrating TypeScript: state, typed failure, runtime validation, readonly APIs, async ownership, tests. Bun and Oxc only; review is read-only.
+Apply strict TypeScript 7 language/UI policy when in-scope work touches TypeScript, TSX, React state, runtime validation, typed failure, readonly APIs, async ownership, or their tests. Not project scaffolding or backend business logic.
 
 ## Invocation
 
-This skill never activates on its own. Name it in your request:
+This model-policy skill may load automatically only when its exact trigger
+matches work already in scope. Selection grants no authority beyond the
+active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-typescript-best-practices` …
 

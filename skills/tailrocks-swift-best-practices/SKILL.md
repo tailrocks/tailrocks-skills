@@ -1,8 +1,9 @@
 ---
 name: tailrocks-swift-best-practices
 description: >-
-  Use only when the user explicitly requests this skill. Write, review, or refactor native macOS and iOS Swift or SwiftUI: strict concurrency, state ownership, platform interop boundaries, typed failure, availability, accessibility, and tests.
-disable-model-invocation: true
+  Apply native Swift code policy when in-scope work touches Swift, SwiftUI,
+  concurrency, state ownership, accessibility, availability, or narrow AppKit
+  bridges. Not project setup or visual-design authority.
 license: Apache-2.0
 user-invocable: true
 ---

@@ -55,10 +55,10 @@ Repository mechanics, language-level policy, the HTTP boundary, and the two serv
 | Skill | What it does | Invocation |
 |---|---|---|
 | [`tailrocks-rust-project-setup`](skills/tailrocks-rust-project-setup/README.md) | Scaffold, audit, or remediate a latest-compatible strict Rust workspace baseline. | Manual only |
-| [`tailrocks-rust-best-practices`](skills/tailrocks-rust-best-practices/README.md) | Apply strict idiomatic Rust contracts when writing, reviewing, or refactoring Rust code. | Manual only |
-| [`tailrocks-axum-best-practices`](skills/tailrocks-axum-best-practices/README.md) | Apply production Axum HTTP-adapter practices when building, reviewing, or refactoring routers, handlers, extractors, Tower middleware, lifecycle, and transport tests. | Manual only |
-| [`tailrocks-graphql-best-practices`](skills/tailrocks-graphql-best-practices/README.md) | Design, build, review, or audit the public GraphQL API of a backend service: schema and pagination shape, Juniper on Axum, generated TanStack clients, and committed-SDL contract gates. | Manual only |
-| [`tailrocks-grpc-best-practices`](skills/tailrocks-grpc-best-practices/README.md) | Apply cross-service gRPC practices for Rust services: buf-governed proto contracts, tonic servers and clients, status mapping, deadlines, streaming, health, and wire contract tests. | Manual only |
+| [`tailrocks-rust-best-practices`](skills/tailrocks-rust-best-practices/README.md) | Apply Rust correctness contracts when in-scope work writes, reviews, or refactors Rust source, APIs, or domain behavior. | Model policy |
+| [`tailrocks-axum-best-practices`](skills/tailrocks-axum-best-practices/README.md) | Apply production Axum HTTP-adapter policy when in-scope work touches routers, handlers, extractors, Tower layers, lifecycle, or HTTP transport tests. | Model policy |
+| [`tailrocks-graphql-best-practices`](skills/tailrocks-graphql-best-practices/README.md) | Apply public GraphQL API policy when in-scope work touches schema, Juniper resolvers, SDL, pagination, or generated GraphQL clients. | Model policy |
+| [`tailrocks-grpc-best-practices`](skills/tailrocks-grpc-best-practices/README.md) | Apply cross-service gRPC policy when in-scope work touches proto or Buf contracts, tonic/prost services, status mapping, deadlines, streaming, health, or wire tests. | Model policy |
 
 ### TypeScript and TanStack
 
@@ -67,7 +67,7 @@ The Bun-only application baseline and strict TypeScript policy.
 | Skill | What it does | Invocation |
 |---|---|---|
 | [`tailrocks-tanstack-project-setup`](skills/tailrocks-tanstack-project-setup/README.md) | Scaffold, migrate, audit, or remediate the Tailrocks Bun/TanStack Start application baseline. | Manual only |
-| [`tailrocks-typescript-best-practices`](skills/tailrocks-typescript-best-practices/README.md) | Apply strict Rust-inspired TypeScript 7 contracts when writing, reviewing, refactoring, or migrating TypeScript: state, typed failure, runtime validation, readonly APIs, async ownership, tests. | Manual only |
+| [`tailrocks-typescript-best-practices`](skills/tailrocks-typescript-best-practices/README.md) | Apply strict TypeScript 7 language/UI policy when in-scope work touches TypeScript, TSX, React state, runtime validation, typed failure, readonly APIs, async ownership, or their tests. | Model policy |
 
 ### Native macOS
 
@@ -75,7 +75,7 @@ The Swift implementation stack: code-level policy and the agent-drivable project
 
 | Skill | What it does | Invocation |
 |---|---|---|
-| [`tailrocks-swift-best-practices`](skills/tailrocks-swift-best-practices/README.md) | Write, review, or refactor native macOS and iOS Swift or SwiftUI: strict concurrency, state ownership, platform interop boundaries, typed failure, availability, accessibility, and tests. | Manual only |
+| [`tailrocks-swift-best-practices`](skills/tailrocks-swift-best-practices/README.md) | Apply native Swift code policy when in-scope work touches Swift, SwiftUI, concurrency, state ownership, accessibility, availability, or narrow AppKit bridges. | Model policy |
 | [`tailrocks-swift-project-setup`](skills/tailrocks-swift-project-setup/README.md) | Scaffold, audit, or remediate a strict native macOS Swift baseline: project generation, deployment targets and SDK lanes, local signing, format and lint gates, test wiring, mise tooling, Xcode agent integration. | Manual only |
 
 ### Design and prototypes
