@@ -1,4 +1,6 @@
-# macOS visual-QA harness
+<!-- tailrocks-macos-harness-contract:start -->
+
+# macOS visual-QA harness contract
 
 Install the hardened harness into a real project:
 
@@ -27,6 +29,16 @@ These commands need an interactive macOS GUI. Screen capture needs Screen
 Recording; AX driving needs Accessibility; setting changes may need Automation.
 Missing permission is a blocker, never a pass. The scripts never request grants.
 
+Only the typed `run.ts capture` and `run.ts state` interfaces are public. Raw
+shell helpers are private implementation. The supervisor uses fixed system-tool
+paths, a minimal allowlisted environment with secret-shaped names removed,
+bounded time/output/process-group cleanup, one exact-executable capture lock,
+and one global preference lock. Timeout overrides have hard maxima. Production
+state execution accepts only the installed capture operation; arbitrary commands
+and executable overrides are refused. Capture publication holds an anchored
+output-parent identity and refuses replacement before publishing either PNG or
+sidecar.
+
 Build two runnable local fixtures outside temporary storage:
 
 ```sh
@@ -36,3 +48,4 @@ scripts/macos-visual-qa/test-apps/build.sh "$HOME/Library/Caches/tailrocks-visua
 Launch `Fixture.app` normally for one window or pass `--two-windows` to its real
 executable to prove ambiguity refusal. `DecoyFixture.app` has a similar identity
 but a different real executable, proving exact ownership isolation.
+<!-- tailrocks-macos-harness-contract:end -->

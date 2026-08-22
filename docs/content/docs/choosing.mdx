@@ -72,9 +72,11 @@ running proof, implementation, and verified pixels.
 flowchart LR
   design["macos-design"] --> review["macos-design-review"]
   review --> design
-  design --> swift["swift-best-practices"]
+  design --> baseline["macos-visual-baseline"]
+  baseline --> swift["swift-best-practices"]
   swift --> gates["swift-project-setup gates"]
   gates --> qa["macos-visual-qa"]
+  qa --> regression["macos-visual-regression"]
 ```
 
 | Skill                                                                                   | Owns                                                                                                                                                                                                      |
@@ -91,7 +93,9 @@ flowchart LR
 | [`tailrocks-swift-project-remediate`](/docs/skills/tailrocks-swift-project-remediate)   | Closing exact approved baseline ledger rows.                                                                                                                                                              |
 | [`tailrocks-swift-agent-integration`](/docs/skills/tailrocks-swift-agent-integration)   | Wiring Xcode bridge access and pinned read-only agent knowledge.                                                                                                                                          |
 | [`tailrocks-swift-rust-core-setup`](/docs/skills/tailrocks-swift-rust-core-setup)       | Adding the generated Rust-core project/package lane and gates.                                                                                                                                            |
-| [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa)                   | Verification. Kill-launch-capture, window-ID capture, accessibility audits, state matrix, pixel regression.                                                                                               |
+| [`tailrocks-macos-visual-baseline`](/docs/skills/tailrocks-macos-visual-baseline)       | Freeze the complete separately reviewed and user-blessed prototype matrix into one reproducible baseline package.                                                                                         |
+| [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa)                   | Inspect and judge the current running app through window-ID capture, accessibility driving/audit, and the restored state matrix.                                                                          |
+| [`tailrocks-macos-visual-regression`](/docs/skills/tailrocks-macos-visual-regression)   | Compare current running-window captures against one exact baseline without changing project or baseline bytes.                                                                                            |
 
 Never run two skills that both encode aesthetic taste. Two findings shape the
 whole family. **No design file is authoritative for Liquid Glass; the operating
@@ -116,11 +120,11 @@ refuses a screen contract that cites none.
 | **freeze** | Take the mechanical baseline the implementation is compared against | the agent                     |
 | **audit**  | Check an implementation against the blessed reference, read-only    | the agent                     |
 
-| Medium   | Stack                            | design                                                          | bless                           | freeze                                                                | audit                                                                         |
-| -------- | -------------------------------- | --------------------------------------------------------------- | ------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| Terminal | Rust, ratatui, crossterm         | [`tailrocks-tui-design`](/docs/skills/tailrocks-tui-design)     | same                            | same — the golden test                                                | [`tailrocks-tui-design-audit`](/docs/skills/tailrocks-tui-design-audit)       |
-| Web      | TanStack Start, React, shadcn/ui | [`tailrocks-web-design`](/docs/skills/tailrocks-web-design)     | same                            | [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa)     | [`tailrocks-web-design-audit`](/docs/skills/tailrocks-web-design-audit)       |
-| macOS    | Swift, SwiftUI, Liquid Glass     | [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | same — on the running prototype | [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa) | [`tailrocks-macos-design-review`](/docs/skills/tailrocks-macos-design-review) |
+| Medium   | Stack                            | design                                                          | bless                           | freeze                                                                            | audit                                                                                 |
+| -------- | -------------------------------- | --------------------------------------------------------------- | ------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Terminal | Rust, ratatui, crossterm         | [`tailrocks-tui-design`](/docs/skills/tailrocks-tui-design)     | same                            | same — the golden test                                                            | [`tailrocks-tui-design-audit`](/docs/skills/tailrocks-tui-design-audit)               |
+| Web      | TanStack Start, React, shadcn/ui | [`tailrocks-web-design`](/docs/skills/tailrocks-web-design)     | same                            | [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa)                 | [`tailrocks-web-design-audit`](/docs/skills/tailrocks-web-design-audit)               |
+| macOS    | Swift, SwiftUI, Liquid Glass     | [`tailrocks-macos-design`](/docs/skills/tailrocks-macos-design) | same — on the running prototype | [`tailrocks-macos-visual-baseline`](/docs/skills/tailrocks-macos-visual-baseline) | [`tailrocks-macos-visual-regression`](/docs/skills/tailrocks-macos-visual-regression) |
 
 macOS keeps design and bless in one skill because the material only exists at
 runtime: taste is decided in the design stages, and the sign-off happens on
@@ -128,13 +132,16 @@ the running Liquid Glass prototype the same skill builds. The Liquid Glass
 material authority owns no separate stage — it is the rulebook the design and
 prototype stages consult.
 
-| Skill                                                                   | Reach for it when                                                                                                                                                                                         |
-| ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`tailrocks-tui-design`](/docs/skills/tailrocks-tui-design)             | A terminal screen needs a pinned, verifiable design before implementation: ratatui golden frames rendered from fixtures, blessed by the user, enforced by a golden test.                                  |
-| [`tailrocks-tui-design-audit`](/docs/skills/tailrocks-tui-design-audit) | Existing gallery packages or shipped terminal screens need read-only verification against blessed golden frames, registry coverage, style checks, states, and sizes.                                      |
-| [`tailrocks-web-design`](/docs/skills/tailrocks-web-design)             | A TanStack screen needs its look agreed before implementation: guarded design routes over the installed shadcn/ui components, blessed live in the browser. Captures nothing.                              |
-| [`tailrocks-web-design-audit`](/docs/skills/tailrocks-web-design-audit) | Existing design routes or shipped web screens need read-only verification against their blessed component, state, theme, viewport, and accessibility contract.                                            |
-| [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa)       | A finalized web design needs its baselines frozen, or an existing visual suite needs a regress run: Playwright screenshot matrix, determinism rules, the baseline record — refused for unblessed screens. |
+| Skill                                                                                 | Reach for it when                                                                                                                                                                                         |
+| ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`tailrocks-tui-design`](/docs/skills/tailrocks-tui-design)                           | A terminal screen needs a pinned, verifiable design before implementation: ratatui golden frames rendered from fixtures, blessed by the user, enforced by a golden test.                                  |
+| [`tailrocks-tui-design-audit`](/docs/skills/tailrocks-tui-design-audit)               | Existing gallery packages or shipped terminal screens need read-only verification against blessed golden frames, registry coverage, style checks, states, and sizes.                                      |
+| [`tailrocks-web-design`](/docs/skills/tailrocks-web-design)                           | A TanStack screen needs its look agreed before implementation: guarded design routes over the installed shadcn/ui components, blessed live in the browser. Captures nothing.                              |
+| [`tailrocks-web-design-audit`](/docs/skills/tailrocks-web-design-audit)               | Existing design routes or shipped web screens need read-only verification against their blessed component, state, theme, viewport, and accessibility contract.                                            |
+| [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa)                     | A finalized web design needs its baselines frozen, or an existing visual suite needs a regress run: Playwright screenshot matrix, determinism rules, the baseline record — refused for unblessed screens. |
+| [`tailrocks-macos-visual-baseline`](/docs/skills/tailrocks-macos-visual-baseline)     | A finalized, independently accepted, user-blessed macOS prototype needs its complete signed-off matrix frozen reproducibly.                                                                               |
+| [`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa)                 | The current running macOS implementation needs visual, behavioral, state-matrix, and accessibility inspection without touching baselines.                                                                 |
+| [`tailrocks-macos-visual-regression`](/docs/skills/tailrocks-macos-visual-regression) | Current macOS renders need mechanical structural/pixel comparison against one exact approved baseline.                                                                                                    |
 
 ### One design owner per medium
 
@@ -148,7 +155,7 @@ capture nothing:
 screenshots are frozen only after finalization, by
 [`tailrocks-web-visual-qa`](/docs/skills/tailrocks-web-visual-qa) for web
 screens and
-[`tailrocks-macos-visual-qa`](/docs/skills/tailrocks-macos-visual-qa) for
+[`tailrocks-macos-visual-baseline`](/docs/skills/tailrocks-macos-visual-baseline) for
 macOS windows. The shared shape is
 the same everywhere: the reference is rendered by the real UI substrate
 from fixtures, the user blesses it, and a mechanical comparison holds the

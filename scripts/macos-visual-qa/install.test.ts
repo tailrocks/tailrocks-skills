@@ -1,4 +1,5 @@
 import { expect, test } from "bun:test";
+import { createHash } from "node:crypto";
 import {
   lstat,
   mkdir,
@@ -7,6 +8,7 @@ import {
   readdir,
   realpath,
   rename,
+  rm,
   symlink,
   writeFile,
 } from "node:fs/promises";
@@ -92,25 +94,31 @@ test("installed supervisor emits one terminal receipt for success and recovery f
   const root = await temporary();
   expect((await install(root)).outcome).toBe("installed");
   const harness = path.join(root, "Scripts/TailrocksVisualQA");
+  const app = path.join(root, "App.app");
+  const output = path.join(root, "capture.png");
+  await mkdir(app);
   const capture = path.join(harness, "capture.sh");
-  await writeFile(capture, "#!/bin/sh\nprintf '{\"pid\":42}\\n'\n");
+  await writeFile(
+    capture,
+    '#!/bin/sh\nprintf png > "$2"\nprintf \'{"pid":42}\\n\' > "$2.json"\nprintf \'{"pid":42}\\n\'\n',
+  );
   const success = await runBoundedCommand({
-    command: ["bun", "run.ts", "capture", "--", "/Applications/App.app", "/tmp/capture.png"],
+    command: ["bun", "run.ts", "capture", "--", app, output],
     cwd: harness,
   });
   expect(success.code).toBe(0);
   expect(JSON.parse(success.stdout)).toMatchObject({
     outcome: "success",
     code: "capture_completed",
-    mutations: ["/tmp/capture.png", "/tmp/capture.png.json"],
+    mutations: [output, `${output}.json`],
     data: { pid: 42 },
   });
   await writeFile(
     capture,
-    "#!/bin/sh\necho 'restore failed; recovery snapshots retained: /tmp/before /tmp/applied' >&2\nexit 1\n",
+    `#!/bin/sh\nprintf 'tailrocks-recovery-artifact-base64:%s\\n' '${Buffer.from("/tmp/before").toString("base64")}' '${Buffer.from("/tmp/applied").toString("base64")}' >&2\nexit 1\n`,
   );
   const failure = await runBoundedCommand({
-    command: ["bun", "run.ts", "capture", "--", "/Applications/App.app", "/tmp/capture.png"],
+    command: ["bun", "run.ts", "capture", "--", app, output],
     cwd: harness,
   });
   expect(failure.code).toBe(1);
@@ -119,14 +127,35 @@ test("installed supervisor emits one terminal receipt for success and recovery f
     code: "capture_failed",
     recovery_artifacts: ["/tmp/before", "/tmp/applied"],
   });
+  const unusualRecovery = path.join(root, "My Captures\ncontrol", "capture.png");
+  await writeFile(
+    capture,
+    `#!/bin/sh\nprintf 'tailrocks-recovery-artifact-base64:%s\\n' '${Buffer.from(unusualRecovery).toString("base64")}' >&2\nexit 1\n`,
+  );
+  const unusualFailure = await runBoundedCommand({
+    command: ["bun", "run.ts", "capture", "--", app, unusualRecovery],
+    cwd: harness,
+  });
+  expect(JSON.parse(unusualFailure.stdout)).toMatchObject({
+    outcome: "failed",
+    recovery_artifacts: [unusualRecovery],
+  });
+  await writeFile(
+    capture,
+    '#!/bin/sh\nprintf png > "$2"\nprintf \'{"pid":42}\\n\' > "$2.json"\nprintf \'{"pid":42}\\n\'\n',
+  );
   const state = path.join(harness, "state.sh");
-  await writeFile(state, "#!/bin/sh\nexit 0\n");
+  await writeFile(state, '#!/bin/sh\nshift 3\nexec "$@"\n');
   const stateResult = await runBoundedCommand({
-    command: ["bun", "run.ts", "state", "--", "with", "dark", "--", "true"],
+    command: ["bun", "run.ts", "state", "--", "with", "dark", "--", "capture", app, output],
     cwd: harness,
   });
   const stateReceipt = JSON.parse(stateResult.stdout) as Record<string, unknown>;
-  expect(stateReceipt).toMatchObject({ outcome: "success", code: "state_completed", mutations: [] });
+  expect(stateReceipt).toMatchObject({
+    outcome: "success",
+    code: "state_completed",
+    mutations: [output, `${output}.json`],
+  });
   expect(stateReceipt.system_mutations).toHaveLength(6);
   expect((stateReceipt.system_mutations as Array<{ restored: boolean }>).every((item) => item.restored)).toBe(
     true,
@@ -137,26 +166,123 @@ test("supervisor refuses unknown state and ambiguous capture arguments", async (
   const root = await temporary();
   expect((await install(root)).outcome).toBe("installed");
   const harness = path.join(root, "Scripts/TailrocksVisualQA");
+  const app = path.join(root, "App.app");
+  await mkdir(app);
   for (const argv of [
     ["state", "--", "with", "unknown", "--", "true"],
+    ["state", "--", "snapshot", path.join(root, "unsafe")],
     ["capture", "--", "/Applications/App.app", "/tmp/out.png", "unsafe-app-arg"],
   ]) {
     const result = await runBoundedCommand({ command: ["bun", "run.ts", ...argv], cwd: harness });
     expect(result.code).toBe(2);
     expect(JSON.parse(result.stdout)).toMatchObject({ outcome: "refused", code: "invalid_arguments" });
   }
+  const rawState = await runBoundedCommand({
+    command: ["/bin/sh", "state.sh", "with", "dark", "--", "/usr/bin/true"],
+    cwd: harness,
+  });
+  expect(rawState.code).toBe(2);
+  expect(rawState.stderr).toContain("with permits only the installed capture operation");
+});
+
+test("supervisor caps timing overrides and strips ambient secrets from children", async () => {
+  const root = await temporary();
+  expect((await install(root)).outcome).toBe("installed");
+  const harness = path.join(root, "Scripts/TailrocksVisualQA");
+  const app = path.join(root, "App.app");
+  const output = path.join(root, "capture.png");
+  await mkdir(app);
+  for (const [name, value] of [
+    ["TAILROCKS_VISUAL_QA_TIMEOUT_MILLISECONDS", "600001"],
+    ["TAILROCKS_VISUAL_QA_KILL_GRACE_MILLISECONDS", "10001"],
+  ]) {
+    const result = await runBoundedCommand({
+      command: ["bun", "run.ts", "capture", "--", app, output],
+      cwd: harness,
+      env: { [name]: value },
+    });
+    expect(result.code).toBe(2);
+    expect(JSON.parse(result.stdout)).toMatchObject({ outcome: "refused", code: "invalid_arguments" });
+  }
+  await writeFile(
+    path.join(harness, "capture.sh"),
+    '#!/bin/sh\nprintf png > "$2"\nprintf \'{"pid":42}\\n\' > "$2.json"\nprintf \'{"secret":"%s","override":"%s","path":"%s"}\\n\' "${SECRET_TOKEN:-}" "${TAILROCKS_DEFAULTS_COMMAND:-}" "$PATH"\n',
+  );
+  const result = await runBoundedCommand({
+    command: ["bun", "run.ts", "capture", "--", app, output],
+    cwd: harness,
+    env: { SECRET_TOKEN: "must-not-cross", TAILROCKS_DEFAULTS_COMMAND: "/tmp/hostile" },
+  });
+  expect(result.code).toBe(0);
+  expect(JSON.parse(result.stdout)).toMatchObject({
+    data: { secret: "", override: "", path: "/usr/bin:/bin:/usr/sbin:/sbin" },
+  });
+});
+
+test("exact app and global state locks refuse concurrent operations and preserve foreign locks", async () => {
+  const root = await temporary();
+  expect((await install(root)).outcome).toBe("installed");
+  const harness = path.join(root, "Scripts/TailrocksVisualQA");
+  const app = path.join(root, "App.app");
+  const output = path.join(root, "capture.png");
+  await mkdir(app);
+  const captureLock = path.join(
+    tmpdir(),
+    `tailrocks-macos-visual-capture-${createHash("sha256")
+      .update(await realpath(app))
+      .digest("hex")
+      .slice(0, 24)}.lock`,
+  );
+  await writeFile(captureLock, "foreign", { mode: 0o600 });
+  const capture = await runBoundedCommand({
+    command: ["bun", "run.ts", "capture", "--", app, output],
+    cwd: harness,
+  });
+  expect(capture.code).toBe(2);
+  expect(await readFile(captureLock, "utf8")).toBe("foreign");
+  await rm(captureLock);
+  const stateLock = path.join(tmpdir(), "tailrocks-macos-visual-state.lock");
+  await writeFile(stateLock, "foreign", { mode: 0o600 });
+  const state = await runBoundedCommand({
+    command: [
+      "bun",
+      "run.ts",
+      "state",
+      "--",
+      "recover",
+      path.join(root, "before"),
+      path.join(root, "applied"),
+    ],
+    cwd: harness,
+  });
+  expect(state.code).toBe(2);
+  expect(await readFile(stateLock, "utf8")).toBe("foreign");
+  await rm(stateLock);
 });
 
 test("supervisor reports known recovery paths after timeout", async () => {
   const root = await temporary();
   expect((await install(root)).outcome).toBe("installed");
   const harness = path.join(root, "Scripts/TailrocksVisualQA");
+  const app = path.join(root, "App.app");
+  await mkdir(app);
   await writeFile(
     path.join(harness, "state.sh"),
     '#!/bin/sh\nprintf before > "$TAILROCKS_STATE_BEFORE"\nprintf applied > "$TAILROCKS_STATE_APPLIED"\nsleep 10\n',
   );
   const result = await runBoundedCommand({
-    command: ["bun", "run.ts", "state", "--", "with", "dark", "--", "true"],
+    command: [
+      "bun",
+      "run.ts",
+      "state",
+      "--",
+      "with",
+      "dark",
+      "--",
+      "capture",
+      app,
+      path.join(root, "capture.png"),
+    ],
     cwd: harness,
     env: {
       TAILROCKS_VISUAL_QA_TIMEOUT_MILLISECONDS: "50",

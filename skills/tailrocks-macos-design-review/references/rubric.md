@@ -9,7 +9,7 @@ been scored — the model will otherwise write flattering prose about work it
 cannot see.
 
 Rendered evidence is the design *running*: the prototype app
-judged live, or captures `tailrocks-macos-visual-qa` froze from it after
+judged live, or captures `tailrocks-macos-visual-baseline` froze from it after
 finalization, or the shipped screen itself. A design file, an exported image,
 and a mockup are none of these — they are a picture of the screen, and a
 picture cannot show a material the operating system renders.

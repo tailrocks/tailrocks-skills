@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: macOS Visual Baseline"
+  short_description: "Freeze one blessed macOS prototype baseline"
+  default_prompt: "Use $tailrocks-macos-visual-baseline baseline to freeze this exact blessed macOS prototype and complete state matrix into the named reproducible baseline directory."
+policy:
+  allow_implicit_invocation: false

@@ -2,6 +2,18 @@
   "$schema": "tailrocks.generated-references/v1",
   "entries": [
     {
+      "source": "scripts/macos-visual-qa/README.md",
+      "destinations": [
+        "skills/tailrocks-macos-visual-baseline/references/harness-contract.md",
+        "skills/tailrocks-macos-visual-qa/references/harness-contract.md",
+        "skills/tailrocks-macos-visual-regression/references/harness-contract.md"
+      ],
+      "slice": {
+        "start": "<!-- tailrocks-macos-harness-contract:start -->\n",
+        "end": "<!-- tailrocks-macos-harness-contract:end -->"
+      }
+    },
+    {
       "source": "shared/references/contribution-handoff.md",
       "destinations": [
         "skills/tailrocks-contribute-prepare/references/contribution-handoff.md",
@@ -15,6 +27,7 @@
       "source": "shared/references/design-pipeline.md",
       "destinations": [
         "skills/tailrocks-macos-design/references/design-pipeline.md",
+        "skills/tailrocks-macos-visual-baseline/references/design-pipeline.md",
         "skills/tailrocks-tui-design/references/design-pipeline.md",
         "skills/tailrocks-web-design/references/design-pipeline.md"
       ]
@@ -73,7 +86,9 @@
         "skills/tailrocks-macos-design-review/references/runtime-trust.md",
         "skills/tailrocks-macos-design-systematize/references/runtime-trust.md",
         "skills/tailrocks-macos-design/references/runtime-trust.md",
+        "skills/tailrocks-macos-visual-baseline/references/runtime-trust.md",
         "skills/tailrocks-macos-visual-qa/references/runtime-trust.md",
+        "skills/tailrocks-macos-visual-regression/references/runtime-trust.md",
         "skills/tailrocks-merge-pr/references/runtime-trust.md",
         "skills/tailrocks-plan/references/runtime-trust.md",
         "skills/tailrocks-pr-template/references/runtime-trust.md",
@@ -319,6 +334,13 @@
       "destinations": ["skills/tailrocks-macos-design-review/references/experience-brief.md"]
     },
     {
+      "source": "skills/tailrocks-macos-design/references/launch-contract.md",
+      "destinations": [
+        "skills/tailrocks-macos-visual-baseline/references/launch-contract.md",
+        "skills/tailrocks-macos-visual-regression/references/launch-contract.md"
+      ]
+    },
+    {
       "source": "skills/tailrocks-macos-design/references/layer-model.md",
       "destinations": ["skills/tailrocks-macos-design-review/references/layer-model.md"]
     },
@@ -328,7 +350,11 @@
     },
     {
       "source": "skills/tailrocks-macos-design/references/match-policy.md",
-      "destinations": ["skills/tailrocks-macos-design-review/references/match-policy.md"]
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/match-policy.md",
+        "skills/tailrocks-macos-visual-baseline/references/match-policy.md",
+        "skills/tailrocks-macos-visual-regression/references/match-policy.md"
+      ]
     },
     {
       "source": "skills/tailrocks-macos-design/references/motion.md",
@@ -352,7 +378,41 @@
     },
     {
       "source": "skills/tailrocks-macos-design/references/verification.md",
-      "destinations": ["skills/tailrocks-macos-design-review/references/verification.md"]
+      "destinations": [
+        "skills/tailrocks-macos-design-review/references/verification.md",
+        "skills/tailrocks-macos-visual-baseline/references/verification.md",
+        "skills/tailrocks-macos-visual-qa/references/verification.md",
+        "skills/tailrocks-macos-visual-regression/references/verification.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-visual-qa/references/interaction.md",
+      "destinations": [
+        "skills/tailrocks-macos-visual-baseline/references/interaction.md",
+        "skills/tailrocks-macos-visual-regression/references/interaction.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-visual-qa/references/missing-project-policy.md",
+      "destinations": [
+        "skills/tailrocks-macos-visual-baseline/references/missing-project-policy.md",
+        "skills/tailrocks-macos-visual-regression/references/missing-project-policy.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-visual-qa/references/state-matrix.md",
+      "destinations": [
+        "skills/tailrocks-macos-visual-baseline/references/state-matrix.md",
+        "skills/tailrocks-macos-visual-regression/references/state-matrix.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-macos-visual-regression/references/regression.md",
+      "destinations": ["skills/tailrocks-macos-visual-baseline/references/baseline-metadata.md"],
+      "slice": {
+        "start": "<!-- tailrocks-macos-baseline-metadata:start -->\n",
+        "end": "<!-- tailrocks-macos-baseline-metadata:end -->"
+      }
     },
     {
       "source": "skills/tailrocks-rust-best-practices/references/api-design.md",

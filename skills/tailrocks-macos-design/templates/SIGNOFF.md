@@ -3,7 +3,7 @@
 - **Design inputs**: <each consumed artifact with path and revision/date>
 - **Scenarios**: <name — one line each; which were walked live, in which
   appearances and sizes>
-- **Pending capture lane**: <what tailrocks-macos-visual-qa freezes after
+- **Pending capture lane**: <what tailrocks-macos-visual-baseline freezes after
   finalization — the scenario matrix per Regions.md, plus the
   real-settings states>
 - **Not proven live**: <hover under automation, VoiceOver, keyboard

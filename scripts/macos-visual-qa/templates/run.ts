@@ -1,5 +1,6 @@
 import { spawn } from "node:child_process";
-import { chmod, lstat, mkdtemp, rm } from "node:fs/promises";
+import { createHash, randomUUID } from "node:crypto";
+import { chmod, lstat, mkdtemp, open, readFile, realpath, rm, unlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -41,47 +42,99 @@ if ((command !== "capture" && command !== "state") || separator !== "--" || forw
   refusal("usage: bun run.ts capture|state -- ARGV...");
 if (
   timeoutMilliseconds !== undefined &&
-  (!Number.isSafeInteger(timeoutMilliseconds) || timeoutMilliseconds < 10)
+  (!Number.isSafeInteger(timeoutMilliseconds) || timeoutMilliseconds < 10 || timeoutMilliseconds > 600_000)
 )
-  refusal("TAILROCKS_VISUAL_QA_TIMEOUT_MILLISECONDS must be an integer of at least 10");
-if (!Number.isSafeInteger(killGraceMilliseconds) || killGraceMilliseconds < 10)
-  refusal("TAILROCKS_VISUAL_QA_KILL_GRACE_MILLISECONDS must be an integer of at least 10");
-if (command === "capture") {
-  if (forwarded.length < 2) refusal("capture requires APP and OUT");
+  refusal("TAILROCKS_VISUAL_QA_TIMEOUT_MILLISECONDS must be an integer from 10 through 600000");
+if (
+  !Number.isSafeInteger(killGraceMilliseconds) ||
+  killGraceMilliseconds < 10 ||
+  killGraceMilliseconds > 10_000
+)
+  refusal("TAILROCKS_VISUAL_QA_KILL_GRACE_MILLISECONDS must be an integer from 10 through 10000");
+function validateCapture(arguments_: readonly string[]): void {
+  if (arguments_.length < 2) refusal("capture requires APP and OUT");
   let index = 2;
-  if (forwarded[index] === "--window-title") {
-    if (!forwarded[index + 1] || forwarded[index + 1] === "--") refusal("--window-title requires TITLE");
+  if (arguments_[index] === "--window-title") {
+    if (!arguments_[index + 1] || arguments_[index + 1] === "--") refusal("--window-title requires TITLE");
     index += 2;
   }
-  if (index < forwarded.length) {
-    if (forwarded[index] !== "--" || index + 1 >= forwarded.length)
+  if (index < arguments_.length) {
+    if (arguments_[index] !== "--" || index + 1 >= arguments_.length)
       refusal("application arguments require an inner -- separator");
   }
 }
-if (command === "state" && !["snapshot", "recover", "with"].includes(forwarded[0]!))
-  refusal("state requires snapshot, recover, or with");
-if (command === "state" && forwarded[0] === "snapshot" && forwarded.length !== 2)
-  refusal("state snapshot requires exactly one file");
+if (command === "capture") validateCapture(forwarded);
+if (command === "state" && !["recover", "with"].includes(forwarded[0]!))
+  refusal("state requires recover or with");
 if (command === "state" && forwarded[0] === "recover" && forwarded.length !== 3)
   refusal("state recover requires exactly two files");
 if (command === "state" && forwarded[0] === "with") {
   if (!allowedStates.has(forwarded[1]!)) refusal("state with requires a known state");
-  if (forwarded.length < 4 || forwarded[2] !== "--") refusal("state with requires STATE -- COMMAND...");
+  if (forwarded.length < 6 || forwarded[2] !== "--" || forwarded[3] !== "capture")
+    refusal("state with requires STATE -- capture APP OUT [capture arguments]");
+  validateCapture(forwarded.slice(4));
 }
 
 let recoveryDirectory: string | undefined;
 let recoveryPaths: string[] = [];
+const ownedLocks: Array<{ path: string; token: string }> = [];
+async function releaseLocks(): Promise<void> {
+  for (const lock of ownedLocks.reverse()) {
+    try {
+      if ((await readFile(lock.path, "utf8")) === lock.token) await unlink(lock.path);
+    } catch {
+      // A missing or concurrently replaced lock is not ours to remove.
+    }
+  }
+}
 try {
   const script = `${import.meta.dir}/${command === "capture" ? "capture.sh" : "state.sh"}`;
-  const childEnvironment = { ...process.env };
+  const lockKeys = command === "state" ? ["state"] : [];
+  if (command === "capture" || (command === "state" && forwarded[0] === "with")) {
+    const appInput = command === "capture" ? forwarded[0]! : forwarded[4]!;
+    const app = await realpath(appInput);
+    lockKeys.push(`capture-${createHash("sha256").update(app).digest("hex").slice(0, 24)}`);
+  }
+  lockKeys.sort();
+  for (const lockKey of lockKeys) {
+    const lockPath = path.join(tmpdir(), `tailrocks-macos-visual-${lockKey}.lock`);
+    const lockToken = `${process.pid}:${randomUUID()}`;
+    try {
+      const lock = await open(lockPath, "wx", 0o600);
+      await lock.writeFile(lockToken);
+      await lock.sync();
+      await lock.close();
+      ownedLocks.push({ path: lockPath, token: lockToken });
+    } catch {
+      await releaseLocks();
+      refusal(`operation lock unavailable: ${lockPath}`);
+    }
+  }
+  const childEnvironment: Record<string, string> = {
+    PATH: "/usr/bin:/bin:/usr/sbin:/sbin",
+    HOME: process.env.HOME ?? "",
+    USER: process.env.USER ?? "",
+    LOGNAME: process.env.LOGNAME ?? "",
+    TMPDIR: process.env.TMPDIR ?? tmpdir(),
+    LANG: "C.UTF-8",
+  };
+  let childArguments = forwarded;
   if (command === "state" && forwarded[0] === "with") {
     recoveryDirectory = await mkdtemp(path.join(tmpdir(), "tailrocks-state-"));
     await chmod(recoveryDirectory, 0o700);
     recoveryPaths = [path.join(recoveryDirectory, "before"), path.join(recoveryDirectory, "applied")];
     childEnvironment.TAILROCKS_STATE_BEFORE = recoveryPaths[0]!;
     childEnvironment.TAILROCKS_STATE_APPLIED = recoveryPaths[1]!;
+    childArguments = [
+      "with",
+      forwarded[1]!,
+      "--",
+      "/bin/sh",
+      `${import.meta.dir}/capture.sh`,
+      ...forwarded.slice(4),
+    ];
   }
-  const child = spawn("/bin/sh", [script, ...forwarded], {
+  const child = spawn("/bin/sh", [script, ...childArguments], {
     cwd: process.cwd(),
     env: childEnvironment,
     detached: true,
@@ -155,13 +208,30 @@ try {
   } catch {
     data = undefined;
   }
-  const success = exit === 0 && !timedOut && !saturated && (command !== "capture" || data !== undefined);
-  const mutations =
-    success && command === "capture"
-      ? [forwarded[1]!, `${forwarded[1]!}.json`]
-      : success && command === "state" && forwarded[0] === "snapshot"
-        ? [forwarded[1]!]
-        : [];
+  const captureOutput =
+    command === "capture"
+      ? forwarded[1]
+      : command === "state" && forwarded[0] === "with"
+        ? forwarded[5]
+        : undefined;
+  const captureDataValid =
+    captureOutput === undefined || (typeof data === "object" && data !== null && !Array.isArray(data));
+  const captureArtifactsValid =
+    captureOutput === undefined ||
+    (
+      await Promise.all(
+        [captureOutput, `${captureOutput}.json`].map(async (file) => {
+          try {
+            const status = await lstat(file);
+            return status.isFile() && !status.isSymbolicLink();
+          } catch {
+            return false;
+          }
+        }),
+      )
+    ).every(Boolean);
+  const success = exit === 0 && !timedOut && !saturated && captureDataValid && captureArtifactsValid;
+  const mutations = success && captureOutput ? [captureOutput, `${captureOutput}.json`] : [];
   const preferenceKeys = [
     "com.apple.universalaccess.increaseContrast",
     "com.apple.universalaccess.reduceTransparency",
@@ -174,10 +244,17 @@ try {
     command === "state" && (forwarded[0] === "with" || forwarded[0] === "recover")
       ? preferenceKeys.map((key) => ({ key, restored: success }))
       : [];
-  const recoveryMatch = stderr.match(/recovery snapshots retained:\s+(\S+)\s+(\S+)/);
+  const decodedRecoveryPaths = [
+    ...stderr.matchAll(/^tailrocks-recovery-artifact-base64:([A-Za-z0-9+/=]+)$/gm),
+  ]
+    .map((match) => match[1]!)
+    .flatMap((encoded) => {
+      const decoded = Buffer.from(encoded, "base64");
+      return decoded.length > 0 && decoded.toString("base64") === encoded ? [decoded.toString()] : [];
+    });
   const retained = [
     ...new Set([
-      ...(recoveryMatch ? recoveryMatch.slice(1) : []),
+      ...decodedRecoveryPaths,
       ...(
         await Promise.all(
           recoveryPaths.map(async (file) =>
@@ -217,7 +294,7 @@ try {
             : stderr.trim() || "operation failed",
     }),
   );
-  if (!success) process.exit(1);
+  if (!success) process.exitCode = 1;
 } catch (error) {
   const retained = (
     await Promise.all(
@@ -242,5 +319,7 @@ try {
       detail: error instanceof Error ? error.message : String(error),
     }),
   );
-  process.exit(1);
+  process.exitCode = 1;
+} finally {
+  await releaseLocks();
 }

@@ -246,8 +246,9 @@ Skill definition: `skills/tailrocks-tanstack-project-remediate/SKILL.md`
 Two skills take a blessed macOS design into production code. The design and
 verification of macOS interfaces live in the design family below:
 `tailrocks-macos-design` owns taste, the runnable prototype, and the Liquid
-Glass material authority; `tailrocks-macos-visual-qa` owns capture and
-verification.
+Glass material authority; `tailrocks-macos-visual-qa` owns current-render
+verification, `tailrocks-macos-visual-baseline` owns freeze, and
+`tailrocks-macos-visual-regression` owns comparison.
 
 - **tailrocks-swift-best-practices** — write-only code policy. Actor isolation as
   a design decision, state ownership and view identity, work kept out of `body`,
@@ -297,7 +298,7 @@ Exactly one skill owns each responsibility. Never run two skills that both encod
 aesthetic taste — they conflict, and the conflict surfaces as inconsistency
 across features rather than as an error. Inspection modes are named `audit`,
 except `tailrocks-macos-design-review`'s scored `preliminary` and `acceptance`
-reviews and visual QA's capture-producing `verify`.
+reviews and current-render verification's capture-producing `verify`.
 
 **One process across all three platforms.** The stage runs between READY and
 planning — `tailrocks-finalize` grants READY on schematic mockups, the
@@ -311,7 +312,7 @@ baseline), **audit** (implementation against the blessed reference).
 | -------- | -------------------------------- | ---------------------- | ------------------------------- | ------------------------- | ----------------------------- |
 | Terminal | Rust, ratatui, crossterm         | tailrocks-tui-design   | same                            | same — the golden test    | tailrocks-tui-design-audit    |
 | Web      | TanStack Start, React, shadcn/ui | tailrocks-web-design   | same                            | tailrocks-web-visual-qa   | tailrocks-web-design-audit    |
-| macOS    | Swift, SwiftUI, Liquid Glass     | tailrocks-macos-design | same — on the running prototype | tailrocks-macos-visual-qa | tailrocks-macos-design-review |
+| macOS    | Swift, SwiftUI, Liquid Glass     | tailrocks-macos-design | same — on the running prototype | tailrocks-macos-visual-baseline | tailrocks-macos-visual-regression |
 
 macOS keeps design and bless in one skill because the material only exists at
 runtime: taste is decided in the design stages, and the sign-off happens on
@@ -395,14 +396,22 @@ a name list cannot.
   generated design-owner rules but never designs, fixes, blesses, regenerates,
   commits, or changes taste. Definition:
   `skills/tailrocks-tui-design-audit/SKILL.md`
-- **tailrocks-macos-visual-qa** — the macOS verification loop. The atomic
-  kill-launch-capture invocation, capture by window ID rather than screen
-  rectangle, accessibility-tree driving, the appearance and accessibility state
-  matrix with restore, `performAccessibilityAudit`, and pixel regression on
-  captures rather than detached snapshots. Owns **freeze**: its harness copies
-  drive the blessed prototype through the launch contract after finalization
-  and the captures become the baseline. Definition:
+- **tailrocks-macos-visual-qa** — read-only current-render verification. It
+  drives one exact app through the bounded shared harness, captures by PID and
+  window ID, exercises the accessibility tree and state matrix, restores system
+  settings, runs app-scoped accessibility audit, and returns one conversation
+  verdict. It never installs, freezes, or compares a baseline. Definition:
   `skills/tailrocks-macos-visual-qa/SKILL.md`
+- **tailrocks-macos-visual-baseline** — the sole macOS **freeze** owner. It
+  requires the separately reviewed and user-blessed prototype, captures the
+  complete signed-off matrix, records reproducibility and region-oracle
+  metadata, and publishes one complete baseline directory by CAS. Definition:
+  `skills/tailrocks-macos-visual-baseline/SKILL.md`
+- **tailrocks-macos-visual-regression** — read-only comparison of current
+  running-window captures against one exact baseline package. It applies
+  structural native-region and budgeted custom-region oracles; green means no
+  regression, never design approval. Definition:
+  `skills/tailrocks-macos-visual-regression/SKILL.md`
 - **tailrocks-web-visual-qa** — the freeze that follows finalization:
   Playwright screenshot baselines per state, theme, and viewport, captured
   from a blessed design's routes only — a missing blessing blocks the

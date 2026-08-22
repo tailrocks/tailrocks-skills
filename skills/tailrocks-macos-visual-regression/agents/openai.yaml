@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: macOS Visual Regression"
+  short_description: "Compare current macOS renders to one baseline"
+  default_prompt: "Use $tailrocks-macos-visual-regression regress to compare these exact running-window states against the named approved baseline without changing project or baseline bytes."
+policy:
+  allow_implicit_invocation: false

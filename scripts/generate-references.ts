@@ -81,15 +81,42 @@ const generatedFamilies = [
       "experience-brief.md",
       "layer-model.md",
       "macos-craft.md",
-      "match-policy.md",
       "motion.md",
       "native-behavior.md",
       "native-component-map.md",
       "platform-baseline.md",
       "swiftui-api.md",
-      "verification.md",
     ],
     destinations: ["tailrocks-macos-design-review"],
+  },
+  {
+    owner: "tailrocks-macos-design",
+    references: ["launch-contract.md"],
+    destinations: ["tailrocks-macos-visual-baseline", "tailrocks-macos-visual-regression"],
+  },
+  {
+    owner: "tailrocks-macos-design",
+    references: ["match-policy.md"],
+    destinations: [
+      "tailrocks-macos-design-review",
+      "tailrocks-macos-visual-baseline",
+      "tailrocks-macos-visual-regression",
+    ],
+  },
+  {
+    owner: "tailrocks-macos-design",
+    references: ["verification.md"],
+    destinations: [
+      "tailrocks-macos-design-review",
+      "tailrocks-macos-visual-baseline",
+      "tailrocks-macos-visual-qa",
+      "tailrocks-macos-visual-regression",
+    ],
+  },
+  {
+    owner: "tailrocks-macos-visual-qa",
+    references: ["interaction.md", "missing-project-policy.md", "state-matrix.md"],
+    destinations: ["tailrocks-macos-visual-baseline", "tailrocks-macos-visual-regression"],
   },
   {
     owner: "tailrocks-rust-best-practices",
@@ -165,11 +192,36 @@ const generatedFamilies = [
     destinations: ["tailrocks-web-design-audit"],
   },
 ] as const;
+const generatedProjections = [
+  {
+    source: "scripts/macos-visual-qa/README.md",
+    destinations: [
+      "skills/tailrocks-macos-visual-baseline/references/harness-contract.md",
+      "skills/tailrocks-macos-visual-qa/references/harness-contract.md",
+      "skills/tailrocks-macos-visual-regression/references/harness-contract.md",
+    ],
+    slice: {
+      start: "<!-- tailrocks-macos-harness-contract:start -->\n",
+      end: "<!-- tailrocks-macos-harness-contract:end -->",
+    },
+  },
+  {
+    source: "skills/tailrocks-macos-visual-regression/references/regression.md",
+    destinations: ["skills/tailrocks-macos-visual-baseline/references/baseline-metadata.md"],
+    slice: {
+      start: "<!-- tailrocks-macos-baseline-metadata:start -->\n",
+      end: "<!-- tailrocks-macos-baseline-metadata:end -->",
+    },
+  },
+] as const;
 const familySources = generatedFamilies.flatMap((family) =>
   family.references.map((name) => `skills/${family.owner}/references/${name}`),
 );
+const projectionSources = generatedProjections.map((projection) => projection.source);
 export function isGeneratedReferenceSource(source: string): boolean {
-  return rootSourcePattern.test(source) || familySources.includes(source);
+  return (
+    rootSourcePattern.test(source) || familySources.includes(source) || projectionSources.includes(source)
+  );
 }
 const destinationPattern =
   /^skills\/tailrocks-[a-z0-9]+(?:-[a-z0-9]+)*\/references\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/;
@@ -205,7 +257,8 @@ function projectReference(content: Buffer, slice: ReferenceSlice | undefined, so
   const endIndex = content.indexOf(end);
   if (endIndex < contentStart || content.indexOf(end, endIndex + end.length) >= 0)
     throw new Error(`${source} slice end marker must occur exactly once after start`);
-  const projected = content.subarray(contentStart, endIndex);
+  const rawProjected = content.subarray(contentStart, endIndex).toString("utf8");
+  const projected = Buffer.from(rawProjected.replace(/^(?:\r?\n)+/, ""));
   if (!projected.toString("utf8").startsWith("# ") || !projected.toString("utf8").endsWith("\n"))
     throw new Error(`${source} slice must be a self-contained Markdown document`);
   return projected;
@@ -359,14 +412,18 @@ async function loadPlan(
       )
         throw new Error(`entries[${index}].slice is invalid`);
     }
-    if (!entry.source.startsWith("skills/") && entry.slice !== undefined)
-      throw new Error(`entries[${index}].slice is allowed only for owner-family sources`);
+    if (
+      entry.slice !== undefined &&
+      !projectionSources.includes(entry.source) &&
+      !familySources.includes(entry.source)
+    )
+      throw new Error(`entries[${index}].slice is allowed only for declared generated sources`);
     return entry.source;
   });
   assertSorted(sources, "manifest sources");
 
   const discoveredSources = await canonicalSources(root);
-  const rootSources = sources.filter((source) => !source.startsWith("skills/"));
+  const rootSources = sources.filter((source) => rootSourcePattern.test(source));
   if (rootSources.join("\n") !== discoveredSources.join("\n"))
     throw new Error("manifest sources must exactly cover canonical reference files");
   const ownerSources = sources.filter((source) => source.startsWith("skills/"));
@@ -390,9 +447,30 @@ async function loadPlan(
         throw new Error(`${source} must use its declared projection slice`);
     }
   }
+  for (const projection of generatedProjections) {
+    const manifestEntry = manifest.entries.find((entry) => entry.source === projection.source);
+    const projectionPresent = await exists(path.join(root, projection.source));
+    if (!projectionPresent) {
+      if (manifestEntry) throw new Error(`generated projection source is missing: ${projection.source}`);
+      continue;
+    }
+    if (manifestEntry?.destinations.join("\n") !== projection.destinations.join("\n"))
+      throw new Error(`${projection.source} must copy to its exact declared destinations`);
+    if (JSON.stringify(manifestEntry.slice) !== JSON.stringify(projection.slice))
+      throw new Error(`${projection.source} must use its declared projection slice`);
+    if (projection.source.startsWith("skills/")) expectedOwnerSources.push(projection.source);
+  }
   expectedOwnerSources.sort(compareCodeUnits);
   if (ownerSources.join("\n") !== expectedOwnerSources.join("\n"))
     throw new Error("manifest must exactly cover active generated-reference owner families");
+  const scriptSources = sources.filter((source) => source.startsWith("scripts/"));
+  const expectedScriptSources: string[] = [];
+  for (const projection of generatedProjections)
+    if (projection.source.startsWith("scripts/") && (await exists(path.join(root, projection.source))))
+      expectedScriptSources.push(projection.source);
+  expectedScriptSources.sort(compareCodeUnits);
+  if (scriptSources.join("\n") !== expectedScriptSources.join("\n"))
+    throw new Error("manifest must exactly cover declared script reference sources");
 
   const destinations = manifest.entries.flatMap((entry) => entry.destinations);
   if (new Set(destinations).size !== destinations.length)

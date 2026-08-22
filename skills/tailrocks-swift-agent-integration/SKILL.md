@@ -24,7 +24,8 @@ Apply [`runtime-trust.md`](references/runtime-trust.md), then read
    as evidence. Never copy secret values.
 2. **Assign one owner per responsibility.** Framework correctness belongs to
    Swift code policy, Liquid Glass material to macOS design, visual verification
-   to macOS visual QA, and project baseline to the project-family owner. Refuse
+   to the exact current-render, visual-baseline, or visual-regression owner, and
+   project baseline to the project-family owner. Refuse
    overlapping taste or policy skills. **Complete when:** the ownership table has
    no duplicate authority.
 3. **Wire the Xcode bridge narrowly.** The user must enable Xcode's external-agent

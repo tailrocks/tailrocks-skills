@@ -3,7 +3,7 @@
 Every visible region from the component map, with the match mode the
 implementation is held to. Rects are points from the window's top-left at
 the reference `--tr-window` size; pixel modes diff the cropped region with
-the visual-qa protocol under the identical backdrop and scenario.
+the visual-regression protocol under the identical backdrop and scenario.
 
 | Region | Class | Rect (pt) | Mode | Budget |
 |---|---|---|---|---|

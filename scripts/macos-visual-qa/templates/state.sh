@@ -8,7 +8,7 @@ com.apple.universalaccess|reduceMotion|-bool
 com.apple.universalaccess|differentiateWithoutColor|-bool
 NSGlobalDomain|AppleInterfaceStyle|-string
 NSGlobalDomain|AppleInterfaceStyleSwitchesAutomatically|-bool'
-DEFAULTS=${TAILROCKS_DEFAULTS_COMMAND:-defaults}
+DEFAULTS=/usr/bin/defaults
 read_value() { domain=$1; [ "$domain" = NSGlobalDomain ] && domain=-g; "$DEFAULTS" read "$domain" "$2" 2>/dev/null; }
 snapshot() {
   umask 077; file=$1; printf '%s\n' "$SCHEMA" > "$file"; chmod 600 "$file"
@@ -66,13 +66,16 @@ restore_once() {
     line=$((line + 1))
   done
 }
-restore() { attempt=1; while [ "$attempt" -le 3 ]; do restore_once "$1" "$2" && return 0; attempt=$((attempt + 1)); sleep 1; done; echo "restore failed after 3 attempts; recovery snapshots retained: $1 $2" >&2; return 1; }
+report_recovery() { encoded=$(printf '%s' "$1" | /usr/bin/base64 | /usr/bin/tr -d '\n'); printf 'tailrocks-recovery-artifact-base64:%s\n' "$encoded" >&2; }
+restore() { attempt=1; while [ "$attempt" -le 3 ]; do restore_once "$1" "$2" && return 0; attempt=$((attempt + 1)); sleep 1; done; echo "restore failed after 3 attempts" >&2; report_recovery "$1"; report_recovery "$2"; return 1; }
 command=${1:?snapshot|recover|with required}
 case "$command" in
   snapshot) snapshot "${2:?snapshot file required}" ;;
   recover) restore "${2:?before snapshot required}" "${3:?applied snapshot required}" ;;
   with)
     state=${2:?state required}; shift 2; [ "${1:-}" = -- ] || { echo "with requires --" >&2; exit 2; }; shift; [ "$#" -gt 0 ] || { echo "with requires command argv" >&2; exit 2; }
+    HERE=$(cd "$(dirname "$0")" && pwd -P)
+    [ "$#" -ge 4 ] && [ "$1" = /bin/sh ] && [ "$2" = "$HERE/capture.sh" ] || { echo "with permits only the installed capture operation" >&2; exit 2; }
     before=${TAILROCKS_STATE_BEFORE:-}; applied=${TAILROCKS_STATE_APPLIED:-}
     [ -n "$before" ] || before=$(mktemp "${TMPDIR:-/tmp}/tailrocks-state-before.XXXXXX")
     [ -n "$applied" ] || applied=$(mktemp "${TMPDIR:-/tmp}/tailrocks-state-applied.XXXXXX")

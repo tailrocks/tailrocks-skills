@@ -54,7 +54,7 @@ explicitly invoked:
 |---|---|
 | Framework correctness | `tailrocks-swift-best-practices` |
 | Material policy, visual direction, and acceptance rubric | `tailrocks-macos-design` |
-| Rendering and verification | `tailrocks-macos-visual-qa` |
+| Current render, baseline freeze, regression | `tailrocks-macos-visual-qa`, `tailrocks-macos-visual-baseline`, `tailrocks-macos-visual-regression` |
 | Project mechanics | `tailrocks-swift-project-setup` |
 | Agent integration | `tailrocks-swift-agent-integration` |
 README's family ownership table is canonical.

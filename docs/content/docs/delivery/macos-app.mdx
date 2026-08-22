@@ -18,7 +18,10 @@ round's findings go.
 
 ## 1. Capture — `tailrocks-idea`
 
-<Invoke skill="tailrocks-idea" args="a macOS app that opens huge log files fast and lets you scrub a timeline of matches" />
+<Invoke
+  skill="tailrocks-idea"
+  args="a macOS app that opens huge log files fast and lets you scrub a timeline of matches"
+/>
 
 It derives the slug `log-explorer`, writes the item in DRAFT, and leaves
 Screens, Flows, Decisions, Must-not, and Quality bar visibly empty.
@@ -61,7 +64,10 @@ guessing it wrongly costs a rewrite.
 
 ## 3. Establish facts — `tailrocks-research`
 
-<Invoke skill="tailrocks-research" args="log-explorer: what are the current options for calling Rust from Swift, and how does each one handle streaming and cancellation?" />
+<Invoke
+  skill="tailrocks-research"
+  args="log-explorer: what are the current options for calling Rust from Swift, and how does each one handle streaming and cancellation?"
+/>
 
 Parallel investigators write vetted chapters into `research/rust-swift-ffi/`,
 each claim carrying a primary source or a `file:line`. The topic is registered
@@ -71,7 +77,10 @@ re-deriving it.
 
 A second topic is worth its own run before any design work:
 
-<Invoke skill="tailrocks-research" args="log-explorer: what does Liquid Glass require of a document-style macOS window, and what is the deployment-target floor for the APIs we would use?" />
+<Invoke
+  skill="tailrocks-research"
+  args="log-explorer: what does Liquid Glass require of a document-style macOS window, and what is the deployment-target floor for the APIs we would use?"
+/>
 
 ```text
 + research/rust-swift-ffi/README.md, 01-*.md …
@@ -87,7 +96,10 @@ removes reasons it cannot advance.
 With the FFI research in hand, the shape of the app is now a choice rather than
 a guess:
 
-<Invoke skill="tailrocks-record-decision" args="log-explorer: Rust owns parsing, indexing, and query; Swift owns rendering and input only. The interface is a typed snapshot the UI polls, never a callback into Swift, because a callback across the boundary would put Rust threads on the main actor." />
+<Invoke
+  skill="tailrocks-record-decision"
+  args="log-explorer: Rust owns parsing, indexing, and query; Swift owns rendering and input only. The interface is a typed snapshot the UI polls, never a callback into Swift, because a callback across the boundary would put Rust threads on the main actor."
+/>
 
 The skill validates it against settled ground, dates it with its reason,
 propagates it through the item, and writes the corresponding entries into
@@ -97,7 +109,10 @@ the difference between a constraint and a mystery.
 A second one belongs here too, and it is the kind an agent will otherwise decide
 for you:
 
-<Invoke skill="tailrocks-record-decision" args="log-explorer: the app opens log files read-only and never writes to them, because a corrupted log is unrecoverable evidence" />
+<Invoke
+  skill="tailrocks-record-decision"
+  args="log-explorer: the app opens log files read-only and never writes to them, because a corrupted log is unrecoverable evidence"
+/>
 
 ## 5. Design the interface — `tailrocks-macos-design`
 
@@ -125,7 +140,10 @@ The approved design is still a document, and no document is authoritative for
 Liquid Glass — the operating system is. So before finalize and plan treat these
 screens as settled, the design has to exist as something that runs.
 
-<Invoke skill="tailrocks-macos-design" args="prototype log-explorer: build the prototype from the approved design and walk every scenario with me" />
+<Invoke
+  skill="tailrocks-macos-design"
+  args="prototype log-explorer: build the prototype from the approved design and walk every scenario with me"
+/>
 
 It scaffolds a small SwiftPM executable beside the design artifacts, rendering
 the design's own fixture scenarios and nothing else — no parser, no index, no
@@ -166,7 +184,7 @@ dynamic one.
 ~ roadmap/log-explorer/README.md   Screens: Design pointer per screen
 ```
 
-After finalization, `tailrocks-macos-visual-qa` drives this same package through
+After finalization, `tailrocks-macos-visual-baseline` drives this same package through
 the launch contract and freezes the baseline the implementation is held to.
 That is the only capture in the whole stage, and it happens once the design has
 stopped moving.
@@ -206,15 +224,15 @@ This is where the two-language shape stops being a risk. The plan step:
 
 The slice list is the part worth studying:
 
-| Slice | What it stands up | Executed under |
-|---|---|---|
-| — | Not a slice: the signed-off prototype and its `Regions.md`, standing before READY | `tailrocks-macos-design` |
-| 001 | Verification baseline: workspace, empty Rust crate, empty app target, Rust-core bridge lane, one task runner, all gates green | `tailrocks-rust-project-setup`, `tailrocks-swift-project-setup`, `tailrocks-swift-rust-core-setup` |
-| 002 | Tracer bullet: Rust returns a hardcoded snapshot, Swift renders it, gates still green | `tailrocks-rust-best-practices`, `tailrocks-swift-best-practices` |
-| 003 | Real parser and index behind the same snapshot type | `tailrocks-rust-best-practices` |
-| 004 | Timeline and results surface: the prototype's view layer over real snapshots, with its Liquid Glass chrome | `tailrocks-macos-design`, `tailrocks-swift-best-practices` |
-| 005 | Query during index build, cancellation, error states | both language skills |
-| 006 | Rendered verification against the prototype baseline, across appearance and accessibility states | `tailrocks-macos-visual-qa` |
+| Slice | What it stands up                                                                                                             | Executed under                                                                                     |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| —     | Not a slice: the signed-off prototype and its `Regions.md`, standing before READY                                             | `tailrocks-macos-design`                                                                           |
+| 001   | Verification baseline: workspace, empty Rust crate, empty app target, Rust-core bridge lane, one task runner, all gates green | `tailrocks-rust-project-setup`, `tailrocks-swift-project-setup`, `tailrocks-swift-rust-core-setup` |
+| 002   | Tracer bullet: Rust returns a hardcoded snapshot, Swift renders it, gates still green                                         | `tailrocks-rust-best-practices`, `tailrocks-swift-best-practices`                                  |
+| 003   | Real parser and index behind the same snapshot type                                                                           | `tailrocks-rust-best-practices`                                                                    |
+| 004   | Timeline and results surface: the prototype's view layer over real snapshots, with its Liquid Glass chrome                    | `tailrocks-macos-design`, `tailrocks-swift-best-practices`                                         |
+| 005   | Query during index build, cancellation, error states                                                                          | both language skills                                                                               |
+| 006   | Rendered verification against the prototype baseline, across appearance and accessibility states                              | `tailrocks-macos-visual-regression`                                                                |
 
 The first row is not a slice. The prototype was signed off before the item
 reached READY, so no plan row builds it — it appears in the manifest as what
@@ -297,22 +315,34 @@ row that never reached a terminal status, a gate that failed, a gate that proved
 nothing, or `plan-drift`, which means the contract the executor was handed no
 longer hashes to the fingerprint in the hub.
 
-The stack skills are invoked *inside* execution, named by the slice. Slice 003
+The stack skills are invoked _inside_ execution, named by the slice. Slice 003
 is Rust, so the executor works under the Rust skills:
 
-<Invoke skill="tailrocks-rust-review" args="review crates/sift-core: ownership across the index, error and panic policy, and the unsafe boundary. Do not edit." />
+<Invoke
+  skill="tailrocks-rust-review"
+  args="review crates/sift-core: ownership across the index, error and panic policy, and the unsafe boundary. Do not edit."
+/>
 
 Slice 004 is the interface, and it starts from code that already exists: the
 prototype's view layer, lifted verbatim. Two skills own different halves of what
 happens next — code policy and the material:
 
-<Invoke skill="tailrocks-swift-best-practices" args="implement the timeline view model: actor isolation for the snapshot poller, state ownership, and work kept out of body" />
+<Invoke
+  skill="tailrocks-swift-best-practices"
+  args="implement the timeline view model: actor isolation for the snapshot poller, state ownership, and work kept out of body"
+/>
 
-<Invoke skill="tailrocks-macos-design-review" args="acceptance: review the toolbar and sidebar chrome for layer split and availability. Do not edit." />
+<Invoke
+  skill="tailrocks-macos-design-review"
+  args="acceptance: review the toolbar and sidebar chrome for layer split and availability. Do not edit."
+/>
 
 Slice 006 proves it:
 
-<Invoke skill="tailrocks-macos-visual-qa" args="verify the timeline screen in light, dark, inactive, and increased-contrast states" />
+<Invoke
+  skill="tailrocks-macos-visual-regression"
+  args="regress the timeline screen in light, dark, inactive, and increased-contrast states against the approved prototype baseline"
+/>
 
 That last one is not optional decoration. Glass surfaces snapshot fully
 transparent from a detached view, so capturing the running app by window ID is
@@ -359,7 +389,7 @@ window, switch appearance. Every verdict cites a command that ran in this
 session and the output line that decided it, and a surface that could not be
 executed is reported `NOT EXECUTED` with its reason rather than as passing.
 
-The window is judged against the baseline `tailrocks-macos-visual-qa` froze from
+The window is compared against the baseline `tailrocks-macos-visual-baseline` froze from
 the signed-off prototype, captured by window ID from the running app, region by
 region as `Regions.md` declared. Then the round audits the item's own proofs,
 judging each done criterion and each `goal/START.md` gate by what it executed
@@ -484,7 +514,10 @@ Rewind to the middle of execution. You decide the app should tail growing files
 after all. Do not edit the plan: it is fingerprinted, so a hand-edit reads as
 `plan-drift` at the next gate rather than as a change of mind.
 
-<Invoke skill="tailrocks-record-decision" args="log-explorer: the app tails a growing file and appends to the index incrementally, because operators watch live deployments" />
+<Invoke
+  skill="tailrocks-record-decision"
+  args="log-explorer: the app tails a growing file and appends to the index incrementally, because operators watch live deployments"
+/>
 
 That reopens the item to SHAPING, marks the affected plan rows `STALE`, and
 leaves everything else intact. Finalize again, then re-run `tailrocks-plan`: it

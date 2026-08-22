@@ -23,7 +23,10 @@ design running, from fixtures, signed off live. It produces the preference
 system and the runnable prototype proving it, and carries the Liquid Glass
 material authority. Of the family's four stages — **design**, **bless**,
 **freeze**, **audit** — it owns design and bless (the material only exists at
-runtime); freeze and audit belong to `tailrocks-macos-visual-qa`, and
+runtime); freeze belongs to `tailrocks-macos-visual-baseline`, current-render
+verification to `tailrocks-macos-visual-qa`, and implementation comparison to
+`tailrocks-macos-visual-regression`; independent taste review remains
+`tailrocks-macos-design-review`, and
 `tailrocks-plan` refuses a screen contract with no blessed reference.
 
 **This skill writes design artifacts and the prototype package; it never edits
@@ -101,7 +104,7 @@ design stage, never resolved ad hoc. The four laws below and the six gated steps
 semantics live in [`launch-contract.md`](references/launch-contract.md).
 
 - **No screenshots during design.** The prototype is reviewed **running**;
-  captures are frozen only after finalization by `tailrocks-macos-visual-qa`
+  captures are frozen only after finalization by `tailrocks-macos-visual-baseline`
   driving this package through its launch contract; decline mid-iteration
   requests and name the boundary. Picking between directions is the design
   stage's structural alternatives, never a screenshot comparison.
@@ -126,7 +129,7 @@ native regions verified structurally through the accessibility tree, never
 pixel-gated, content and custom regions pixel-budgeted, glass compared only
 under an identical backdrop, a whole-window zero-pixel diff across two
 binaries no gate (same-binary determinism does not transfer); hand off to the
-visual-qa capture lane; then **relocate, never delete**: the feature PR moves
+visual-baseline lane; then **relocate, never delete**: the feature PR moves
 the package to a reference branch or standing prototypes home, because
 deleting forfeits the only source the frozen baseline can be regenerated from,
 and a prototype package inside the shipped feature's diff is a defect.

@@ -364,7 +364,7 @@
     {
       "source": "skills/tailrocks-macos-design/references/match-policy.md",
       "destination": "skills/tailrocks-macos-design-review/references/match-policy.md",
-      "sha256": "e63c570b478473994ae7b7b5176ca25ec6bbaf009f19d3085b72e73f79dd716d"
+      "sha256": "becc11e4b1497541ea50613b3d8eb8b8a707c688ab0eea5973f5ecd2868cb070"
     },
     {
       "source": "skills/tailrocks-macos-design/references/motion.md",
@@ -432,9 +432,109 @@
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
     },
     {
+      "source": "skills/tailrocks-macos-visual-regression/references/regression.md",
+      "destination": "skills/tailrocks-macos-visual-baseline/references/baseline-metadata.md",
+      "sha256": "02756630bc552b99ee0b8b078b1e898ed5977d97fc4b6657885a4e6db933a043"
+    },
+    {
+      "source": "shared/references/design-pipeline.md",
+      "destination": "skills/tailrocks-macos-visual-baseline/references/design-pipeline.md",
+      "sha256": "00bbf16de54860b26445c91e75b408b1536a5025c698923aee7241f7ab6e3de9"
+    },
+    {
+      "source": "scripts/macos-visual-qa/README.md",
+      "destination": "skills/tailrocks-macos-visual-baseline/references/harness-contract.md",
+      "sha256": "abededc3ee7103e029092b8bc04daaa65eb3382f02af4b4fd9e81f8091dc3687"
+    },
+    {
+      "source": "skills/tailrocks-macos-visual-qa/references/interaction.md",
+      "destination": "skills/tailrocks-macos-visual-baseline/references/interaction.md",
+      "sha256": "f7cb528cb5b9d25f4b876ef9a146baf04d0d0dd60fc9c4347059201036c4bf59"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/launch-contract.md",
+      "destination": "skills/tailrocks-macos-visual-baseline/references/launch-contract.md",
+      "sha256": "34be3880415b0dd6bd8aa18078dced25c12d25df5aa5d313a1c5a3ad683532f3"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/match-policy.md",
+      "destination": "skills/tailrocks-macos-visual-baseline/references/match-policy.md",
+      "sha256": "becc11e4b1497541ea50613b3d8eb8b8a707c688ab0eea5973f5ecd2868cb070"
+    },
+    {
+      "source": "skills/tailrocks-macos-visual-qa/references/missing-project-policy.md",
+      "destination": "skills/tailrocks-macos-visual-baseline/references/missing-project-policy.md",
+      "sha256": "85952788f2fb21647f5ebd8feb74488226030f4fcb1bac487bf68466ef29e831"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-macos-visual-baseline/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-macos-visual-qa/references/state-matrix.md",
+      "destination": "skills/tailrocks-macos-visual-baseline/references/state-matrix.md",
+      "sha256": "241caa5472eba83d7b952bacb636cfb003e056c752b2b4c27e4f8c3d9efc7454"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/verification.md",
+      "destination": "skills/tailrocks-macos-visual-baseline/references/verification.md",
+      "sha256": "fba1487ec6dbdcba3addaf2e31da6d52e563f20adcef6f4d5a11550973143ef9"
+    },
+    {
+      "source": "scripts/macos-visual-qa/README.md",
+      "destination": "skills/tailrocks-macos-visual-qa/references/harness-contract.md",
+      "sha256": "abededc3ee7103e029092b8bc04daaa65eb3382f02af4b4fd9e81f8091dc3687"
+    },
+    {
       "source": "shared/references/runtime-trust.md",
       "destination": "skills/tailrocks-macos-visual-qa/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/verification.md",
+      "destination": "skills/tailrocks-macos-visual-qa/references/verification.md",
+      "sha256": "fba1487ec6dbdcba3addaf2e31da6d52e563f20adcef6f4d5a11550973143ef9"
+    },
+    {
+      "source": "scripts/macos-visual-qa/README.md",
+      "destination": "skills/tailrocks-macos-visual-regression/references/harness-contract.md",
+      "sha256": "abededc3ee7103e029092b8bc04daaa65eb3382f02af4b4fd9e81f8091dc3687"
+    },
+    {
+      "source": "skills/tailrocks-macos-visual-qa/references/interaction.md",
+      "destination": "skills/tailrocks-macos-visual-regression/references/interaction.md",
+      "sha256": "f7cb528cb5b9d25f4b876ef9a146baf04d0d0dd60fc9c4347059201036c4bf59"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/launch-contract.md",
+      "destination": "skills/tailrocks-macos-visual-regression/references/launch-contract.md",
+      "sha256": "34be3880415b0dd6bd8aa18078dced25c12d25df5aa5d313a1c5a3ad683532f3"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/match-policy.md",
+      "destination": "skills/tailrocks-macos-visual-regression/references/match-policy.md",
+      "sha256": "becc11e4b1497541ea50613b3d8eb8b8a707c688ab0eea5973f5ecd2868cb070"
+    },
+    {
+      "source": "skills/tailrocks-macos-visual-qa/references/missing-project-policy.md",
+      "destination": "skills/tailrocks-macos-visual-regression/references/missing-project-policy.md",
+      "sha256": "85952788f2fb21647f5ebd8feb74488226030f4fcb1bac487bf68466ef29e831"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-macos-visual-regression/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-macos-visual-qa/references/state-matrix.md",
+      "destination": "skills/tailrocks-macos-visual-regression/references/state-matrix.md",
+      "sha256": "241caa5472eba83d7b952bacb636cfb003e056c752b2b4c27e4f8c3d9efc7454"
+    },
+    {
+      "source": "skills/tailrocks-macos-design/references/verification.md",
+      "destination": "skills/tailrocks-macos-visual-regression/references/verification.md",
+      "sha256": "fba1487ec6dbdcba3addaf2e31da6d52e563f20adcef6f4d5a11550973143ef9"
     },
     {
       "source": "shared/references/pr-conventions.md",

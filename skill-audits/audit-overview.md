@@ -1061,9 +1061,29 @@ all terminal checks pass, and the final literal marker is changed to
     passed 69 tests/286 assertions; final `rtk mise run migration-check` passed
     385 tests/2,550 assertions across 52 selected non-protected files. Fresh
     subagent verdict: PASS. Protected paths unchanged; no evals run.
-- [ ] [IN_PROGRESS] P07.04 macOS visual verification → current-render verification,
+- [x] [COMPLETED] P07.04 macOS visual verification → current-render verification,
   baseline, and regression; all remain `MANUAL_ONLY`.
-- [ ] [TODO] P07.05 Web visual verification → baseline and regression; both
+  - Evidence receipt (2026-08-23): split the prior combined macOS visual owner
+    into exclusive manual current-render verification, durable baseline, and
+    read-only regression owners. Removed the old baseline/regression selectors
+    and references immediately with no alias or redirect. Canonical harness,
+    state-matrix, launch, match, and verification contracts generate only to
+    their exact consumers. Current-render capture writes only external temporary
+    evidence; baseline alone binds human blessing and publishes a full matrix
+    with atomic no-replace/CAS cleanup; regression cannot approve or rebaseline.
+    The shared harness now locks exact applications and global preference state,
+    strips ambient secrets, bounds processes/output/image dimensions, validates
+    regular capture artifacts, and emits canonical encoded recovery records.
+    Adversarial proof preserves concurrent outputs and foreign replacements
+    across second-link and output-parent races, including recovery paths with
+    spaces and control characters. Registry and docs cover 84 skills (73 manual,
+    11 model-policy), 21,529 total description characters, and 17,514 capped
+    characters; 86 sources produced 254 byte-identical destinations and 256
+    generated docs checked. Focused proof passed 106 tests/886 assertions; final
+    `rtk mise run migration-check` passed 394 tests/2,662 assertions across 53
+    selected non-protected files. Fresh subagent verdict: PASS. Protected paths
+    unchanged; no evals run.
+- [ ] [IN_PROGRESS] P07.05 Web visual verification → baseline and regression; both
   remain `MANUAL_ONLY`.
 - [ ] [TODO] P07.06 Preserve human blessing, owned-process capture, appearance
   restoration, wrong-server refusal, and region-specific conformance rules.

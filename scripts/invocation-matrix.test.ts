@@ -87,7 +87,12 @@ test("instruction and design policy selection preserves mutation and human autho
     ) as { interface?: { default_prompt?: unknown } };
     expect(openai.interface?.default_prompt).toMatch(/Stay read-only|Do not .*mutat/);
   }
-  for (const name of ["tailrocks-macos-visual-qa", "tailrocks-web-visual-qa"]) {
+  for (const name of [
+    "tailrocks-macos-visual-baseline",
+    "tailrocks-macos-visual-qa",
+    "tailrocks-macos-visual-regression",
+    "tailrocks-web-visual-qa",
+  ]) {
     const source = await readFile(path.join(root, "skills", name, "SKILL.md"), "utf8");
     const metadata = Bun.YAML.parse(source.match(/^---\n([\s\S]*?)\n---/)![1]) as Record<string, unknown>;
     expect(metadata["disable-model-invocation"]).toBe(true);

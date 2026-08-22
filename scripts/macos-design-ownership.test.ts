@@ -68,9 +68,13 @@ test("macOS design references have exact canonical ownership", async () => {
     "verification.md",
   ];
   for (const name of reviewNames) {
-    expect(entries.get(`skills/tailrocks-macos-design/references/${name}`)).toEqual([
-      `skills/tailrocks-macos-design-review/references/${name}`,
-    ]);
+    const destinations = [`skills/tailrocks-macos-design-review/references/${name}`];
+    if (name === "match-policy.md" || name === "verification.md")
+      destinations.push(`skills/tailrocks-macos-visual-baseline/references/${name}`);
+    if (name === "verification.md") destinations.push(`skills/tailrocks-macos-visual-qa/references/${name}`);
+    if (name === "match-policy.md" || name === "verification.md")
+      destinations.push(`skills/tailrocks-macos-visual-regression/references/${name}`);
+    expect(entries.get(`skills/tailrocks-macos-design/references/${name}`)).toEqual(destinations);
   }
   for (const name of ["exemplars.md", "reference-corpus.md"]) {
     expect(entries.get(`skills/tailrocks-macos-design-systematize/references/${name}`)).toEqual([

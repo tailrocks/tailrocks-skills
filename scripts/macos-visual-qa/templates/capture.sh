@@ -25,12 +25,21 @@ case "$EXECUTABLE_REAL" in "$MACOS"/*) ;; *) echo "bundle executable escaped Mac
 
 OUT_PARENT_INPUT=$(dirname "$OUT"); [ ! -L "$OUT_PARENT_INPUT" ] || { echo "symlink output parent refused" >&2; exit 2; }
 OUT_PARENT=$(cd "$OUT_PARENT_INPUT" 2>/dev/null && pwd -P) || { echo "output parent must already exist" >&2; exit 2; }
-OUT="$OUT_PARENT/$(basename "$OUT")"; SIDECAR="$OUT.json"
+OUT_NAME=$(basename "$OUT"); SIDECAR_NAME="$OUT_NAME.json"
+case "$OUT_NAME" in ''|.|..|*/*) echo "unsafe output name" >&2; exit 2 ;; esac
+OUT_PARENT_ID=$(stat -f '%d:%i' "$OUT_PARENT")
+cd "$OUT_PARENT"
+OUT_ANCHOR=.
+OUT="$OUT_ANCHOR/$OUT_NAME"; SIDECAR="$OUT_ANCHOR/$SIDECAR_NAME"
 [ ! -e "$OUT" ] && [ ! -L "$OUT" ] && [ ! -e "$SIDECAR" ] && [ ! -L "$SIDECAR" ] || { echo "output exists" >&2; exit 2; }
 
 TOOLS=$(mktemp -d "${TMPDIR:-/tmp}/tailrocks-visual-qa-tools.XXXXXX"); chmod 700 "$TOOLS"
 PROCESS_TOOL="$TOOLS/process-owner"; WINDOW_TOOL="$TOOLS/window-id"
-TMP_OUT=""; PRE_JSON=""; POST_JSON=""; PUBLISHED_SIDECAR=0; IDENTITY=""; SUCCESS=0
+TMP_OUT=""; PRE_JSON=""; POST_JSON=""; PUBLISHED_SIDECAR=0; PUBLISHED_OUT=0; SIDECAR_ID=""; OUT_ID=""; IDENTITY=""; SUCCESS=0
+report_recovery() {
+  encoded=$(printf '%s' "$1" | /usr/bin/base64 | /usr/bin/tr -d '\n')
+  printf 'tailrocks-recovery-artifact-base64:%s\n' "$encoded" >&2
+}
 cleanup() {
   if [ "$SUCCESS" -eq 0 ] && [ -n "$IDENTITY" ] && [ -x "$PROCESS_TOOL" ]; then
     cleanup_pid=${IDENTITY%%|*}; cleanup_token=${IDENTITY#*|}
@@ -42,7 +51,16 @@ cleanup() {
   [ -n "$TMP_OUT" ] && rm -f "$TMP_OUT"
   [ -n "$PRE_JSON" ] && rm -f "$PRE_JSON"
   [ -n "$POST_JSON" ] && rm -f "$POST_JSON"
-  [ "$PUBLISHED_SIDECAR" -eq 1 ] && [ ! -e "$OUT" ] && rm -f "$SIDECAR"
+  if [ "$SUCCESS" -eq 0 ] && [ "$PUBLISHED_OUT" -eq 1 ] && [ -e "$OUT" ]; then
+    current=$(stat -f '%d:%i' "$OUT" 2>/dev/null || true)
+    if [ "$current" = "$OUT_ID" ]; then rm -f "$OUT" || report_recovery "$OUT_PARENT/$OUT_NAME"
+    else report_recovery "$OUT_PARENT/$OUT_NAME"; fi
+  fi
+  if [ "$SUCCESS" -eq 0 ] && [ "$PUBLISHED_SIDECAR" -eq 1 ] && [ -e "$SIDECAR" ]; then
+    current=$(stat -f '%d:%i' "$SIDECAR" 2>/dev/null || true)
+    if [ "$current" = "$SIDECAR_ID" ]; then rm -f "$SIDECAR" || report_recovery "$OUT_PARENT/$SIDECAR_NAME"
+    else report_recovery "$OUT_PARENT/$SIDECAR_NAME"; fi
+  fi
   rm -f "$PROCESS_TOOL" "$WINDOW_TOOL" "$TOOLS/window-error"; rmdir "$TOOLS" 2>/dev/null || true
 }
 trap cleanup EXIT INT TERM
@@ -69,7 +87,7 @@ done
 PID=${IDENTITY%%|*}; TOKEN=${IDENTITY#*|}
 "$PROCESS_TOOL" activate "$EXECUTABLE_REAL" "$PID" "$TOKEN"
 
-PRE_JSON=$(mktemp "$OUT_PARENT/.tailrocks-window-pre.XXXXXX")
+PRE_JSON=$(mktemp "$OUT_ANCHOR/.tailrocks-window-pre.XXXXXX")
 attempt=0; code=1
 while [ "$attempt" -lt 40 ]; do
   set +e
@@ -84,18 +102,27 @@ done
 WID=$(plutil -extract windowID raw "$PRE_JSON"); case "$WID" in ''|*[!0-9]*) echo "invalid window identity" >&2; exit 1 ;; esac
 "$PROCESS_TOOL" verify "$EXECUTABLE_REAL" "$PID" "$TOKEN"
 
-TMP_OUT=$(mktemp "$OUT_PARENT/.tailrocks-capture.XXXXXX")
+TMP_OUT=$(mktemp "$OUT_ANCHOR/.tailrocks-capture.XXXXXX")
 screencapture -x -o -l "$WID" "$TMP_OUT"
-[ -f "$TMP_OUT" ] && [ ! -L "$TMP_OUT" ] && [ "$(wc -c < "$TMP_OUT")" -ge 8192 ] || { echo "capture invalid" >&2; exit 1; }
+[ -f "$TMP_OUT" ] && [ ! -L "$TMP_OUT" ] || { echo "capture invalid" >&2; exit 1; }
+capture_bytes=$(wc -c < "$TMP_OUT")
+[ "$capture_bytes" -ge 8192 ] && [ "$capture_bytes" -le 67108864 ] || { echo "capture byte bound failed" >&2; exit 1; }
 dims=$(sips -g pixelWidth -g pixelHeight "$TMP_OUT" 2>/dev/null)
 pixel_width=$(printf '%s\n' "$dims" | awk '/pixelWidth:/ { print $2 }'); pixel_height=$(printf '%s\n' "$dims" | awk '/pixelHeight:/ { print $2 }')
 case "$pixel_width:$pixel_height" in *[!0-9:]*|0:*|*:0|:) echo "capture dimensions invalid" >&2; exit 1 ;; esac
-POST_JSON=$(mktemp "$OUT_PARENT/.tailrocks-window-post.XXXXXX")
+[ "$pixel_width" -le 16384 ] && [ "$pixel_height" -le 16384 ] && [ $((pixel_width * pixel_height)) -le 100000000 ] || { echo "capture pixel bound failed" >&2; exit 1; }
+POST_JSON=$(mktemp "$OUT_ANCHOR/.tailrocks-window-post.XXXXXX")
 if [ -n "$WINDOW_NAME" ]; then "$WINDOW_TOOL" "$PID" "$WINDOW_NAME" --json > "$POST_JSON"; else "$WINDOW_TOOL" "$PID" --json > "$POST_JSON"; fi
 cmp -s "$PRE_JSON" "$POST_JSON" || { echo "window identity changed during capture" >&2; exit 1; }
 "$PROCESS_TOOL" verify "$EXECUTABLE_REAL" "$PID" "$TOKEN"
 plutil -replace pixelDimensions -json "{\"width\":$pixel_width,\"height\":$pixel_height}" "$PRE_JSON"
+[ "$(stat -f '%d:%i' "$OUT_PARENT")" = "$OUT_PARENT_ID" ] || { echo "output parent identity changed" >&2; exit 2; }
+SIDECAR_ID=$(stat -f '%d:%i' "$PRE_JSON")
+OUT_ID=$(stat -f '%d:%i' "$TMP_OUT")
 ln "$PRE_JSON" "$SIDECAR" || { echo "sidecar publication raced" >&2; exit 2; }; PUBLISHED_SIDECAR=1
-ln "$TMP_OUT" "$OUT" || { echo "capture publication raced" >&2; exit 2; }
-rm -f "$TMP_OUT"; TMP_OUT=""; PUBLISHED_SIDECAR=0; SUCCESS=1
+[ "$(stat -f '%d:%i' "$SIDECAR")" = "$SIDECAR_ID" ] || { echo "sidecar publication identity changed" >&2; exit 2; }
+ln "$TMP_OUT" "$OUT" || { echo "capture publication raced" >&2; exit 2; }; PUBLISHED_OUT=1
+[ "$(stat -f '%d:%i' "$OUT")" = "$OUT_ID" ] || { echo "capture publication identity changed" >&2; exit 2; }
+[ "$(stat -f '%d:%i' "$OUT_PARENT")" = "$OUT_PARENT_ID" ] || { echo "output parent identity changed after publication" >&2; exit 2; }
+rm -f "$TMP_OUT"; TMP_OUT=""; SUCCESS=1
 plutil -convert json -o - "$SIDECAR"
