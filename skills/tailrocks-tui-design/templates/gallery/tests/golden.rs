@@ -18,7 +18,9 @@ fn golden_dir() -> &'static Path {
 
 #[test]
 fn frames_match_render() {
-    for entry in registry::entries() {
+    let entries = registry::entries();
+    registry::validate(&entries).expect("valid bounded registry");
+    for entry in entries {
         let path = golden_dir().join(entry.golden_name());
         let expected = std::fs::read_to_string(&path)
             .unwrap_or_else(|_| panic!("missing golden {}", path.display()));
@@ -34,7 +36,9 @@ fn frames_match_render() {
 
 #[test]
 fn style_checks_hold() {
-    for entry in registry::entries() {
+    let entries = registry::entries();
+    registry::validate(&entries).expect("valid bounded registry");
+    for entry in entries {
         let (width, height) = entry.size;
         let mut terminal = Terminal::new(TestBackend::new(width, height)).unwrap();
         terminal.draw(|frame| (entry.render)(frame)).unwrap();
@@ -56,10 +60,9 @@ fn style_checks_hold() {
 
 #[test]
 fn no_orphan_frames() {
-    let claimed: HashSet<String> = registry::entries()
-        .iter()
-        .map(|e| e.golden_name())
-        .collect();
+    let entries = registry::entries();
+    registry::validate(&entries).expect("valid bounded registry");
+    let claimed: HashSet<String> = entries.iter().map(|e| e.golden_name()).collect();
     for file in std::fs::read_dir(golden_dir()).expect("golden dir") {
         let name = file.unwrap().file_name().into_string().unwrap();
         assert!(

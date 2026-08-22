@@ -29,7 +29,7 @@ menus. There is no pending, dual, or inherited invocation class.
 | `tailrocks-macos-design`              | Native macOS screen structure, material, component mapping, prototype, or design review is already in scope.                      |
 | `tailrocks-rust-best-practices`       | Writing new or changing existing Rust behavior is already in scope.                                                               |
 | `tailrocks-swift-best-practices`      | Swift, SwiftUI, concurrency, accessibility, or a narrow AppKit bridge is already in scope.                                        |
-| `tailrocks-tui-design`                | Ratatui screens, terminal UX, fixture galleries, golden frames, or terminal design review are already in scope.                   |
+| `tailrocks-tui-design`                | Ratatui screen design, terminal UX, fixture galleries, or golden frames are already in scope.                                     |
 | `tailrocks-typescript-best-practices` | TypeScript, TSX, React state, validation, async ownership, or API work is already in scope.                                       |
 | `tailrocks-web-design`                | TanStack screen design, design routes, shadcn/ui composition, or visual fixtures are already in scope.                            |
 

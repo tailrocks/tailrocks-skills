@@ -110,7 +110,8 @@ One design skill per platform — macOS, web, terminal — each producing a bles
 | [`tailrocks-macos-design-systematize`](skills/tailrocks-macos-design-systematize/README.md) | Turn one user-approved macOS design and independent review into reusable product design-system records. | Manual only |
 | [`tailrocks-web-design`](skills/tailrocks-web-design/README.md) | Apply web visual-design policy when in-scope work touches TanStack screens, design routes, shadcn/ui composition, or visual fixtures. | Model policy |
 | [`tailrocks-web-design-audit`](skills/tailrocks-web-design-audit/README.md) | Audit an existing TanStack design-route package or shipped web screen against its blessed in-app reference. | Manual only |
-| [`tailrocks-tui-design`](skills/tailrocks-tui-design/README.md) | Apply terminal visual-design policy when in-scope work touches ratatui screens, terminal UX, fixture galleries, golden frames, or design review. | Model policy |
+| [`tailrocks-tui-design`](skills/tailrocks-tui-design/README.md) | Apply terminal visual-design policy when in-scope work touches ratatui screens, terminal UX, fixture galleries, or golden frames. | Model policy |
+| [`tailrocks-tui-design-audit`](skills/tailrocks-tui-design-audit/README.md) | Audit a ratatui gallery, golden-frame package, or shipped terminal screen against its blessed contract. | Manual only |
 | [`tailrocks-macos-visual-qa`](skills/tailrocks-macos-visual-qa/README.md) | Build, launch, capture, drive, and verify a native macOS app so an agent can see its own interface: window-ID capture, accessibility-tree driving, appearance and accessibility state matrix, audits, and pixel regression. | Manual only |
 | [`tailrocks-web-visual-qa`](skills/tailrocks-web-visual-qa/README.md) | Freeze and regress Playwright screenshot baselines for TanStack design routes and pages: the capture matrix per state, theme, and viewport — only from a finalized, blessed design. | Manual only |
 

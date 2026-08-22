@@ -4,7 +4,7 @@
 
 `tailrocks-tui-design` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-tui-design)
 
-Apply terminal visual-design policy when in-scope work touches ratatui screens, terminal UX, fixture galleries, golden frames, or design review. Selection alone never authorizes blessing, golden freeze, capture, or mutation.
+Apply terminal visual-design policy when in-scope work touches ratatui screens, terminal UX, fixture galleries, or golden frames. Selection alone never authorizes blessing, golden freeze, capture, or mutation.
 
 ## Invocation
 
@@ -14,7 +14,7 @@ active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-tui-design` …
 
-Arguments: `[design|audit] <feature or screens>`
+Arguments: `design <feature or screens>`
 
 ## Skill definition
 

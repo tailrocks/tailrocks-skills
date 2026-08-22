@@ -42,7 +42,8 @@ one shared directory:
   `tailrocks-swift-rust-core-setup`
 - **Design and prototypes:** `tailrocks-macos-design`, `tailrocks-macos-design-review`,
   `tailrocks-macos-design-systematize`, `tailrocks-web-design`,
-  `tailrocks-web-design-audit`, `tailrocks-tui-design`, `tailrocks-macos-visual-qa`,
+  `tailrocks-web-design-audit`, `tailrocks-tui-design`,
+  `tailrocks-tui-design-audit`, `tailrocks-macos-visual-qa`,
   `tailrocks-web-visual-qa`
 - **Code quality:** `tailrocks-code-health`, `tailrocks-code-health-audit`, `tailrocks-improve`,
   `tailrocks-improve-deep`, `tailrocks-improve-security`,
@@ -75,7 +76,7 @@ The registry classifies 11 skills as `MODEL_POLICY`: `tailrocks-agents-md`,
 `tailrocks-macos-design`, `tailrocks-rust-best-practices`,
 `tailrocks-swift-best-practices`, `tailrocks-tui-design`,
 `tailrocks-typescript-best-practices`, and `tailrocks-web-design`. They may load
-only under their exact description trigger. The other 70 skills are
+only under their exact description trigger. The other 71 skills are
 `MANUAL_ONLY` and require an explicit request.
 
 Model selection grants no mutation, tool, blessing, commit, push, release,

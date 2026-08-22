@@ -75,6 +75,7 @@
     { "skill": "tailrocks-tanstack-project-remediate", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-tanstack-project-setup", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-tui-design", "class": "MODEL_POLICY" },
+    { "skill": "tailrocks-tui-design-audit", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-typescript-best-practices", "class": "MODEL_POLICY" },
     { "skill": "tailrocks-typescript-migrate", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-typescript-refactor", "class": "MANUAL_ONLY" },

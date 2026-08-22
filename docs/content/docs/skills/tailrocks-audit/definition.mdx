@@ -85,7 +85,7 @@ merging stays the user's call.
    mode's target (whole repo, branch diff, or named category).
    **The interface lanes carry no taste of their own.** They judge against
    `tailrocks-web-design-audit` applying blessed web routes,
-   `tailrocks-tui-design`'s golden
+   `tailrocks-tui-design-audit` applying blessed golden
    frames, and `tailrocks-macos-design-review`'s rubric and
    glass acceptance gate — never a fresh aesthetic call.
    Blessing-dependent checks skip where nothing is blessed; objective defects

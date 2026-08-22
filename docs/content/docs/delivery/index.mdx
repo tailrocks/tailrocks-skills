@@ -187,8 +187,9 @@ Its lanes are addressable one at a time — `security`, `perf`, `ux`, `tui`,
 `liquid-glass`, `agent-legibility` — and `--deep` is a modifier rather than a
 mode, so it composes with any of them. The taste lanes carry no taste of their
 own: `ux` uses `tailrocks-web-design-audit` to judge against
-`tailrocks-web-design`'s blessed screens, `tui`
-against `tailrocks-tui-design`'s golden frames, and `liquid-glass` against
+`tailrocks-web-design`'s blessed screens, `tui` uses
+`tailrocks-tui-design-audit` against `tailrocks-tui-design`'s golden frames,
+and `liquid-glass` against
 `tailrocks-macos-design`'s acceptance gate. Blessing-dependent checks skip
 where nothing is blessed; objective defects still run wherever that interface
 ships.
@@ -432,11 +433,11 @@ measured against. `tailrocks-plan` refuses a screen contract that cites none.
 One skill per medium, one owner per stage — each platform prototypes in its
 own skill:
 
-| Medium                      | Prototype built as                                                         | design                   | bless                                                  | freeze                                   |
-| --------------------------- | -------------------------------------------------------------------------- | ------------------------ | ------------------------------------------------------ | ---------------------------------------- |
-| Terminal (Rust, ratatui)    | A gallery crate rendering the application's own view functions             | `tailrocks-tui-design`   | `tailrocks-tui-design`                                 | `tailrocks-tui-design` — the golden test |
-| Web (TanStack, shadcn/ui)   | Guarded `/design/...` routes in the real app, blessed live in the browser  | `tailrocks-web-design`   | `tailrocks-web-design`                                 | `tailrocks-web-visual-qa`                |
-| macOS (Swift, Liquid Glass) | A running Liquid Glass prototype app — the material only exists at runtime | `tailrocks-macos-design` | `tailrocks-macos-design` — sign-off on the running app | `tailrocks-macos-visual-qa`              |
+| Medium                      | Prototype built as                                                         | design                   | bless                                                  | freeze                                   | audit                           |
+| --------------------------- | -------------------------------------------------------------------------- | ------------------------ | ------------------------------------------------------ | ---------------------------------------- | ------------------------------- |
+| Terminal (Rust, ratatui)    | A gallery crate rendering the application's own view functions             | `tailrocks-tui-design`   | `tailrocks-tui-design`                                 | `tailrocks-tui-design` — the golden test | `tailrocks-tui-design-audit`    |
+| Web (TanStack, shadcn/ui)   | Guarded `/design/...` routes in the real app, blessed live in the browser  | `tailrocks-web-design`   | `tailrocks-web-design`                                 | `tailrocks-web-visual-qa`                | `tailrocks-web-design-audit`    |
+| macOS (Swift, Liquid Glass) | A running Liquid Glass prototype app — the material only exists at runtime | `tailrocks-macos-design` | `tailrocks-macos-design` — sign-off on the running app | `tailrocks-macos-visual-qa`              | `tailrocks-macos-design-review` |
 
 **Design** authors the prototype on the real substrate from fixtures. **Bless**
 is the user's recorded sign-off; an agent never blesses its own output.

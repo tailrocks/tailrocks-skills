@@ -145,6 +145,11 @@ const generatedFamilies = [
     ],
   },
   {
+    owner: "tailrocks-tui-design",
+    references: ["gallery.md", "golden-frames.md", "screen-package.md", "tui-craft.md"],
+    destinations: ["tailrocks-tui-design-audit"],
+  },
+  {
     owner: "tailrocks-typescript-best-practices",
     references: [
       "boundaries-and-domain-values.md",

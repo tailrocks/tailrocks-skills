@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: TUI Design Audit"
+  short_description: "Audit terminal screens against blessed golden frames"
+  default_prompt: "Use $tailrocks-tui-design-audit only for the explicitly requested read-only audit. Bind exact golden and rendered evidence; do not design, fix, bless, regenerate, commit, or mutate."
+policy:
+  allow_implicit_invocation: false

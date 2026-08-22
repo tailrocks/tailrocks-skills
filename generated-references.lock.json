@@ -1042,6 +1042,31 @@
       "sha256": "2a739014e0781f5b19ba90fc41cc95f025eabe80e032094d4ae89241e847f136"
     },
     {
+      "source": "skills/tailrocks-tui-design/references/gallery.md",
+      "destination": "skills/tailrocks-tui-design-audit/references/gallery.md",
+      "sha256": "83eacbca68528fcaec9dea35d5cf1b2df593d346e1449e658114a750e0ac71a2"
+    },
+    {
+      "source": "skills/tailrocks-tui-design/references/golden-frames.md",
+      "destination": "skills/tailrocks-tui-design-audit/references/golden-frames.md",
+      "sha256": "53e7046a401b3e76af6eafcc6e74aed90d78fb107a49ca264cc3af11642c0e56"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-tui-design-audit/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-tui-design/references/screen-package.md",
+      "destination": "skills/tailrocks-tui-design-audit/references/screen-package.md",
+      "sha256": "ce41638ca9cc0006f6d6a55102315449e6352b605ab42036cb084eee5879fabf"
+    },
+    {
+      "source": "skills/tailrocks-tui-design/references/tui-craft.md",
+      "destination": "skills/tailrocks-tui-design-audit/references/tui-craft.md",
+      "sha256": "0a066532c35c29641cd8eac0e50967c0328ef7a2d45917ebf3c79e4d319a6f34"
+    },
+    {
       "source": "shared/references/design-pipeline.md",
       "destination": "skills/tailrocks-tui-design/references/design-pipeline.md",
       "sha256": "00bbf16de54860b26445c91e75b408b1536a5025c698923aee7241f7ab6e3de9"

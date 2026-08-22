@@ -52,6 +52,7 @@ Two lanes touch aesthetics, and neither may own it.
 | Lane         | Judgment source                                                                       | What the lane may not do                                   |
 | ------------ | ------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | UX           | `tailrocks-web-design-audit` applying patterns `tailrocks-web-design` already blessed | propose a new screen design, or override a blessed pattern |
+| Terminal UI  | `tailrocks-tui-design-audit` applying frames `tailrocks-tui-design` already blessed   | invent or regenerate a terminal design                     |
 | Liquid Glass | `tailrocks-macos-design-review`'s rubric and glass acceptance gate                    | make a fresh material or chrome call                       |
 
 Both lanes invoke the owning skill's rubric rather than re-deriving one, and

@@ -113,6 +113,7 @@
         "skills/tailrocks-tanstack-project-migrate/references/runtime-trust.md",
         "skills/tailrocks-tanstack-project-remediate/references/runtime-trust.md",
         "skills/tailrocks-tanstack-project-setup/references/runtime-trust.md",
+        "skills/tailrocks-tui-design-audit/references/runtime-trust.md",
         "skills/tailrocks-tui-design/references/runtime-trust.md",
         "skills/tailrocks-typescript-best-practices/references/runtime-trust.md",
         "skills/tailrocks-typescript-migrate/references/runtime-trust.md",
@@ -525,6 +526,22 @@
         "skills/tailrocks-tanstack-project-migrate/references/version-policy.md",
         "skills/tailrocks-tanstack-project-remediate/references/version-policy.md"
       ]
+    },
+    {
+      "source": "skills/tailrocks-tui-design/references/gallery.md",
+      "destinations": ["skills/tailrocks-tui-design-audit/references/gallery.md"]
+    },
+    {
+      "source": "skills/tailrocks-tui-design/references/golden-frames.md",
+      "destinations": ["skills/tailrocks-tui-design-audit/references/golden-frames.md"]
+    },
+    {
+      "source": "skills/tailrocks-tui-design/references/screen-package.md",
+      "destinations": ["skills/tailrocks-tui-design-audit/references/screen-package.md"]
+    },
+    {
+      "source": "skills/tailrocks-tui-design/references/tui-craft.md",
+      "destinations": ["skills/tailrocks-tui-design-audit/references/tui-craft.md"]
     },
     {
       "source": "skills/tailrocks-typescript-best-practices/references/boundaries-and-domain-values.md",

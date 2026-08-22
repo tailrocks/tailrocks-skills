@@ -75,8 +75,9 @@ Every lane brief carries, verbatim, all six:
     `tailrocks-web-design-audit` applies from the routes
     `tailrocks-web-design` already blessed. Skip this half in a
     repository with no blessed web screens, and say so.
-- **Terminal UI** — screens in a ratatui application, judged against the
-  golden frames `tailrocks-tui-design` blessed. Same split as the UX
+- **Terminal UI** — screens in a ratatui application. Read-only judgment belongs
+  to `tailrocks-tui-design-audit`, applying the golden frames
+  `tailrocks-tui-design` blessed. Same split as the UX
   lane: frame drift against a blessed golden runs only where goldens
   exist; unreachable states, unhandled resize, and key bindings a user
   cannot discover run wherever the repository ships a terminal UI. Skip

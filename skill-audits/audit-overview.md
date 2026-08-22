@@ -1037,10 +1037,31 @@ all terminal checks pass, and the final literal marker is changed to
     `rtk mise run migration-check` passed 372 tests/2,434 assertions across 50
     selected non-protected files. Fresh subagent verdict: PASS. Protected paths
     unchanged; no evals run.
-- [ ] [IN_PROGRESS] P07.03 Terminal design → design/blessing/golden freeze and design
+- [x] [COMPLETED] P07.03 Terminal design → design/blessing/golden freeze and design
   audit; retain `MODEL_POLICY` only on the existing named owner pending
   descendant approval.
-- [ ] [TODO] P07.04 macOS visual verification → current-render verification,
+  - Evidence receipt (2026-08-23): split the existing terminal design owner into
+    exclusive design/human-blessing/golden-freeze and manual read-only audit
+    owners. The base alone retains `MODEL_POLICY`; the audit descendant is
+    `MANUAL_ONLY`, emits one conversation report, and owns no authoring,
+    blessing, freeze, or mutation authority. Removed the base `audit` selector
+    immediately with no alias or redirect. Four canonical terminal-design
+    references and the runtime-trust contract generate byte-identically to the
+    audit owner as criteria only. The base now binds the complete registry,
+    view, fixture, frame, style, revision, and matrix identities; validates a
+    bounded exact registry; renders twice; and publishes the whole golden
+    directory with OS atomic no-replace swaps, identity/content CAS, and
+    quarantine-before-delete cleanup. Adversarial proof preserves concurrent
+    absent targets, altered stages, and post-quarantine replacements. Audit
+    execution is locked, offline, disposable, exact-revision, and enforceably
+    read-only with all writable tool state outside the subject. Registry and
+    docs cover 82 skills (71 manual, 11 model-policy), 20,989 total description
+    characters, and 17,084 capped characters; 80 sources produced 234
+    byte-identical destinations and 250 generated docs checked. Focused proof
+    passed 69 tests/286 assertions; final `rtk mise run migration-check` passed
+    385 tests/2,550 assertions across 52 selected non-protected files. Fresh
+    subagent verdict: PASS. Protected paths unchanged; no evals run.
+- [ ] [IN_PROGRESS] P07.04 macOS visual verification → current-render verification,
   baseline, and regression; all remain `MANUAL_ONLY`.
 - [ ] [TODO] P07.05 Web visual verification → baseline and regression; both
   remain `MANUAL_ONLY`.

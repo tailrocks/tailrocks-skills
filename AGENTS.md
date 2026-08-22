@@ -309,7 +309,7 @@ baseline), **audit** (implementation against the blessed reference).
 
 | Medium   | Stack                            | design                 | bless                           | freeze                    | audit                         |
 | -------- | -------------------------------- | ---------------------- | ------------------------------- | ------------------------- | ----------------------------- |
-| Terminal | Rust, ratatui, crossterm         | tailrocks-tui-design   | same                            | same — the golden test    | tailrocks-tui-design          |
+| Terminal | Rust, ratatui, crossterm         | tailrocks-tui-design   | same                            | same — the golden test    | tailrocks-tui-design-audit    |
 | Web      | TanStack Start, React, shadcn/ui | tailrocks-web-design   | same                            | tailrocks-web-visual-qa   | tailrocks-web-design-audit    |
 | macOS    | Swift, SwiftUI, Liquid Glass     | tailrocks-macos-design | same — on the running prototype | tailrocks-macos-visual-qa | tailrocks-macos-design-review |
 
@@ -387,8 +387,14 @@ a name list cannot.
   as golden frames: a gallery crate renders the application's own view
   functions through a test backend, the user blesses each frame, and a
   golden test holds the implementation byte-exact from then on. Decides
-  ratatui as the house terminal UI library.
+  ratatui as the house terminal UI library and never audits itself.
   Definition: `skills/tailrocks-tui-design/SKILL.md`
+- **tailrocks-tui-design-audit** — independent, read-only judgment of an
+  existing gallery package or shipped terminal screen against blessed frames,
+  registry coverage, style cells, states, sizes, and terminal craft. It applies
+  generated design-owner rules but never designs, fixes, blesses, regenerates,
+  commits, or changes taste. Definition:
+  `skills/tailrocks-tui-design-audit/SKILL.md`
 - **tailrocks-macos-visual-qa** — the macOS verification loop. The atomic
   kill-launch-capture invocation, capture by window ID rather than screen
   rectangle, accessibility-tree driving, the appearance and accessibility state

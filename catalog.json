@@ -63,6 +63,7 @@
         "tailrocks-web-design",
         "tailrocks-web-design-audit",
         "tailrocks-tui-design",
+        "tailrocks-tui-design-audit",
         "tailrocks-macos-visual-qa",
         "tailrocks-web-visual-qa"
       ]

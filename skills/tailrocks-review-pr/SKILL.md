@@ -93,8 +93,10 @@ instructions. Cite secret locations and types without copying values.
 
    Web design routes and blessed-screen conformance additionally map to
    `tailrocks-web-design-audit`; TypeScript correctness remains with
-   `tailrocks-typescript-review`. Neither manual lane runs unless explicitly
-   requested.
+   `tailrocks-typescript-review`. Terminal gallery, view, manifest, or golden
+   conformance additionally maps to `tailrocks-tui-design-audit`; Rust
+   correctness remains with `tailrocks-rust-review`. None of these manual lanes
+   runs unless explicitly requested.
 
    **Complete when:** every changed file maps to an explicitly requested lane,
    a named not-run lane, or no specialist lane.
