@@ -249,11 +249,19 @@ verification of macOS interfaces live in the design family below:
 Glass material authority; `tailrocks-macos-visual-qa` owns capture and
 verification.
 
-- **tailrocks-swift-best-practices** — code-level policy. Actor isolation as a
-  design decision, state ownership and view identity, work kept out of `body`,
-  narrow AppKit interop boundaries, typed failure, availability guards with
-  decided fallbacks, accessibility as a code obligation. Definition:
+- **tailrocks-swift-best-practices** — write-only code policy. Actor isolation as
+  a design decision, state ownership and view identity, work kept out of `body`,
+  narrow AppKit interop, typed failure, guarded availability, accessibility.
+  Definition:
   `skills/tailrocks-swift-best-practices/SKILL.md`
+- **tailrocks-swift-review** — read-only verified Swift/SwiftUI code findings.
+  Definition: `skills/tailrocks-swift-review/SKILL.md`
+- **tailrocks-swift-refactor** — preservation-oracle Swift/SwiftUI restructuring.
+  Definition: `skills/tailrocks-swift-refactor/SKILL.md`
+- **tailrocks-swift-rust-core-boundary** — the thin SwiftUI platform shell over
+  the Rust application runtime, generated FFI, one store, and durable Apple
+  effect protocol. Definition:
+  `skills/tailrocks-swift-rust-core-boundary/SKILL.md`
 - **tailrocks-swift-project-setup** — the baseline an agent can drive from a
   terminal. Declarative project generation with a synchronized source folder, the
   three target values, a decided fallback behavior, and two SDK lanes, ad-hoc local signing, strict

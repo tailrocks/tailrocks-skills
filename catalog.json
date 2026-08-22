@@ -42,6 +42,9 @@
       "summary": "The Swift implementation stack: code-level policy and the agent-drivable project baseline.",
       "skills": [
         "tailrocks-swift-best-practices",
+        "tailrocks-swift-review",
+        "tailrocks-swift-refactor",
+        "tailrocks-swift-rust-core-boundary",
         "tailrocks-swift-project-setup"
       ]
     },

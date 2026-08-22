@@ -788,10 +788,30 @@ all terminal checks pass, and the final literal marker is changed to
     `rtk mise run migration-check` passed 296 tests/1,659 assertions across 39
     selected non-protected files with all gates green. Fresh subagent verdict:
     PASS, reconfirmed after final authority strengthening. No evals run.
-- [ ] [IN_PROGRESS] P05.08 Swift best practices → write, review, refactor, Rust-core
+- [x] [COMPLETED] P05.08 Swift best practices → write, review, refactor, Rust-core
   boundary; retain `MODEL_POLICY` only on the existing named owner pending
   descendant approval.
-- [ ] [TODO] P05.09 Swift project setup → setup, audit, remediate, agent
+  - Evidence receipt (2026-08-23): made
+    `tailrocks-swift-best-practices` a write-only native code owner retaining the
+    sole family `MODEL_POLICY` without mutation authority; added manual-only
+    read-only review, preservation-oracle refactor, and exclusive Rust-core/
+    Apple-platform boundary owners. Moved `rust-core-boundary.md` and
+    `apple-platform-shell.md` byte-identically only to the boundary owner;
+    generated five canonical Swift code references only to review/refactor plus
+    runtime trust to all four owners. All 45 sources produce 162 byte-identical
+    destinations. The boundary enforces generated FFI, one main-actor store,
+    immutable feature snapshots, semantic actions, lossy-notice reconciliation,
+    and durable idempotent Apple effects; architecture/review are immutable and
+    every edit requires explicit write authority. Both read-only owners require
+    enforceably immutable target execution, frozen inputs, scrubbed secrets,
+    disabled network, external owner-only output/cache, bounded process trees,
+    and no install/generate/format-write. Catalog/registry, PR routing,
+    install/choosing docs, and context counts agree on 61 skills (50 manual, 11
+    model-policy). Focused proof passed 20 tests/256 assertions; final
+    `rtk mise run migration-check` passed 300 tests/1,720 assertions across 40
+    selected non-protected files with all gates green. Fresh subagent verdict:
+    PASS after boundary authority/sandbox correction. No evals run.
+- [ ] [IN_PROGRESS] P05.09 Swift project setup → setup, audit, remediate, agent
   integration, Rust-core setup.
 - [ ] [TODO] P05.10 Code health → approved ratchet mutation and read-only audit;
   remove minimum-release-age policy while retaining latest-stable and

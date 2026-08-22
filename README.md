@@ -89,7 +89,10 @@ The Swift implementation stack: code-level policy and the agent-drivable project
 
 | Skill | What it does | Invocation |
 |---|---|---|
-| [`tailrocks-swift-best-practices`](skills/tailrocks-swift-best-practices/README.md) | Apply native Swift code policy when in-scope work touches Swift, SwiftUI, concurrency, state ownership, accessibility, availability, or narrow AppKit bridges. | Model policy |
+| [`tailrocks-swift-best-practices`](skills/tailrocks-swift-best-practices/README.md) | Apply Swift code policy when writing in-scope Swift, SwiftUI, concurrency, state ownership, accessibility, availability, or narrow AppKit bridges. | Model policy |
+| [`tailrocks-swift-review`](skills/tailrocks-swift-review/README.md) | Review Swift, SwiftUI, concurrency, accessibility, availability, errors, and narrow AppKit bridges read-only. | Manual only |
+| [`tailrocks-swift-refactor`](skills/tailrocks-swift-refactor/README.md) | Refactor Swift and SwiftUI code under a preservation oracle while retaining behavior, public API, isolation, cancellation, state identity, rendering, accessibility, errors, availability, and bridge lifecycles. | Manual only |
+| [`tailrocks-swift-rust-core-boundary`](skills/tailrocks-swift-rust-core-boundary/README.md) | Design, implement, or review the thin SwiftUI platform shell over a Rust-owned application runtime: generated FFI, immutable view state, typed actions, durable Apple effects, and one main-actor store. | Manual only |
 | [`tailrocks-swift-project-setup`](skills/tailrocks-swift-project-setup/README.md) | Scaffold, audit, or remediate a strict native macOS Swift baseline: project generation, deployment targets and SDK lanes, local signing, format and lint gates, test wiring, mise tooling, Xcode agent integration. | Manual only |
 
 ### Design and prototypes

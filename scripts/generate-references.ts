@@ -69,6 +69,17 @@ const generatedFamilies = [
     destinations: ["tailrocks-rust-project-audit", "tailrocks-rust-project-remediate"],
   },
   {
+    owner: "tailrocks-swift-best-practices",
+    references: [
+      "accessibility.md",
+      "appkit-interop.md",
+      "concurrency.md",
+      "errors-and-api.md",
+      "swiftui.md",
+    ],
+    destinations: ["tailrocks-swift-refactor", "tailrocks-swift-review"],
+  },
+  {
     owner: "tailrocks-tanstack-project-setup",
     references: [
       "boundaries-and-data.md",

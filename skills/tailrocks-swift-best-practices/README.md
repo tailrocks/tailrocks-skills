@@ -4,7 +4,7 @@
 
 `tailrocks-swift-best-practices` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-swift-best-practices)
 
-Apply native Swift code policy when in-scope work touches Swift, SwiftUI, concurrency, state ownership, accessibility, availability, or narrow AppKit bridges. Not project setup or visual-design authority.
+Apply Swift code policy when writing in-scope Swift, SwiftUI, concurrency, state ownership, accessibility, availability, or narrow AppKit bridges. Not review, refactoring, project setup, Rust-core boundary architecture, or visual-design authority.
 
 ## Invocation
 
@@ -13,6 +13,8 @@ matches work already in scope. Selection grants no authority beyond the
 active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-swift-best-practices` …
+
+Arguments: `<Swift or SwiftUI writing task>`
 
 ## Skill definition
 
@@ -23,9 +25,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 
 - [`accessibility.md`](references/accessibility.md)
 - [`appkit-interop.md`](references/appkit-interop.md)
-- [`apple-platform-shell.md`](references/apple-platform-shell.md)
 - [`concurrency.md`](references/concurrency.md)
 - [`errors-and-api.md`](references/errors-and-api.md)
 - [`runtime-trust.md`](references/runtime-trust.md)
-- [`rust-core-boundary.md`](references/rust-core-boundary.md)
 - [`swiftui.md`](references/swiftui.md)

@@ -547,6 +547,71 @@
       "sha256": "48ae188d631f007a458e8da80541ba9fa6f464ff9ec35cc7908c566f3bd890cf"
     },
     {
+      "source": "skills/tailrocks-swift-best-practices/references/accessibility.md",
+      "destination": "skills/tailrocks-swift-refactor/references/accessibility.md",
+      "sha256": "dd88b9c13523e1777f0d02cc712a30e5ce882cedd4ad9c87b97be944a06359d9"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/appkit-interop.md",
+      "destination": "skills/tailrocks-swift-refactor/references/appkit-interop.md",
+      "sha256": "0a17010c4358cdf39ed2cccacadd1ff6097e302d354388a9ab8043b40d632da9"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/concurrency.md",
+      "destination": "skills/tailrocks-swift-refactor/references/concurrency.md",
+      "sha256": "f20e6f75848ff3d3d3b293f0f362c29fa600e83dd61673eb8f4ca8f374994d55"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/errors-and-api.md",
+      "destination": "skills/tailrocks-swift-refactor/references/errors-and-api.md",
+      "sha256": "e21382c58b017044437ab1a34d345224736ce9ef181266b44ea1543163ab4b29"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-refactor/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/swiftui.md",
+      "destination": "skills/tailrocks-swift-refactor/references/swiftui.md",
+      "sha256": "7bc15182dd86b56d827a3e5b4d994bea337239bcc54472888882889136da8ab1"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/accessibility.md",
+      "destination": "skills/tailrocks-swift-review/references/accessibility.md",
+      "sha256": "dd88b9c13523e1777f0d02cc712a30e5ce882cedd4ad9c87b97be944a06359d9"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/appkit-interop.md",
+      "destination": "skills/tailrocks-swift-review/references/appkit-interop.md",
+      "sha256": "0a17010c4358cdf39ed2cccacadd1ff6097e302d354388a9ab8043b40d632da9"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/concurrency.md",
+      "destination": "skills/tailrocks-swift-review/references/concurrency.md",
+      "sha256": "f20e6f75848ff3d3d3b293f0f362c29fa600e83dd61673eb8f4ca8f374994d55"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/errors-and-api.md",
+      "destination": "skills/tailrocks-swift-review/references/errors-and-api.md",
+      "sha256": "e21382c58b017044437ab1a34d345224736ce9ef181266b44ea1543163ab4b29"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-review/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-swift-best-practices/references/swiftui.md",
+      "destination": "skills/tailrocks-swift-review/references/swiftui.md",
+      "sha256": "7bc15182dd86b56d827a3e5b4d994bea337239bcc54472888882889136da8ab1"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-swift-rust-core-boundary/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
       "source": "skills/tailrocks-tanstack-project-setup/references/boundaries-and-data.md",
       "destination": "skills/tailrocks-tanstack-project-audit/references/boundaries-and-data.md",
       "sha256": "d6733731fdbd1e826eaaadaa787fd249523608c9f0decfa843aa2a9454087300"
