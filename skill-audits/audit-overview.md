@@ -1127,14 +1127,29 @@ all terminal checks pass, and the final literal marker is changed to
     `rtk mise run migration-check` passed 407 tests/2,781 assertions across 55
     selected non-protected files. Fresh subagent verdict: PASS. Protected paths
     unchanged; no evals run.
-- [ ] [IN_PROGRESS] P07.GATE Prove the exact eleven-skill model-policy set, manual
+- [x] [COMPLETED] P07.GATE Prove the exact eleven-skill model-policy set, manual
   descendant and visual-verification routing, one taste owner per medium, and
   `rtk mise run migration-check`.
-  Evidence: pending.
+  - Evidence receipt (2026-08-23): the registry's exact 11 `MODEL_POLICY`
+    owners remain agents-md, Axum, GraphQL, grilling, gRPC, macOS design, Rust,
+    Swift, terminal design, TypeScript, and web design. Every macOS
+    review/systematize, web/terminal audit descendant, and all five macOS/web
+    visual verification/baseline/regression owners are `MANUAL_ONLY` with the
+    canonical metadata tuple. macOS, web, and terminal each retain exactly one
+    model-policy taste owner; all old combined selectors and retired visual
+    routes are absent from published surfaces. Generated-reference ownership,
+    locks, catalog, registry, and generated docs agree. During the gate, a
+    repeatable GUI race exposed that window resolution accepted a transient
+    first sample; the structural fix requires four identical bounded window
+    samples before capture, so delayed second windows become ambiguity instead
+    of capture drift. Focused proof passed 110 tests/973 assertions; final
+    `rtk mise run migration-check` passed 407 tests/2,782 assertions across 55
+    selected non-protected files. Fresh subagent verdict: PASS. Protected paths
+    unchanged; no evals run.
 
 ## P08 — Rehome repository audit and preserve compatibility
 
-- [ ] [TODO] P08.01 Encode every invocation row and modifier from
+- [ ] [IN_PROGRESS] P08.01 Encode every invocation row and modifier from
   `content-movement-audit-retirement.md` in a deterministic route schema.
 - [ ] [TODO] P08.02 Route default/quick/category/batch to standard improve;
   whole-repository deep to improve-deep; security to improve-security.

@@ -11,6 +11,7 @@ test("capture binds process and window by exact executable and pid with bounded 
   expect(source).toContain('"$WINDOW_TOOL" "$PID"');
   expect(source).toContain('attempt" -lt 40');
   expect(source).toContain("ambiguous exact-owned processes");
+  expect(source).toContain('[ "$stable" -ge 3 ] && break');
   expect(source).toContain('"$PROCESS_TOOL" verify "$EXECUTABLE_REAL" "$PID" "$TOKEN"');
   expect(source).toContain("symlink app bundle refused");
   expect(source).toContain("unsafe CFBundleExecutable");

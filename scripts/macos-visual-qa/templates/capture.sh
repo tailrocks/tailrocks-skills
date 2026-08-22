@@ -61,7 +61,7 @@ cleanup() {
     if [ "$current" = "$SIDECAR_ID" ]; then rm -f "$SIDECAR" || report_recovery "$OUT_PARENT/$SIDECAR_NAME"
     else report_recovery "$OUT_PARENT/$SIDECAR_NAME"; fi
   fi
-  rm -f "$PROCESS_TOOL" "$WINDOW_TOOL" "$TOOLS/window-error"; rmdir "$TOOLS" 2>/dev/null || true
+  rm -f "$PROCESS_TOOL" "$WINDOW_TOOL" "$TOOLS/window-error" "$TOOLS/window-candidate"; rmdir "$TOOLS" 2>/dev/null || true
 }
 trap cleanup EXIT INT TERM
 swiftc -O "$HERE/process-owner.swift" -o "$PROCESS_TOOL"; swiftc -O "$HERE/window-id.swift" -o "$WINDOW_TOOL"
@@ -88,14 +88,18 @@ PID=${IDENTITY%%|*}; TOKEN=${IDENTITY#*|}
 "$PROCESS_TOOL" activate "$EXECUTABLE_REAL" "$PID" "$TOKEN"
 
 PRE_JSON=$(mktemp "$OUT_ANCHOR/.tailrocks-window-pre.XXXXXX")
-attempt=0; code=1
+WINDOW_CANDIDATE="$TOOLS/window-candidate"; attempt=0; code=1; stable=0
 while [ "$attempt" -lt 40 ]; do
   set +e
   if [ -n "$WINDOW_NAME" ]; then "$WINDOW_TOOL" "$PID" "$WINDOW_NAME" --json > "$PRE_JSON" 2>"$TOOLS/window-error"; code=$?
   else "$WINDOW_TOOL" "$PID" --json > "$PRE_JSON" 2>"$TOOLS/window-error"; code=$?; fi
   set -e
   [ "$code" -eq 4 ] && { cat "$TOOLS/window-error" >&2; exit 4; }
-  [ "$code" -eq 0 ] && break
+  if [ "$code" -eq 0 ]; then
+    if [ -f "$WINDOW_CANDIDATE" ] && cmp -s "$PRE_JSON" "$WINDOW_CANDIDATE"; then stable=$((stable + 1)); else stable=0; cp "$PRE_JSON" "$WINDOW_CANDIDATE"; fi
+    [ "$stable" -ge 3 ] && break
+    code=1
+  fi
   sleep 0.25; attempt=$((attempt + 1))
 done
 [ "$code" -eq 0 ] || { echo "window resolution timed out after 10 seconds" >&2; exit 1; }
