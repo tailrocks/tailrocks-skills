@@ -70,6 +70,7 @@
       "summary": "Debt that shrinks, defects that stop recurring, skills that improve from field evidence, and work on repositories you do not own.",
       "skills": [
         "tailrocks-code-health",
+        "tailrocks-code-health-audit",
         "tailrocks-improve",
         "tailrocks-agents-md",
         "tailrocks-retrospect",

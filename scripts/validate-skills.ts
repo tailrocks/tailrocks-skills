@@ -268,6 +268,10 @@ const negationPattern =
 // verb and is deliberately not matched; only the tool and its artifacts are.
 const designToolPattern =
   /\b(?:figma|penpot|zeplin|invision|lunacy|framer|adobe\s*xd)\b|\.sketch\b|\bartboards?\b|\bsketch\s+(?:file|files|document|documents|app|symbol|symbols)\b/i;
+const releaseDelayConfigPattern = /\b(?:minimumReleaseAge|stabilityDays)\b/i;
+const releaseAgePattern = /\bminimum[\s-]+release[\s-]+age\b/i;
+const releaseAgeRefusalPattern =
+  /^(?:[-*]\s*)?(?:(?:never|do not|don't) configure (?:an?\s+)?minimum[\s-]+release[\s-]+age|(?:an?\s+)?minimum[\s-]+release[\s-]+age(?: rule)? is (?:forbidden|a gap)|no minimum[\s-]+release[\s-]+age delay is permitted)\.?$/i;
 
 // Model route names. Provider mappings are volatile and the shared skill tree
 // is source-neutral: a skill states the capability role it needs, never the
@@ -298,6 +302,40 @@ function scanBannedTerms(source: string, directory: string, label: string, error
   }
 }
 
+function scanReleaseDelayPolicy(source: string, directory: string, label: string, errors: string[]): void {
+  for (const line of source.split("\n")) {
+    if (
+      releaseDelayConfigPattern.test(line) ||
+      (releaseAgePattern.test(line) && !releaseAgeRefusalPattern.test(line.trim()))
+    )
+      errors.push(`${directory}:${label}: dependency release-delay policy forbidden: ${line.trim()}`);
+  }
+}
+
+function structuredReleaseDelay(value: unknown): boolean {
+  if (typeof value === "string") return releaseDelayConfigPattern.test(value);
+  if (Array.isArray(value)) return value.some(structuredReleaseDelay);
+  if (typeof value !== "object" || value === null) return false;
+  return Object.entries(value).some(
+    ([key, nested]) => releaseDelayConfigPattern.test(key) || structuredReleaseDelay(nested),
+  );
+}
+
+function scanStructuredReleaseDelay(
+  source: string,
+  directory: string,
+  label: string,
+  errors: string[],
+): void {
+  if (!label.endsWith(".json")) return;
+  try {
+    if (structuredReleaseDelay(JSON.parse(source)))
+      errors.push(`${directory}:${label}: dependency release-delay policy forbidden in parsed JSON`);
+  } catch {
+    // JSON validity belongs to the template's owning contract.
+  }
+}
+
 async function generatedReferenceDestinations(root: string, errors: string[]): Promise<Set<string>> {
   const file = path.join(root, "generated-references.json");
   if (!(await exists(file))) return new Set();
@@ -323,7 +361,7 @@ async function generatedReferenceDestinations(root: string, errors: string[]): P
         typeof entry !== "object" ||
         entry === null ||
         Array.isArray(entry) ||
-        Object.keys(entry).sort().join(",") !== "destinations,source" ||
+        !["destinations,source", "destinations,slice,source"].includes(Object.keys(entry).sort().join(",")) ||
         typeof (entry as { source?: unknown }).source !== "string" ||
         !isGeneratedReferenceSource((entry as { source: string }).source) ||
         !Array.isArray((entry as { destinations?: unknown }).destinations) ||
@@ -334,6 +372,16 @@ async function generatedReferenceDestinations(root: string, errors: string[]): P
               destination,
             ),
         )
+      )
+        throw new Error();
+      if (
+        "slice" in entry &&
+        (typeof entry.slice !== "object" ||
+          entry.slice === null ||
+          Array.isArray(entry.slice) ||
+          Object.keys(entry.slice).sort().join(",") !== "end,start" ||
+          typeof (entry.slice as { start?: unknown }).start !== "string" ||
+          typeof (entry.slice as { end?: unknown }).end !== "string")
       )
         throw new Error();
       destinations.push(...(entry as { destinations: string[] }).destinations);
@@ -494,6 +542,7 @@ export async function validate(root: string): Promise<string[]> {
 
     await scanLinks(source, skillFile, skillDir, directory, errors);
     scanForgeUrls(source, directory, "SKILL.md", errors);
+    scanReleaseDelayPolicy(source, directory, "SKILL.md", errors);
     const referencesDir = path.join(skillDir, "references");
     for (const referenceFile of await filesUnder(referencesDir)) {
       if (!referenceFile.endsWith(".md")) continue;
@@ -513,6 +562,7 @@ export async function validate(root: string): Promise<string[]> {
         errors.push(`${directory}:${relative}: forbidden package-manager command: ${line.trim()}`);
       }
       scanBannedTerms(reference, directory, relative, errors);
+      scanReleaseDelayPolicy(reference, directory, relative, errors);
     }
 
     for (const line of packageManagerCommands(fencedCode(source))) {
@@ -530,6 +580,8 @@ export async function validate(root: string): Promise<string[]> {
           );
         }
         scanBannedTerms(text, directory, path.relative(skillDir, template), errors);
+        scanReleaseDelayPolicy(text, directory, path.relative(skillDir, template), errors);
+        scanStructuredReleaseDelay(text, directory, path.relative(skillDir, template), errors);
       } catch {
         // Binary templates contain no commands this text gate can inspect.
       }

@@ -117,7 +117,8 @@ Debt that shrinks, defects that stop recurring, skills that improve from field e
 
 | Skill | What it does | Invocation |
 |---|---|---|
-| [`tailrocks-code-health`](skills/tailrocks-code-health/README.md) | Establish, audit, or tighten measurable shrink-only code-health ratchets for architecture, lint, dependency, flake, defect, documentation, or verification debt. | Manual only |
+| [`tailrocks-code-health`](skills/tailrocks-code-health/README.md) | Establish or tighten one explicitly approved shrink-only code-health ratchet for architecture, lint, dependency, flake, defect, documentation, or verification debt. | Manual only |
+| [`tailrocks-code-health-audit`](skills/tailrocks-code-health-audit/README.md) | Audit one code-health debt class read-only: inventory gates and exceptions, measure the baseline, evaluate shrink-only enforcement and verification placement, and emit fixed-ID evidence without installing or editing. | Manual only |
 | [`tailrocks-improve`](skills/tailrocks-improve/README.md) | Audit any repository through parallel read-only investigators and turn verified findings into standalone, executor-ready implementation plans under plans/ — no roadmap required. | Manual only |
 | [`tailrocks-agents-md`](skills/tailrocks-agents-md/README.md) | Apply agent-instruction topology policy when in-scope work touches AGENTS.md, client symlinks, instruction rules, or rule placement. | Model policy |
 | [`tailrocks-retrospect`](skills/tailrocks-retrospect/README.md) | After a roadmap item ships, rebuild which skills ran from commit trailers, diff that against its Decisions, Must not, spec IDs, and verification rounds, and propose patches to the skills at fault. | Manual only |

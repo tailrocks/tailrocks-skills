@@ -394,12 +394,18 @@ the running app.
 
 ### tailrocks-code-health
 
-Turn code quality into executable, monotonic contracts across the house stack:
-architecture DAGs, measured baselines, shrink-only debt budgets, flake quarantine,
-defect-to-gate learning, structured gate output, tiered verification, and
-automated latest-version enforcement.
+Establish or tighten one explicitly approved executable monotonic contract:
+architecture DAG, measured shrink-only debt, flake quarantine, defect-to-gate
+learning, structured output, tiered verification, or latest-version enforcement.
 
 Skill definition: `skills/tailrocks-code-health/SKILL.md`
+
+### tailrocks-code-health-audit
+
+Measure one code-health debt class read-only, inventory its gates and exceptions,
+and emit fixed-ID evidence without installing, editing, or authorizing a ratchet.
+
+Skill definition: `skills/tailrocks-code-health-audit/SKILL.md`
 
 ### tailrocks-improve
 

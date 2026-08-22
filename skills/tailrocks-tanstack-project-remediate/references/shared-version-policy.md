@@ -11,3 +11,7 @@ retain an older release or major silently. Resolve versions from the ecosystem's
 primary release source, read release and migration notes for breaking
 transitions, and prove peer, platform, and toolchain compatibility before
 acceptance.
+
+A minimum release age is forbidden.
+Security advisories use the highest fixed version immediately; batching or
+dependency-update delays never postpone a vulnerability fix.

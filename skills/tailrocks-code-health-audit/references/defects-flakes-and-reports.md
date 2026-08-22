@@ -1,4 +1,3 @@
-<!-- tailrocks-code-health-audit:start -->
 # Defect, Flake, and Report Criteria
 
 Every escaped defect has a dated identity, symptom, architectural enabling
@@ -19,10 +18,3 @@ schema, gate, ok, rule, file, line?, why, fix, rerun
 Human, versioned JSON, and CI renderers preserve identical pass/fail semantics.
 Non-empty violations exit nonzero, escape control characters, and name the
 narrowest correction and rerun command.
-<!-- tailrocks-code-health-audit:end -->
-
-## Mutation adapter
-
-Establish may add the approved defect ledger, exact flake presence baseline, and
-renderer contract. Tighten only removes proved-resolved identities; it never
-adds a quarantine entry merely to make a failing run green.

@@ -4,7 +4,8 @@ import path from "node:path";
 
 import { atomicRecoveryArtifacts, atomicWriteFiles, type AtomicFileRuntime } from "./atomic-file-transaction";
 
-type Entry = { source: string; destinations: string[] };
+type ReferenceSlice = { start: string; end: string };
+type Entry = { source: string; destinations: string[]; slice?: ReferenceSlice };
 type Manifest = { $schema: "tailrocks.generated-references/v1"; entries: Entry[] };
 type PlannedCopy = { source: string; destination: string; content: Buffer };
 type PlannedWrite = { source: string; destination: string; content: string | Uint8Array };
@@ -24,6 +25,10 @@ export type GeneratorReceipt = {
 const manifestSchema = "tailrocks.generated-references/v1";
 const receiptSchema = "tailrocks.generated-references-receipt/v1";
 const lockSchema = "tailrocks.generated-references-lock/v1";
+const codeHealthAuditSlice = {
+  start: "<!-- tailrocks-code-health-audit:start -->\n",
+  end: "<!-- tailrocks-code-health-audit:end -->",
+} as const;
 const rootSourcePattern = /^(?:shared|skill-authoring)\/references\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/;
 const generatedFamilies = [
   {
@@ -35,6 +40,18 @@ const generatedFamilies = [
       "middleware-and-security.md",
     ],
     destinations: ["tailrocks-axum-refactor", "tailrocks-axum-review"],
+  },
+  {
+    owner: "tailrocks-code-health",
+    references: [
+      "architecture-and-docs.md",
+      "defects-flakes-and-reports.md",
+      "ratchets-and-baselines.md",
+      "verification-lanes.md",
+      "versions-and-dependencies.md",
+    ],
+    destinations: ["tailrocks-code-health-audit"],
+    slice: codeHealthAuditSlice,
   },
   {
     owner: "tailrocks-graphql-best-practices",
@@ -137,6 +154,23 @@ function assertSorted(values: readonly string[], label: string): void {
 
 function sha256(source: Uint8Array): string {
   return createHash("sha256").update(source).digest("hex");
+}
+
+function projectReference(content: Buffer, slice: ReferenceSlice | undefined, source: string): Buffer {
+  if (slice === undefined) return content;
+  const start = Buffer.from(slice.start);
+  const end = Buffer.from(slice.end);
+  const startIndex = content.indexOf(start);
+  if (startIndex < 0 || content.indexOf(start, startIndex + start.length) >= 0)
+    throw new Error(`${source} slice start marker must occur exactly once`);
+  const contentStart = startIndex + start.length;
+  const endIndex = content.indexOf(end);
+  if (endIndex < contentStart || content.indexOf(end, endIndex + end.length) >= 0)
+    throw new Error(`${source} slice end marker must occur exactly once after start`);
+  const projected = content.subarray(contentStart, endIndex);
+  if (!projected.toString("utf8").startsWith("# ") || !projected.toString("utf8").endsWith("\n"))
+    throw new Error(`${source} slice must be a self-contained Markdown document`);
+  return projected;
 }
 
 function expectedLock(plan: readonly PlannedCopy[]): ReferenceLock {
@@ -259,7 +293,11 @@ async function loadPlan(
   const sources = manifest.entries.map((entry, index) => {
     if (typeof entry !== "object" || entry === null || Array.isArray(entry))
       throw new Error(`entries[${index}] must be an object`);
-    exactKeys(entry, ["destinations", "source"], `entries[${index}]`);
+    exactKeys(
+      entry,
+      entry.slice === undefined ? ["destinations", "source"] : ["destinations", "slice", "source"],
+      `entries[${index}]`,
+    );
     if (typeof entry.source !== "string" || !isGeneratedReferenceSource(entry.source))
       throw new Error(`entries[${index}].source is invalid`);
     if (
@@ -270,6 +308,21 @@ async function loadPlan(
     )
       throw new Error(`entries[${index}].destinations are invalid`);
     assertSorted(entry.destinations, `entries[${index}].destinations`);
+    if (entry.slice !== undefined) {
+      if (typeof entry.slice !== "object" || entry.slice === null || Array.isArray(entry.slice))
+        throw new Error(`entries[${index}].slice is invalid`);
+      exactKeys(entry.slice, ["end", "start"], `entries[${index}].slice`);
+      if (
+        typeof entry.slice.start !== "string" ||
+        typeof entry.slice.end !== "string" ||
+        entry.slice.start.length === 0 ||
+        entry.slice.end.length === 0 ||
+        entry.slice.start === entry.slice.end
+      )
+        throw new Error(`entries[${index}].slice is invalid`);
+    }
+    if (!entry.source.startsWith("skills/") && entry.slice !== undefined)
+      throw new Error(`entries[${index}].slice is allowed only for owner-family sources`);
     return entry.source;
   });
   assertSorted(sources, "manifest sources");
@@ -291,9 +344,12 @@ async function loadPlan(
       const source = `skills/${family.owner}/references/${name}`;
       expectedOwnerSources.push(source);
       const expected = family.destinations.map((destination) => `skills/${destination}/references/${name}`);
-      const actual = manifest.entries.find((entry) => entry.source === source)?.destinations;
-      if (actual?.join("\n") !== expected.join("\n"))
+      const manifestEntry = manifest.entries.find((entry) => entry.source === source);
+      if (manifestEntry?.destinations.join("\n") !== expected.join("\n"))
         throw new Error(`${source} must copy exactly to ${family.destinations.join(" and ")}`);
+      const expectedSlice = "slice" in family ? family.slice : undefined;
+      if (JSON.stringify(manifestEntry?.slice) !== JSON.stringify(expectedSlice))
+        throw new Error(`${source} must use its declared projection slice`);
     }
   }
   expectedOwnerSources.sort(compareCodeUnits);
@@ -327,7 +383,7 @@ async function loadPlan(
       if (!(await exists(path.join(root, "skills", owner, "SKILL.md"))))
         throw new Error(`generated-reference source owner is missing: ${owner}`);
     }
-    const content = await readFile(sourceFile);
+    const content = projectReference(await readFile(sourceFile), entry.slice, entry.source);
     for (const destination of entry.destinations) {
       await assertNoSymlink(root, destination);
       const skill = destination.split("/")[1]!;

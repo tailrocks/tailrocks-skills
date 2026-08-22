@@ -43,6 +43,7 @@
     "tailrocks-web-visual-qa",
     "---Code quality and contribution---",
     "tailrocks-code-health",
+    "tailrocks-code-health-audit",
     "tailrocks-improve",
     "tailrocks-agents-md",
     "tailrocks-retrospect",

@@ -151,7 +151,8 @@ implementation to it afterward.
 
 | Skill | Reach for it when |
 |---|---|
-| [`tailrocks-code-health`](/docs/skills/tailrocks-code-health) | A debt class must stop growing and become a measurable, shrink-only contract. |
+| [`tailrocks-code-health`](/docs/skills/tailrocks-code-health) | One explicitly approved debt class must become or tighten a standing shrink-only contract. |
+| [`tailrocks-code-health-audit`](/docs/skills/tailrocks-code-health-audit) | One debt class needs read-only measurement and fixed-ID evidence before any ratchet is authorized. |
 | [`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) | A rule must be recorded for coding agents, or the instruction files have grown, drifted, or landed in the wrong directory. |
 | [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) | A roadmap item has shipped and its delivery history should say which skills let it diverge from its own plan. |
 | [`tailrocks-simplify`](/docs/skills/tailrocks-simplify) | A pull request works and should carry less code, with behavior frozen. |
@@ -371,9 +372,10 @@ get wrong — and to a fixer skill instead when the finding's shape says
 so: `tailrocks-remediate` when the defect class will recur,
 `tailrocks-rethink` when nothing failed but the shape keeps producing
 near-misses, `tailrocks-simplify` for redundancy inside a diff.
-[`tailrocks-code-health`](/docs/skills/tailrocks-code-health) is not a
-one-off audit — it is the standing, monotonic debt gate that keeps a
-named class from growing once it is wired into CI.
+[`tailrocks-code-health-audit`](/docs/skills/tailrocks-code-health-audit) owns
+one-off read-only debt measurement. [`tailrocks-code-health`](/docs/skills/tailrocks-code-health)
+owns only an explicitly approved standing ratchet mutation that keeps a named
+class from growing once wired into CI.
 [`tailrocks-review-pr`](/docs/skills/tailrocks-review-pr) never runs cold:
 it reviews one open PR, branch, or diff against author intent, and never
 seeds roadmap items or plans. Run `tailrocks-audit` to find work, wire

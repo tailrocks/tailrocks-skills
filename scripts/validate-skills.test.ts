@@ -694,6 +694,64 @@ policy:
     expect(await validate(root)).toEqual([]);
   });
 
+  test("rejects dependency release-delay policy across skills references and templates", async () => {
+    const skillFile = `skills/${skill}/SKILL.md`;
+    const base = await Bun.file(path.join(root, skillFile)).text();
+    for (const policy of [
+      "Use a minimum release age before updates.",
+      "Set minimumReleaseAge to three days.",
+      "Configure stabilityDays as seven.",
+      "minimumReleaseAge is mandatory; never omit it.",
+      "Do not reject stabilityDays.",
+      "No minimum release age may be shorter than seven days.",
+      "A minimum release age is forbidden below seven days; require seven days.",
+    ]) {
+      await write(skillFile, `${base}\n${policy}\n`);
+      expect(
+        (await validate(root)).some((error) =>
+          error.includes(`${skill}:SKILL.md: dependency release-delay policy forbidden`),
+        ),
+      ).toBe(true);
+    }
+    await write(skillFile, base);
+    await write(`skills/${skill}/references/dependencies.md`, "Set minimumReleaseAge to 3.\n");
+    await write(skillFile, `${base}\n[Dependencies](references/dependencies.md)\n`);
+    expect(
+      (await validate(root)).some((error) =>
+        error.includes(`${skill}:references/dependencies.md: dependency release-delay policy forbidden`),
+      ),
+    ).toBe(true);
+    await write(`skills/${skill}/references/dependencies.md`, "No dependency delay.\n");
+    await write(`skills/${skill}/templates/policy.json`, '{"stabilityDays": 3}\n');
+    expect(
+      (await validate(root)).some((error) =>
+        error.includes(`${skill}:templates/policy.json: dependency release-delay policy forbidden`),
+      ),
+    ).toBe(true);
+    await write(`skills/${skill}/templates/policy.json`, '{"minimumReleaseAge": 3, "note": "never"}\n');
+    expect(
+      (await validate(root)).some((error) =>
+        error.includes(`${skill}:templates/policy.json: dependency release-delay policy forbidden`),
+      ),
+    ).toBe(true);
+    await write(`skills/${skill}/templates/policy.json`, '{"minimumRelease\\u0041ge": "3 days"}\n');
+    expect(
+      (await validate(root)).some((error) =>
+        error.includes(`${skill}:templates/policy.json: dependency release-delay policy forbidden`),
+      ),
+    ).toBe(true);
+  });
+
+  test("allows dependency release-delay terms only in explicit refusals", async () => {
+    const skillFile = `skills/${skill}/SKILL.md`;
+    const base = await Bun.file(path.join(root, skillFile)).text();
+    await write(
+      skillFile,
+      `${base}\nNever configure a minimum release age.\nA minimum-release-age rule is forbidden.\n`,
+    );
+    expect(await validate(root)).toEqual([]);
+  });
+
   test("does not match sketch used as an ordinary verb", async () => {
     await write(
       `skills/${skill}/SKILL.md`,

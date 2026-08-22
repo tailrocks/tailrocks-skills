@@ -40,6 +40,7 @@
         "skills/tailrocks-axum-review/references/runtime-trust.md",
         "skills/tailrocks-brainstorm/references/runtime-trust.md",
         "skills/tailrocks-checkout-pr/references/runtime-trust.md",
+        "skills/tailrocks-code-health-audit/references/runtime-trust.md",
         "skills/tailrocks-code-health/references/runtime-trust.md",
         "skills/tailrocks-contribute/references/runtime-trust.md",
         "skills/tailrocks-create-pr/references/runtime-trust.md",
@@ -103,6 +104,7 @@
     {
       "source": "shared/references/version-policy.md",
       "destinations": [
+        "skills/tailrocks-code-health-audit/references/shared-version-policy.md",
         "skills/tailrocks-code-health/references/shared-version-policy.md",
         "skills/tailrocks-rust-project-audit/references/shared-version-policy.md",
         "skills/tailrocks-rust-project-remediate/references/shared-version-policy.md",
@@ -178,6 +180,56 @@
         "skills/tailrocks-axum-refactor/references/middleware-and-security.md",
         "skills/tailrocks-axum-review/references/middleware-and-security.md"
       ]
+    },
+    {
+      "source": "skills/tailrocks-code-health/references/architecture-and-docs.md",
+      "destinations": [
+        "skills/tailrocks-code-health-audit/references/architecture-and-docs.md"
+      ],
+      "slice": {
+        "start": "<!-- tailrocks-code-health-audit:start -->\n",
+        "end": "<!-- tailrocks-code-health-audit:end -->"
+      }
+    },
+    {
+      "source": "skills/tailrocks-code-health/references/defects-flakes-and-reports.md",
+      "destinations": [
+        "skills/tailrocks-code-health-audit/references/defects-flakes-and-reports.md"
+      ],
+      "slice": {
+        "start": "<!-- tailrocks-code-health-audit:start -->\n",
+        "end": "<!-- tailrocks-code-health-audit:end -->"
+      }
+    },
+    {
+      "source": "skills/tailrocks-code-health/references/ratchets-and-baselines.md",
+      "destinations": [
+        "skills/tailrocks-code-health-audit/references/ratchets-and-baselines.md"
+      ],
+      "slice": {
+        "start": "<!-- tailrocks-code-health-audit:start -->\n",
+        "end": "<!-- tailrocks-code-health-audit:end -->"
+      }
+    },
+    {
+      "source": "skills/tailrocks-code-health/references/verification-lanes.md",
+      "destinations": [
+        "skills/tailrocks-code-health-audit/references/verification-lanes.md"
+      ],
+      "slice": {
+        "start": "<!-- tailrocks-code-health-audit:start -->\n",
+        "end": "<!-- tailrocks-code-health-audit:end -->"
+      }
+    },
+    {
+      "source": "skills/tailrocks-code-health/references/versions-and-dependencies.md",
+      "destinations": [
+        "skills/tailrocks-code-health-audit/references/versions-and-dependencies.md"
+      ],
+      "slice": {
+        "start": "<!-- tailrocks-code-health-audit:start -->\n",
+        "end": "<!-- tailrocks-code-health-audit:end -->"
+      }
     },
     {
       "source": "skills/tailrocks-graphql-best-practices/references/client-tanstack.md",

@@ -18,6 +18,8 @@ function manifest(): Record<string, unknown> {
       {
         source: "shared/references/runtime-trust.md",
         destinations: [
+          "skills/tailrocks-code-health-audit/references/runtime-trust.md",
+          "skills/tailrocks-code-health/references/runtime-trust.md",
           "skills/tailrocks-one/references/runtime-trust.md",
           "skills/tailrocks-rust-project-audit/references/runtime-trust.md",
           "skills/tailrocks-rust-project-remediate/references/runtime-trust.md",
@@ -46,6 +48,20 @@ function manifest(): Record<string, unknown> {
         source: "skill-authoring/references/operational-contract.md",
         destinations: ["skills/tailrocks-one/references/operational-contract.md"],
       },
+      ...[
+        "architecture-and-docs.md",
+        "defects-flakes-and-reports.md",
+        "ratchets-and-baselines.md",
+        "verification-lanes.md",
+        "versions-and-dependencies.md",
+      ].map((name) => ({
+        source: `skills/tailrocks-code-health/references/${name}`,
+        destinations: [`skills/tailrocks-code-health-audit/references/${name}`],
+        slice: {
+          start: "<!-- tailrocks-code-health-audit:start -->\n",
+          end: "<!-- tailrocks-code-health-audit:end -->",
+        },
+      })),
       ...[
         "lints-clippy-rustfmt.md",
         "supply-chain-and-testing.md",
@@ -112,6 +128,8 @@ async function fixture(): Promise<string> {
   await write(root, "skills/tailrocks-one/SKILL.md");
   await write(root, "skills/tailrocks-two/SKILL.md");
   for (const skill of [
+    "tailrocks-code-health-audit",
+    "tailrocks-code-health",
     "tailrocks-rust-project-audit",
     "tailrocks-rust-project-remediate",
     "tailrocks-rust-project-setup",
@@ -134,6 +152,18 @@ async function fixture(): Promise<string> {
     "tailrocks-typescript-review",
   ])
     await write(root, `skills/${skill}/SKILL.md`);
+  for (const name of [
+    "architecture-and-docs.md",
+    "defects-flakes-and-reports.md",
+    "ratchets-and-baselines.md",
+    "verification-lanes.md",
+    "versions-and-dependencies.md",
+  ])
+    await write(
+      root,
+      `skills/tailrocks-code-health/references/${name}`,
+      `before\n<!-- tailrocks-code-health-audit:start -->\n# ${name}\naudit\n<!-- tailrocks-code-health-audit:end -->\nafter\n`,
+    );
   for (const name of [
     "lints-clippy-rustfmt.md",
     "supply-chain-and-testing.md",
@@ -177,17 +207,17 @@ test("writes every destination atomically and then proves byte equality", async 
   expect(written).toMatchObject({
     schema: "tailrocks.generated-references-receipt/v1",
     mode: "write",
-    sources: 25,
-    destinations: 74,
-    byte_identical: 74,
-    written: 74,
+    sources: 30,
+    destinations: 81,
+    byte_identical: 81,
+    written: 81,
   });
-  expect(written.mutations).toHaveLength(75);
+  expect(written.mutations).toHaveLength(82);
   expect(written.mutations).toContain("generated-references.lock.json");
   expect(await readFile(path.join(root, "skills/tailrocks-two/references/runtime-trust.md"), "utf8")).toBe(
     "runtime\n",
   );
-  expect((await generateReferences(root, "check")).byte_identical).toBe(74);
+  expect((await generateReferences(root, "check")).byte_identical).toBe(81);
   expect((await generateReferences(root, "write")).written).toBe(0);
   expect(await readFile(path.join(root, "generated-references.lock.json"), "utf8")).toContain(
     "tailrocks.generated-references-lock/v1",
@@ -209,7 +239,48 @@ test("copies and validates canonical bytes without text normalization", async ()
   await generateReferences(root, "write");
   const destination = await readFile(path.join(root, "skills/tailrocks-one/references/runtime-trust.md"));
   expect(destination.equals(bytes)).toBe(true);
-  expect((await generateReferences(root, "check")).byte_identical).toBe(74);
+  expect((await generateReferences(root, "check")).byte_identical).toBe(81);
+});
+
+test("projects declared reference slices as exact self-contained bytes", async () => {
+  const root = await fixture();
+  await generateReferences(root, "write");
+  expect(
+    await readFile(
+      path.join(root, "skills/tailrocks-code-health-audit/references/ratchets-and-baselines.md"),
+      "utf8",
+    ),
+  ).toBe("# ratchets-and-baselines.md\naudit\n");
+});
+
+test("rejects missing duplicate and malformed projection markers", async () => {
+  for (const [, content, error] of [
+    ["missing", "# missing\n", "slice start marker must occur exactly once"],
+    [
+      "duplicate",
+      "<!-- tailrocks-code-health-audit:start -->\n# one\n<!-- tailrocks-code-health-audit:start -->\n# two\n<!-- tailrocks-code-health-audit:end -->\n",
+      "slice start marker must occur exactly once",
+    ],
+    [
+      "malformed",
+      "<!-- tailrocks-code-health-audit:start -->\nnot a document\n<!-- tailrocks-code-health-audit:end -->\n",
+      "slice must be a self-contained Markdown document",
+    ],
+    [
+      "end-before-start",
+      "<!-- tailrocks-code-health-audit:end -->\n<!-- tailrocks-code-health-audit:start -->\n# late\n",
+      "slice end marker must occur exactly once after start",
+    ],
+    [
+      "duplicate-end-before-start",
+      "<!-- tailrocks-code-health-audit:end -->\n<!-- tailrocks-code-health-audit:start -->\n# body\n<!-- tailrocks-code-health-audit:end -->\n",
+      "slice end marker must occur exactly once after start",
+    ],
+  ] as const) {
+    const root = await fixture();
+    await write(root, `skills/tailrocks-code-health/references/architecture-and-docs.md`, content);
+    await expect(generateReferences(root, "write")).rejects.toThrow(error);
+  }
 });
 
 test("manifest exactly covers canonical sources and every current skill runtime copy", async () => {
@@ -226,7 +297,7 @@ test("manifest exactly covers canonical sources and every current skill runtime 
 
 test("admits only declared owner-family reference sources and counts them", async () => {
   const root = await fixture();
-  expect((await generateReferences(root, "write")).sources).toBe(25);
+  expect((await generateReferences(root, "write")).sources).toBe(30);
 
   const source = manifest();
   const entries = source.entries as Array<{ source: string; destinations: string[] }>;
@@ -280,8 +351,8 @@ test("rejects lock-owned removal, path escapes, and unsorted entries", async () 
 
 test("concurrent replacement refuses, survives rollback, and retains recovery", async () => {
   const root = await fixture();
-  const first = "skills/tailrocks-one/references/runtime-trust.md";
-  const second = "skills/tailrocks-two/references/runtime-trust.md";
+  const first = "skills/tailrocks-code-health-audit/references/runtime-trust.md";
+  const second = "skills/tailrocks-code-health/references/runtime-trust.md";
   await write(root, first, "old one\n");
   await write(root, second, "old two\n");
   await expect(

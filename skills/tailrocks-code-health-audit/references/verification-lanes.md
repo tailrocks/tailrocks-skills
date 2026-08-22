@@ -1,4 +1,3 @@
-<!-- tailrocks-code-health-audit:start -->
 # Verification Lane Criteria
 
 Checks are placed by measured feedback cost:
@@ -17,9 +16,3 @@ artifact/summary, owner, and correction path. Advisory failures remain visible.
 Promotion or demotion requires measured runtime, near-zero false positives, a
 named failure class, and an owner. Benchmark/profiling profiles never masquerade
 as shipped behavior; nightly-dependent tools stay isolated from stable PR gates.
-<!-- tailrocks-code-health-audit:end -->
-
-## Mutation adapter
-
-Establish places only the approved selected gate. Tighten may promote it only
-after the required evidence; cadence changes never hide a current failure.

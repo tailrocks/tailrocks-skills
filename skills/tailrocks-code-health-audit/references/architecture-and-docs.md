@@ -1,4 +1,3 @@
-<!-- tailrocks-code-health-audit:start -->
 # Architecture and Documentation Criteria
 
 The measurable contract starts with an inward dependency DAG. Every crate or
@@ -20,10 +19,3 @@ commands, internal links, flags, routes, fields, and module paths remain current
 Generated files name their generator and reproduce cleanly from owned inputs.
 The audit treats an unclassified edge, duplicated source of truth, stale doc
 mapping, or edited generated output as a gap.
-<!-- tailrocks-code-health-audit:end -->
-
-## Mutation adapter
-
-Establish writes the approved DAG, current presence baseline, and one provider
-gate. Tighten only deletes resolved violations or narrows the approved surface;
-it never reclassifies a forbidden edge to absorb a regression.

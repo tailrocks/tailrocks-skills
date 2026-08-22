@@ -829,16 +829,39 @@ all terminal checks pass, and the final literal marker is changed to
     tests/1,794 assertions across 41 selected non-protected files. Fresh subagent
     verdict: PASS after verify-selector and generator-sandbox corrections. No
     migration-plan artifact added; no evals run.
-- [ ] [IN_PROGRESS] P05.10 Code health → approved ratchet mutation and read-only audit;
+- [x] [COMPLETED] P05.10 Code health → approved ratchet mutation and read-only audit;
   remove minimum-release-age policy while retaining latest-stable and
   vulnerability policy.
-- [ ] [TODO] P05.GATE Prove one owner per old selector, exact compatibility
+  - Evidence receipt (2026-08-23): narrowed `tailrocks-code-health` to one
+    explicitly approved establish/tighten mutation with no-widen, exact
+    precondition, command sandbox, atomic CAS, and recovery contracts; added the
+    manual-only read-only `tailrocks-code-health-audit` with a fixed 12-row ledger
+    and explicit provider `NOT_APPLICABLE` state. Extended reference generation
+    with globally unique marker-validated source slices and exact extracted-byte
+    locks; five canonical adapters now produce five self-contained audit-only
+    projections. All 54 sources produce 184 byte-identical destinations. Moved
+    latest-stable, no-delay, and immediate highest-fixed vulnerability doctrine
+    to the shared version source; the code-health adapter retains only ratchet
+    measurement/enforcement, and semantic JSON plus exact-line validation blocks
+    release-delay policy and escaped-key/false-refusal bypasses. Registry/docs
+    agree on 66 skills (55 manual, 11 model-policy), 17,252 total description
+    characters, and 14,227 capped characters. Focused proof passed 77 tests/601
+    assertions; final `rtk mise run migration-check` passed 315 tests/1,853
+    assertions across 42 selected non-protected files. Fresh subagent verdict:
+    PASS after slice, version-authority, and validator-bypass corrections. No
+    migration-plan artifact added; no evals run.
+- [x] [COMPLETED] P05.GATE Prove one owner per old selector, exact compatibility
   routing, synchronized generated surfaces, and `rtk mise run migration-check`.
-  Evidence: pending.
+  - Evidence receipt (2026-08-23): the ten package ownership suites passed 38
+    tests/459 assertions; reference generation proved 54 sources and 184
+    byte-identical destinations; skill validation covered 66 skills and generated
+    documentation check covered 202 files. Final `rtk mise run migration-check`
+    passed 315 tests/1,853 assertions across 42 selected non-protected files.
+    No migration-plan artifact added; no evals run.
 
 ## P06 — Split improvement, instruction, and contribution ownership
 
-- [ ] [TODO] P06.01 Improve → standard, deep, security, plan, execution,
+- [ ] [IN_PROGRESS] P06.01 Improve → standard, deep, security, plan, execution,
   reconcile, and seed-roadmap owners with exclusive outputs.
 - [ ] [TODO] P06.02 Agents MD → add, audit, sync; retain `MODEL_POLICY` only on
   the existing named owner pending descendant approval, while mutation remains

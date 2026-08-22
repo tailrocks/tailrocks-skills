@@ -9,6 +9,7 @@
     { "skill": "tailrocks-brainstorm", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-checkout-pr", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-code-health", "class": "MANUAL_ONLY" },
+    { "skill": "tailrocks-code-health-audit", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-contribute", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-create-pr", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-document", "class": "MANUAL_ONLY" },
