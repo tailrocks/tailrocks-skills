@@ -52,9 +52,22 @@ writing one.
 
 ## Steps
 
+Before invoking topology mechanics, set `SKILL_DIR` to the directory containing
+the real path of this installed `SKILL.md`. Derive `TOPOLOGY_SCRIPT` exactly:
+
+```sh
+TOPOLOGY_SCRIPT=$(realpath "$SKILL_DIR/../../scripts/agents-md-topology.ts")
+```
+
+Require the joined path itself to be non-symlink and its resolved entrypoint to
+be regular. Never run a same-named script from the target repository.
+
 1. **Map the instruction files first.** Find every `AGENTS.md`, `CLAUDE.md`,
-   and other client name in the repository, and what each is — file or symlink,
-   and to what. Read
+   and other client name in the repository with `bun "$TOPOLOGY_SCRIPT"
+   discover --root <repository>`. Pass each
+   additional required client basename with `--client-name`. Treat its typed
+   receipt as the topology record; do not infer link correctness from a
+   filename alone. Read
    [`placement-and-topology.md`](references/placement-and-topology.md).
    **Complete when:** the current topology is known, including files that
    should be symlinks and are not.
@@ -90,14 +103,20 @@ then run step 9 read-only. Only `add` and `sync` may mutate files.
 
 6. **Place it, creating the file when the owning directory has none.** A new
    `AGENTS.md` plus its `CLAUDE.md` symlink is the expected outcome, not an
-   escalation. Never redirect a rule to an existing file merely because that
-   file exists. Never create a second content file beside one.
+   escalation. Write the approved `AGENTS.md` content first, then invoke the
+   topology script's `create` mode for each missing client. Never redirect a
+   rule to an existing file merely because that file exists. Never create a
+   second content file beside one.
    **Complete when:** the rule sits at its owning level, any new file has its
    symlink, and no ancestor repeats the rule.
 
 7. **Fix the topology in the same pass.** Every client-specific name beside an
    `AGENTS.md` is a symlink to it. A client name holding real content is merged
-   into `AGENTS.md` and replaced by a symlink.
+   into `AGENTS.md` under this skill's semantic review, removed only after the
+   merge is proved, then recreated through `create`. Repair an existing wrong
+   symlink only through `repair --expect-target <exact-discovered-raw-target>`.
+   The script refuses regular files and stale observations; never bypass that
+   refusal with an overwrite.
    **Complete when:** every instruction file is `AGENTS.md` or a symlink
    resolving to one in its own directory.
 
@@ -107,8 +126,10 @@ then run step 9 read-only. Only `add` and `sync` may mutate files.
    added unless the repository genuinely grew.
    **Complete when:** removals are proposed with evidence, not deferred.
 
-9. **Verify.** Resolve every symlink, confirm no rule is stated at two levels,
-   and report each file's size against its budget.
+9. **Verify.** Run `bun "$TOPOLOGY_SCRIPT" verify --root <repository>` with the
+   same extra client names and require a valid typed
+   receipt. Then confirm no rule is stated at two levels and report each file's
+   size against its budget.
    **Complete when:** the topology holds and every reported size is measured.
 
 ## Output contract
@@ -119,7 +140,7 @@ Report:
 - for each rule: its owning directory and why the level above is too broad;
 - rules rejected as obvious, and rules routed to a gate, skill, or document;
 - the exact lines written, and the lines deleted with their evidence;
-- symlinks created or repaired;
+- typed topology issues and mutations from the script receipts;
 - per-file size before and after, and which files load on every request.
 
 ## Final gate

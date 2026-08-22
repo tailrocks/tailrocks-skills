@@ -106,11 +106,12 @@ The existing set of instruction files is a snapshot, not a constraint. When step
 the nearest existing file is the failure this skill exists to prevent — it is
 how root files grow.
 
-A new file is created as a pair, in the same change:
+A new file is created as a pair, in the same change. Write the reviewed content,
+then let the topology script create the missing client link:
 
 ```sh
 printf '# %s\n\n' "$(basename "$PWD")" > AGENTS.md
-ln -s AGENTS.md CLAUDE.md
+bun "$TOPOLOGY_SCRIPT" create --root "$REPOSITORY" --directory "$RELATIVE_DIRECTORY" --client CLAUDE.md
 ```
 
 A directory never holds one without the other. Add both to the same commit so no
@@ -128,30 +129,29 @@ In any directory that has instructions:
 - `CLAUDE.md`, `GEMINI.md`, and any other client name are symlinks to
   `AGENTS.md` in the same directory.
 
-Create and verify:
+Create and verify through typed receipts:
 
 ```sh
-ln -s AGENTS.md CLAUDE.md
-readlink CLAUDE.md          # AGENTS.md
-git ls-files -s CLAUDE.md   # mode 120000 means git stored a symlink
+bun "$TOPOLOGY_SCRIPT" create --root "$REPOSITORY" --directory "$RELATIVE_DIRECTORY" --client CLAUDE.md
+bun "$TOPOLOGY_SCRIPT" verify --root "$REPOSITORY"
 ```
 
 The link target is the bare filename, never a path, so the pair stays valid
 under any checkout, worktree, or copy.
 
 Merging a client file that already holds content: move anything it says that
-`AGENTS.md` does not into `AGENTS.md`, delete the client file, then create the
-symlink. Never keep "just a few Claude-specific lines" — that is how the two
-files diverged in the first place.
+`AGENTS.md` does not into `AGENTS.md`, prove the semantic merge, delete the
+client file, then use the script's `create` mode. For an existing wrong symlink,
+use `repair` with the exact raw target returned by `discover`; a changed target
+must be rediscovered, never overwritten. The script never replaces a regular
+file. Never keep "just a few Claude-specific lines" — that is how the two files
+diverged in the first place.
 
-Two situations argue against the symlink, and only these two:
-
-- **Windows checkouts without Developer Mode or `core.symlinks=true`**, where
-  git materializes a symlink as a text file containing its target. Use
-  `CLAUDE.md` containing exactly `@AGENTS.md` instead, for that repository.
-- **A genuinely client-specific instruction** that would be wrong for other
-  agents. Prefer deleting it; agent-specific behavior in a shared repository is
-  usually a sign the rule belongs in that client's own configuration.
+Repositories using this topology must enable real symlinks on every checkout,
+including Windows Developer Mode or `core.symlinks=true`. A text import fallback
+is a second content file and fails verification. Genuinely client-specific
+behavior belongs in that client's user configuration, not a repository client
+file that makes shared instructions diverge.
 
 ## Budget
 

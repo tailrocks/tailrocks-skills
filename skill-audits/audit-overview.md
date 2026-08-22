@@ -469,10 +469,25 @@ all terminal checks pass, and the final literal marker is changed to
     proof covered 4 patterns and 183 frozen source paths with zero violations;
     diff check passed. Fresh subagent verdict: PASS after a destructive temp
     cleanup blocker was fixed with UUID ownership tracking. No evals run.
-- [ ] [IN_PROGRESS] P04.02 Add `scripts/agents-md-topology.ts` with typed mutation
+- [x] [COMPLETED] P04.02 Add `scripts/agents-md-topology.ts` with typed mutation
   receipts, exact symlink discovery/create/repair/verify behavior, and temporary
   directory tests.
-- [ ] [TODO] P04.03 Add `scripts/checkout-pr.ts` with validated number/URL/branch,
+  - Evidence receipt (2026-08-22): added deterministic discovery and verification
+    receipts plus no-clobber create and exact-observation repair. Mutations run
+    from a directory-inode-bound child, use bigint device/inode ownership, move
+    deletion candidates through UUID quarantines, restore mismatches, and retain
+    named recovery artifacts when rollback cannot finish. The skill resolves the
+    installed collection entrypoint, keeps semantic regular-file merges outside
+    software mechanics, and routes audit through read-only modes. Focused proof
+    passed 15 tests/70 assertions, including symlink loops, parent swaps,
+    concurrent entry replacement, install/rollback failures, and post-success
+    hook failures. `rtk mise run migration-check` passed 164 tests/907 assertions
+    across 19 selected non-protected files, validated 44 skills, checked 136
+    generated files, and passed formatting and diff checks. Protection proof
+    covered 4 patterns/183 frozen source paths with zero violations. Fresh
+    subagent verdict: PASS after descriptor anchoring and completion-state fixes.
+    No evals run.
+- [ ] [IN_PROGRESS] P04.03 Add `scripts/checkout-pr.ts` with validated number/URL/branch,
   dirty-tree refusal, closed/no-match handling, and exact switch verification.
 - [ ] [TODO] P04.04 Add `scripts/post-pr-review.ts`; require fresh posting
   authority, verify current HEAD, and deduplicate repeated receipts.
