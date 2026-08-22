@@ -13,7 +13,7 @@ agent loads it. Source: [SKILL.md](https://github.com/tailrocks/tailrocks-skills
 A behavioral edit is code: **no behavioral edit without the failure
 observed first** — if you have not seen the skill's current text produce
 the wrong behavior, you do not know the edit fixes it. And a router edit
-is a change to *every* behavior in the file: each added line dilutes the
+is a change to _every_ behavior in the file: each added line dilutes the
 ones already there.
 
 An update preserves the complete public contract: responsibility, name,
@@ -36,17 +36,17 @@ artifacts; cite location and type only.
    declined.
 
 2. **Freeze the contract and scope the edit.** Read `SKILL.md`, every
-   reference, `evals/evals.json`. Check the eval set for cases that
-   depend on the lines you are about to touch *before* rewording a gate,
+   reference, and the cited non-protected evidence record. Check its acceptance
+   claims for dependencies on lines you are about to touch _before_ rewording a gate,
    a rejection rule, or a completion clause: those lines are
-   load-bearing, and an eval-pinned line is not edited casually.
+   load-bearing, and an evidence-pinned line is not edited casually.
    Read canonical
    `skills/tailrocks-skill-audit/references/design-doctrine.md` directly.
    Record every public-contract field. Apply its topology predicate to target
    and requested delta only. Separate trigger, output/oracle, authority, side
    effect, or failure path routes to refactor; public-contract delta stops for a
    migration contract. **Complete when:** every line the edit touches is classified
-   load-bearing or free, with the eval cases that pin it named.
+   load-bearing or free, with the acceptance claims that pin it named.
 
 3. **Apply the smallest strong form.** Strengthen an existing section
    over adding one — two sections gesturing at one obligation are weaker
@@ -60,7 +60,7 @@ artifacts; cite location and type only.
 4. **Preserve frozen evidence.** Read canonical
    `skills/tailrocks-skill-audit/references/testing-doctrine.md` directly.
    Map target failure and affected invariants to existing evidence. This task
-   leaves eval artifacts and execution untouched under its explicit exclusion.
+   never inspects or changes frozen legacy eval artifacts under its explicit exclusion.
    **Complete when:** the behavioral delta has prior discriminating evidence and
    the complete public-contract snapshot is unchanged.
 
@@ -75,18 +75,19 @@ artifacts; cite location and type only.
 ## Red flags — STOP
 
 - "Just add a section" — additions dilute every existing behavior;
-  strengthen or replace, then update the whole eval set for CI.
-- "The evals pass, skip the baseline" — passing evals prove the old
-  behaviors survive; they say nothing about the new one.
-- "Rephrase the gates, it's just prose" — a gate an eval case depends on
-  is load-bearing; check the eval set first.
+  strengthen or replace, then rerun all affected deterministic acceptance checks.
+- "The old checks pass, skip the baseline" — preservation proof says nothing
+  about the new behavior.
+- "Rephrase the gates, it's just prose" — a gate an acceptance claim depends
+  on is load-bearing; check its evidence first.
 - "Fire the trigger more often while you're at it" — that is a contract
   change, not an update.
 
 ## Final gate
 
 Never ship a behavioral edit whose failure was not observed. Never
-reword an eval-pinned line without checking the eval set. Never append
+reword an evidence-pinned line without checking its acceptance claims. Never append
 past the router budget. Never change any public-contract field or absorb a
-separately invokable responsibility in an update. Never run the eval harness
-locally. Report every check skipped.
+separately invokable responsibility in an update. Never inspect, require,
+modify, move, execute, or certify frozen legacy eval infrastructure. Report
+every check skipped.

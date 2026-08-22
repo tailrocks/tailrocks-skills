@@ -3,6 +3,9 @@ import path from "node:path";
 
 const guard = "Use only when the user explicitly requests this skill.";
 const descriptionBudget = 250;
+const invocationRegistrySchema = "tailrocks.skill-invocation/v1";
+
+type InvocationClass = "MANUAL_ONLY" | "MODEL_POLICY";
 
 async function exists(file: string): Promise<boolean> {
   try {
@@ -11,10 +14,6 @@ async function exists(file: string): Promise<boolean> {
   } catch {
     return false;
   }
-}
-
-export function resolveEvalFixture(root: string, skillDir: string, fixture: string): string {
-  return fixture.startsWith("skills/") ? path.join(root, fixture) : path.join(skillDir, fixture);
 }
 
 async function filesUnder(directory: string): Promise<string[]> {
@@ -26,6 +25,74 @@ async function filesUnder(directory: string): Promise<string[]> {
     else output.push(file);
   }
   return output;
+}
+
+async function validateInvocationRegistry(
+  root: string,
+  skills: string[],
+  errors: string[],
+): Promise<Map<string, InvocationClass>> {
+  const classes = new Map<string, InvocationClass>();
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(await readFile(path.join(root, "invocation-registry.json"), "utf8"));
+  } catch {
+    errors.push("invocation-registry.json: missing or invalid JSON");
+    return classes;
+  }
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    errors.push("invocation-registry.json: root must be an object");
+    return classes;
+  }
+  const registry = parsed as { $schema?: unknown; owners?: unknown };
+  const topLevelKeys = Object.keys(registry).sort();
+  if (topLevelKeys.join(",") !== "$schema,owners") {
+    errors.push("invocation-registry.json: top-level keys must be $schema and owners");
+  }
+  if (registry.$schema !== invocationRegistrySchema) {
+    errors.push(`invocation-registry.json: schema must be ${invocationRegistrySchema}`);
+  }
+  if (!Array.isArray(registry.owners)) {
+    errors.push("invocation-registry.json: owners must be an array");
+    return classes;
+  }
+
+  const known = new Set(skills);
+  let previousSkill = "";
+  for (const [index, raw] of registry.owners.entries()) {
+    if (typeof raw !== "object" || raw === null) {
+      errors.push(`invocation-registry.json: owner #${index + 1} must be an object`);
+      continue;
+    }
+    const owner = raw as { skill?: unknown; class?: unknown };
+    if (Object.keys(owner).sort().join(",") !== "class,skill") {
+      errors.push(`invocation-registry.json: owner #${index + 1} keys must be skill and class`);
+    }
+    if (typeof owner.skill !== "string" || owner.skill === "") {
+      errors.push(`invocation-registry.json: owner #${index + 1} needs skill`);
+      continue;
+    }
+    if (classes.has(owner.skill)) {
+      errors.push(`invocation-registry.json: duplicate owner ${owner.skill}`);
+      continue;
+    }
+    if (previousSkill !== "" && owner.skill < previousSkill) {
+      errors.push("invocation-registry.json: owners must be sorted by skill");
+    }
+    previousSkill = owner.skill;
+    if (!known.has(owner.skill)) {
+      errors.push(`invocation-registry.json: unknown owner ${owner.skill}`);
+    }
+    if (owner.class !== "MANUAL_ONLY" && owner.class !== "MODEL_POLICY") {
+      errors.push(`invocation-registry.json: ${owner.skill} has invalid class ${String(owner.class)}`);
+      continue;
+    }
+    classes.set(owner.skill, owner.class);
+  }
+  for (const skill of skills) {
+    if (!classes.has(skill)) errors.push(`invocation-registry.json: missing owner ${skill}`);
+  }
+  return classes;
 }
 
 async function validateDurableContracts(root: string, errors: string[]): Promise<void> {
@@ -117,9 +184,7 @@ async function scanLinks(
       errors.push(`${directory}: broken reference ${raw}`);
     }
   }
-  for (const match of proseWithoutFences(source).matchAll(
-    /`((?:references|templates|scripts|evals)\/[^\s`]+)`/g,
-  )) {
+  for (const match of proseWithoutFences(source).matchAll(/`((?:references|templates|scripts)\/[^\s`]+)`/g)) {
     const raw = match[1].replace(/[),.;:]+$/, "").split("#", 1)[0];
     const target = path.resolve(skillDir, raw);
     if (outside(skillDir, target)) {
@@ -203,19 +268,10 @@ const designToolPattern =
 const modelBrandPattern =
   /\b(?:fable\s*\d|mythos\s*\d|opus\s*\d|sonnet\s*\d|haiku\s*\d|claude-(?:opus|sonnet|haiku|fable|mythos)|gpt-\d|gemini-\d|llama\s*\d|mistral-\w)\b/i;
 
-// The eval harness. Authoring `evals/evals.json` is part of every skill
-// change; running the harness is a CI/CD concern that nothing in this
-// repository has wired yet. Prose *about* the policy has to be able to name
-// the command, so only a fenced block matches — a fenced command is a
-// copy-paste invocation, which is the failure this gate exists to stop.
-const evalRunnerPattern = /\bmise\s+run\s+evals\b|\brun-evals\.ts\b/;
-
-function evalRunnerInvocations(source: string): string[] {
-  return fencedCode(source)
-    .split("\n")
-    .filter((line) => evalRunnerPattern.test(line));
-}
-
+// The frozen legacy eval runtime is outside ordinary authoring. Prose *about*
+// that exclusion has to be able to name the command, so only a fenced block
+// matches — a fenced command is a copy-paste invocation and therefore an
+// attempt to execute excluded infrastructure.
 function bannedTermLines(source: string, pattern: RegExp): string[] {
   return source.split("\n").filter((line) => pattern.test(line) && !negationPattern.test(line));
 }
@@ -226,9 +282,6 @@ function scanBannedTerms(source: string, directory: string, label: string, error
   }
   for (const line of bannedTermLines(source, modelBrandPattern)) {
     errors.push(`${directory}:${label}: model brand name forbidden in skill content: ${line.trim()}`);
-  }
-  for (const line of evalRunnerInvocations(source)) {
-    errors.push(`${directory}:${label}: eval harness invocation forbidden in skill content: ${line.trim()}`);
   }
 }
 
@@ -241,6 +294,7 @@ export async function validate(root: string): Promise<string[]> {
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .sort();
+  const invocationClasses = await validateInvocationRegistry(root, entries, errors);
 
   for (const directory of entries) {
     const skillDir = path.join(skillsRoot, directory);
@@ -251,17 +305,18 @@ export async function validate(root: string): Promise<string[]> {
     }
 
     const source = await readFile(skillFile, "utf8");
-    const routerLines = source.split("\n").length;
-    if (routerLines > ROUTER_BUDGET) {
-      errors.push(
-        `${directory}: SKILL.md is ${routerLines} lines, over the ${ROUTER_BUDGET}-line router budget — ` +
-          `move depth into references/ or replace a section rather than appending one`,
-      );
-    }
     const block = source.match(/^---\n([\s\S]*?)\n---/);
     if (!block) {
       errors.push(`${directory}: invalid frontmatter`);
       continue;
+    }
+    const routerBody = source.slice(block[0].length).replace(/^\n/, "");
+    const routerLines = routerBody.split("\n").length;
+    if (routerLines > ROUTER_BUDGET) {
+      errors.push(
+        `${directory}: SKILL.md body is ${routerLines} lines, over the ${ROUTER_BUDGET}-line router budget — ` +
+          `move depth into references/ or replace a section rather than appending one`,
+      );
     }
 
     let metadata: Record<string, unknown>;
@@ -273,6 +328,7 @@ export async function validate(root: string): Promise<string[]> {
     }
     const name = metadata.name;
     const description = metadata.description;
+    const invocationClass = invocationClasses.get(directory);
     if (name !== directory) errors.push(`${directory}: name must match directory`);
     if (typeof name === "string" && !name.startsWith("tailrocks-")) {
       errors.push(`${directory}: name must start with tailrocks-`);
@@ -282,24 +338,62 @@ export async function validate(root: string): Promise<string[]> {
     }
     if (typeof description !== "string" || description.length < 1 || description.length > 1024) {
       errors.push(`${directory}: description must contain 1-1024 characters`);
-    } else if (!description.startsWith(guard)) {
-      errors.push(`${directory}: description must start with explicit-request guard`);
+    } else if (invocationClass === "MANUAL_ONLY" && !description.startsWith(guard)) {
+      errors.push(`${directory}: MANUAL_ONLY description must start with explicit-request guard`);
+    } else if (invocationClass === "MODEL_POLICY" && description.startsWith(guard)) {
+      errors.push(`${directory}: MODEL_POLICY description must state its exact model trigger`);
     } else {
       // Descriptions load on every request in clients that ignore manual-only
       // policy, and overflow the skill listing's budget once a skill is model
       // invocable. Keep the trigger, drop the prose the router already carries.
-      const body = description.slice(guard.length).trim().length;
+      const body =
+        invocationClass === "MANUAL_ONLY"
+          ? description.slice(guard.length).trim().length
+          : description.length;
       if (body > descriptionBudget) {
         errors.push(
-          `${directory}: description is ${body} characters after the guard, budget is ${descriptionBudget}`,
+          invocationClass === "MANUAL_ONLY"
+            ? `${directory}: description is ${body} characters after the guard, budget is ${descriptionBudget}`
+            : `${directory}: description is ${body} characters, budget is ${descriptionBudget}`,
         );
       }
     }
     if (metadata.license !== "Apache-2.0") errors.push(`${directory}: Apache-2.0 license metadata missing`);
-    if (metadata["disable-model-invocation"] !== true)
-      errors.push(`${directory}: Claude manual-only policy missing`);
+    if (invocationClass === "MANUAL_ONLY" && metadata["disable-model-invocation"] !== true) {
+      errors.push(`${directory}: MANUAL_ONLY Claude policy missing`);
+    }
+    const disableModelInvocation = metadata["disable-model-invocation"];
+    if (
+      invocationClass === "MODEL_POLICY" &&
+      disableModelInvocation !== undefined &&
+      disableModelInvocation !== false
+    ) {
+      errors.push(`${directory}: MODEL_POLICY crossed with Claude manual-only policy`);
+    }
     if (metadata["user-invocable"] !== true)
       errors.push(`${directory}: explicit user invocation policy missing`);
+    if (
+      invocationClass === "MODEL_POLICY" &&
+      (metadata["allowed-tools"] !== undefined ||
+        metadata.hooks !== undefined ||
+        /!`[^`\n]+`|^\s*```!/m.test(routerBody))
+    ) {
+      errors.push(`${directory}: MODEL_POLICY may not carry executable or pre-approved authority`);
+    }
+
+    const portableMetadata = metadata.metadata;
+    if (portableMetadata !== undefined) {
+      if (
+        typeof portableMetadata !== "object" ||
+        portableMetadata === null ||
+        Array.isArray(portableMetadata) ||
+        Object.values(portableMetadata).some((value) => typeof value !== "string")
+      ) {
+        errors.push(`${directory}: metadata must be a string-to-string map for OpenCode`);
+      } else if ("opencode/autoinvoke" in portableMetadata || "opencode/slash" in portableMetadata) {
+        errors.push(`${directory}: unsupported OpenCode discovery/menu metadata for supported client`);
+      }
+    }
 
     const openaiFile = path.join(skillDir, "agents", "openai.yaml");
     if (!(await exists(openaiFile))) {
@@ -310,8 +404,9 @@ export async function validate(root: string): Promise<string[]> {
           interface?: Record<string, unknown>;
           policy?: Record<string, unknown>;
         };
-        if (openai.policy?.allow_implicit_invocation !== false) {
-          errors.push(`${directory}: Codex manual-only policy missing`);
+        const expectedImplicit = invocationClass === "MODEL_POLICY";
+        if (invocationClass !== undefined && openai.policy?.allow_implicit_invocation !== expectedImplicit) {
+          errors.push(`${directory}: ${invocationClass} crossed with Codex allow_implicit_invocation`);
         }
         for (const key of ["display_name", "short_description", "default_prompt"]) {
           if (typeof openai.interface?.[key] !== "string" || openai.interface[key] === "") {
@@ -356,64 +451,6 @@ export async function validate(root: string): Promise<string[]> {
         errors.push(`${directory}:${relative}: forbidden package-manager command: ${line.trim()}`);
       }
       scanBannedTerms(reference, directory, relative, errors);
-    }
-
-    const evalFile = path.join(skillDir, "evals", "evals.json");
-    if (!(await exists(evalFile))) {
-      errors.push(`${directory}: missing evals/evals.json`);
-    } else {
-      try {
-        const evaluation = JSON.parse(await readFile(evalFile, "utf8")) as {
-          skill_name?: unknown;
-          evals?: unknown;
-        };
-        if (
-          evaluation.skill_name !== directory ||
-          !Array.isArray(evaluation.evals) ||
-          evaluation.evals.length < 3
-        ) {
-          errors.push(`${directory}: evals require matching skill_name and at least 3 cases`);
-        } else {
-          const ids = new Set<number>();
-          for (const [index, value] of evaluation.evals.entries()) {
-            const item = value as Record<string, unknown>;
-            if (
-              typeof item.id !== "number" ||
-              typeof item.prompt !== "string" ||
-              item.prompt.length === 0 ||
-              typeof item.expected_output !== "string" ||
-              item.expected_output.length === 0 ||
-              !Array.isArray(item.files)
-            ) {
-              errors.push(`${directory}: eval case ${index + 1} has invalid shape`);
-              continue;
-            }
-            if (ids.has(item.id as number)) {
-              errors.push(`${directory}: duplicate eval case id ${item.id}`);
-            }
-            ids.add(item.id as number);
-            if (
-              item.execution_mode !== undefined &&
-              item.execution_mode !== "single_subject" &&
-              item.execution_mode !== "workflow"
-            ) {
-              errors.push(
-                `${directory}: eval case ${item.id} has invalid execution_mode: ${item.execution_mode}`,
-              );
-            }
-            for (const fixture of item.files as unknown[]) {
-              if (
-                typeof fixture !== "string" ||
-                !(await exists(resolveEvalFixture(root, skillDir, fixture)))
-              ) {
-                errors.push(`${directory}: eval case ${item.id} fixture not found: ${String(fixture)}`);
-              }
-            }
-          }
-        }
-      } catch {
-        errors.push(`${directory}: invalid evals/evals.json`);
-      }
     }
 
     for (const line of packageManagerCommands(fencedCode(source))) {

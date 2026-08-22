@@ -218,7 +218,7 @@ Both are meta work; they own different artifacts.
 [`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) owns agent
 instruction files — always-loaded rules scoped to the directory that owns
 them. The authoring family owns skills — invoked behavior with descriptions,
-routers, references, and evals. The placement decision is part of
+routers, references, and non-protected evidence. The placement decision is part of
 [`tailrocks-skill-create`](/docs/skills/tailrocks-skill-create)'s job: a rule
 a competent agent needs on every request routes to the owning `AGENTS.md`, a
 mechanically checkable rule routes to a gate, and only an observed failure
@@ -232,7 +232,7 @@ roadmap item's delivery history and produces evidence: which skills ran, in
 what order, and which of the item's own Decisions, Must-nots, and spec IDs the
 result failed to honor. It writes one record and never touches `skills/`.
 [`tailrocks-skill-update`](/docs/skills/tailrocks-skill-update) owns the edit
-— the router budget, the load-bearing lines, the full eval re-run — and its
+— the router budget, the load-bearing lines, and deterministic acceptance proof — and its
 iron law is that no behavioral change ships without an observed failure; a
 retrospective finding is that observed failure, sourced from production
 instead of from a baseline run. When the evidence says no skill owns the
@@ -249,7 +249,7 @@ stays put — is documented under [self-improvement](/docs/self-improve).
 
 Both audit, at different subjects.
 [`tailrocks-skill-audit`](/docs/skills/tailrocks-skill-audit) judges the
-**skills** — descriptions, routers, references, evals, wiring, overlap —
+**skills** — descriptions, routers, references, evidence, wiring, overlap —
 against the authoring doctrine, and its report feeds
 [`tailrocks-skill-refactor`](/docs/skills/tailrocks-skill-refactor).
 [`tailrocks-improve`](/docs/skills/tailrocks-improve) judges the repository's

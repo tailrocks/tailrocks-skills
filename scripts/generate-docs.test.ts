@@ -160,4 +160,9 @@ test("generates a README and a documentation page for every skill", async () => 
   expect(skillReadme!.content.length).toBeLessThan(definition!.content.length);
   // Skill bodies link to their own references; the site cannot serve those paths.
   expect(page?.content).not.toContain("](references/");
+
+  const createReadme = generated.find(
+    (entry) => entry.file === path.join("skills", "tailrocks-skill-create", "README.md"),
+  );
+  expect(createReadme?.content).not.toContain("skill/evals/");
 });

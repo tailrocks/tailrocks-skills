@@ -25,4 +25,3 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`skill-authoring-policy.json`](templates/skill-authoring-policy.json)
 - [`skill/SKILL.md`](templates/skill/SKILL.md)
 - [`skill/agents/openai.yaml`](templates/skill/agents/openai.yaml)
-- [`skill/evals/evals.json`](templates/skill/evals/evals.json)

@@ -60,9 +60,9 @@ Adding a section does not just add its own instruction — it dilutes the ones
 already there. Reference files carry no such cost: they are read on demand and
 their length is nearly free.
 
-This is not a theory. Every substantive eval failure during the macOS family's
-hardening was a router-dilution failure or a gate misread as permission to
-produce nothing. None was a references problem.
+This is not a theory. Repeated behavior checks during the macOS family's
+hardening exposed router dilution and gates misread as permission to produce
+nothing. Reference depth was not the limiting context cost.
 
 Rules for changing a `SKILL.md`:
 
@@ -71,44 +71,36 @@ Rules for changing a `SKILL.md`:
   contents. A router section that reads like a table of contents is dilution with
   no benefit; the reference already says all of it, better.
 - Adding a section to a router is a change to **every** behavior in that file.
-- **Eval execution is a CI/CD concern, never a local step.** `mise run evals`
-  needs the `claude` CLI and spends budget, and no gate in this repository runs
-  it. Authoring and updating `evals/evals.json` is part of the work; running
-  the harness is not. Never block a change on a local eval run, never claim a
-  change is verified because the harness passed on your machine, and never add
-  a `mise run evals` invocation to a skill body, an instruction file, or a
-  workflow gate. Record the expected red-before / green-after in the pull
-  request and let CI own execution once that lane lands.
-
-  This does not weaken the observed-failure law carried by
-  `tailrocks-skill-create` and `tailrocks-skill-update`.
-  The red bar is *watching the behavior fail* — run the skill against the case
-  prompt in a session and read what it produces. That is a manual observation,
-  costs one invocation, and needs no harness. `mise run evals` is the scoring
-  harness for that same case at scale; the two are not substitutes, and only
-  the second one defers to CI.
+- **Frozen legacy eval infrastructure is excluded.** Ordinary validation,
+  authoring, scaffolding, documentation generation, and release work never
+  inspect, require, modify, move, execute, or certify `skills/*/evals/**`,
+  `scripts/run-evals.ts`, `scripts/run-evals.test.ts`, or
+  `docs/design/eval-runner-design.md`. Behavioral changes instead cite a
+  non-protected evidence record and deterministic acceptance checks. A manual
+  observation may establish the red bar; it never becomes authority to touch
+  the frozen tree.
 - Prefer strengthening an existing section over adding one. Two sections that
   both gesture at the same obligation are weaker than one that states it.
 - When a router grows past roughly 200 lines, the next addition should replace
   something rather than append.
-- Load-bearing router lines — ones an eval case depends on — are not edited
-  casually. Check `evals/evals.json` before rewording a gate, a rejection rule,
-  or a "complete when" clause.
+- Load-bearing router lines — ones a recorded acceptance claim depends on — are
+  not edited casually. Re-open the non-protected evidence record before
+  rewording a gate, rejection rule, or "complete when" clause.
 - **A load-bearing requirement gets a structural cue, not a mid-paragraph
-  clause.** A requirement an eval depends on needs a named bullet, a heading, or
+  clause.** A requirement an acceptance claim depends on needs a named bullet, a heading, or
   its own sentence with a label. Buried as the third idea in a four-idea
   paragraph it competes with better-signposted ideas elsewhere in the file and
-  surfaces only sometimes — which reads as a flaky eval rather than as the
+  surfaces only sometimes — which reads as a flaky check rather than as the
   prose defect it is.
 
   The case: the content-layer *mechanism* argument sat mid-paragraph in the
   macOS glass-material router, while layer classification and render-pass cost each
   had dedicated bullets. Subjects reliably produced the well-signposted two and
-  intermittently omitted the third, even though its eval case demanded it
+  intermittently omitted the third, even though its acceptance case demanded it
   specifically. Promoting rule / mechanism / exception to named bullets — with
   the wording unchanged — made it pass consecutively.
 
-  Corollary for debugging: an eval that fails on one missing element while
-  everything else is correct is usually a signposting defect, not a knowledge
-  gap. Look at where the requirement sits in the file before rewriting what it
-  says.
+  Corollary for debugging: a behavior check that misses one element while
+  everything else is correct usually exposes a signposting defect, not a
+  knowledge gap. Inspect where the requirement sits before rewriting its
+  substance.

@@ -60,7 +60,7 @@ prompts, or artifacts; cite location and type only.
    conditional for context-dependent behavior; the wrong form measurably
    backfires. Split content by cost: the router carries triggers, mode
    gates, and the rules an agent must hold while working; depth defaults
-   to references, routed by *when to read*, never summarized. The
+   to references, routed by _when to read_, never summarized. The
    contract also names the deliverable's destination — the conversation
    or a file in the repository; the doctrine's output-contract section
    owns that choice.
@@ -68,16 +68,21 @@ prompts, or artifacts; cite location and type only.
    section to a layer, every contract field has observable proof or a justified
    `NOT APPLICABLE`, and the deliverable has a named destination.
 
-4. **Freeze cases, then scaffold.** Read canonical
+4. **Freeze acceptance, then scaffold.** Read canonical
    `skills/tailrocks-skill-audit/references/testing-doctrine.md` directly.
-   Freeze baseline/control, normal, boundary, refusal, and checker intent before
-   router prose. This task leaves eval artifacts untouched under its explicit
-   exclusion. Derive target policy from its instruction files, existing skill
+   Freeze baseline/control, normal, boundary, refusal, and checker intent in the
+   non-protected evidence record before router prose. Frozen legacy eval
+   infrastructure is excluded: never inspect, require, modify, move, execute,
+   or certify it. Derive target policy from its instruction files, existing skill
    siblings, validators, manifests, and catalogs. Record it as
    `.skill-authoring.json` using `templates/skill-authoring-policy.json`; never
    infer unsupported client metadata. Create or select the repository's own
    template, then run
    `bun run <installed-skill-path>/scripts/scaffold-skill.ts --root <target> <skill-name>`.
+   This defaults to fail-closed `MANUAL_ONLY`. Only a separately confirmed exact
+   trigger may use `--invocation-class MODEL_POLICY`; selection grants no new
+   mutation or external authority. When the target owns an invocation registry,
+   name it in policy so scaffold and registry update as one transaction.
    The tool validates against target naming policy, refuses collisions without
    mutation, copies target template, performs declared catalog wiring, restricts
    writes to target allowlist, and prints mutation set. Fill semantic
@@ -97,7 +102,7 @@ prompts, or artifacts; cite location and type only.
 
 5. **Wire the repository.** Read canonical
    `skills/tailrocks-skill-audit/references/house-wiring.md` directly for the full artifact list — client metadata,
-   eval files, catalog grouping, generated docs, install and index
+   deterministic acceptance checks, catalog grouping, generated docs, install and index
    documents, version lockstep. Run `mise run docs`, `mise run lint`, and
    `mise run docs:check` once. Repair only matched failures in files created or
    declared by this transaction, at most two repair passes; inspect current
@@ -115,8 +120,8 @@ prompts, or artifacts; cite location and type only.
   one at a time, proven before the next.
 - "Put the workflow in the description so it triggers better" — agents
   follow the description and skip the body; triggers only.
-- A skill whose evals pass without it — the skill is dead weight or the
-  evals are theater; fix one.
+- A skill whose acceptance check passes without it — the skill is dead weight
+  or the check is non-discriminating; fix one.
 
 ## Final gate
 
@@ -124,9 +129,9 @@ Never ship a skill without admissible evidence and an executable acceptance
 check. Never summarize
 a workflow in a description or a reference in a router. Never leave a
 new skill unwired or a validator red. Never author two skills owning one
-responsibility. Never run the eval harness locally in this repository —
-its execution is deferred to CI; only the eval *cases* are written here.
-That deferral never excuses evidence: controlled-baseline claims need a hand-
+responsibility. Never inspect, require, modify, move, execute, or certify the
+frozen legacy eval tree. That exclusion never excuses evidence:
+controlled-baseline claims need a hand-
 observed red bar; preventive security or external-contract claims need the
 executable acceptance gap they were admitted on, never a fabricated failure.
 Report every check skipped.

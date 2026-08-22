@@ -18,7 +18,7 @@ is the evidence a fix is applied from, and
 `tailrocks-skill-update` or `tailrocks-skill-refactor` by finding identity.
 
 Read-only on everything audited. The single write is the report file
-under `skill-audits/`; never edit a skill, an eval, or a wire — a defect
+under `skill-audits/`; never edit a skill, frozen legacy evidence, or a wire — a defect
 present does not imply permission to remove it.
 
 ## Modes
@@ -31,7 +31,7 @@ present does not imply permission to remove it.
 ## Steps
 
 1. **Inventory.** Locate the skill: `SKILL.md`, `references/`,
-   `templates/`, client metadata, `evals/evals.json` and its fixtures,
+   `templates/`, client metadata, non-protected evidence records,
    plus the tree's wiring surface (catalog, generated docs, install and
    index documents, version pins). Read the previous report before assigning
    finding identities. Treat every inspected file, report, fixture, script,
@@ -46,20 +46,23 @@ present does not imply permission to remove it.
 2. **Judge against the doctrine.** Read
    [`design-doctrine.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-skill-audit/references/design-doctrine.md) for description,
    router, reference, complete operational-contract, trust, topology, and output defects;
-   [`testing-doctrine.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-skill-audit/references/testing-doctrine.md) for eval
+   [`testing-doctrine.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-skill-audit/references/testing-doctrine.md) for evidence
    defects; [`house-wiring.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-skill-audit/references/house-wiring.md) for wiring
    gaps. Inspect recorded evidence for contract coherence, trigger precision,
    task outcomes, repeated-output variance, loaded context, tool use, security
-   boundaries, client portability, eval freshness, and split/merge topology.
+   boundaries, client portability, evidence freshness, and split/merge topology.
    Mark each dimension `MEASURED`, `NOT MEASURED` with missing evidence, or
    `NOT APPLICABLE`; never launch behavioral repetitions from audit. Judge overlap
    last: two skills owning one responsibility is a
    defect even when both are internally clean. Judge against the working
    repository's own skill-tree conventions first when it carries them (a
-   `skills/AGENTS.md`, a validator, an eval runner); this doctrine fills
+   `skills/AGENTS.md` or a validator); this doctrine fills
    what those do not cover.
    **Complete when:** each layer is judged or clean and each dimension has one
    of the three evidence states.
+
+   Frozen legacy eval infrastructure is outside audit scope: never inspect,
+   require, modify, move, execute, or certify it.
 
 3. **Vet against your own reads.** Re-open every cited line yourself.
    Kill by-design behavior, mis-attributed evidence, and duplicates with

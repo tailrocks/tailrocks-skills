@@ -624,7 +624,7 @@ This repository is its own first customer: every instruction file is an
 
 Four skills carry the two authoring laws: no new skill and no behavioral edit
 without the failure observed first (the baseline run is the red bar, and a
-skill whose evals pass without it is dead weight), and the context window is a
+skill whose acceptance check passes without it is dead weight), and the context window is a
 public good (trigger-only descriptions that never summarize workflow, lean
 routers, depth in references routed by when-to-read). Guidance form is matched
 to the failure type — prohibitions plus rationalization counters for
@@ -641,20 +641,20 @@ contract; refactor may produce the handoff but never executes it.
   captured verbatim (a retrospective field record with commit-level evidence
   is the strongest form), placement decided before writing (gates beat prose,
   the owning `AGENTS.md` beats a skill, extending a neighbor beats forking a
-  rival), the copy-ready skeleton under `templates/skill/`, baselined eval
-  cases, deterministic policy-driven scaffold, durable evidence contract, full
+  rival), the copy-ready skeleton under `templates/skill/`, deterministic
+  policy-driven scaffold, durable evidence contract and acceptance cases, full
   target-repository wiring. Metadata comes from target policy, never this tree by
   default.
   Definition: `skills/tailrocks-skill-create/SKILL.md`
 - **tailrocks-skill-update** — an in-place semantic edit that preserves every
-  public-contract field: eval-pinned lines checked before a gate is reworded, strengthen
-  over append, replace past the router budget, and the full eval set updated
-  for CI — eval execution never happens locally here.
+  public-contract field: evidence-pinned lines checked before a gate is
+  reworded, strengthen over append, replace past the router budget, and rerun
+  deterministic acceptance checks outside the frozen legacy eval tree.
   Definition: `skills/tailrocks-skill-update/SKILL.md`
 - **tailrocks-skill-audit** — the doctrine authority and the read-only judge:
   audits one skill or sweeps the tree with one read-only subagent per skill,
   vets every finding against its own reads, and writes the layered report —
-  description, router, references, evals, wiring, overlap — to
+  description, router, references, evidence, wiring, overlap — to
   `skill-audits/<skill>.md` with stable finding IDs and named fixes. Never
   edits. Definition: `skills/tailrocks-skill-audit/SKILL.md`
 - **tailrocks-skill-refactor** — behavior-preserving structural ownership change.
@@ -694,7 +694,7 @@ reconstructed). The skill writes one file, its record under
 Skill definition: `skills/tailrocks-retrospect/SKILL.md`
 
 tailrocks-retrospect produces the observed failure; tailrocks-skill-update
-consumes it and owns the edit, the router budget, and the eval re-run. A
+consumes it and owns the edit, the router budget, and deterministic acceptance proof. A
 skill change with neither a baseline run nor a retrospective finding behind
 it has no evidence at all.
 
@@ -721,16 +721,15 @@ subagent fan-out, then hands approved patches to
    true`, and `user-invocable: true` in the frontmatter. Evidence belongs in
    artifacts and references, never disguised as instructions.
 2. Add `agents/openai.yaml` with `policy.allow_implicit_invocation: false`.
-3. Add `evals/evals.json` with realistic normal, boundary, and safety cases. Audit/review-shaped cases should reference fixtures under `evals/fixtures/<case>/`; refusal cases may stay fixture-free.
-4. Put deep material under `skills/<name>/references/` and copy-ready assets under
+3. Put deep material under `skills/<name>/references/` and copy-ready assets under
    `skills/<name>/templates/`; keep `SKILL.md` a concise router.
-5. Every plugin manifest auto-discovers the new skill from `skills/` — no
+4. Every plugin manifest auto-discovers the new skill from `skills/` — no
    manifest edit needed. Place the skill in a `catalog.json` group; validation
    fails until exactly one group contains it. Run `mise run docs` to generate the skill's
    `README.md`, its documentation page, and the root `README.md` row; then add
    it by hand to `INSTALL.md`, this file, and — when it needs a boundary
    against a neighbouring skill — `docs/content/docs/choosing.mdx`.
-6. Bump `version` in lockstep across `.claude-plugin/plugin.json`,
+5. Bump `version` in lockstep across `.claude-plugin/plugin.json`,
    `.codex-plugin/plugin.json`, `.kimi-plugin/plugin.json`, and the
    `.claude-plugin/marketplace.json` entry, and tag the release so installs
    can pin.
@@ -794,14 +793,12 @@ Load the plugin locally in Claude Code:
 claude --plugin-dir .
 ```
 
-**Evals are authored here and executed in CI, never locally.** Every skill
-ships `evals/evals.json`, and keeping those cases honest is part of every
-change — but `mise run evals` needs the `claude` CLI and spends real budget,
-so no gate in this repository runs it and no instruction in this repository
-may require it. Record the expected red-before / green-after in the pull
-request and let the CI lane own execution once it lands. This does not
-weaken the observed-failure law: the red bar is watching the behavior fail
-in a session, which is a manual observation and needs no harness.
+**Frozen legacy eval infrastructure is outside ordinary work.** Validation,
+authoring, scaffolding, documentation generation, and release work never
+inspect, require, modify, move, execute, or certify the paths listed in
+`skill-audits/protected-paths.txt`. Behavioral evidence lives in non-protected
+records and deterministic checks. A manual observation may establish the red
+bar; it never authorizes touching the frozen tree.
 
 ## Documentation
 
@@ -880,7 +877,5 @@ footer in the body.
    and refresh its verified date.
 7. Re-verify macOS platform baselines against Apple DocC availability data and
    `gdmf.apple.com/v2/pmv`, and refresh their verification stamps. Use
-   `examples/macos-screen/` as the rendered regression corpus. **Eval
-   execution is not a release step** — `mise run evals` is a CI/CD concern
-   in this repository, never run locally; update the affected `evals.json`
-   cases in the release change and let CI own the run.
+   `examples/macos-screen/` as the rendered regression corpus. Frozen legacy
+   eval infrastructure is not a release input and remains untouched.

@@ -47,18 +47,6 @@ policy:
   allow_implicit_invocation: false
 `,
   );
-  await write(
-    `skills/${directory}/evals/evals.json`,
-    JSON.stringify({
-      skill_name: name,
-      evals: [1, 2, 3].map((id) => ({
-        id,
-        prompt: `Prompt ${id}`,
-        expected_output: `Output ${id}`,
-        files: [],
-      })),
-    }),
-  );
 }
 
 async function writeManifests(customDescription = "same"): Promise<void> {
@@ -82,6 +70,59 @@ async function writeManifests(customDescription = "same"): Promise<void> {
       groups: [{ id: "sample", title: "Sample", summary: "Fixture group.", skills: [skill] }],
     }),
   );
+  await writeInvocationRegistry([{ skill, class: "MANUAL_ONLY" }]);
+}
+
+async function writeInvocationRegistry(owners: { skill: string; class: string }[]): Promise<void> {
+  await write(
+    "invocation-registry.json",
+    JSON.stringify({ $schema: "tailrocks.skill-invocation/v1", owners }),
+  );
+}
+
+async function writeInvocationProfile(
+  invocationClass: "MANUAL_ONLY" | "MODEL_POLICY",
+  overrides: {
+    description?: string;
+    disableModelInvocation?: string | null;
+    userInvocable?: string | null;
+    codexImplicit?: string | null;
+    allowedTools?: string;
+  } = {},
+): Promise<void> {
+  const manual = invocationClass === "MANUAL_ONLY";
+  const disableModelInvocation =
+    overrides.disableModelInvocation === undefined
+      ? manual
+        ? "true"
+        : null
+      : overrides.disableModelInvocation;
+  const userInvocable = overrides.userInvocable === undefined ? "true" : overrides.userInvocable;
+  const codexImplicit = overrides.codexImplicit === undefined ? String(!manual) : overrides.codexImplicit;
+  const lines = [
+    "---",
+    `name: ${skill}`,
+    `description: ${overrides.description ?? (manual ? description : "Apply sample policy when sample files are in scope.")}`,
+    ...(disableModelInvocation === null ? [] : [`disable-model-invocation: ${disableModelInvocation}`]),
+    ...(overrides.allowedTools === undefined ? [] : [`allowed-tools: ${overrides.allowedTools}`]),
+    "license: Apache-2.0",
+    ...(userInvocable === null ? [] : [`user-invocable: ${userInvocable}`]),
+    "---",
+    "",
+    "# Sample",
+    "",
+  ];
+  await write(`skills/${skill}/SKILL.md`, lines.join("\n"));
+  await write(
+    `skills/${skill}/agents/openai.yaml`,
+    `interface:
+  display_name: "Tailrocks: Sample"
+  short_description: "Sample fixture"
+  default_prompt: "Use $${skill} for this fixture."
+policy:
+${codexImplicit === null ? "" : `  allow_implicit_invocation: ${codexImplicit}\n`}`,
+  );
+  await writeInvocationRegistry([{ skill, class: invocationClass }]);
 }
 
 beforeEach(async () => {
@@ -96,6 +137,11 @@ afterEach(async () => {
 
 describe("validate", () => {
   test("accepts a valid minimal repository", async () => {
+    expect(await validate(root)).toEqual([]);
+  });
+
+  test("ordinary validation does not require or inspect the frozen legacy eval subtree", async () => {
+    await write(`skills/${skill}/evals/evals.json`, "not json and deliberately ignored\n");
     expect(await validate(root)).toEqual([]);
   });
 
@@ -115,6 +161,10 @@ describe("validate", () => {
     for (const catalog of ["README.md", "INSTALL.md", "AGENTS.md", "CLAUDE.md"]) {
       await write(catalog, `${skill}\n${unbranded}`);
     }
+    await writeInvocationRegistry([
+      { skill: unbranded, class: "MANUAL_ONLY" },
+      { skill, class: "MANUAL_ONLY" },
+    ]);
     expect(await validate(root)).toEqual([`${unbranded}: name must start with tailrocks-`]);
   });
 
@@ -140,7 +190,286 @@ describe("validate", () => {
 
   test("rejects a description without the guard", async () => {
     await writeSkill("Validate a minimal fixture.");
-    expect(await validate(root)).toContain(`${skill}: description must start with explicit-request guard`);
+    expect(await validate(root)).toContain(
+      `${skill}: MANUAL_ONLY description must start with explicit-request guard`,
+    );
+  });
+
+  test("rejects the manual-only guard on a MODEL_POLICY description", async () => {
+    await writeInvocationProfile("MODEL_POLICY", { description });
+    expect(await validate(root)).toContain(
+      `${skill}: MODEL_POLICY description must state its exact model trigger`,
+    );
+  });
+
+  test("rejects missing, false, or non-boolean MANUAL_ONLY Claude policy", async () => {
+    for (const disableModelInvocation of [null, "false", '"true"', "1"]) {
+      await writeInvocationProfile("MANUAL_ONLY", { disableModelInvocation });
+      expect(await validate(root)).toContain(`${skill}: MANUAL_ONLY Claude policy missing`);
+    }
+  });
+
+  test("requires boolean explicit user invocation for both classes", async () => {
+    for (const invocationClass of ["MANUAL_ONLY", "MODEL_POLICY"] as const) {
+      for (const userInvocable of [null, "false", '"true"', "1"]) {
+        await writeInvocationProfile(invocationClass, { userInvocable });
+        expect(await validate(root)).toContain(`${skill}: explicit user invocation policy missing`);
+      }
+    }
+  });
+
+  test("requires exact boolean Codex policy for both classes", async () => {
+    for (const invocationClass of ["MANUAL_ONLY", "MODEL_POLICY"] as const) {
+      for (const codexImplicit of [
+        null,
+        "null",
+        JSON.stringify(String(invocationClass === "MODEL_POLICY")),
+      ]) {
+        await writeInvocationProfile(invocationClass, { codexImplicit });
+        expect(await validate(root)).toContain(
+          `${skill}: ${invocationClass} crossed with Codex allow_implicit_invocation`,
+        );
+      }
+    }
+  });
+
+  test("accepts the exact MODEL_POLICY metadata profile", async () => {
+    await writeSkill("Apply sample policy when sample files are in scope.");
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `---
+name: ${skill}
+description: Apply sample policy when sample files are in scope.
+license: Apache-2.0
+user-invocable: true
+---
+
+# Sample
+`,
+    );
+    await write(
+      `skills/${skill}/agents/openai.yaml`,
+      `interface:
+  display_name: "Tailrocks: Sample"
+  short_description: "Sample fixture"
+  default_prompt: "Use $${skill} for this fixture."
+policy:
+  allow_implicit_invocation: true
+`,
+    );
+    await writeInvocationRegistry([{ skill, class: "MODEL_POLICY" }]);
+    expect(await validate(root)).toEqual([]);
+
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `---
+name: ${skill}
+description: Apply sample policy when sample files are in scope.
+disable-model-invocation: false
+license: Apache-2.0
+user-invocable: true
+---
+
+# Sample
+`,
+    );
+    expect(await validate(root)).toEqual([]);
+  });
+
+  test("rejects non-boolean MODEL_POLICY Claude metadata", async () => {
+    await writeInvocationRegistry([{ skill, class: "MODEL_POLICY" }]);
+    await write(
+      `skills/${skill}/agents/openai.yaml`,
+      `interface:
+  display_name: "Tailrocks: Sample"
+  short_description: "Sample fixture"
+  default_prompt: "Use $${skill} for this fixture."
+policy:
+  allow_implicit_invocation: true
+`,
+    );
+    for (const value of ["null", '"false"', "1"]) {
+      await write(
+        `skills/${skill}/SKILL.md`,
+        `---
+name: ${skill}
+description: Apply sample policy when sample files are in scope.
+disable-model-invocation: ${value}
+license: Apache-2.0
+user-invocable: true
+---
+
+# Sample
+`,
+      );
+      expect(await validate(root)).toContain(`${skill}: MODEL_POLICY crossed with Claude manual-only policy`);
+    }
+  });
+
+  test("rejects duplicate, unknown, and missing invocation owners", async () => {
+    await writeInvocationRegistry([
+      { skill, class: "MANUAL_ONLY" },
+      { skill, class: "MODEL_POLICY" },
+      { skill: "tailrocks-unknown", class: "MANUAL_ONLY" },
+    ]);
+    const errors = await validate(root);
+    expect(errors).toContain(`invocation-registry.json: duplicate owner ${skill}`);
+    expect(errors).toContain("invocation-registry.json: unknown owner tailrocks-unknown");
+
+    await writeInvocationRegistry([]);
+    expect(await validate(root)).toContain(`invocation-registry.json: missing owner ${skill}`);
+  });
+
+  test("rejects a missing, malformed, or wrong-schema invocation registry", async () => {
+    await rm(path.join(root, "invocation-registry.json"));
+    expect(await validate(root)).toContain("invocation-registry.json: missing or invalid JSON");
+
+    await write("invocation-registry.json", "null");
+    expect(await validate(root)).toContain("invocation-registry.json: root must be an object");
+
+    await write(
+      "invocation-registry.json",
+      JSON.stringify({ $schema: "tailrocks.skill-invocation/v2", owners: [] }),
+    );
+    expect(await validate(root)).toContain(
+      "invocation-registry.json: schema must be tailrocks.skill-invocation/v1",
+    );
+  });
+
+  test("rejects extra registry keys and unsorted owners", async () => {
+    const other = "tailrocks-another-skill";
+    await writeSkill(description, { name: other, directory: other, displayName: "Tailrocks: Another" });
+    await write(
+      "catalog.json",
+      JSON.stringify({
+        groups: [{ id: "sample", title: "Sample", summary: "Fixture group.", skills: [skill, other] }],
+      }),
+    );
+    for (const catalog of ["README.md", "INSTALL.md", "AGENTS.md", "CLAUDE.md"]) {
+      await write(catalog, `${skill}\n${other}`);
+    }
+    await write(
+      "invocation-registry.json",
+      JSON.stringify({
+        $schema: "tailrocks.skill-invocation/v1",
+        owners: [
+          { skill, class: "MANUAL_ONLY", note: "forbidden" },
+          { skill: other, class: "MANUAL_ONLY" },
+        ],
+        extra: true,
+      }),
+    );
+    const errors = await validate(root);
+    expect(errors).toContain("invocation-registry.json: top-level keys must be $schema and owners");
+    expect(errors).toContain("invocation-registry.json: owner #1 keys must be skill and class");
+    expect(errors).toContain("invocation-registry.json: owners must be sorted by skill");
+  });
+
+  test("rejects unknown invocation classes", async () => {
+    await writeInvocationRegistry([{ skill, class: "DUAL" }]);
+    expect(await validate(root)).toContain(`invocation-registry.json: ${skill} has invalid class DUAL`);
+  });
+
+  test("rejects Claude and Codex metadata crossed between invocation classes", async () => {
+    await writeInvocationRegistry([{ skill, class: "MODEL_POLICY" }]);
+    const modelErrors = await validate(root);
+    expect(modelErrors).toContain(`${skill}: MODEL_POLICY crossed with Claude manual-only policy`);
+    expect(modelErrors).toContain(`${skill}: MODEL_POLICY crossed with Codex allow_implicit_invocation`);
+
+    await writeInvocationRegistry([{ skill, class: "MANUAL_ONLY" }]);
+    await write(
+      `skills/${skill}/agents/openai.yaml`,
+      `interface:
+  display_name: "Tailrocks: Sample"
+  short_description: "Sample fixture"
+  default_prompt: "Use $${skill} for this fixture."
+policy:
+  allow_implicit_invocation: true
+`,
+    );
+    expect(await validate(root)).toContain(
+      `${skill}: MANUAL_ONLY crossed with Codex allow_implicit_invocation`,
+    );
+  });
+
+  test("validates stable OpenCode metadata and rejects unsupported discovery/menu claims", async () => {
+    await write(
+      `skills/${skill}/SKILL.md`,
+      (await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()).replace(
+        "license: Apache-2.0",
+        'license: Apache-2.0\nmetadata:\n  owner: "tailrocks"',
+      ),
+    );
+    expect(await validate(root)).toEqual([]);
+
+    await write(
+      `skills/${skill}/SKILL.md`,
+      (await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()).replace(
+        'owner: "tailrocks"',
+        "owner: true",
+      ),
+    );
+    expect(await validate(root)).toContain(`${skill}: metadata must be a string-to-string map for OpenCode`);
+
+    for (const key of ["opencode/autoinvoke", "opencode/slash"]) {
+      await writeSkill();
+      await write(
+        `skills/${skill}/SKILL.md`,
+        (await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()).replace(
+          "license: Apache-2.0",
+          `license: Apache-2.0\nmetadata:\n  ${key}: "true"`,
+        ),
+      );
+      expect(await validate(root)).toContain(
+        `${skill}: unsupported OpenCode discovery/menu metadata for supported client`,
+      );
+    }
+  });
+
+  test("rejects accidental authority escalation in MODEL_POLICY metadata", async () => {
+    await writeInvocationProfile("MODEL_POLICY", { allowedTools: "Write Bash" });
+    expect(await validate(root)).toContain(
+      `${skill}: MODEL_POLICY may not carry executable or pre-approved authority`,
+    );
+
+    await writeInvocationProfile("MODEL_POLICY");
+    await write(
+      `skills/${skill}/SKILL.md`,
+      (await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()).replace(
+        "license: Apache-2.0",
+        "hooks:\n  Stop: []\nlicense: Apache-2.0",
+      ),
+    );
+    expect(await validate(root)).toContain(
+      `${skill}: MODEL_POLICY may not carry executable or pre-approved authority`,
+    );
+
+    await writeInvocationProfile("MODEL_POLICY");
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n!\`git push\`\n`,
+    );
+    expect(await validate(root)).toContain(
+      `${skill}: MODEL_POLICY may not carry executable or pre-approved authority`,
+    );
+
+    await writeInvocationProfile("MODEL_POLICY");
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n\`\`\`!\ngit push\n\`\`\`\n`,
+    );
+    expect(await validate(root)).toContain(
+      `${skill}: MODEL_POLICY may not carry executable or pre-approved authority`,
+    );
+
+    await write(
+      "invocation-registry.json",
+      JSON.stringify({
+        $schema: "tailrocks.skill-invocation/v1",
+        owners: [{ skill, class: "MODEL_POLICY", authority: "write" }],
+      }),
+    );
+    expect(await validate(root)).toContain("invocation-registry.json: owner #1 keys must be skill and class");
   });
 
   test("rejects a description over the budget after the guard", async () => {
@@ -161,71 +490,6 @@ describe("validate", () => {
       `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[escape](../outside.md)\n`,
     );
     expect(await validate(root)).toContain(`${skill}: reference escapes skill directory: ../outside.md`);
-  });
-
-  test("rejects fewer than three eval cases", async () => {
-    await write(
-      `skills/${skill}/evals/evals.json`,
-      JSON.stringify({
-        skill_name: skill,
-        evals: [1, 2].map((id) => ({
-          id,
-          prompt: "Prompt",
-          expected_output: "Output",
-          files: [],
-        })),
-      }),
-    );
-    expect(await validate(root)).toContain(
-      `${skill}: evals require matching skill_name and at least 3 cases`,
-    );
-  });
-
-  test("rejects an eval case missing expected_output", async () => {
-    await write(
-      `skills/${skill}/evals/evals.json`,
-      JSON.stringify({
-        skill_name: skill,
-        evals: [1, 2, 3].map((id) =>
-          id === 2
-            ? { id, prompt: "Prompt", files: [] }
-            : { id, prompt: "Prompt", expected_output: "Output", files: [] },
-        ),
-      }),
-    );
-    expect(await validate(root)).toContain(`${skill}: eval case 2 has invalid shape`);
-  });
-
-  test("rejects an unknown eval execution mode", async () => {
-    const evaluation = await Bun.file(path.join(root, `skills/${skill}/evals/evals.json`)).json();
-    evaluation.evals[0].execution_mode = "fanout";
-    await write(`skills/${skill}/evals/evals.json`, JSON.stringify(evaluation));
-    expect(await validate(root)).toContain(`${skill}: eval case 1 has invalid execution_mode: fanout`);
-  });
-
-  test("accepts each explicit eval execution mode", async () => {
-    for (const execution_mode of ["single_subject", "workflow"]) {
-      const evaluation = await Bun.file(path.join(root, `skills/${skill}/evals/evals.json`)).json();
-      evaluation.evals[0].execution_mode = execution_mode;
-      await write(`skills/${skill}/evals/evals.json`, JSON.stringify(evaluation));
-      expect(await validate(root)).toEqual([]);
-    }
-  });
-
-  test("rejects a missing eval fixture", async () => {
-    const evaluation = await Bun.file(path.join(root, `skills/${skill}/evals/evals.json`)).json();
-    evaluation.evals[0].files = ["evals/fixtures/missing.txt"];
-    await write(`skills/${skill}/evals/evals.json`, JSON.stringify(evaluation));
-    expect(await validate(root)).toContain(
-      `${skill}: eval case 1 fixture not found: evals/fixtures/missing.txt`,
-    );
-  });
-
-  test("rejects a duplicate eval id", async () => {
-    const evaluation = await Bun.file(path.join(root, `skills/${skill}/evals/evals.json`)).json();
-    evaluation.evals[1].id = 1;
-    await write(`skills/${skill}/evals/evals.json`, JSON.stringify(evaluation));
-    expect(await validate(root)).toContain(`${skill}: duplicate eval case id 1`);
   });
 
   test("rejects mismatched manifest descriptions", async () => {
@@ -312,37 +576,13 @@ describe("validate", () => {
   });
 
   test("allows a router at the line budget", async () => {
-    const body = await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text();
-    const remaining = 200 - body.split("\n").length;
-    await write(`skills/${skill}/SKILL.md`, `${body}${"padding\n".repeat(remaining)}`);
+    const source = await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text();
+    const block = source.match(/^---\n[\s\S]*?\n---/);
+    expect(block).not.toBeNull();
+    const bodyLines = source.slice(block![0].length).replace(/^\n/, "").split("\n").length;
+    await write(`skills/${skill}/SKILL.md`, `${source}${"padding\n".repeat(200 - bodyLines)}`);
     const errors = await validate(root);
     expect(errors.some((error) => error.includes("router budget"))).toBe(false);
-  });
-
-  test("rejects a fenced eval harness invocation in skill content", async () => {
-    await write(
-      `skills/${skill}/references/wiring.md`,
-      "Verify the change:\n\n```sh\nmise run evals -- --skill sample --case 1\n```\n",
-    );
-    await write(
-      `skills/${skill}/SKILL.md`,
-      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[Wiring](references/wiring.md)\n`,
-    );
-    expect(await validate(root)).toContain(
-      `${skill}:references/wiring.md: eval harness invocation forbidden in skill content: mise run evals -- --skill sample --case 1`,
-    );
-  });
-
-  test("allows prose that names the eval harness to defer it", async () => {
-    await write(
-      `skills/${skill}/references/wiring.md`,
-      "Eval execution is a CI/CD concern: never run `mise run evals` locally.\n",
-    );
-    await write(
-      `skills/${skill}/SKILL.md`,
-      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[Wiring](references/wiring.md)\n`,
-    );
-    expect(await validate(root)).toEqual([]);
   });
 
   test("requires Kimi keywords to include Claude keywords", async () => {

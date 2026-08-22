@@ -4,7 +4,7 @@
 
 `tailrocks-skill-audit` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-skill-audit)
 
-Inspect one skill or the portfolio and report behavioral, structural, efficiency, portability, security, evaluation, and overlap defects. Never edits audited skills or wiring; writes only skill-audits/ reports.
+Inspect one skill or the portfolio and report behavioral, structural, efficiency, portability, security, evidence, and overlap defects. Never edits audited skills or wiring; writes only skill-audits/ reports.
 
 ## Invocation
 

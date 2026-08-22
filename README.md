@@ -112,7 +112,7 @@ Create skills from target repository policy, update behavior under a frozen cont
 |---|---|
 | [`tailrocks-skill-create`](skills/tailrocks-skill-create/README.md) | Create a new agent skill for an evidenced responsibility with no owner, using the target repository's policy. |
 | [`tailrocks-skill-update`](skills/tailrocks-skill-update/README.md) | Improve an existing skill in place while preserving its responsibility and public contract. |
-| [`tailrocks-skill-audit`](skills/tailrocks-skill-audit/README.md) | Inspect one skill or the portfolio and report behavioral, structural, efficiency, portability, security, evaluation, and overlap defects. |
+| [`tailrocks-skill-audit`](skills/tailrocks-skill-audit/README.md) | Inspect one skill or the portfolio and report behavioral, structural, efficiency, portability, security, evidence, and overlap defects. |
 | [`tailrocks-skill-refactor`](skills/tailrocks-skill-refactor/README.md) | Restructure skill ownership while preserving observable behavior and public contracts. |
 
 ### Pull request lifecycle
@@ -154,7 +154,7 @@ An idea through shaping, planning, autonomous execution, and back to verified tr
 mise install
 mise run lint
 mise run docs
-bun test scripts/
+mise run test
 claude --plugin-dir .
 ```
 

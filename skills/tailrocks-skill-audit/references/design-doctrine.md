@@ -22,7 +22,7 @@ Consequences, each binding:
 - A load-bearing requirement gets a structural cue — a named bullet, a
   heading, a labeled sentence. Buried as the third idea in a four-idea
   paragraph, it surfaces only sometimes, and that intermittency looks like
-  a flaky eval instead of the prose defect it is.
+  a flaky check instead of the prose defect it is.
 - Past the tree's router budget (~200 lines here), an addition replaces
   something. Two sections gesturing at one obligation are weaker than one
   that states it.

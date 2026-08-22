@@ -26,17 +26,14 @@ the author is not clear to a fresh agent), "it's just a reference"
 (problems are agents failing in production), "no time" (a bad skill
 costs more than its test).
 
-## Two different things wear the word *run*
+## Evidence and excluded infrastructure
 
-**The evidence observation is manual and stays here. The eval harness defers to
-CI.** Watching a fresh agent attempt a behavior task, or running the executable
-contract/security check for a preventive task, is an ordinary session and what
-the evidence law demands. Deferral never excuses skipping the applicable red
-bar. `mise run evals`, the graded
-suite over `evals/evals.json`, is the other thing: authored here,
-executed in CI — a lane this repository has not wired yet — and never
-invoked locally. Every "run", "re-test", and "repetition" below that is
-not `mise run evals` is the manual kind.
+Watching a fresh agent attempt a behavior task, or running an executable
+contract/security check for a preventive task, establishes the evidence law's
+red bar. Record the input, environment, observable result, and irrelevant
+control in a non-protected evidence artifact. Frozen legacy eval infrastructure
+is never inspected, required, modified, moved, executed, or certified by
+ordinary authoring or audit work.
 
 ## Test to the skill's type
 
@@ -67,7 +64,7 @@ counter-examples masquerade as hits. Treat variance as a metric: when
 wording binds, repetitions converge on one shape; five interpretations
 across five runs means the form is wrong, not the word count.
 
-## Eval cases that earn their place
+## Acceptance cases that earn their place
 
 - **Realistic prompts.** The kind a user actually types — concrete
   files, half-remembered names, casual phrasing — not schematic
@@ -87,16 +84,12 @@ across five runs means the form is wrong, not the word count.
 
 ## The improvement loop
 
-The eval cases are authored here and executed in CI — a lane this
-repository has not wired yet — so `mise run evals` is never run locally.
-Author cases so that grading generalizes from failures rather than
-patching them: the evals
-are a handful of examples standing in for thousands of future
-invocations, a fix that only fits the eval is overfitting, and stacking
-rigid MUSTs to pass one case is the documentation version of
-hard-coding the test's answer. Read transcripts, not only outcomes: if
-the skill makes the agent do unproductive work, cut the section causing
-it. When every test run independently
+Author acceptance cases so checks generalize from failures rather than
+patching examples: a handful of observations stands in for thousands of future
+invocations, so a fix that only fits one prompt is overfitting, and stacking
+rigid MUSTs to pass one case is the documentation version of hard-coding the
+answer. Read transcripts, not only outcomes: if the skill makes the agent do
+unproductive work, cut the section causing it. When every test run independently
 rebuilds the same helper, ship the helper with the skill instead of the
 instructions to rebuild it. The behavior the baseline documented should
 no longer occur and re-runs should converge — that is when to stop

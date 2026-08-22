@@ -20,10 +20,9 @@ finding never examined.
 5. **A template slot, added or removed** — a copy-ready asset that made the
    executor invent a shape, or a section no reader of the record used. Give
    the template path, the section it follows, and the exact block.
-6. **An eval case** — a behavior the skill claims and no case proves. Give the
-   prompt and the expected output; the applying skill owns the baseline that
-   admits it. A fixture that pre-computes the step under test is this shape
-   too: it can never fail the case that tests it.
+6. **An acceptance check** — a behavior the skill claims and no deterministic
+   or recorded check proves. Give the input, observable output, and evidence
+   record; the applying skill owns the baseline that admits it.
 
 A patch that fits none of these is a whole-skill redesign that belongs to a
 create-or-restructure invocation of the skill-authoring skill.
@@ -38,21 +37,21 @@ Target:   skills/<name>/SKILL.md
 Shape:    Boundaries bullet | appended step | final-gate clause | reference + router line
 Anchor:   after the "<exact heading or bullet>" that currently ends with "<quoted tail>"
 Text:     <the exact prose to insert, in the target's voice and line width>
-Evals:    <ids of the target's cases whose expected_output describes behavior the patched section governs — proximity is behavioral, not positional>
+Checks:   <non-protected acceptance-check or evidence IDs governing the patched behavior>
 Replaces: <nothing | the exact lines this patch removes, and why>
 ```
 
-`Evals` is not optional. A router edit changes every behavior in the file, so
-the applying skill re-runs the target's whole eval set; naming the cases the
-patch sits closest to tells it which ones are most likely to move and which
-wording is load-bearing enough that it cannot be paraphrased.
+`Checks` is not optional. A router edit can affect every behavior in the file,
+so the applying skill reruns all affected deterministic checks; naming the
+claims nearest the patch identifies load-bearing wording without touching the
+frozen legacy eval tree.
 
 ## Additive discipline
 
 - **Never rewrite a section the finding did not examine.** The evidence
   licenses exactly the change that would have caught the divergence.
 - **Append steps; never renumber earlier ones.** A patch that reorders steps
-  invalidates every eval expectation keyed to a step's content.
+  invalidates acceptance evidence keyed to a step's content.
 - **Strengthen before adding.** If an existing section already gestures at
   the obligation, the patch makes that section state it. Two sections aiming
   at one obligation are weaker than one that says it plainly.

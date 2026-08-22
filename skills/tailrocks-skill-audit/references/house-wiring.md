@@ -14,10 +14,7 @@ skills/<name>/
 ├── SKILL.md            # router: frontmatter + body
 ├── agents/openai.yaml  # per-client invocation policy
 ├── references/         # depth, free until read
-├── templates/          # copy-ready assets the skill ships (optional)
-└── evals/
-    ├── evals.json      # normal, boundary, safety cases
-    └── fixtures/<id>/  # seeded artifacts for audit-shaped cases
+└── templates/          # copy-ready assets the skill ships (optional)
 ```
 
 Tailrocks profile uses: `name`, `license: Apache-2.0`, a description
@@ -51,7 +48,9 @@ that boundary. Never copy or paraphrase these rules into sibling routers.
 Rows below define Tailrocks profile. Another repository maps only artifacts its
 observed policy supports; absent client or catalog surfaces stay absent. Its
 `.skill-authoring.json` names skill root, anchored name pattern, template, optional
-display prefix, and optional catalog wiring.
+display prefix, invocation registry, and optional catalog wiring. Scaffolding
+defaults to `MANUAL_ONLY`; `MODEL_POLICY` requires a separately confirmed exact
+trigger on that invocation and grants no new authority.
 
 | Artifact | Obligation |
 |---|---|
@@ -75,28 +74,26 @@ Stop immediately for an unmatched error, unavailable tool, or exhausted bound;
 preserve current state, report exact failure and prior mutations, and never
 claim completion.
 
-Eval runs use the tree's runner:
-`mise run evals -- --skill <name> --case <id> --runs 2`. It needs the
-`claude` CLI and spends budget — this repository does not run it locally
-or in gates; eval verification is a CI/CD concern, not yet wired.
+Frozen legacy eval infrastructure is not a house-wiring obligation. Ordinary
+validation, authoring, scaffolding, generated docs, and release work never
+inspect, require, modify, move, execute, or certify it. Behavioral claims use
+non-protected evidence records and deterministic acceptance checks.
 
 ## Update-mode obligations
 
 Editing an existing skill adds constraints beyond the create path:
 
-- **Check `evals/evals.json` before rewording** a gate, rejection rule,
-  or "complete when" clause — load-bearing lines are not edited
-  casually, and an eval that names a phrase pins it.
+- **Check the cited evidence record before rewording** a gate, rejection rule,
+  or "complete when" clause — load-bearing lines are not edited casually.
 - **Strengthen over append.** Prefer making an existing section state
   the new obligation to adding a sibling section that gestures at it.
 - **Past the router budget (~200 lines), replace.** The next addition
   removes something.
-- **Update the skill's full eval set** after any router change, for CI to
-  run — a new section changes every behavior in the file, so the case
-  nearest the edit is not the only one at risk. Updating the cases is the
-  local obligation; running them is not.
-- An eval that fails on one missing element while everything else is
-  correct is usually a signposting defect — look at where the
+- **Rerun every affected deterministic acceptance check** after a router
+  change — a new section changes every behavior in the file, so the check
+  nearest the edit is not the only one at risk.
+- A check that misses one element while everything else is correct usually
+  exposes a signposting defect — look at where the
   requirement sits in the file before rewriting what it says.
 - Generated files (`README.md`, docs pages) are refreshed by
   `mise run docs`, never edited.
