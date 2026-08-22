@@ -71,18 +71,24 @@ present does not imply permission to remove it.
    **Complete when:** every surviving finding carries evidence you
    opened, and every killed one carries its reason.
 
-4. **Reconcile identities and write the report.** Build each finding's identity
-   tuple exactly as the report format defines. Reuse the previous ID only when
-   the tuple matches; retired IDs stay retired
-   and new IDs increase monotonically. One report file per skill under `skill-audits/`
-   at the audited repository's root, per
-   [`report-format.md`](references/report-format.md): findings by layer
-   with stable IDs and named fixes, clean layers stated, killed findings
-   listed with reasons. A re-audit overwrites the same file. In
+4. **Reconcile identities and write the report.** Build a candidate report in
+   an OS temporary file exactly as
+   [`report-format.md`](references/report-format.md) defines, using `PREFIX-NEW`
+   headings and machine-readable identity fields for new findings; copy the
+   previous tuple line unchanged when a surviving legacy finding still uses the
+   old five-field form. Locate this skill's
+   `scripts/reconcile-report.ts` and run it with `--candidate <temp>` and
+   `--output skill-audits/<skill-name>.md`; it alone compares the immediate
+   previous report and committed history, preserves matching IDs, protects
+   retired IDs, allocates new IDs canonically, and atomically writes the final
+   report. Delete the candidate after the script returns. Never assign or edit
+   numeric IDs yourself. Findings stay grouped by layer with named fixes, clean
+   layers are stated, and killed findings carry reasons. In
    conversation, present the per-skill verdict lines and counts — the
    file carries the detail.
-   **Complete when:** the report file is written and every finding in it
-   has an ID and a fix.
+   **Complete when:** the receipt reports nonzero reconciliation work when
+   findings exist, the report file has no `-NEW` heading, and every finding has
+   an ID and a fix.
 
 ## Boundaries
 
@@ -108,6 +114,8 @@ Authoring a new skill is `tailrocks-skill-create`; an in-place edit is
   cross-cutting lanes after deterministic prechecks.
 - A finding with no ID or no named fix — a report that cannot be
   consumed is trivia.
+- A hand-assigned numeric ID or a report written around the reconciler — exact
+  identity and retirement history belong to software.
 - Treating a clean-by-design choice as a defect — the kill list exists
   to record exactly these.
 

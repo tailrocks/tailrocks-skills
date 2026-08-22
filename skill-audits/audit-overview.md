@@ -447,9 +447,29 @@ all terminal checks pass, and the final literal marker is changed to
 
 ## P04 — Extract deterministic and security-sensitive seams
 
-- [ ] [IN_PROGRESS] P04.01 Add deterministic audit-report identity and finding-ID
+- [x] [COMPLETED] P04.01 Add deterministic audit-report identity and finding-ID
   reconciliation.
-- [ ] [TODO] P04.02 Add `scripts/agents-md-topology.ts` with typed mutation
+  - Evidence receipt (2026-08-22): added the packaged
+    `tailrocks-skill-audit/scripts/reconcile-report.ts` seam and routed report
+    writes through it. It validates exact report/header identity, structured
+    case-sensitive evidence identity plus legacy continuity, immediate-report
+    preservation, committed Git history, retired-ID non-reuse, independent
+    per-layer maxima, canonical allocation, corrupt-history collisions, exact
+    output scope, and atomic UUID-owned installation with no unowned cleanup.
+    The report format now gives semantic audit only `PREFIX-NEW` headings and
+    typed tuple fields; software owns numeric IDs and the machine receipt.
+    Focused temporary-repository proof passed 11 tests with 45 assertions,
+    covering whitespace and line movement, draft reordering, returning retired
+    tuples, six layer maxima, legacy continuity, identifier case and whitespace,
+    malformed/duplicate/reused identity refusal, Git history, byte-preserving
+    failure, and zero first-audit mutation. `rtk mise run migration-check`
+    passed 149 tests with 837 assertions across 18 non-protected files,
+    validated 44 skills, checked 136 generated files and 72 byte-identical
+    shared-reference destinations, and checked 44 formatted files. Protection
+    proof covered 4 patterns and 183 frozen source paths with zero violations;
+    diff check passed. Fresh subagent verdict: PASS after a destructive temp
+    cleanup blocker was fixed with UUID ownership tracking. No evals run.
+- [ ] [IN_PROGRESS] P04.02 Add `scripts/agents-md-topology.ts` with typed mutation
   receipts, exact symlink discovery/create/repair/verify behavior, and temporary
   directory tests.
 - [ ] [TODO] P04.03 Add `scripts/checkout-pr.ts` with validated number/URL/branch,
