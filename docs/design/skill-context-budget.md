@@ -37,15 +37,16 @@ not name-only. Codex behaves the same way with
 `policy.allow_implicit_invocation: false`, verified previously through
 `codex debug prompt-input`.
 
-Consequence: in Claude Code and Codex this collection's 23 skills add **zero**
-tokens to a session until one is named. The always-on cost is real only in
-OpenCode, Amp, and the Antigravity CLI, which ignore both fields — there the
-explicit-request guard sentence in each description is the only control, and
-every description is loaded.
+Consequence: in Claude Code and Codex the current 33 manual-only skills add
+**zero** tokens until named; the 11 model-policy descriptions remain visible so
+their exact triggers can match. OpenCode, Amp, and the Antigravity CLI ignore
+both fields and load all 44 descriptions; there the explicit-request guard on
+the 33 manual owners is their discovery control.
 
 ## Measurement: the guard sentence earns its length
 
-The guard costs 54 characters per skill, 1,242 across the collection. Whether a
+The guard costs 54 characters per skill, 1,782 across the 33 manual owners.
+Whether a
 shorter form works was tested rather than argued, in the condition that matters:
 a model-invocable skill, as OpenCode, Amp, and Antigravity see ours.
 
@@ -69,21 +70,28 @@ The full sentence stays.
 
 ## Policy
 
-**Every skill is manual-only.** Reaffirmed, now with a measured basis rather
-than a preference: manual-only is free in the two clients that honor it, and an
-auto-discoverable skill pays its description on every request forever while
-competing for a budget that truncates on overflow.
+Invocation class is registry-owned and responsibility-driven. `MANUAL_ONLY`
+remains the default for transactions and workflows. `MODEL_POLICY` is reserved
+for exact-trigger policy or conversation guidance whose selection grants no new
+authority. Direct invocation of those owners is best-effort across clients.
 
-Where a skill should apply automatically to a body of work, the cheaper and more
-precise mechanism is one line in that directory's `AGENTS.md` naming the skill —
-scoped to the subtree, loaded only when the agent works there, and costing
-nothing elsewhere. See `skills/tailrocks-agents-md/SKILL.md`.
+The exact model-policy set is the six Axum, GraphQL, gRPC, Rust, Swift, and
+TypeScript best-practice owners; `tailrocks-agents-md`; `tailrocks-grilling`;
+and the macOS, web, and terminal design owners. Every other skill remains
+manual-only, and a split descendant does not inherit its parent's class.
 
-**Descriptions are capped at 250 characters after the guard.** Enforced by
-`scripts/validate-skills.ts`. The description carries the trigger and the
-do-not-use clause; everything else is the router's job. This cut the collection
-from 10,141 to 6,875 characters, roughly 2.7k to 1.8k tokens for the clients
-that load them.
+The measured listing cost still governs description and router discipline; it
+does not override correct applicability. Exact triggers keep the permanent
+listing narrow, while structural authority boundaries prevent selection from
+starting mutation, execution, blessing, or external action.
+
+**Description bodies are capped at 250 characters.** Enforced by
+`scripts/validate-skills.ts`: manual-only owners are measured after removing and
+trimming the full guard sentence; model-policy owners, which have no guard, are
+measured in full. The description carries the trigger and boundary; everything
+else is the router's job. The current 44 descriptions total 11,533 characters;
+9,718 count against the per-skill caps. The other 1,815 are the 1,782 guard
+characters plus one trimmed separator on each of 33 manual owners.
 
 **Routers stay under ~200 lines**, already enforced as a notice. One exceeds it
 today: `tailrocks-macos-design` — it merged the design, prototype, and Liquid
@@ -94,11 +102,9 @@ is free until read.
 ## Rejected
 
 - **Shortening the guard.** Measured worse than useless; see above.
-- **Making the four language best-practices skills auto-discoverable.** They are
-  the strongest candidates — pure policy that should apply whenever that
-  language is touched — but they would cost their descriptions permanently in
-  every session, in exchange for what one `AGENTS.md` line does for free in the
-  repositories that want it.
+- **Making every skill auto-discoverable.** Transaction and workflow owners
+  would gain no correctness from ambient selection and would crowd the listing.
+  Only the confirmed exact-trigger set pays that permanent cost.
 - **Dropping the do-not-use clauses to save characters.** They are the part of
   a description that prevents the wrong skill being named; the boundary is worth
   more than the bytes.

@@ -410,10 +410,27 @@ all terminal checks pass, and the final literal marker is changed to
     destinations, and checked 42 formatted files. Protection proof covered 4
     patterns and 183 frozen source paths with zero violations; diff check
     passed. Fresh subagent verdict: PASS. No evals run.
-- [ ] [IN_PROGRESS] P03.06 Reconcile `invocation-policy.md`, root doctrine, install
+- [x] [COMPLETED] P03.06 Reconcile `invocation-policy.md`, root doctrine, install
   guidance, choosing guide, context-budget decision, catalog, and generated
   skill pages with the confirmed matrix.
-- [ ] [TODO] P03.GATE Run `rtk mise run migration-check`; prove the exact
+  - Evidence receipt (2026-08-22): replaced the obsolete unconfirmed
+    three-class proposal with implemented two-class doctrine and the exact
+    eleven-owner matrix; reconciled root and install guidance, the choosing
+    guide, decision-support ownership, and context-budget policy to 44 skills,
+    11 model-policy owners, 33 manual owners, zero authority gain, and
+    best-effort direct visibility. Current description measurements are 11,533
+    full characters and 9,718 validator-counted body characters; the 1,815
+    remainder is 1,782 guard characters plus 33 trimmed separators. Catalog and
+    all generated pages already matched and were regenerated from their
+    canonical sources. Focused doctrine and matrix proof passed 9 tests with
+    181 assertions. `rtk mise run migration-check` passed 138 tests with 792
+    assertions across 17 non-protected files, validated 44 skills, checked 136
+    generated files and 72 byte-identical shared-reference destinations, and
+    checked 43 formatted files. Protection proof covered 4 patterns and 183
+    frozen source paths with zero violations; stale-claim and diff checks
+    passed. Fresh subagent verdict: PASS after its stale measurement blocker was
+    corrected and guarded. No evals run.
+- [ ] [IN_PROGRESS] P03.GATE Run `rtk mise run migration-check`; prove the exact
   model-visible set, representative manual-only absence, trigger boundaries,
   and zero authority gain. Evidence: pending.
 

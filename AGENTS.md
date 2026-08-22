@@ -54,6 +54,12 @@ an exact content/intent trigger; selection grants no authority beyond the
 active task. Clients that ignore these fields rely on the description, and
 OpenCode users may additionally enforce `permission.skill` config.
 
+The confirmed `MODEL_POLICY` set is exact: `tailrocks-agents-md`, the Axum,
+GraphQL, gRPC, Rust, Swift, and TypeScript best-practice owners,
+`tailrocks-grilling`, and the macOS, web, and terminal design owners. Every
+other skill is `MANUAL_ONLY`; new skills and split descendants default manual
+until an exact trigger is separately confirmed.
+
 **Token usage is a design criterion.** Skills stay lean: scale effort (subagents,
 depth) to the task, prefer pointers (`file:line`/URL) over copied blocks, skip
 stages that add no value, and never produce an artifact that will not be read.

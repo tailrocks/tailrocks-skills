@@ -47,6 +47,22 @@ one shared directory:
   `tailrocks-plan`, `tailrocks-record-feedback`, `tailrocks-prove`,
   `tailrocks-reconcile`
 
+## Invocation policy
+
+The registry classifies 11 skills as `MODEL_POLICY`: `tailrocks-agents-md`,
+`tailrocks-axum-best-practices`, `tailrocks-graphql-best-practices`,
+`tailrocks-grilling`, `tailrocks-grpc-best-practices`,
+`tailrocks-macos-design`, `tailrocks-rust-best-practices`,
+`tailrocks-swift-best-practices`, `tailrocks-tui-design`,
+`tailrocks-typescript-best-practices`, and `tailrocks-web-design`. They may load
+only under their exact description trigger. The other 33 skills are
+`MANUAL_ONLY` and require an explicit request.
+
+Model selection grants no mutation, tool, blessing, commit, push, release,
+external-message, or external-system authority. Direct invocation of a
+model-policy owner remains available where the client supports it; identical
+menu behavior is not portable.
+
 There is no per-family install: an agent gets the whole collection through its
 one chosen channel. See README.md for what each skill does.
 
