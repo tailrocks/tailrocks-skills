@@ -92,6 +92,21 @@ rustfmt, `rust-toolchain.toml`, mise-managed tooling, and the cargo-deny / audit
 
 Skill definition: `skills/tailrocks-rust-project-setup/SKILL.md`
 
+### tailrocks-rust-project-audit
+
+Audit an existing Rust workspace against the strict project baseline and report
+exact layout, policy, toolchain, dependency, and gate gaps without changing
+files or installing tools.
+
+Skill definition: `skills/tailrocks-rust-project-audit/SKILL.md`
+
+### tailrocks-rust-project-remediate
+
+Close explicitly approved Rust workspace baseline gaps in coherent, reversible,
+verified slices while preserving stronger compatible local policy.
+
+Skill definition: `skills/tailrocks-rust-project-remediate/SKILL.md`
+
 ### tailrocks-axum-best-practices
 
 Build and review production Axum services with typed state and extractors,

@@ -645,8 +645,28 @@ all terminal checks pass, and the final literal marker is changed to
 
 ## P05 — Split stack ownership
 
-- [ ] [IN_PROGRESS] P05.01 Rust project setup → setup, project audit, project remediate.
-- [ ] [TODO] P05.02 Rust best practices → write, review, refactor; retain
+- [x] [COMPLETED] P05.01 Rust project setup → setup, project audit, project remediate.
+  - Evidence receipt (2026-08-22): made `tailrocks-rust-project-setup`
+    scaffold-only with a hard existing-workspace refusal; added manual-only
+    `tailrocks-rust-project-audit` and `tailrocks-rust-project-remediate` owners
+    with exclusive read/write authority, exact invocation hints, actionable
+    canonical-template routing, and shared trust/freshness policy. Audit now
+    proves repository bytes stable, permits only locked/frozen/offline
+    check-only commands with external temporary state, and emits a fixed
+    14-rule `PASS`/`GAP`/`BLOCKED` ledger; remediation requires the approved
+    row/scope and never infers authority. The reference generator now admits
+    exactly five setup-owned Rust sources, requires both descendant copies,
+    rejects missing owners/generated-source promotion, and reports all 15
+    sources truthfully; 86 destinations are byte-identical. Hand-authored and
+    generated catalogs, install/choosing pages, invocation counts, context
+    budget, READMEs, and 142 documentation files agree on 46 skills (35 manual,
+    11 model-policy). Focused proof passed 71 tests/500 assertions; full
+    `rtk mise run migration-check` passed 274 tests/1,329 assertions across 33
+    selected non-protected files with formatting, generated-content, validator,
+    plan-state, and protected-path gates green. Fresh subagent verdict: PASS
+    after closing selector, stable-ID, read-only command, template ownership,
+    generated-source completeness, and exact grammar defects. No evals run.
+- [ ] [IN_PROGRESS] P05.02 Rust best practices → write, review, refactor; retain
   `MODEL_POLICY` only on the existing named owner pending descendant approval.
 - [ ] [TODO] P05.03 Axum best practices → build, review, refactor; retain
   `MODEL_POLICY` only on the existing named owner pending descendant approval.

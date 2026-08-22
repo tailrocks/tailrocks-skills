@@ -1,7 +1,7 @@
 import { access, readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
-import { generateReferences } from "./generate-references";
+import { generateReferences, isGeneratedReferenceSource } from "./generate-references";
 import { parseInvocationRegistry, type InvocationClass } from "./invocation-registry";
 
 const guard = "Use only when the user explicitly requests this skill.";
@@ -127,7 +127,17 @@ async function scanLinks(
     const raw = match[1].split("#", 1)[0];
     if (!raw || /^(?:https?:|mailto:)/.test(raw)) continue;
     const target = path.resolve(path.dirname(file), raw);
-    if (raw.startsWith("../") || outside(skillDir, target)) {
+    const setupRoot = path.resolve(path.dirname(skillDir), "tailrocks-rust-project-setup");
+    const setupTemplates = path.join(setupRoot, "templates");
+    const setupResolver = path.join(setupRoot, "scripts/resolve-crate-versions.ts");
+    const allowedSetupLink =
+      [
+        "tailrocks-rust-project-setup",
+        "tailrocks-rust-project-audit",
+        "tailrocks-rust-project-remediate",
+      ].includes(directory) &&
+      (target === setupResolver || target === setupTemplates || !outside(setupTemplates, target));
+    if ((raw.startsWith("../") || outside(skillDir, target)) && !allowedSetupLink) {
       errors.push(`${directory}: reference escapes skill directory: ${raw}`);
     } else if (!(await exists(target))) {
       errors.push(`${directory}: broken reference ${raw}`);
@@ -261,9 +271,7 @@ async function generatedReferenceDestinations(root: string, errors: string[]): P
         Array.isArray(entry) ||
         Object.keys(entry).sort().join(",") !== "destinations,source" ||
         typeof (entry as { source?: unknown }).source !== "string" ||
-        !/^(?:shared|skill-authoring)\/references\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/.test(
-          (entry as { source: string }).source,
-        ) ||
+        !isGeneratedReferenceSource((entry as { source: string }).source) ||
         !Array.isArray((entry as { destinations?: unknown }).destinations) ||
         (entry as { destinations: unknown[] }).destinations.some(
           (destination) =>

@@ -64,6 +64,8 @@
         "skills/tailrocks-retrospect/references/runtime-trust.md",
         "skills/tailrocks-review-pr/references/runtime-trust.md",
         "skills/tailrocks-rust-best-practices/references/runtime-trust.md",
+        "skills/tailrocks-rust-project-audit/references/runtime-trust.md",
+        "skills/tailrocks-rust-project-remediate/references/runtime-trust.md",
         "skills/tailrocks-rust-project-setup/references/runtime-trust.md",
         "skills/tailrocks-simplify/references/runtime-trust.md",
         "skills/tailrocks-skill-audit/references/runtime-trust.md",
@@ -83,6 +85,8 @@
       "source": "shared/references/version-policy.md",
       "destinations": [
         "skills/tailrocks-code-health/references/shared-version-policy.md",
+        "skills/tailrocks-rust-project-audit/references/shared-version-policy.md",
+        "skills/tailrocks-rust-project-remediate/references/shared-version-policy.md",
         "skills/tailrocks-rust-project-setup/references/shared-version-policy.md",
         "skills/tailrocks-swift-project-setup/references/shared-version-policy.md",
         "skills/tailrocks-tanstack-project-setup/references/shared-version-policy.md"
@@ -120,6 +124,41 @@
         "skills/tailrocks-skill-create/references/responsibility-topology.md",
         "skills/tailrocks-skill-refactor/references/responsibility-topology.md",
         "skills/tailrocks-skill-update/references/responsibility-topology.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/lints-clippy-rustfmt.md",
+      "destinations": [
+        "skills/tailrocks-rust-project-audit/references/lints-clippy-rustfmt.md",
+        "skills/tailrocks-rust-project-remediate/references/lints-clippy-rustfmt.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/supply-chain-and-testing.md",
+      "destinations": [
+        "skills/tailrocks-rust-project-audit/references/supply-chain-and-testing.md",
+        "skills/tailrocks-rust-project-remediate/references/supply-chain-and-testing.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/toolchain-and-mise.md",
+      "destinations": [
+        "skills/tailrocks-rust-project-audit/references/toolchain-and-mise.md",
+        "skills/tailrocks-rust-project-remediate/references/toolchain-and-mise.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/version-policy.md",
+      "destinations": [
+        "skills/tailrocks-rust-project-audit/references/version-policy.md",
+        "skills/tailrocks-rust-project-remediate/references/version-policy.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/workspace-and-layout.md",
+      "destinations": [
+        "skills/tailrocks-rust-project-audit/references/workspace-and-layout.md",
+        "skills/tailrocks-rust-project-remediate/references/workspace-and-layout.md"
       ]
     }
   ]

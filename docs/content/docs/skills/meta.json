@@ -4,6 +4,8 @@
     "index",
     "---Rust and services---",
     "tailrocks-rust-project-setup",
+    "tailrocks-rust-project-audit",
+    "tailrocks-rust-project-remediate",
     "tailrocks-rust-best-practices",
     "tailrocks-axum-best-practices",
     "tailrocks-graphql-best-practices",

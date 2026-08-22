@@ -7,6 +7,8 @@
       "summary": "Repository mechanics, language-level policy, the HTTP boundary, and the two service contracts.",
       "skills": [
         "tailrocks-rust-project-setup",
+        "tailrocks-rust-project-audit",
+        "tailrocks-rust-project-remediate",
         "tailrocks-rust-best-practices",
         "tailrocks-axum-best-practices",
         "tailrocks-graphql-best-practices",

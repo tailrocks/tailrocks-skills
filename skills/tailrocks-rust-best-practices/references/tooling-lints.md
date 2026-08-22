@@ -5,9 +5,10 @@ performance claims, and suppress lints correctly.
 
 **Configuration and CI setup live elsewhere.** The strict `[workspace.lints]`
 tables, `clippy.toml`, `rustfmt.toml`, the toolchain, and the cargo-deny /
-audit / shear / hack / nextest gates are owned by the
-`tailrocks-rust-project-setup` skill. This file assumes that strict baseline is
-already in place and focuses on working within it.
+audit / shear / hack / nextest baseline and templates are owned by
+`tailrocks-rust-project-setup`; approved changes to an existing workspace are
+owned by `tailrocks-rust-project-remediate`. This file assumes that strict
+baseline is already in place and focuses on working within it.
 
 ## Running the Checks
 
@@ -96,5 +97,5 @@ cargo test --workspace --doc --locked
   clearer design, and say why.
 - Never add a broad crate-level allow to make a check pass. If many warnings
   are genuinely acceptable, that policy belongs in the central lint table
-  (owned by `tailrocks-rust-project-setup`), with a comment — not scattered
+  (changed through `tailrocks-rust-project-remediate`), with a comment — not scattered
   attributes.

@@ -4,13 +4,15 @@
 
 `tailrocks-rust-project-setup` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-rust-project-setup)
 
-Scaffold, audit, or remediate a latest-compatible strict Rust workspace baseline. Use for workspace layout, toolchains, lints, formatting, mise, dependency policy, and test gates; audits are read-only unless remediation is explicitly requested.
+Scaffold a strict Rust workspace with layout, toolchains, lints, mise, dependency policy, and test gates. For existing projects, use tailrocks-rust-project-audit to report gaps or tailrocks-rust-project-remediate for approved fixes.
 
 ## Invocation
 
 This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-rust-project-setup` …
+
+Arguments: `<new workspace requirements>`
 
 ## Skill definition
 

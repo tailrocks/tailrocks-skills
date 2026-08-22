@@ -16,7 +16,9 @@ Repository mechanics, language-level policy, the HTTP boundary, and the two serv
 
 | Skill | What it does | Invocation |
 |---|---|---|
-| [`tailrocks-rust-project-setup`](/docs/skills/tailrocks-rust-project-setup) | Scaffold, audit, or remediate a latest-compatible strict Rust workspace baseline. | Manual only |
+| [`tailrocks-rust-project-setup`](/docs/skills/tailrocks-rust-project-setup) | Scaffold a strict Rust workspace with layout, toolchains, lints, mise, dependency policy, and test gates. | Manual only |
+| [`tailrocks-rust-project-audit`](/docs/skills/tailrocks-rust-project-audit) | Audit an existing Rust workspace against the strict project baseline and report exact gaps without changing files or installing tools. | Manual only |
+| [`tailrocks-rust-project-remediate`](/docs/skills/tailrocks-rust-project-remediate) | Remediate user-approved gaps in an existing Rust workspace baseline while keeping every intermediate state buildable. | Manual only |
 | [`tailrocks-rust-best-practices`](/docs/skills/tailrocks-rust-best-practices) | Apply Rust correctness contracts when in-scope work writes, reviews, or refactors Rust source, APIs, or domain behavior. | Model policy |
 | [`tailrocks-axum-best-practices`](/docs/skills/tailrocks-axum-best-practices) | Apply production Axum HTTP-adapter policy when in-scope work touches routers, handlers, extractors, Tower layers, lifecycle, or HTTP transport tests. | Model policy |
 | [`tailrocks-graphql-best-practices`](/docs/skills/tailrocks-graphql-best-practices) | Apply public GraphQL API policy when in-scope work touches schema, Juniper resolvers, SDL, pagination, or generated GraphQL clients. | Model policy |

@@ -24,7 +24,21 @@ export type GeneratorReceipt = {
 const manifestSchema = "tailrocks.generated-references/v1";
 const receiptSchema = "tailrocks.generated-references-receipt/v1";
 const lockSchema = "tailrocks.generated-references-lock/v1";
-const sourcePattern = /^(?:shared|skill-authoring)\/references\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/;
+const sourcePattern =
+  /^(?:(?:shared|skill-authoring)\/references\/[a-z0-9]+(?:-[a-z0-9]+)*|skills\/tailrocks-rust-project-setup\/references\/(?:lints-clippy-rustfmt|supply-chain-and-testing|toolchain-and-mise|version-policy|workspace-and-layout))\.md$/;
+export function isGeneratedReferenceSource(source: string): boolean {
+  return sourcePattern.test(source);
+}
+const rustProjectOwnerReferences = [
+  "lints-clippy-rustfmt.md",
+  "supply-chain-and-testing.md",
+  "toolchain-and-mise.md",
+  "version-policy.md",
+  "workspace-and-layout.md",
+] as const;
+const rustProjectOwnerSources = rustProjectOwnerReferences.map(
+  (name) => `skills/tailrocks-rust-project-setup/references/${name}`,
+);
 const destinationPattern =
   /^skills\/tailrocks-[a-z0-9]+(?:-[a-z0-9]+)*\/references\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/;
 
@@ -148,7 +162,10 @@ async function skillNames(root: string): Promise<string[]> {
   return names.sort(compareCodeUnits);
 }
 
-async function loadPlan(root: string, manifestFile: string): Promise<PlannedCopy[]> {
+async function loadPlan(
+  root: string,
+  manifestFile: string,
+): Promise<{ plan: PlannedCopy[]; sourceCount: number }> {
   let manifest: Manifest;
   try {
     manifest = JSON.parse(await readFile(manifestFile, "utf8")) as Manifest;
@@ -166,7 +183,7 @@ async function loadPlan(root: string, manifestFile: string): Promise<PlannedCopy
     if (typeof entry !== "object" || entry === null || Array.isArray(entry))
       throw new Error(`entries[${index}] must be an object`);
     exactKeys(entry, ["destinations", "source"], `entries[${index}]`);
-    if (typeof entry.source !== "string" || !sourcePattern.test(entry.source))
+    if (typeof entry.source !== "string" || !isGeneratedReferenceSource(entry.source))
       throw new Error(`entries[${index}].source is invalid`);
     if (
       !Array.isArray(entry.destinations) ||
@@ -181,8 +198,25 @@ async function loadPlan(root: string, manifestFile: string): Promise<PlannedCopy
   assertSorted(sources, "manifest sources");
 
   const discoveredSources = await canonicalSources(root);
-  if (sources.join("\n") !== discoveredSources.join("\n"))
+  const rootSources = sources.filter((source) => !source.startsWith("skills/"));
+  if (rootSources.join("\n") !== discoveredSources.join("\n"))
     throw new Error("manifest sources must exactly cover canonical reference files");
+  const ownerSources = sources.filter((source) => source.startsWith("skills/"));
+  const rustOwnerPresent = await exists(path.join(root, "skills/tailrocks-rust-project-setup/SKILL.md"));
+  if (rustOwnerPresent && ownerSources.join("\n") !== rustProjectOwnerSources.join("\n"))
+    throw new Error("manifest must exactly cover the five Rust project owner references");
+  if (!rustOwnerPresent && ownerSources.length > 0)
+    throw new Error("generated-reference source owner is missing: tailrocks-rust-project-setup");
+  for (const source of rustOwnerPresent ? rustProjectOwnerSources : []) {
+    const name = path.posix.basename(source);
+    const expected = [
+      `skills/tailrocks-rust-project-audit/references/${name}`,
+      `skills/tailrocks-rust-project-remediate/references/${name}`,
+    ];
+    const actual = manifest.entries.find((entry) => entry.source === source)!.destinations;
+    if (actual.join("\n") !== expected.join("\n"))
+      throw new Error(`${source} must copy exactly to Rust project audit and remediation`);
+  }
 
   const destinations = manifest.entries.flatMap((entry) => entry.destinations);
   if (new Set(destinations).size !== destinations.length)
@@ -190,6 +224,8 @@ async function loadPlan(root: string, manifestFile: string): Promise<PlannedCopy
   const caseFolded = destinations.map((destination) => destination.toLowerCase());
   if (new Set(caseFolded).size !== caseFolded.length)
     throw new Error("generated-reference destinations must be case-fold unique");
+  if (sources.some((source) => destinations.includes(source)))
+    throw new Error("generated-reference sources cannot also be destinations");
   const runtime = manifest.entries.find((entry) => entry.source === "shared/references/runtime-trust.md");
   if (runtime) {
     const covered = runtime.destinations
@@ -204,6 +240,11 @@ async function loadPlan(root: string, manifestFile: string): Promise<PlannedCopy
   for (const entry of manifest.entries) {
     await assertNoSymlink(root, entry.source);
     const sourceFile = resolveInside(root, entry.source);
+    if (entry.source.startsWith("skills/")) {
+      const owner = entry.source.split("/")[1]!;
+      if (!(await exists(path.join(root, "skills", owner, "SKILL.md"))))
+        throw new Error(`generated-reference source owner is missing: ${owner}`);
+    }
     const content = await readFile(sourceFile);
     for (const destination of entry.destinations) {
       await assertNoSymlink(root, destination);
@@ -213,7 +254,7 @@ async function loadPlan(root: string, manifestFile: string): Promise<PlannedCopy
       plan.push({ source: entry.source, destination, content });
     }
   }
-  return plan;
+  return { plan, sourceCount: sources.length };
 }
 
 export async function generateReferences(
@@ -225,7 +266,7 @@ export async function generateReferences(
   const resolvedRoot = await realpath(path.resolve(root));
   const manifestFile = resolveInside(resolvedRoot, manifestPath);
   await assertNoSymlink(resolvedRoot, manifestPath);
-  const plan = await loadPlan(resolvedRoot, manifestFile);
+  const { plan, sourceCount } = await loadPlan(resolvedRoot, manifestFile);
   const lockFile = resolveInside(resolvedRoot, "generated-references.lock.json");
   await assertNoSymlink(resolvedRoot, "generated-references.lock.json");
   const lock = expectedLock(plan);
@@ -305,7 +346,7 @@ export async function generateReferences(
   return {
     schema: receiptSchema,
     mode,
-    sources: (await canonicalSources(resolvedRoot)).length,
+    sources: sourceCount,
     destinations: plan.length,
     byte_identical: mode === "check" ? identical : identical + changed.length,
     written: mode === "write" ? changed.length : 0,

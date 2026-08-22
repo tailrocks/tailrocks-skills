@@ -202,6 +202,76 @@
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
     },
     {
+      "source": "skills/tailrocks-rust-project-setup/references/lints-clippy-rustfmt.md",
+      "destination": "skills/tailrocks-rust-project-audit/references/lints-clippy-rustfmt.md",
+      "sha256": "6c31c7e50c8cc989097d1d1f4703041fac9b2cd7aa951ec81e51e24b1d1eb12a"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-rust-project-audit/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-rust-project-audit/references/shared-version-policy.md",
+      "sha256": "48ae188d631f007a458e8da80541ba9fa6f464ff9ec35cc7908c566f3bd890cf"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/supply-chain-and-testing.md",
+      "destination": "skills/tailrocks-rust-project-audit/references/supply-chain-and-testing.md",
+      "sha256": "309786e33902726dfe9abaa2cb33cb858e049a467a985ddb41ae0a7e592a2b25"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/toolchain-and-mise.md",
+      "destination": "skills/tailrocks-rust-project-audit/references/toolchain-and-mise.md",
+      "sha256": "3c8656fa0735692d11426a99089eaa82876ea830a9c6e4c6c4bd4f61c0635763"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/version-policy.md",
+      "destination": "skills/tailrocks-rust-project-audit/references/version-policy.md",
+      "sha256": "44bdca0a253d099597ce90cf2e992ea6c7edae0cc89fa734347e17aea25de85d"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/workspace-and-layout.md",
+      "destination": "skills/tailrocks-rust-project-audit/references/workspace-and-layout.md",
+      "sha256": "9c346132d45f8c4b95b316082ada3e4ff551e7408dc445b1adc3c19f35691aae"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/lints-clippy-rustfmt.md",
+      "destination": "skills/tailrocks-rust-project-remediate/references/lints-clippy-rustfmt.md",
+      "sha256": "6c31c7e50c8cc989097d1d1f4703041fac9b2cd7aa951ec81e51e24b1d1eb12a"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-rust-project-remediate/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "shared/references/version-policy.md",
+      "destination": "skills/tailrocks-rust-project-remediate/references/shared-version-policy.md",
+      "sha256": "48ae188d631f007a458e8da80541ba9fa6f464ff9ec35cc7908c566f3bd890cf"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/supply-chain-and-testing.md",
+      "destination": "skills/tailrocks-rust-project-remediate/references/supply-chain-and-testing.md",
+      "sha256": "309786e33902726dfe9abaa2cb33cb858e049a467a985ddb41ae0a7e592a2b25"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/toolchain-and-mise.md",
+      "destination": "skills/tailrocks-rust-project-remediate/references/toolchain-and-mise.md",
+      "sha256": "3c8656fa0735692d11426a99089eaa82876ea830a9c6e4c6c4bd4f61c0635763"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/version-policy.md",
+      "destination": "skills/tailrocks-rust-project-remediate/references/version-policy.md",
+      "sha256": "44bdca0a253d099597ce90cf2e992ea6c7edae0cc89fa734347e17aea25de85d"
+    },
+    {
+      "source": "skills/tailrocks-rust-project-setup/references/workspace-and-layout.md",
+      "destination": "skills/tailrocks-rust-project-remediate/references/workspace-and-layout.md",
+      "sha256": "9c346132d45f8c4b95b316082ada3e4ff551e7408dc445b1adc3c19f35691aae"
+    },
+    {
       "source": "shared/references/runtime-trust.md",
       "destination": "skills/tailrocks-rust-project-setup/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"

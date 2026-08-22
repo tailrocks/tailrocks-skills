@@ -19,6 +19,9 @@ function manifest(): Record<string, unknown> {
         source: "shared/references/runtime-trust.md",
         destinations: [
           "skills/tailrocks-one/references/runtime-trust.md",
+          "skills/tailrocks-rust-project-audit/references/runtime-trust.md",
+          "skills/tailrocks-rust-project-remediate/references/runtime-trust.md",
+          "skills/tailrocks-rust-project-setup/references/runtime-trust.md",
           "skills/tailrocks-two/references/runtime-trust.md",
         ],
       },
@@ -26,6 +29,19 @@ function manifest(): Record<string, unknown> {
         source: "skill-authoring/references/operational-contract.md",
         destinations: ["skills/tailrocks-one/references/operational-contract.md"],
       },
+      ...[
+        "lints-clippy-rustfmt.md",
+        "supply-chain-and-testing.md",
+        "toolchain-and-mise.md",
+        "version-policy.md",
+        "workspace-and-layout.md",
+      ].map((name) => ({
+        source: `skills/tailrocks-rust-project-setup/references/${name}`,
+        destinations: [
+          `skills/tailrocks-rust-project-audit/references/${name}`,
+          `skills/tailrocks-rust-project-remediate/references/${name}`,
+        ],
+      })),
     ],
   };
 }
@@ -36,6 +52,20 @@ async function fixture(): Promise<string> {
   await write(root, "skill-authoring/references/operational-contract.md", "contract\n");
   await write(root, "skills/tailrocks-one/SKILL.md");
   await write(root, "skills/tailrocks-two/SKILL.md");
+  for (const skill of [
+    "tailrocks-rust-project-audit",
+    "tailrocks-rust-project-remediate",
+    "tailrocks-rust-project-setup",
+  ])
+    await write(root, `skills/${skill}/SKILL.md`);
+  for (const name of [
+    "lints-clippy-rustfmt.md",
+    "supply-chain-and-testing.md",
+    "toolchain-and-mise.md",
+    "version-policy.md",
+    "workspace-and-layout.md",
+  ])
+    await write(root, `skills/tailrocks-rust-project-setup/references/${name}`, `${name}\n`);
   await write(root, "generated-references.json", `${JSON.stringify(manifest(), null, 2)}\n`);
   return root;
 }
@@ -43,24 +73,20 @@ async function fixture(): Promise<string> {
 test("writes every destination atomically and then proves byte equality", async () => {
   const root = await fixture();
   const written = await generateReferences(root, "write");
-  expect(written).toEqual({
+  expect(written).toMatchObject({
     schema: "tailrocks.generated-references-receipt/v1",
     mode: "write",
-    sources: 2,
-    destinations: 3,
-    byte_identical: 3,
-    written: 3,
-    mutations: [
-      "skills/tailrocks-one/references/runtime-trust.md",
-      "skills/tailrocks-two/references/runtime-trust.md",
-      "skills/tailrocks-one/references/operational-contract.md",
-      "generated-references.lock.json",
-    ],
+    sources: 7,
+    destinations: 16,
+    byte_identical: 16,
+    written: 16,
   });
+  expect(written.mutations).toHaveLength(17);
+  expect(written.mutations).toContain("generated-references.lock.json");
   expect(await readFile(path.join(root, "skills/tailrocks-two/references/runtime-trust.md"), "utf8")).toBe(
     "runtime\n",
   );
-  expect((await generateReferences(root, "check")).byte_identical).toBe(3);
+  expect((await generateReferences(root, "check")).byte_identical).toBe(16);
   expect((await generateReferences(root, "write")).written).toBe(0);
   expect(await readFile(path.join(root, "generated-references.lock.json"), "utf8")).toContain(
     "tailrocks.generated-references-lock/v1",
@@ -82,7 +108,7 @@ test("copies and validates canonical bytes without text normalization", async ()
   await generateReferences(root, "write");
   const destination = await readFile(path.join(root, "skills/tailrocks-one/references/runtime-trust.md"));
   expect(destination.equals(bytes)).toBe(true);
-  expect((await generateReferences(root, "check")).byte_identical).toBe(3);
+  expect((await generateReferences(root, "check")).byte_identical).toBe(16);
 });
 
 test("manifest exactly covers canonical sources and every current skill runtime copy", async () => {
@@ -95,6 +121,39 @@ test("manifest exactly covers canonical sources and every current skill runtime 
   ((source.entries as Array<Record<string, unknown>>)[0]!.destinations as string[]).pop();
   await write(missingRuntime, "generated-references.json", JSON.stringify(source));
   await expect(generateReferences(missingRuntime, "write")).rejects.toThrow("exactly cover current skills");
+});
+
+test("admits only the five setup-owned Rust reference sources and counts them", async () => {
+  const root = await fixture();
+  expect((await generateReferences(root, "write")).sources).toBe(7);
+
+  const source = manifest();
+  const entries = source.entries as Array<{ source: string; destinations: string[] }>;
+  await rm(path.join(root, "skills/tailrocks-rust-project-setup/SKILL.md"));
+  entries[0]!.destinations = entries[0]!.destinations.filter(
+    (destination) => !destination.includes("tailrocks-rust-project-setup"),
+  );
+  await write(root, "generated-references.json", JSON.stringify(source));
+  await expect(generateReferences(root, "check")).rejects.toThrow("source owner is missing");
+
+  const omitted = await fixture();
+  const omittedManifest = manifest();
+  (omittedManifest.entries as unknown[]).pop();
+  await write(omitted, "generated-references.json", JSON.stringify(omittedManifest));
+  await expect(generateReferences(omitted, "write")).rejects.toThrow("exactly cover the five");
+
+  const redirected = await fixture();
+  const redirectedManifest = manifest();
+  (redirectedManifest.entries as Array<{ destinations: string[] }>)[2]!.destinations.pop();
+  await write(redirected, "generated-references.json", JSON.stringify(redirectedManifest));
+  await expect(generateReferences(redirected, "write")).rejects.toThrow("copy exactly");
+
+  const generated = await fixture();
+  const generatedManifest = manifest();
+  (generatedManifest.entries as Array<{ source: string }>)[2]!.source =
+    "skills/tailrocks-rust-project-audit/references/lints-clippy-rustfmt.md";
+  await write(generated, "generated-references.json", JSON.stringify(generatedManifest));
+  await expect(generateReferences(generated, "write")).rejects.toThrow("source is invalid");
 });
 
 test("rejects lock-owned removal, path escapes, and unsorted entries", async () => {

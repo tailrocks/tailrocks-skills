@@ -32,6 +32,8 @@
     { "skill": "tailrocks-retrospect", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-review-pr", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-rust-best-practices", "class": "MODEL_POLICY" },
+    { "skill": "tailrocks-rust-project-audit", "class": "MANUAL_ONLY" },
+    { "skill": "tailrocks-rust-project-remediate", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-rust-project-setup", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-simplify", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-skill-audit", "class": "MANUAL_ONLY" },
