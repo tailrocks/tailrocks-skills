@@ -29,6 +29,8 @@
     "tailrocks-remediate",
     "tailrocks-rethink",
     "tailrocks-contribute",
+    "---Decision support---",
+    "tailrocks-grilling",
     "---Skill authoring---",
     "tailrocks-skill-create",
     "tailrocks-skill-update",

@@ -375,10 +375,25 @@ all terminal checks pass, and the final literal marker is changed to
     skills, checked 133 generated files, and checked 42 formatted files.
     Protection proof covered 4 patterns and 183 frozen paths with zero
     violations; diff check passed. Fresh subagent verdict: PASS. No evals run.
-- [ ] [IN_PROGRESS] P03.04 Create `tailrocks-grilling` from its recorded baseline:
+- [x] [COMPLETED] P03.04 Create `tailrocks-grilling` from its recorded baseline:
   dependency-ordered frontier rounds, recommendation per question, agent-owned
   fact retrieval, user-owned decisions, explicit confirmation, no execution.
-- [ ] [TODO] P03.05 Give `tailrocks-grilling` exclusive boundaries against
+  - Evidence receipt (2026-08-22): created the conversation-only
+    `tailrocks-grilling` model-policy owner with explicitly numbered
+    dependency-frontier rounds, a grounded recommendation on every question,
+    agent-owned fact retrieval with one alternate-source retry, user-owned
+    choices, contradiction reopening, early-exit and resume state, live-human
+    refusal, explicit final-map confirmation, and structural zero-write and
+    zero-execution authority. Added sorted invocation, catalog, shared-runtime,
+    root/install, Codex, generated documentation, and exact-matrix wiring.
+    Focused proof passed 5 tests with 128 assertions. `rtk mise run
+    migration-check` passed 134 tests with 739 assertions across 16
+    non-protected files, validated 44 skills, checked 136 generated files and
+    72 byte-identical shared-reference destinations, and checked 42 formatted
+    files. Protection proof covered 4 patterns and 183 frozen source paths with
+    zero violations; diff check passed. Fresh subagent verdict: PASS after its
+    numbered-round blocker was fixed and statically guarded. No evals run.
+- [ ] [IN_PROGRESS] P03.05 Give `tailrocks-grilling` exclusive boundaries against
   roadmap shaping/readiness, reusable research, implementation planning, and
   medium-specific design.
 - [ ] [TODO] P03.06 Reconcile `invocation-policy.md`, root doctrine, install

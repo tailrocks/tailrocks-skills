@@ -297,6 +297,15 @@ themselves are judged by tailrocks-skill-audit, not by improve's lanes.
 
 Skill definition: `skills/tailrocks-improve/SKILL.md`
 
+### tailrocks-grilling
+
+Stress-test an idea, plan, or decision before action through dependency-ordered
+frontier rounds. It retrieves lookupable facts, recommends an answer with every
+question, leaves every choice to the user, requires explicit confirmation, and
+ends without writing or executing.
+
+Skill definition: `skills/tailrocks-grilling/SKILL.md`
+
 ### The delivery family — roadmap-driven pipeline
 
 Ten skills drive work from a cold repository or a captured idea through

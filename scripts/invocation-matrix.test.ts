@@ -9,6 +9,7 @@ const modelPolicy = [
   "tailrocks-agents-md",
   "tailrocks-axum-best-practices",
   "tailrocks-graphql-best-practices",
+  "tailrocks-grilling",
   "tailrocks-grpc-best-practices",
   "tailrocks-macos-design",
   "tailrocks-rust-best-practices",
@@ -91,4 +92,27 @@ test("instruction and design policy selection preserves mutation and human autho
     const metadata = Bun.YAML.parse(source.match(/^---\n([\s\S]*?)\n---/)![1]) as Record<string, unknown>;
     expect(metadata["disable-model-invocation"]).toBe(true);
   }
+});
+
+test("grilling policy is conversation-only and preserves user decision authority", async () => {
+  const raw = await readFile(path.join(root, "skills/tailrocks-grilling/SKILL.md"), "utf8");
+  const source = raw.replace(/\s+/g, " ");
+  for (const phrase of [
+    "whole frontier as one numbered list",
+    "Label it `Round N`",
+    "Every question must include a recommended answer",
+    "Never ask a dependent question",
+    "user explicitly confirms the final map",
+    "Do not turn the decision map into repository changes",
+  ]) {
+    expect(source).toContain(phrase);
+  }
+  const metadata = Bun.YAML.parse(raw.match(/^---\n([\s\S]*?)\n---/)![1]) as Record<string, unknown>;
+  expect(metadata.description).toMatch(/grilled, challenged, interrogated, or stress-tested/);
+  const openai = Bun.YAML.parse(
+    await readFile(path.join(root, "skills/tailrocks-grilling/agents/openai.yaml"), "utf8"),
+  ) as { interface?: { default_prompt?: unknown } };
+  expect(openai.interface?.default_prompt).toMatch(/conversation-only and read-only/);
+  expect(openai.interface?.default_prompt).toMatch(/leave every decision to me/);
+  expect(openai.interface?.default_prompt).toMatch(/do not execute/);
 });
