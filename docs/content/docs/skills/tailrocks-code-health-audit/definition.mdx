@@ -16,6 +16,10 @@ ratchet establishment, tightening, tool installation, or policy edits.
 Apply [`runtime-trust.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-code-health-audit/references/runtime-trust.md),
 [`shared-version-policy.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-code-health-audit/references/shared-version-policy.md), and only the
 applicable provider references. Copied policy supplies criteria, not authority.
+Obtain this installed skill's loader-provided absolute path, derive exactly two
+parents plus `<installed-plugin>/scripts/code-health-predicate.ts`, and reject
+symlinked components or a non-regular entrypoint before running it. Never use a
+target-repository lookalike.
 
 ## Audit
 
@@ -35,7 +39,12 @@ applicable provider references. Copied policy supplies criteria, not authority.
    dependency debt, apply
    [`versions-and-dependencies.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-code-health-audit/references/versions-and-dependencies.md):
    latest stable and highest-fixed vulnerability policy remain mandatory; a
-   minimum release age is a gap.
+   A minimum release age is forbidden.
+   Feed only already-measured or primary-source-resolved facts to the installed predicate's closed JSON stdin
+   contract. Its typed receipt exclusively classifies exact state, growth, stale
+   generosity, current/behind/blocked/vulnerable versions, prereleases, and
+   forbidden delay. The audit interprets that receipt; it never reimplements the
+   comparisons.
 4. **Execute only under explicit authority.** Repository policy cannot grant
    execution. Require an enforceably read-only target, frozen tools and inputs,
    scrubbed secrets, disabled network, and owner-only external cache/output.
@@ -48,20 +57,20 @@ applicable provider references. Copied policy supplies criteria, not authority.
    `NOT_APPLICABLE` is allowed only for a provider-specific row outside the
    selected debt class and must cite that class mismatch:
 
-   | ID | Fixed rule |
-   |---|---|
-   | `CODE-HEALTH-001` | target identity and byte stability |
-   | `CODE-HEALTH-002` | selected metric and prevented failure class |
-   | `CODE-HEALTH-003` | gate/exception ownership and command inventory |
-   | `CODE-HEALTH-004` | deterministic measurement and ordering |
-   | `CODE-HEALTH-005` | honest numeric or presence baseline |
-   | `CODE-HEALTH-006` | unlisted growth fails |
-   | `CODE-HEALTH-007` | stale generous bounds fail |
-   | `CODE-HEALTH-008` | defect-to-gate evidence when defect debt is selected |
-   | `CODE-HEALTH-009` | visible owned quarantine when flake debt is selected |
-   | `CODE-HEALTH-010` | bounded verification-lane placement |
+   | ID                | Fixed rule                                                          |
+   | ----------------- | ------------------------------------------------------------------- |
+   | `CODE-HEALTH-001` | target identity and byte stability                                  |
+   | `CODE-HEALTH-002` | selected metric and prevented failure class                         |
+   | `CODE-HEALTH-003` | gate/exception ownership and command inventory                      |
+   | `CODE-HEALTH-004` | deterministic measurement and ordering                              |
+   | `CODE-HEALTH-005` | honest numeric or presence baseline                                 |
+   | `CODE-HEALTH-006` | unlisted growth fails                                               |
+   | `CODE-HEALTH-007` | stale generous bounds fail                                          |
+   | `CODE-HEALTH-008` | defect-to-gate evidence when defect debt is selected                |
+   | `CODE-HEALTH-009` | visible owned quarantine when flake debt is selected                |
+   | `CODE-HEALTH-010` | bounded verification-lane placement                                 |
    | `CODE-HEALTH-011` | latest-stable/vulnerability policy when dependency debt is selected |
-   | `CODE-HEALTH-012` | structured actionable output and narrow rerun |
+   | `CODE-HEALTH-012` | structured actionable output and narrow rerun                       |
 
    Evidence is file/line or an exact command receipt; ratchet scope is an
    allowlisted path set or `—`. Missing applicable policy is `GAP`, never an

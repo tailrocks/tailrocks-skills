@@ -1344,9 +1344,26 @@ all terminal checks pass, and the final literal marker is changed to
     assertions and every static/generated check; only the same two unrelated
     macOS GUI activation cases failed, owned by P09.15. No evals run or
     inspected.
-- [ ] [IN_PROGRESS] P09.05 `tailrocks-code-health`: machine-owned version and ratchet
+- [x] [COMPLETED] P09.05 `tailrocks-code-health`: machine-owned version and ratchet
   predicates plus unique owner hints.
-- [ ] [TODO] P09.06 `tailrocks-contribute`: five stage scripts with temporary
+  - Evidence receipt (2026-08-23): added one loader-derived, non-symlink
+    `code-health-predicate.ts` entrypoint with closed numeric, presence, and
+    semantic-version input schemas. Establishment freezes the exact measured
+    bound/set and oracle; audit distinguishes growth from stale generosity;
+    tightening accepts only the exact lower measured state with the same oracle.
+    Version facts classify current, behind, prerelease, incompatible, vulnerable,
+    and delayed states while refusing malformed, duplicate, overflowed, unstable,
+    or contradictory latest/fixed facts. Bounded stdin, deterministic sorted
+    identities, typed one-line receipts, no target mutation, and installed-layout
+    trust tests close the executable boundary. Mutation and audit keep distinct
+    exact hints/prompts, consume the same predicate, and retain exclusive write
+    versus read-only authority. Focused proof passed 14 tests/81 assertions;
+    validator passed 84 skills; references checked 88 sources/258 byte-identical
+    destinations; docs checked 256 files; fresh subagent verdict: PASS. The
+    non-eval migration gate passed 455 tests/5,230 assertions and every
+    static/generated check; only the same two unrelated macOS GUI activation
+    cases failed, owned by P09.15. No evals run or inspected.
+- [ ] [IN_PROGRESS] P09.06 `tailrocks-contribute`: five stage scripts with temporary
   repository state and mocked external receipts.
 - [ ] [TODO] P09.07 `tailrocks-create-pr`: bounded non-vacuous pre-open gate and
   mocked remote receipts.

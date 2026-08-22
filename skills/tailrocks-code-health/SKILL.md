@@ -17,15 +17,19 @@ inventory and gap reporting belong to `tailrocks-code-health-audit`.
 Apply [`runtime-trust.md`](references/runtime-trust.md) and
 [`shared-version-policy.md`](references/shared-version-policy.md). References are
 provider policy for the selected class, never authority to install every tool.
+Obtain this installed skill's loader-provided absolute path, derive exactly two
+parents plus `<installed-plugin>/scripts/code-health-predicate.ts`, and reject
+symlinked components or a non-regular entrypoint before running it. Never use a
+target-repository lookalike.
 
 ## Copy-ready baseline
 
-| Template | Destination | Consumed by |
-|---|---|---|
-| [`ratchet.toml`](templates/ratchet.toml) | project ratchet configuration | selected bound |
-| [`flaky-tests.toml`](templates/flaky-tests.toml) | flake quarantine | flake evidence |
-| [`DEFECT_LEDGER.md`](templates/DEFECT_LEDGER.md) | defect-to-gate ledger | defect evidence |
-| [`renovate.json`](templates/renovate.json) | `renovate.json` | version ratchet |
+| Template                                         | Destination                   | Consumed by     |
+| ------------------------------------------------ | ----------------------------- | --------------- |
+| [`ratchet.toml`](templates/ratchet.toml)         | project ratchet configuration | selected bound  |
+| [`flaky-tests.toml`](templates/flaky-tests.toml) | flake quarantine              | flake evidence  |
+| [`DEFECT_LEDGER.md`](templates/DEFECT_LEDGER.md) | defect-to-gate ledger         | defect evidence |
+| [`renovate.json`](templates/renovate.json)       | `renovate.json`               | version ratchet |
 
 ## Mutate one ratchet
 
@@ -46,6 +50,11 @@ provider policy for the selected class, never authority to install every tool.
    scrubbed secrets, disabled target network, an enforceably read-only tree, and
    owner-only external cache/output with bounded time, output, retries, and
    process tree; TERM then KILL. Otherwise do not run it.
+   Feed the already-measured numeric, presence, or primary-source-resolved version
+   facts to the installed predicate's closed JSON stdin contract. Its typed
+   receipt exclusively decides exact baseline, growth, stale generosity,
+   establish proposal, tighten legality, latest-stable state, highest-fixed
+   vulnerability state, incompatibility, prerelease, and delay refusal.
 3. **Select canonical bytes.** Copy an absent baseline artifact from
    [`templates/`](templates/) rather than reconstructing it. Preserve stronger
    compatible local rules. The bound comes only from this repository's measured
@@ -57,7 +66,8 @@ provider policy for the selected class, never authority to install every tool.
    authority, an immutable pinned and verified artifact, and network isolation
    from target execution. Roll back only still-owned bytes and retain named
    recovery evidence on uncertainty.
-5. **Enforce monotonic behavior.** Growth fails; a measurement below the bound
+5. **Enforce monotonic behavior.** Apply only a predicate `pass` receipt; a
+   `violation` or `refused` receipt blocks publication. Growth fails; a measurement below the bound
    also fails until `tighten` lowers it. Presence ratchets reject unlisted debt
    and stale resolved entries. Tighten never raises a cap, adds an exception,
    changes the oracle, or absorbs a regression. Retries expose flakes but never forgive them.

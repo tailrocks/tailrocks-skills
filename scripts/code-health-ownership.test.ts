@@ -97,3 +97,23 @@ test("registry catalog and choosing expose both manual owners", async () => {
     "one-off read-only debt measurement",
   );
 });
+
+test("owner hints and prompts are distinct while both consume the one machine predicate", async () => {
+  const [mutate, audit, mutateAgent, auditAgent, predicate] = await Promise.all([
+    source("tailrocks-code-health"),
+    source("tailrocks-code-health-audit"),
+    source("tailrocks-code-health", "agents/openai.yaml"),
+    source("tailrocks-code-health-audit", "agents/openai.yaml"),
+    readFile(path.join(root, "scripts/code-health-predicate.ts"), "utf8"),
+  ]);
+  expect(mutate).toContain('argument-hint: "<establish|tighten, approved debt class, metric, and paths>"');
+  expect(audit).toContain('argument-hint: "<repository path and selected debt class>"');
+  expect(mutateAgent).not.toBe(auditAgent);
+  expect(mutateAgent).toContain("establish or tighten");
+  expect(auditAgent).toContain("measure this selected debt class read-only");
+  for (const owner of [mutate, audit])
+    expect(owner).toContain("<installed-plugin>/scripts/code-health-predicate.ts");
+  expect(mutate).toContain("Apply one transactional slice");
+  expect(audit).toContain("Never install, update, format-write, generate, mutate locks");
+  expect(predicate).toContain('"tailrocks.code-health-predicate-input/v1"');
+});
