@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-research` …
 
-Arguments: `<question | roadmap-slug> [--slug <topic-name>] [--for <roadmap-slug>] [--deep]`
+Arguments: `<question | roadmap-slug> [--slug <topic-name>] [--for <roadmap-slug>] [--deep] [--batch]`
 
 ## Skill definition
 

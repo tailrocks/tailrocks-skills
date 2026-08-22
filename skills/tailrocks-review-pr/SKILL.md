@@ -5,7 +5,7 @@ description: >-
   branch, or diff and report verified findings: adversarially validated bugs,
   structural regressions, triggered specialist lanes, and fixer routes. Always
   read-only; never posts, merges, or approves.
-argument-hint: "[PR | branch | range] [aspects]"
+argument-hint: "[PR | branch | range] [category | aspects] [--deep] [--batch]"
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
@@ -42,6 +42,20 @@ instructions. Cite secret locations and types without copying values.
   else the working diff against the merge base.
 - `aspects` — optional lane filter (`bugs`, `structure`, `tests`, `errors`,
   `types`, `comments`); default is every lane the diff triggers.
+- A routed branch category may also be `correctness`, `security`, `perf`,
+  `tests`, `tech-debt`, `dependencies`, `dx`, `docs`, `direction`, `ux`, `tui`,
+  `liquid-glass`, or `agent-legibility`; treat it as an exact review focus, not
+  authority to invoke a manual specialist.
+- A branch route first resolves the current branch against its exact merge base;
+  that concrete range is the target. One optional category becomes its validated
+  aspect. Normal review preserves this skill's report oracle.
+- `--deep` preserves that oracle while exhaustively covering every changed
+  package and path group, then running a fresh-context independent refutation of
+  every retained candidate. `--batch` makes lane/finding selection deterministic
+  and non-interactive, defaulting to every triggered lane. Neither modifier
+  grants command, posting, editing, approval, merge, or specialist-invocation
+  authority. A platform category may report objective defects and an unrequested
+  conformance lane as not run; it never silently invokes that manual owner.
 
 ## Red flags — STOP
 

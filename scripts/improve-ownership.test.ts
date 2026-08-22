@@ -177,3 +177,68 @@ test("standard deep and security audit routes are closed and preserve batch auth
     "tailrocks-audit",
   );
 });
+
+test("branch research and design-conformance routes preserve depth batch and authority", async () => {
+  const [review, research, web, tui, macos] = await Promise.all([
+    source("tailrocks-review-pr"),
+    source("tailrocks-research"),
+    source("tailrocks-web-design-audit"),
+    source("tailrocks-tui-design-audit"),
+    source("tailrocks-macos-design-review"),
+  ]);
+  const categories = [
+    ...IMPROVE_CATEGORIES.standard,
+    ...IMPROVE_CATEGORIES.security,
+    ...Object.keys(IMPROVE_CATEGORIES.platformDesign),
+  ];
+  for (const id of ["branch", "branch-deep"]) {
+    const route = IMPROVE_ROUTES.find((candidate) => candidate.id === id);
+    expect(route?.target).toBe("tailrocks-review-pr");
+    expect(route?.categoryClasses).toEqual(["standard", "security", "platform-design"]);
+    expect(route?.optionalTargetArguments).toEqual(["<validated category aspect>"]);
+    expect(route?.batchForward).toBe(true);
+  }
+  for (const category of categories) expect(review).toContain(`\`${category}\``);
+  expect(review).toContain("exhaustively covering every changed\n  package and path group");
+  expect(review).toContain("fresh-context independent refutation");
+  expect(review).toContain("never silently invokes that manual owner");
+
+  const directionQuestion =
+    "What candidate product directions follow from this repository's evidence and history?";
+  expect(IMPROVE_ROUTES.find(({ id }) => id === "next")?.targetArguments).toEqual([directionQuestion]);
+  expect(IMPROVE_ROUTES.find(({ id }) => id === "next-deep")?.targetArguments).toEqual([
+    directionQuestion,
+    "--deep",
+  ]);
+  expect(IMPROVE_ROUTES.find(({ id }) => id === "ask")?.targetArguments).toEqual(["<question>"]);
+  expect(IMPROVE_ROUTES.find(({ id }) => id === "ask-deep")?.targetArguments).toEqual([
+    "<question>",
+    "--deep",
+  ]);
+  expect(research).toContain("competing directions with trade-offs");
+  expect(research).toContain("competing answers");
+  expect(research).toContain("never retained `next`/`ask` selectors");
+
+  const designContracts = [
+    ["web", web, "tailrocks-web-design-audit", "<design-route package or shipped screens>"],
+    ["tui", tui, "tailrocks-tui-design-audit", "<gallery package or shipped terminal screens>"],
+    ["macos", macos, "tailrocks-macos-design-review", "<screen, window, or prototype package>"],
+  ] as const;
+  for (const [medium, contract, target, subject] of designContracts) {
+    for (const suffix of ["", "-deep"]) {
+      const route = IMPROVE_ROUTES.find(({ id }) => id === `ask-design-${medium}${suffix}`);
+      expect(route?.target).toBe(target);
+      expect(route?.targetArguments).toContain(subject);
+      expect(route?.batchEffect).toBe("non-interactive-selection");
+      expect(route?.authority).toBe("target-only");
+    }
+    expect(contract.replace(/\s+/g, " ")).toContain("accepts no `ask` compatibility selector");
+    expect(contract).toContain("fresh-context independent refutation");
+    expect(contract).toContain("non-interactive");
+    expect(contract).not.toContain("tailrocks-audit");
+  }
+  expect(IMPROVE_ROUTES.find(({ id }) => id === "ask-design-macos")?.targetArguments.at(0)).toBe(
+    "acceptance",
+  );
+  for (const contract of [review, research]) expect(contract).not.toContain("tailrocks-audit");
+});

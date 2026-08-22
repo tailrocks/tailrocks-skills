@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-review-pr` …
 
-Arguments: `[PR | branch | range] [aspects]`
+Arguments: `[PR | branch | range] [category | aspects] [--deep] [--batch]`
 
 ## Skill definition
 

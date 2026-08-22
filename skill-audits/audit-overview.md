@@ -1178,9 +1178,22 @@ all terminal checks pass, and the final literal marker is changed to
     the unrelated macOS GUI lane retained the host activation failure (413 pass,
     2 fail), deferred to its explicit P09.15 harness row. Protected paths
     unchanged; no evals run.
-- [ ] [IN_PROGRESS] P08.03 Route branch variants to PR review; next/ask variants to
+- [x] [COMPLETED] P08.03 Route branch variants to PR review; next/ask variants to
   research; visual-conformance questions to the matching design owner.
-- [ ] [TODO] P08.04 Route plan, seed, execute, plan-sweep, and roadmap-sweep to
+  - Evidence receipt (2026-08-23): branch review now accepts the closed
+    thirteen-category focus set and direct normal/deep/batch contracts; deep
+    exhausts every changed package/path group and independently refutes retained
+    findings. Research owns the fixed repository-direction question and verbatim
+    targeted questions with distinct deep semantics and authority-neutral batch.
+    Web, terminal, and macOS conformance owners accept exact subjects plus
+    deep/batch directly; macOS conformance is bound to acceptance, and none
+    accepts an old `ask` selector or dispatches another manual skill. The schema
+    now includes ordered deep conformance compositions. Generated READMEs/docs
+    agree. Focused proof passed 15 tests/387 assertions; fresh subagent verdict:
+    PASS. The non-eval migration gate passed all changed/schema/generated checks
+    but the unrelated macOS GUI lane retained the host activation failure (414
+    pass, 2 fail), deferred to P09.15. Protected paths unchanged; no evals run.
+- [ ] [IN_PROGRESS] P08.04 Route plan, seed, execute, plan-sweep, and roadmap-sweep to
   their exclusive owners, preserving deep and batch modifiers.
 - [ ] [TODO] P08.05 Refuse `quick --deep`, malformed modes, and multiple primary
   modes deterministically.

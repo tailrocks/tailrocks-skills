@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-tui-design-audit` …
 
-Arguments: `<gallery package or shipped terminal screens>`
+Arguments: `<gallery package or shipped terminal screens> [--deep] [--batch]`
 
 ## Skill definition
 

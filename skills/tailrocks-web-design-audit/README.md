@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-web-design-audit` …
 
-Arguments: `<design-route package or shipped screens>`
+Arguments: `<design-route package or shipped screens> [--deep] [--batch]`
 
 ## Skill definition
 

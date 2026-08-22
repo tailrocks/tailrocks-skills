@@ -12,7 +12,7 @@ This skill never activates on its own. Name it in your request:
 
 > Use `tailrocks-macos-design-review` …
 
-Arguments: `[preliminary|acceptance] <screen, window, or prototype package>`
+Arguments: `[preliminary|acceptance] <screen, window, or prototype package> [--deep] [--batch]`
 
 ## Skill definition
 

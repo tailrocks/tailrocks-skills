@@ -86,6 +86,17 @@ export const IMPROVE_CATEGORIES = {
  */
 export const IMPROVE_ROUTES = [
   route({
+    id: "ask-design-web-deep",
+    invocation: "design-conformance ask (web) --deep",
+    selector: "ask <web design-conformance question>",
+    context: "repository",
+    target: "tailrocks-web-design-audit",
+    targetArguments: ["<design-route package or shipped screens>", "--deep"],
+    designMedium: "web",
+    designConformance: true,
+    deepOperation: "every-platform-screen-and-state-with-fresh-independent-refutation",
+  }),
+  route({
     id: "ask-design-web",
     invocation: "design-conformance ask (web)",
     selector: "ask <web design-conformance question>",
@@ -96,6 +107,17 @@ export const IMPROVE_ROUTES = [
     designConformance: true,
   }),
   route({
+    id: "ask-design-tui-deep",
+    invocation: "design-conformance ask (terminal) --deep",
+    selector: "ask <terminal design-conformance question>",
+    context: "repository",
+    target: "tailrocks-tui-design-audit",
+    targetArguments: ["<gallery package or shipped terminal screens>", "--deep"],
+    designMedium: "tui",
+    designConformance: true,
+    deepOperation: "every-platform-screen-and-state-with-fresh-independent-refutation",
+  }),
+  route({
     id: "ask-design-tui",
     invocation: "design-conformance ask (terminal)",
     selector: "ask <terminal design-conformance question>",
@@ -104,6 +126,17 @@ export const IMPROVE_ROUTES = [
     targetArguments: ["<gallery package or shipped terminal screens>"],
     designMedium: "tui",
     designConformance: true,
+  }),
+  route({
+    id: "ask-design-macos-deep",
+    invocation: "design-conformance ask (macOS) --deep",
+    selector: "ask <macOS design-conformance question>",
+    context: "repository",
+    target: "tailrocks-macos-design-review",
+    targetArguments: ["acceptance", "<screen, window, or prototype package>", "--deep"],
+    designMedium: "macos",
+    designConformance: true,
+    deepOperation: "every-platform-screen-and-state-with-fresh-independent-refutation",
   }),
   route({
     id: "ask-design-macos",
@@ -197,6 +230,7 @@ export const IMPROVE_ROUTES = [
     target: "tailrocks-review-pr",
     targetArguments: ["<resolved current-branch merge-base range>", "--deep"],
     optionalTargetArguments: ["<validated category aspect>"],
+    categoryClasses: ["standard", "security", "platform-design"],
     deepOperation: "every-changed-package-with-independent-refutation",
   }),
   route({
@@ -207,6 +241,7 @@ export const IMPROVE_ROUTES = [
     target: "tailrocks-review-pr",
     targetArguments: ["<resolved current-branch merge-base range>"],
     optionalTargetArguments: ["<validated category aspect>"],
+    categoryClasses: ["standard", "security", "platform-design"],
   }),
   route({
     id: "next-deep",

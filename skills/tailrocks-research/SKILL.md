@@ -2,7 +2,7 @@
 name: tailrocks-research
 description: >-
   Use only when the user explicitly requests this skill. Run deep, sourced research into a reusable topic under research/, for a question or to extend a roadmap item, using parallel investigators. Do not use for decisions only the user can make, or questions one lookup answers.
-argument-hint: "<question | roadmap-slug> [--slug <topic-name>] [--for <roadmap-slug>] [--deep]"
+argument-hint: "<question | roadmap-slug> [--slug <topic-name>] [--for <roadmap-slug>] [--deep] [--batch]"
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
@@ -24,6 +24,19 @@ Two invocation shapes:
   what the referenced world offers, which genuinely different directions
   exist — each direction with evidence and trade-offs, none chosen. Choosing
   is the user's, via `tailrocks-record-decision`.
+
+A repository-direction request uses the exact question “What candidate product
+directions follow from this repository's evidence and history?” An ordinary
+targeted question stays verbatim. `--deep` on the direction question requires
+parallel investigators to return competing directions with trade-offs;
+`--deep` on another question requires parallel investigators to return and
+reconcile competing answers. `--batch` makes selection deterministic and
+non-interactive, selecting every applicable question cluster without prompting.
+It preserves only this skill's existing research transaction: it cannot widen
+write paths, choose a direction, infer a user decision or credential, or grant
+target-command or unrelated network authority. These are direct research
+invocations using the question text, never retained `next`/`ask` selectors and
+never dispatch from another manual skill.
 
 ## Boundaries
 
