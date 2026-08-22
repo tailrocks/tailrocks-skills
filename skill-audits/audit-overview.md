@@ -430,13 +430,24 @@ all terminal checks pass, and the final literal marker is changed to
     frozen source paths with zero violations; stale-claim and diff checks
     passed. Fresh subagent verdict: PASS after its stale measurement blocker was
     corrected and guarded. No evals run.
-- [ ] [IN_PROGRESS] P03.GATE Run `rtk mise run migration-check`; prove the exact
+- [x] [COMPLETED] P03.GATE Run `rtk mise run migration-check`; prove the exact
   model-visible set, representative manual-only absence, trigger boundaries,
-  and zero authority gain. Evidence: pending.
+  and zero authority gain.
+  - Evidence receipt (2026-08-22): on clean committed state, `rtk mise run
+    migration-check` passed 138 tests with 792 assertions across 17
+    non-protected files, validated 44 skills, checked 136 generated files and
+    72 byte-identical shared-reference destinations, and checked 43 formatted
+    files. Focused terminal proof passed 9 tests with 181 assertions: exact 11
+    model-policy owners, representative manual transaction absence, canonical
+    client tuples, trigger and human-authority boundaries, grilling ownership,
+    two-class documentation, and zero authority gain. Protection proof covered
+    4 patterns and 183 frozen source paths with zero violations; worktree and
+    diff checks passed. P03.06 fresh subagent verdict remained PASS. No evals
+    run.
 
 ## P04 — Extract deterministic and security-sensitive seams
 
-- [ ] [TODO] P04.01 Add deterministic audit-report identity and finding-ID
+- [ ] [IN_PROGRESS] P04.01 Add deterministic audit-report identity and finding-ID
   reconciliation.
 - [ ] [TODO] P04.02 Add `scripts/agents-md-topology.ts` with typed mutation
   receipts, exact symlink discovery/create/repair/verify behavior, and temporary
