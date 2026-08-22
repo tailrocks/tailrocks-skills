@@ -2,6 +2,8 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
+import { runBoundedCommand } from "./bounded-command";
+
 const receiptSchema = "tailrocks.protected-paths-check/v1";
 const protectedPathsManifestSha256 = "aa32fee13155a3765438bad38be146a2c21a8b0fab926585dee3746e5c7fefa1";
 
@@ -36,20 +38,11 @@ export interface ProtectedPathsReceipt {
 }
 
 async function git(root: string, args: string[]): Promise<string> {
-  const process = Bun.spawn(["git", ...args], {
-    cwd: root,
-    stdout: "pipe",
-    stderr: "pipe",
-  });
-  const [stdout, stderr, exitCode] = await Promise.all([
-    new Response(process.stdout).text(),
-    new Response(process.stderr).text(),
-    process.exited,
-  ]);
-  if (exitCode !== 0) {
-    throw new Error(`git ${args[0]} failed: ${stderr.trim() || `exit ${exitCode}`}`);
+  const result = await runBoundedCommand({ command: ["git", ...args], cwd: root });
+  if (result.code !== 0 || result.timedOut) {
+    throw new Error(`git ${args[0]} failed: ${result.stderr.trim() || `exit ${result.code}`}`);
   }
-  return stdout;
+  return result.stdout;
 }
 
 function nulFields(output: string): string[] {
@@ -254,15 +247,38 @@ export async function checkProtectedPaths(
 
 if (import.meta.main) {
   const root = path.resolve(import.meta.dir, "..");
-  try {
-    const receipt = await checkProtectedPaths(root);
-    console.log(JSON.stringify(receipt));
-    if (receipt.violations.length > 0) process.exit(1);
-  } catch (error) {
-    console.error(
+  if (process.argv.length !== 2) {
+    console.log(
       JSON.stringify({
         schema: receiptSchema,
-        error: error instanceof Error ? error.message : String(error),
+        outcome: "refused",
+        code: "invalid_arguments",
+        mutations: [],
+        detail: "check-protected-paths takes no arguments",
+      }),
+    );
+    process.exit(2);
+  }
+  try {
+    const receipt = await checkProtectedPaths(root);
+    console.log(
+      JSON.stringify({
+        ...receipt,
+        outcome: receipt.violations.length === 0 ? "success" : "failed",
+        code: receipt.violations.length === 0 ? "protected" : "violations",
+        mutations: [],
+        detail: `${receipt.baseline_paths_checked} protected source paths checked`,
+      }),
+    );
+    if (receipt.violations.length > 0) process.exit(1);
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        schema: receiptSchema,
+        outcome: "failed",
+        code: "check_failed",
+        mutations: [],
+        detail: error instanceof Error ? error.message : String(error),
       }),
     );
     process.exit(1);

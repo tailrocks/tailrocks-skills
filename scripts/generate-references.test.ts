@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { mkdir, mkdtemp, readFile, rename, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -50,6 +50,12 @@ test("writes every destination atomically and then proves byte equality", async 
     destinations: 3,
     byte_identical: 3,
     written: 3,
+    mutations: [
+      "skills/tailrocks-one/references/runtime-trust.md",
+      "skills/tailrocks-two/references/runtime-trust.md",
+      "skills/tailrocks-one/references/operational-contract.md",
+      "generated-references.lock.json",
+    ],
   });
   expect(await readFile(path.join(root, "skills/tailrocks-two/references/runtime-trust.md"), "utf8")).toBe(
     "runtime\n",
@@ -112,84 +118,25 @@ test("rejects lock-owned removal, path escapes, and unsorted entries", async () 
   await expect(generateReferences(unsorted, "write")).rejects.toThrow("strictly sorted");
 });
 
-test("install failure restores every prior destination byte-identically", async () => {
+test("concurrent replacement refuses, survives rollback, and retains recovery", async () => {
   const root = await fixture();
   const first = "skills/tailrocks-one/references/runtime-trust.md";
   const second = "skills/tailrocks-two/references/runtime-trust.md";
   await write(root, first, "old one\n");
   await write(root, second, "old two\n");
-  let failed = false;
   await expect(
     generateReferences(root, "write", "generated-references.json", {
-      rm,
-      writeFile,
-      rename: async (from, to) => {
-        if (!failed && String(from).includes(".next") && String(to).endsWith(second)) {
-          failed = true;
-          throw new Error("injected second install failure");
-        }
-        await rename(from, to);
+      afterPublish: async (file, index) => {
+        if (index !== 0) return;
+        await rm(file);
+        await writeFile(file, "concurrent replacement\n");
+        await writeFile(path.join(root, second), "concurrent blocker\n");
       },
     }),
-  ).rejects.toThrow("injected second install failure");
-  expect(await readFile(path.join(root, first), "utf8")).toBe("old one\n");
-  expect(await readFile(path.join(root, second), "utf8")).toBe("old two\n");
-  expect((await readdirRecursive(root)).filter((file) => file.includes(".generated-")).length).toBe(0);
-});
-
-test("retains recovery backup when rollback itself cannot restore it", async () => {
-  const root = await fixture();
-  const first = "skills/tailrocks-one/references/runtime-trust.md";
-  const second = "skills/tailrocks-two/references/runtime-trust.md";
-  await write(root, first, "old one\n");
-  await write(root, second, "old two\n");
-  let installFailed = false;
-  await expect(
-    generateReferences(root, "write", "generated-references.json", {
-      rm,
-      writeFile,
-      rename: async (from, to) => {
-        if (!installFailed && String(from).includes(".next") && String(to).endsWith(second)) {
-          installFailed = true;
-          throw new Error("injected install failure");
-        }
-        if (installFailed && String(from).includes(".restore") && String(to).endsWith(first))
-          throw new Error("injected rollback failure");
-        await rename(from, to);
-      },
-    }),
-  ).rejects.toThrow("rollback needs recovery");
-  const recovery = (await readdirRecursive(root)).filter(
-    (file) => file.endsWith(".restore") && file.includes("tailrocks-one"),
-  );
-  expect(recovery).toHaveLength(1);
-  expect(await readFile(path.join(root, recovery[0]!), "utf8")).toBe("old one\n");
-});
-
-test("cleanup failure keeps committed output and its recovery backup", async () => {
-  const root = await fixture();
-  const first = "skills/tailrocks-one/references/runtime-trust.md";
-  await write(root, first, "old one\n");
-  let failed = false;
-  await expect(
-    generateReferences(root, "write", "generated-references.json", {
-      rename,
-      writeFile,
-      rm: async (target, options) => {
-        if (!failed && String(target).includes("tailrocks-one") && String(target).endsWith(".restore")) {
-          failed = true;
-          throw new Error("injected cleanup failure");
-        }
-        await rm(target, options);
-      },
-    }),
-  ).rejects.toThrow("install committed but retained .restore files need cleanup");
-  expect(await readFile(path.join(root, first), "utf8")).toBe("runtime\n");
-  const recovery = (await readdirRecursive(root)).filter(
-    (file) => file.endsWith(".restore") && file.includes("tailrocks-one"),
-  );
-  expect(recovery).toHaveLength(1);
-  expect(await readFile(path.join(root, recovery[0]!), "utf8")).toBe("old one\n");
+  ).rejects.toThrow("transaction restore retained");
+  expect(await readFile(path.join(root, first), "utf8")).toBe("concurrent replacement\n");
+  expect(await readFile(path.join(root, second), "utf8")).toBe("concurrent blocker\n");
+  expect((await readdirRecursive(root)).some((file) => file.includes(".restore"))).toBe(true);
 });
 
 async function readdirRecursive(root: string): Promise<string[]> {

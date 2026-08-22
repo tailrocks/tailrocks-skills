@@ -3,6 +3,7 @@ import { mkdtemp, readFile, realpath, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
+import { runBoundedCommand } from "../bounded-command";
 import { install } from "./install";
 
 async function temporary(): Promise<string> {
@@ -44,4 +45,14 @@ test("rollback never deletes concurrently replaced or raced targets", async () =
   expect(result).toMatchObject({ outcome: "failed", code: "install_failed" });
   expect(await readFile(path.join(root, "playwright.visual.config.ts"), "utf8")).toBe(replacement);
   expect(await readFile(path.join(root, "tests/visual/global-setup.ts"), "utf8")).toBe(blocker);
+});
+
+test("CLI rejects unknown, duplicate, and trailing arguments with one receipt", async () => {
+  for (const args of [["--unknown", "x"], ["--root", "/tmp", "--root", "/tmp"], ["--root"]]) {
+    const result = await runBoundedCommand({ command: ["bun", "install.ts", ...args], cwd: import.meta.dir });
+    expect(result.code).toBe(2);
+    expect(result.stderr).toBe("");
+    expect(result.stdout.trim().split("\n")).toHaveLength(1);
+    expect(JSON.parse(result.stdout)).toMatchObject({ outcome: "refused", code: "invalid_arguments" });
+  }
 });

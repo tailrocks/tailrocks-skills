@@ -1,6 +1,7 @@
-import { randomUUID } from "node:crypto";
-import { chmod, copyFile, link, lstat, mkdir, realpath, rm } from "node:fs/promises";
+import { lstat, mkdir, readFile, realpath } from "node:fs/promises";
 import path from "node:path";
+
+import { atomicRecoveryArtifacts, atomicWriteFiles } from "../atomic-file-transaction";
 
 const schema = "tailrocks.web-visual-qa-install/v1";
 const targets = [
@@ -14,8 +15,9 @@ const targets = [
 export interface InstallReceipt {
   readonly schema: typeof schema;
   readonly outcome: "installed" | "refused" | "failed";
-  readonly code: "installed" | "invalid_root" | "collision" | "install_failed";
+  readonly code: "installed" | "invalid_arguments" | "invalid_root" | "collision" | "install_failed";
   readonly files: readonly string[];
+  readonly recoveryArtifacts?: readonly string[];
   readonly detail: string;
 }
 interface InstallRuntime {
@@ -65,9 +67,8 @@ export async function install(rootInput: string, runtime: InstallRuntime = {}): 
         return { schema, outcome: "failed", code: "install_failed", files: [], detail: String(error) };
     }
   }
-  const staged: { temporary: string; destination: string }[] = [];
-  const published: { path: string; dev: number; ino: number }[] = [];
   try {
+    const writes = [];
     for (const [sourceRelative, destinationRelative] of targets) {
       await ensureParents(root, destinationRelative);
       const source = path.join(import.meta.dir, "templates", sourceRelative);
@@ -75,23 +76,9 @@ export async function install(rootInput: string, runtime: InstallRuntime = {}): 
       if (!sourceInfo.isFile() || sourceInfo.isSymbolicLink() || (await realpath(source)) !== source)
         throw new Error(`unsafe template: ${sourceRelative}`);
       const destination = path.join(root, destinationRelative);
-      const temporary = path.join(
-        path.dirname(destination),
-        `.${path.basename(destination)}.tailrocks-${randomUUID()}`,
-      );
-      await copyFile(source, temporary, 0);
-      await chmod(temporary, 0o644);
-      staged.push({ temporary, destination });
+      writes.push({ file: destination, expected: null, content: await readFile(source), mode: 0o644 });
     }
-    for (const [index, item] of staged.entries()) {
-      if ((await realpath(path.dirname(item.destination))) !== path.dirname(item.destination))
-        throw new Error("target ancestor changed before publication");
-      await link(item.temporary, item.destination);
-      const identity = await lstat(item.destination);
-      published.push({ path: item.destination, dev: identity.dev, ino: identity.ino });
-      await rm(item.temporary);
-      await runtime.afterPublish?.(item.destination, index);
-    }
+    await atomicWriteFiles(writes, runtime);
     return {
       schema,
       outcome: "installed",
@@ -100,32 +87,26 @@ export async function install(rootInput: string, runtime: InstallRuntime = {}): 
       detail: "owned web visual-QA harness installed",
     };
   } catch (error) {
-    for (const item of staged) await rm(item.temporary, { force: true }).catch(() => undefined);
-    for (const owned of published) {
-      try {
-        const current = await lstat(owned.path);
-        if (current.dev === owned.dev && current.ino === owned.ino) await rm(owned.path);
-      } catch {}
-    }
     return {
       schema,
       outcome: "failed",
       code: "install_failed",
-      files: published.map((file) => path.relative(root, file.path)),
+      files: [],
+      recoveryArtifacts: atomicRecoveryArtifacts(error),
       detail: String(error),
     };
   }
 }
 
 if (import.meta.main) {
-  const index = Bun.argv.indexOf("--root");
+  const args = Bun.argv.slice(2);
   const result =
-    index >= 0 && Bun.argv[index + 1]
-      ? await install(Bun.argv[index + 1]!)
+    args.length === 2 && args[0] === "--root" && args[1]
+      ? await install(args[1])
       : ({
           schema,
           outcome: "refused",
-          code: "invalid_root",
+          code: "invalid_arguments",
           files: [],
           detail: "usage: bun install.ts --root PATH",
         } satisfies InstallReceipt);

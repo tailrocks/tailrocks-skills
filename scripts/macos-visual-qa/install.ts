@@ -1,6 +1,7 @@
-import { randomUUID } from "node:crypto";
-import { chmod, copyFile, lstat, mkdir, realpath, rename, rm } from "node:fs/promises";
+import { lstat, mkdir, readFile, realpath } from "node:fs/promises";
 import path from "node:path";
+
+import { atomicWriteFiles, atomicRecoveryArtifacts } from "../atomic-file-transaction";
 
 const schema = "tailrocks.macos-visual-qa-install/v1";
 const templates = [
@@ -8,6 +9,7 @@ const templates = [
   "ax-drive.swift",
   "capture.sh",
   "process-owner.swift",
+  "run.ts",
   "state.sh",
   "window-id.swift",
 ] as const;
@@ -19,7 +21,11 @@ export interface InstallReceipt {
   readonly root?: string;
   readonly destination?: string;
   readonly files: readonly string[];
+  readonly recoveryArtifacts?: readonly string[];
   readonly detail: string;
+}
+interface InstallRuntime {
+  readonly afterDestinationClaim?: (destination: string) => Promise<void>;
 }
 
 async function safeRoot(input: string): Promise<string> {
@@ -48,6 +54,7 @@ async function ensureRealParents(root: string, relativeDirectory: string): Promi
 export async function install(
   rootInput: string,
   destinationInput = "Scripts/TailrocksVisualQA",
+  runtime: InstallRuntime = {},
 ): Promise<InstallReceipt> {
   let root: string;
   try {
@@ -92,55 +99,76 @@ export async function install(
       };
   }
   const source = path.join(import.meta.dir, "templates");
-  const created: string[] = [];
-  let staging: string | undefined;
+  const published: string[] = [];
+  let destinationClaimed = false;
   try {
     await ensureRealParents(root, path.dirname(destinationInput));
-    staging = path.join(path.dirname(destination), `.${path.basename(destination)}.stage-${randomUUID()}`);
-    await mkdir(staging, { recursive: false, mode: 0o700 });
+    const writes = [];
     for (const name of templates) {
       const from = path.join(source, name);
       const sourceInfo = await lstat(from);
       if (!sourceInfo.isFile() || sourceInfo.isSymbolicLink() || (await realpath(from)) !== from)
         throw new Error(`template is not a canonical regular file: ${name}`);
-      const to = path.join(staging, name);
-      await copyFile(from, to, 0);
-      await chmod(to, name.endsWith(".sh") ? 0o755 : 0o644);
-      created.push(name);
+      writes.push({
+        file: path.join(destination, name),
+        content: await readFile(from),
+        expected: null,
+        mode: 0o644,
+      });
     }
-    await chmod(staging, 0o755);
-    await rename(staging, destination);
-    staging = undefined;
+    await mkdir(destination, { mode: 0o755 });
+    destinationClaimed = true;
+    await runtime.afterDestinationClaim?.(destination);
+    await atomicWriteFiles(writes);
+    published.push(...templates);
     return {
       schema,
       outcome: "installed",
       code: "installed",
       root,
       destination,
-      files: created,
+      files: published,
       detail: "hardened harness installed",
     };
   } catch (error) {
-    if (staging) await rm(staging, { recursive: true, force: true }).catch(() => undefined);
+    const recovery = atomicRecoveryArtifacts(error);
     return {
       schema,
       outcome: "failed",
       code: "install_failed",
       root,
       destination,
-      files: created,
-      detail: String(error),
+      files: published,
+      recoveryArtifacts: destinationClaimed ? [...new Set([destination, ...recovery])] : recovery,
+      detail: destinationClaimed
+        ? `${String(error)}; partial destination retained for recovery at ${destination}`
+        : String(error),
     };
   }
 }
 
 if (import.meta.main) {
   const args = Bun.argv.slice(2);
-  const rootIndex = args.indexOf("--root");
-  const destinationIndex = args.indexOf("--destination");
+  let root: string | undefined;
+  let destination: string | undefined;
+  let valid = true;
+  for (let index = 0; index < args.length; index += 2) {
+    const flag = args[index];
+    const value = args[index + 1];
+    if (
+      !value ||
+      (flag === "--root" ? root !== undefined : flag === "--destination" ? destination !== undefined : true)
+    ) {
+      valid = false;
+      break;
+    }
+    if (flag === "--root") root = value;
+    else if (flag === "--destination") destination = value;
+    else valid = false;
+  }
   const receipt =
-    rootIndex >= 0 && args[rootIndex + 1]
-      ? await install(args[rootIndex + 1]!, destinationIndex >= 0 ? args[destinationIndex + 1] : undefined)
+    valid && root
+      ? await install(root, destination)
       : ({
           schema,
           outcome: "refused",

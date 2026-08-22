@@ -3,6 +3,8 @@ import { lstat, mkdir, readFile, realpath, rename, writeFile } from "node:fs/pro
 import { tmpdir } from "node:os";
 import path from "node:path";
 
+import { runBoundedCommand } from "./bounded-command";
+
 export const postReviewSchema = "tailrocks.post-pr-review/v1";
 export const reviewReportSchema = "tailrocks.pr-review-report/v1";
 
@@ -103,25 +105,8 @@ interface Challenge {
 
 const markerPrefix = "<!-- tailrocks-review:v1:";
 
-export const defaultReviewRunner: ReviewRunner = async ({ command, cwd, stdin }) => {
-  const child = Bun.spawn(command, {
-    cwd,
-    stdin: stdin === undefined ? "ignore" : new Blob([stdin]),
-    stdout: "pipe",
-    stderr: "pipe",
-  });
-  let timedOut = false;
-  const timer = setTimeout(() => {
-    timedOut = true;
-    child.kill();
-  }, 30_000);
-  const [code, stdout, stderr] = await Promise.all([
-    child.exited,
-    new Response(child.stdout).text(),
-    new Response(child.stderr).text(),
-  ]).finally(() => clearTimeout(timer));
-  return { code, stdout, stderr, timedOut };
-};
+export const defaultReviewRunner: ReviewRunner = ({ command, cwd, stdin }) =>
+  runBoundedCommand({ command, cwd, stdin });
 
 function exactKeys(value: Record<string, unknown>, expected: readonly string[], label: string): void {
   const actual = Object.keys(value).sort();

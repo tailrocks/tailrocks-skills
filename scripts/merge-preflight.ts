@@ -1,6 +1,8 @@
 import { lstat, realpath } from "node:fs/promises";
 import path from "node:path";
 
+import { runBoundedCommand } from "./bounded-command";
+
 export const mergePreflightSchema = "tailrocks.merge-preflight/v1";
 
 type Outcome = "ready" | "blocked" | "pending" | "refused" | "failed";
@@ -118,20 +120,7 @@ const maximumAttempts = 30;
 const pollIntervalMs = 10_000;
 const wallClockLimitMs = 300_000;
 
-export const defaultRunner: CommandRunner = async ({ command, cwd }) => {
-  const child = Bun.spawn(command, { cwd, stdin: "ignore", stdout: "pipe", stderr: "pipe" });
-  let timedOut = false;
-  const timer = setTimeout(() => {
-    timedOut = true;
-    child.kill();
-  }, 30_000);
-  const [code, stdout, stderr] = await Promise.all([
-    child.exited,
-    new Response(child.stdout).text(),
-    new Response(child.stderr).text(),
-  ]).finally(() => clearTimeout(timer));
-  return { code, stdout, stderr, timedOut };
-};
+export const defaultRunner: CommandRunner = ({ command, cwd }) => runBoundedCommand({ command, cwd });
 
 function baseReceipt(code: Code, outcome: Outcome, commands: readonly (readonly string[])[], detail: string) {
   return {

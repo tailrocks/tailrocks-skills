@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
-import { access, lstat, mkdir, readFile, readdir, rename, rm, rmdir, writeFile } from "node:fs/promises";
+import { access, lstat, mkdir, readFile, readdir, realpath, rmdir } from "node:fs/promises";
 import path from "node:path";
+
+import { atomicRecoveryArtifacts, atomicWriteFiles, type AtomicFileRuntime } from "./atomic-file-transaction";
 
 type Entry = { source: string; destinations: string[] };
 type Manifest = { $schema: "tailrocks.generated-references/v1"; entries: Entry[] };
@@ -9,7 +11,6 @@ type PlannedWrite = { source: string; destination: string; content: string | Uin
 type LockCopy = { source: string; destination: string; sha256: string };
 type ReferenceLock = { $schema: "tailrocks.generated-references-lock/v1"; copies: LockCopy[] };
 
-export type GeneratorIO = { rename: typeof rename; rm: typeof rm; writeFile: typeof writeFile };
 export type GeneratorReceipt = {
   schema: "tailrocks.generated-references-receipt/v1";
   mode: "check" | "write";
@@ -17,6 +18,7 @@ export type GeneratorReceipt = {
   destinations: number;
   byte_identical: number;
   written: number;
+  mutations: string[];
 };
 
 const manifestSchema = "tailrocks.generated-references/v1";
@@ -218,9 +220,9 @@ export async function generateReferences(
   root: string,
   mode: "check" | "write",
   manifestPath = "generated-references.json",
-  io: GeneratorIO = { rename, rm, writeFile },
+  runtime: AtomicFileRuntime = {},
 ): Promise<GeneratorReceipt> {
-  const resolvedRoot = path.resolve(root);
+  const resolvedRoot = await realpath(path.resolve(root));
   const manifestFile = resolveInside(resolvedRoot, manifestPath);
   await assertNoSymlink(resolvedRoot, manifestPath);
   const plan = await loadPlan(resolvedRoot, manifestFile);
@@ -269,63 +271,28 @@ export async function generateReferences(
       content: lockSource,
     });
 
-  const transaction = `${process.pid}`;
-  const staged = writes.map((copy) => ({
-    ...copy,
-    file: resolveInside(resolvedRoot, copy.destination),
-    temporary: `${resolveInside(resolvedRoot, copy.destination)}.generated-${transaction}.next`,
-    restore: `${resolveInside(resolvedRoot, copy.destination)}.generated-${transaction}.restore`,
-  }));
   const createdDirectories: string[] = [];
-  const installed: Array<(typeof staged)[number] & { hadOriginal: boolean }> = [];
   try {
-    for (const copy of staged) {
-      const directory = path.dirname(copy.file);
+    for (const copy of writes) {
+      const directory = path.dirname(resolveInside(resolvedRoot, copy.destination));
       if (!(await exists(directory))) {
         await mkdir(directory, { recursive: true });
         createdDirectories.push(directory);
       }
-      if ((await exists(copy.temporary)) || (await exists(copy.restore)))
-        throw new Error(`stale generated-reference transaction beside ${copy.destination}`);
-      await io.writeFile(copy.temporary, copy.content, { flag: "wx" });
     }
-    for (const copy of staged) {
-      const hadOriginal = await exists(copy.file);
-      if (hadOriginal) await io.rename(copy.file, copy.restore);
+    const transactionWrites = [];
+    for (const copy of writes) {
+      const file = resolveInside(resolvedRoot, copy.destination);
+      let expected: Buffer | null = null;
       try {
-        await io.rename(copy.temporary, copy.file);
+        expected = await readFile(file);
       } catch (error) {
-        if (hadOriginal) await io.rename(copy.restore, copy.file);
-        throw error;
+        if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
       }
-      installed.push({ ...copy, hadOriginal });
+      transactionWrites.push({ file, expected, content: copy.content });
     }
-  } catch (error) {
-    const rollbackErrors: unknown[] = [];
-    for (const copy of installed.reverse()) {
-      try {
-        await io.rm(copy.file, { force: true });
-      } catch (rollbackError) {
-        rollbackErrors.push(rollbackError);
-      }
-      if (copy.hadOriginal) {
-        try {
-          await io.rename(copy.restore, copy.file);
-        } catch (rollbackError) {
-          rollbackErrors.push(rollbackError);
-        }
-      }
-    }
-    if (rollbackErrors.length > 0)
-      throw new AggregateError(
-        [error, ...rollbackErrors],
-        "generated-reference install failed and rollback needs recovery from retained .restore files",
-      );
-    throw error;
+    await atomicWriteFiles(transactionWrites, runtime);
   } finally {
-    for (const copy of staged) {
-      await io.rm(copy.temporary, { force: true });
-    }
     for (const directory of createdDirectories.reverse()) {
       try {
         await rmdir(directory);
@@ -335,20 +302,6 @@ export async function generateReferences(
     }
   }
 
-  const cleanupErrors: unknown[] = [];
-  for (const copy of installed) {
-    try {
-      await io.rm(copy.restore, { force: true });
-    } catch (error) {
-      cleanupErrors.push(error);
-    }
-  }
-  if (cleanupErrors.length > 0)
-    throw new AggregateError(
-      cleanupErrors,
-      "generated-reference install committed but retained .restore files need cleanup",
-    );
-
   return {
     schema: receiptSchema,
     mode,
@@ -356,28 +309,45 @@ export async function generateReferences(
     destinations: plan.length,
     byte_identical: mode === "check" ? identical : identical + changed.length,
     written: mode === "write" ? changed.length : 0,
+    mutations: mode === "write" ? writes.map((write) => write.destination) : [],
   };
 }
 
 if (import.meta.main) {
   const args = process.argv.slice(2);
   if (args.length !== 1 || (args[0] !== "--check" && args[0] !== "--write")) {
-    console.error(
-      JSON.stringify({ schema: receiptSchema, error: "usage: generate-references.ts --check|--write" }),
-    );
-    process.exit(1);
-  }
-  try {
     console.log(
-      JSON.stringify(
-        await generateReferences(path.resolve(import.meta.dir, ".."), args[0].slice(2) as "check" | "write"),
-      ),
-    );
-  } catch (error) {
-    console.error(
       JSON.stringify({
         schema: receiptSchema,
-        error: error instanceof Error ? error.message : String(error),
+        outcome: "refused",
+        code: "invalid_arguments",
+        mutations: [],
+        detail: "usage: generate-references.ts --check|--write",
+      }),
+    );
+    process.exit(2);
+  }
+  try {
+    const mode = args[0].slice(2) as "check" | "write";
+    const receipt = await generateReferences(path.resolve(import.meta.dir, ".."), mode);
+    console.log(
+      JSON.stringify({
+        ...receipt,
+        outcome: "success",
+        code: mode === "check" ? "checked" : "written",
+        recovery_artifacts: [],
+        detail: `${receipt.byte_identical} destinations are byte-identical`,
+      }),
+    );
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        schema: receiptSchema,
+        outcome: "failed",
+        code: "generation_failed",
+        mutations: [],
+        recovery_artifacts: atomicRecoveryArtifacts(error),
+        detail: error instanceof Error ? error.message : String(error),
       }),
     );
     process.exit(1);

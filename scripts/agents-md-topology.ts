@@ -2,6 +2,8 @@ import { randomUUID } from "node:crypto";
 import { lstat, opendir, readlink, realpath } from "node:fs/promises";
 import path from "node:path";
 
+import { runBoundedCommand } from "./bounded-command";
+
 export const topologySchema = "tailrocks.agents-md-topology/v1";
 const canonicalTarget = "AGENTS.md";
 const builtInClients = ["CLAUDE.md", "GEMINI.md"] as const;
@@ -126,8 +128,8 @@ async function anchored(
   io: TopologyIO,
 ): Promise<FileIdentity | undefined> {
   await io.beforeOperation?.(operation);
-  const child = Bun.spawn(
-    [
+  const result = await runBoundedCommand({
+    command: [
       process.execPath,
       "-e",
       anchoredProgram,
@@ -138,16 +140,12 @@ async function anchored(
       value,
       quarantine,
     ],
-    { cwd: context.directory, stdin: "ignore", stdout: "pipe", stderr: "pipe" },
-  );
-  const [code, stdout, stderr] = await Promise.all([
-    child.exited,
-    new Response(child.stdout).text(),
-    new Response(child.stderr).text(),
-  ]);
-  if (code !== 0) throw new Error(stderr.trim() || `anchored ${operation} failed`);
-  const result = JSON.parse(stdout) as Partial<FileIdentity>;
-  return result.device && result.inode ? { device: result.device, inode: result.inode } : undefined;
+    cwd: context.directory,
+  });
+  if (result.code !== 0 || result.timedOut)
+    throw new Error(result.stderr.trim() || `anchored ${operation} failed`);
+  const identity = JSON.parse(result.stdout) as Partial<FileIdentity>;
+  return identity.device && identity.inode ? { device: identity.device, inode: identity.inode } : undefined;
 }
 
 function codeUnitCompare(left: string, right: string): number {
@@ -605,8 +603,9 @@ interface ParsedCLI {
   readonly expectTarget?: string;
 }
 
+class UsageError extends Error {}
 function usage(): never {
-  throw new Error(
+  throw new UsageError(
     "usage: agents-md-topology.ts <discover|verify> --root <repo> [--client-name <basename>]... | <create> --root <repo> --directory <relative> --client <basename> | <repair> --root <repo> --directory <relative> --client <basename> --expect-target <raw-target>",
   );
 }
@@ -634,6 +633,12 @@ function parseCLI(args: readonly string[]): ParsedCLI {
   if ((mode === "create" || mode === "repair") && (!directory || !client || clients.length > 0)) usage();
   if (mode === "create" && expectTarget !== undefined) usage();
   if (mode === "repair" && expectTarget === undefined) usage();
+  try {
+    for (const name of clients) validateClientName(name);
+    if (client) validateClientName(client);
+  } catch (error) {
+    throw new UsageError(error instanceof Error ? error.message : String(error));
+  }
   return { mode, root, clients, directory, client, expectTarget };
 }
 
@@ -654,13 +659,18 @@ async function main(args: readonly string[]): Promise<void> {
 if (import.meta.main) {
   main(process.argv.slice(2)).catch((error) => {
     const causes = error instanceof AggregateError ? error.errors.map(String) : undefined;
-    console.error(
+    const refused = error instanceof UsageError;
+    console.log(
       JSON.stringify({
         schema: topologySchema,
-        error: error instanceof Error ? error.message : String(error),
+        outcome: refused ? "refused" : "failed",
+        code: refused ? "invalid_arguments" : "topology_operation_failed",
+        mutations: [],
+        recovery_artifacts: [],
+        detail: error instanceof Error ? error.message : String(error),
         ...(causes ? { causes } : {}),
       }),
     );
-    process.exit(1);
+    process.exit(refused ? 2 : 1);
   });
 }

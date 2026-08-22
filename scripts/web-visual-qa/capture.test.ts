@@ -351,3 +351,13 @@ test("bounded command runner kills a child that ignores SIGTERM", async () => {
   expect(result).toMatchObject({ code: 124, stderr: "command timed out" });
   expect(performance.now() - started).toBeLessThan(2_000);
 });
+
+test("capture CLI rejects unknown, duplicate, and trailing arguments with one receipt", async () => {
+  for (const args of [["--unknown"], ["--root", "/tmp", "--root", "/tmp"], ["--root"]]) {
+    const result = await runChild(["bun", "capture.ts", ...args], import.meta.dir, undefined, 2_000, 100);
+    expect(result.code).toBe(2);
+    expect(result.stderr).toBe("");
+    expect(result.stdout.trim().split("\n")).toHaveLength(1);
+    expect(JSON.parse(result.stdout)).toMatchObject({ outcome: "refused", code: "invalid_arguments" });
+  }
+});

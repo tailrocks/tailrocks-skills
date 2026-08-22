@@ -345,6 +345,10 @@ test("CLI emits typed receipts; verify is nonzero on issues", async () => {
   expect(verify.code).toBe(2);
   expect(JSON.parse(verify.stdout).issues[0].code).toBe("client_missing");
   const invalid = await run(["create", "--root", directory, "--directory", ".", "--client", "bad.md"]);
-  expect(invalid.code).toBe(1);
-  expect(JSON.parse(invalid.stderr).schema).toBe(topologySchema);
+  expect(invalid.code).toBe(2);
+  expect(JSON.parse(invalid.stdout)).toMatchObject({
+    schema: topologySchema,
+    outcome: "refused",
+    code: "invalid_arguments",
+  });
 });

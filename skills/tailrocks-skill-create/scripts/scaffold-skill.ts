@@ -1,5 +1,23 @@
-import { access, cp, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import {
+  access,
+  cp,
+  mkdir,
+  readFile,
+  readdir,
+  realpath,
+  rename,
+  rm,
+  rmdir,
+  writeFile,
+} from "node:fs/promises";
 import path from "node:path";
+
+import {
+  atomicRecoveryArtifacts,
+  atomicWriteFiles,
+  type AtomicFileRuntime,
+} from "../../../scripts/atomic-file-transaction";
 
 type SkillPolicy = {
   schema: "skill-authoring/v1";
@@ -18,10 +36,7 @@ type InvocationRegistry = {
   owners: Array<{ skill: string; class: InvocationClass }>;
 };
 
-export type ScaffoldIO = {
-  rename: typeof rename;
-  writeFile: typeof writeFile;
-};
+export type ScaffoldIO = AtomicFileRuntime;
 
 const manualGuard = "Use only when the user explicitly requests this skill.";
 const manualDescription = `  Use only when the user explicitly requests this skill. <Triggers only:
@@ -30,6 +45,7 @@ const manualDescription = `  Use only when the user explicitly requests this ski
 const modelDescription = `  <Exact model trigger only: the artifact, language, framework, protocol,
   or explicit intent already in scope; include the do-not-use boundary.
   Never a workflow summary.>`;
+const receiptSchema = "tailrocks.skill-scaffold/v1";
 
 function inside(root: string, target: string): boolean {
   const relative = path.relative(root, target);
@@ -64,40 +80,12 @@ function parseYamlRecord(source: string, label: string): Record<string, unknown>
 
 async function commitSharedFiles(
   files: Array<{ file: string; source: string; next: string }>,
-  transaction: string,
   io: ScaffoldIO,
 ): Promise<void> {
-  const staged = files.map((entry) => ({
-    ...entry,
-    temporary: `${entry.file}.scaffold-${transaction}-${process.pid}.next`,
-    restore: `${entry.file}.scaffold-${transaction}-${process.pid}.restore`,
-  }));
-  for (const entry of staged) {
-    if ((await exists(entry.temporary)) || (await exists(entry.restore))) {
-      throw new Error(`stale scaffold transaction beside ${entry.file}`);
-    }
-  }
-  try {
-    for (const entry of staged) await io.writeFile(entry.temporary, entry.next);
-    const installed: typeof staged = [];
-    try {
-      for (const entry of staged) {
-        await io.rename(entry.temporary, entry.file);
-        installed.push(entry);
-      }
-    } catch (error) {
-      for (const entry of installed.reverse()) {
-        await io.writeFile(entry.restore, entry.source);
-        await io.rename(entry.restore, entry.file);
-      }
-      throw error;
-    }
-  } finally {
-    for (const entry of staged) {
-      await rm(entry.temporary, { force: true });
-      await rm(entry.restore, { force: true });
-    }
-  }
+  await atomicWriteFiles(
+    files.map((entry) => ({ file: entry.file, expected: entry.source, content: entry.next })),
+    io,
+  );
 }
 
 async function readable(file: string): Promise<boolean> {
@@ -123,12 +111,12 @@ export async function scaffoldSkill(
   name: string,
   policyPath = ".skill-authoring.json",
   invocationClass: InvocationClass = "MANUAL_ONLY",
-  sharedIO: ScaffoldIO = { rename, writeFile },
+  sharedIO: ScaffoldIO = {},
 ): Promise<string[]> {
   if (invocationClass !== "MANUAL_ONLY" && invocationClass !== "MODEL_POLICY") {
     throw new Error(`unsupported invocation class: ${String(invocationClass)}`);
   }
-  const resolvedRoot = path.resolve(root);
+  const resolvedRoot = await realpath(path.resolve(root));
   const resolvedPolicy = path.resolve(resolvedRoot, policyPath);
   if (!inside(resolvedRoot, resolvedPolicy))
     throw new Error(`policy escapes target repository: ${policyPath}`);
@@ -168,8 +156,7 @@ export async function scaffoldSkill(
   }
   if (!(await readable(path.join(template, "SKILL.md"))))
     throw new Error(`policy template missing SKILL.md: ${policy.template}`);
-  if (await readable(path.join(target, "SKILL.md")))
-    throw new Error(`skill already exists: ${path.relative(resolvedRoot, target)}`);
+  if (await exists(target)) throw new Error(`skill already exists: ${path.relative(resolvedRoot, target)}`);
 
   let catalog: { groups: Array<{ id: string; skills: string[] }> } | undefined;
   let catalogFile: string | undefined;
@@ -232,13 +219,12 @@ export async function scaffoldSkill(
     registry = parsed;
   }
 
-  const staging = path.join(skillRoot, `.scaffold-${name}`);
+  const staging = path.join(skillRoot, `.scaffold-${name}-${randomUUID()}`);
   const mutations = [`${path.relative(resolvedRoot, target)}/`];
   if (catalogFile) mutations.push(path.relative(resolvedRoot, catalogFile));
   if (registryFile) mutations.push(path.relative(resolvedRoot, registryFile));
   const createdSkillRoot = !(await exists(skillRoot));
   await mkdir(skillRoot, { recursive: true });
-  await rm(staging, { recursive: true, force: true });
   let targetCreated = false;
   try {
     await cp(template, staging, { recursive: true, errorOnExist: true, force: false });
@@ -323,8 +309,15 @@ export async function scaffoldSkill(
       registry.owners.push({ skill: name, class: invocationClass });
       registry.owners.sort((left, right) => compareCodeUnits(left.skill, right.skill));
     }
-    await rename(staging, target);
+    await mkdir(target, { mode: 0o755 });
     targetCreated = true;
+    for (const entry of await readdir(staging))
+      await cp(path.join(staging, entry), path.join(target, entry), {
+        recursive: true,
+        errorOnExist: true,
+        force: false,
+      });
+    await rm(staging, { recursive: true });
     const sharedFiles: Array<{ file: string; source: string; next: string }> = [];
     if (catalog && catalogFile && catalogSource !== undefined)
       sharedFiles.push({
@@ -338,42 +331,109 @@ export async function scaffoldSkill(
         source: registrySource,
         next: `${JSON.stringify(registry, null, 2)}\n`,
       });
-    await commitSharedFiles(sharedFiles, name, sharedIO);
+    await commitSharedFiles(sharedFiles, sharedIO);
     return mutations;
   } catch (error) {
     await rm(staging, { recursive: true, force: true });
-    if (targetCreated) await rm(target, { recursive: true, force: true });
-    if (createdSkillRoot) await rm(skillRoot, { recursive: true, force: true });
+    if (targetCreated) {
+      const recovery = `${target}.scaffold-recovery-${randomUUID()}`;
+      try {
+        await rename(target, recovery);
+        error = new AggregateError([error], `scaffold failed; recovery retained at ${recovery}`);
+      } catch (recoveryError) {
+        error = new AggregateError(
+          [error, recoveryError],
+          `scaffold failed; target recovery remains at ${target}`,
+        );
+      }
+    }
+    if (createdSkillRoot) await rmdir(skillRoot).catch(() => undefined);
     throw error;
   }
 }
 
-if (import.meta.main) {
-  const args = process.argv.slice(2);
-  const rootIndex = args.indexOf("--root");
-  const policyIndex = args.indexOf("--policy");
-  const invocationIndex = args.indexOf("--invocation-class");
-  const root = rootIndex === -1 ? process.cwd() : args[rootIndex + 1];
-  const policy = policyIndex === -1 ? ".skill-authoring.json" : args[policyIndex + 1];
-  const invocationClass = invocationIndex === -1 ? "MANUAL_ONLY" : args[invocationIndex + 1];
-  const consumed = new Set<number>();
-  if (rootIndex !== -1) {
-    consumed.add(rootIndex);
-    consumed.add(rootIndex + 1);
+export function parseScaffoldArguments(args: readonly string[]): {
+  root: string;
+  policy: string;
+  invocationClass: InvocationClass;
+  name: string;
+} {
+  let root = process.cwd();
+  let policy = ".skill-authoring.json";
+  let invocationClass: string = "MANUAL_ONLY";
+  let name: string | undefined;
+  const seen = new Set<string>();
+  for (let index = 0; index < args.length; index += 1) {
+    const value = args[index]!;
+    if (value.startsWith("--")) {
+      if (
+        !(["--root", "--policy", "--invocation-class"] as const).includes(value as never) ||
+        seen.has(value)
+      )
+        throw new Error("unknown or duplicate scaffold option");
+      const next = args[index + 1];
+      if (!next || next.startsWith("--")) throw new Error(`missing value for ${value}`);
+      seen.add(value);
+      if (value === "--root") root = next;
+      else if (value === "--policy") policy = next;
+      else invocationClass = next;
+      index += 1;
+    } else if (name === undefined) name = value;
+    else throw new Error("multiple skill names are not allowed");
   }
-  if (policyIndex !== -1) {
-    consumed.add(policyIndex);
-    consumed.add(policyIndex + 1);
-  }
-  if (invocationIndex !== -1) {
-    consumed.add(invocationIndex);
-    consumed.add(invocationIndex + 1);
-  }
-  const name = args.find((_, index) => !consumed.has(index));
-  if (!root || !policy || !name || (invocationClass !== "MANUAL_ONLY" && invocationClass !== "MODEL_POLICY"))
+  if (!name || (invocationClass !== "MANUAL_ONLY" && invocationClass !== "MODEL_POLICY"))
     throw new Error(
       "usage: scaffold-skill.ts [--root path] [--policy path] [--invocation-class MANUAL_ONLY|MODEL_POLICY] <skill-name>",
     );
-  const mutations = await scaffoldSkill(root, name, policy, invocationClass);
-  console.log(JSON.stringify({ status: "created", mutations }));
+  return { root, policy, invocationClass, name };
+}
+
+if (import.meta.main) {
+  let parsed: ReturnType<typeof parseScaffoldArguments>;
+  try {
+    parsed = parseScaffoldArguments(process.argv.slice(2));
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : String(error);
+    const namedRecovery = [...detail.matchAll(/\S+\.scaffold-recovery-[^\s]+/g)].map((match) => match[0]);
+    console.log(
+      JSON.stringify({
+        schema: receiptSchema,
+        outcome: "refused",
+        code: "invalid_arguments",
+        mutations: [],
+        recovery_artifacts: [],
+        detail: error instanceof Error ? error.message : String(error),
+      }),
+    );
+    process.exit(2);
+  }
+  try {
+    const mutations = await scaffoldSkill(parsed.root, parsed.name, parsed.policy, parsed.invocationClass);
+    console.log(
+      JSON.stringify({
+        schema: receiptSchema,
+        outcome: "success",
+        code: "created",
+        mutations,
+        recovery_artifacts: [],
+        detail: "skill scaffold created",
+      }),
+    );
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : String(error);
+    const namedRecovery = [...detail.matchAll(/\S+\.scaffold-recovery-[^\s]+/g)].map(
+      (match) => match[0],
+    );
+    console.log(
+      JSON.stringify({
+        schema: receiptSchema,
+        outcome: "failed",
+        code: "scaffold_failed",
+        mutations: [],
+        recovery_artifacts: [...atomicRecoveryArtifacts(error), ...namedRecovery],
+        detail,
+      }),
+    );
+    process.exit(1);
+  }
 }

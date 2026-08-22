@@ -9,6 +9,7 @@ async function verifyGuard(): Promise<void> {
     cache: "no-store",
     redirect: "manual",
     headers: { "X-Tailrocks-Visual-Session": nonce },
+    signal: AbortSignal.timeout(2_000),
   });
   expect(response.status).toBe(200);
   expect(response.redirected).toBe(false);

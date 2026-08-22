@@ -611,15 +611,41 @@ all terminal checks pass, and the final literal marker is changed to
     violations. Fresh security-focused subagent verdict: PASS after closing
     repeated-HEAD, direct-baseline, CAS rollback, stale-server, hung-child, and
     staged-source publication-race gaps. No evals run.
-- [ ] [IN_PROGRESS] P04.08 Require every script to reject unmatched state, bound retries,
+- [x] [COMPLETED] P04.08 Require every script to reject unmatched state, bound retries,
   restore recoverable state, and emit machine-readable receipts.
-- [ ] [TODO] P04.GATE Run `rtk mise run migration-check`; record nonzero tests
-  for every new script and a fresh security-focused subagent review. Evidence:
-  pending.
+  - Evidence receipt (2026-08-22): introduced shared hard-deadline command and
+    fetch supervisors, strict terminal receipt envelopes, and no-replace
+    multi-file transactions backed by persistent directory anchors. Migrated
+    repository generators, resolvers, PR helpers, audit reconciliation, static
+    docs scripts, and visual-QA installers/capture entrypoints to reject
+    unmatched arguments, cap network/process/output work, preserve concurrent
+    replacements, restore only owned state, and name retained recovery
+    artifacts. The macOS harness now exposes one typed supervisor, installs its
+    shell internals non-executable, validates exact capture/state grammar,
+    kills and proves whole process groups dead, and preallocates recovery paths.
+    Adversarial proof covers ignored aborts, TERM-resistant descendants,
+    spawn errors, helper death, parent and destination swaps after staging,
+    output saturation, CAS conflicts, ambiguous CLI state, and timeout recovery.
+    The selected non-protected migration suite passed 270 tests/1,285
+    assertions across 32 files. Fresh security-focused subagent verdict: PASS
+    after closing descendant leaks, pathname-reopen races, shell bypass,
+    unbounded Vite output, receipt gaps, and dead-helper rollback. No evals run.
+- [x] [COMPLETED] P04.GATE Run `rtk mise run migration-check`; record nonzero tests
+  for every new script and a fresh security-focused subagent review.
+  - Evidence receipt (2026-08-22): `rtk mise run migration-check` passed 270
+    tests/1,288 assertions across 32 selected non-protected files, validated 44
+    skills, checked 136 generated documentation files and 72 packaged reference
+    copies, found no formatting drift, and proved 4 protected patterns/183
+    frozen source paths unchanged. Every new shared supervisor, resolver,
+    transaction helper, and visual-QA entrypoint had nonzero focused proof.
+    Fresh security-focused subagent verdict: PASS after adversarial review of
+    process-group cleanup, request deadlines, bounded output, strict receipt
+    paths, anchored rollback, helper death, destination swaps, and generated
+    documentation consistency. No evals run.
 
 ## P05 — Split stack ownership
 
-- [ ] [TODO] P05.01 Rust project setup → setup, project audit, project remediate.
+- [ ] [IN_PROGRESS] P05.01 Rust project setup → setup, project audit, project remediate.
 - [ ] [TODO] P05.02 Rust best practices → write, review, refactor; retain
   `MODEL_POLICY` only on the existing named owner pending descendant approval.
 - [ ] [TODO] P05.03 Axum best practices → build, review, refactor; retain

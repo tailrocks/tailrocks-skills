@@ -6,13 +6,14 @@ Install the hardened harness into a real project:
 bun scripts/macos-visual-qa/install.ts --root /absolute/project
 ```
 
-Run `capture.sh APP.app OUT.png [--window-title TITLE] [-- APP_ARG...]`. It resolves the bundle's
+Run `bun run.ts capture -- APP.app OUT.png [--window-title TITLE] [-- APP_ARG...]`. It resolves the bundle's
 real executable, terminates only exact executable owners, bounds launch and
 window recovery to ten seconds each, binds windows to the exact PID, refuses
 multiple matches, captures by window ID, and rechecks ownership before publishing
 the PNG and JSON sidecar. Similar-name decoy applications are never selected.
 
-Run appearance rows only through `state.sh with STATE -- COMMAND ...`. The script
+Run appearance rows only through `bun run.ts state -- with STATE -- COMMAND ...`. The supervisor
+emits one bounded terminal JSON receipt; the internal script
 snapshots the four accessibility keys plus both appearance keys (including Auto),
 restores each value on exit, retries restoration three times, and retains the
 owner-only before/applied recovery pair if restoration fails. Bare mutation is

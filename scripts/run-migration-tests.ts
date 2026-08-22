@@ -1,6 +1,7 @@
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 
+import { runBoundedCommand } from "./bounded-command";
 import { loadProtectedPathsManifest, matchesProtectedPath } from "./check-protected-paths";
 
 const receiptSchema = "tailrocks.migration-tests/v1";
@@ -31,20 +32,62 @@ export async function selectMigrationTests(
 if (import.meta.main) {
   const root = path.resolve(import.meta.dir, "..");
   try {
+    if (process.argv.length !== 2) {
+      console.log(
+        JSON.stringify({
+          schema: receiptSchema,
+          outcome: "refused",
+          code: "invalid_arguments",
+          selected_test_files: 0,
+          tests: [],
+          mutations: [],
+          detail: "run-migration-tests takes no arguments",
+        }),
+      );
+      process.exit(2);
+    }
     const tests = await selectMigrationTests(root);
-    console.log(JSON.stringify({ schema: receiptSchema, selected_test_files: tests.length, tests }));
-    const child = Bun.spawn([process.execPath, "test", ...tests], {
+    const result = await runBoundedCommand({
+      command: [process.execPath, "test", ...tests],
       cwd: root,
-      stdin: "ignore",
-      stdout: "inherit",
-      stderr: "inherit",
+      timeoutMilliseconds: 600_000,
+      killGraceMilliseconds: 5_000,
+      maximumOutputBytes: 50_000_000,
     });
-    process.exit(await child.exited);
-  } catch (error) {
-    console.error(
+    if (result.stdout) process.stdout.write(result.stdout);
+    if (result.stderr && !result.timedOut && !result.saturated) process.stderr.write(result.stderr);
+    const success = result.code === 0 && !result.timedOut && !result.saturated;
+    console.log(
       JSON.stringify({
         schema: receiptSchema,
-        error: error instanceof Error ? error.message : String(error),
+        outcome: success ? "success" : "failed",
+        code: success
+          ? "tests_passed"
+          : result.timedOut
+            ? "timeout"
+            : result.saturated
+              ? "output_saturated"
+              : "tests_failed",
+        selected_test_files: tests.length,
+        tests,
+        test_exit_code: result.code,
+        mutations: [],
+        detail: success
+          ? "all selected non-protected tests passed"
+          : result.stderr || `test exit ${result.code}`,
+      }),
+    );
+    process.exit(success ? 0 : 1);
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        schema: receiptSchema,
+        outcome: "failed",
+        code: "selection_failed",
+        selected_test_files: 0,
+        tests: [],
+        mutations: [],
+        detail: error instanceof Error ? error.message : String(error),
       }),
     );
     process.exit(1);

@@ -1,6 +1,8 @@
-import { lstat, mkdir, readFile, realpath, rename, rm, rmdir, writeFile } from "node:fs/promises";
-import path from "node:path";
 import { randomUUID } from "node:crypto";
+import { link, lstat, mkdir, readFile, realpath, rename, rm, rmdir, writeFile } from "node:fs/promises";
+import path from "node:path";
+
+import { runBoundedCommand } from "../../../scripts/bounded-command";
 
 export const receiptSchema = "tailrocks.audit-report-reconciliation/v1";
 
@@ -69,7 +71,8 @@ const headingPattern = /^### ((?:DESC|RTR|REF|EVAL|WIRE|OVL)-(?:NEW|\d+)) — .+
 const reportHeader = /^# Skill audit: ([a-z0-9]+(?:-[a-z0-9]+)*)$/gm;
 
 function object(value: unknown, label: string): Record<string, unknown> {
-  if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error(`${label} must be an object`);
+  if (!value || typeof value !== "object" || Array.isArray(value))
+    throw new Error(`${label} must be an object`);
   return value as Record<string, unknown>;
 }
 
@@ -80,7 +83,8 @@ function keys(value: Record<string, unknown>, expected: readonly string[], label
 }
 
 function nonempty(value: unknown, label: string): string {
-  if (typeof value !== "string" || value.trim() === "") throw new Error(`${label} must be a non-empty string`);
+  if (typeof value !== "string" || value.trim() === "")
+    throw new Error(`${label} must be a non-empty string`);
   return value;
 }
 
@@ -131,7 +135,8 @@ export function normalizeStructuredIdentity(value: unknown, label = "identity tu
 
 function normalizeLegacyIdentity(value: string, label: string): string {
   const fields = value.split(";");
-  if (fields.length !== 5) throw new Error(`${label} legacy tuple must contain exactly five semicolon fields`);
+  if (fields.length !== 5)
+    throw new Error(`${label} legacy tuple must contain exactly five semicolon fields`);
   const layer = normalizeProse(fields[0]!) as FindingLayer;
   if (!(layer in layerPrefixes)) throw new Error(`${label} has unknown legacy layer: ${layer}`);
   return `legacy:${[layer, ...fields.slice(1).map(normalizeProse)].join("; ")}`;
@@ -181,8 +186,10 @@ export function parseReport(source: string, mode: "candidate" | "existing", labe
     const tuples = [...section.matchAll(/^- \*\*Identity tuple:\*\*\s*(.+)$/gm)];
     if (tuples.length !== 1) throw new Error(`${label} finding ${id} must have exactly one identity tuple`);
     const identity = parseIdentity(tuples[0]![1]!, `${label} finding ${id}`);
-    if (layerPrefixes[identity.layer] !== match[1]) throw new Error(`${label} finding ${id} prefix disagrees with its layer`);
-    if (identities.has(identity.normalized)) throw new Error(`${label} has duplicate identity tuple ${identity.normalized}`);
+    if (layerPrefixes[identity.layer] !== match[1])
+      throw new Error(`${label} finding ${id} prefix disagrees with its layer`);
+    if (identities.has(identity.normalized))
+      throw new Error(`${label} has duplicate identity tuple ${identity.normalized}`);
     identities.add(identity.normalized);
     const idStart = heading.index! + heading[0].indexOf(id);
     findings.push({
@@ -241,13 +248,17 @@ export function reconcileReport(
   if (report.split(path.sep).join("/") !== `skill-audits/${candidate.skill}.md`) {
     throw new Error(`report path must be skill-audits/${candidate.skill}.md`);
   }
-  const previous = previousSource === undefined ? undefined : parseReport(previousSource, "existing", "previous report");
+  const previous =
+    previousSource === undefined ? undefined : parseReport(previousSource, "existing", "previous report");
   const historical = history.map((item) => parseReport(item.source, "existing", `history ${item.revision}`));
   for (const item of [previous, ...historical]) {
-    if (item && item.skill !== candidate.skill) throw new Error(`report skill mismatch: expected ${candidate.skill}, got ${item.skill}`);
+    if (item && item.skill !== candidate.skill)
+      throw new Error(`report skill mismatch: expected ${candidate.skill}, got ${item.skill}`);
   }
   const maxima = validateHistory([...(previous ? [previous] : []), ...historical]);
-  const previousByIdentity = new Map(previous?.findings.map((finding) => [finding.identity, finding.id]) ?? []);
+  const previousByIdentity = new Map(
+    previous?.findings.map((finding) => [finding.identity, finding.id]) ?? [],
+  );
   const assignments = new Map<number, string>();
   let preserved = 0;
   const fresh: Array<{ index: number; finding: ParsedFinding }> = [];
@@ -259,7 +270,11 @@ export function reconcileReport(
     } else fresh.push({ index, finding });
   });
   fresh.sort((left, right) =>
-    left.finding.identity < right.finding.identity ? -1 : left.finding.identity > right.finding.identity ? 1 : 0,
+    left.finding.identity < right.finding.identity
+      ? -1
+      : left.finding.identity > right.finding.identity
+        ? 1
+        : 0,
   );
   for (const item of fresh) {
     const number = (maxima.get(item.finding.prefix) ?? 0) + 1;
@@ -283,15 +298,10 @@ export function reconcileReport(
 }
 
 async function git(root: string, args: readonly string[], allowMissing = false): Promise<string | undefined> {
-  const child = Bun.spawn(["git", ...args], { cwd: root, stdin: "ignore", stdout: "pipe", stderr: "pipe" });
-  const [code, stdout, stderr] = await Promise.all([
-    child.exited,
-    new Response(child.stdout).text(),
-    new Response(child.stderr).text(),
-  ]);
-  if (code === 0) return stdout;
-  if (allowMissing && /does not exist in|exists on disk, but not in/.test(stderr)) return undefined;
-  throw new Error(`git ${args[0]} failed: ${stderr.trim()}`);
+  const result = await runBoundedCommand({ command: ["git", ...args], cwd: root });
+  if (result.code === 0 && !result.timedOut) return result.stdout;
+  if (allowMissing && /does not exist in|exists on disk, but not in/.test(result.stderr)) return undefined;
+  throw new Error(`git ${args[0]} failed: ${result.stderr.trim()}`);
 }
 
 export async function committedHistory(root: string, report: string): Promise<HistoricalReport[]> {
@@ -300,10 +310,16 @@ export async function committedHistory(root: string, report: string): Promise<Hi
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean);
+  if (revisions.length > 1_000) throw new Error("report history exceeds 1000 revisions");
   const reports: HistoricalReport[] = [];
+  let bytes = 0;
   for (const revision of revisions) {
     const source = await git(root, ["show", `${revision}:${report}`], true);
-    if (source !== undefined) reports.push({ revision, source });
+    if (source !== undefined) {
+      bytes += Buffer.byteLength(source);
+      if (bytes > 50_000_000) throw new Error("report history exceeds 50 MB");
+      reports.push({ revision, source });
+    }
   }
   return reports;
 }
@@ -318,7 +334,8 @@ async function existingFile(file: string): Promise<string | undefined> {
 }
 
 async function safeOutputPath(root: string, relative: string, skill: string): Promise<string> {
-  if (path.isAbsolute(relative) || relative.split(/[\\/]/).includes("..")) throw new Error("output must stay inside the repository");
+  if (path.isAbsolute(relative) || relative.split(/[\\/]/).includes(".."))
+    throw new Error("output must stay inside the repository");
   const expected = `skill-audits/${skill}.md`;
   if (relative.split(path.sep).join("/") !== expected) throw new Error(`output must be ${expected}`);
   const absolute = path.resolve(root, relative);
@@ -333,25 +350,129 @@ async function safeOutputPath(root: string, relative: string, skill: string): Pr
   return absolute;
 }
 
-async function atomicWrite(file: string, source: string): Promise<void> {
-  const temporary = `${file}.reconcile-${process.pid}-${randomUUID()}.next`;
+interface Identity {
+  readonly dev: number;
+  readonly ino: number;
+  readonly sha256: string;
+}
+
+function sha256(source: string | Uint8Array): string {
+  return new Bun.CryptoHasher("sha256").update(source).digest("hex");
+}
+
+async function fileIdentity(file: string): Promise<Identity> {
+  const info = await lstat(file);
+  if (!info.isFile() || info.isSymbolicLink()) throw new Error(`report path is not a regular file: ${file}`);
+  const body = await readFile(file);
+  const after = await lstat(file);
+  if (
+    after.dev !== info.dev ||
+    after.ino !== info.ino ||
+    after.size !== info.size ||
+    after.mtimeMs !== info.mtimeMs
+  )
+    throw new Error(`report changed while observed: ${file}`);
+  return { dev: info.dev, ino: info.ino, sha256: sha256(body) };
+}
+
+function sameIdentity(left: Identity, right: Identity): boolean {
+  return left.dev === right.dev && left.ino === right.ino && left.sha256 === right.sha256;
+}
+
+async function removeOwned(file: string, expected: Identity, transaction: string): Promise<void> {
+  const quarantine = `${file}.reconcile-${transaction}.quarantine`;
+  try {
+    await rename(file, quarantine);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return;
+    throw error;
+  }
+  const moved = await fileIdentity(quarantine);
+  if (!sameIdentity(moved, expected)) {
+    await link(quarantine, file).catch(() => undefined);
+    throw new Error(`refusing to remove changed path; recovery artifact retained: ${quarantine}`);
+  }
+  await rm(quarantine);
+}
+
+export async function replaceReport(
+  file: string,
+  source: string,
+  expectedSource: string | undefined,
+  runtime: { readonly beforePublish?: () => Promise<void> } = {},
+): Promise<void> {
+  const transaction = randomUUID();
+  const temporary = `${file}.reconcile-${transaction}.next`;
+  const backup = `${file}.reconcile-${transaction}.restore`;
   let createdDirectory: string | undefined;
-  let ownsTemporary = false;
+  let temporaryIdentity: Identity | undefined;
+  let backupIdentity: Identity | undefined;
+  let installedIdentity: Identity | undefined;
   try {
     createdDirectory = await mkdir(path.dirname(file), { recursive: true });
     await writeFile(temporary, source, { flag: "wx" });
-    ownsTemporary = true;
-    await rename(temporary, file);
-    ownsTemporary = false;
-  } catch (error) {
-    if (ownsTemporary) await rm(temporary, { force: true });
+    temporaryIdentity = await fileIdentity(temporary);
+    let expected: Identity | undefined;
+    try {
+      expected = await fileIdentity(file);
+      if (expectedSource === undefined || expected.sha256 !== sha256(expectedSource))
+        throw new Error("report state no longer matches the reconciled input");
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+      if (expectedSource !== undefined) throw new Error("report disappeared before publication");
+    }
+    await runtime.beforePublish?.();
+    if (expected) {
+      await rename(file, backup);
+      backupIdentity = await fileIdentity(backup);
+      if (!sameIdentity(backupIdentity, expected)) {
+        await link(backup, file).catch(() => undefined);
+        throw new Error(`report changed before backup; recovery artifact retained: ${backup}`);
+      }
+    }
+    await link(temporary, file);
+    const installed = await fileIdentity(file);
+    if (!sameIdentity(installed, temporaryIdentity)) throw new Error("report changed during publication");
+    installedIdentity = installed;
+    await removeOwned(temporary, temporaryIdentity, transaction);
+    temporaryIdentity = undefined;
+    if (backupIdentity) {
+      await removeOwned(backup, backupIdentity, transaction);
+      backupIdentity = undefined;
+    }
+  } catch (caught) {
+    let error: unknown = caught;
+    if (installedIdentity) {
+      try {
+        await removeOwned(file, installedIdentity, transaction);
+      } catch (rollbackError) {
+        error = new AggregateError([error, rollbackError], "report publication rollback failed");
+      }
+    }
+    if (backupIdentity) {
+      try {
+        await link(backup, file);
+        await removeOwned(backup, backupIdentity, transaction);
+        backupIdentity = undefined;
+      } catch (rollbackError) {
+        error = new AggregateError([error, rollbackError], `report restore retained at ${backup}`);
+      }
+    }
+    if (temporaryIdentity) {
+      try {
+        await removeOwned(temporary, temporaryIdentity, transaction);
+      } catch (cleanupError) {
+        error = new AggregateError([error, cleanupError], `temporary recovery retained at ${temporary}`);
+      }
+    }
     if (createdDirectory) await rmdir(createdDirectory).catch(() => undefined);
     throw error;
   }
 }
 
+class UsageError extends Error {}
 function usage(): never {
-  throw new Error("usage: reconcile-report.ts --candidate <draft.md> --output skill-audits/<skill>.md");
+  throw new UsageError("usage: reconcile-report.ts --candidate <draft.md> --output skill-audits/<skill>.md");
 }
 
 async function main(args: readonly string[]): Promise<void> {
@@ -378,20 +499,48 @@ async function main(args: readonly string[]): Promise<void> {
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
   }
+  const previous = await existingFile(outputAbsolute);
   const receipt = reconcileReport(
     candidateSource,
-    await existingFile(outputAbsolute),
+    previous,
     await committedHistory(root, outputFile.split(path.sep).join("/")),
     outputFile.split(path.sep).join("/"),
   );
-  await atomicWrite(outputAbsolute, receipt.output);
+  await replaceReport(outputAbsolute, receipt.output, previous);
   const { output: _output, ...publicReceipt } = receipt;
-  console.log(JSON.stringify(publicReceipt));
+  console.log(
+    JSON.stringify({
+      ...publicReceipt,
+      outcome: "success",
+      code: "reconciled",
+      mutations: [
+        {
+          path: outputFile,
+          before_sha256: previous ? sha256(previous) : null,
+          after_sha256: receipt.output_sha256,
+        },
+      ],
+      recovery_artifacts: [],
+    }),
+  );
 }
 
 if (import.meta.main) {
   main(process.argv.slice(2)).catch((error) => {
-    console.error(JSON.stringify({ schema: receiptSchema, error: error instanceof Error ? error.message : String(error) }));
-    process.exit(1);
+    const detail = error instanceof Error ? error.message : String(error);
+    const refused = error instanceof UsageError;
+    console.log(
+      JSON.stringify({
+        schema: receiptSchema,
+        outcome: refused ? "refused" : "failed",
+        code: refused ? "invalid_arguments" : "reconciliation_failed",
+        mutations: [],
+        recovery_artifacts: [...detail.matchAll(/\S+\.reconcile-[^\s]+\.(?:restore|next|quarantine)/g)].map(
+          (match) => match[0],
+        ),
+        detail,
+      }),
+    );
+    process.exit(refused ? 2 : 1);
   });
 }

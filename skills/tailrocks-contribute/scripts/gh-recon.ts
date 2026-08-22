@@ -1,12 +1,20 @@
+import { runBoundedCommand } from "../../../scripts/bounded-command";
+
 type Envelope = {
+  schema: "tailrocks.github-recon/v1";
+  outcome: "success" | "refused" | "failed";
+  code: "scanned" | "invalid_arguments" | "lookup_failed";
   command: string;
   ok: boolean;
   data: unknown;
   warnings: string[];
   errors: string[];
+  mutations: [];
+  detail: string;
 };
 
-const [command = "", rawRepo = "", subject = ""] = Bun.argv.slice(2);
+const args = Bun.argv.slice(2);
+const [command = "", rawRepo = "", subject = ""] = args;
 const normalized = rawRepo
   .replace(/^https?:\/\/github\.com\//, "")
   .replace(/\.git$/, "")
@@ -14,23 +22,37 @@ const normalized = rawRepo
 const repo = normalized.split("/").slice(0, 2).join("/");
 const errors: string[] = [];
 const warnings: string[] = [];
+const subjectCommands = new Set(["issue", "issue-comments", "related-prs"]);
+const knownCommands = new Set([
+  "repo-scan",
+  "ai-policy",
+  "legal",
+  "liveness",
+  "issue",
+  "issue-comments",
+  "related-prs",
+  "prs-closed",
+  "templates-issue",
+  "templates-pr",
+  "commit-log",
+  "pr-stats",
+  "codeowners",
+  "pr-caps",
+]);
+const argumentsValid =
+  knownCommands.has(command) &&
+  args.length === (subjectCommands.has(command) ? 3 : 2) &&
+  (!subjectCommands.has(command) || (subject.length > 0 && subject.length <= 1_000)) &&
+  (!new Set(["issue", "issue-comments"]).has(command) || /^[1-9]\d*$/.test(subject));
 
 async function api(endpoint: string): Promise<unknown | null> {
-  const proc = Bun.spawn(["gh", "api", endpoint], {
-    stdout: "pipe",
-    stderr: "pipe",
-  });
-  const [stdout, stderr, code] = await Promise.all([
-    new Response(proc.stdout).text(),
-    new Response(proc.stderr).text(),
-    proc.exited,
-  ]);
-  if (code !== 0) {
-    errors.push(`${endpoint}: ${stderr.trim() || `gh exited ${code}`}`);
+  const result = await runBoundedCommand({ command: ["gh", "api", endpoint], cwd: process.cwd() });
+  if (result.code !== 0 || result.timedOut) {
+    errors.push(`${endpoint}: ${result.stderr.trim() || `gh exited ${result.code}`}`);
     return null;
   }
   try {
-    return JSON.parse(stdout);
+    return JSON.parse(result.stdout);
   } catch {
     errors.push(`${endpoint}: invalid JSON from gh`);
     return null;
@@ -51,6 +73,10 @@ async function repoFile(path: string): Promise<unknown | null> {
 }
 
 async function run(): Promise<unknown> {
+  if (!argumentsValid) {
+    errors.push("invalid or unmatched command arguments");
+    return {};
+  }
   if (!/^[^/]+\/[^/]+$/.test(repo) || (!rawRepo.includes("github.com") && rawRepo.includes("://"))) {
     errors.push("target is not a GitHub owner/repo; detect and follow its documented channel");
     return {};
@@ -64,17 +90,29 @@ async function run(): Promise<unknown> {
       const metadata = await api(`repos/${repo}`);
       if (!metadata) return {};
       const paths = [
-        "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "SECURITY.md", "LICENSE",
-        "AI_POLICY.md", "DCO", "MAINTAINERS", "CODEOWNERS",
-        ".github/CODEOWNERS", ".github/ISSUE_TEMPLATE",
-        ".github/PULL_REQUEST_TEMPLATE.md", ".github/workflows",
-        "AGENTS.md", "CLAUDE.md", ".cursorrules",
+        "CONTRIBUTING.md",
+        "CODE_OF_CONDUCT.md",
+        "SECURITY.md",
+        "LICENSE",
+        "AI_POLICY.md",
+        "DCO",
+        "MAINTAINERS",
+        "CODEOWNERS",
+        ".github/CODEOWNERS",
+        ".github/ISSUE_TEMPLATE",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        ".github/workflows",
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".cursorrules",
       ];
       const found: string[] = [];
       const missing: string[] = [];
-      await Promise.all(paths.map(async (path) => {
-        (await repoFile(path)) ? found.push(path) : missing.push(path);
-      }));
+      await Promise.all(
+        paths.map(async (path) => {
+          (await repoFile(path)) ? found.push(path) : missing.push(path);
+        }),
+      );
       return { metadata, found: found.sort(), missing: missing.sort() };
     }
     case "ai-policy":
@@ -85,15 +123,14 @@ async function run(): Promise<unknown> {
       };
     case "legal": {
       const commits = await api(`repos/${repo}/commits?per_page=30`);
-      const messages = Array.isArray(commits)
-        ? commits.map((item: any) => item.commit?.message ?? "")
-        : [];
+      const messages = Array.isArray(commits) ? commits.map((item: any) => item.commit?.message ?? "") : [];
       return {
         license: await repoFile("LICENSE"),
         dco: await repoFile("DCO"),
-        signoff_density: messages.length === 0
-          ? null
-          : messages.filter((message) => /Signed-off-by:/i.test(message)).length / messages.length,
+        signoff_density:
+          messages.length === 0
+            ? null
+            : messages.filter((message) => /Signed-off-by:/i.test(message)).length / messages.length,
         workflows: await repoFile(".github/workflows"),
       };
     }
@@ -136,9 +173,7 @@ async function run(): Promise<unknown> {
     case "pr-caps": {
       const viewer = await api("user");
       const login = (viewer as any)?.login;
-      return login
-        ? api(`search/issues?q=repo:${repo}+type:pr+state:open+author:${login}`)
-        : null;
+      return login ? api(`search/issues?q=repo:${repo}+type:pr+state:open+author:${login}`) : null;
     }
     default:
       errors.push(`unknown subcommand: ${command}`);
@@ -146,12 +181,37 @@ async function run(): Promise<unknown> {
   }
 }
 
-const data = await run();
-const envelope: Envelope = {
-  command,
-  ok: errors.length === 0,
-  data,
-  warnings,
-  errors,
-};
-console.log(JSON.stringify(envelope, null, 2));
+try {
+  const data = await run();
+  const invalid = !argumentsValid || errors.some((error) => error.startsWith("target is not"));
+  const envelope: Envelope = {
+    schema: "tailrocks.github-recon/v1",
+    outcome: errors.length === 0 ? "success" : invalid ? "refused" : "failed",
+    code: errors.length === 0 ? "scanned" : invalid ? "invalid_arguments" : "lookup_failed",
+    command,
+    ok: errors.length === 0,
+    data,
+    warnings,
+    errors,
+    mutations: [],
+    detail: errors.length === 0 ? "GitHub reconnaissance complete" : errors.join("; "),
+  };
+  console.log(JSON.stringify(envelope, null, 2));
+  if (envelope.outcome !== "success") process.exit(envelope.outcome === "refused" ? 2 : 1);
+} catch (error) {
+  console.log(
+    JSON.stringify({
+      schema: "tailrocks.github-recon/v1",
+      outcome: "failed",
+      code: "lookup_failed",
+      command,
+      ok: false,
+      data: {},
+      warnings,
+      errors: [error instanceof Error ? error.message : String(error)],
+      mutations: [],
+      detail: error instanceof Error ? error.message : String(error),
+    }),
+  );
+  process.exit(1);
+}

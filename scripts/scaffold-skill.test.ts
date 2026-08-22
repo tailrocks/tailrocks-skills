@@ -1,9 +1,13 @@
 import { describe, expect, test } from "bun:test";
-import { cp, mkdir, mkdtemp, readdir, readFile, rename, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
-import { scaffoldSkill } from "../skills/tailrocks-skill-create/scripts/scaffold-skill";
+import {
+  parseScaffoldArguments,
+  scaffoldSkill,
+} from "../skills/tailrocks-skill-create/scripts/scaffold-skill";
+import { runBoundedCommand } from "./bounded-command";
 
 async function fixture(): Promise<string> {
   const root = await mkdtemp(path.join(tmpdir(), "tailrocks-scaffold-"));
@@ -38,6 +42,32 @@ async function fixture(): Promise<string> {
 }
 
 describe("scaffoldSkill", () => {
+  test("CLI parser and entrypoint reject unmatched argument state", async () => {
+    expect(() => parseScaffoldArguments(["one", "two"])).toThrow();
+    expect(() => parseScaffoldArguments(["--root", "/tmp", "--root", "/tmp", "one"])).toThrow();
+    const script = "../skills/tailrocks-skill-create/scripts/scaffold-skill.ts";
+    const result = await runBoundedCommand({ command: ["bun", script, "one", "two"], cwd: import.meta.dir });
+    expect(result.code).toBe(2);
+    expect(result.stderr).toBe("");
+    expect(JSON.parse(result.stdout)).toMatchObject({
+      outcome: "refused",
+      code: "invalid_arguments",
+      mutations: [],
+    });
+    const root = await mkdtemp(path.join(tmpdir(), "tailrocks-scaffold-cli-"));
+    const failed = await runBoundedCommand({
+      command: ["bun", script, "--root", path.join(root, "missing"), "deploy-check"],
+      cwd: import.meta.dir,
+    });
+    expect(failed.code).toBe(1);
+    expect(failed.stderr).toBe("");
+    expect(JSON.parse(failed.stdout)).toMatchObject({
+      outcome: "failed",
+      code: "scaffold_failed",
+      mutations: [],
+      recovery_artifacts: [],
+    });
+  });
   test("copies exact skeleton and reports allowlisted writes", async () => {
     const root = await fixture();
     expect(await scaffoldSkill(root, "deploy-check")).toEqual([
@@ -178,26 +208,26 @@ describe("scaffoldSkill", () => {
     }
   });
 
-  test("restores shared files byte-identically when the second install fails", async () => {
+  test("shared-file CAS preserves a concurrent replacement and restores owned writes", async () => {
     const root = await fixture();
     const catalogFile = path.join(root, "catalog.json");
     const registryFile = path.join(root, "invocation-registry.json");
     const catalogBefore = await readFile(catalogFile, "utf8");
-    const registryBefore = await readFile(registryFile, "utf8");
     await expect(
       scaffoldSkill(root, "deploy-check", ".skill-authoring.json", "MANUAL_ONLY", {
-        writeFile,
-        rename: async (source, destination) => {
-          if (source.endsWith(".next") && destination === registryFile) {
-            throw new Error("injected second install failure");
-          }
-          await rename(source, destination);
+        afterPublish: async (_file, index) => {
+          if (index === 0) await writeFile(registryFile, "concurrent registry\n");
         },
       }),
-    ).rejects.toThrow("injected second install failure");
+    ).rejects.toThrow("scaffold failed; recovery retained");
     expect(await readFile(catalogFile, "utf8")).toBe(catalogBefore);
-    expect(await readFile(registryFile, "utf8")).toBe(registryBefore);
+    expect(await readFile(registryFile, "utf8")).toBe("concurrent registry\n");
     expect(await Bun.file(path.join(root, ".agent-skills/deploy-check/SKILL.md")).exists()).toBeFalse();
+    expect(
+      (await readdir(path.join(root, ".agent-skills"))).some((entry) =>
+        entry.startsWith("deploy-check.scaffold-recovery-"),
+      ),
+    ).toBe(true);
     expect((await readdir(root)).filter((entry) => entry.includes(".scaffold-deploy-check-"))).toEqual([]);
   });
 

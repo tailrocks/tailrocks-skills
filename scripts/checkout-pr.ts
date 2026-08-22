@@ -1,6 +1,8 @@
 import { lstat, realpath } from "node:fs/promises";
 import path from "node:path";
 
+import { runBoundedCommand } from "./bounded-command";
+
 export const checkoutSchema = "tailrocks.checkout-pr/v1";
 
 export type CheckoutCode =
@@ -70,20 +72,7 @@ class CommandFailure extends Error {
   }
 }
 
-export const defaultRunner: CommandRunner = async (command, cwd) => {
-  const child = Bun.spawn(command, { cwd, stdin: "ignore", stdout: "pipe", stderr: "pipe" });
-  let timedOut = false;
-  const timer = setTimeout(() => {
-    timedOut = true;
-    child.kill();
-  }, 30_000);
-  const [code, stdout, stderr] = await Promise.all([
-    child.exited,
-    new Response(child.stdout).text(),
-    new Response(child.stderr).text(),
-  ]).finally(() => clearTimeout(timer));
-  return { code, stdout, stderr, timedOut };
-};
+export const defaultRunner: CommandRunner = (command, cwd) => runBoundedCommand({ command, cwd });
 
 function codeUnitCompare(left: PullRequest, right: PullRequest): number {
   return left.number - right.number || (left.headRefName < right.headRefName ? -1 : 1);

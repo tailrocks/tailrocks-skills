@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { lstat, mkdtemp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { lstat, mkdtemp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -7,6 +7,7 @@ import {
   type FindingLayer,
   type HistoricalReport,
   reconcileReport,
+  replaceReport,
 } from "../skills/tailrocks-skill-audit/scripts/reconcile-report";
 
 const reconciler = path.resolve(
@@ -336,8 +337,27 @@ test("CLI reads Git history, writes atomically, and leaves prior bytes on failur
     "skill-audits/tailrocks-example.md",
   ]);
   expect(failure.code).toBe(1);
-  expect(JSON.parse(failure.stderr).error).toContain("duplicate identity tuple");
+  expect(failure.stderr).toBe("");
+  expect(JSON.parse(failure.stdout).detail).toContain("duplicate identity tuple");
   expect(await readFile(output)).toEqual(beforeFailure);
+});
+
+test("report CAS refuses concurrent replacement and retains recovery evidence", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "audit-report-race-"));
+  const output = path.join(root, "report.md");
+  const original = "original\n";
+  const replacement = "concurrent\n";
+  await writeFile(output, original);
+  await expect(
+    replaceReport(output, "candidate\n", original, {
+      beforePublish: async () => {
+        await rm(output);
+        await writeFile(output, replacement);
+      },
+    }),
+  ).rejects.toThrow("report restore retained");
+  expect(await readFile(output, "utf8")).toBe(replacement);
+  expect((await readdir(root)).some((name) => name.includes(".restore"))).toBe(true);
 });
 
 test("failed first-audit validation creates no output directory", async () => {

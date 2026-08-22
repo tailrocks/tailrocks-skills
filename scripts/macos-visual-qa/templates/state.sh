@@ -73,7 +73,10 @@ case "$command" in
   recover) restore "${2:?before snapshot required}" "${3:?applied snapshot required}" ;;
   with)
     state=${2:?state required}; shift 2; [ "${1:-}" = -- ] || { echo "with requires --" >&2; exit 2; }; shift; [ "$#" -gt 0 ] || { echo "with requires command argv" >&2; exit 2; }
-    before=$(mktemp "${TMPDIR:-/tmp}/tailrocks-state-before.XXXXXX"); applied=$(mktemp "${TMPDIR:-/tmp}/tailrocks-state-applied.XXXXXX"); applied_ready=0
+    before=${TAILROCKS_STATE_BEFORE:-}; applied=${TAILROCKS_STATE_APPLIED:-}
+    [ -n "$before" ] || before=$(mktemp "${TMPDIR:-/tmp}/tailrocks-state-before.XXXXXX")
+    [ -n "$applied" ] || applied=$(mktemp "${TMPDIR:-/tmp}/tailrocks-state-applied.XXXXXX")
+    applied_ready=0
     snapshot "$before"
     cleanup() { status=$?; trap - EXIT INT TERM; if [ "$applied_ready" -eq 0 ]; then snapshot "$applied" || status=1; fi; if restore "$before" "$applied"; then rm -f "$before" "$applied"; else status=1; fi; exit "$status"; }
     trap cleanup EXIT INT TERM; apply_state "$state"; snapshot "$applied"; applied_ready=1; "$@"

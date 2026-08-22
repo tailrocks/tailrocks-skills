@@ -2,6 +2,8 @@ import { createHash, randomBytes } from "node:crypto";
 import { link, lstat, mkdir, mkdtemp, readFile, readdir, realpath, rename, rm } from "node:fs/promises";
 import path from "node:path";
 
+import { runBoundedCommand } from "../bounded-command";
+
 export const captureSchema = "tailrocks.web-visual-qa-capture/v1";
 type Outcome = "captured" | "refused" | "failed";
 type Code =
@@ -63,28 +65,7 @@ export async function runChild(
   timeoutMilliseconds: number,
   killGraceMilliseconds = 5_000,
 ): Promise<CommandResult> {
-  const child = Bun.spawn(command, {
-    cwd,
-    env: { ...process.env, ...env },
-    stdin: "ignore",
-    stdout: "pipe",
-    stderr: "pipe",
-  });
-  let timedOut = false;
-  let killTimer: ReturnType<typeof setTimeout> | undefined;
-  const timeout = setTimeout(() => {
-    timedOut = true;
-    child.kill("SIGTERM");
-    killTimer = setTimeout(() => child.kill("SIGKILL"), killGraceMilliseconds);
-  }, timeoutMilliseconds);
-  const [code, stdout, stderr] = await Promise.all([
-    child.exited,
-    new Response(child.stdout).text(),
-    new Response(child.stderr).text(),
-  ]);
-  clearTimeout(timeout);
-  if (killTimer) clearTimeout(killTimer);
-  return { code: timedOut ? 124 : code, stdout, stderr: timedOut ? "command timed out" : stderr };
+  return runBoundedCommand({ command, cwd, env, timeoutMilliseconds, killGraceMilliseconds });
 }
 const defaultRunner: Runner = (command, cwd, env) =>
   runChild(command, cwd, env, command.includes("playwright") ? 300_000 : 30_000);
@@ -94,7 +75,7 @@ const defaultSpawn = (command: readonly string[], cwd: string, env: Record<strin
     env: { ...process.env, ...env },
     stdin: "ignore",
     stdout: "ignore",
-    stderr: "inherit",
+    stderr: "ignore",
   });
   return { pid: child.pid, exited: child.exited, kill: (signal) => child.kill(signal) };
 };
@@ -658,16 +639,31 @@ export async function runCapture(
 
 if (import.meta.main) {
   const args = Bun.argv.slice(2);
-  const rootIndex = args.indexOf("--root");
-  const portIndex = args.indexOf("--port");
-  const updateSnapshots = args.includes("--update-snapshots");
+  let root: string | undefined;
+  let port: string | undefined;
+  let updateSnapshots = false;
+  let valid = true;
+  for (let index = 0; index < args.length; index += 1) {
+    const flag = args[index];
+    if (flag === "--update-snapshots" && !updateSnapshots) updateSnapshots = true;
+    else if ((flag === "--root" || flag === "--port") && args[index + 1]) {
+      if (flag === "--root" ? root !== undefined : port !== undefined) {
+        valid = false;
+        break;
+      }
+      if (flag === "--root") root = args[index + 1];
+      else port = args[index + 1];
+      index += 1;
+    } else {
+      valid = false;
+      break;
+    }
+  }
   const result =
-    rootIndex >= 0 && args[rootIndex + 1]
+    valid && root
       ? await runCapture({
-          root: args[rootIndex + 1]!,
-          port: Number(
-            portIndex >= 0 ? args[portIndex + 1] : 40_000 + (randomBytes(2).readUInt16BE(0) % 20_000),
-          ),
+          root,
+          port: Number(port ?? 40_000 + (randomBytes(2).readUInt16BE(0) % 20_000)),
           updateSnapshots,
         })
       : receipt(

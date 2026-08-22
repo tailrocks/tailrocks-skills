@@ -590,14 +590,37 @@ export async function validate(root: string): Promise<string[]> {
 }
 
 if (import.meta.main) {
-  const root = path.resolve(import.meta.dir, "..");
-  const errors = await validate(root);
-  if (errors.length > 0) {
-    for (const error of errors) console.error(`error: ${error}`);
-    process.exit(1);
+  try {
+    if (process.argv.length !== 2) throw new Error("validate-skills takes no arguments");
+    const root = path.resolve(import.meta.dir, "..");
+    const errors = await validate(root);
+    const entries = (await readdir(path.join(root, "skills"), { withFileTypes: true })).filter((entry) =>
+      entry.isDirectory(),
+    );
+    console.log(
+      JSON.stringify({
+        schema: "tailrocks.validate-skills/v1",
+        outcome: errors.length === 0 ? "success" : "failed",
+        code: errors.length === 0 ? "valid" : "invalid",
+        skills: entries.length,
+        errors,
+        mutations: [],
+        detail:
+          errors.length === 0 ? `validated ${entries.length} skills` : `${errors.length} validation errors`,
+      }),
+    );
+    if (errors.length > 0) process.exit(1);
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        schema: "tailrocks.validate-skills/v1",
+        outcome: "refused",
+        code: "invalid_arguments",
+        errors: [],
+        mutations: [],
+        detail: error instanceof Error ? error.message : String(error),
+      }),
+    );
+    process.exit(2);
   }
-  const entries = (await readdir(path.join(root, "skills"), { withFileTypes: true })).filter((entry) =>
-    entry.isDirectory(),
-  );
-  console.log(`Validated ${entries.length} skills.`);
 }

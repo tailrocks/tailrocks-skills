@@ -79,6 +79,7 @@ test("real apps prove exact decoy ownership and two-window refusal", async () =>
   try {
     const output = path.join(root, "ambiguous.png");
     const capture = await run([
+      "/bin/sh",
       path.join(import.meta.dir, "templates/capture.sh"),
       path.join(apps, "Fixture.app"),
       output,
@@ -110,10 +111,12 @@ test("appearance transaction restores exact typed registry and rejects forged re
   await chmod(fake, 0o755);
   const environment = { TAILROCKS_DEFAULTS_COMMAND: fake, TAILROCKS_FAKE_DEFAULTS: store };
   const state = path.join(import.meta.dir, "templates/state.sh");
-  expect(await run([state, "with", "dark", "--", "/usr/bin/true"], environment)).toMatchObject({ code: 0 });
+  expect(await run(["/bin/sh", state, "with", "dark", "--", "/usr/bin/true"], environment)).toMatchObject({
+    code: 0,
+  });
   expect(JSON.parse(await readFile(store, "utf8"))).toEqual(original);
   expect(
-    await run([state, "with", "dark", "--", "/usr/bin/true"], {
+    await run(["/bin/sh", state, "with", "dark", "--", "/usr/bin/true"], {
       ...environment,
       TAILROCKS_FAKE_FAIL_ONCE: "NSGlobalDomain|AppleInterfaceStyleSwitchesAutomatically|1",
     }),
@@ -123,6 +126,6 @@ test("appearance transaction restores exact typed registry and rejects forged re
   await writeFile(forged, "tailrocks.macos-state/v1\nNSGlobalDomain|arbitrary|-string|owned\n", {
     mode: 0o600,
   });
-  expect((await run([state, "recover", forged, forged], environment)).code).not.toBe(0);
+  expect((await run(["/bin/sh", state, "recover", forged, forged], environment)).code).not.toBe(0);
   expect(JSON.parse(await readFile(store, "utf8"))).toEqual(original);
 }, 20_000);

@@ -208,11 +208,43 @@ export function checkAuditPlanState(
 }
 
 if (import.meta.main) {
-  const { mode, file } = parsePlanStateArgs(process.argv.slice(2));
-  const result = checkAuditPlanState(await readFile(path.resolve(file), "utf8"), mode);
-  if (result.errors.length > 0) {
-    for (const error of result.errors) console.error(`error: ${error}`);
-    process.exit(1);
+  try {
+    const { mode, file } = parsePlanStateArgs(process.argv.slice(2));
+    const result = checkAuditPlanState(await readFile(path.resolve(file), "utf8"), mode);
+    if (result.errors.length > 0) {
+      console.log(
+        JSON.stringify({
+          schema: "tailrocks.audit-plan-state/v1",
+          outcome: "failed",
+          code: "plan_state_invalid",
+          mutations: [],
+          recovery_artifacts: [],
+          errors: result.errors,
+        }),
+      );
+      process.exit(1);
+    }
+    console.log(
+      JSON.stringify({
+        ...result.receipt,
+        outcome: "success",
+        code: "checked",
+        mutations: [],
+        recovery_artifacts: [],
+      }),
+    );
+  } catch (error) {
+    const refused = error instanceof Error && error.message === usage;
+    console.log(
+      JSON.stringify({
+        schema: "tailrocks.audit-plan-state/v1",
+        outcome: refused ? "refused" : "failed",
+        code: refused ? "invalid_arguments" : "check_failed",
+        mutations: [],
+        recovery_artifacts: [],
+        detail: error instanceof Error ? error.message : String(error),
+      }),
+    );
+    process.exit(refused ? 2 : 1);
   }
-  console.log(JSON.stringify(result.receipt));
 }

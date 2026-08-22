@@ -13,6 +13,10 @@ Require the joined installer path itself to be non-symlink and its resolved
 entrypoint to be regular. The installer refuses an existing destination; never
 merge generated files into an unmatched harness.
 
+Invoke capture only as `bun Scripts/TailrocksVisualQA/run.ts capture -- APP.app
+OUT.png ...`; this public supervisor bounds the internal shell and emits one
+terminal JSON receipt on success, refusal, timeout, or failure.
+
 The installed capture script resolves Info.plist's exact executable, enumerates
 running applications by the executable's canonical path, and signals only PIDs
 that still carry that identity. It never matches names or regular expressions.
@@ -30,7 +34,8 @@ and requires exactly one accessibility identifier. The UI-test audit runs the
 four macOS audit types and ignores system-owned elements; it never turns a
 system menu-bar issue into an app defect.
 
-Appearance rows run only through state.sh's with mode. The transaction records
+Appearance rows run only through `bun run.ts state -- with` mode. The bounded
+supervisor emits the terminal receipt; the transaction records
 the four accessibility preferences plus AppleInterfaceStyle and
 AppleInterfaceStyleSwitchesAutomatically, verifies writes, restores every key
 on all ordinary exits, retries restoration exactly three times, and retains the

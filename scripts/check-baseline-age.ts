@@ -39,19 +39,42 @@ export async function baselineStamps(root: string, now = new Date()): Promise<St
 }
 
 if (import.meta.main) {
-  const argument = process.argv.indexOf("--max-age-days");
-  const maxAgeDays = argument === -1 ? 90 : Number(process.argv[argument + 1]);
-  if (!Number.isFinite(maxAgeDays) || maxAgeDays < 0) throw new Error("--max-age-days must be non-negative");
-  const root = path.resolve(import.meta.dir, "..");
-  const stamps = await baselineStamps(root);
-  if (stamps.length === 0) {
-    console.error("error: no verified baseline stamps found");
-    process.exit(1);
+  try {
+    const args = process.argv.slice(2);
+    if (!(args.length === 0 || (args.length === 2 && args[0] === "--max-age-days")))
+      throw new Error("usage: check-baseline-age.ts [--max-age-days N]");
+    const maxAgeDays = args.length === 0 ? 90 : Number(args[1]);
+    if (!Number.isFinite(maxAgeDays) || maxAgeDays < 0)
+      throw new Error("--max-age-days must be non-negative");
+    const root = path.resolve(import.meta.dir, "..");
+    const stamps = await baselineStamps(root);
+    if (stamps.length === 0) throw new Error("no verified baseline stamps found");
+    const stale = stamps.filter((stamp) => stamp.ageDays >= maxAgeDays);
+    console.log(
+      JSON.stringify({
+        schema: "tailrocks.baseline-age/v1",
+        outcome: stale.length === 0 ? "success" : "failed",
+        code: stale.length === 0 ? "current" : "stale",
+        max_age_days: maxAgeDays,
+        stamps,
+        stale: stale.map((stamp) => stamp.file),
+        mutations: [],
+        detail: stale.length === 0 ? "all baselines are current" : `${stale.length} baselines are stale`,
+      }),
+    );
+    if (stale.length > 0) process.exit(1);
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        schema: "tailrocks.baseline-age/v1",
+        outcome: "refused",
+        code: "invalid_arguments",
+        stamps: [],
+        stale: [],
+        mutations: [],
+        detail: error instanceof Error ? error.message : String(error),
+      }),
+    );
+    process.exit(2);
   }
-  let stale = false;
-  for (const stamp of stamps) {
-    console.log(`${stamp.file}: verified ${stamp.date}, age ${stamp.ageDays} days`);
-    if (stamp.ageDays >= maxAgeDays) stale = true;
-  }
-  if (stale) process.exit(1);
 }

@@ -1,6 +1,7 @@
-import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
+import { atomicRecoveryArtifacts, atomicWriteFiles } from "./atomic-file-transaction";
 import { parseInvocationRegistry, type InvocationClass } from "./invocation-registry";
 
 const guard = "Use only when the user explicitly requests this skill.";
@@ -493,13 +494,24 @@ async function currentContent(file: string): Promise<string | undefined> {
   }
 }
 
-if (import.meta.main) {
+async function main(args: readonly string[]): Promise<number> {
   const root = path.resolve(import.meta.dir, "..");
-  const check = process.argv.includes("--check");
+  if (!(args.length === 0 || (args.length === 1 && args[0] === "--check"))) {
+    console.log(
+      JSON.stringify({
+        schema: "tailrocks.generate-docs/v1",
+        outcome: "refused",
+        code: "invalid_arguments",
+        mutations: [],
+        detail: "usage: generate-docs.ts [--check]",
+      }),
+    );
+    return 2;
+  }
+  const check = args[0] === "--check";
   const stray = await strayMarkdown(root);
   if (stray.length > 0) {
-    for (const file of stray) console.error(`error: documentation pages must be .mdx, not .md: ${file}`);
-    process.exit(1);
+    throw new Error(`documentation pages must be .mdx, not .md: ${stray.join(", ")}`);
   }
 
   const drawn: string[] = [];
@@ -511,26 +523,52 @@ if (import.meta.main) {
     }
   }
   if (drawn.length > 0) {
-    for (const at of drawn) console.error(`error: draw this as a \`\`\`mermaid diagram, not text: ${at}`);
-    process.exit(1);
+    throw new Error(`draw as mermaid, not text: ${drawn.join(", ")}`);
   }
   const generated = await generate(root);
   const stale: string[] = [];
+  const writes = [];
   for (const { file, content } of generated) {
     const target = path.join(root, file);
-    if ((await currentContent(target)) === content) continue;
+    const current = await currentContent(target);
+    if (current === content) continue;
     stale.push(file);
     if (check) continue;
     await mkdir(path.dirname(target), { recursive: true });
-    await writeFile(target, content);
+    writes.push({ file: target, expected: current ?? null, content });
   }
   if (check && stale.length > 0) {
-    for (const file of stale) console.error(`error: out of date, run 'mise run docs': ${file}`);
+    throw new Error(`generated docs are out of date: ${stale.join(", ")}`);
+  }
+  await atomicWriteFiles(writes);
+  console.log(
+    JSON.stringify({
+      schema: "tailrocks.generate-docs/v1",
+      outcome: "success",
+      code: check ? "checked" : "written",
+      checked: generated.length,
+      mutations: stale,
+      recovery_artifacts: [],
+      detail: check ? `checked ${generated.length} generated files` : `wrote ${stale.length} generated files`,
+    }),
+  );
+  return 0;
+}
+
+if (import.meta.main) {
+  try {
+    process.exit(await main(process.argv.slice(2)));
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        schema: "tailrocks.generate-docs/v1",
+        outcome: "failed",
+        code: "generation_failed",
+        mutations: [],
+        recovery_artifacts: atomicRecoveryArtifacts(error),
+        detail: error instanceof Error ? error.message : String(error),
+      }),
+    );
     process.exit(1);
   }
-  console.log(
-    check
-      ? `Checked ${generated.length} generated files.`
-      : `Wrote ${stale.length}/${generated.length} files.`,
-  );
 }

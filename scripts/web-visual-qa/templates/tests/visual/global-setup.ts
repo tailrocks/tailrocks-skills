@@ -11,6 +11,7 @@ export default async function globalSetup(_config: FullConfig): Promise<void> {
     cache: "no-store",
     redirect: "manual",
     headers: { "X-Tailrocks-Visual-Session": nonce },
+    signal: AbortSignal.timeout(2_000),
   });
   if (
     !response.ok ||
