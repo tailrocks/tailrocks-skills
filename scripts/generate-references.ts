@@ -37,6 +37,11 @@ const generatedFamilies = [
     destinations: ["tailrocks-axum-refactor", "tailrocks-axum-review"],
   },
   {
+    owner: "tailrocks-graphql-best-practices",
+    references: ["client-tanstack.md", "contract-gates.md", "schema-design.md", "server-rust.md"],
+    destinations: ["tailrocks-graphql-review"],
+  },
+  {
     owner: "tailrocks-rust-best-practices",
     references: [
       "api-design.md",

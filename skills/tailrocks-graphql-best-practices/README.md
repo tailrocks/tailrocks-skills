@@ -4,7 +4,7 @@
 
 `tailrocks-graphql-best-practices` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-graphql-best-practices)
 
-Apply public GraphQL API policy when in-scope work touches schema, Juniper resolvers, SDL, pagination, or generated GraphQL clients. Not for cross-service communication; that is gRPC.
+Apply public GraphQL API policy when in-scope work evolves schema, Juniper resolvers, SDL, pagination, or generated clients. Use tailrocks-graphql-review for read-only findings. Not for cross-service communication; that is gRPC.
 
 ## Invocation
 
@@ -13,6 +13,8 @@ matches work already in scope. Selection grants no authority beyond the
 active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-graphql-best-practices` …
+
+Arguments: `<public GraphQL API evolution>`
 
 ## Skill definition
 

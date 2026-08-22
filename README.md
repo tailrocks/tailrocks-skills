@@ -63,7 +63,8 @@ Repository mechanics, language-level policy, the HTTP boundary, and the two serv
 | [`tailrocks-axum-best-practices`](skills/tailrocks-axum-best-practices/README.md) | Apply Axum policy when in-scope work builds or changes HTTP adapters, routers, handlers, extractors, Tower layers, lifecycle, or transport tests. | Model policy |
 | [`tailrocks-axum-review`](skills/tailrocks-axum-review/README.md) | Review Axum HTTP adapters, extractors, Tower policy, lifecycle, and transport tests without editing. | Manual only |
 | [`tailrocks-axum-refactor`](skills/tailrocks-axum-refactor/README.md) | Restructure Axum adapters or Tower composition while preserving HTTP behavior. | Manual only |
-| [`tailrocks-graphql-best-practices`](skills/tailrocks-graphql-best-practices/README.md) | Apply public GraphQL API policy when in-scope work touches schema, Juniper resolvers, SDL, pagination, or generated GraphQL clients. | Model policy |
+| [`tailrocks-graphql-best-practices`](skills/tailrocks-graphql-best-practices/README.md) | Apply public GraphQL API policy when in-scope work evolves schema, Juniper resolvers, SDL, pagination, or generated clients. | Model policy |
+| [`tailrocks-graphql-review`](skills/tailrocks-graphql-review/README.md) | Review a GraphQL diff or audit a public API surface without editing. | Manual only |
 | [`tailrocks-grpc-best-practices`](skills/tailrocks-grpc-best-practices/README.md) | Apply cross-service gRPC policy when in-scope work touches proto or Buf contracts, tonic/prost services, status mapping, deadlines, streaming, health, or wire tests. | Model policy |
 
 ### TypeScript and TanStack

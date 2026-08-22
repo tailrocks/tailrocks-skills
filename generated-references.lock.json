@@ -122,6 +122,31 @@
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
     },
     {
+      "source": "skills/tailrocks-graphql-best-practices/references/client-tanstack.md",
+      "destination": "skills/tailrocks-graphql-review/references/client-tanstack.md",
+      "sha256": "46b5e6b6c03b9442f6115c3254bc3205de7127cf6485010c00f34b08c0cc8764"
+    },
+    {
+      "source": "skills/tailrocks-graphql-best-practices/references/contract-gates.md",
+      "destination": "skills/tailrocks-graphql-review/references/contract-gates.md",
+      "sha256": "e661f07695d5c0e257708c1af84c08541c97f29291f9d4ce9d179286e5d9157b"
+    },
+    {
+      "source": "shared/references/runtime-trust.md",
+      "destination": "skills/tailrocks-graphql-review/references/runtime-trust.md",
+      "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"
+    },
+    {
+      "source": "skills/tailrocks-graphql-best-practices/references/schema-design.md",
+      "destination": "skills/tailrocks-graphql-review/references/schema-design.md",
+      "sha256": "c08b3cb493d63f5448c6dc813808c7c42aa38d6c9a5e0de1b493d33beb56597f"
+    },
+    {
+      "source": "skills/tailrocks-graphql-best-practices/references/server-rust.md",
+      "destination": "skills/tailrocks-graphql-review/references/server-rust.md",
+      "sha256": "101be17dbbda3f52e67b4c805bef504d096d04b3a843bb5104d9bcde1f2c7f06"
+    },
+    {
       "source": "shared/references/runtime-trust.md",
       "destination": "skills/tailrocks-grilling/references/runtime-trust.md",
       "sha256": "d87639c38ec9d99b6e843282d2b4e5f208157eadad9c622ed64b650220170134"

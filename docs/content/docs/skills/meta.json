@@ -13,6 +13,7 @@
     "tailrocks-axum-review",
     "tailrocks-axum-refactor",
     "tailrocks-graphql-best-practices",
+    "tailrocks-graphql-review",
     "tailrocks-grpc-best-practices",
     "---TypeScript and TanStack---",
     "tailrocks-tanstack-project-setup",

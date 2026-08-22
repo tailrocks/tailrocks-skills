@@ -46,6 +46,7 @@
         "skills/tailrocks-document/references/runtime-trust.md",
         "skills/tailrocks-finalize/references/runtime-trust.md",
         "skills/tailrocks-graphql-best-practices/references/runtime-trust.md",
+        "skills/tailrocks-graphql-review/references/runtime-trust.md",
         "skills/tailrocks-grilling/references/runtime-trust.md",
         "skills/tailrocks-grpc-best-practices/references/runtime-trust.md",
         "skills/tailrocks-idea/references/runtime-trust.md",
@@ -156,6 +157,30 @@
       "destinations": [
         "skills/tailrocks-axum-refactor/references/middleware-and-security.md",
         "skills/tailrocks-axum-review/references/middleware-and-security.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-graphql-best-practices/references/client-tanstack.md",
+      "destinations": [
+        "skills/tailrocks-graphql-review/references/client-tanstack.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-graphql-best-practices/references/contract-gates.md",
+      "destinations": [
+        "skills/tailrocks-graphql-review/references/contract-gates.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-graphql-best-practices/references/schema-design.md",
+      "destinations": [
+        "skills/tailrocks-graphql-review/references/schema-design.md"
+      ]
+    },
+    {
+      "source": "skills/tailrocks-graphql-best-practices/references/server-rust.md",
+      "destinations": [
+        "skills/tailrocks-graphql-review/references/server-rust.md"
       ]
     },
     {

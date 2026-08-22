@@ -14,6 +14,7 @@
     { "skill": "tailrocks-document", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-finalize", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-graphql-best-practices", "class": "MODEL_POLICY" },
+    { "skill": "tailrocks-graphql-review", "class": "MANUAL_ONLY" },
     { "skill": "tailrocks-grilling", "class": "MODEL_POLICY" },
     { "skill": "tailrocks-grpc-best-practices", "class": "MODEL_POLICY" },
     { "skill": "tailrocks-idea", "class": "MANUAL_ONLY" },

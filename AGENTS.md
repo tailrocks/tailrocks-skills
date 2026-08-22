@@ -145,7 +145,7 @@ Skill definition: `skills/tailrocks-axum-refactor/SKILL.md`
 
 ### tailrocks-graphql-best-practices
 
-Design, build, and review the GraphQL public API of public backend services —
+Evolve the GraphQL public API of public backend services —
 the only public API surface in the doctrine. Contract-first: Juniper on Axum
 serves it (Juniper is the only sanctioned GraphQL library for Rust), the
 committed SDL snapshot is the contract, a breaking-change gate blocks silent
@@ -154,6 +154,13 @@ client consumes it through generated types. Never for cross-service
 communication — that is gRPC.
 
 Skill definition: `skills/tailrocks-graphql-best-practices/SKILL.md`
+
+### tailrocks-graphql-review
+
+Review a GraphQL diff or audit a whole public API surface without mutation,
+covering schema shape, Juniper boundaries, SDL gates, and generated clients.
+
+Skill definition: `skills/tailrocks-graphql-review/SKILL.md`
 
 ### tailrocks-grpc-best-practices
 

@@ -707,10 +707,27 @@ all terminal checks pass, and the final literal marker is changed to
     protection, formatting, generator, validator, and plan-state gates green.
     Fresh subagent re-review: PASS after closing shorthand-selector and
     invocation-class portability defects. No evals run.
-- [ ] [IN_PROGRESS] P05.04 GraphQL best practices → public-API evolution and review;
+- [x] [COMPLETED] P05.04 GraphQL best practices → public-API evolution and review;
   retain `MODEL_POLICY` only on the existing named owner pending descendant
   approval.
-- [ ] [TODO] P05.05 gRPC best practices → service-contract evolution and review;
+  - Evidence receipt (2026-08-23): made
+    `tailrocks-graphql-best-practices` the public-API evolution-only owner with
+    hard review/audit and internal-gRPC refusals while retaining its existing
+    `MODEL_POLICY`; added manual-only `tailrocks-graphql-review` for both diff
+    review and whole-surface audit under one read-only findings oracle. Review
+    binds exact revisions and SDL contracts, or the code-first schema, committed
+    SDL, persisted-operation manifest, and generated client at one revision;
+    command proof forbids installs, snapshot/codegen writes, unchanged
+    artifact-writing schema tasks, network, secrets, and repository mutation.
+    Generated four canonical GraphQL references to the review owner; all 28
+    sources produce 113 byte-identical destinations. Exact selectors,
+    catalog/registry, PR routing, install/choosing docs, and context counts agree
+    on 51 skills (40 manual, 11 model-policy). Focused proof passed 50 tests/167
+    assertions; final `rtk mise run migration-check` passed 284 tests/1,447
+    assertions across 36 selected non-protected files with all protection,
+    formatting, generator, validator, and plan-state gates green. Fresh subagent
+    verdict: PASS. No evals run.
+- [ ] [IN_PROGRESS] P05.05 gRPC best practices → service-contract evolution and review;
   retain `MODEL_POLICY` only on the existing named owner pending descendant
   approval.
 - [ ] [TODO] P05.06 TanStack project setup → setup, audit, migrate, remediate.

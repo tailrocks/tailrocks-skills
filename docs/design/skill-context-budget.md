@@ -37,15 +37,15 @@ not name-only. Codex behaves the same way with
 `policy.allow_implicit_invocation: false`, verified previously through
 `codex debug prompt-input`.
 
-Consequence: in Claude Code and Codex the current 39 manual-only skills add
+Consequence: in Claude Code and Codex the current 40 manual-only skills add
 **zero** tokens until named; the 11 model-policy descriptions remain visible so
 their exact triggers can match. OpenCode, Amp, and the Antigravity CLI ignore
-both fields and load all 50 descriptions; there the explicit-request guard on
-the 39 manual owners is their discovery control.
+both fields and load all 51 descriptions; there the explicit-request guard on
+the 40 manual owners is their discovery control.
 
 ## Measurement: the guard sentence earns its length
 
-The guard costs 54 characters per skill, 2,106 across the 39 manual owners.
+The guard costs 54 characters per skill, 2,160 across the 40 manual owners.
 Whether a
 shorter form works was tested rather than argued, in the condition that matters:
 a model-invocable skill, as OpenCode, Amp, and Antigravity see ours.
@@ -89,9 +89,9 @@ starting mutation, execution, blessing, or external action.
 `scripts/validate-skills.ts`: manual-only owners are measured after removing and
 trimming the full guard sentence; model-policy owners, which have no guard, are
 measured in full. The description carries the trigger and boundary; everything
-else is the router's job. The current 50 descriptions total 13,051 characters;
-10,906 count against the per-skill caps. The other 2,145 are the 2,106 guard
-characters plus one trimmed separator on each of 39 manual owners.
+else is the router's job. The current 51 descriptions total 13,345 characters;
+11,145 count against the per-skill caps. The other 2,200 are the 2,160 guard
+characters plus one trimmed separator on each of 40 manual owners.
 
 **Routers stay under ~200 lines**, already enforced as a notice. One exceeds it
 today: `tailrocks-macos-design` — it merged the design, prototype, and Liquid
