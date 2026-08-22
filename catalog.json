@@ -78,6 +78,8 @@
         "tailrocks-improve-execution",
         "tailrocks-improve-reconcile",
         "tailrocks-agents-md",
+        "tailrocks-agents-md-audit",
+        "tailrocks-agents-md-sync",
         "tailrocks-retrospect",
         "tailrocks-simplify",
         "tailrocks-remediate",

@@ -34,6 +34,8 @@
     {
       "source": "shared/references/runtime-trust.md",
       "destinations": [
+        "skills/tailrocks-agents-md-audit/references/runtime-trust.md",
+        "skills/tailrocks-agents-md-sync/references/runtime-trust.md",
         "skills/tailrocks-agents-md/references/runtime-trust.md",
         "skills/tailrocks-audit/references/runtime-trust.md",
         "skills/tailrocks-axum-best-practices/references/runtime-trust.md",

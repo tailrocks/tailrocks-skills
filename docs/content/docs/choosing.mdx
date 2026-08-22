@@ -160,7 +160,9 @@ implementation to it afterward.
 | [`tailrocks-improve-execution`](/docs/skills/tailrocks-improve-execution) | One approved standalone plan should run in an isolated worktree and return a reviewed verdict. |
 | [`tailrocks-improve-reconcile`](/docs/skills/tailrocks-improve-reconcile) | The standalone `plans/` index must be synchronized with repository truth. |
 | [`tailrocks-seed-roadmap`](/docs/skills/tailrocks-seed-roadmap) | One verified finding or approved plan must enter the roadmap delivery pipeline as a DRAFT item. |
-| [`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) | A rule must be recorded for coding agents, or the instruction files have grown, drifted, or landed in the wrong directory. |
+| [`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) | One task-authorized non-obvious rule must be added at its narrowest owning directory. |
+| [`tailrocks-agents-md-audit`](/docs/skills/tailrocks-agents-md-audit) | Instruction placement, deletion evidence, topology, and load cost need one read-only report. |
+| [`tailrocks-agents-md-sync`](/docs/skills/tailrocks-agents-md-sync) | One current audit repair set has explicit approval and must be applied exactly. |
 | [`tailrocks-retrospect`](/docs/skills/tailrocks-retrospect) | A roadmap item has shipped and its delivery history should say which skills let it diverge from its own plan. |
 | [`tailrocks-simplify`](/docs/skills/tailrocks-simplify) | A pull request works and should carry less code, with behavior frozen. |
 | [`tailrocks-remediate`](/docs/skills/tailrocks-remediate) | A defect is proven and the system must keep its promises while being corrected. |
@@ -271,9 +273,12 @@ mediates it.
 ### agents-md or the authoring family
 
 Both are meta work; they own different artifacts.
-[`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) owns agent
-instruction files — always-loaded rules scoped to the directory that owns
-them. The authoring family owns skills — invoked behavior with descriptions,
+[`tailrocks-agents-md`](/docs/skills/tailrocks-agents-md) owns adding one
+task-authorized rule; automatic policy selection grants no write.
+`tailrocks-agents-md-audit` reports instruction placement, deletion evidence,
+topology, and load cost without editing. `tailrocks-agents-md-sync` applies one
+explicitly approved repair set and invents no policy. The authoring family owns
+skills — invoked behavior with descriptions,
 routers, references, and non-protected evidence. The placement decision is part of
 [`tailrocks-skill-create`](/docs/skills/tailrocks-skill-create)'s job: a rule
 a competent agent needs on every request routes to the owning `AGENTS.md`, a

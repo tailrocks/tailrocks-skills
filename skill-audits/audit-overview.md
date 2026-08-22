@@ -878,10 +878,28 @@ all terminal checks pass, and the final literal marker is changed to
     tests/1,963 assertions across 43 selected non-protected files. Fresh
     subagent verdict: PASS after plan-schema, planner-sandbox, and bounded
     execution corrections. No migration-plan artifact added; no evals run.
-- [ ] [IN_PROGRESS] P06.02 Agents MD → add, audit, sync; retain `MODEL_POLICY` only on
+- [x] [COMPLETED] P06.02 Agents MD → add, audit, sync; retain `MODEL_POLICY` only on
   the existing named owner pending descendant approval, while mutation remains
   task-authorized only.
-- [ ] [TODO] P06.03 Simplify → read-only audit and approved apply owner.
+  - Evidence receipt (2026-08-23): narrowed the existing model-policy owner to
+    one task-authorized rule addition with exact legacy audit/sync handoffs and
+    zero automatic mutation authority; added manual-only read-only audit and
+    one-approved-repair sync owners. Moved deletion/topology evidence to audit,
+    kept placement/rule writing with add, and retained the hardened installed
+    topology script for typed create/repair/verify operations. Failed topology
+    transactions now expose partial mutation and recovery paths; multi-path
+    publication is honestly sequential/recoverable, and all owners bind the
+    loader-provided skill path and reject unresolved symlinks before resolution.
+    Registry/docs agree on 74 skills (63 manual, 11 model-policy), 19,121 total
+    description characters, and 15,656 capped characters. Focused ownership,
+    topology, invocation, reference, documentation, and validation proof passed
+    99 tests/786 assertions; 54 sources produced 193 byte-identical destinations
+    and 226 generated docs checked. Final `rtk mise run migration-check` passed
+    327 tests/2,006 assertions across 44 selected non-protected files. Fresh
+    subagent verdict: PASS after recovery-receipt, sequential-publication, and
+    installed-entrypoint identity corrections. No migration-plan artifact added;
+    no evals run.
+- [ ] [IN_PROGRESS] P06.03 Simplify → read-only audit and approved apply owner.
 - [ ] [TODO] P06.04 Remediate → root-cause diagnosis/design and approved
   correction; merge rethink analysis and keep the old name route-only.
 - [ ] [TODO] P06.05 Contribute → recon, propose, prepare, submit, respond; keep

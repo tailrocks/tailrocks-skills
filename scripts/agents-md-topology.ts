@@ -74,6 +74,23 @@ export interface TopologyIO {
   readonly afterOperation?: (operation: "create" | "remove") => Promise<void>;
 }
 
+export class TopologyOperationError extends AggregateError {
+  readonly mutationPaths: readonly string[];
+  readonly recoveryArtifacts: readonly string[];
+
+  constructor(
+    errors: readonly unknown[],
+    message: string,
+    mutationPaths: readonly string[],
+    recoveryArtifacts: readonly string[],
+  ) {
+    super(errors, message);
+    this.name = "TopologyOperationError";
+    this.mutationPaths = mutationPaths;
+    this.recoveryArtifacts = recoveryArtifacts;
+  }
+}
+
 const defaultIO: TopologyIO = {};
 
 interface FileIdentity {
@@ -471,9 +488,11 @@ export async function createClientLink(
         io,
       );
     } catch (rollbackError) {
-      throw new AggregateError(
+      throw new TopologyOperationError(
         [error, rollbackError],
         `create proof failed; unowned path was retained at ${context.destination}`,
+        [context.destination],
+        [context.destination],
       );
     }
     throw error;
@@ -585,9 +604,11 @@ export async function repairClientLink(
       }
     }
     if (rollbackErrors.length > 0) {
-      throw new AggregateError(
+      throw new TopologyOperationError(
         [error, ...rollbackErrors],
         `repair failed; recovery artifact may remain at ${restore}`,
+        [context.destination],
+        [restore],
       );
     }
     throw error;
@@ -656,21 +677,25 @@ async function main(args: readonly string[]): Promise<void> {
   if (parsed.mode === "verify" && !receipt.valid) process.exit(2);
 }
 
+export function topologyFailureReceipt(error: unknown): Record<string, unknown> {
+  const causes = error instanceof AggregateError ? error.errors.map(String) : undefined;
+  const refused = error instanceof UsageError;
+  const operation = error instanceof TopologyOperationError ? error : undefined;
+  return {
+    schema: topologySchema,
+    outcome: refused ? "refused" : "failed",
+    code: refused ? "invalid_arguments" : "topology_operation_failed",
+    mutations: operation?.mutationPaths ?? [],
+    recovery_artifacts: operation?.recoveryArtifacts ?? [],
+    detail: error instanceof Error ? error.message : String(error),
+    ...(causes ? { causes } : {}),
+  };
+}
+
 if (import.meta.main) {
   main(process.argv.slice(2)).catch((error) => {
-    const causes = error instanceof AggregateError ? error.errors.map(String) : undefined;
     const refused = error instanceof UsageError;
-    console.log(
-      JSON.stringify({
-        schema: topologySchema,
-        outcome: refused ? "refused" : "failed",
-        code: refused ? "invalid_arguments" : "topology_operation_failed",
-        mutations: [],
-        recovery_artifacts: [],
-        detail: error instanceof Error ? error.message : String(error),
-        ...(causes ? { causes } : {}),
-      }),
-    );
+    console.log(JSON.stringify(topologyFailureReceipt(error)));
     process.exit(refused ? 2 : 1);
   });
 }

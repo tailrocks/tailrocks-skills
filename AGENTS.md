@@ -429,6 +429,19 @@ Skill definition: `skills/tailrocks-improve/SKILL.md`
 - Standalone reconciliation: `skills/tailrocks-improve-reconcile/SKILL.md`
 - Delivery seeding: `skills/tailrocks-seed-roadmap/SKILL.md`
 
+### tailrocks-agents-md
+
+Apply instruction policy to one task-authorized, non-obvious rule at its
+narrowest owning `AGENTS.md`. The existing named owner alone retains
+`MODEL_POLICY`; selection grants no mutation. `tailrocks-agents-md-audit` is the
+manual-only read-only sweep for placement, deletion evidence, load cost, and
+topology. `tailrocks-agents-md-sync` is the manual-only transaction for one
+explicitly approved repair through the installed topology script.
+
+- Rule addition: `skills/tailrocks-agents-md/SKILL.md`
+- Read-only audit: `skills/tailrocks-agents-md-audit/SKILL.md`
+- Approved sync: `skills/tailrocks-agents-md-sync/SKILL.md`
+
 ### tailrocks-grilling
 
 Stress-test an idea, plan, or decision before action through dependency-ordered

@@ -19,6 +19,8 @@ import {
   createClientLink,
   discoverTopology,
   repairClientLink,
+  TopologyOperationError,
+  topologyFailureReceipt,
   topologySchema,
   type TopologyIO,
 } from "./agents-md-topology";
@@ -259,6 +261,23 @@ test("rollback failure retains and names the recovery artifact", async () => {
   const recovery = (await snapshot(directory)).filter((entry) => entry.path.endsWith(".restore"));
   expect(recovery).toHaveLength(1);
   expect(recovery[0]).toMatchObject({ kind: "symlink", value: "old.md" });
+});
+
+test("CLI failure receipt preserves partial mutations and recovery paths", () => {
+  const error = new TopologyOperationError(
+    [new Error("primary"), new Error("rollback")],
+    "repair failed",
+    ["/repo/CLAUDE.md"],
+    ["/repo/CLAUDE.md.topology-id.restore"],
+  );
+  expect(topologyFailureReceipt(error)).toMatchObject({
+    schema: topologySchema,
+    outcome: "failed",
+    code: "topology_operation_failed",
+    mutations: ["/repo/CLAUDE.md"],
+    recovery_artifacts: ["/repo/CLAUDE.md.topology-id.restore"],
+    causes: ["Error: primary", "Error: rollback"],
+  });
 });
 
 test("repair never deletes a concurrently replaced canonical destination", async () => {

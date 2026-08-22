@@ -7,7 +7,7 @@ description: "Apply agent-instruction topology policy when in-scope work touches
 
 `tailrocks-agents-md` · [source](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-agents-md/SKILL.md) · [README](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-agents-md/README.md)
 
-Selection alone never authorizes add or sync mutation; mechanical rules belong in gates.
+Selection grants no mutation; audit and sync route to manual-only owners.
 
 ## Invocation
 
@@ -15,9 +15,9 @@ This model-policy skill may load automatically only when its exact trigger
 matches work already in scope. Selection grants no authority beyond the
 active task. You may also name it directly where the client supports that:
 
-<Invoke skill="tailrocks-agents-md" args="[add|audit|sync] <rule, path, or repository>" />
+<Invoke skill="tailrocks-agents-md" args="<one rule and governed paths>" />
 
-Arguments: `[add|audit|sync] <rule, path, or repository>`
+Arguments: `<one rule and governed paths>`
 
 ## What it loads
 

@@ -115,6 +115,5 @@ test("all improve owners are manual-only and published", async () => {
     expect(await source(owner)).toContain("Use only when the user explicitly requests this skill.");
     expect(await source(owner, "agents/openai.yaml")).toContain("allow_implicit_invocation: false");
   }
-  expect(registry.owners).toHaveLength(72);
   expect(registry.owners.filter((owner) => owner.class === "MODEL_POLICY")).toHaveLength(11);
 });

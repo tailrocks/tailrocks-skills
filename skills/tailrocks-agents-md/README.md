@@ -4,7 +4,7 @@
 
 `tailrocks-agents-md` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-agents-md)
 
-Apply agent-instruction topology policy when in-scope work touches AGENTS.md, client symlinks, instruction rules, or rule placement. Selection alone never authorizes add or sync mutation; mechanical rules belong in gates.
+Apply agent-instruction topology policy when in-scope work touches AGENTS.md, client symlinks, instruction rules, or rule placement. Selection grants no mutation; audit and sync route to manual-only owners.
 
 ## Invocation
 
@@ -14,7 +14,7 @@ active task. Direct invocation remains available where the client supports it:
 
 > Use `tailrocks-agents-md` …
 
-Arguments: `[add|audit|sync] <rule, path, or repository>`
+Arguments: `<one rule and governed paths>`
 
 ## Skill definition
 
