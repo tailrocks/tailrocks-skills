@@ -397,6 +397,7 @@ function isolatedGateRunner(workspace: string): CreatePrRunner {
     const sudo = "/usr/bin/sudo";
     const environmentArguments = Object.entries(environment).flatMap(([name, value]) => [name, value]);
     const bubblewrapArguments = [
+      "--unshare-user",
       "--unshare-net",
       "--die-with-parent",
       "--new-session",
