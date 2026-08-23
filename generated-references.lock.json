@@ -264,7 +264,7 @@
     {
       "source": "shared/references/repository-audit-lanes.md",
       "destination": "skills/tailrocks-improve-deep/references/repository-audit-lanes.md",
-      "sha256": "630c6ef1462769f0654a41f5c920da1cd7c52260d8fdb5114492b51a09fa63b6"
+      "sha256": "cba64525060e0339d0c2690ead79094fb22a53e3dded99169a415056d692f80e"
     },
     {
       "source": "shared/references/runtime-trust.md",
@@ -294,7 +294,7 @@
     {
       "source": "shared/references/repository-audit-lanes.md",
       "destination": "skills/tailrocks-improve/references/repository-audit-lanes.md",
-      "sha256": "630c6ef1462769f0654a41f5c920da1cd7c52260d8fdb5114492b51a09fa63b6"
+      "sha256": "cba64525060e0339d0c2690ead79094fb22a53e3dded99169a415056d692f80e"
     },
     {
       "source": "shared/references/runtime-trust.md",

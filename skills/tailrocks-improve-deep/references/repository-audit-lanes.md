@@ -63,8 +63,11 @@ defects are not comparable on one axis.
 
 Every candidate carries:
 
+- a stable secret-safe ID and exactly one `defect` or `direction` kind;
 - `file:line` evidence;
 - one-sentence impact;
+- explicit correctness, consistency, and goal-fit booleans plus severity
+  `BLOCKER`, `HIGH`, `MEDIUM`, or `LOW`;
 - effort: `S`, `M`, or `L`;
 - confidence: `HIGH`, `MEDIUM`, or `LOW`; and
 - fix risk: `LOW`, `MEDIUM`, or `HIGH` — damage a wrong fix could cause,
@@ -100,11 +103,15 @@ for re-reading.
 ## Prioritization
 
 Rank verified defects first by correctness, consistency, goal fit, severity,
-confidence, and fix risk. Effort is planning metadata and a tiebreaker only;
-low effort, low leverage, or competitor behavior never excuses a known-wrong
-state.
+confidence, and fix risk, each lexicographically in that order; lower fix risk
+ranks first, then the stable ID breaks a complete tie bytewise.
+Effort is planning metadata only and never changes rank. Low effort, low leverage, or
+competitor behavior never excuses a known-wrong state.
 
-Report direction separately, ranked by the same evidence, effort, confidence,
-and risk dimensions. Preserve rejected-candidate reasons in the invocation's
-authorized durable record when one exists; do not create an empty artifact only
-to log a drop.
+Report direction separately under the same correctness-first comparator, with
+effort retained only as metadata. Every input candidate appears exactly once as a verified
+defect, verified direction, or rejection. Rejections retain the stable ID,
+evidence, detail, and exactly one closed reason: `duplicate`, `contradicted`,
+`unverified`, `by-design`, `out-of-scope`, or `current-decision`. An audit never
+writes rejection history elsewhere; only a later explicitly requested planning
+owner may update its own authorized durable record.

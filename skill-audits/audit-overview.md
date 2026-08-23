@@ -1504,9 +1504,36 @@ all terminal checks pass, and the final literal marker is changed to
     before the final recovery-only test addition; only the same two unrelated
     macOS GUI activation cases failed, owned by P09.15. No evals run or
     inspected.
-- [ ] [IN_PROGRESS] P09.13 `tailrocks-improve`: deterministic route selection,
+- [x] [COMPLETED] P09.13 `tailrocks-improve`: deterministic route selection,
   correctness-first ranking, rejected-finding handling, and typed receipts.
-- [ ] [TODO] P09.14 `tailrocks-macos-design`: live-render requirement,
+  - Evidence receipt (2026-08-23): added a loader-bound, read-only
+    `tailrocks.improve-report/v1` finalizer that composes the existing total
+    route resolver, permits only current standard-audit selectors, returns empty
+    direct-owner handoffs for specialist routes, and refuses all retired umbrella
+    selectors rather than retaining aliases. Closed lane, command, candidate,
+    citation, disposition, rejection, and next-owner schemas now require every
+    candidate to appear exactly once in ranked defects, separately ranked
+    directions, or the rejected partition. Ranking is lexicographic by
+    correctness, consistency, goal fit, severity, confidence, lower fix risk,
+    then bytewise stable ID; effort is metadata only. The installed command
+    re-reads 2–5 citation lines through canonical parent/file identities, checks
+    dev/inode/size/mtime/ctime and full content digests twice, and verifies exact
+    Git top-level, HEAD, and dirty-state digest before and after. Git proof is
+    non-locking and environment-isolated; fsmonitor, hooks, external diff,
+    attributes, local includes, and all enumerated clean/process filters are
+    neutralized or refused. Tests cover every route/refusal class, permutations,
+    correctness over cheap cosmetics, all six rejection reasons, exhaustive
+    partition, vacuous commands, root/evidence/filter races, traversal, hostile
+    local/global Git helpers, exact index preservation, staged installed success,
+    and symlink refusal. No plan or repository byte is written and no deprecated
+    route remains. Focused proof passed 33 tests/2,469 assertions; validator
+    passed 84 skills; references checked 88 sources/258 byte-identical
+    destinations; docs checked 256 files; formatting and protected paths passed;
+    fresh subagent verdict: PASS. The non-eval migration gate passed 530
+    tests/5,893 assertions and every static/generated check; only the same two
+    unrelated macOS GUI activation cases failed, owned by P09.15. No evals run
+    or inspected.
+- [ ] [IN_PROGRESS] P09.14 `tailrocks-macos-design`: live-render requirement,
   bounded-baseline authority, exclusive review/systematize outputs.
 - [ ] [TODO] P09.15 `tailrocks-macos-visual-qa`: owned-app ambiguity,
   permission, decoy, and restoration tests through the harness.
