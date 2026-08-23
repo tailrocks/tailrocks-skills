@@ -1,7 +1,7 @@
 ---
 name: tailrocks-plan
 description: >-
-  Use only when the user explicitly requests this skill. Convert a READY roadmap item into roadmap/<slug>/plan/ and goal/: coverage ledger, gap research, an OpenSpec-grammar spec, one zero-context plan per work item, and the goal handoff. Do not use on unshaped items or one-session changes.
+  Use only when the user explicitly requests this skill. Convert a READY roadmap item into roadmap/<slug>/plan/ and goal/: coverage ledger, research-gap manifest, an OpenSpec-grammar spec, one zero-context plan per work item, and the goal handoff. Do not use on unshaped items or one-session changes.
 argument-hint: "<roadmap-slug> [additional context] [--deep]"
 disable-model-invocation: true
 license: Apache-2.0
@@ -23,8 +23,8 @@ One item, one folder: `roadmap/<slug>/plan/` (hub, plans, `spec/`,
 
 ## Boundaries
 
-- Write only under `roadmap/<slug>/plan/`, `roadmap/<slug>/goal/`, `research/`
-  (gap-filling topics), and the item's status, Plan link, and `## Run` section.
+- Write only under `roadmap/<slug>/plan/`, `roadmap/<slug>/goal/`, and the
+  item's status, Plan link, and `## Run` section.
   Never write `roadmap/<slug>/verification/` — rounds belong to the skills that
   capture reported defects and prove shipped work. Source, configuration, and
   dependencies stay unchanged; Git moves only per the delivery git contract
@@ -37,8 +37,11 @@ One item, one folder: `roadmap/<slug>/plan/` (hub, plans, `spec/`,
   into plans, gates, and done criteria come from the verification-tooling
   research and are **executed once during planning** — a package, target, or
   path that does not resolve is a planning defect.
-- New research lands in `research/<topic>/` as reusable, indexed topics, not
-  buried in the item folder.- An existing `plan/` is refreshed, never duplicated — the re-run rules are in
+- Planning never writes reusable research. Unresolved evidence becomes the
+  plan-owned manifest defined by
+  [`references/research-gap-manifest.md`](references/research-gap-manifest.md),
+  then planning stops and routes that manifest to `tailrocks-research`.
+- An existing `plan/` is refreshed, never duplicated — the re-run rules are in
   [`references/plan-template.md`](references/plan-template.md).
 - Subagents inherit nothing: every brief restates its rules; a plan-writer
   subagent writes exactly one plan, never two.
@@ -68,19 +71,19 @@ later audit reads, and the commits are the item's only history.
    every normative statement in the item maps to one. **Complete when:** the
    ledger accounts for the whole item with no silently dropped statement.
 
-2. **Research the gaps.** Collect the item's linked `research/` topics;
-   vet-check they are still current — vetting per the research shape: open
-   every citation, confirm it supports the claim, fix misattributions, and
-   drop the unverifiable. Derive what planning still lacks — platform facts,
-   integration seams, reference-project practice, and always the exact
-   build/test/lint commands for the target stack. Fan out investigators per
-   [`references/research-shape.md`](references/research-shape.md) into
-   `research/<topic>/` folders (extend overlapping topics, never fork), vet,
-   and index them.
-   With `--deep`, run a completeness critic and reslice until a round surfaces
-   nothing load-bearing. **Complete when:** every ledger unknown has vetted
-   evidence, a named assumption, or an explicit deferral, and verification
-   commands are proven by running them.
+2. **Resolve research gaps.** Read linked research read-only and derive what
+   planning still lacks — platform facts, integration seams, reference-project
+   practice, and exact build/test/lint commands for the target stack. Write or
+   deterministically refresh `roadmap/<slug>/plan/research-gaps.json` per
+   [`references/research-gap-manifest.md`](references/research-gap-manifest.md).
+   If any gap is open, stop without setting `PLANNED` and route the manifest to
+   `tailrocks-research`; that skill alone writes and indexes reusable research.
+   On rerun, reconcile gaps in ID order against the manifest's named evidence;
+   never infer resolution from prose or create a second manifest. With
+   `--deep`, add completeness-critic findings as new gap rows until a round
+   adds none. **Complete when:** every row is `RESOLVED` or `DEFERRED`, every
+   resolution points to vetted evidence, and every verification command has a
+   planning-time proof receipt.
 
 3. **Write the spec.** Read
    [`references/spec-format.md`](references/spec-format.md). Write
@@ -141,6 +144,13 @@ later audit reads, and the commits are the item's only history.
    After accepting each plan, the orchestrator backfills the ledger's Plans
    columns and the must-not and entry-point registries — writer subagents
    never touch shared files.
+   Record every named command in the hub's command-proof table: runnable
+   commands must have a typed receipt from `scripts/plan-package.ts prove`
+   whose dedicated proof command produced a positive unit count; legitimately
+   dependency-blocked commands instead name the enabling slice and carry a
+   typed receipt for an executed precondition proving the dependency absent.
+   Invalid targets, missing paths, unresolved packages, and commands without
+   positive proof are planning defects, never dependency blocks.
    **Complete when:** every manifest row has a plan file passing the
    template's quality bar — every done criterion asserting executed work
    rather than an exit code alone, and a Documentation section naming the
@@ -161,20 +171,17 @@ later audit reads, and the commits are the item's only history.
    [`references/goal-handoff.md`](references/goal-handoff.md), write
    `roadmap/<slug>/goal/START.md` (the machine-checkable, gate-first goal
    condition, the gates block, the kickoff prompt) and
-   `roadmap/<slug>/goal/RESUME.md`, then stamp the hub's frozen contract
+   `roadmap/<slug>/goal/RESUME.md`, use `scripts/plan-package.ts resume` to prove
+   the current row or exact blocking state, then stamp the hub's frozen contract
    fingerprint. **Every gate line is `<command> ||| <proof>`** — the proof
    prints how many units the command executed, because a gate that cannot tell
    "everything passed" from "nothing ran" is not a gate. Write the item's
-   `## Run` section with the pasteable start and resume blocks per the handoff
-   reference — refreshed on every re-plan, never pointing at a goal file that
-   does not exist. Set the item
-   `PLANNED` with its Plan link and index row per the roadmap item format
+   `## Run` section with client-neutral start and resume paths per the handoff
+   reference — refreshed on every re-plan, never pointing at a missing file.
+   Set the item `PLANNED` with its Plan link and index row per the roadmap format
    (tailrocks-idea's roadmap-item-format.md), then commit the package as the
-   final action. **Complete when:** a goal-executing host takes the blocks
-   verbatim — or an operator pastes them by hand — and the executor runs to
-   completion without this conversation.
-
-## Closing content gate
+   final action. **Complete when:** a host or operator follows the blocks and
+   the executor completes without this conversation.
 
 `goal/check.sh` proves the package's own structure — clean tree,
 frozen-contract fingerprint, status-table completeness, and that each gate both
@@ -193,7 +200,9 @@ Finish only when source is untouched, the ledger shows every spec-bearing ID
 (`S#`/`F#`/`W#`/`N#`/`E#`/`B#`) covered or deferred aloud and every other prefix
 resolved per the ledger's pipeline table, every plan passed cold review with
 done criteria that assert executed work and specific STOP conditions, every
-command in the package ran once during planning, the goal condition is
+command currently runnable in the package ran once during planning with a
+typed positive-unit receipt, every dependency-blocked command names its
+enabling slice and an executed blocker-precondition receipt, the goal condition is
 machine-checkable and gate-first with a proof expression on every gate, the
 closing content gate passed, and the item is `PLANNED` with consistent links and
 index.

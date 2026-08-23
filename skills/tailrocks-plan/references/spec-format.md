@@ -5,16 +5,16 @@ grammar extended with screen contracts, a must-not registry, and ledger
 traceability. The spec is the contract between the roadmap item and the
 plans — plans implement requirements, never raw item prose.
 
-The grammar matches OpenSpec (`### Requirement:` /
-`#### Scenario:` heading shapes, SHALL/MUST bodies, delta sections) so
-`openspec validate`-style tooling works on these files without rewrites.
+The grammar uses OpenSpec-compatible `### Requirement:` / `#### Scenario:`
+heading shapes and SHALL/MUST bodies, so structural tooling can validate it
+without preserving obsolete deltas.
 
 ## Layout
 
 ```
 roadmap/<slug>/plan/spec/
   README.md           ← purpose, capability index, must-not registry,
-                        entry-point registry, deferrals, change log
+                        entry-point registry, deferrals
   <capability>.md     ← one file per capability, kebab-case
   decisions.md        ← the item's Decisions section, snapshotted verbatim
 ```
@@ -172,30 +172,6 @@ the same edit.
 
 Ledger IDs consciously not specified: reason + revisit trigger each. A
 deferral is a decision; silence is a defect.
-
-## Change log — re-runs only
-
-On a re-run (typically after `tailrocks-record-decision` marked plans stale),
-update capability files in place and record the delta in `spec/README.md`
-using OpenSpec delta sections, applied RENAMED → REMOVED → MODIFIED →
-ADDED:
-
-```markdown
-## Change log
-
-### <YYYY-MM-DD> — decision D7 (Swift UI reversal)
-
-#### MODIFIED Requirements
-- `### Requirement: Session list ordering` — now flat, not grouped.
-  Plans affected: 004 (STALE).
-
-#### REMOVED Requirements
-- `### Requirement: iCloud sync` — **Reason**: cut by D8.
-  **Migration**: plan 009 marked REJECTED.
-```
-
-MODIFIED means the capability file now holds the full replacement text with
-all scenarios; the log records that it changed and which plans went stale.
 
 ## Quality gate before slicing
 

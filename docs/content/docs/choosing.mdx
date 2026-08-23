@@ -426,7 +426,7 @@ run `tailrocks-review-pr` once that work becomes a PR.
 
 ```mermaid
 flowchart LR
-  seed["seed-roadmap"] --> brainstorm --> finalize --> plan --> exec["/goal execution"]
+  seed["seed-roadmap"] --> brainstorm --> finalize --> plan --> exec["execution"]
   exec --> feedback["record-feedback"] --> prove --> reconcile
   reconcile -->|Remaining not empty| exec
   reconcile -->|Remaining empty| done["DONE"] --> retire["retired — folder deleted"]

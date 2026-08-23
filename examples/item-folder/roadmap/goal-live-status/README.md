@@ -112,11 +112,11 @@ and without the viewer being able to touch the executor.
 Start execution:
 
 ```text
-/goal Follow roadmap/goal-live-status/goal/START.md
+Follow roadmap/goal-live-status/goal/START.md
 ```
 
 Resume after any interruption:
 
 ```text
-/goal Follow roadmap/goal-live-status/goal/RESUME.md
+Follow roadmap/goal-live-status/goal/RESUME.md
 ```

@@ -10,11 +10,10 @@ Resume implementing the "<title>" roadmap item.
 
 If this session is resuming after a dead or stalled loop, or the repository
 changed since planning, first run the tailrocks-reconcile skill on this slug
-and trust only its refreshed statuses. Then proceed by the "Executor protocol"
-section of roadmap/<slug>/plan/README.md. If the first eligible plan or any
-TODO dependency is STALE, stop and report "package reopened — run
-tailrocks-plan <slug> to refresh, then resume". Never build on a STALE or
-BLOCKED row.
+and trust only its refreshed statuses. Then run the installed plan-package
+`resume` operation and follow only its typed route under the "Executor
+protocol" section of roadmap/<slug>/plan/README.md. Never select a row from
+prose or build on a STALE or BLOCKED row.
 
 Run `sh roadmap/<slug>/goal/check.sh` before resuming work and paste its final
 line. Route dirty-tree to cleanup and stop, plan-drift to STALE re-planning,

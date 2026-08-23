@@ -12,7 +12,7 @@ work is finished, the folder is deleted and git carries the record.
 
 ```mermaid
 flowchart LR
-  seed["seed-roadmap"] --> brainstorm --> finalize --> design["design stage"] --> plan --> exec["/goal execution"]
+  seed["seed-roadmap"] --> brainstorm --> finalize --> design["design stage"] --> plan --> exec["execution"]
   exec --> feedback["record-feedback"] --> prove --> reconcile
   reconcile -->|Remaining not empty| exec
   reconcile -->|Remaining empty| done["DONE"] --> retire["retired — report kept at delivery/<slug>.md, folder deleted"]
@@ -173,7 +173,7 @@ and
 The operator hands the executor the start file, not a pasted block:
 
 ```text
-/goal Follow roadmap/goal-live-status/goal/START.md
+Follow roadmap/goal-live-status/goal/START.md
 ```
 
 `START.md` carries the gates block, the machine-checkable goal condition, and
@@ -189,7 +189,7 @@ executor never writes the item's DONE status: a `PASS` proves the work ran, not
 that it behaves.
 
 After an interruption, resume with
-`/goal Follow roadmap/goal-live-status/goal/RESUME.md`.
+`Follow roadmap/goal-live-status/goal/RESUME.md`.
 
 ## 9. Capture what the user hit with tailrocks-record-feedback
 

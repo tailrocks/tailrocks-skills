@@ -1606,9 +1606,35 @@ all terminal checks pass, and the final literal marker is changed to
     byte-identical destinations; docs checked 256 files; formatting and protected
     paths passed; fresh subagent verdict: PASS. The non-eval migration gate
     passed 553 tests/6,046 assertions. No evals run or inspected.
-- [ ] [IN_PROGRESS] P09.17 `tailrocks-plan`: runnable proof-producing commands,
+- [x] [COMPLETED] P09.17 `tailrocks-plan`: runnable proof-producing commands,
   client-neutral handoff, research-gap manifest, and deterministic resume.
-- [ ] [TODO] P09.18 `tailrocks-pr-template`: deterministic sole-target
+  - Evidence receipt (2026-08-23): added one installed, loader-bound
+    `plan-package` transaction with closed `prove`, `validate`, and `resume`
+    receipts. Runnable commands require a dedicated canonical positive-integer
+    proof; dependency-blocked commands require an enabling slice and executed
+    blocker proof. Receipts bind exact item/root/HEAD/argv/cwd/output digests,
+    form an exhaustive partition, and refuse failure, zero, timeout, invalid
+    targets, source/research/ignored/untracked/index mutation, and inspection
+    races; only explicit conventional build-cache roots may change. Research is
+    now read-only to plan: the copied research procedure was deleted and one
+    closed plan-owned gap manifest binds the requested item and HEAD, reopens
+    canonical evidence anchors, stops before command planning while gaps remain,
+    and leaves reusable topic writing solely to research. Shared templates,
+    manifests, examples, docs, and item format no longer publish the deprecated
+    client `/goal` route, permission mode, CLI, or resume syntax; the spec
+    changelog/delta route was removed. Resume now verifies the byte-identical
+    frozen checker, exact manifest/files/statuses/dependencies/DAG, isolated Git
+    and hostile filters, clean before/after identity, and current reconcile
+    trailer before deterministic START/CONTINUE/RECONCILE_REQUIRED/
+    REPLAN_REQUIRED/BLOCKED/COMPLETE. Goal proof rejects prose, zero, and leading
+    zero forms. Focused proof passed 27 tests/70 assertions; validator passed 84
+    skills; references checked 88 sources/258 byte-identical destinations; docs
+    checked 256 files; formatting and protected paths passed; fresh subagent
+    verdict: PASS. The non-eval migration gate passed 565 tests/6,101
+    assertions across 75 selected test files.
+    No evals run or inspected. No deprecated plan route or copied research
+    artifact remains.
+- [ ] [IN_PROGRESS] P09.18 `tailrocks-pr-template`: deterministic sole-target
   resolution across absent, existing, and alternate repository layouts.
 - [ ] [TODO] P09.19 `tailrocks-prove`: capability drivers against local
   CLI/application/browser programs with machine-readable receipts.

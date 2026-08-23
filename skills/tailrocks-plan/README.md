@@ -4,7 +4,7 @@
 
 `tailrocks-plan` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-plan)
 
-Convert a READY roadmap item into roadmap/<slug>/plan/ and goal/: coverage ledger, gap research, an OpenSpec-grammar spec, one zero-context plan per work item, and the goal handoff. Do not use on unshaped items or one-session changes.
+Convert a READY roadmap item into roadmap/<slug>/plan/ and goal/: coverage ledger, research-gap manifest, an OpenSpec-grammar spec, one zero-context plan per work item, and the goal handoff. Do not use on unshaped items or one-session changes.
 
 ## Invocation
 
@@ -25,7 +25,7 @@ file. They are not copied here — one source, and no chance of the two drifting
 - [`execution-roles.md`](references/execution-roles.md)
 - [`goal-handoff.md`](references/goal-handoff.md)
 - [`plan-template.md`](references/plan-template.md)
-- [`research-shape.md`](references/research-shape.md)
+- [`research-gap-manifest.md`](references/research-gap-manifest.md)
 - [`runtime-trust.md`](references/runtime-trust.md)
 - [`spec-format.md`](references/spec-format.md)
 

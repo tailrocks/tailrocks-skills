@@ -505,8 +505,8 @@ zero-context plans, `plan/spec/`, `plan/coverage.md`), its verification rounds
 (`goal/START.md`, `goal/RESUME.md`, `goal/check.sh`). Standing research topics
 stay in `research/<topic>/`, independent of items, with many-to-many links.
 No delivery artifact lives outside the item's folder — there is no parallel
-`plans/` tree to keep in step. The item's `## Run` section carries the
-pasteable `/goal` start and resume blocks once planned.
+`plans/` tree to keep in step. The item's `## Run` section points to the
+portable start and resume files once planned.
 
 **Delivered work leaves the tree.** A folder under `roadmap/` is work that is
 **not finished**. `DONE` is a transition, not a resting place: when every plan
@@ -538,8 +538,8 @@ so it is fingerprinted by proxy instead: planning snapshots it verbatim into
 when the live section no longer matches — a decision is still changeable at
 any time through `tailrocks-record-decision`, but never _silently_ changeable.
 
-Execution is handed the file, not a pasted block: `/goal Follow
-roadmap/<slug>/goal/START.md`, and `goal/RESUME.md` after any interruption.
+Execution is handed the file, not a client command: follow
+`roadmap/<slug>/goal/START.md`, and `goal/RESUME.md` after any interruption.
 Every line in `START.md`'s gates block is `<command> ||| <proof>` — the proof
 prints how many units the command executed, because a gate that cannot tell
 "everything passed" from "nothing ran" is not a gate; `check.sh` answers
@@ -619,7 +619,7 @@ series is the item's history (the contract lives in tailrocks-idea's
   the only writer of `DONE`, and only after a round that found none — and the
   invocation that writes it retires the item in a second commit, keeping the
   report at `delivery/<slug>.md`. Run it
-  when a /goal loop finishes, stalls, the repository moved on, or a round
+  when an execution loop finishes, stalls, the repository moved on, or a round
   needs closing. Definition: `skills/tailrocks-reconcile/SKILL.md`
 
 The loop closes, iterates until `Remaining` is empty, and then the item leaves
@@ -627,7 +627,7 @@ the board:
 
 ```mermaid
 flowchart LR
-  plan --> exec["/goal execution"] --> feedback["record-feedback"]
+  plan --> exec["execution"] --> feedback["record-feedback"]
   feedback --> prove --> reconcile
   reconcile -->|Remaining not empty| exec
   reconcile -->|Remaining empty| done["DONE"] --> retire["retired — report kept at delivery/<slug>.md, folder deleted"]

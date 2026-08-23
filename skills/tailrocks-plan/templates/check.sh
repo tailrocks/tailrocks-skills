@@ -7,6 +7,7 @@
 # right — that is `tailrocks-prove`'s job, and its rounds live beside this one.
 
 set -u
+export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 GIT_OPTIONAL_LOCKS=0
 
 verdict() {
   printf '%s\n' "TAILROCKS GOAL: $1"
@@ -27,7 +28,7 @@ start="$item/goal/START.md"
 [ -f "$hub" ] || verdict "BLOCKED malformed=missing-hub"
 [ -f "$start" ] || verdict "BLOCKED malformed=missing-start"
 
-[ -z "$(git status --porcelain 2>/dev/null)" ] ||
+[ -z "$(git -c core.fsmonitor=false status --porcelain 2>/dev/null)" ] ||
   verdict "BLOCKED dirty-tree"
 
 expected_fingerprint=$(sed -n \
@@ -76,24 +77,41 @@ if [ -f "$decisions_snapshot" ]; then
 fi
 
 status_counts=$(awk -F '|' '
-  /^\|/ {
-    status = $(NF - 1)
+  /^## Execution order & status[[:space:]]*$/ { section = 1; next }
+  section && /^## / { section = 0 }
+  section && /^\| Plan \| Title \| Covers \| Priority \| Effort \| Depends on \| Status \|[[:space:]]*$/ {
+    header = 1
+    next
+  }
+  header && /^\|/ && $2 ~ /^[[:space:]]*-+[[:space:]]*$/ { separator = 1; next }
+  section && separator && /^\|/ {
+    plan = $2
+    gsub(/^[[:space:]]+|[[:space:]]+$/, "", plan)
+    if (plan !~ /^[0-9][0-9][0-9]$/) { malformed++; next }
+    if (seen[plan]++) { malformed++; next }
+    rows++
+    status = $8
     gsub(/^[[:space:]]+|[[:space:]]+$/, "", status)
     if (status == "DONE") done++
     else if (status == "REJECTED" || status ~ /^REJECTED \(/) rejected++
     else if (status == "TODO" || status == "STALE" ||
              status == "IN PROGRESS" || status == "BLOCKED" ||
-             status ~ /^BLOCKED \(/) nonterminal++
+             status ~ /^BLOCKED \(/ || status ~ /^STALE \(/) nonterminal++
+    else malformed++
   }
-  END { print done + 0, rejected + 0, nonterminal + 0 }
+  END {
+    if (!section && !header) malformed++
+    if (!header || !separator || rows == 0) malformed++
+    print done + 0, rejected + 0, nonterminal + 0, malformed + 0
+  }
 ' "$hub")
 set -- $status_counts
 done_count=$1
 terminal_count=$((done_count + $2))
 nonterminal_count=$3
+[ "$4" -eq 0 ] || verdict "BLOCKED malformed=status-table"
 [ "$nonterminal_count" -eq 0 ] ||
   verdict "BLOCKED nonterminal-rows=$nonterminal_count"
-[ "$done_count" -gt 0 ] || verdict "BLOCKED malformed=status-table"
 [ "$terminal_count" -gt 0 ] || verdict "BLOCKED malformed=status-table"
 
 gates=$(awk '
@@ -120,9 +138,9 @@ printf '%s\n' "$gates" | while IFS= read -r line; do
     printf '%s\n' "TAILROCKS GOAL: BLOCKED gate-failed=$command"
     exit 1
   }
-  executed=$(sh -c "$proof" 2>/dev/null | tr -cd '0-9')
+  executed=$(sh -c "$proof" 2>/dev/null)
   case "$executed" in
-    ''|0) printf '%s\n' "TAILROCKS GOAL: BLOCKED gate-vacuous=$command"
+    ''|0|0*|*[!0-9]*) printf '%s\n' "TAILROCKS GOAL: BLOCKED gate-vacuous=$command"
           exit 1 ;;
   esac
 done

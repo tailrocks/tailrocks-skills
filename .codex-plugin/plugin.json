@@ -1,7 +1,7 @@
 {
   "name": "tailrocks-skills",
   "version": "0.27.0",
-  "description": "Cross-agent Tailrocks skills for strict Rust, Axum, TypeScript, TanStack, native macOS Swift with Liquid Glass, code-health ratchets, and the roadmap delivery pipeline (idea, brainstorm, research, record-decision, finalize, plan, reconcile, /goal handoff)",
+  "description": "Cross-agent Tailrocks skills for strict Rust, Axum, TypeScript, TanStack, native macOS Swift with Liquid Glass, code-health ratchets, and the roadmap delivery pipeline (idea, brainstorm, research, record-decision, finalize, plan, reconcile, portable goal handoff)",
   "author": {
     "name": "tailrocks",
     "url": "https://github.com/tailrocks"
@@ -46,7 +46,7 @@
   "interface": {
     "displayName": "Tailrocks Skills",
     "shortDescription": "Strict Rust, TypeScript, and native macOS engineering workflows",
-    "longDescription": "Tailrocks workflows for Rust, Axum, TypeScript, TanStack, native macOS Swift and Liquid Glass design, correctness-first remediation, code-health ratchets, and the roadmap delivery pipeline from idea capture to /goal handoff.",
+    "longDescription": "Tailrocks workflows for Rust, Axum, TypeScript, TanStack, native macOS Swift and Liquid Glass design, correctness-first remediation, code-health ratchets, and the roadmap delivery pipeline from idea capture to portable goal handoff.",
     "developerName": "Tailrocks",
     "category": "Developer Tools",
     "capabilities": [

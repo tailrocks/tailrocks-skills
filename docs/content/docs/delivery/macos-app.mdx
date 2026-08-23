@@ -295,7 +295,7 @@ that hash by design.
 The handoff is a file, not a paste. Point your agent's goal execution at it:
 
 ```text
-/goal Follow roadmap/log-explorer/goal/START.md
+Follow roadmap/log-explorer/goal/START.md
 ```
 
 `START.md` carries the gates, the machine-checkable goal condition, and the
@@ -305,7 +305,7 @@ a dead session, a context reset, a week away — the resume prompt has the same
 shape:
 
 ```text
-/goal Follow roadmap/log-explorer/goal/RESUME.md
+Follow roadmap/log-explorer/goal/RESUME.md
 ```
 
 The machine gate is `sh roadmap/log-explorer/goal/check.sh`, run on a clean tree
@@ -451,12 +451,12 @@ Remaining is empty.
 
 ```mermaid
 flowchart LR
-  exec["/goal execution"] --> feedback["record-feedback"] --> prove --> reconcile
+  exec["execution"] --> feedback["record-feedback"] --> prove --> reconcile
   reconcile -->|"Remaining not empty"| exec
   reconcile -->|"round with no blocking defect"| done["DONE"] --> retire["retired — folder deleted"]
 ```
 
-The next pass resumes with `/goal Follow roadmap/log-explorer/goal/RESUME.md`,
+The next pass resumes with `Follow roadmap/log-explorer/goal/RESUME.md`,
 works the reopened rows, and comes back through feedback and prove again.
 
 ## 13. Retire the item — `tailrocks-reconcile`
