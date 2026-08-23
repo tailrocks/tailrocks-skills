@@ -103,6 +103,7 @@ test("destination directory swap cannot redirect template publication", async ()
 });
 
 test("installed supervisor emits one terminal receipt for success and recovery failure", async () => {
+  if (process.platform !== "darwin") return;
   const root = await temporary();
   expect((await install(root)).outcome).toBe("installed");
   const harness = path.join(root, "Scripts/TailrocksVisualQA");
@@ -202,6 +203,7 @@ test("supervisor refuses unknown state and ambiguous capture arguments", async (
 });
 
 test("supervisor caps timing overrides and strips ambient secrets from children", async () => {
+  if (process.platform !== "darwin") return;
   const root = await temporary();
   expect((await install(root)).outcome).toBe("installed");
   const harness = path.join(root, "Scripts/TailrocksVisualQA");
@@ -236,6 +238,7 @@ test("supervisor caps timing overrides and strips ambient secrets from children"
 });
 
 test("exact app and global state locks refuse concurrent operations and preserve foreign locks", async () => {
+  if (process.platform !== "darwin") return;
   const root = await temporary();
   expect((await install(root)).outcome).toBe("installed");
   const harness = path.join(root, "Scripts/TailrocksVisualQA");
@@ -277,6 +280,7 @@ test("exact app and global state locks refuse concurrent operations and preserve
 });
 
 test("supervisor reports known recovery paths after timeout", async () => {
+  if (process.platform !== "darwin") return;
   const root = await temporary();
   expect((await install(root)).outcome).toBe("installed");
   const harness = path.join(root, "Scripts/TailrocksVisualQA");

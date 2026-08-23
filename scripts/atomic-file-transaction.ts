@@ -195,12 +195,12 @@ class DirectoryAnchor {
     }
     if (!reply.ok) {
       const error = new Error(reply.error || `anchored ${op} failed`) as NodeJS.ErrnoException;
-      error.code = reply.code;
+      if (reply.code !== undefined) error.code = reply.code;
       throw error;
     }
     return reply;
   }
-  private beforeOperation?: (directory: string, operation: string, pid: number) => Promise<void>;
+  private beforeOperation: ((directory: string, operation: string, pid: number) => Promise<void>) | undefined;
   async close(): Promise<void> {
     if (this.settled) return;
     try {

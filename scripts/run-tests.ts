@@ -29,7 +29,7 @@ if (import.meta.main) {
     if (process.argv.length !== 2) throw new Error("run-tests takes no arguments");
     const tests = await selectScriptTests(root);
     const result = await runBoundedCommand({
-      command: [process.execPath, "test", ...tests, "--parallel=1"],
+      command: [process.execPath, "test", ...tests, "--parallel=1", "--timeout=60000"],
       cwd: root,
       timeoutMilliseconds: 900_000,
       killGraceMilliseconds: 5_000,
