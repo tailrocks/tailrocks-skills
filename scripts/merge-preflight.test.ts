@@ -263,7 +263,7 @@ test("delivery emits all six exact contradiction classes", () => {
       { status: "D", path: "roadmap/old/README.md" },
     ],
     baseFiles: new Map([
-      ["roadmap/old/README.md", "# Old\n\n- **Status**: IN EXECUTION\n\n## Remaining\n\n- Still broken\n"],
+      ["roadmap/old/README.md", "# Old\n\n- **Status**: DONE\n\n## Remaining\n\n- Still broken\n"],
       ["roadmap/old/verification/01-report.md", blocked],
     ]),
     headFiles: new Map([
@@ -292,6 +292,16 @@ test("delivery avoids partial-deletion retirement and prose defect false positiv
         ["roadmap/item/plan/README.md", "| ID | Status |\n|---|---|\n| 001 | DONE |\n"],
         ["roadmap/item/verification/01-report.md", "## Blocking defects\n\nNo B1 remains.\n"],
       ]),
+    }),
+  ).toEqual([]);
+});
+
+test("deleting an unstarted empty draft needs no delivery report", () => {
+  expect(
+    evaluateDelivery({
+      changed: [{ status: "D", path: "roadmap/draft/README.md" }],
+      baseFiles: new Map([["roadmap/draft/README.md", "# Draft\n\n- **Status**: DRAFT\n\n## Remaining\n"]]),
+      headFiles: new Map(),
     }),
   ).toEqual([]);
 });

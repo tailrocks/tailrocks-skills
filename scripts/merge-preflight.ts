@@ -461,6 +461,7 @@ export function evaluateDelivery(input: DeliveryInput): DeliveryFinding[] {
     if (!baseSlugs.has(slug) || headSlugs.has(slug)) continue;
     const itemPath = `roadmap/${slug}/README.md`;
     const item = input.baseFiles.get(itemPath)!;
+    const status = itemStatus(item);
     const remaining = remainingIsEmpty(item);
     const round = newestRound(input.baseFiles, slug);
     if (remaining === undefined)
@@ -482,7 +483,10 @@ export function evaluateDelivery(input: DeliveryInput): DeliveryFinding[] {
           : "retired item still has Remaining work",
       });
     const deliveryPath = `delivery/${slug}.md`;
-    if (!input.changed.some((entry) => entry.status === "A" && entry.path === deliveryPath))
+    if (
+      status === "DONE" &&
+      !input.changed.some((entry) => entry.status === "A" && entry.path === deliveryPath)
+    )
       findings.push({
         case: 6,
         slug,
