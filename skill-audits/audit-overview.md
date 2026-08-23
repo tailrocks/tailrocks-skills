@@ -1448,9 +1448,23 @@ all terminal checks pass, and the final literal marker is changed to
     PASS. The non-eval migration gate passed 506 tests/5,609 assertions and
     every static/generated check; only the same two unrelated macOS GUI
     activation cases failed, owned by P09.15. No evals run or inspected.
-- [ ] [IN_PROGRESS] P09.10 `tailrocks-graphql-best-practices`: unique evolution/review
+- [x] [COMPLETED] P09.10 `tailrocks-graphql-best-practices`: unique evolution/review
   ownership, invocation, output, refusal, and hints.
-- [ ] [TODO] P09.11 `tailrocks-grpc-best-practices`: unique evolution/review
+  - Evidence receipt (2026-08-23): made public-API evolution and read-only
+    findings terminal, mutually exclusive authorities. Review/audit, requested
+    mutation, internal-service contracts, and unresolved targets now refuse
+    without mutation and route to exactly one current GraphQL or gRPC owner.
+    Added distinct closed `GraphQL Evolution Report` and `GraphQL Findings`
+    output grammars, positive execution counts, honest skipped gates, exact
+    argument hints, and tests covering invocation classes, prompts, catalog,
+    choosing guide, PR dispatch, generated docs, and canonical references. No
+    deprecated route or alias remains. Focused proof passed 4 tests/75
+    assertions; validator passed 84 skills; references checked 88 sources/258
+    byte-identical destinations; docs checked 256 files; fresh subagent verdict:
+    PASS. The non-eval migration gate passed 507 tests/5,656 assertions and
+    every static/generated check; only the same two unrelated macOS GUI
+    activation cases failed, owned by P09.15. No evals run or inspected.
+- [ ] [IN_PROGRESS] P09.11 `tailrocks-grpc-best-practices`: unique evolution/review
   ownership, invocation, output, refusal, and hints.
 - [ ] [TODO] P09.12 `tailrocks-idea`: atomic capture success/refusal/boundary
   tests using temporary repositories.

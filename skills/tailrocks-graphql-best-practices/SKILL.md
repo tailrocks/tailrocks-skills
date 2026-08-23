@@ -21,10 +21,14 @@ API syntax; preserve exact compatible pins.
 ## Evolve
 
 1. **Confirm selector and authority.** Continue only for approved public-API
-   evolution. Refuse review or audit without mutation and name
-   `tailrocks-graphql-review`. Refuse internal service communication, name the
-   gRPC owner, and stop. **Complete when:** consumers, intended contract delta,
-   and mutation scope are explicit.
+   evolution with an exact target and mutation authority from the active task.
+   Refuse review or audit without mutation and name
+   `tailrocks-graphql-review`, then stop without mutation. Refuse internal
+   service communication, name `tailrocks-grpc-best-practices`, and stop. A
+   vague GraphQL request with no resolvable target is refused pending scope;
+   selection never supplies it.
+   **Complete when:** consumers, intended contract delta, target, and mutation
+   scope are explicit.
 2. **Fix the boundary.** Domain crates compile without Juniper; resolvers
    translate and delegate, never decide. **Complete when:** no business rule
    lives in a resolver or React component.
@@ -59,6 +63,17 @@ API syntax; preserve exact compatible pins.
 8. **Report evolution.** Name changed schema elements, client/server paths,
    snapshot and breaking-gate receipts, executed test counts, skipped gates, and
    residual compatibility risk. **Complete when:** no contract delta is hidden.
+
+## GraphQL Evolution Report
+
+Return exactly these top-level fields, in order: `Outcome` (`EVOLVED`,
+`BLOCKED`, or `REFUSED`), `Scope binding`, `Contract changes`, `Compatibility`,
+`Verification`, `Skipped gates`, `Residual risk`, and `Route`. Verification
+entries name the command, exit status, and positive executed count; an unrun
+gate is skipped, never passed. `Route` is `—` except on refusal, where it names
+exactly one current owner and the reason. A refusal reports `Contract changes`
+as `none` and performs no mutation. Never emit a second free-form summary that
+can contradict these fields.
 
 ## Final gate
 
