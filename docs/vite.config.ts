@@ -6,6 +6,9 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   base: "/",
+  optimizeDeps: {
+    exclude: ["react/jsx-runtime", "react/jsx-dev-runtime"],
+  },
   plugins: [
     mdx(),
     tailwindcss(),
