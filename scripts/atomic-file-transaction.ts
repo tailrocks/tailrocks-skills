@@ -8,6 +8,7 @@ export interface AtomicFileWrite {
   readonly file: string;
   readonly content: string | Uint8Array;
   readonly expected: string | Uint8Array | null;
+  readonly expectedNode?: { readonly dev: number; readonly ino: number };
   readonly mode?: number;
 }
 export interface AtomicFileCheck {
@@ -336,7 +337,13 @@ export async function atomicWriteFiles(
       for (const item of staged) {
         try {
           item.expectedIdentity = await identity(item.anchor, item.name);
-          if (item.expected === null || item.expectedIdentity.sha256 !== digest(item.expected))
+          if (
+            item.expected === null ||
+            item.expectedIdentity.sha256 !== digest(item.expected) ||
+            (item.expectedNode !== undefined &&
+              (item.expectedIdentity.dev !== item.expectedNode.dev ||
+                item.expectedIdentity.ino !== item.expectedNode.ino))
+          )
             throw new Error(`transaction precondition changed: ${item.file}`);
         } catch (error) {
           if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
@@ -358,6 +365,9 @@ export async function atomicWriteFiles(
         if (!same(item.installedIdentity, item.temporaryIdentity!))
           throw new Error(`transaction target raced: ${item.file}`);
         await runtime.afterPublish?.(item.file, index);
+        const published = await identity(item.anchor, item.name);
+        if (!same(published, item.installedIdentity))
+          throw new Error(`transaction published target changed: ${item.file}`);
         await verifyReadSet();
       }
       await verifyReadSet();

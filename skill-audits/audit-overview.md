@@ -1634,9 +1634,35 @@ all terminal checks pass, and the final literal marker is changed to
     assertions across 75 selected test files.
     No evals run or inspected. No deprecated plan route or copied research
     artifact remains.
-- [ ] [IN_PROGRESS] P09.18 `tailrocks-pr-template`: deterministic sole-target
+- [x] [COMPLETED] P09.18 `tailrocks-pr-template`: deterministic sole-target
   resolution across absent, existing, and alternate repository layouts.
-- [ ] [TODO] P09.19 `tailrocks-prove`: capability drivers against local
+  - Evidence receipt (2026-08-23): added one installed, loader-bound
+    `pr-template-target` resolver/publisher with closed typed requests and
+    receipts. Resolution follows the active PR-consumer matrix exactly: a sole
+    case-insensitive Markdown default at root, `docs/`, or `.github`, or a sole
+    Markdown file inside `.github/PULL_REQUEST_TEMPLATE/`, is updated at its
+    exact existing path; an absent layout creates only
+    `.github/PULL_REQUEST_TEMPLATE.md`; ambiguous, empty multi-template, inert,
+    symlinked, FIFO, or otherwise unsafe layouts refuse without choosing or
+    writing. The opaque resolution binding carries repository-root, parent, and
+    target inode identity plus HEAD, path, layout, and preimage across separate
+    resolve/publish invocations. Publication revalidates those identities,
+    content digest, target preimage, and parent ownership before mutation;
+    shared atomic publication now re-identifies the installed node after its
+    callback, keeps final public-layout and HEAD proofs inside rollback, and
+    preserves concurrent replacements. `UNCHANGED` performs the same identity
+    checks. Structured failures expose exact uncertain mutations and retained
+    recovery artifacts instead of claiming an empty recovery. The skill now
+    requires the typed resolver/publisher, preserves a sole alternate target,
+    creates the standard target only when none exists, and exposes no relocation
+    or deprecated migration route. Generated metadata, reference prose, and
+    public docs match. Focused proof passed 29 tests/90 assertions; validator
+    passed 84 skills; references checked 88 sources/258 byte-identical
+    destinations; docs checked 256 files; formatting and protected paths
+    passed; fresh subagent verdict: PASS. The non-eval migration gate passed 589
+    tests/6,173 assertions across 76 selected test files. No evals run or
+    inspected.
+- [ ] [IN_PROGRESS] P09.19 `tailrocks-prove`: capability drivers against local
   CLI/application/browser programs with machine-readable receipts.
 - [ ] [TODO] P09.20 `tailrocks-reconcile`: deterministic frozen-package,
   closer, retirement, and partial-failure predicates.

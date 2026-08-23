@@ -4,7 +4,7 @@
 
 `tailrocks-pr-template` — part of [tailrocks-skills](../../README.md) · [documentation](https://skills.tailrocks.com/docs/skills/tailrocks-pr-template)
 
-Generate a repository's .github/PULL_REQUEST_TEMPLATE.md: tailor this skill's base template to the repo's structure, gates, and merged-PR history so every section and verify block is earned. Do not use to open, refresh, or merge a PR.
+Generate or reconcile a repository's sole GitHub-supported pull-request template. Preserve its exact existing target or create the standard target when absent; tailor sections and commands to repository evidence. Do not open, refresh, or merge a PR.
 
 ## Invocation
 

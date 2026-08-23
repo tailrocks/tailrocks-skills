@@ -176,7 +176,7 @@ Open, refresh, review, document, and merge pull requests in any repository, exte
 | [`tailrocks-review-pr`](skills/tailrocks-review-pr/README.md) | Review a pull request, branch, or diff and report verified findings: adversarially validated bugs, structural regressions, triggered specialist lanes, and fixer routes. | Manual only |
 | [`tailrocks-merge-pr`](skills/tailrocks-merge-pr/README.md) | Merge a pull request fail-closed in any repository: CI and documentation gates, blast-radius confirm, metadata reconcile, repo-selected merge method, the repo's pre-merge worklist from .tailrocks/pr.md. | Manual only |
 | [`tailrocks-document`](skills/tailrocks-document/README.md) | Before a pull request merges, make the repository's own documentation the final source of truth for everything the diff changed — rewritten pages and new structures, never a changelog. | Manual only |
-| [`tailrocks-pr-template`](skills/tailrocks-pr-template/README.md) | Generate a repository's .github/PULL_REQUEST_TEMPLATE.md: tailor this skill's base template to the repo's structure, gates, and merged-PR history so every section and verify block is earned. | Manual only |
+| [`tailrocks-pr-template`](skills/tailrocks-pr-template/README.md) | Generate or reconcile a repository's sole GitHub-supported pull-request template. | Manual only |
 
 ### Roadmap and delivery
 
