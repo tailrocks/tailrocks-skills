@@ -11,7 +11,7 @@
 "cargo:cargo-careful" = "0.4.10"
 "cargo:cargo-dylint" = "6.0.4"
 "cargo:dylint-link" = "6.0.4"
-cargo-binstall = "1.21.1"
+cargo-binstall = "1.22.0"
 
 [settings]
 cargo.binstall = true
