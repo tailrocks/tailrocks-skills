@@ -487,7 +487,7 @@ extensions above safe to ship in one shared file.
 6. **Version in lockstep.** `version` must match across all three versioned
    manifests and the marketplace entry (enforced by the validator). Tag
    releases (`vX.Y.Z`) so Grok/Kimi/Codex installs can pin.
-7. **Keep SKILL.md a router.** Under 500 lines; deep material in
+7. **Keep SKILL.md a router.** At most 200 body lines; deep material in
    `references/`, copy-ready assets in `templates/`; link every reference
    from SKILL.md (paths relative to the skill directory — Claude Code copies
    plugins into a cache, so `../` escapes break).

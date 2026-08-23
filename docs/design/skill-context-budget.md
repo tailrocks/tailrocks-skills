@@ -93,11 +93,8 @@ else is the router's job. The current 84 descriptions total 21,545 characters;
 17,530 count against the per-skill caps. The other 4,015 are the 3,942 guard
 characters plus one trimmed separator on each of 73 manual owners.
 
-**Routers stay under ~200 lines**, already enforced as a notice. One exceeds it
-today: `tailrocks-macos-design` — it merged the design, prototype, and Liquid
-Glass material routers into one file, and its size is the price of keeping one
-taste authority per platform. Its material depth lives in `references/`, which
-is free until read.
+**Routers have at most 200 body lines.** The validator rejects any excess; deep
+material lives in `references/`, which is free until read.
 
 ## Rejected
 

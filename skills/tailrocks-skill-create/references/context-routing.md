@@ -23,9 +23,9 @@ Consequences, each binding:
   heading, a labeled sentence. Buried as the third idea in a four-idea
   paragraph, it surfaces only sometimes, and that intermittency looks like
   a flaky check instead of the prose defect it is.
-- Past the tree's router budget (~200 lines here), an addition replaces
-  something. Two sections gesturing at one obligation are weaker than one
-  that states it.
+- A router has at most 200 body lines. At the limit, an addition replaces or
+  extracts existing material. Two sections gesturing at one obligation are
+  weaker than one that states it.
 
 ## Match the form to the failure
 

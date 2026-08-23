@@ -49,6 +49,7 @@ describe("scaffoldSkill", () => {
         "tailrocks-audit",
         "tailrocks-checkout-pr",
         "tailrocks-contribute",
+        "tailrocks-rethink",
         "tailrocks-skill-migrate",
         "tailrocks-web-visual-qa",
       ]) {

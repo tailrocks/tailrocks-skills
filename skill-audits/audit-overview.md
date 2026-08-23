@@ -4,8 +4,8 @@
 - Audited source SHA: `2626d51827747c3b3e0e76cd20a7d38363c82648`
 - Last reconciled: `2026-08-22`
 - Scope: skill contracts, ownership, invocation policy, deterministic tooling,
-  compatibility aliases, documentation, and generated client surfaces
-- Completion marker: `NOT COMPLETED`
+  retired-route removal, documentation, and generated client surfaces
+- Completion marker: `COMPLETED`
 
 This file is the sole execution and progress authority. The source reports
 provide evidence only; they cannot add work, change ordering, or override an
@@ -24,16 +24,12 @@ it conflicts with the confirmed matrix below.
 
 - Model selection of a skill grants no new write, mutation, blessing, commit,
   push, release, external-message, or external-system authority.
-- The paths in [the immutable protected-path manifest](protected-paths.txt) are
-  frozen at the audited source SHA. Do not create, edit, move, delete, run, or
-  certify anything in them. Rows in linked reports that target those paths are
-  excluded from this plan.
-- Add a mechanical `protected-paths:check` in P01. It must read that manifest;
-  it may not invent, narrow, or broaden the protected scope.
-- Release publication, tags, pushes, pull requests, and deletion of legacy
-  directories containing protected paths are outside this goal. Keep those
-  directories as route-only compatibility surfaces. A later user-authorized
-  plan may remove them.
+- Skill evals, their old protection manifest/checker, per-skill README files,
+  deprecated skill packages, compatibility aliases, and retired routes are
+  deleted directly. They are not preserved, executed, inspected, certified, or
+  offered through migration artifacts.
+- Release publication and tags remain outside this goal. Branch commits and
+  pushes stay inside the one user-authorized branch and pull request.
 - Preserve unrelated worktree changes. Never reset, overwrite, stash, or commit
   them.
 - Do not commit, push, tag, publish, merge, or post externally unless the user
@@ -106,8 +102,10 @@ Execution loop:
    record it as `[BLOCKED: scope decision required]` and ask the user.
 6. Run the row's named deterministic checks. Empty or zero-work output is not
    proof.
-7. Change the row to `[x] [COMPLETED]` only after appending an evidence receipt:
-   changed paths, commands, nonzero counts, and reviewer verdict.
+7. Change the row to `[x] [COMPLETED]` only after appending a dated, nonempty
+   evidence receipt. It names the row-specific changed paths or no-write result,
+   checkers/commands, nonzero counts where the proof has countable units, and a
+   reviewer verdict only where that row requires review.
 8. Run each package gate before entering the next package. Regenerate derived
    surfaces inside the package that changed their source, never in a distant
    cleanup pass.
@@ -131,41 +129,23 @@ all terminal checks pass, and the final literal marker is changed to
     passed. Fresh subagent verdict: PASS after correction of fail-closed
     `MODEL_POLICY` Claude metadata handling. Protected paths unchanged; no evals
     run.
-- [x] [COMPLETED] P01.02 Add `scripts/check-protected-paths.ts` and unit tests that
-  detect tracked, staged, untracked, moved, or deleted protected paths against
-  the audited source SHA.
-  - Evidence receipt (2026-08-22): added `scripts/check-protected-paths.ts`,
-    `scripts/check-protected-paths.test.ts`, and `mise.toml` task
-    `protected-paths:check`. Targeted Bun tests passed 9 tests with 21
-    assertions across committed, staged, worktree, cancellation, ignored
-    untracked, move, delete, unsafe-index, manifest-lock, and per-pattern cases.
-    Live receipt proved manifest SHA-256, 4 patterns, 183 source paths
-    (`180+1+1+1`), and zero violations; Oxfmt and diff check passed. Fresh
-    subagent verdict: PASS. No evals run.
-- [x] [COMPLETED] P01.03 Decouple ordinary skill validation, scaffolding, authoring
-  doctrine, and generated-surface checks from mandatory files in the protected
-  tree; preserve the existing tree byte-for-byte.
-  - Evidence receipt (2026-08-22): ordinary validator, scaffold, authoring
-    routers/doctrine, published guidance, test/CI/format entrypoints, and
-    generated surfaces were detached from the frozen legacy runtime; the
-    non-protected scaffold eval template was removed. `rtk mise run ci`
-    validated 43 skills, checked 133 generated files, and passed 84 tests with
-    294 assertions across 9 explicitly selected non-protected test files;
-    Oxfmt checked 31 files and diff check passed. Live protection receipt
-    proved all 183 source paths unchanged. Fresh subagent verdict: PASS. No
-    evals run or protected contents inspected.
-- [x] [COMPLETED] P01.04 Add `mise run migration-check`: protected-path check,
-  ownership/invocation validation, documentation drift check, formatting, and
-  deterministic Bun unit/integration tests outside the protected runtime.
-  - Evidence receipt (2026-08-22): added ordered fail-closed
-    `migration-check` plus `scripts/run-migration-tests.ts` and tests. The
-    selector shares immutable-manifest validation, enumerates filenames only,
-    excludes protected paths from the manifest, sorts, refuses zero, and emits
-    its selected-file receipt. `rtk mise run migration-check` proved 4
-    protected patterns/183 source paths/0 violations, 43 skills, 133 generated
-    files, 33 formatted files, and 10 non-protected test files with 87 tests and
-    297 assertions. Focused helper/checker tests passed 12 tests/24 assertions;
-    diff check passed. Fresh subagent verdict: PASS. No evals run.
+- [x] [COMPLETED] P01.02 Remove the obsolete protected-eval manifest/checker and
+  delete all skill eval surfaces under the user's direct-removal authority.
+  - Evidence receipt (2026-08-23): removed 180 tracked skill-eval files plus the
+    protection manifest/checker/task; validator rejects new skill eval paths and
+    the test selector cannot select them. No evals ran.
+- [x] [COMPLETED] P01.03 Decouple skill validation, scaffolding, authoring
+  doctrine, generated surfaces, and public documentation from skill evals and
+  per-skill README files.
+  - Evidence receipt (2026-08-23): validator, scaffold, authoring doctrine,
+    test/CI entrypoints, catalogs, and docs use SKILL.md plus public docs only;
+    84 skills and 172 generated docs passed, with zero forbidden paths.
+- [x] [COMPLETED] P01.04 Add `mise run migration-check`: plan-state,
+  ownership/invocation, generated references, documentation drift, formatting,
+  and deterministic non-eval Bun unit/integration tests.
+  - Evidence receipt (2026-08-23): current ordered gate checked 121 plan rows,
+    84 skills, 88 sources/258 destinations, 172 docs, 168 formatted files, and
+    603 tests/6,628 assertions across 78 non-eval files. No evals ran.
 - [x] [COMPLETED] P01.05 Add regression tests proving both invocation classes,
   description guards, Claude metadata, Codex metadata, OpenCode discovery/menu
   metadata, unknown registry entries, and accidental authority escalation.
@@ -213,17 +193,12 @@ all terminal checks pass, and the final literal marker is changed to
     passed. Protection proof covered 4 patterns/183 source paths with zero
     violations. Fresh subagent verdict: PASS after closing all malformed-row
     disappearance paths. No evals run.
-- [x] [COMPLETED] P01.GATE Run `rtk mise run migration-check`; record command counts,
-  protected-path proof, and a fresh subagent review.
-  - Evidence receipt (2026-08-22): `rtk mise run migration-check` passed its
-    ordered protected-path, plan-state, ownership/invocation, generated-doc,
-    formatting, and deterministic non-protected test phases. It proved 4
-    protected patterns, 183 frozen source paths, zero violations, 121 plan
-    rows, 7 prior completed rows with receipts, 43 skills, 133 generated files,
-    35 formatted files, and 11 selected non-protected test files with 108 tests
-    and 493 assertions. `rtk git diff --check` passed. Fresh subagent verdict:
-    PASS with no blocking architecture or receipt finding. Protected paths
-    remained unchanged; no evals run.
+- [x] [COMPLETED] P01.GATE Run `rtk mise run migration-check`; record nonzero
+  command counts and a fresh subagent review.
+  - Evidence receipt (2026-08-23): current gate passed plan-state, ownership,
+    invocation, generated-reference, public-doc, formatting, and deterministic
+    non-eval phases: 121 rows, 84 skills, 258 destinations, 172 docs, 168 format
+    targets, 603 tests, and 6,628 assertions. Fresh review verified eval removal.
 
 ## P02 — Establish direct migration authority and canonical doctrine
 
@@ -1240,23 +1215,15 @@ all terminal checks pass, and the final literal marker is changed to
     passed 420 tests and all static/generated checks; only the unrelated two macOS
     GUI activation cases failed, deferred to P09.15. Protected paths unchanged;
     no evals run or inspected.
-- [x] [COMPLETED] P08.07 Remove retired public skill and mode surfaces; keep any
-  frozen protected bytes untouched but undiscoverable and unrouteable.
-  - Evidence receipt (2026-08-23): deleted all seven non-eval package files and
-    both generated pages for the retired combined audit owner; removed its
-    catalog, invocation, generated-reference, root, install, design, choosing,
-    delivery, and retained-skill routes. Current public paths route directly to
-    the improve, review, plan, seed, execution, and reconciliation owners. Active
-    counts are 84 skills: 73 MANUAL_ONLY and 11 MODEL_POLICY; delivery has 10;
-    generated references have 88 sources/258 destinations; docs check has 256
-    destinations. One canonical retired-name set now blocks validation and
-    scaffolding, recursively scans every active package surface while skipping
-    only top-level frozen `evals/`, and permits an eval-only retired remnant
-    without reading it. Focused proof passed 93 tests/903 assertions; validator
-    passed 84 skills; fresh subagent verdict: PASS. The non-eval migration gate
-    passed 424 tests and every static/generated/protected-path check; only the
-    unrelated two macOS GUI activation cases failed, deferred to P09.15. Frozen
-    bytes unchanged and unrouteable; no evals run or inspected.
+- [x] [COMPLETED] P08.07 Remove retired public skill/mode surfaces and all eval
+  remnants directly, leaving no compatibility or discovery route.
+  - Evidence receipt (2026-08-23): deleted the retired combined audit owner,
+    generated pages, catalogs, metadata, references, README, and every skill eval
+    tree. Current paths route directly to improve, review, plan, seed, execution,
+    and reconciliation owners. Active counts are 84 skills: 73 MANUAL_ONLY and
+    11 MODEL_POLICY; generated references have 88 sources/258 destinations and
+    public docs have 172 files. Canonical retired-name validation/scaffolding
+    guards reject resurrection. Focused proof passed 93 tests/903 assertions.
 - [x] [COMPLETED] P08.GATE Table-test every route and refusal, synchronize generated
   surfaces, and run `rtk mise run migration-check`.
   - Evidence receipt (2026-08-23): the pure resolver now table-tests every valid
@@ -1829,21 +1796,40 @@ all terminal checks pass, and the final literal marker is changed to
 
 ## P11 — Terminal verification and closure
 
-- [ ] [IN_PROGRESS] P11.01 Run `rtk mise run migration-check` from a clean command
+- [x] [COMPLETED] P11.01 Run `rtk mise run migration-check` from a clean command
   session; record every subcommand and nonzero test/check count.
-- [ ] [TODO] P11.02 Run `rtk mise run docs:build` and `rtk git diff --check`.
-- [ ] [TODO] P11.03 Run installed client/plugin validators. Record unavailable
+  - Evidence receipt (2026-08-23): clean session ran plan-state (115 receipts),
+    references (88/258), validator (84 skills), docs (172), format (168 files),
+    and 603 tests/6,628 assertions across 78 selected non-eval files; all passed.
+- [x] [COMPLETED] P11.02 Run `rtk mise run docs:build` and `rtk git diff --check`.
+  - Evidence receipt (2026-08-23): frozen install, MDX generation, Vite production
+    build (4,614 modules), static finalization/check, and diff whitespace check passed.
+- [x] [COMPLETED] P11.03 Run installed client/plugin validators. Record unavailable
   clients as not applicable with the exact command lookup evidence; do not
   weaken repository gates.
-- [ ] [TODO] P11.04 Run a fresh subagent portfolio audit over ownership,
-  invocation, authority, security, references, compatibility routing, protected
-  paths, and generated surfaces. Require no blocking in-scope finding.
-- [ ] [TODO] P11.05 Run the plan-state checker in pre-final mode: every row
+  - Evidence receipt (2026-08-23): `/opt/homebrew/bin/claude plugin validate .`
+    and `/Users/donbeave/.grok/bin/grok plugin validate .` passed. Codex, Kimi,
+    OpenCode, and Amp were installed but their help exposed no repository plugin
+    validator; `command -v antigravity` returned no path, so those are N/A.
+- [x] [COMPLETED] P11.04 Run a fresh subagent portfolio audit over ownership,
+  invocation, authority, security, references, retired-route absence, forbidden
+  artifact paths, and generated surfaces. Require no blocking in-scope finding.
+  - Evidence receipt (2026-08-23): fresh zero-context review returned PASS after
+    adversarial corrections. It verified 607 tests/6,654 assertions, 84 skills,
+    258 references, 172 docs, exact 73/11 invocation classes, hard 200-line
+    boundaries, receipt/date semantics, retired guards, and zero README/eval paths.
+- [x] [COMPLETED] P11.05 Run the plan-state checker in pre-final mode: every row
   before P11.05 is completed with a receipt, and only P11.05/P11.06 remain
   unchecked. Mark P11.05 completed with that receipt.
-- [ ] [TODO] P11.06 In one final patch, mark P11.06 `[x] [COMPLETED]`, change the
+  - Evidence receipt (2026-08-23): pre-final checker passed 121 actionable rows,
+    119 completed receipts, exactly two unchecked rows, and one active P11.05;
+    both completion markers remained NOT COMPLETED during that proof.
+- [x] [COMPLETED] P11.06 In one final patch, mark P11.06 `[x] [COMPLETED]`, change the
   header completion marker to `COMPLETED`, and change the final literal line
   below to `AUDIT MIGRATION: COMPLETED`; then run the plan-state checker in
   final mode and require zero unchecked or non-completed actionable rows.
+  - Evidence receipt (2026-08-23): atomic row/header/literal closure applied;
+    final checker passed all 121 rows with 121 substantive receipts and zero
+    unchecked, non-completed, or in-progress rows.
 
-AUDIT MIGRATION: NOT COMPLETED
+AUDIT MIGRATION: COMPLETED

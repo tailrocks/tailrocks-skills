@@ -499,7 +499,8 @@ export async function validate(root: string): Promise<string[]> {
       continue;
     }
     const routerBody = source.slice(block[0].length).replace(/^\n/, "");
-    const routerLines = routerBody.split("\n").length;
+    const countedBody = routerBody.endsWith("\n") ? routerBody.slice(0, -1) : routerBody;
+    const routerLines = countedBody === "" ? 0 : countedBody.split("\n").length;
     if (routerLines > ROUTER_BUDGET) {
       errors.push(
         `${directory}: SKILL.md body is ${routerLines} lines, over the ${ROUTER_BUDGET}-line router budget — ` +

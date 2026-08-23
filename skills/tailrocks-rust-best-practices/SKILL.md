@@ -1,7 +1,7 @@
 ---
 name: tailrocks-rust-best-practices
 description: >-
-  Apply Rust correctness contracts when in-scope work writes Rust behavior. Covers ownership, failure, unsafe, tests, readability, and measured performance; use rust-review for findings and rust-refactor for behavior-preserving restructuring.
+  Apply Rust correctness contracts when in-scope work writes Rust behavior. Covers ownership, failure, unsafe, tests, and performance; use tailrocks-rust-review for findings and tailrocks-rust-refactor for behavior-preserving restructuring.
 argument-hint: "<Rust writing task or target>"
 license: Apache-2.0
 user-invocable: true

@@ -1,7 +1,7 @@
 ---
 name: tailrocks-rust-review
 description: >-
-  Use only when the user explicitly requests this skill. Review Rust source, APIs, unsafe code, tests, and performance evidence read-only. Report verified findings; never edit. Use rust-best-practices for new behavior and rust-refactor for approved restructuring.
+  Use only when the user explicitly requests this skill. Review Rust source, APIs, unsafe code, tests, and performance evidence read-only. Report verified findings; never edit. Use tailrocks-rust-best-practices for new behavior and tailrocks-rust-refactor for approved restructuring.
 argument-hint: "<Rust review target or diff>"
 disable-model-invocation: true
 license: Apache-2.0

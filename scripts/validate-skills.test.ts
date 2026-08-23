@@ -739,6 +739,16 @@ policy:
     expect(await validate(root)).toContain(`${retired}: retired skill name is forbidden`);
   });
 
+  test("rejects resurrection of the retired rethink owner and route", async () => {
+    const retired = "tailrocks-rethink";
+    await write("README.md", `${skill}\n${retired}\n`);
+    expect(await validate(root)).toContain(`README.md: retired skill route is forbidden: ${retired}`);
+    await cp(path.join(root, "skills", skill), path.join(root, "skills", retired), { recursive: true });
+    const file = path.join(root, "skills", retired, "SKILL.md");
+    await writeFile(file, (await readFile(file, "utf8")).replaceAll(skill, retired));
+    expect(await validate(root)).toContain(`${retired}: retired skill name is forbidden`);
+  });
+
   test("retired contribution owner guard preserves its five current descendants", async () => {
     await write("README.md", `${skill}\ntailrocks-contribute-recon\ntailrocks-contribute-submit\n`);
     expect(await validate(root)).not.toContain("retired skill route is forbidden: tailrocks-contribute");
@@ -866,8 +876,13 @@ policy:
   });
 
   test("rejects a router over the line budget", async () => {
-    const body = await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text();
-    await write(`skills/${skill}/SKILL.md`, `${body}${"padding\n".repeat(210)}`);
+    const source = await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text();
+    const block = source.match(/^---\n[\s\S]*?\n---/);
+    expect(block).not.toBeNull();
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${block![0]}\n${Array.from({ length: 201 }, () => "padding").join("\n")}\n`,
+    );
     const errors = await validate(root);
     expect(errors.some((error) => error.includes("over the 200-line router budget"))).toBe(true);
   });
@@ -876,8 +891,10 @@ policy:
     const source = await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text();
     const block = source.match(/^---\n[\s\S]*?\n---/);
     expect(block).not.toBeNull();
-    const bodyLines = source.slice(block![0].length).replace(/^\n/, "").split("\n").length;
-    await write(`skills/${skill}/SKILL.md`, `${source}${"padding\n".repeat(200 - bodyLines)}`);
+    await write(
+      `skills/${skill}/SKILL.md`,
+      `${block![0]}\n${Array.from({ length: 200 }, () => "padding").join("\n")}\n`,
+    );
     const errors = await validate(root);
     expect(errors.some((error) => error.includes("router budget"))).toBe(false);
   });

@@ -23,7 +23,7 @@ AUDIT MIGRATION: ${literal}
 }
 
 const completed = (id: string) =>
-  `- [x] [COMPLETED] ${id} Complete it.\n  - Evidence receipt (2026-08-22): proof.`;
+  `- [x] [COMPLETED] ${id} Complete it.\n  - Evidence receipt (2026-08-22): command passed 1 check.`;
 
 function run(source: string, mode: PlanStateMode = "progress"): string[] {
   return checkAuditPlanState(source, mode).errors;
@@ -73,6 +73,50 @@ describe("checkAuditPlanState", () => {
   test("requires receipts only for completed actionable rows", () => {
     const errors = run(plan(["- [x] [COMPLETED] P01.01 Done.", "- [ ] [TODO] P11.06 Close."]));
     expect(errors).toContain("P01.01: completed row missing evidence receipt");
+  });
+
+  test("rejects malformed duplicate and pending completed receipts", () => {
+    const malformed = plan([
+      "- [x] [COMPLETED] P01.01 Done.\n  - Evidence receipt (today): proof.",
+      "- [ ] [TODO] P11.06 Close.",
+    ]);
+    expect(run(malformed)).toContain(
+      "P01.01: evidence receipt must have a real ISO date and substantive result",
+    );
+
+    for (const receipt of [
+      "  - Evidence receipt (2026-02-30): command passed 1 check.",
+      "  - Evidence receipt (9999-99-99): TBD",
+      "  - Evidence receipt (2026-08-23): x",
+      "  - Evidence receipt (2026-08-23): placeholder",
+      "  - Evidence receipt (2026-08-23): proof goes here",
+      "  - Evidence receipt (2999-01-01): command passed 1 check.",
+      "  - Evidence receipt (2026-08-23): TBD: run the checker later.",
+      "  - Evidence receipt (2026-08-23): TODO run command.",
+      "  - Evidence receipt (2026-08-23): example result: 10 tests passed.",
+      "  - Evidence receipt (2026-08-23): fake proof: 10 tests passed.",
+      "  - Evidence receipt (2026-08-23): proof: command passed 1 check.",
+      "  - Evidence receipt (2026-08-23): unknown: command passed 1 check.",
+      "  - Evidence receipt (2026-08-23): later: command passed 1 check.",
+      "  - Evidence receipt (2026-08-23): n/a: command passed 1 check.",
+      "  - Evidence receipt (2026-08-23): n-a: command passed 1 check.",
+      "  - Evidence receipt (2026-08-23): N.A.: command passed 1 check.",
+    ]) {
+      const errors = run(plan([`- [x] [COMPLETED] P01.01 Done.\n${receipt}`, "- [ ] [TODO] P11.06 Close."]));
+      expect(errors).toContain("P01.01: evidence receipt must have a real ISO date and substantive result");
+    }
+
+    const duplicate = plan([
+      `${completed("P01.01")}\n  - Evidence receipt (2026-08-23): second proof.`,
+      "- [ ] [TODO] P11.06 Close.",
+    ]);
+    expect(run(duplicate)).toContain("P01.01: row has multiple evidence receipts");
+
+    const pending = plan([
+      "- [x] [COMPLETED] P01.01 Done.\n  - Evidence receipt (2026-08-23): evidence pending.",
+      "- [ ] [TODO] P11.06 Close.",
+    ]);
+    expect(run(pending)).toContain("P01.01: completed row contains pending evidence");
   });
 
   test("progress requires a completed prefix and active first unresolved row", () => {

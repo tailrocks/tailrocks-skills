@@ -76,8 +76,8 @@ Rules for changing a `SKILL.md`:
   deterministic acceptance checks.
 - Prefer strengthening an existing section over adding one. Two sections that
   both gesture at the same obligation are weaker than one that states it.
-- When a router grows past roughly 200 lines, the next addition should replace
-  something rather than append.
+- A router has at most 200 body lines. At the limit, an addition must replace or
+  extract existing material rather than append.
 - Load-bearing router lines — ones a recorded acceptance claim depends on — are
   not edited casually. Re-open the durable evidence record before
   rewording a gate, rejection rule, or "complete when" clause.

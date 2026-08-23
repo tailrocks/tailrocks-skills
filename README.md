@@ -43,8 +43,8 @@ Everything else lives in the documentation, once:
 
 ## Skills
 
-Each row links to that skill's own README. The table is generated from the
-skills themselves — edit a skill, never the table.
+Each row links to that skill's public documentation page. The table is generated
+from the skills themselves — edit a skill, never the table.
 
 <!-- skills:start -->
 
@@ -207,8 +207,8 @@ mise run test
 claude --plugin-dir .
 ```
 
-Skill READMEs, the documentation pages, and the table above are generated from
-`SKILL.md` by `scripts/generate-docs.ts`; edit the skill, then run
+The documentation pages and table above are generated from `SKILL.md` by
+`scripts/generate-docs.ts`; edit the skill, then run
 `mise run docs`. Contribution and release rules live in
 [AGENTS.md](AGENTS.md); installation internals in [INSTALL.md](INSTALL.md);
 the documentation site in [docs/](docs/README.md). A saved prompt for

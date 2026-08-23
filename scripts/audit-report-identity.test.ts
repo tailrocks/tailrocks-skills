@@ -140,7 +140,7 @@ test("all six layers keep independent historical maxima", () => {
     description: "DESC",
     router: "RTR",
     references: "REF",
-    evals: "EVAL",
+    evidence: "EVAL",
     wiring: "WIRE",
     overlap: "OVL",
   }) as Array<[FindingLayer, string]>;
@@ -162,6 +162,31 @@ test("all six layers keep independent historical maxima", () => {
   layers.forEach(([, prefix], index) =>
     expect(receipt.output).toContain(`### ${prefix}-${index + 3} — Defect`),
   );
+});
+
+test("new structured evidence rejects the deprecated evals layer", () => {
+  const deprecated = identity("evidence", "missing proof").replace('"layer":"evidence"', '"layer":"evals"');
+  expect(() =>
+    reconcileReport(
+      report([{ id: "EVAL-NEW", tuple: deprecated }]),
+      undefined,
+      [],
+      "skill-audits/tailrocks-example.md",
+    ),
+  ).toThrow("layer evals is deprecated; use evidence");
+});
+
+test("historical structured evals identities normalize to evidence", () => {
+  const evidence = identity("evidence", "missing proof");
+  const deprecated = evidence.replace('"layer":"evidence"', '"layer":"evals"');
+  const receipt = reconcileReport(
+    report([{ id: "EVAL-NEW", tuple: evidence }]),
+    report([{ id: "EVAL-7", tuple: deprecated }]),
+    [],
+    "skill-audits/tailrocks-example.md",
+  );
+  expect(receipt.output).toContain("### EVAL-7 — Defect");
+  expect(receipt.preserved).toBe(1);
 });
 
 test("rejects candidate collisions, malformed IDs, and prefix disagreement", () => {

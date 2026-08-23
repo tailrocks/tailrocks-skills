@@ -55,7 +55,7 @@ trigger on that invocation and grants no new authority.
 | Artifact | Obligation |
 |---|---|
 | `catalog.json` | Add the skill to exactly one group; validation fails until it appears once. |
-| Generated docs | `mise run docs` writes the skill's `README.md`, its site pages, and the root `README.md` row — never edit generated files by hand. |
+| Generated docs | `mise run docs` writes the skill's public site pages and the root `README.md` row — never edit generated files by hand. |
 | `INSTALL.md` | Add the skill to its family line by hand. |
 | Root `AGENTS.md` | Add the skill's section by hand. When the skill descends from external work, extract and rephrase the knowledge into this tree's own references — no external project, collection, or author is named or linked anywhere in shipped content; provenance lives in git and pull-request history. |
 | `docs/content/docs/choosing.mdx` | Add the reach-for-it row, and a boundary subsection when the skill needs one against a neighbor. |
@@ -85,13 +85,12 @@ Editing an existing skill adds constraints beyond the create path:
   or "complete when" clause — load-bearing lines are not edited casually.
 - **Strengthen over append.** Prefer making an existing section state
   the new obligation to adding a sibling section that gestures at it.
-- **Past the router budget (~200 lines), replace.** The next addition
-  removes something.
+- **A router has at most 200 body lines.** At the limit, the next addition
+  replaces or extracts existing material.
 - **Rerun every affected deterministic acceptance check** after a router
   change — a new section changes every behavior in the file, so the check
   nearest the edit is not the only one at risk.
 - A check that misses one element while everything else is correct usually
   exposes a signposting defect — look at where the
   requirement sits in the file before rewriting what it says.
-- Generated files (`README.md`, docs pages) are refreshed by
-  `mise run docs`, never edited.
+- Generated public docs are refreshed by `mise run docs`, never edited.

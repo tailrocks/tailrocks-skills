@@ -55,6 +55,45 @@ const actionablePattern =
   /^- \[([ x])\] \[(TODO|IN_PROGRESS|COMPLETED|BLOCKED: [^\]]+|STALE: [^\]]+)\] (P\d{2}\.(?:\d{2}|GATE))(?=\s|$)/;
 const candidatePattern = /^- .*?(P\d{2}\.(?:\d{2}|GATE))\b/;
 
+function isValidReceiptLine(line: string): boolean {
+  const match = line.match(/^  - Evidence receipt \((\d{4})-(\d{2})-(\d{2})\):\s+(\S.*)$/);
+  if (!match) return false;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day ||
+    date.getTime() > new Date().setUTCHours(0, 0, 0, 0)
+  )
+    return false;
+  const result = match[4].trim();
+  const firstToken = result
+    .split(/[\s:]+/, 1)[0]!
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+  const placeholderTokens = new Set([
+    "tbd",
+    "todo",
+    "pending",
+    "proof",
+    "placeholder",
+    "fake",
+    "example",
+    "unknown",
+    "later",
+    "na",
+  ]);
+  return (
+    result.length >= 4 &&
+    !/^(?:tbd|todo|pending|proof|placeholder|fake|example|unknown|later|n\/a)[.!]?$/i.test(result) &&
+    !placeholderTokens.has(firstToken) &&
+    !/\b(?:placeholder|proof goes here|evidence goes here|fill (?:this|me) in|to be done)\b/i.test(result)
+  );
+}
+
 export function checkAuditPlanState(
   source: string,
   mode: PlanStateMode = "progress",
@@ -94,11 +133,18 @@ export function checkAuditPlanState(
 
   for (const [index, row] of rows.entries()) {
     const end = index + 1 < rows.length ? rows[index + 1].line - 1 : lines.length;
-    row.receipt = lines
+    const rowLines = lines
       .slice(row.line, end)
-      .some(
-        (line, offset) => visibleLines.has(row.line + offset + 1) && /^  - Evidence receipt \(/.test(line),
-      );
+      .filter((_, offset) => visibleLines.has(row.line + offset + 1));
+    const receiptLines = rowLines.filter((line) => /^  - Evidence receipt \(/.test(line));
+    row.receipt = receiptLines.some(isValidReceiptLine);
+    if (receiptLines.length > 1) errors.push(`${row.id}: row has multiple evidence receipts`);
+    if (receiptLines.length > 0 && !row.receipt) {
+      errors.push(`${row.id}: evidence receipt must have a real ISO date and substantive result`);
+    }
+    if (row.status === "COMPLETED" && receiptLines.some((line) => /\bpending\b/i.test(line))) {
+      errors.push(`${row.id}: completed row contains pending evidence`);
+    }
   }
 
   const seen = new Set<string>();

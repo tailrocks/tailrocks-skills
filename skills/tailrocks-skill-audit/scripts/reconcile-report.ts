@@ -10,7 +10,7 @@ export const layerPrefixes = {
   description: "DESC",
   router: "RTR",
   references: "REF",
-  evals: "EVAL",
+  evidence: "EVAL",
   wiring: "WIRE",
   overlap: "OVL",
 } as const;
@@ -98,10 +98,18 @@ export function normalizeProse(value: string): string {
     .trim();
 }
 
-function structuredIdentity(value: unknown, label: string): StructuredIdentity {
+function structuredIdentity(
+  value: unknown,
+  label: string,
+  allowDeprecatedEvalsLayer: boolean,
+): StructuredIdentity {
   const identity = object(value, label);
   keys(identity, ["layer", "doctrine_rule", "defect", "responsibility", "evidence"], label);
-  const layer = nonempty(identity.layer, `${label}.layer`) as FindingLayer;
+  const rawLayer = nonempty(identity.layer, `${label}.layer`);
+  if (rawLayer === "evals" && !allowDeprecatedEvalsLayer) {
+    throw new Error(`${label}.layer evals is deprecated; use evidence`);
+  }
+  const layer = (rawLayer === "evals" ? "evidence" : rawLayer) as FindingLayer;
   if (!(layer in layerPrefixes)) throw new Error(`${label}.layer is unknown: ${layer}`);
   const evidence = object(identity.evidence, `${label}.evidence`);
   keys(evidence, ["path", "anchor", "quote"], `${label}.evidence`);
@@ -118,8 +126,12 @@ function structuredIdentity(value: unknown, label: string): StructuredIdentity {
   };
 }
 
-export function normalizeStructuredIdentity(value: unknown, label = "identity tuple"): string {
-  const identity = structuredIdentity(value, label);
+export function normalizeStructuredIdentity(
+  value: unknown,
+  label = "identity tuple",
+  allowDeprecatedEvalsLayer = false,
+): string {
+  const identity = structuredIdentity(value, label, allowDeprecatedEvalsLayer);
   return JSON.stringify({
     layer: identity.layer,
     doctrine_rule: normalizeProse(identity.doctrine_rule),
@@ -137,12 +149,17 @@ function normalizeLegacyIdentity(value: string, label: string): string {
   const fields = value.split(";");
   if (fields.length !== 5)
     throw new Error(`${label} legacy tuple must contain exactly five semicolon fields`);
-  const layer = normalizeProse(fields[0]!) as FindingLayer;
+  const rawLayer = normalizeProse(fields[0]!);
+  const layer = (rawLayer === "evals" ? "evidence" : rawLayer) as FindingLayer;
   if (!(layer in layerPrefixes)) throw new Error(`${label} has unknown legacy layer: ${layer}`);
   return `legacy:${[layer, ...fields.slice(1).map(normalizeProse)].join("; ")}`;
 }
 
-function parseIdentity(value: string, label: string): { normalized: string; layer: FindingLayer } {
+function parseIdentity(
+  value: string,
+  label: string,
+  allowDeprecatedEvalsLayer: boolean,
+): { normalized: string; layer: FindingLayer } {
   const trimmed = value.trim();
   if (trimmed.startsWith("{")) {
     let parsed: unknown;
@@ -151,7 +168,7 @@ function parseIdentity(value: string, label: string): { normalized: string; laye
     } catch {
       throw new Error(`${label} identity tuple must be valid one-line JSON`);
     }
-    const normalized = normalizeStructuredIdentity(parsed, label);
+    const normalized = normalizeStructuredIdentity(parsed, label, allowDeprecatedEvalsLayer);
     return { normalized, layer: JSON.parse(normalized).layer as FindingLayer };
   }
   const normalized = normalizeLegacyIdentity(trimmed, label);
@@ -185,7 +202,11 @@ export function parseReport(source: string, mode: "candidate" | "existing", labe
     const section = source.slice(start, end);
     const tuples = [...section.matchAll(/^- \*\*Identity tuple:\*\*\s*(.+)$/gm)];
     if (tuples.length !== 1) throw new Error(`${label} finding ${id} must have exactly one identity tuple`);
-    const identity = parseIdentity(tuples[0]![1]!, `${label} finding ${id}`);
+    const identity = parseIdentity(
+      tuples[0]![1]!,
+      `${label} finding ${id}`,
+      mode === "existing",
+    );
     if (layerPrefixes[identity.layer] !== match[1])
       throw new Error(`${label} finding ${id} prefix disagrees with its layer`);
     if (identities.has(identity.normalized))

@@ -1,7 +1,7 @@
 ---
 name: tailrocks-rust-refactor
 description: >-
-  Use only when the user explicitly requests this skill. Restructure Rust code while preserving observable behavior and public contracts. Require a preservation oracle and approved scope. Use rust-best-practices when behavior changes and rust-review for read-only findings.
+  Use only when the user explicitly requests this skill. Restructure Rust code while preserving observable behavior and public contracts. Require a preservation oracle and approved scope. Use tailrocks-rust-best-practices when behavior changes and tailrocks-rust-review for read-only findings.
 argument-hint: "<Rust refactor target and preserved behavior>"
 disable-model-invocation: true
 license: Apache-2.0

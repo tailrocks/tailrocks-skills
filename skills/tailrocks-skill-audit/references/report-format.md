@@ -23,7 +23,7 @@ Each layer has its own monotonic ID prefix:
 | Description | `DESC-n` | Workflow summary, missing triggers, budget breach, missing do-not-use boundary |
 | Router | `RTR-n` | Dilution, buried load-bearing lines, reference summaries, concept explanations, stacked musts, budget |
 | References | `REF-n` | Content in the wrong layer, unrouted depth, duplication of the router |
-| Evals | `EVAL-n` | Missing baseline evidence, unrealistic prompts, no refusal case, missing fixtures |
+| Evidence | `EVAL-n` | Missing durable baseline receipts, unrealistic proof, absent refusal coverage, or missing deterministic checks |
 | Wiring | `WIRE-n` | Catalog, client metadata, generated docs, install/index documents, version lockstep |
 | Overlap | `OVL-n` | Two skills owning one responsibility |
 
@@ -31,7 +31,8 @@ Prefix names the artifact layer that owns the fix. Add one or more dimensions:
 `contract`, `behavior`, `predictability`, `efficiency`, `topology`,
 `portability`, `security`. Dimensions never allocate IDs. Example: an unsafe
 router instruction is `RTR-n` with `contract` and `security`; missing outcome
-proof is `EVAL-n` with `behavior`.
+proof is `EVAL-n` with `behavior`. `EVAL` remains the stable historical ID
+prefix; it names the Evidence layer and does not authorize or imply an eval tree.
 
 ## Finding shape
 
