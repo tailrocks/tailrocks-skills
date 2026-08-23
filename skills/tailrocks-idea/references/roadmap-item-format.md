@@ -253,7 +253,7 @@ Section rules:
 |------|-------|--------|-----------|
 | <slug> | <title> | DRAFT | — |
 
-Run an item: `/goal Follow roadmap/<slug>/goal/START.md` — each item's `## Run`
+Run an item: follow `roadmap/<slug>/goal/START.md` — each item's `## Run`
 section carries its pasteable start and resume blocks once planned.
 ```
 

@@ -12,6 +12,10 @@
  */
 import path from "node:path";
 
+import { atomicRecoveryArtifacts, atomicWriteFiles } from "./atomic-file-transaction";
+import { runBoundedCommand } from "./bounded-command";
+import { boundedFetchText } from "./bounded-fetch";
+
 const ROOT = path.resolve(import.meta.dir, "..");
 const TEMPLATE = "skills/tailrocks-tanstack-project-setup/templates/package.json";
 const POLICY = "skills/tailrocks-tanstack-project-setup/references/version-policy.md";
@@ -253,111 +257,78 @@ export function applyMiseCargoTools(mise: string, latest: Latest): string {
 type ResolverResult = { name: string; latest: string | null; selected_channel: string };
 
 async function resolve(args: string[]): Promise<ResolverResult[]> {
-  const proc = Bun.spawn(["bun", path.join(ROOT, RESOLVER), ...args], {
+  const result = await runBoundedCommand({
+    command: ["bun", path.join(ROOT, RESOLVER), ...args],
     cwd: ROOT,
-    stdout: "pipe",
-    stderr: "inherit",
+    timeoutMilliseconds: 120_000,
+    maximumOutputBytes: 20_000_000,
   });
-  const text = await new Response(proc.stdout).text();
-  await proc.exited; // Exits 1 on staleness alone, which is the case we are here to fix.
-  return (JSON.parse(text) as { results: ResolverResult[] }).results;
+  if (![0, 1].includes(result.code) || result.timedOut || result.saturated)
+    throw new Error(result.stderr || `package resolver exited ${result.code}`);
+  const receipt = JSON.parse(result.stdout) as { results: ResolverResult[]; errors: number };
+  if (!Array.isArray(receipt.results) || receipt.errors !== 0) throw new Error("package resolution failed");
+  return receipt.results;
 }
 
-if (import.meta.main) {
+async function checkConsistency(): Promise<string[]> {
   const templatePath = path.join(ROOT, TEMPLATE);
-  const policyPath = path.join(ROOT, POLICY);
+  const problems = consistencyMismatches(
+    await Bun.file(templatePath).text(),
+    await Bun.file(path.join(ROOT, POLICY)).text(),
+  ).map(
+    (mismatch) =>
+      `${POLICY} says ${mismatch.label} is ${mismatch.policy}, ${TEMPLATE} pins ${mismatch.package} at ${mismatch.template}`,
+  );
+  const rust = "skills/tailrocks-rust-project-setup";
+  const rustFiles: RustFiles = {
+    toolchain: await Bun.file(path.join(ROOT, rust, "templates/rust-toolchain.toml")).text(),
+    cargo: await Bun.file(path.join(ROOT, rust, "templates/Cargo.toml")).text(),
+    clippy: await Bun.file(path.join(ROOT, rust, "templates/clippy.toml")).text(),
+    mise: await Bun.file(path.join(ROOT, rust, "templates/mise.toml")).text(),
+  };
+  problems.push(...rustConsistencyProblems(rustFiles).map((problem) => `${rust}: ${problem}`));
+  for (const policyFile of [POLICY, `${rust}/references/version-policy.md`])
+    for (const row of ledgerRows(await Bun.file(path.join(ROOT, policyFile)).text()))
+      problems.push(`${policyFile} carries a version in prose: ${row.trim()}`);
+  return problems;
+}
 
-  if (Bun.argv.includes("--check-consistency")) {
-    const mismatches = consistencyMismatches(
-      await Bun.file(templatePath).text(),
-      await Bun.file(policyPath).text(),
-    );
-    const problems: string[] = [];
-    for (const mismatch of mismatches) {
-      problems.push(
-        `${POLICY} says ${mismatch.label} is ${mismatch.policy}, ` +
-          `${TEMPLATE} pins ${mismatch.package} at ${mismatch.template}`,
-      );
-    }
-
-    const rust = "skills/tailrocks-rust-project-setup";
-    const rustFiles: RustFiles = {
-      toolchain: await Bun.file(path.join(ROOT, rust, "templates/rust-toolchain.toml")).text(),
-      cargo: await Bun.file(path.join(ROOT, rust, "templates/Cargo.toml")).text(),
-      clippy: await Bun.file(path.join(ROOT, rust, "templates/clippy.toml")).text(),
-      mise: await Bun.file(path.join(ROOT, rust, "templates/mise.toml")).text(),
-    };
-    for (const problem of rustConsistencyProblems(rustFiles)) {
-      problems.push(`${rust}: ${problem}`);
-    }
-
-    for (const policyPath of [POLICY, `${rust}/references/version-policy.md`]) {
-      for (const row of ledgerRows(await Bun.file(path.join(ROOT, policyPath)).text())) {
-        problems.push(`${policyPath} carries a version in prose: ${row.trim()}`);
-      }
-    }
-
-    for (const problem of problems) console.error(`error: ${problem}`);
-    console.log(`Checked ${POLICY_ROWS.length} documented components and the Rust templates.`);
-    process.exit(problems.length === 0 ? 0 : 1);
-  }
-
-  const extra = POLICY_ROWS.map(([, name]) => name);
-  const results = [
+async function refresh(): Promise<{ mutations: string[]; packages: number; crates: number }> {
+  const packageResults = [
     ...(await resolve(["--check-template", path.join(ROOT, TEMPLATE)])),
-    ...(await resolve(extra)),
+    ...(await resolve(POLICY_ROWS.map(([, name]) => name))),
   ];
-
   const latest = new Map<string, string>();
-  for (const result of results) {
-    if (result.latest === null || result.selected_channel !== "stable") continue;
-    latest.set(result.name, result.latest);
-  }
+  for (const result of packageResults)
+    if (result.latest !== null && result.selected_channel === "stable")
+      latest.set(result.name, result.latest);
 
+  const templatePath = path.join(ROOT, TEMPLATE);
   const templateBefore = await Bun.file(templatePath).text();
   const templateAfter = applyPins(templateBefore, latest);
-
-  // The policy document is never rewritten. It carries primary release
-  // *sources*, not versions, because its own rule is that
-  // `templates/package.json` is the only exact pin source and versions are
-  // never copied into prose. A refresh that wrote numbers back into it would
-  // recreate the second ledger the document exists to forbid.
-  if (templateAfter !== templateBefore) await Bun.write(templatePath, templateAfter);
-
   const misePath = path.join(ROOT, MISE);
   const miseBefore = await Bun.file(misePath).text();
   const bun = templateBun(templateAfter);
   const miseAfter = bun === null ? miseBefore : applyMiseBun(miseBefore, bun);
-  if (miseAfter !== miseBefore) {
-    await Bun.write(misePath, miseAfter);
-    console.log(`synced ${MISE} to bun ${bun}; run \`mise install\` to relock`);
-  }
 
-  const moved = templateAfter !== templateBefore;
-  console.log(moved ? `refreshed ${TEMPLATE}` : "pins already current");
-  console.log(`resolved ${latest.size} packages`);
-
-  // Rust: the channel comes from the toolchain's own manifest, the rest from
-  // crates.io through the skill's existing resolver.
-  const channelManifest = await (await fetch(RUST_CHANNEL_URL)).text();
-  const channel = rustStableChannel(channelManifest);
-
-  const crateProc = Bun.spawn(["bun", path.join(ROOT, RUST_RESOLVER), ...RUST_CRATES, ...RUST_TOOLS], {
+  const channel = rustStableChannel(await boundedFetchText(RUST_CHANNEL_URL, { maximumBytes: 5_000_000 }));
+  if (channel === null) throw new Error("stable Rust channel manifest is invalid");
+  const crateResult = await runBoundedCommand({
+    command: ["bun", path.join(ROOT, RUST_RESOLVER), ...RUST_CRATES, ...RUST_TOOLS],
     cwd: ROOT,
-    stdout: "pipe",
-    stderr: "inherit",
+    timeoutMilliseconds: 120_000,
+    maximumOutputBytes: 20_000_000,
   });
-  const crateText = await new Response(crateProc.stdout).text();
-  await crateProc.exited;
+  if (crateResult.code !== 0 || crateResult.timedOut || crateResult.saturated)
+    throw new Error(crateResult.stderr || `crate resolver exited ${crateResult.code}`);
   const crateLatest = new Map<string, string>();
   for (const result of (
-    JSON.parse(crateText) as {
+    JSON.parse(crateResult.stdout) as {
       results: { name: string; stable: string | null; selected_channel: string }[];
     }
-  ).results) {
-    if (result.stable === null || result.selected_channel !== "stable") continue;
-    crateLatest.set(result.name, result.stable);
-  }
+  ).results)
+    if (result.stable !== null && result.selected_channel === "stable")
+      crateLatest.set(result.name, result.stable);
 
   const rustPaths = {
     toolchain: path.join(ROOT, RUST, "templates/rust-toolchain.toml"),
@@ -371,19 +342,83 @@ if (import.meta.main) {
     clippy: await Bun.file(rustPaths.clippy).text(),
     mise: await Bun.file(rustPaths.mise).text(),
   };
-  const channelled = channel === null ? before : applyRustChannel(before, channel);
+  const channelled = applyRustChannel(before, channel);
   const after: RustFiles = {
     ...channelled,
     cargo: applyCargoDeps(channelled.cargo, crateLatest),
     mise: applyMiseCargoTools(channelled.mise, crateLatest),
   };
-  let rustMoved = false;
-  for (const key of ["toolchain", "cargo", "clippy", "mise"] as const) {
-    if (after[key] === before[key]) continue;
-    await Bun.write(rustPaths[key], after[key]);
-    rustMoved = true;
+  const candidates = [
+    { file: templatePath, expected: templateBefore, content: templateAfter, relative: TEMPLATE },
+    { file: misePath, expected: miseBefore, content: miseAfter, relative: MISE },
+    ...(["toolchain", "cargo", "clippy", "mise"] as const).map((key) => ({
+      file: rustPaths[key],
+      expected: before[key],
+      content: after[key],
+      relative: path.relative(ROOT, rustPaths[key]),
+    })),
+  ].filter((item) => item.expected !== item.content);
+  await atomicWriteFiles(candidates);
+  return {
+    mutations: candidates.map((item) => item.relative),
+    packages: latest.size,
+    crates: crateLatest.size,
+  };
+}
+
+if (import.meta.main) {
+  const args = Bun.argv.slice(2);
+  if (!(args.length === 0 || (args.length === 1 && args[0] === "--check-consistency"))) {
+    console.log(
+      JSON.stringify({
+        schema: "tailrocks.refresh-template-pins/v1",
+        outcome: "refused",
+        code: "invalid_arguments",
+        mutations: [],
+        detail: "usage: refresh-template-pins.ts [--check-consistency]",
+      }),
+    );
+    process.exit(2);
   }
-  if (channel === null) console.log(`could not read a stable channel from ${RUST_CHANNEL_URL}`);
-  console.log(rustMoved ? `refreshed ${RUST}/templates` : "Rust pins already current");
-  console.log(`resolved ${crateLatest.size} crates`);
+  try {
+    if (args[0] === "--check-consistency") {
+      const problems = await checkConsistency();
+      console.log(
+        JSON.stringify({
+          schema: "tailrocks.refresh-template-pins/v1",
+          outcome: problems.length === 0 ? "success" : "failed",
+          code: problems.length === 0 ? "consistent" : "inconsistent",
+          problems,
+          mutations: [],
+          recovery_artifacts: [],
+          detail: `checked ${POLICY_ROWS.length} documented components and Rust templates`,
+        }),
+      );
+      if (problems.length > 0) process.exit(1);
+    } else {
+      const result = await refresh();
+      console.log(
+        JSON.stringify({
+          schema: "tailrocks.refresh-template-pins/v1",
+          outcome: "success",
+          code: "refreshed",
+          ...result,
+          recovery_artifacts: [],
+          detail: `resolved ${result.packages} packages and ${result.crates} crates`,
+        }),
+      );
+    }
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        schema: "tailrocks.refresh-template-pins/v1",
+        outcome: "failed",
+        code: "refresh_failed",
+        mutations: [],
+        recovery_artifacts: atomicRecoveryArtifacts(error),
+        detail: error instanceof Error ? error.message : String(error),
+      }),
+    );
+    process.exit(1);
+  }
 }

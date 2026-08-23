@@ -68,11 +68,3 @@ Rules:
   empty (a claim left unverified is a Remaining statement, and Remaining
   must be empty to retire), and the file moves to `delivery/<slug>.md`
   unchanged otherwise.
-
-## The audit-sweep variant
-
-`tailrocks-audit`'s sweep retires items it seeded without the full loop.
-Its minimal report names the fixing commit per capability instead of round
-evidence — same file shape, evidence pointer reading `fixed in <SHA>`. A
-sweep retirement without even that is an unverified claim and does not
-retire.

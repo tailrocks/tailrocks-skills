@@ -1,6 +1,6 @@
 ---
 title: tailrocks-skills
-description: "Manual-only engineering skills shared by seven coding agents from one skills/ tree."
+description: "Registry-governed engineering skills shared by seven coding agents from one skills/ tree."
 ---
 
 Reusable engineering skills for Claude Code, Codex CLI, OpenCode, Grok Build,
@@ -9,10 +9,10 @@ so a skill behaves the same wherever you invoke it.
 
 ## Three things to know
 
-**Skills are manual-only.** Nothing here activates on its own. Every description
-begins with an explicit-request guard, and the clients that support per-skill
-policy are configured to refuse implicit invocation. You name the skill or it
-stays out of the way.
+**Invocation is registry-owned.** Manual-only skills stay inactive until named.
+Model-policy skills may load only when their exact description trigger matches
+work already in scope; selection grants no extra authority. The
+[skills index](/docs/skills) identifies each class.
 
 **The stack is fixed.** Rust 2024 with Axum, Tokio, and Tower. TypeScript 7 with
 Bun, TanStack Start, React, shadcn/ui, Tailwind CSS v4, and Oxc. Native macOS
@@ -33,23 +33,23 @@ boundaries and the order to run them in.
 - [Choosing a skill](/docs/choosing) — which one to reach for when several could
   apply.
 - [Delivery pipeline](/docs/delivery) — how the ten delivery skills turn a
-  repository or an idea into something an agent executes predictably, with two
-  worked features.
+  repository or an idea into something an agent executes predictably, with four
+  worked product scenarios.
 
 ## Invoking a skill
 
 ```text
-Claude Code   /tailrocks-skills:tailrocks-rust-best-practices review this crate
-Codex CLI     $tailrocks-rust-best-practices review this crate
-Grok Build    /tailrocks-rust-best-practices review this crate
-Kimi Code     /skill:tailrocks-rust-best-practices review this crate
-Antigravity   /tailrocks-rust-best-practices review this crate
-OpenCode/Amp  Use tailrocks-rust-best-practices to review this crate
+Claude Code   /tailrocks-skills:tailrocks-rust-review review this crate
+Codex CLI     $tailrocks-rust-review review this crate
+Grok Build    /tailrocks-rust-review review this crate
+Kimi Code     /skill:tailrocks-rust-review review this crate
+Antigravity   /tailrocks-rust-review review this crate
+OpenCode/Amp  Use tailrocks-rust-review to review this crate
 ```
 
 A strong request names the skill, the action, the scope, and the constraint:
 
 ```text
-Use tailrocks-typescript-best-practices in review mode on src/auth/.
+Use tailrocks-typescript-review on src/auth/.
 Focus on runtime validation, typed failure, and async ownership. Do not edit.
 ```

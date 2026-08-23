@@ -1,34 +1,27 @@
-# Ratchets and Baselines
+<!-- tailrocks-code-health-audit:start -->
+# Ratchet and Baseline Criteria
 
-A baseline makes brownfield debt explicit without blessing growth. Two provider
-types cover most enforcement:
+A baseline exposes brownfield debt without blessing growth:
 
-- **Numeric:** key to upper bound. `measured > bound` fails growth;
-  `measured < bound` fails stale policy and instructs tightening; equality passes.
-- **Presence:** listed violations are existing debt; any unlisted violation fails;
-  resolved entries must be deleted.
+- **Numeric:** `measured > bound` fails growth; `measured < bound` fails stale
+  generous policy; equality passes.
+- **Presence:** listed identities are existing debt; unlisted violations and
+  stale resolved entries fail.
 
-Useful providers include suppressions per lint/module, file-size outliers, public
-surface size, dependency cycles/forbidden edges, flaky or skipped tests, unsafe
-sites, direct dependency exceptions, unvalidated boundary casts, and docs/source
-freshness violations.
+Providers use deterministic ordering, repository-relative keys, explicit
+exclusions, and a narrow rerun. Useful measurements include lint suppressions,
+file/public-surface size, dependency cycles/edges, flakes/skips, unsafe sites,
+dependency exceptions, boundary casts, and docs/source freshness.
 
-Coverage and mutation scores become blocking only for named critical surfaces
-after stable measurement. Repository-wide percentage targets are weak proxies and
-encourage low-value tests.
+Coverage and mutation scores block only named critical surfaces after stable
+measurement. Repository-wide percentage targets are weak proxies. The audit
+rejects imported thresholds, unowned exceptions, non-deterministic identities,
+growth that passes, or a lower measurement that leaves a stale bound green.
+<!-- tailrocks-code-health-audit:end -->
 
-Keep one ratchet file and one engine. Legacy allowlists/budget files become shims
-or migrate into the unified schema. Each provider defines deterministic ordering,
-repository-relative keys, exclusions, and a narrow rerun command.
+## Mutation adapter
 
-Adoption sequence:
-
-1. Measure without fixes.
-2. Read representative findings and reject noisy/no-op metrics.
-3. Freeze exact current debt.
-4. Block unlisted growth.
-5. Burn down in coherent changes.
-6. Tighten automatically whenever measured debt falls.
-
-Never import another repository's counts or thresholds. Borrow the shrink-only
-mechanism; derive bounds from the current project.
+Establish measures without fixes, rejects noisy metrics, freezes exact current
+debt, and blocks unlisted growth. Tighten lowers numeric bounds or deletes
+resolved presence entries. It never raises a cap, adds an exception, changes the
+oracle, or absorbs a regression.

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Contribute Respond"
+  short_description: "Handle one contribution review round safely"
+  default_prompt: "Use $tailrocks-contribute-respond to process this contribution's current review round, separating local fixes from every freshly approved remote action."
+policy:
+  allow_implicit_invocation: false

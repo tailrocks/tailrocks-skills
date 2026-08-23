@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: TanStack Project Audit"
+  short_description: "Audit a TanStack baseline without mutation"
+  default_prompt: "Use $tailrocks-tanstack-project-audit to inspect this Bun/TanStack Start application read-only and emit the fixed baseline gap ledger without installing or editing."
+policy:
+  allow_implicit_invocation: false

@@ -73,10 +73,11 @@ record's own references ambiguous against the item it audits.
 
 ```text
 Target:   skills/<name>/SKILL.md
-Shape:    <Boundaries bullet | appended step | final-gate clause | reference + router line>
+Shape:    <Boundaries bullet | appended step | final-gate clause | reference + router line | template slot | acceptance check>
 Anchor:   after "<exact heading or bullet>"
+Text:     <the exact prose to insert, in the target's voice and line width>
 Replaces: <nothing | the exact lines removed, and why>
-Evals:    <case ids at risk>
+Checks:   <non-protected acceptance-check or evidence IDs at risk>
 ```
 
 <the exact text to insert>
@@ -100,6 +101,6 @@ Evals:    <case ids at risk>
 
 ## Hand-off
 
-| Rank | Proposal | Owning skill | Record | Command | Evals to re-run |
+| Rank | Proposal | Owning skill | Record | Command | Checks to re-run |
 |---|---|---|---|---|---|
-| 1 | <RF id / X id> | <skill> | `retrospectives/<source>-<slug>.md#RF<id>` | `tailrocks-skill-update <skill>` | <case ids> |
+| 1 | <RF id / X id> | <skill> | `retrospectives/<source>-<slug>.md#RF<id>` | `tailrocks-skill-update <skill>` | <check or evidence ids> |

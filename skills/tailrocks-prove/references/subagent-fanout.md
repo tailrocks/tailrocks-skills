@@ -20,7 +20,9 @@ Fan out: one agent per surface row, each blind to the others.
 - The claims to test: the item's statements about this surface, and any `U#`
   from the feedback round that names it.
 - The blessed reference for a visual surface, by path.
-- The evidence contract it must return.
+- The exact prepared-session manifest and inventory row. It invokes the
+  installed capability driver and returns its receipt plus the evidence
+  projection; handwritten execution facts are invalid.
 
 And three prohibitions, stated in the brief because agents drift toward
 helpfulness: **do not fix anything**, **do not report a verdict you did not
@@ -49,11 +51,12 @@ defect before it is reported.
 
 ## What an agent returns
 
-The evidence block from `execution-evidence.md`, nothing else. No
+The typed driver receipt and the evidence block from `execution-evidence.md`,
+nothing else. No
 recommendations, no root-cause theory beyond what the output shows, no
 prioritization — the round orders findings once, at the end, with every
-surface visible. An agent that returns prose instead of the contract is re-run
-with the contract restated.
+surface visible. An agent that returns prose without a receipt is not
+re-prompted into trust; the row remains missing and assembly refuses.
 
 ## The refute pass
 

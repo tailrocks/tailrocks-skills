@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: macOS Design Review"
+  short_description: "Independently score rendered macOS design"
+  default_prompt: "Use $tailrocks-macos-design-review to inspect and score the named rendered macOS subject without fixing, blessing, capturing, or systematizing it."
+policy:
+  allow_implicit_invocation: false

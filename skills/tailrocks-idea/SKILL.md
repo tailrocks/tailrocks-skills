@@ -24,6 +24,9 @@ into the item template, stop. Zero questions is the normal case.
 - Write only `roadmap/<slug>/README.md` and the index `roadmap/README.md`
   (create either when absent). Keep source, configuration, and dependencies
   unchanged; Git moves only as the delivery git contract below directs.
+- The installed `idea-capture.ts` command is the sole writer of the item,
+  index, branch, capture commit, push, and draft PR. Never reproduce those
+  mutations manually and never invoke a target-repository lookalike.
 - `roadmap/<slug>/` is the item's whole home: `plan/`, `verification/`, and
   `goal/` appear there later, written by the skills that own them. Capture
   creates the item file and nothing else.
@@ -41,14 +44,15 @@ into the item template, stop. Zero questions is the normal case.
 Read [`references/delivery-git-contract.md`](references/delivery-git-contract.md)
 before writing.
 
-- **One item, one branch, one pull request.** This skill opens the lane —
+- **One item, one branch, one pull request.** The installed command opens the lane —
   branch `roadmap/<slug>` off the base branch **before** the first write (repo
   law and `.tailrocks/pr.md` govern naming and exceptions) — and every later
   delivery skill commits into that same branch and that same pull request. No
   delivery skill opens a second PR for an item that already has one.
-- After registering, commit the two files with the repository's convention plus
-  the trailer `Tailrocks-Skill: tailrocks-idea`, push, and open the **draft**
-  PR the rest of the family ripens.
+- The command commits exactly the two capture files with the repository's
+  additional trailers plus exactly one `Tailrocks-Skill: tailrocks-idea`,
+  pushes the immutable commit without force, and opens and verifies the
+  **draft** PR the rest of the family ripens.
 - **The commit series is the history.** One invocation, one marked commit; the
   trailer attributes it. The item carries no log of its own — a status change
   is recorded by the commit that makes it.
@@ -61,27 +65,39 @@ before writing.
    native macOS app for our CLI" → `macos-application`). If
    `roadmap/<slug>/` already exists, this is an update request in disguise —
    stop and point at `tailrocks-brainstorm` or `tailrocks-record-decision`.
+   Obtain the loader-provided absolute path of this installed `SKILL.md`; ignore
+   ambient path variables. The exact command is `bun
+   <installed-plugin>/scripts/idea-capture.ts --skill-file
+   <absolute-SKILL.md> <roadmap-slug>`.
    **Complete when:** the slug is unique, content-derived, and stable.
 
-2. **Pour it in.** Create `roadmap/<slug>/README.md` from the item template:
-   status `DRAFT`, the user's intent in their own words, every concrete
-   statement sorted into its section (capabilities, screens, must-nots,
-   references, quality bar), open questions the input itself raises under
-   Open questions, everything else left empty.
+2. **Pour it in without writing.** Build one closed
+   `tailrocks.idea-capture-input/v1` object using the schema in the command
+   README installed beside the entrypoint. Supply exact repository, actor,
+   remote, base branch/SHA, title, date, raw intent, typed section arrays,
+   expected index SHA-256 (or `null` only when absent), and repository-required
+   additional trailers. The command constructs the canonical template itself;
+   never pass or write arbitrary file bytes. Keep status `DRAFT`, the user's
+   intent in their own words, every concrete statement sorted into its section
+   (capabilities, screens, must-nots, references, quality bar), open questions
+   the input itself raises under Open questions, everything else empty.
    **Complete when:** every statement from the input landed in exactly one
    section and nothing appears that the user did not say.
 
-3. **Register.** Add the item's row to `roadmap/README.md` (create the index
-   from the format reference if absent).
-   **Complete when:** the index row matches the item's status and title.
+3. **Capture the whole lane.** Send the object on stdin to the exact installed
+   command. It preflights the clean exact base, actor, remote base, and absence
+   of local/remote branch, item, index row, and open PR collisions before
+   mutation. It creates `roadmap/<slug>` before its first file write, publishes
+   item and canonical linked index row by anchored compare-and-swap, stages
+   exactly those files, commits once, pushes, opens one draft PR, and verifies
+   rendered identity. Its one `tailrocks.idea-capture/v1` receipt is the only
+   success oracle. `refused` means no owned capture remains;
+   `recovery_required` names a local or remote lane that must be reconciled and
+   must never be duplicated or deleted speculatively.
+   **Complete when:** receipt outcome is `captured`; otherwise stop on its exact
+   refusal or recovery evidence.
 
-4. **Commit and open the lane.** Commit the item file and index row on the
-   `roadmap/<slug>` branch with the `Tailrocks-Skill: tailrocks-idea`
-   trailer, push, open the draft PR per the contract.
-   **Complete when:** the branch, the marked commit, and the draft PR
-   exist (or the recorded repo-law exception says why not).
-
-5. **Hand back.** Report the slug, the PR, and the emptiest sections; name
+4. **Hand back.** Report the slug, the verified PR, and the emptiest sections; name
    the next step: `tailrocks-brainstorm <slug>` to shape it, or
    `tailrocks-research` if a named unknown already blocks thinking.
    **Complete when:** the user knows the slug and the next command.

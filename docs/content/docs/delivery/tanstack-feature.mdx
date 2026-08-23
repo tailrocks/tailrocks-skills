@@ -1,484 +1,284 @@
 ---
-title: "Worked example: a TanStack feature on a Rust backend"
-description: "Offline inspection capture with a live supervisor board — the same pipeline on a brownfield product, where research carries most of the weight."
+title: "Worked example: TanStack Start feature with Axum"
+description: "An offline inspection workflow in a strict TanStack Start and shadcn/ui app backed by a Rust Axum service."
 ---
 
-The product: compliance software for fire-safety inspection contractors. The
-form renderer, scheduling, and report generator already exist.
+## Scenario
 
-The feature: **offline inspection capture with a live site board.** An inspector
-works a whole job on a tablet with no connectivity — verdict per asset, defect
-severity, notes, photos, signature. On large sites two inspectors split zones
-and work the *same* inspection concurrently. Work syncs when the network
-returns, and an office supervisor watches progress stream in and adjudicates
-anything that diverged before the certificate is signed.
+**FieldOps** is an enterprise inspection product. Inspectors use a browser on
+unstable job-site networks to complete a checklist, attach evidence, and submit
+the inspection. Supervisors watch the inspection board from a desktop browser.
 
-TypeScript in the browser, Axum behind it. This example is worth walking for a
-different reason than [the macOS one](/docs/delivery/macos-app): almost every
-hard question here has a factual answer somebody has to go and find, which is
-what `tailrocks-research` exists for — and the two questions that *don't* are
-the ones that decide the product.
+The feature adds an offline-capable inspection runner and a resumable evidence
+upload path:
 
-## 1. Capture — `tailrocks-idea`
+```mermaid
+flowchart LR
+  browser["TanStack Start\nReact + shadcn/ui + Tailwind"] --> http["Axum\nHTTP, WebSocket, SSE, uploads"]
+  browser --> local["local replica + offline queue"]
+  http --> rust["Rust domain + validation"]
+  rust --> db[("PostgreSQL")]
+  browser -->|reconnect + state vector| http
+```
 
-<Invoke skill="tailrocks-idea" args="inspectors need to complete inspections with no signal in basements and plant rooms, and the office needs to see progress as it happens" />
+The UI is a thin TypeScript/React shell. Rust owns inspection rules, conflict
+classification, server validation, and persistence. Axum owns the HTTP
+boundary, WebSocket/SSE lifecycle, body limits, and graceful shutdown. The
+feature is an authenticated product surface, not an exported public API; if
+this product later exposes a third-party public contract, the public API
+decision belongs in the Juniper GraphQL scenario, not in an ad hoc browser
+endpoint.
 
-Slug `offline-inspection`, status DRAFT. Note what the sentence does not say:
-nothing about two inspectors on one job, nothing about photos, nothing about
-what "as it happens" means when a device has been in a basement for two hours.
-Those gaps are the next two stages.
+This walkthrough starts from a verified high-risk finding, so it demonstrates
+`tailrocks-seed-roadmap`. A new feature idea with no verified evidence would
+start with `tailrocks-idea` instead.
 
-Capture also opens the item's lane — branch `roadmap/offline-inspection`, draft
-pull request — and every later delivery skill commits into it under a
-`Tailrocks-Skill` trailer. One item, one branch, one pull request, from capture
-through the last verification round; the commits are the item's only history.
+## 1. Enter delivery — `tailrocks-seed-roadmap`
 
-## 2. Shape — `tailrocks-brainstorm`
+A read-only repository audit has already verified this finding:
+
+```text
+F-042: the existing inspection client drops staged photo references when a
+reconnect races with queue compaction; reproduction and affected paths are in
+the approved evidence report.
+```
+
+Seed that one finding:
+
+<Invoke
+  skill="tailrocks-seed-roadmap"
+  args="F-042 from the approved verification report"
+/>
+
+Seed checks the evidence identity, current `roadmap/`, `delivery/`, and Git
+history for duplicates, then creates exactly one DRAFT item and index row. It
+does not implement the queue, create `plan/`, or make a product choice. The
+item lane is branch `roadmap/offline-inspection` with one draft PR.
+
+If the request had only been “make inspections work offline,” the correct
+entry would have been:
+
+<Invoke skill="tailrocks-idea" args="make FieldOps inspections work offline with evidence that survives reconnect" />
+
+That alternative captures intent and leaves evidence and decisions open. It
+does not accept a finding as verified merely because it sounds plausible.
+
+## 2. Shape the feature — `tailrocks-brainstorm`
 
 <Invoke skill="tailrocks-brainstorm" args="offline-inspection" />
 
-The interview goes after the tensions, not the features. On this item it lands
-on five questions that no amount of research can settle, because each is a
-product position:
+The interview turns a bug-shaped request into a product contract. Questions
+include:
 
-1. Two inspectors record **different verdicts** for the same fire door while
-   offline. Does the later write win, or is divergence a hard conflict that
-   blocks the certificate until a supervisor adjudicates?
-2. Is an inspection legally submitted at the moment of **offline signature**, or
-   at server ingest? This one answer decides which timestamp is printed on a
-   compliance certificate.
-3. What is the maximum supported **offline window** — one shift, 24 hours, a
-   week, unbounded?
-4. Does the supervisor board show **unsynced draft verdicts**, or only committed
-   ones? Drafts are more useful and create real liability when a supervisor acts
-   on a "fail" the inspector then revises.
-5. Under storage pressure mid-inspection, does the app **degrade** — drop photo
-   resolution, force a sync-or-stop — or hard-block new capture?
+- Is the checklist editable offline, and which fields are forbidden offline?
+- Is a photo reference valid before its bytes upload?
+- What is the conflict rule if two devices edit the same inspection?
+- Does “submitted” mean locally queued or durably accepted by the server?
+- Can a supervisor issue a certificate while evidence is still pending?
+- What does the inspector see when local storage is full?
 
-Brainstorm does not answer these. It writes them into the item, recommends a
-position on each, and asks. Meanwhile it looks up anything lookup-able itself
-rather than spending your attention on it.
+The answer “a certificate must never be issued while an unresolved conflict or
+pending required evidence exists” is a user decision. The fact “browser storage
+eviction and background-tab scheduling differ by platform” is research. The
+interview writes the former into the item and creates the latter as an open
+research question.
 
-## 3. Establish facts — `tailrocks-research`
+## 3. Research facts — `tailrocks-research`
 
-Three topics, each genuinely unanswerable from the armchair, each reusable by
-the next feature that touches the same ground.
+<Invoke
+  skill="tailrocks-research"
+  args="offline-inspection: determine browser storage durability, quota and eviction signals, background scheduling, and the repository-approved local persistence options"
+/>
 
-<Invoke skill="tailrocks-research" args="offline-inspection: which CRDT gives us a Rust server-side replica and a browser client sharing one wire format, and can it surface that two updates disagreed rather than silently merging them?" />
+<Invoke
+  skill="tailrocks-research"
+  args="offline-inspection: compare reconnect protocols for an inspection replica, state-vector backfill, idempotent operations, resumable uploads, and event-stream gaps"
+/>
 
-That last clause is the whole point, and it is the kind of thing a shaping
-interview only surfaces if someone is looking for it. **A CRDT is designed to
-eliminate conflicts.** Feed it two contradictory pass/fail verdicts and it
-returns one deterministic answer — the math is right and the artifact is wrong,
-because nobody signed the merged document. The feature needs conflict
-*detection* layered on top of a library built to make conflicts impossible.
-Candidates the topic weighs: Loro, Yjs with its Rust counterpart Yrs, and
-Automerge, whose change history maps well onto "who claimed what, when".
+Parallel investigators produce reusable, cited chapters under topics such as
+`research/browser-offline-durability/` and `research/resumable-inspection-sync/`.
+The topic is linked back to `roadmap/offline-inspection/`; answered factual
+questions leave the open-research list, while product choices remain open.
 
-<Invoke skill="tailrocks-research" args="offline-inspection: what durability can we actually promise for offline data in a browser on iOS, and what does requesting persistent storage genuinely grant?" />
+Research does not select CRDT versus operation log, a storage eviction policy,
+or a certificate rule. It presents supported directions and trade-offs.
 
-This one returns bad news, which is exactly why it runs before planning rather
-than during it: Safari evicts origin storage after a week without interaction,
-quota is opaque, and iOS supports neither Background Sync nor Periodic
-Background Sync — so there is no way to flush a queue after the tab closes.
-Losing three hours of capture is a product-killing failure, and the fallback
-(foreground-only flush, an explicit "safe to close" affordance) is a *design*
-consequence of a *platform* fact.
+## 4. Lock choices — `tailrocks-record-decision`
 
-<Invoke skill="tailrocks-research" args="offline-inspection: which resumable upload protocol for the photo pipeline, and what is the real server-side story in Rust?" />
+After research, the product owner records one choice per invocation:
 
-Photos are 30–80 files at several megabytes each. They cannot ride the document
-channel, which means the document will reference blobs that have not uploaded
-yet — a dangling-reference window that can last hours and that the supervisor's
-live view will see. The topic compares the established tus protocol against the
-IETF resumable-upload draft, and finds the Rust server-side ecosystem thin
-enough that implementing the upload resource directly in Axum is the likely
-answer.
+<Invoke
+  skill="tailrocks-record-decision"
+  args="offline-inspection: the local replica stores an append-only operation queue and a materialized checklist snapshot; operations carry an idempotency key and are never silently discarded during compaction, because reconnect must be replayable"
+/>
 
-```text
-+ research/offline-crdt-selection/
-+ research/browser-offline-durability/
-+ research/resumable-evidence-upload/
-~ roadmap/offline-inspection/README.md   Research links
-```
+<Invoke
+  skill="tailrocks-record-decision"
+  args="offline-inspection: a certificate is blocked until all required evidence bytes are durably accepted and all conflicts are resolved by the supervisor"
+/>
 
-Every claim carries a primary source. The orchestrator opens each citation and
-confirms it supports the claim — misattributions get fixed, unverifiable claims
-get dropped. Topics stay in `research/`, not buried in the item folder, because
-the next offline feature in this product will need all three.
+The skill validates each choice against settled ground, dates the reason,
+propagates it through capabilities, screens, flows, quality, and must-nots, and
+marks a plan row `STALE` if a later reversal invalidates it. It never chooses
+between the alternatives for the owner.
 
-## 4. Decide — `tailrocks-record-decision`
-
-Now the five questions are answerable, because the research changed what is
-possible.
-
-<Invoke skill="tailrocks-record-decision" args="offline-inspection: divergent verdicts on the same asset are a hard conflict that blocks certificate generation until a supervisor adjudicates, because a merged verdict is one nobody signed" />
-
-<Invoke skill="tailrocks-record-decision" args="offline-inspection: every event carries both device time and server time in separate columns, never coalesced, because an offline tablet's clock is untrusted and inspection times are legally material" />
-
-One decision per invocation. Each is dated with its reason, propagated through
-the item, and turned into Must-not entries where it forbids something. The
-second one above is the sort of constraint that is invisible in a schema review
-six months later and obvious in the item's Decisions section forever.
-
-## 5. Design the screens — `tailrocks-web-design`
-
-Finalize is about to ask for five screens. A screen drawn outside the
-application is a picture of a design; a screen the application renders is the
-design — so these five get built where they will ship.
-
-<Invoke skill="tailrocks-web-design" args="offline-inspection: design the inspection runner, the sync-center drawer, the live site board, conflict review, and sign-off" />
-
-Each screen becomes one pure presentational component under
-`src/components/screens/`: props in, markup out, no loader, no router coupling,
-rendered by a guarded `/design/<screen>/<state>` route from typed fixtures. The
-guard is one rule — the design routes answer only under `import.meta.env.DEV`
-or `VITE_DESIGN_ROUTES=1`, and throw `notFound()` otherwise. Everything renders
-through the app's own Vite and Tailwind pipeline out of the installed shadcn/ui
-components; a component that is missing gets added with the pinned CLI rather
-than approximated in hand-written markup. Design mode writes the component and
-its prop types and stops there: loaders, mutations, and server functions stay
-unwritten until the slices.
-
-The fixtures are where this particular feature earns the stage. They are
-deterministic — fixed dates, ordered collections, no randomness — and
-realistic, which here means the states nobody volunteers to draw: a verdict
-chip reading `pending upload` with its photo still queued, a device badge two
-hours stale, two contradictory verdicts side by side with both the device and
-the server timestamp, a storage-pressure banner mid-capture. A screen blessed
-on `foo` has not met its layout.
-
-Then you bless them, live in the browser, one state and one theme at a time. The
-agent never blesses a screen: the recorded blessing lands in
-`src/design/MANIFEST.md` with its date, and each screen's `Design:` line in the
-item points at that section instead of re-describing it. An item whose screens
-carry no blessing is SHAPING ground however finished they look.
-
-Nothing is captured here — the design is live on the dev server, and a baseline
-frozen mid-iteration is churn that gets re-frozen on every tweak.
-
-```text
-+ src/components/screens/*.tsx
-+ src/design/fixtures/*.ts
-+ src/design/registry.tsx
-+ src/design/MANIFEST.md
-+ src/routes/design/…
-~ roadmap/offline-inspection/README.md   Screens: Design pointer per screen
-```
-
-## 6. Earn READY — `tailrocks-finalize`
+## 5. Close readiness — `tailrocks-finalize`
 
 <Invoke skill="tailrocks-finalize" args="offline-inspection" />
 
-The five screens are no longer adjectives, they are routes you can open: the
-inspection runner with a per-item sync-state chip, the sync-center drawer with
-its "safe to close" indicator, the live site board with a per-device staleness
-badge, the conflict review with side-by-side verdicts and both timestamps, and
-sign-off blocked on unresolved conflicts or unuploaded evidence. Each one is
-confirmed against its blessed manifest section, walked live rather than
-described.
+The closing interview confirms schematic states and walks the core flow:
 
-Then the flow is walked end to end, including the ugly path: two inspectors,
-one asset, contradictory verdicts, one device still in a basement when the
-supervisor opens the board.
+1. open an inspection with network access;
+2. lose the network and continue editing allowed fields;
+3. stage a photo and see `pending upload`, not false “synced”;
+4. regain the network and observe idempotent replay;
+5. receive a conflict and send it to supervisor adjudication;
+6. show a certificate blocked by conflict or pending required evidence;
+7. complete adjudication and produce a certificate.
 
-Anything still open at the end is resolved, deferred with a reason, or
-reclassified as researchable. READY is granted only when the whole checklist
-passes.
+It also confirms the supervisor board, reconnect/error states, keyboard access,
+small viewport behavior, and the quality bar for queue durability. A statement
+such as “the board should probably show pending uploads” remains an open
+decision and prevents READY until resolved, deferred with a reason, or
+reclassified as research.
 
-## 7. Freeze the reference — `tailrocks-web-visual-qa`
+## 6. Design, bless, freeze — web owners
 
-READY is the point where the design stops moving, and that is the only point at
-which a screenshot baseline is worth keeping.
+The item is now `READY`, but its schematic screens are not pixel truth. Build
+the reference in the real TanStack application:
 
-<Invoke skill="tailrocks-web-visual-qa" args="freeze offline-inspection: every screen, state, viewport, and theme from the design routes" />
+<Invoke skill="tailrocks-web-design" args="design the offline inspection runner and supervisor board from typed fixtures; include offline, reconnect, conflict, pending-upload, and certificate-blocked states" />
 
-One baseline per screen × state × viewport × theme, walked from the design
-registry rather than from the route parameters — a state that exists only as a
-URL string is a state the suite silently skips, so the registry is the
-enumeration of record. Every capture lands in `tests/visual/BASELINES.md` with
-the manifest blessing it was frozen from, the environment it binds to, and every
-mask with the reason for it, because a masked region is an unverified region.
+The design route is guarded and renders the same pure screen components that
+production uses. The user blesses it live in the browser. Then freeze every
+blessed state and viewport:
 
-The precondition does not bend: a screen whose manifest carries no recorded
-blessing cannot be frozen, and a draft baseline "just for now" is the same
-violation with a schedule. Afterwards authority runs one way — the baseline
-holds the code. A red suite has two exits, fix the code or take the change back
-to the user for a re-blessing; regenerating the snapshots to make it green is
-neither, and reduces the contract to `x == x`.
+<Invoke skill="tailrocks-web-visual-baseline" args="freeze the signed-off offline-inspection design routes for light/dark themes and inspector/supervisor viewports" />
 
-## 8. Package — `tailrocks-plan`
+`tailrocks-web-design-audit` owns later read-only design review and
+`tailrocks-web-visual-regression` compares the running revision against the
+bound baseline. No exported design file becomes the source of truth.
+
+## 7. Package vertical slices — `tailrocks-plan`
 
 <Invoke skill="tailrocks-plan" args="offline-inspection with --deep" />
 
-**This is a brownfield item, and the plan reflects it.** There is no
-verification-baseline slice, because the gates already exist — the plan records
-the proven build, test, and lint commands instead of standing up new ones. Where
-the existing baseline is doubtful, the audit belongs to the setup skills before
-planning, not inside it:
+The plan package traces the finding, decisions, screens, flows, and must-nots
+into IDs and slices:
 
-<Invoke skill="tailrocks-tanstack-project-setup" args="audit this app and remediate every baseline violation" />
-
-Recorded is not the same as trusted. Each gate enters `goal/START.md` as
-`<command> ||| <proof>`, where the proof prints how many units the command
-executed:
-
-```text
-bun test             ||| bun test 2>&1 | grep -Eo '[0-9]+ pass'
-cargo nextest run    ||| cargo nextest run 2>&1 | grep -Eo '[0-9]+ tests run'
-bunx playwright test ||| bunx playwright test --list 2>&1 | grep -Eo 'Total: [0-9]+'
-```
-
-`goal/check.sh` reads the number out of the proof: zero is
-`BLOCKED gate-vacuous`, and a line with no `|||` is `BLOCKED gate-unproven`.
-Brownfield is where that earns its keep. An inherited command that quietly
-matches no spec file passes forever, and the suite most likely to be doing it is
-the one whose output nobody reads.
-
-The spec carries the contract between the two languages as requirements rather
-than folklore:
-
-| Concern | Decided shape |
-|---|---|
-| Document sync | WebSocket, binary frames, an opaque CRDT update inside a thin envelope carrying inspection, device, operation id, device time, and schema version |
-| Reconnect | Client sends a state vector and receives a delta, never a full document |
-| Supervisor stream | Server-sent events with a monotonic id per event, heartbeats, and resume by last event id — plus an explicit "gap, resubscribe from snapshot" event, because the spec does not define what happens when that id is no longer available |
-| Evidence | A separate resumable HTTP channel; the document holds a content hash and a blob handle, and the reference stays `pending` until bytes land |
-| Types | One Rust source of truth, TypeScript generated from it |
-| Errors | `application/problem+json` over HTTP and a typed error frame over the socket sharing one vocabulary, each error classed retryable, terminal, or needs-human |
-
-That last row is not bureaucracy: the offline queue's entire retry behavior is a
-function of the error class, so leaving it unspecified means the queue's most
-important behavior gets invented by whoever writes it first.
-
-The slices, in dependency order:
-
-| Slice | Ships | Executed under |
+| Slice | Complete path | Main owners |
 |---|---|---|
-| — | Not a slice: the design routes blessed before READY and the baseline frozen from them the moment it was granted | `tailrocks-web-design`, `tailrocks-web-visual-qa` |
-| 001 | Document model, wire types, validation core in Rust with a conformance vector suite the TypeScript validator must also pass | `tailrocks-rust-best-practices`, `tailrocks-typescript-best-practices` |
-| 002 | Offline runner, local only: local replica, persistence, storage telemetry, capture UI, photo staging | `tailrocks-typescript-best-practices` |
-| 003 | Sync channel: WebSocket endpoint, server replica, state-vector backfill, dual-timestamp acks | `tailrocks-axum-best-practices`, `tailrocks-rust-best-practices` |
-| 004 | Resumable evidence pipeline and reconciliation of pending references | `tailrocks-axum-best-practices` |
-| 005 | Live site board: event fan-out, resume, gap event, staleness model | both stacks |
-| 006 | Conflict detection, supervisor adjudication, sign-off gating, certificate | both stacks |
+| 001 | Existing app gates run with positive counts; conformance fixtures define an inspection operation and validation errors | `tailrocks-typescript-best-practices`, `tailrocks-rust-best-practices` |
+| 002 | Offline local replica, durable queue, storage-pressure state, and inspector capture screen | `tailrocks-typescript-best-practices` plus the blessed web components |
+| 003 | Axum sync endpoint, idempotent operation ingest, state-vector backfill, and typed error mapping | `tailrocks-axum-best-practices`, `tailrocks-rust-best-practices` |
+| 004 | Resumable evidence resource from staged photo to durable acceptance | `tailrocks-axum-best-practices`, Rust domain owner |
+| 005 | Supervisor event stream, conflict adjudication, certificate blocking, and board state | Rust and TypeScript owners |
+| 006 | Browser flows, accessibility, and visual regression against the blessed routes | `tailrocks-web-visual-regression`, `tailrocks-web-design-audit` |
 
-The first row is not a slice. The screens were blessed and their baseline
-frozen before planning began, so no plan row builds them — they enter the
-manifest as the components the UI slices render and the suite those slices are
-measured against, cited by the spec as each screen's observable check.
+The slices are vertical: slice 002 provides usable local behavior before the
+server exists, slice 003 adds a real reconnect path, and slice 004 proves the
+evidence lifecycle rather than hiding it behind a green document-sync badge.
+The plan records exact Bun/Oxc, Axum, and database gate commands only after
+planning runs each available command once and records a positive proof count.
 
-Two details in that ordering are deliberate.
+The item becomes `PLANNED` only when every requirement is covered, each plan is
+cold-reviewed, and `goal/check.sh` fingerprints the frozen package.
 
-**Slice 001 puts the validation rules in one place with a shared test suite.**
-The rules run twice — in TypeScript for immediate offline feedback, in Rust
-authoritatively at ingest — and two implementations of the same rules drift. The
-drift surfaces as rejected inspections after the inspector has left the site, so
-the conformance vectors are the fix, and they exist before either implementation
-does.
-
-**Slice 002 ships value alone**, with no server work at all, and proves the
-durability findings on real devices before anything depends on them. If the
-storage assumptions are wrong, that is the cheapest possible moment to learn it.
-
-Each plan is written by its own subagent and read by a fresh-context reviewer
-holding only that plan and the repository.
-
-The package lands inside the item's own folder — one item, one folder, no
-parallel tree to keep in step. Everything under `plan/` but the manifest hub,
-and everything under `goal/`, is frozen: `check.sh` hashes it into the
-fingerprint the hub carries and answers `BLOCKED plan-drift` when it changes.
-The item, the manifest's status rows, and the verification rounds stay outside
-that hash, because those are what the loop has to move.
+## 8. Execute — TypeScript UI and Axum boundary
 
 ```text
-+ roadmap/offline-inspection/plan/coverage.md
-+ roadmap/offline-inspection/plan/spec/
-+ roadmap/offline-inspection/plan/README.md      manifest + executor protocol
-+ roadmap/offline-inspection/plan/001-*.md … 006-*.md
-+ roadmap/offline-inspection/goal/START.md       gates, goal condition, kickoff
-+ roadmap/offline-inspection/goal/RESUME.md      resume prompt
-+ roadmap/offline-inspection/goal/check.sh       the machine gate
-~ roadmap/offline-inspection/README.md           Status: PLANNED
+Follow roadmap/offline-inspection/goal/START.md
 ```
 
-## 9. Execute
+Inside the goal loop, the executor uses the owners named by the slice:
 
-```text
-/goal Follow roadmap/offline-inspection/goal/START.md
-```
+<Invoke skill="tailrocks-typescript-best-practices" args="implement the offline operation queue and inspector state machine with runtime validation, exhaustive state, readonly boundaries, and typed failure" />
 
-`START.md` carries the gates, the goal condition, and the kickoff prompt: one
-plan per iteration, every verification run, status writes committed with the
-work, and `sh roadmap/offline-inspection/goal/check.sh` on a clean tree before
-any DONE flip and again as the iteration's last act. An interrupted loop picks
-up from `goal/RESUME.md` the same way.
+<Invoke skill="tailrocks-axum-best-practices" args="implement the sync WebSocket and resumable evidence resource with typed state, ordered Tower policy, body limits, deadlines, and graceful shutdown" />
 
-Each slice names the stack skill it runs under, and here that alternates
-language by language. Slice 001 writes the shared model on both sides at once:
+<Invoke skill="tailrocks-typescript-review" args="review the local replica and reconnect path read-only for async ownership, stale writes, runtime trust, and rollback behavior" />
 
-<Invoke skill="tailrocks-rust-best-practices" args="implement the inspection document and ops envelope: typed failure, no panics on untrusted input" />
+The browser components stay strict TypeScript 7 with React, TanStack Start,
+shadcn/ui, Tailwind v4, Bun, and Oxc. The backend owns authoritative
+validation. Client validation is for immediate feedback, never permission to
+skip the Rust boundary.
 
-<Invoke skill="tailrocks-typescript-best-practices" args="implement the TypeScript validator against the Rust conformance vectors: exhaustive state, runtime validation at the boundary, typed failure" />
+## 9. User report — `tailrocks-record-feedback`
 
-Slice 002 is browser-only, and its screens already exist and are blessed, so the
-work is putting real state behind the components the design routes render.
-Slices 003 to 005 put the HTTP and socket surface behind Axum:
-
-<Invoke skill="tailrocks-typescript-best-practices" args="review the offline queue and local replica in src/inspection: async ownership, readonly boundaries, rollback on failure. Do not edit." />
-
-<Invoke skill="tailrocks-axum-best-practices" args="implement the sync WebSocket and the resumable upload resource: typed state, ordered middleware, body limits, graceful shutdown" />
-
-## 10. What the field found — `tailrocks-record-feedback`
-
-Two weeks of real inspections, and the reports come back as prose from two
-people who do not share a vocabulary.
+After two weeks in the field:
 
 <Invoke skill="tailrocks-record-feedback" args="offline-inspection" />
 
 ```text
-+ roadmap/offline-inspection/verification/01-feedback.md
+verification/01-feedback.md
 
-  U1  "Dyer signed off the Waterside job with a fire door still in
-       conflict, and it printed a certificate."
-  U2  "The board said his tablet was in sync while eight photos still
-       said pending upload, an hour after he came up from the basement."
+U1  "The board said the tablet was synced while eight photos still said pending
+    upload after the inspector came out of the basement."
+U2  "Dyer signed off with a fire door conflict still showing on the other
+    tablet, and the certificate printed anyway."
 ```
 
-U1 contradicts a decision from section 4 outright — divergent verdicts are a
-hard conflict that blocks certificate generation — so it is either a defect or a
-misreading of what happened on site. This skill does not decide which. It
-records both statements in the reporter's own words, with the surface, the
-reproduction as given, and the build they were running, and stops there. Working
-out who is right at capture time is how a real defect gets talked out of
-existence before anything has executed it.
+The report keeps the operator's words and adds only mechanics such as device,
+inspection fixture, network transition, and build SHA. It does not call U1 a
+badge bug or U2 a race; that judgment belongs to prove.
 
-## 11. Execute the claims — `tailrocks-prove`
+## 10. Execute and judge — `tailrocks-prove`
 
 <Invoke skill="tailrocks-prove" args="offline-inspection with --deep" />
 
-It builds from the bound SHA and fans out one subagent per surface, driving the
-real thing: the runner in a browser with the network cut and restored, the sync
-socket, the supervisor stream, the upload resource, the sign-off gate. Every
-verdict cites a command that ran in this session and the line of output that
-decided it; a surface it could not execute is reported `NOT EXECUTED` with the
-reason, never as passing.
+Prove builds the bound commit in an isolated checkout and drives every claimed
+surface: offline capture, queue restart, reconnect replay, upload resume,
+supervisor stream, conflict adjudication, certificate gating, accessibility,
+and the frozen visual matrix.
 
-The screens are judged twice — against the blessed design routes, the same pure
-components rendering the same fixtures, and against the Playwright baseline
-frozen in section 7. Then the round audits the item's own proofs by what they
-executed rather than by what they exited.
+A strong report could say:
 
-- **U1 — CONFIRMED.** Sign-off checks the conflicts the server has ingested, and
-  the second tablet's operations were still queued when the certificate was
-  generated. The must-not is enforced against the wrong set. Blocking.
-- **U2 — WIDER.** The board's device badge reports document sync only; evidence
-  upload has no representation on it at all, so a device holding eight unsent
-  photos reads as in sync. The absent element is the defect. Blocking.
-- **The visual gate — VACUOUS.** `bunx playwright test --project=visual` has
-  been exiting 0 on zero tests since slice 002 renamed the tag it filters on.
-  Nothing has compared a shipped screen against the baseline for four slices.
+- `U1 — WIDER`: the board reports document synchronization only; pending
+  evidence has no state at all, so any device with unsent evidence appears
+  synced.
+- `U2 — CONFIRMED`: certificate generation checks the local replica instead of
+  server-ingested conflict state.
+- visual gate — `VACUOUS`: the Playwright project selected zero tests after a
+  tag rename, so the passing command proves nothing.
+- decision lane — `VIOLATED`: the certificate path breaks the explicit
+  “required evidence and conflicts” decision.
 
-```text
-+ roadmap/offline-inspection/verification/01-report.md   Verdict: BLOCKED
-```
+Every verdict cites a command and decisive output line. A route that cannot run
+because a credential or device is unavailable is `NOT EXECUTED`, not green.
 
-Every finding gets an independent pass that tries to break it before it is
-written down, and every surface reported clean gets one attempt to fail the way
-the reporter described. The round writes no status and fixes nothing — the
-evidence goes to reconcile.
-
-## 12. Reconcile — `tailrocks-reconcile`
+## 11. Reconcile and repeat — `tailrocks-reconcile`
 
 <Invoke skill="tailrocks-reconcile" args="offline-inspection" />
 
-It re-earns every DONE row by running that row's criteria now, then folds round
-01 into the item. The two confirmed defects become the item's `## Remaining` —
-sign-off blocks on conflicts that have not reached the server; the board shows
-evidence state, not only document state — the rows they broke are reopened, and
-the item returns to IN EXECUTION with the roadmap index's Remaining column
-carrying the count. The vacuous gate cannot be fixed here: gate commands live in
-the frozen `goal/START.md`, so the rows it covered go `STALE` for a
-`tailrocks-plan` re-run.
-
-Then round two — `/goal Follow roadmap/offline-inspection/goal/RESUME.md`, the
-reopened rows, feedback, prove, reconcile again. DONE arrives only from a round
-that found no blocking defect, and reconcile is the only skill that may write it.
-
-Every pass also re-tests the part this feature makes vivid. The research
-recorded two facts that are true today and load-bearing tomorrow, and the ledger
-carries them as `A#` assumptions rather than as settled truth:
-
-- the upload client library the evidence pipeline leans on is maintained;
-- no cross-browser API exists for prioritising which stored data survives
-  eviction, so the storage-pressure behavior has to be a product decision.
-
-Reconcile retests those assumptions along with everything else. If the upload
-library went unmaintained between planning and slice 004, the row goes `STALE`
-with a reason instead of an executor discovering it mid-implementation and
-improvising a replacement. If a browser shipped the missing storage API, that is
-a decision to revisit, not a silent improvement.
-
-That is the whole argument for the pipeline in one paragraph: the facts that
-justified a design are written down with their sources, so when the world moves,
-you find out from a status row rather than from production.
-
-## 13. Retire the item — `tailrocks-reconcile`
-
-Round 02 closes it. The re-planned rows land with the gate proving how many
-Playwright specs it actually ran, sign-off now blocks on unsynced conflicts,
-the supervisor board distinguishes evidence state from document state, and
-`tailrocks-prove` walks both against the blessed design routes and their
-frozen baselines without finding anything blocking. Every hub row is terminal
-and `goal/check.sh` passed in the session.
-
-<Invoke skill="tailrocks-reconcile" args="offline-inspection" />
-
-Two commits, one invocation. The first writes `DONE` with `## Remaining`
-empty. The second retires the item — `roadmap/offline-inspection/` deleted
-whole, index row removed:
+Reconcile re-runs completed plan criteria, marks the vacuous visual row stale,
+folds the report into `Remaining`, and returns the item to `IN EXECUTION`:
 
 ```text
-commit 1  ~ roadmap/offline-inspection/README.md   Status: DONE, Remaining empty
-          ~ roadmap/README.md                      DONE
-commit 2  - roadmap/offline-inspection/            README.md, plan/, verification/, goal/
-          ~ roadmap/README.md                      row removed
+The supervisor board does not expose pending evidence state.
+The certificate path can issue while a server conflict remains unresolved.
+The visual gate does not prove that any visual test ran.
 ```
 
-**What does not go is the research.** `research/` holds standing topics, not
-item artifacts: `offline-crdt-selection`, `browser-offline-durability`, and
-`resumable-evidence-upload` were reusable the day they were written and are
-reusable now, linked to whatever item needs them next. Retirement deletes the
-item's folder and nothing else — which is exactly why the split between
-`roadmap/<slug>/` and `research/<topic>/` is worth keeping straight on a
-brownfield product, where the facts outlive the feature that paid to find
-them.
+The next run follows `goal/RESUME.md`. A product conflict routes to
+record-decision; an expired browser-storage assumption routes to research; a
+frozen command or screen contract routes to plan. Reconcile never patches the
+plan or dismisses a user statement.
 
-The item itself is recoverable in full, including the two `A#` assumptions and
-the rounds that retested them:
+When a later round proves every slice, gate, surface, and decision, reconcile
+writes `DONE`, then retires the item in the same invocation:
 
-```sh
-git log --format='%h %ad %s' --date=short -- roadmap/offline-inspection/
-git show <commit>^:roadmap/offline-inspection/README.md
+```text
+delivery/offline-inspection.md   final verified report
+roadmap/offline-inspection/      deleted whole
+roadmap/README.md                row removed
 ```
 
-A folder under `roadmap/` is work that is not finished, so a shipped feature
-does not have one. [`tailrocks-merge-pr`](/docs/skills/tailrocks-merge-pr)
-refuses to merge a pull request that gets either half wrong: an item claiming
-`DONE` with its folder still present, or a folder deleted while its latest
-verification round still names a blocking defect.
+The web design baseline, reusable research topics, and Git commit history stay
+available. The delivered item does not remain as a stale board record.
 
-## The contrast worth noticing
+## Why this flow differs from macOS
 
-The [macOS example](/docs/delivery/macos-app) is greenfield, and its risk lives
-in a boundary between two languages that has to be proven early — so the plan
-opens with a verification baseline and a tracer bullet.
-
-This one is brownfield, and its risk lives in the outside world: platform
-storage rules, protocol maturity, library maintenance. So the weight moves to
-`tailrocks-research`, and the plan's job is to keep those findings attached to
-the work as assumptions that get retested rather than facts that quietly expire.
-
-Same nine delivery skills, same order, completely different centre of gravity.
-Choosing where the effort goes is the judgement; the pipeline is what makes
-either choice survive contact with an agent.
+The macOS example front-loads FFI and runtime material risk. This feature
+front-loads offline durability, reconnect semantics, and evidence state. Both
+still require the same ten delivery owners, the same READY and PLANNED gates,
+the same executed proof, and the same evidence-backed retirement.

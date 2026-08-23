@@ -22,6 +22,13 @@ the round: the claim exists with nothing behind it.
 A surface the user reported and the item never claimed is also a row. Scope
 creep and misunderstanding both show up here, and both matter.
 
+Rows use unique stable IDs and exactly one capability: `CLI`, `APPLICATION`,
+or `BROWSER`. Service, terminal UI, data, and background effects select the
+driver that reaches their shipping boundary: a service client and terminal
+binary are CLI programs; an owned long-lived process uses an application
+adapter; a shipped web route uses a browser adapter. Assembly rejects any row
+without exactly one receipt or with receipts from multiple drivers.
+
 ## What counts as executed, per medium
 
 Executed means the shipping artifact ran and produced observable output. Not

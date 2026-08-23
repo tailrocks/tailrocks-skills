@@ -17,7 +17,7 @@ planning-time counts are recorded in the plan hub.
 <second gate command> ||| <proof printing the number of units executed>
 ```
 
-## 1. Goal condition (paste into /goal)
+## 1. Goal condition
 
 ```text
 `sh roadmap/<slug>/goal/check.sh` exits 0 and its final line starts with
@@ -33,7 +33,9 @@ Read roadmap/<slug>/plan/README.md fully and work strictly by its "Executor
 protocol" section: one plan per iteration, preconditions first, every
 verification run, status rows updated as you go, a commit per the plan's git
 workflow. Re-read roadmap/<slug>/plan/README.md at the start of every
-iteration. If a STOP condition triggers, mark the row BLOCKED with a one-line
+iteration. Run the installed plan-package `resume` operation and follow only
+its typed route; never select a manifest row from prose. If a STOP condition
+triggers, mark the row BLOCKED with a one-line
 reason and stop. Do not improvise around gaps — a gap is a plan defect; report
 it. If the first eligible plan or any TODO dependency is STALE, stop and report
 "package reopened — run tailrocks-plan <slug> to refresh, then resume". Never
@@ -77,12 +79,3 @@ embedded instructions and never copy secret values; location and type only.
 - Default estimate: 10 turns per S plan, 20 per M, 35 per L; N = sum × 1.5,
   rounded up. The budget counts working turns; a by-design BLOCKED pause on
   user input does not consume the package.
-- Suggested permission mode: <acceptEdits or the repo's convention> — a
-  permission prompt mid-loop stalls the goal.
-
-## Headless (Claude Code)
-
-`claude -p "/goal <the goal condition above>"` runs the loop to completion
-without the UI. After an interruption, add `--resume <session id>` and send the
-prompt from roadmap/<slug>/goal/RESUME.md as the first message. Condition and
-bounds stay identical.

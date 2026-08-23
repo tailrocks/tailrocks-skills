@@ -1,0 +1,6 @@
+{
+  "changed": [{ "status": "M", "path": "src/app.ts" }],
+  "baseFiles": {},
+  "headFiles": {},
+  "expected": []
+}

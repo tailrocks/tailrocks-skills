@@ -49,9 +49,9 @@ that skips fallible operations, retry loops. For each:
   can do; the house boundary rule applies — semantic error codes from the
   core, localized wording at the shell.
 
-A silent-failure pattern repeated across the diff is a defect class:
-route it to `tailrocks-remediate` rather than listing each instance as an
-independent nit.
+A silent-failure pattern repeated across the diff is a defect class: route it to
+`tailrocks-root-cause` for diagnosis rather than listing each instance as an
+independent nit. Only an approved correction routes to `tailrocks-remediate`.
 
 ## Type design — trigger: new or reshaped types
 

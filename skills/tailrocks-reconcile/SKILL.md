@@ -2,7 +2,7 @@
 name: tailrocks-reconcile
 description: >-
   Use only when the user explicitly requests this skill. True up roadmap/<slug>/ with execution reality: re-run each plan row's done criteria, reject criteria that executed nothing, fold the newest verification round into the item's Remaining, and set the status reality supports.
-argument-hint: "<roadmap-slug>"
+argument-hint: "<roadmap-slug> [--deep] [--batch]"
 disable-model-invocation: true
 license: Apache-2.0
 user-invocable: true
@@ -21,6 +21,14 @@ Reconcile makes each round cheap: it marks off what is genuinely done and
 rewrites the item's `## Remaining` from evidence, so the next round reads a
 short list. When nothing is left open, that pass ends the loop — the item
 reaches `DONE` and leaves the tree.
+
+Pass the roadmap slug directly; a retained `sweep` selector is invalid. `--deep`
+re-verifies every row, applicable criterion, blocker, and assumption regardless
+of claimed status, with no sampling or unchanged/empty-diff shortcut. `--batch`
+makes selection deterministic and non-interactive; it cannot infer decisions or
+authorize retirement. Both preserve every proof, frozen-contract, write, Git,
+four-condition retirement, and fresh-authorization gate without widening writes
+or verification-command authority. Invoke directly; no routing skill dispatches it.
 
 ## Boundaries
 

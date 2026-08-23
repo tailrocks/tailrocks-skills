@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: TypeScript Review"
+  short_description: "Review TypeScript and React read-only"
+  default_prompt: "Use $tailrocks-typescript-review to review this exact TypeScript/React scope read-only and report only verified language-contract defects. Do not edit, install, or mutate."
+policy:
+  allow_implicit_invocation: false

@@ -24,4 +24,6 @@ or explicitly `None` with a reason.
   counts, truncation per column>
 - **Keys**: <footer content per state; aliases that stay out of the footer>
 - **Frames**: <golden file names this section owns>
-- **Blessed**: <YYYY-MM-DD> by <user> — <one line on what was approved>
+- **Blessed**: <YYYY-MM-DD> by <user> at revision <full SHA> — registry
+  <digest>, view/fixture sources <digest>, frames/style matrix <digest>; <one
+  line on what exact screen/state/size/style set was approved>

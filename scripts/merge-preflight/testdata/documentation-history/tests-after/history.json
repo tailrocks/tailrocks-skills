@@ -1,0 +1,24 @@
+{
+  "commits": [
+    {
+      "sha": "1111111111111111111111111111111111111111",
+      "paths": ["src/app.ts"],
+      "message": "feat: behavior",
+      "parents": []
+    },
+    {
+      "sha": "2222222222222222222222222222222222222222",
+      "paths": ["docs/app.md"],
+      "message": "docs: cover\n\nTailrocks-Skill: tailrocks-document\n",
+      "parents": ["1111111111111111111111111111111111111111"]
+    },
+    {
+      "sha": "3333333333333333333333333333333333333333",
+      "paths": ["tests/app.test.ts"],
+      "message": "test: later proof",
+      "parents": ["2222222222222222222222222222222222222222"]
+    }
+  ],
+  "head": "3333333333333333333333333333333333333333",
+  "expected": true
+}

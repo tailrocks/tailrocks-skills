@@ -31,7 +31,7 @@ settings, and this skill's defaults govern.
 
 - **Authorization does not carry forward.** A prior session's "just merge
   everything" or an earlier merge in this session authorizes nothing now.
-  High-blast-radius with no explicit confirm for *this* PR → STOP.
+  High-blast-radius with no explicit confirm for _this_ PR → STOP.
 - Any required check failing → STOP. No bypass without `--admin <check>`
   naming that check, plus the confirm.
 - The repository's `## Before merge` worklist not done → STOP, do it first.
@@ -50,7 +50,7 @@ settings, and this skill's defaults govern.
    `gh pr view <PR>` and `gh pr diff <PR>`.
    **Complete when:** you know what the diff ships.
 
-2. **Classify blast radius.** *High* when the diff touches the repository's
+2. **Classify blast radius.** _High_ when the diff touches the repository's
    `## Blast radius` patterns; default classes: CI and workflow definitions,
    authentication or security surfaces, release and versioning machinery,
    data migrations, or anything needing a force-push or `--admin`. High →
@@ -58,11 +58,27 @@ settings, and this skill's defaults govern.
    the go.
    **Complete when:** the class is stated and any needed confirm obtained.
 
-3. **CI gate.** `gh pr checks <PR>`: pending → poll until green (unless
-   `--no-poll`); failing → STOP. Trust CI over local re-runs; run local
-   gates only when the repository's `## Checks` section names them.
-   **Complete when:** every required check is green or the named `--admin`
-   bypass was confirmed.
+3. **Run the machine preflight.** Resolve the real path of this installed
+   `SKILL.md`; the collection root is two directories above its containing
+   skill directory. Require the merge-preflight TypeScript entrypoint under that root's scripts directory to be
+   a regular non-symlink, then run it once with the real target repository root
+   and resolved PR number. Forward `--no-poll` when requested. The command owns
+   exact PR/head/base binding, the delivery and documentation predicates, and
+   required-check polling; it never merges or grants authority.
+
+   Read [`references/delivery-artifacts-policy.md`](references/delivery-artifacts-policy.md),
+   then apply user and repository precedence to the raw delivery/documentation
+   findings without altering the receipt. A reasoned `off` may waive only its
+   named gate. When every static blocker is waived but its receipt sampled
+   pending checks, rerun once with `--poll-with-static-blockers`; this changes
+   observation only, not raw findings. Terminal `pending` → STOP. Failed or
+   cancelled required checks → STOP unless the fresh invocation names exactly
+   one failing check through `--admin <check>` and supplies the required high
+   blast-radius confirmation. Trust hosted checks over local reruns; run local
+   gates only when `## Checks` names them.
+   **Complete when:** the typed receipt is bound to the current head, every
+   non-waived static predicate passes, and required checks are green or one
+   exact named bypass was freshly confirmed.
 
 4. **Pre-merge worklist.** Run the repository's `## Before merge` items —
    changelog entry, docs updates, version checks, whatever the file names —
@@ -72,38 +88,9 @@ settings, and this skill's defaults govern.
    external publication, or another irreversible effect requires explicit
    authorization immediately before that item.
 
-   **Delivery-artifact check.** Fires **only when this PR's diff touches
-   `roadmap/`**; otherwise do nothing and say nothing. Read-only: it blocks,
-   names the contradiction, names the skill that resolves it — and never
-   edits, deletes, or commits an artifact. Six contradictions, their
-   detection, the routing, and the switch-off form:
-   [`references/delivery-artifacts.md`](references/delivery-artifacts.md).
-   The one that must not survive a merge: an item reading `DONE` — or with an
-   empty `## Remaining` and every plan row terminal — while
-   `roadmap/<slug>/` still exists in the merge result. Delivered work leaves
-   the tree; `tailrocks-reconcile` retires it, in this same pull request.
-
-   **Negative space, stated when you report.** The check reads this PR's own
-   diff and files, requires no roadmap skill to be installed, and does nothing
-   in a repository with no `roadmap/`. A repository switches it off like any
-   other worklist item — a `Delivery-artifact check: off — <reason>` line
-   under `## Before merge` in `.tailrocks/pr.md`.
-   **Documentation gate.** Fires on every pull request. Find the commits
-   since the merge base that change doc-worthy surface — observable
-   behavior: source, configuration, dependencies, public contracts. Not
-   doc-worthy: tests-only, CI, chores, docs-only commits, and `roadmap/`
-   artifacts the delivery check owns. None found → pass and say why. Any
-   found → the newest one must be followed by a `Tailrocks-Skill:
-   tailrocks-document` commit covering HEAD; a documentation commit that
-   later behavior commits supersede is stale and does not count. Missing
-   or stale → STOP and route to `tailrocks-document`, which commits into
-   this same branch; re-run the gate after. The repository's own verdict
-   also counts when the worklist names it. Switch-off mirrors the delivery
-   check: a `Documentation gate: off — <reason>` line under
-   `## Before merge`.
-   **Complete when:** every listed item is done and pushed, either the
-   diff leaves `roadmap/` untouched or no delivery contradiction stands,
-   and the documentation gate passes.
+   Any commit or push invalidates the earlier receipt; do not carry it forward.
+   **Complete when:** every listed item is done and every branch-local change is
+   committed and pushed.
 
 5. **Reconcile metadata.** Title and body must match the final diff — a
    squash writes the title verbatim into history. Stale → fix via
@@ -115,19 +102,29 @@ settings, and this skill's defaults govern.
 
 6. **Merge.** Method from `## Merge`, else the repository's allowed methods
    (`gh repo view --json squashMergeAllowed,rebaseMergeAllowed,mergeCommitAllowed`)
-   — squash when allowed. Build the merge body in a file (prose summary, no
-   checklists), append the trailers the repository's commit convention
-   requires, then `gh pr merge <PR> --squash --body-file <file>` (or the
-   selected method). Confirm the squash title carries `(#N)` when the
-   repository expects it. Honor `## Merge` post-merge steps.
+   — squash when allowed. Build exact merge subject/body bytes (prose summary,
+   no checklists), append the trailers the repository's commit convention
+   requires, and confirm the squash subject carries `(#N)` when the repository
+   expects it. Execute the irreversible step only through the installed
+   merge-pr TypeScript entrypoint beside the preflight entrypoint. Require the
+   same regular, non-symlink collection-root binding and pass this skill's
+   loader-provided absolute `SKILL.md` path. Feed its closed
+   request on stdin, binding the final title/body, merge subject/body, method,
+   receipt target, reasoned named gate waivers, blast-radius decision, fresh
+   high-risk confirmation, and at most one named admin check. The command reruns
+   preflight, verifies metadata, issues exactly one guarded merge, and reconciles
+   a strict post-merge receipt. Between final request construction and the
+   command, run nothing that can change the PR head. An expected-head refusal is
+   terminal and requires a new transaction. Honor `## Merge` post-merge steps.
+   `merge_uncertain` is terminal: inspect the PR and never retry blindly.
    **Complete when:** the merge is confirmed on the base branch.
 
 7. **Report.** Merged SHA, the method, and what the pre-merge worklist did.
 
 ## Final gate
 
-Finish only when the merge happened with every required check green or an
-explicitly confirmed named bypass, the pre-merge worklist is done, no delivery
-contradiction stands in a diff that touches `roadmap/`, the documentation gate
-passed (trailer commit covering HEAD, or nothing doc-worthy and said so), and
-the merged title and body match the final diff.
+Finish only when the merge happened from the exact head bound by a fresh
+preflight receipt, every required check was green or one named bypass was
+explicitly confirmed, the worklist was done, every non-waived delivery and
+documentation predicate passed, and the merged title and body matched the final
+diff. A preflight receipt by itself never authorizes merge.

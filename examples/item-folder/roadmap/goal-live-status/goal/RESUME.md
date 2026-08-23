@@ -8,7 +8,7 @@ Operator invocation, after a dead loop, a stall, or a verification round that
 put work back on the board:
 
 ```text
-/goal Follow roadmap/goal-live-status/goal/RESUME.md
+Follow roadmap/goal-live-status/goal/RESUME.md
 ```
 
 ## Resume prompt

@@ -50,8 +50,8 @@ mise run ci      # lint + generated-file drift check + tests
 
 Three more checks sit beside them:
 
-- `mise run docs:check` fails when a generated file — a skill's README, a
-  documentation page, the root README's skill table — is stale against its
+- `mise run docs:check` fails when a generated documentation page or the root
+  README's skill table is stale against its
   `SKILL.md` source. Regenerate with `mise run docs`; never edit a generated
   file.
 - `claude --plugin-dir .` loads the collection locally, the smoke test that
@@ -61,15 +61,12 @@ Three more checks sit beside them:
   57/100 with the full artifact chain. A change that alters what the skills
   produce is checked against what those examples froze.
 
-## Evals: authored here, executed in CI
+## Behavioral evidence
 
-Every skill ships `evals/evals.json` — realistic normal, boundary, and
-refusal cases — and keeping them honest is part of every behavioral change.
-Execution is a CI concern, never a local step: it needs the agent CLI and
-spends real budget. The discipline that replaces a local run is the
-red-before observation: watch the behavior fail against the case prompt in a
-session before the change, watch it pass after, and record both in the pull
-request. CI owns the harness run once the change lands.
+Ordinary work records observed failures and deterministic acceptance checks in
+durable evidence artifacts. Per-skill eval trees are not part of this
+repository. Watching behavior fail before a change and pass after remains valid
+evidence; record both.
 
 ## The release re-verification
 

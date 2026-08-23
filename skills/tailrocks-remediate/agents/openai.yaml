@@ -1,6 +1,6 @@
 interface:
   display_name: "Tailrocks: Remediate"
-  short_description: "Redesign proven defect classes without cost tradeoffs"
-  default_prompt: "Use $tailrocks-remediate to derive the greenfield architecture that prevents this proven defect class, then choose the complete structural correction without optimizing for price, time, effort, or implementation size."
+  short_description: "Apply one approved root-cause correction"
+  default_prompt: "Use $tailrocks-remediate to apply this exact approved root-cause correction and prove both the instance and bounded defect class are prevented."
 policy:
   allow_implicit_invocation: false

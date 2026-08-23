@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Contribute Recon"
+  short_description: "Discover one external contribution contract"
+  default_prompt: "Use $tailrocks-contribute-recon to inspect this external project's contribution contract and produce only a current local recon handoff."
+policy:
+  allow_implicit_invocation: false

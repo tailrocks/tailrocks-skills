@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Simplify Audit"
+  short_description: "Find measurable behavior-preserving removals"
+  default_prompt: "Use $tailrocks-simplify-audit to inspect this one diff read-only and report only measured removals with explicit preservation evidence."
+policy:
+  allow_implicit_invocation: false

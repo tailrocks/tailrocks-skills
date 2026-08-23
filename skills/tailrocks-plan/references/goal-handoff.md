@@ -44,6 +44,31 @@ regression, not a pass.
 |------|-------|-------------------|
 | `<command>` | `<proof>` | 412 tests |
 
+## Command proofs
+
+Every command named by any plan appears exactly once. Receipts come from the
+installed `scripts/plan-package.ts prove` entrypoint and bind the command,
+proof command, repository HEAD, working directory, output digests, and units.
+
+| Plan | Command | Classification | Receipt |
+|------|---------|----------------|---------|
+| 001 | `<argv>` | RUNNABLE | `<typed receipt>` |
+| 002 | `<argv>` | DEFERRED by 001; blocker `<argv>` | `<typed blocker receipt>` |
+
+`RUNNABLE` requires a successful command and an exact positive integer from
+its dedicated proof command. `DEFERRED` requires the earlier enabling slice
+and a successful blocker precondition proving the dependency absent. Invalid
+targets, unresolved paths, and missing or zero proof are planning defects.
+The entrypoint accepts one closed `tailrocks.plan-package-input/v1` JSON object
+on stdin. `prove` carries `root`, `expected_head`, and one command declaration;
+`validate` carries the expected item slug, research-gap manifest, complete
+command partition, and every matching proof receipt. Commands and proof
+commands are argv arrays with absolute executables, a root-relative working
+directory, a timeout, and any allowed build-output roots. Only conventional
+cache/build roots are allowlisted; source, roadmap, skill, script, and research
+paths remain read-stable even when ignored. The tool refuses every other
+tracked, staged, ignored, or untracked repository mutation.
+
 ## Item briefs
 
 - **001 — <title>**: <one goal sentence>.
@@ -97,15 +122,26 @@ frozen snapshot — stop and report "decisions changed — run tailrocks-plan
 gate-failed or gate-vacuous is unfinished work — a gate that executed nothing
 has not been satisfied.
 
+The closed resume input is `schema`, `operation: "resume"`, canonical `root`,
+`expected_head`, and `manifest_path`. It derives the manifest digest, verifies
+the installed goal checker and frozen package, validates regular plan files and
+the dependency DAG, and rechecks repository identity after inspection. A
+package containing DONE work resumes only when HEAD is the active reconcile
+owner's marked commit (`Tailrocks-Skill: tailrocks-reconcile`); any later
+repository movement makes the route `RECONCILE_REQUIRED` again. Git history is
+the receipt; no parallel reconciliation-log artifact exists.
+
 1. Re-read this file first — other sessions may have updated it. Set the
    roadmap item at roadmap/<slug>/README.md to IN EXECUTION on the first
    plan you start, and update its roadmap/README.md row in the same edit.
-2. Pick the first TODO plan whose dependencies are all DONE. Re-run the
+2. Run the installed `scripts/plan-package.ts resume` entrypoint and follow its
+   typed route only. `CONTINUE` names the sole IN PROGRESS row; `START` names
+   the first TODO row whose dependencies are DONE; `RECONCILE_REQUIRED`,
+   `REPLAN_REQUIRED`, `BLOCKED`, and `COMPLETE` are terminal for this session.
+   Re-run the
    cheapest done criterion of the most recent DONE dependency before
-   building on it. Set the picked row to IN PROGRESS. If the first eligible
-   plan, or any dependency of a TODO plan, is STALE: stop the loop and
-   report "package reopened — run tailrocks-plan <slug> to refresh, then
-   resume". Never build on top of a STALE or BLOCKED row.
+   building on a `START` route. Set that row to IN PROGRESS. Never select a row
+  from prose or build on a STALE or BLOCKED row.
 3. Read the plan file fully. Run its preconditions; a failure is a STOP.
 4. Follow the steps; run every verification; honor every STOP condition
    and Must NOT.
@@ -170,17 +206,15 @@ Three files, copied from this skill's templates and filled in:
 
 | File | Template | Contents |
 |---|---|---|
-| `START.md` | `templates/START.md` | the gates block, the goal condition, the kickoff prompt, bounds, the headless note |
+| `START.md` | `templates/START.md` | the gates block, the goal condition, the kickoff prompt, and bounds |
 | `RESUME.md` | `templates/RESUME.md` | the resume prompt for any interrupted or reconciled session |
 | `check.sh` | `templates/check.sh` | copied verbatim, never edited per item |
 
-Each fenced block in `START.md` and `RESUME.md` is independently pasteable,
-because hosts consume them differently. A host with a **persisted goal loop**
-takes the condition into that loop and the kickoff prompt as its first
-message. A host that takes **a task directly** gets the kickoff prompt with
-the condition restated inside it. A host with **no goal loop** consumes both
-as manual prompts, with no persisted objective and no stop enforcement — the
-operator runs the script and reads its final line.
+Each fenced block in `START.md` and `RESUME.md` is independently consumable.
+A host with a persisted objective uses the condition and kickoff separately;
+a host that takes one task uses the kickoff with the condition restated; an
+operator may follow both manually. Product CLI, permission, and session-resume
+syntax belongs to client documentation, never this shared handoff.
 
 ## The item's `## Run` section — the copy-paste surface
 
@@ -192,16 +226,16 @@ with exactly two blocks:
 ```markdown
 ## Run
 
-Start execution:
+Start execution from:
 
 ```text
-/goal Follow roadmap/<slug>/goal/START.md
+roadmap/<slug>/goal/START.md
 ```
 
-Resume after any interruption:
+Resume after any interruption from:
 
 ```text
-/goal Follow roadmap/<slug>/goal/RESUME.md
+roadmap/<slug>/goal/RESUME.md
 ```
 ```
 
@@ -221,9 +255,8 @@ gate per line, in the form:
 ```
 
 - **The command is the gate**; a non-zero exit is `BLOCKED gate-failed`.
-- **The proof prints how many units the command executed** — tests run,
-  packages checked, files formatted. `check.sh` reads the digits from the
-  proof's output: zero or empty is `BLOCKED gate-vacuous`, and a line with no
+- **The proof prints one exact positive integer** — tests run, packages checked,
+  files formatted. Any other output, zero, or empty is `BLOCKED gate-vacuous`, and a line with no
   `|||` is `BLOCKED gate-unproven`.
 - **Two gates maximum.** The plans' own done criteria carry everything else;
   a third gate is a done criterion in the wrong file.

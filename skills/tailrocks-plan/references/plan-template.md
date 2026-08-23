@@ -2,7 +2,7 @@
 
 Every plan is written for an executor with **zero context**: it has not seen
 the roadmap item, the research, the spec, the other plans, or any
-conversation — it may be a `/goal` loop iterating with a fresh window per
+conversation — it may be a persistent loop iterating with a fresh window per
 plan. Assume it follows explicit instructions well and is weak at filling
 gaps, recovering from ambiguity, or knowing when to stop.
 
@@ -375,13 +375,12 @@ type only.
 Orchestrator checks (not the reviewer's):
 
 - Commands are cited to the verification-tooling research.
-- **Every command the plan names — preconditions, step verifications, test
-  plan, done criteria — was executed once during planning**, and the done
-  criterion records what it did: the count it printed, the targets it built,
-  the files it listed. A package, target, or path that fails to resolve is a
-  planning defect caught here, not an executor's surprise at the end of a
-  loop. A command that cannot run yet (it depends on an earlier slice) is
-  recorded as such, with the slice that makes it runnable.
+- Every runnable command the plan names — preconditions, step verifications,
+  test plan, done criteria — was executed once during planning and has a typed
+  positive-unit proof receipt in the hub. A legitimately dependency-blocked
+  command names its enabling slice and has an executed precondition receipt
+  proving that dependency absent. A missing target, path, or package, or a
+  command without positive proof, is a planning defect rather than a block.
 - Every user-facing surface in the plan's scope appears in the Documentation
   table with a canonical page, or is recorded there as undocumented by
   decision with its reason.
@@ -397,8 +396,8 @@ second package beside it:
 - Keep numbering monotonic. A superseded plan is marked stale, never deleted:
   a deleted row is coverage `goal/check.sh` can no longer count, and its
   requirement loses its trace in the ledger.
-- Record spec deltas per the spec format rather than rewriting a requirement
-  in place, so what changed stays legible.
+- Rewrite current spec truth in place. Git history carries prior versions; the
+  package keeps no changelog or deprecated requirement route.
 - Re-stamp `spec/decisions.md` from the item's live `## Decisions` body after
   the refreshed spec is final — that is the only way the snapshot moves, and
   it clears the `decisions-drift` gate that fired when the decision changed.

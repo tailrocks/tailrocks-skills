@@ -1,6 +1,6 @@
 <!--
 Base PR body template — the starting shape tailrocks-pr-template tailors
-into a repository's own .github/PULL_REQUEST_TEMPLATE.md. Never lands in a
+into a repository's resolved pull-request template target. Never lands in a
 repository verbatim: every section survives only when the repository's
 structure and merged-PR history earn it, and every <placeholder> command is
 replaced with the repository's real gate.

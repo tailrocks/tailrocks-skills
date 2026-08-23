@@ -7,7 +7,11 @@ bun = "1.4.0"
 
 [tasks.lint]
 description = "Validate every skill, manifest, catalog group, and reverse catalog"
-run = "bun run scripts/validate-skills.ts"
+run = "bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts"
+
+[tasks."audit-plan-state:check"]
+description = "Validate audit migration row state and atomic closure"
+run = "bun run scripts/check-audit-plan-state.ts --mode progress"
 
 [tasks.fmt]
 description = "Check formatting of the TypeScript this repository owns"
@@ -17,21 +21,41 @@ run = "oxfmt --check scripts docs/src docs/scripts docs/vite.config.ts docs/sour
 description = "Format the TypeScript this repository owns"
 run = "oxfmt scripts docs/src docs/scripts docs/vite.config.ts docs/source.config.ts"
 
+[tasks."migration-check"]
+description = "Prove audit progress, ownership, generated docs, formatting, and deterministic tests"
+run = "bun run scripts/check-audit-plan-state.ts --mode progress && bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && oxfmt --check scripts docs/src docs/scripts docs/vite.config.ts docs/source.config.ts && bun run scripts/run-tests.ts"
+
 [tasks.ci]
 description = "Everything CI runs: lint, generated-file drift check, script tests"
-run = "bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && bun test scripts/"
+run = "bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && bun run scripts/run-tests.ts"
 
 [tasks.test]
 description = "Run the script test suite"
-run = "bun test scripts/"
+run = "bun run scripts/run-tests.ts"
+
+[tasks."pr:checkout"]
+description = "Resolve, guard, switch, and verify one pull request checkout"
+run = "bun run scripts/checkout-pr.ts"
+
+[tasks."pr:post-review"]
+description = "Prepare or consume a separately authorized PR review posting challenge"
+run = "bun run scripts/post-pr-review.ts"
+
+[tasks."pr:merge-preflight"]
+description = "Run bounded read-only merge readiness predicates"
+run = "bun run scripts/merge-preflight.ts"
+
+[tasks."pr:merge"]
+description = "Consume an exact authorized merge request and reconcile its receipt"
+run = "bun run scripts/merge-pr.ts --skill-file $MISE_PROJECT_ROOT/skills/tailrocks-merge-pr/SKILL.md"
 
 [tasks.docs]
-description = "Regenerate skill READMEs and documentation pages from SKILL.md"
-run = "bun run scripts/generate-docs.ts"
+description = "Regenerate documentation pages from SKILL.md"
+run = "bun run scripts/generate-references.ts --write && bun run scripts/generate-docs.ts"
 
 [tasks."docs:check"]
-description = "Fail when a generated README or documentation page is out of date"
-run = "bun run scripts/generate-docs.ts --check"
+description = "Fail when a generated documentation page or root catalog is out of date"
+run = "bun run scripts/generate-references.ts --check && bun run scripts/generate-docs.ts --check"
 
 [tasks."docs:dev"]
 description = "Run the documentation site locally with hot reload"
@@ -47,7 +71,3 @@ run = "bun install --frozen-lockfile && bun run build"
 description = "Serve the built documentation site as GitHub Pages will"
 dir = "docs"
 run = "bun run preview"
-
-[tasks.evals]
-description = "Skill eval runner — CI/CD concern, not yet wired; never a local step (needs the claude CLI; spends budget)"
-run = "bun scripts/run-evals.ts"

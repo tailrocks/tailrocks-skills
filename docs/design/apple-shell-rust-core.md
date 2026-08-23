@@ -64,7 +64,7 @@ where each one is encoded; the skills are the normative text.
   — decisions 1, 4, 7 in full: the effect protocol, per-framework
   mechanism/policy splits, networking and persistence split, the durable
   outbox, and the iOS lifecycle rules.
-- `skills/tailrocks-swift-project-setup/references/rust-core.md` —
+- `skills/tailrocks-swift-rust-core-setup/references/rust-core.md` —
   decision 8: layout, Cargo configuration, pins, packaging, and the CI
   gate order.
 - `skills/tailrocks-macos-design/references/anti-patterns.md` §12 — the

@@ -1,3 +1,10 @@
+import { lstat, readFile, realpath } from "node:fs/promises";
+import path from "node:path";
+
+import { boundedFetchJson } from "../../../scripts/bounded-fetch";
+
+const schema = "tailrocks.package-version-resolution/v1";
+
 type RegistryResponse = {
   "dist-tags"?: Record<string, string>;
   homepage?: string;
@@ -11,110 +18,139 @@ type RegistryResponse = {
   >;
 };
 
-const args = Bun.argv.slice(2);
-const checkTemplatePath = args[0] === "--check-template" ? args[1] : undefined;
-if (args[0] === "--check-template" && !checkTemplatePath) {
-  console.error(
-    "usage: bun run scripts/resolve-package-versions.ts --check-template <package.json>",
-  );
-  process.exit(2);
+type Parsed = { readonly template?: string; readonly packages: readonly string[] };
+
+export function parseArguments(args: readonly string[]): Parsed {
+  if (args[0] === "--check-template") {
+    if (args.length !== 2 || !args[1]) throw new Error("--check-template requires exactly one path");
+    return { template: args[1], packages: [] };
+  }
+  const valid = /^(?:@[a-z0-9][a-z0-9._-]*\/[a-z0-9][a-z0-9._-]*|[a-z0-9][a-z0-9._-]*)$/;
+  if (
+    args.length === 0 ||
+    args.length > 200 ||
+    new Set(args).size !== args.length ||
+    args.some((name) => !valid.test(name))
+  )
+    throw new Error("usage: resolve-package-versions.ts <unique-package>... | --check-template PATH");
+  return { packages: [...args] };
 }
 
-const pinned = new Map<string, string>();
-let packages = args;
-if (checkTemplatePath) {
-  const template = (await Bun.file(checkTemplatePath).json()) as {
+async function templatePackages(file: string): Promise<{ pinned: Map<string, string>; packages: string[] }> {
+  const absolute = path.resolve(file);
+  const info = await lstat(absolute);
+  if (
+    !info.isFile() ||
+    info.isSymbolicLink() ||
+    info.size > 2_000_000 ||
+    (await realpath(absolute)) !== absolute
+  )
+    throw new Error("template must be a canonical bounded regular file");
+  const template = JSON.parse(await readFile(absolute, "utf8")) as {
     packageManager?: string;
     dependencies?: Record<string, string>;
     devDependencies?: Record<string, string>;
   };
-  for (const [name, version] of Object.entries({
-    ...template.dependencies,
-    ...template.devDependencies,
-  })) {
+  const pinned = new Map<string, string>();
+  for (const [name, version] of Object.entries({ ...template.dependencies, ...template.devDependencies })) {
+    if (typeof version !== "string") throw new Error(`template version is invalid: ${name}`);
     pinned.set(name, version);
   }
   const bunVersion = template.packageManager?.match(/^bun@(.+)$/)?.[1];
   if (bunVersion) pinned.set("bun", bunVersion);
-  packages = [...pinned.keys()];
+  if (pinned.size === 0 || pinned.size > 200) throw new Error("template package count is invalid");
+  return { pinned, packages: [...pinned.keys()] };
 }
 
-if (packages.length === 0) {
-  console.error(
-    "usage: bun run scripts/resolve-package-versions.ts <package>... | " +
-      "--check-template <package.json>",
+async function main(args: readonly string[]): Promise<number> {
+  let parsed: Parsed;
+  let pinned = new Map<string, string>();
+  let packages: string[] = [];
+  try {
+    parsed = parseArguments(args);
+    packages = [...parsed.packages];
+    if (parsed.template) ({ pinned, packages } = await templatePackages(parsed.template));
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        schema,
+        outcome: "refused",
+        code: "invalid_arguments",
+        results: [],
+        errors: 0,
+        stale: 0,
+        peer_issues: [],
+        mutations: [],
+        detail: String(error),
+      }),
+    );
+    return 2;
+  }
+  const results = await Promise.all(
+    packages.map(async (name) => {
+      try {
+        const body = await boundedFetchJson<RegistryResponse>(
+          `https://registry.npmjs.org/${encodeURIComponent(name)}`,
+          { maximumBytes: 10_000_000 },
+        );
+        const latest = body["dist-tags"]?.latest ?? null;
+        const prerelease = latest !== null && /-[0-9A-Za-z]/.test(latest);
+        return {
+          ecosystem: "npm-registry-via-bun",
+          name,
+          latest,
+          pinned: pinned.get(name) ?? null,
+          current: pinned.has(name) ? pinned.get(name) === latest : null,
+          selected_channel: latest === null ? "prerelease-or-unknown" : prerelease ? "prerelease" : "stable",
+          dist_tags: body["dist-tags"] ?? {},
+          peer_dependencies: latest === null ? {} : (body.versions?.[latest]?.peerDependencies ?? {}),
+          peer_dependencies_meta:
+            latest === null ? {} : (body.versions?.[latest]?.peerDependenciesMeta ?? {}),
+          homepage: body.homepage ?? null,
+          repository: typeof body.repository === "string" ? body.repository : (body.repository?.url ?? null),
+        };
+      } catch (error) {
+        return {
+          ecosystem: "npm-registry-via-bun",
+          name,
+          error: error instanceof Error ? error.message : String(error),
+        };
+      }
+    }),
   );
-  process.exit(2);
+  const errors = results.filter((result) => "error" in result).length;
+  const stale = results.filter((result) => "current" in result && result.current === false).length;
+  const peerIssues = parsed.template
+    ? results.flatMap((result) => {
+        if (!("peer_dependencies" in result)) return [];
+        return Object.entries(result.peer_dependencies).flatMap(([name, range]) => {
+          if (result.peer_dependencies_meta[name]?.optional === true) return [];
+          const version = pinned.get(name);
+          if (version === undefined || Bun.semver.satisfies(version, range)) return [];
+          return [{ package: result.name, peer: name, required: range, pinned: version }];
+        });
+      })
+    : [];
+  const failed = errors > 0 || stale > 0 || peerIssues.length > 0;
+  console.log(
+    JSON.stringify(
+      {
+        schema,
+        outcome: failed ? "failed" : "success",
+        code: failed ? "resolution_failed" : "resolved",
+        resolved_at: new Date().toISOString(),
+        results,
+        errors,
+        stale,
+        peer_issues: peerIssues,
+        mutations: [],
+        detail: failed ? "registry or compatibility checks failed" : "all package versions resolved",
+      },
+      null,
+      2,
+    ),
+  );
+  return failed ? 1 : 0;
 }
 
-const results = await Promise.all(
-  packages.map(async (name) => {
-    try {
-      const response = await fetch(`https://registry.npmjs.org/${encodeURIComponent(name)}`);
-      if (!response.ok) throw new Error(`registry returned ${response.status}`);
-      const body = (await response.json()) as RegistryResponse;
-      const latest = body["dist-tags"]?.latest ?? null;
-      const prerelease = latest !== null && /-[0-9A-Za-z]/.test(latest);
-      return {
-        ecosystem: "npm-registry-via-bun",
-        name,
-        latest,
-        pinned: pinned.get(name) ?? null,
-        current: pinned.has(name) ? pinned.get(name) === latest : null,
-        selected_channel:
-          latest === null ? "prerelease-or-unknown" : prerelease ? "prerelease" : "stable",
-        dist_tags: body["dist-tags"] ?? {},
-        peer_dependencies: latest === null ? {} : (body.versions?.[latest]?.peerDependencies ?? {}),
-        peer_dependencies_meta:
-          latest === null ? {} : (body.versions?.[latest]?.peerDependenciesMeta ?? {}),
-        homepage: body.homepage ?? null,
-        repository:
-          typeof body.repository === "string" ? body.repository : (body.repository?.url ?? null),
-      };
-    } catch (error) {
-      return {
-        ecosystem: "npm-registry-via-bun",
-        name,
-        error: error instanceof Error ? error.message : String(error),
-      };
-    }
-  }),
-);
-
-const errors = results.filter((result) => "error" in result).length;
-const stale = results.filter((result) => "current" in result && result.current === false).length;
-const peerIssues = checkTemplatePath
-  ? results.flatMap((result) => {
-      if (!("peer_dependencies" in result)) return [];
-      return Object.entries(result.peer_dependencies).flatMap(([name, range]) => {
-        if (result.peer_dependencies_meta[name]?.optional === true) return [];
-        const version = pinned.get(name);
-        if (version === undefined || Bun.semver.satisfies(version, range)) return [];
-        return [
-          {
-            package: result.name,
-            peer: name,
-            required: range,
-            pinned: version,
-          },
-        ];
-      });
-    })
-  : [];
-console.log(
-  JSON.stringify(
-    {
-      resolved_at: new Date().toISOString(),
-      results,
-      errors,
-      stale,
-      peer_issues: peerIssues,
-    },
-    null,
-    2,
-  ),
-);
-
-if (checkTemplatePath && (errors > 0 || stale > 0 || peerIssues.length > 0)) {
-  process.exit(1);
-}
+if (import.meta.main) process.exit(await main(Bun.argv.slice(2)));

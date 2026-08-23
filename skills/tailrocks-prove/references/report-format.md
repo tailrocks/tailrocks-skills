@@ -20,6 +20,9 @@ patches — so it is ordered for the first and structured for the other two.
 8. **Recommended order** — with the gating relationships stated.
 9. **What was not executed** — surfaces skipped, with the obstacle and the
    claims left unproven.
+10. **Machine evidence** — the byte-exact assembled capability-driver bundle;
+    its inventory partition and digest make every projected execution fact
+    re-derivable.
 
 Blocking defects before decision compliance, and both before drift, because
 that is descending order of "can a person use this at all, and does it honor
@@ -71,6 +74,11 @@ nobody reviewed.
 State the mechanism when the evidence shows it, not a guess: "returns a stored
 value nothing ever assigns to" is mechanism; "probably a race" is a guess
 wearing mechanism's clothes.
+
+Every execution block cites its surface receipt SHA-256. Its command, exit,
+duration, decisive line, and artifacts are projections of that receipt. If the
+prose and receipt disagree, the receipt wins and the round is invalid until the
+prose is corrected; never edit the machine bundle to fit a verdict.
 
 ## Writing for reconcile
 

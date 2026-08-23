@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Rust Project Audit"
+  short_description: "Audit a Rust workspace baseline without mutation"
+  default_prompt: "Use $tailrocks-rust-project-audit to inspect this Rust workspace's layout, policy, toolchain, dependencies, and gates and report exact gaps without changing files."
+policy:
+  allow_implicit_invocation: false

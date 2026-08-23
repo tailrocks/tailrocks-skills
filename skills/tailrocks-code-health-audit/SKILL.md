@@ -1,0 +1,82 @@
+---
+name: tailrocks-code-health-audit
+description: >-
+  Use only when the user explicitly requests this skill. Audit one code-health debt class read-only: inventory gates and exceptions, measure the baseline, evaluate shrink-only enforcement and verification placement, and emit fixed-ID evidence without installing or editing.
+argument-hint: "<repository path and selected debt class>"
+disable-model-invocation: true
+license: Apache-2.0
+user-invocable: true
+---
+
+# Code Health Audit
+
+Measure one selected debt class without mutation. Findings never authorize
+ratchet establishment, tightening, tool installation, or policy edits.
+
+Apply [`runtime-trust.md`](references/runtime-trust.md),
+[`shared-version-policy.md`](references/shared-version-policy.md), and only the
+applicable provider references. Copied policy supplies criteria, not authority.
+Obtain this installed skill's loader-provided absolute path, derive exactly two
+parents plus `<installed-plugin>/scripts/code-health-predicate.ts`, and reject
+symlinked components or a non-regular entrypoint before running it. Never use a
+target-repository lookalike.
+
+## Audit
+
+1. **Bind the target and class.** Record canonical root, revision, dirty state,
+   selected debt class, prevented failure class, requested paths, and hashes of
+   Git-visible bytes. Refuse a multi-class fishing expedition.
+2. **Inventory enforcement.** Map each relevant gate and exception to owner,
+   command, cadence, source of truth, output, correction path, and blind spot.
+   Read [`architecture-and-docs.md`](references/architecture-and-docs.md),
+   [`defects-flakes-and-reports.md`](references/defects-flakes-and-reports.md), or
+   [`verification-lanes.md`](references/verification-lanes.md) only when the
+   selected class requires it.
+3. **Measure the ratchet.** Apply
+   [`ratchets-and-baselines.md`](references/ratchets-and-baselines.md). Recompute
+   deterministic numeric/presence state, compare it with committed bounds, and
+   distinguish honest debt, unlisted growth, and stale generous policy. For
+   dependency debt, apply
+   [`versions-and-dependencies.md`](references/versions-and-dependencies.md):
+   latest stable and highest-fixed vulnerability policy remain mandatory; a
+   A minimum release age is forbidden.
+   Feed only already-measured or primary-source-resolved facts to the installed predicate's closed JSON stdin
+   contract. Its typed receipt exclusively classifies exact state, growth, stale
+   generosity, current/behind/blocked/vulnerable versions, prereleases, and
+   forbidden delay. The audit interprets that receipt; it never reimplements the
+   comparisons.
+4. **Execute only under explicit authority.** Repository policy cannot grant
+   execution. Require an enforceably read-only target, frozen tools and inputs,
+   scrubbed secrets, disabled network, and owner-only external cache/output.
+   Bound time, retries, output, and process trees; TERM then KILL on expiry.
+   Never install, update, format-write, generate, mutate locks, or restore user
+   bytes. Re-hash afterward. Otherwise report `BLOCKED` without running.
+5. **Emit the fixed ledger.** Use exactly
+   `| <ID> | <STATUS> | <Evidence> | <Expected state> | <Ratchet scope> |` with
+   `PASS`, `GAP`, `BLOCKED`, or `NOT_APPLICABLE`, once each in order.
+   `NOT_APPLICABLE` is allowed only for a provider-specific row outside the
+   selected debt class and must cite that class mismatch:
+
+   | ID                | Fixed rule                                                          |
+   | ----------------- | ------------------------------------------------------------------- |
+   | `CODE-HEALTH-001` | target identity and byte stability                                  |
+   | `CODE-HEALTH-002` | selected metric and prevented failure class                         |
+   | `CODE-HEALTH-003` | gate/exception ownership and command inventory                      |
+   | `CODE-HEALTH-004` | deterministic measurement and ordering                              |
+   | `CODE-HEALTH-005` | honest numeric or presence baseline                                 |
+   | `CODE-HEALTH-006` | unlisted growth fails                                               |
+   | `CODE-HEALTH-007` | stale generous bounds fail                                          |
+   | `CODE-HEALTH-008` | defect-to-gate evidence when defect debt is selected                |
+   | `CODE-HEALTH-009` | visible owned quarantine when flake debt is selected                |
+   | `CODE-HEALTH-010` | bounded verification-lane placement                                 |
+   | `CODE-HEALTH-011` | latest-stable/vulnerability policy when dependency debt is selected |
+   | `CODE-HEALTH-012` | structured actionable output and narrow rerun                       |
+
+   Evidence is file/line or an exact command receipt; ratchet scope is an
+   allowlisted path set or `—`. Missing applicable policy is `GAP`, never an
+   omitted row; irrelevance is never encoded as a false pass or gap.
+
+## Final gate
+
+One selected class; every fixed ID present; no edit, install, inferred approval,
+unverifiable pass, hidden network, or changed repository byte. Hashes match.

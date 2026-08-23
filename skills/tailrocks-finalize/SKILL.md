@@ -57,9 +57,17 @@ carries the reason.
 
 1. **Load and assess.** Read `roadmap/<slug>/README.md` fully and
    [`references/readiness-and-grilling.md`](references/readiness-and-grilling.md).
-   Never re-ask settled ground (Decisions, Vocabulary, Must not). If the
-   item is `DRAFT`, stop and route to `tailrocks-brainstorm`; content richness
-   never bypasses status ownership.
+   Obtain the loader-provided absolute path of this installed `SKILL.md`; ignore
+   ambient path variables. Invoke its exact sibling command as `bun
+   <installed-plugin>/scripts/finalize-state.ts --skill-file
+   <absolute-SKILL.md> <roadmap-slug> [--batch]`. The command verifies the
+   installed package identity and emits one `tailrocks.finalize-state/v1`
+   receipt. Its no-input receipt routes `DRAFT` to `tailrocks-brainstorm`,
+   preserves `READY`, refuses every later or mismatched state, and reports that
+   `SHAPING` needs evidence. Never edit either Status field yourself and never
+   invoke a target-repository lookalike. Never re-ask settled ground
+   (Decisions, Vocabulary, Must not). Content richness never bypasses status
+   ownership.
    **Complete when:** the gap between the item and the readiness checklist
    is mapped into a decision tree.
 
@@ -68,6 +76,13 @@ carries the reason.
    user input), then must-nots and quality bar, then the remaining open
    questions. Capture described screens as schematic mockups in the item
    and confirm each back. Write every resolution immediately.
+   Represent the remaining interview as closed nodes with stable IDs,
+   questions, recommendations, dependencies, and optional answers. A recorded
+   answer must carry a same-item-digest `live_user` receipt; prose or a prior
+   session is not a substitute. Send `action: assess` to the command using the
+   schema documented in the command README installed beside it; present only its
+   returned frontier. Interactive mode returns one sorted ready node and batch
+   mode the complete current ready frontier. Both use the same readiness gate.
    **Complete when:** the frontier is empty or the user steered out.
 
 3. **Classify the remainder.** Every still-open item becomes exactly one
@@ -80,8 +95,12 @@ carries the reason.
    checklist. The planning dry run is earned by fresh eyes per the
    reference — a clean-context reader of the item alone reports its
    inventory and every guess or question — never by self-certification. Apply
-   the status change and index-row update per the roadmap item format (owned by
-   tailrocks-idea's roadmap-item-format.md). On pass, name the next step:
+   neither status manually. Build the closed `tailrocks.finalize-readiness/v1`
+   input with exact item and index SHA-256 digests, one evidence-bearing entry
+   for every checklist ID, the fully answered node graph and live-human
+   receipts, and the digest-bound dry-run inventory. Send `action: publish` to
+   the same command. Only its atomic `published` receipt grants `READY`; a
+   `shaping`, `routed`, `refused`, or `failed` receipt does not. On pass, name the next step:
    the design stage for every screen with a visual surface and no blessed
    reference — `tailrocks-tui-design` for a terminal screen,
    `tailrocks-web-design` for a web screen, `tailrocks-macos-design`

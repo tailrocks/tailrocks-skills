@@ -56,7 +56,7 @@ function fixture(
   const fingerprintLine = options.omitFingerprint ? "" : `Frozen contract fingerprint: \`${frozen}\`\n\n`;
   writeFileSync(
     join(plan, "README.md"),
-    `${fingerprintLine}| Plan | Status |\n|---|---|\n| 000 | ${options.status ?? "DONE"} |\n`,
+    `${fingerprintLine}## Execution order & status\n\n| Plan | Title | Covers | Priority | Effort | Depends on | Status |\n|------|-------|--------|----------|--------|------------|--------|\n| 000 | Demo | F1 | P1 | S | — | ${options.status ?? "DONE"} |\n`,
   );
   git(root, "add", ".");
   git(root, "commit", "-qm", "generated");
@@ -123,6 +123,16 @@ describe("check.sh", () => {
     expect(check(root)).toEqual({ code: 1, verdict: "TAILROCKS GOAL: BLOCKED gate-vacuous=true" });
   });
 
+  test("blocks proof prose containing incidental digits", () => {
+    const { root } = fixture({ gate: "true ||| echo '17 tests passed'" });
+    expect(check(root)).toEqual({ code: 1, verdict: "TAILROCKS GOAL: BLOCKED gate-vacuous=true" });
+  });
+
+  test("blocks noncanonical leading-zero proof", () => {
+    const { root } = fixture({ gate: "true ||| printf 00" });
+    expect(check(root)).toEqual({ code: 1, verdict: "TAILROCKS GOAL: BLOCKED gate-vacuous=true" });
+  });
+
   test("blocks a gate whose proof expression is missing", () => {
     const { root } = fixture({ gate: "true" });
     expect(check(root)).toEqual({ code: 1, verdict: "TAILROCKS GOAL: BLOCKED gate-unproven=true" });
@@ -136,8 +146,14 @@ describe("check.sh", () => {
     expect(check(root)).toEqual({ code: 1, verdict: `TAILROCKS GOAL: BLOCKED malformed=${reason}` });
   });
 
-  test("blocks a malformed status table", () => {
-    const { root } = fixture({ status: "REJECTED" });
+  test("accepts an all-rejected terminal package", () => {
+    const { root } = fixture({ status: "REJECTED (decision removed scope)" });
+    const head = git(root, "rev-parse", "--short", "HEAD");
+    expect(check(root)).toEqual({ code: 0, verdict: `TAILROCKS GOAL: PASS ${head}` });
+  });
+
+  test("blocks an unknown status", () => {
+    const { root } = fixture({ status: "FINISHED" });
     expect(check(root)).toEqual({ code: 1, verdict: "TAILROCKS GOAL: BLOCKED malformed=status-table" });
   });
 });

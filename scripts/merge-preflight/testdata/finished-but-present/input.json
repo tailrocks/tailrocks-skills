@@ -1,0 +1,10 @@
+{
+  "changed": [{ "status": "M", "path": "roadmap/item/README.md" }],
+  "baseFiles": {},
+  "headFiles": {
+    "roadmap/README.md": "| Item | Status |\n|---|---|\n| [item](item/README.md) | DONE |\n",
+    "roadmap/item/README.md": "# Item\n\n- **Status**: DONE\n\n## Remaining\n",
+    "roadmap/item/verification/01-report.md": "## Blocking defects\n"
+  },
+  "expected": [1]
+}

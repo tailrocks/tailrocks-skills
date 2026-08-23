@@ -9,14 +9,14 @@ nothing else — no persistence, no networking, no real data.
 **No screenshots during design.** The prototype is reviewed **running** — the
 user launches it, or the agent drives its scenarios in front of them — and
 judges the real material live. Screenshots are frozen only after finalization,
-by `tailrocks-macos-visual-qa` driving this prototype through its launch
+by `tailrocks-macos-visual-baseline` driving this prototype through its launch
 contract; asked for captures mid-iteration, decline and name the boundary.
 Captures taken mid-iteration are churn re-shot on every tweak, and picking
 between directions is the design stage's structural alternatives, never a
 screenshot comparison here.
 
 **The standard-harness law: never rebuild verification machinery the house
-already ships.** Capture runs through `tailrocks-macos-visual-qa`'s harness
+already ships.** Capture runs through the repository's typed macOS visual harness
 (window-ID resolution, the atomic kill-launch-capture loop, its diff protocol
 and state matrix); the prototype's contribution is being drivable. A bespoke
 capture loop, pixel-diff tool, or private manifest shape splits the repository
@@ -31,11 +31,15 @@ drive the app. `--tr-reduce` previews a reduction substitution per process
 through the app's own accessibility hooks — legitimate alongside the
 visual-qa real-settings matrix, never a substitute for it.
 
-**The blessing gate.** The user signs off the running prototype; the agent
-never does. The user walks every scenario, both appearances, the declared
-sizes — live — and the sign-off is recorded in `SIGNOFF.md` with its date and
-the design artifacts' revision. Until then the prototype is a draft that binds
-nobody, and a run that ends without one says so with the Blessed row pending.
+**The blessing gate.** First obtain an independent acceptance `PASS` from
+`tailrocks-macos-design-review` against a named live-render session for this
+exact prototype revision; static or frozen evidence cannot supply that verdict.
+Then the user signs off the same running prototype; the agent never does. The
+user walks every scenario, both appearances, the declared sizes — live — and
+the sign-off is recorded in `SIGNOFF.md` with its date and the design artifacts'
+revision. Until then the prototype is a draft that binds nobody, and a run that
+ends without one says so with the Blessed row pending. Only after both gates may
+`tailrocks-macos-visual-baseline` capture and freeze its bounded output.
 
 ## The six steps
 
@@ -57,7 +61,7 @@ nobody, and a run that ends without one says so with the Blessed row pending.
    only under an identical backdrop. A whole-window zero-pixel diff across two
    binaries is not an acceptance gate: same-binary determinism does not
    transfer. Complete when every visible region has a machine-executable mode.
-5. **Hand off to capture.** After finalization, `tailrocks-macos-visual-qa`
+5. **Hand off to capture.** After finalization, `tailrocks-macos-visual-baseline`
    drives this prototype and freezes the baseline; name what remains for that
    lane — the capture matrix and the real-settings states.
 6. **Relocate, never delete.** Once the baseline is frozen, the feature PR
@@ -83,8 +87,8 @@ Design/Prototypes/<Feature>/
 └── SIGNOFF.md                     # blessing record + design revisions
 
 No captures live here during design: the baseline is frozen after
-finalization by `tailrocks-macos-visual-qa`, driving this package through
-the launch contract, and lands where that skill's regression lane keeps
+finalization by `tailrocks-macos-visual-baseline`, driving this package through
+the launch contract, and lands where the baseline owner keeps
 its baselines.
 ```
 
@@ -126,20 +130,24 @@ Two consequences worth holding:
 - **Design inputs**: <each consumed artifact with path and revision/date>
 - **Scenarios**: <name — one line each; which were walked live, in which
   appearances and sizes>
-- **Pending capture lane**: <what tailrocks-macos-visual-qa freezes after
+- **Pending capture lane**: <what tailrocks-macos-visual-baseline freezes after
   finalization — the scenario matrix per Regions.md, plus the
   real-settings states>
 - **Not proven live**: <hover under automation, VoiceOver, keyboard
   paths — routed where>
+- **Prototype identity**: <Git revision> — <package-tree SHA-256>
+- **Acceptance review**: <DesignReview.md path> — SHA-256 <digest> — `PASS`
+  by <reviewer> in <live session identity>
 - **Blessed**: <YYYY-MM-DD> by <user> — <one line on what was approved,
   reviewed running>
 ```
 
-An unfilled `Blessed` row means draft: the prototype binds nobody, and no
-downstream document may cite it as settled design. After sign-off the
+An unfilled identity, acceptance-review `PASS`, or `Blessed` row means draft:
+the prototype binds nobody, and no downstream document may cite it as settled
+design. After sign-off the
 design is frozen; a change to the prototype's rendering means a recorded
 re-blessing, and any already-frozen baseline is re-captured by the
-visual-qa lane, never edited in place.
+visual-baseline lane, never edited in place.
 
 ## Delivery wiring
 

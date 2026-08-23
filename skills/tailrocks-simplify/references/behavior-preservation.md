@@ -61,15 +61,18 @@ including anything you broke, so its green result means nothing.
    unmodified code.
 3. Make **one** removal.
 4. Run the focused tests for that area, then the fast gates.
-5. Commit or record it, then take the next removal.
+5. Record the per-path CAS receipts, then take the next removal.
 6. Run the full gate set once at the end.
 
 Batching removals loses the property that makes this safe: when something goes
 red, the cause is the last change.
 
-Revert rather than repair. If a removal turns a gate red and the fix is not
-immediately obvious, put the code back and record the finding as rejected with
-the failure. A simplification that needed debugging was not
+Roll back rather than repair. If a removal turns a gate red, restore each preimage
+only when current bytes still match the postimage installed by this invocation,
+using CAS so a concurrent replacement survives. Record a fully restored removal
+as rejected with the failure. If any owned postimage cannot be restored, stop,
+name the surviving changed paths and recovery artifacts, and report
+`RECOVERY_REQUIRED`. A simplification that needed debugging was not
 behavior-preserving.
 
 ## Reporting honestly

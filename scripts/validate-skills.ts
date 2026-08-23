@@ -1,8 +1,13 @@
-import { access, readdir, readFile } from "node:fs/promises";
+import { access, lstat, readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+
+import { generateReferences, isGeneratedReferenceSource } from "./generate-references";
+import { parseInvocationRegistry, type InvocationClass } from "./invocation-registry";
+import { RETIRED_SKILL_NAMES } from "./retired-skill-names";
 
 const guard = "Use only when the user explicitly requests this skill.";
 const descriptionBudget = 250;
+const retiredSkillNames = RETIRED_SKILL_NAMES;
 
 async function exists(file: string): Promise<boolean> {
   try {
@@ -13,8 +18,20 @@ async function exists(file: string): Promise<boolean> {
   }
 }
 
-export function resolveEvalFixture(root: string, skillDir: string, fixture: string): string {
-  return fixture.startsWith("skills/") ? path.join(root, fixture) : path.join(skillDir, fixture);
+async function pathContainsSymlink(root: string, target: string): Promise<boolean> {
+  const relative = path.relative(root, target);
+  if (!relative || outside(root, target)) return false;
+  let current = root;
+  for (const segment of relative.split(path.sep)) {
+    current = path.join(current, segment);
+    try {
+      if ((await lstat(current)).isSymbolicLink()) return true;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === "ENOENT") return false;
+      throw error;
+    }
+  }
+  return false;
 }
 
 async function filesUnder(directory: string): Promise<string[]> {
@@ -26,6 +43,139 @@ async function filesUnder(directory: string): Promise<string[]> {
     else output.push(file);
   }
   return output;
+}
+
+async function validateInvocationRegistry(
+  root: string,
+  skills: string[],
+  errors: string[],
+): Promise<Map<string, InvocationClass>> {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(await readFile(path.join(root, "invocation-registry.json"), "utf8"));
+  } catch {
+    errors.push("invocation-registry.json: missing or invalid JSON");
+    return new Map();
+  }
+  const result = parseInvocationRegistry(parsed, skills);
+  errors.push(...result.errors);
+  return result.classes;
+}
+
+async function validateDurableContracts(root: string, errors: string[]): Promise<void> {
+  const contracts = [
+    {
+      directory: "skill-evidence",
+      schema: "tailrocks.skill-evidence/v1",
+      fields: ["Skill", "Source SHA", "Recorded date", "Provenance"],
+    },
+  ];
+  for (const contract of contracts) {
+    for (const file of await filesUnder(path.join(root, contract.directory))) {
+      if (!file.endsWith(".md")) {
+        errors.push(`${path.relative(root, file)}: durable contract must be Markdown`);
+        continue;
+      }
+      const source = await readFile(file, "utf8");
+      const label = path.relative(root, file);
+      if (!source.includes(`Schema: \`${contract.schema}\``)) {
+        errors.push(`${label}: missing schema ${contract.schema}`);
+      }
+      for (const field of contract.fields) {
+        if (!new RegExp("^- " + field + ": `[^<>\\n]+`$", "m").test(source)) {
+          errors.push(`${label}: missing or placeholder ${field}`);
+        }
+      }
+      if (!/^- Source SHA: `[0-9a-f]{40}`$/m.test(source)) {
+        errors.push(`${label}: Source SHA must be a 40-character lowercase commit SHA`);
+      }
+      if (!/^- Recorded date: `\d{4}-\d{2}-\d{2}`$/m.test(source)) {
+        errors.push(`${label}: Recorded date must be YYYY-MM-DD`);
+      }
+    }
+  }
+  for (const file of await filesUnder(path.join(root, "skill-migrations"))) {
+    errors.push(
+      `${path.relative(root, file)}: migration-plan artifacts are forbidden; use an explicitly authorized direct migration`,
+    );
+  }
+}
+
+async function validateRetiredRoutes(root: string, errors: string[]): Promise<void> {
+  const surfaces = new Set([
+    "AGENTS.md",
+    "CLAUDE.md",
+    "INSTALL.md",
+    "README.md",
+    "catalog.json",
+    "generated-references.json",
+    "invocation-registry.json",
+  ]);
+  for (const directory of ["docs/content", "docs/design"]) {
+    for (const file of await filesUnder(path.join(root, directory))) {
+      const relative = path.relative(root, file);
+      surfaces.add(relative);
+    }
+  }
+
+  const skillsRoot = path.join(root, "skills");
+  if (await exists(skillsRoot)) {
+    for (const entry of await readdir(skillsRoot, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const skillRoot = path.join(skillsRoot, entry.name);
+      const entries = await readdir(skillRoot, { withFileTypes: true });
+      for (const packageEntry of entries) {
+        const relative = path.relative(root, path.join(skillRoot, packageEntry.name));
+        if (packageEntry.isDirectory() && packageEntry.name === "evals") {
+          errors.push(`${relative}: skill eval directories are forbidden`);
+        }
+        if (packageEntry.isFile() && packageEntry.name === "README.md") {
+          errors.push(`${relative}: per-skill README files are forbidden; use public documentation`);
+        }
+      }
+      if (retiredSkillNames.has(entry.name)) {
+        for (const residue of entries) {
+          if (residue.isDirectory() && (await filesUnder(path.join(skillRoot, residue.name))).length === 0)
+            continue;
+          errors.push(
+            `${path.relative(root, path.join(skillRoot, residue.name))}: retired skill residue is forbidden`,
+          );
+        }
+        continue;
+      }
+      if (!(await exists(path.join(skillRoot, "SKILL.md")))) continue;
+      for (const packageEntry of entries) {
+        if (packageEntry.name === "evals" || packageEntry.name === "README.md") continue;
+        const packagePath = path.join(skillRoot, packageEntry.name);
+        if (packageEntry.isDirectory()) {
+          for (const file of await filesUnder(packagePath)) surfaces.add(path.relative(root, file));
+        } else {
+          surfaces.add(path.relative(root, packagePath));
+        }
+      }
+    }
+  }
+  for (const relative of surfaces) {
+    const file = path.join(root, relative);
+    if (!(await exists(file))) continue;
+    const source = await readFile(file, "utf8");
+    for (const name of retiredSkillNames) {
+      const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      if (new RegExp(`${escaped}(?![A-Za-z0-9-])`).test(source))
+        errors.push(`${relative}: retired skill route is forbidden: ${name}`);
+    }
+  }
+  const docsRoot = path.join(root, "docs/content/docs/skills");
+  if (!(await exists(docsRoot))) return;
+  for (const entry of await readdir(docsRoot, { withFileTypes: true })) {
+    if (
+      entry.isDirectory() &&
+      retiredSkillNames.has(entry.name) &&
+      (await filesUnder(path.join(docsRoot, entry.name))).length > 0
+    ) {
+      errors.push(`docs/content/docs/skills/${entry.name}: retired skill route is forbidden`);
+    }
+  }
 }
 
 function outside(base: string, target: string): boolean {
@@ -72,21 +222,76 @@ async function scanLinks(
     const raw = match[1].split("#", 1)[0];
     if (!raw || /^(?:https?:|mailto:)/.test(raw)) continue;
     const target = path.resolve(path.dirname(file), raw);
-    if (raw.startsWith("../") || outside(skillDir, target)) {
+    const setupFamilies = [
+      {
+        members: [
+          "tailrocks-rust-project-setup",
+          "tailrocks-rust-project-audit",
+          "tailrocks-rust-project-remediate",
+        ],
+        owner: "tailrocks-rust-project-setup",
+        resolver: "resolve-crate-versions.ts",
+      },
+      {
+        members: [
+          "tailrocks-tanstack-project-setup",
+          "tailrocks-tanstack-project-audit",
+          "tailrocks-tanstack-project-migrate",
+          "tailrocks-tanstack-project-remediate",
+        ],
+        owner: "tailrocks-tanstack-project-setup",
+        resolver: "resolve-package-versions.ts",
+      },
+      {
+        members: [
+          "tailrocks-swift-project-setup",
+          "tailrocks-swift-project-audit",
+          "tailrocks-swift-project-remediate",
+        ],
+        owner: "tailrocks-swift-project-setup",
+      },
+    ] as const;
+    let allowedSetupRoot: string | undefined;
+    for (const family of setupFamilies) {
+      const setupRoot = path.resolve(path.dirname(skillDir), family.owner);
+      const setupTemplates = path.join(setupRoot, "templates");
+      const setupResolver =
+        "resolver" in family ? path.join(setupRoot, "scripts", family.resolver) : undefined;
+      if (
+        family.members.includes(directory as (typeof family.members)[number]) &&
+        (target === setupResolver || target === setupTemplates || !outside(setupTemplates, target))
+      ) {
+        allowedSetupRoot = setupRoot;
+        break;
+      }
+    }
+    const unsafeSetupLink =
+      allowedSetupRoot !== undefined && (await pathContainsSymlink(allowedSetupRoot, target));
+    if (
+      ((raw.startsWith("../") || outside(skillDir, target)) && allowedSetupRoot === undefined) ||
+      unsafeSetupLink
+    ) {
       errors.push(`${directory}: reference escapes skill directory: ${raw}`);
     } else if (!(await exists(target))) {
       errors.push(`${directory}: broken reference ${raw}`);
     }
   }
-  for (const match of proseWithoutFences(source).matchAll(
-    /`((?:references|templates|scripts|evals)\/[^\s`]+)`/g,
-  )) {
+  for (const match of proseWithoutFences(source).matchAll(/`((?:references|templates|scripts)\/[^\s`]+)`/g)) {
     const raw = match[1].replace(/[),.;:]+$/, "").split("#", 1)[0];
     const target = path.resolve(skillDir, raw);
     if (outside(skillDir, target)) {
       errors.push(`${directory}: reference escapes skill directory: ${raw}`);
     } else if (!(await exists(target))) {
       errors.push(`${directory}: broken reference ${raw}`);
+    }
+  }
+  for (const match of proseWithoutFences(source).matchAll(
+    /`(skills\/tailrocks-skill-audit\/references\/([^\s`]+\.md))`/g,
+  )) {
+    const allowed = new Set(["design-doctrine.md", "testing-doctrine.md", "house-wiring.md"]);
+    const target = path.resolve(path.dirname(skillDir), "..", match[1]);
+    if (!allowed.has(match[2]) || !(await exists(target))) {
+      errors.push(`${directory}: invalid shared authoring doctrine path: ${match[1]}`);
     }
   }
 }
@@ -142,6 +347,10 @@ const negationPattern =
 // verb and is deliberately not matched; only the tool and its artifacts are.
 const designToolPattern =
   /\b(?:figma|penpot|zeplin|invision|lunacy|framer|adobe\s*xd)\b|\.sketch\b|\bartboards?\b|\bsketch\s+(?:file|files|document|documents|app|symbol|symbols)\b/i;
+const releaseDelayConfigPattern = /\b(?:minimumReleaseAge|stabilityDays)\b/i;
+const releaseAgePattern = /\bminimum[\s-]+release[\s-]+age\b/i;
+const releaseAgeRefusalPattern =
+  /^(?:[-*]\s*)?(?:(?:never|do not|don't) configure (?:an?\s+)?minimum[\s-]+release[\s-]+age|(?:an?\s+)?minimum[\s-]+release[\s-]+age(?: rule)? is (?:forbidden|a gap)|no minimum[\s-]+release[\s-]+age delay is permitted)\.?$/i;
 
 // Model route names. Provider mappings are volatile and the shared skill tree
 // is source-neutral: a skill states the capability role it needs, never the
@@ -155,19 +364,6 @@ const designToolPattern =
 const modelBrandPattern =
   /\b(?:fable\s*\d|mythos\s*\d|opus\s*\d|sonnet\s*\d|haiku\s*\d|claude-(?:opus|sonnet|haiku|fable|mythos)|gpt-\d|gemini-\d|llama\s*\d|mistral-\w)\b/i;
 
-// The eval harness. Authoring `evals/evals.json` is part of every skill
-// change; running the harness is a CI/CD concern that nothing in this
-// repository has wired yet. Prose *about* the policy has to be able to name
-// the command, so only a fenced block matches — a fenced command is a
-// copy-paste invocation, which is the failure this gate exists to stop.
-const evalRunnerPattern = /\bmise\s+run\s+evals\b|\brun-evals\.ts\b/;
-
-function evalRunnerInvocations(source: string): string[] {
-  return fencedCode(source)
-    .split("\n")
-    .filter((line) => evalRunnerPattern.test(line));
-}
-
 function bannedTermLines(source: string, pattern: RegExp): string[] {
   return source.split("\n").filter((line) => pattern.test(line) && !negationPattern.test(line));
 }
@@ -179,40 +375,137 @@ function scanBannedTerms(source: string, directory: string, label: string, error
   for (const line of bannedTermLines(source, modelBrandPattern)) {
     errors.push(`${directory}:${label}: model brand name forbidden in skill content: ${line.trim()}`);
   }
-  for (const line of evalRunnerInvocations(source)) {
-    errors.push(`${directory}:${label}: eval harness invocation forbidden in skill content: ${line.trim()}`);
+}
+
+function scanReleaseDelayPolicy(source: string, directory: string, label: string, errors: string[]): void {
+  for (const line of source.split("\n")) {
+    if (
+      releaseDelayConfigPattern.test(line) ||
+      (releaseAgePattern.test(line) && !releaseAgeRefusalPattern.test(line.trim()))
+    )
+      errors.push(`${directory}:${label}: dependency release-delay policy forbidden: ${line.trim()}`);
+  }
+}
+
+function structuredReleaseDelay(value: unknown): boolean {
+  if (typeof value === "string") return releaseDelayConfigPattern.test(value);
+  if (Array.isArray(value)) return value.some(structuredReleaseDelay);
+  if (typeof value !== "object" || value === null) return false;
+  return Object.entries(value).some(
+    ([key, nested]) => releaseDelayConfigPattern.test(key) || structuredReleaseDelay(nested),
+  );
+}
+
+function scanStructuredReleaseDelay(
+  source: string,
+  directory: string,
+  label: string,
+  errors: string[],
+): void {
+  if (!label.endsWith(".json")) return;
+  try {
+    if (structuredReleaseDelay(JSON.parse(source)))
+      errors.push(`${directory}:${label}: dependency release-delay policy forbidden in parsed JSON`);
+  } catch {
+    // JSON validity belongs to the template's owning contract.
+  }
+}
+
+async function generatedReferenceDestinations(root: string, errors: string[]): Promise<Set<string>> {
+  const file = path.join(root, "generated-references.json");
+  if (!(await exists(file))) return new Set();
+  try {
+    await generateReferences(root, "check");
+    const manifest = JSON.parse(await readFile(file, "utf8")) as {
+      $schema?: unknown;
+      entries?: unknown;
+    };
+    if (
+      typeof manifest !== "object" ||
+      manifest === null ||
+      Array.isArray(manifest) ||
+      Object.keys(manifest).sort().join(",") !== "$schema,entries" ||
+      manifest.$schema !== "tailrocks.generated-references/v1" ||
+      !Array.isArray(manifest.entries) ||
+      manifest.entries.length === 0
+    )
+      throw new Error();
+    const destinations: string[] = [];
+    for (const entry of manifest.entries) {
+      if (
+        typeof entry !== "object" ||
+        entry === null ||
+        Array.isArray(entry) ||
+        !["destinations,source", "destinations,slice,source"].includes(Object.keys(entry).sort().join(",")) ||
+        typeof (entry as { source?: unknown }).source !== "string" ||
+        !isGeneratedReferenceSource((entry as { source: string }).source) ||
+        !Array.isArray((entry as { destinations?: unknown }).destinations) ||
+        (entry as { destinations: unknown[] }).destinations.some(
+          (destination) =>
+            typeof destination !== "string" ||
+            !/^skills\/tailrocks-[a-z0-9]+(?:-[a-z0-9]+)*\/references\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/.test(
+              destination,
+            ),
+        )
+      )
+        throw new Error();
+      if (
+        "slice" in entry &&
+        (typeof entry.slice !== "object" ||
+          entry.slice === null ||
+          Array.isArray(entry.slice) ||
+          Object.keys(entry.slice).sort().join(",") !== "end,start" ||
+          typeof (entry.slice as { start?: unknown }).start !== "string" ||
+          typeof (entry.slice as { end?: unknown }).end !== "string")
+      )
+        throw new Error();
+      destinations.push(...(entry as { destinations: string[] }).destinations);
+    }
+    if (new Set(destinations).size !== destinations.length) throw new Error();
+    return new Set(destinations);
+  } catch {
+    errors.push("generated-references.json: invalid generated-reference manifest");
+    return new Set();
   }
 }
 
 export async function validate(root: string): Promise<string[]> {
   const errors: string[] = [];
+  await validateDurableContracts(root, errors);
+  await validateRetiredRoutes(root, errors);
+  const generatedReferences = await generatedReferenceDestinations(root, errors);
   const skillsRoot = path.join(root, "skills");
   if (!(await exists(skillsRoot))) return ["missing skills directory"];
-  const entries = (await readdir(skillsRoot, { withFileTypes: true }))
+  const directories = (await readdir(skillsRoot, { withFileTypes: true }))
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .sort();
+  const entries: string[] = [];
+  for (const directory of directories) {
+    if (await exists(path.join(skillsRoot, directory, "SKILL.md"))) entries.push(directory);
+  }
+  for (const directory of entries) {
+    if (retiredSkillNames.has(directory)) errors.push(`${directory}: retired skill name is forbidden`);
+  }
+  const invocationClasses = await validateInvocationRegistry(root, entries, errors);
 
   for (const directory of entries) {
     const skillDir = path.join(skillsRoot, directory);
     const skillFile = path.join(skillDir, "SKILL.md");
-    if (!(await exists(skillFile))) {
-      errors.push(`${directory}: missing SKILL.md`);
-      continue;
-    }
-
     const source = await readFile(skillFile, "utf8");
-    const routerLines = source.split("\n").length;
-    if (routerLines > ROUTER_BUDGET) {
-      errors.push(
-        `${directory}: SKILL.md is ${routerLines} lines, over the ${ROUTER_BUDGET}-line router budget — ` +
-          `move depth into references/ or replace a section rather than appending one`,
-      );
-    }
     const block = source.match(/^---\n([\s\S]*?)\n---/);
     if (!block) {
       errors.push(`${directory}: invalid frontmatter`);
       continue;
+    }
+    const routerBody = source.slice(block[0].length).replace(/^\n/, "");
+    const countedBody = routerBody.endsWith("\n") ? routerBody.slice(0, -1) : routerBody;
+    const routerLines = countedBody === "" ? 0 : countedBody.split("\n").length;
+    if (routerLines > ROUTER_BUDGET) {
+      errors.push(
+        `${directory}: SKILL.md body is ${routerLines} lines, over the ${ROUTER_BUDGET}-line router budget — ` +
+          `move depth into references/ or replace a section rather than appending one`,
+      );
     }
 
     let metadata: Record<string, unknown>;
@@ -224,6 +517,7 @@ export async function validate(root: string): Promise<string[]> {
     }
     const name = metadata.name;
     const description = metadata.description;
+    const invocationClass = invocationClasses.get(directory);
     if (name !== directory) errors.push(`${directory}: name must match directory`);
     if (typeof name === "string" && !name.startsWith("tailrocks-")) {
       errors.push(`${directory}: name must start with tailrocks-`);
@@ -233,24 +527,62 @@ export async function validate(root: string): Promise<string[]> {
     }
     if (typeof description !== "string" || description.length < 1 || description.length > 1024) {
       errors.push(`${directory}: description must contain 1-1024 characters`);
-    } else if (!description.startsWith(guard)) {
-      errors.push(`${directory}: description must start with explicit-request guard`);
+    } else if (invocationClass === "MANUAL_ONLY" && !description.startsWith(guard)) {
+      errors.push(`${directory}: MANUAL_ONLY description must start with explicit-request guard`);
+    } else if (invocationClass === "MODEL_POLICY" && description.startsWith(guard)) {
+      errors.push(`${directory}: MODEL_POLICY description must state its exact model trigger`);
     } else {
       // Descriptions load on every request in clients that ignore manual-only
       // policy, and overflow the skill listing's budget once a skill is model
       // invocable. Keep the trigger, drop the prose the router already carries.
-      const body = description.slice(guard.length).trim().length;
+      const body =
+        invocationClass === "MANUAL_ONLY"
+          ? description.slice(guard.length).trim().length
+          : description.length;
       if (body > descriptionBudget) {
         errors.push(
-          `${directory}: description is ${body} characters after the guard, budget is ${descriptionBudget}`,
+          invocationClass === "MANUAL_ONLY"
+            ? `${directory}: description is ${body} characters after the guard, budget is ${descriptionBudget}`
+            : `${directory}: description is ${body} characters, budget is ${descriptionBudget}`,
         );
       }
     }
     if (metadata.license !== "Apache-2.0") errors.push(`${directory}: Apache-2.0 license metadata missing`);
-    if (metadata["disable-model-invocation"] !== true)
-      errors.push(`${directory}: Claude manual-only policy missing`);
+    if (invocationClass === "MANUAL_ONLY" && metadata["disable-model-invocation"] !== true) {
+      errors.push(`${directory}: MANUAL_ONLY Claude policy missing`);
+    }
+    const disableModelInvocation = metadata["disable-model-invocation"];
+    if (
+      invocationClass === "MODEL_POLICY" &&
+      disableModelInvocation !== undefined &&
+      disableModelInvocation !== false
+    ) {
+      errors.push(`${directory}: MODEL_POLICY crossed with Claude manual-only policy`);
+    }
     if (metadata["user-invocable"] !== true)
       errors.push(`${directory}: explicit user invocation policy missing`);
+    if (
+      invocationClass === "MODEL_POLICY" &&
+      (metadata["allowed-tools"] !== undefined ||
+        metadata.hooks !== undefined ||
+        /!`[^`\n]+`|^\s*```!/m.test(routerBody))
+    ) {
+      errors.push(`${directory}: MODEL_POLICY may not carry executable or pre-approved authority`);
+    }
+
+    const portableMetadata = metadata.metadata;
+    if (portableMetadata !== undefined) {
+      if (
+        typeof portableMetadata !== "object" ||
+        portableMetadata === null ||
+        Array.isArray(portableMetadata) ||
+        Object.values(portableMetadata).some((value) => typeof value !== "string")
+      ) {
+        errors.push(`${directory}: metadata must be a string-to-string map for OpenCode`);
+      } else if ("opencode/autoinvoke" in portableMetadata || "opencode/slash" in portableMetadata) {
+        errors.push(`${directory}: unsupported OpenCode discovery/menu metadata for supported client`);
+      }
+    }
 
     const openaiFile = path.join(skillDir, "agents", "openai.yaml");
     if (!(await exists(openaiFile))) {
@@ -261,8 +593,9 @@ export async function validate(root: string): Promise<string[]> {
           interface?: Record<string, unknown>;
           policy?: Record<string, unknown>;
         };
-        if (openai.policy?.allow_implicit_invocation !== false) {
-          errors.push(`${directory}: Codex manual-only policy missing`);
+        const expectedImplicit = invocationClass === "MODEL_POLICY";
+        if (invocationClass !== undefined && openai.policy?.allow_implicit_invocation !== expectedImplicit) {
+          errors.push(`${directory}: ${invocationClass} crossed with Codex allow_implicit_invocation`);
         }
         for (const key of ["display_name", "short_description", "default_prompt"]) {
           if (typeof openai.interface?.[key] !== "string" || openai.interface[key] === "") {
@@ -288,6 +621,7 @@ export async function validate(root: string): Promise<string[]> {
 
     await scanLinks(source, skillFile, skillDir, directory, errors);
     scanForgeUrls(source, directory, "SKILL.md", errors);
+    scanReleaseDelayPolicy(source, directory, "SKILL.md", errors);
     const referencesDir = path.join(skillDir, "references");
     for (const referenceFile of await filesUnder(referencesDir)) {
       if (!referenceFile.endsWith(".md")) continue;
@@ -300,71 +634,14 @@ export async function validate(root: string): Promise<string[]> {
         errors,
       );
       const relative = path.relative(skillDir, referenceFile).split(path.sep).join("/");
-      if (!source.includes(relative)) {
+      if (!source.includes(relative) && !generatedReferences.has(`skills/${directory}/${relative}`)) {
         errors.push(`${directory}: reference must be linked directly from SKILL.md: ${relative}`);
       }
       for (const line of packageManagerCommands(fencedCode(reference))) {
         errors.push(`${directory}:${relative}: forbidden package-manager command: ${line.trim()}`);
       }
       scanBannedTerms(reference, directory, relative, errors);
-    }
-
-    const evalFile = path.join(skillDir, "evals", "evals.json");
-    if (!(await exists(evalFile))) {
-      errors.push(`${directory}: missing evals/evals.json`);
-    } else {
-      try {
-        const evaluation = JSON.parse(await readFile(evalFile, "utf8")) as {
-          skill_name?: unknown;
-          evals?: unknown;
-        };
-        if (
-          evaluation.skill_name !== directory ||
-          !Array.isArray(evaluation.evals) ||
-          evaluation.evals.length < 3
-        ) {
-          errors.push(`${directory}: evals require matching skill_name and at least 3 cases`);
-        } else {
-          const ids = new Set<number>();
-          for (const [index, value] of evaluation.evals.entries()) {
-            const item = value as Record<string, unknown>;
-            if (
-              typeof item.id !== "number" ||
-              typeof item.prompt !== "string" ||
-              item.prompt.length === 0 ||
-              typeof item.expected_output !== "string" ||
-              item.expected_output.length === 0 ||
-              !Array.isArray(item.files)
-            ) {
-              errors.push(`${directory}: eval case ${index + 1} has invalid shape`);
-              continue;
-            }
-            if (ids.has(item.id as number)) {
-              errors.push(`${directory}: duplicate eval case id ${item.id}`);
-            }
-            ids.add(item.id as number);
-            if (
-              item.execution_mode !== undefined &&
-              item.execution_mode !== "single_subject" &&
-              item.execution_mode !== "workflow"
-            ) {
-              errors.push(
-                `${directory}: eval case ${item.id} has invalid execution_mode: ${item.execution_mode}`,
-              );
-            }
-            for (const fixture of item.files as unknown[]) {
-              if (
-                typeof fixture !== "string" ||
-                !(await exists(resolveEvalFixture(root, skillDir, fixture)))
-              ) {
-                errors.push(`${directory}: eval case ${item.id} fixture not found: ${String(fixture)}`);
-              }
-            }
-          }
-        }
-      } catch {
-        errors.push(`${directory}: invalid evals/evals.json`);
-      }
+      scanReleaseDelayPolicy(reference, directory, relative, errors);
     }
 
     for (const line of packageManagerCommands(fencedCode(source))) {
@@ -382,6 +659,8 @@ export async function validate(root: string): Promise<string[]> {
           );
         }
         scanBannedTerms(text, directory, path.relative(skillDir, template), errors);
+        scanReleaseDelayPolicy(text, directory, path.relative(skillDir, template), errors);
+        scanStructuredReleaseDelay(text, directory, path.relative(skillDir, template), errors);
       } catch {
         // Binary templates contain no commands this text gate can inspect.
       }
@@ -504,14 +783,40 @@ export async function validate(root: string): Promise<string[]> {
 }
 
 if (import.meta.main) {
-  const root = path.resolve(import.meta.dir, "..");
-  const errors = await validate(root);
-  if (errors.length > 0) {
-    for (const error of errors) console.error(`error: ${error}`);
-    process.exit(1);
+  try {
+    if (process.argv.length !== 2) throw new Error("validate-skills takes no arguments");
+    const root = path.resolve(import.meta.dir, "..");
+    const errors = await validate(root);
+    const directories = (await readdir(path.join(root, "skills"), { withFileTypes: true })).filter((entry) =>
+      entry.isDirectory(),
+    );
+    let skillCount = 0;
+    for (const entry of directories) {
+      if (await exists(path.join(root, "skills", entry.name, "SKILL.md"))) skillCount += 1;
+    }
+    console.log(
+      JSON.stringify({
+        schema: "tailrocks.validate-skills/v1",
+        outcome: errors.length === 0 ? "success" : "failed",
+        code: errors.length === 0 ? "valid" : "invalid",
+        skills: skillCount,
+        errors,
+        mutations: [],
+        detail: errors.length === 0 ? `validated ${skillCount} skills` : `${errors.length} validation errors`,
+      }),
+    );
+    if (errors.length > 0) process.exit(1);
+  } catch (error) {
+    console.log(
+      JSON.stringify({
+        schema: "tailrocks.validate-skills/v1",
+        outcome: "refused",
+        code: "invalid_arguments",
+        errors: [],
+        mutations: [],
+        detail: error instanceof Error ? error.message : String(error),
+      }),
+    );
+    process.exit(2);
   }
-  const entries = (await readdir(path.join(root, "skills"), { withFileTypes: true })).filter((entry) =>
-    entry.isDirectory(),
-  );
-  console.log(`Validated ${entries.length} skills.`);
 }

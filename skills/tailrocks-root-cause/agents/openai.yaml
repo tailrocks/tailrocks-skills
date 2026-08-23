@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Root Cause"
+  short_description: "Diagnose defect classes and derive corrective designs"
+  default_prompt: "Use $tailrocks-root-cause to prove this failed guarantee's bounded causal class and return a read-only approval-ready corrective design."
+policy:
+  allow_implicit_invocation: false

@@ -7,7 +7,7 @@ Item: `roadmap/goal-live-status/README.md` · Plans:
 Operator invocation:
 
 ```text
-/goal Follow roadmap/goal-live-status/goal/START.md
+Follow roadmap/goal-live-status/goal/START.md
 ```
 
 ## Gates

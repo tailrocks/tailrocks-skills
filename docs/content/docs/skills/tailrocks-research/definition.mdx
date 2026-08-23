@@ -25,6 +25,19 @@ Two invocation shapes:
   exist — each direction with evidence and trade-offs, none chosen. Choosing
   is the user's, via `tailrocks-record-decision`.
 
+A repository-direction request uses the exact question “What candidate product
+directions follow from this repository's evidence and history?” An ordinary
+targeted question stays verbatim. `--deep` on the direction question requires
+parallel investigators to return competing directions with trade-offs;
+`--deep` on another question requires parallel investigators to return and
+reconcile competing answers. `--batch` makes selection deterministic and
+non-interactive, selecting every applicable question cluster without prompting.
+It preserves only this skill's existing research transaction: it cannot widen
+write paths, choose a direction, infer a user decision or credential, or grant
+target-command or unrelated network authority. These are direct research
+invocations using the question text, never retained `next`/`ask` selectors and
+never dispatch from another manual skill.
+
 ## Boundaries
 
 - Write only under `research/` (topic folders and the index), plus — when a

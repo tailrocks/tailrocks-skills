@@ -8,6 +8,8 @@ import {
   groupSkills,
   mapProse,
   readCatalog,
+  renderSkillIndex,
+  renderSkillOverview,
   replaceRootList,
   strayMarkdown,
   textDiagrams,
@@ -21,6 +23,7 @@ const skill = (name: string) => ({
   description: "",
   argumentHint: undefined,
   defaultPrompt: undefined,
+  invocationClass: "MANUAL_ONLY" as const,
   body: "",
   references: [],
   templates: [],
@@ -67,6 +70,22 @@ test("grouping preserves catalog order and rejects an incomplete catalog", () =>
   expect(() =>
     groupSkills([...groups, { id: "h", title: "H", summary: "s", skills: ["a"] }], [skill("a"), skill("b")]),
   ).toThrow(/more than one group/);
+});
+
+test("renders manual and model-policy invocation classes distinctly", () => {
+  const manual = skill("tailrocks-manual");
+  const model = { ...skill("tailrocks-model"), invocationClass: "MODEL_POLICY" as const };
+  expect(renderSkillOverview(manual)).toContain("never activates on its own");
+  expect(renderSkillOverview(model)).toContain("may load automatically only when its exact trigger");
+  const index = renderSkillIndex([
+    {
+      group: { id: "g", title: "G", summary: "s", skills: [manual.name, model.name] },
+      skills: [manual, model],
+    },
+  ]);
+  expect(index).toContain("Manual only");
+  expect(index).toContain("Model policy");
+  expect(index).not.toContain("Every skill is manual-only");
 });
 
 test("the catalog groups every skill in the tree", async () => {
@@ -121,43 +140,37 @@ test("no documentation page is plain markdown", async () => {
   expect(await strayMarkdown(path.resolve(import.meta.dir, ".."))).toEqual([]);
 });
 
-test("generates a README and a documentation page for every skill", async () => {
+test("generates public documentation for every skill and refreshes the root catalog", async () => {
   const root = path.resolve(import.meta.dir, "..");
   const generated = await generate(root);
   const files = generated.map((entry) => entry.file);
 
-  expect(files).toContain(path.join("skills", "tailrocks-rethink", "README.md"));
-  expect(files).toContain(path.join("docs", "content", "docs", "skills", "tailrocks-rethink", "index.mdx"));
+  expect(files.some((file) => file.includes("tailrocks-rethink"))).toBe(false);
+  expect(files.some((file) => file.startsWith(`skills${path.sep}`))).toBeFalse();
   expect(files).toContain(
-    path.join("docs", "content", "docs", "skills", "tailrocks-rethink", "definition.mdx"),
+    path.join("docs", "content", "docs", "skills", "tailrocks-root-cause", "index.mdx"),
+  );
+  expect(files).toContain(
+    path.join("docs", "content", "docs", "skills", "tailrocks-root-cause", "definition.mdx"),
   );
   expect(files).toContain("README.md");
 
   const readme = generated.find((entry) => entry.file === "README.md");
-  expect(readme?.content).toContain("skills/tailrocks-rethink/README.md");
+  expect(readme?.content).toContain("https://skills.tailrocks.com/docs/skills/tailrocks-root-cause");
 
-  const page = generated.find((entry) => entry.file.endsWith(path.join("tailrocks-rethink", "index.mdx")));
+  const page = generated.find((entry) => entry.file.endsWith(path.join("tailrocks-root-cause", "index.mdx")));
   const definition = generated.find((entry) =>
-    entry.file.endsWith(path.join("tailrocks-rethink", "definition.mdx")),
+    entry.file.endsWith(path.join("tailrocks-root-cause", "definition.mdx")),
   );
   // The overview stays short: the body it would otherwise inline lives one page deeper.
   expect(page?.content.length).toBeLessThan(definition?.content.length ?? 0);
-  expect(page?.content).toContain("/docs/skills/tailrocks-rethink/definition");
-  expect(definition?.content).toContain("Cost is never a criterion.");
-  expect(page?.content).toStartWith('---\ntitle: "Tailrocks: Rethink"\n');
-  expect(definition?.content).toStartWith('---\ntitle: "Tailrocks: Rethink — Skill definition"\n');
+  expect(page?.content).toContain("/docs/skills/tailrocks-root-cause/definition");
+  expect(definition?.content).toContain("This owner is read-only.");
+  expect(page?.content).toStartWith('---\ntitle: "Tailrocks: Root Cause"\n');
+  expect(definition?.content).toStartWith('---\ntitle: "Tailrocks: Root Cause — Skill definition"\n');
   // The site writes invocations in the reader's own client syntax; the README cannot.
-  expect(page?.content).toContain('<Invoke skill="tailrocks-rethink"');
+  expect(page?.content).toContain('<Invoke skill="tailrocks-root-cause"');
   expect(page?.content).not.toContain("<AgentPicker");
-  const skillReadme = generated.find(
-    (entry) => entry.file === path.join("skills", "tailrocks-rethink", "README.md"),
-  );
-  expect(skillReadme?.content).not.toContain("<Invoke");
-  // The skill README sits beside SKILL.md, so it links to the body instead of copying it.
-  expect(skillReadme?.content).toContain("[`SKILL.md`](SKILL.md)");
-  expect(skillReadme?.content).not.toContain("Cost is never a criterion.");
-  expect(skillReadme?.content).toContain("# Tailrocks: Rethink");
-  expect(skillReadme!.content.length).toBeLessThan(definition!.content.length);
   // Skill bodies link to their own references; the site cannot serve those paths.
   expect(page?.content).not.toContain("](references/");
 });
