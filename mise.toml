@@ -49,6 +49,10 @@ run = "bun run scripts/post-pr-review.ts"
 description = "Run bounded read-only merge readiness predicates"
 run = "bun run scripts/merge-preflight.ts"
 
+[tasks."pr:merge"]
+description = "Consume an exact authorized merge request and reconcile its receipt"
+run = "bun run scripts/merge-pr.ts --skill-file $MISE_PROJECT_ROOT/skills/tailrocks-merge-pr/SKILL.md"
+
 [tasks.docs]
 description = "Regenerate skill READMEs and documentation pages from SKILL.md"
 run = "bun run scripts/generate-references.ts --write && bun run scripts/generate-docs.ts"

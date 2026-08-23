@@ -1579,9 +1579,34 @@ all terminal checks pass, and the final literal marker is changed to
     256 files; formatting and protected paths passed; fresh subagent verdict:
     PASS. The non-eval migration gate passed 542 tests/5,990 assertions. No evals
     run or inspected.
-- [ ] [IN_PROGRESS] P09.16 `tailrocks-merge-pr`: temporary histories and mocked
+- [x] [COMPLETED] P09.16 `tailrocks-merge-pr`: temporary histories and mocked
   check/merge/documentation receipts.
-- [ ] [TODO] P09.17 `tailrocks-plan`: runnable proof-producing commands,
+  - Evidence receipt (2026-08-23): added a loader-bound merge transaction with
+    closed request/receipt schemas while preserving the existing preflight as
+    strictly read-only. The skill retains blast-radius, waiver, worklist,
+    metadata, method, and fresh admin judgment; the command binds those decisions
+    to exact repository/PR/head/base/merge-base and title/body/subject/body
+    digests, reruns preflight, rechecks final metadata, and performs one
+    synchronous GitHub GraphQL `mergePullRequest` mutation with pull-request ID,
+    expected head, exact method, and method-applicable commit text. Success comes
+    only from that same mutation's strict merged/head/merge-commit payload;
+    nonzero, timeout, saturation, malformed output, or a competing effect stays
+    terminal uncertain and is never promoted by later state. Named admin bypass
+    requires one exact failed/cancelled check plus fresh high-blast confirmation;
+    static waivers are exact, reasoned, and accepted only while their named gate
+    blocks. Rebase explicitly makes custom merge text not applicable. The loader
+    proves canonical entrypoint, skill, core, preflight, bounded runner, and
+    documentation dependency identities before dynamic import; symlinked and
+    lookalike packages refuse with zero merge commands. Real temporary Git
+    histories cover documentation ordering and valid delivery retirement;
+    mocked hosted receipts cover pass/pending/fail, metadata drift, exact admin,
+    waiver, mutation inputs, uncertainty, malformed proof, and approved merge.
+    No deprecated merge route remains. Focused proof passed 30 tests/117
+    assertions; validator passed 84 skills; references checked 88 sources/258
+    byte-identical destinations; docs checked 256 files; formatting and protected
+    paths passed; fresh subagent verdict: PASS. The non-eval migration gate
+    passed 553 tests/6,046 assertions. No evals run or inspected.
+- [ ] [IN_PROGRESS] P09.17 `tailrocks-plan`: runnable proof-producing commands,
   client-neutral handoff, research-gap manifest, and deterministic resume.
 - [ ] [TODO] P09.18 `tailrocks-pr-template`: deterministic sole-target
   resolution across absent, existing, and alternate repository layouts.

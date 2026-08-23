@@ -102,17 +102,21 @@ settings, and this skill's defaults govern.
 
 6. **Merge.** Method from `## Merge`, else the repository's allowed methods
    (`gh repo view --json squashMergeAllowed,rebaseMergeAllowed,mergeCommitAllowed`)
-   — squash when allowed. Build the merge body in a file (prose summary, no
-   checklists) and append the trailers the repository's commit convention
-   requires. Then rerun step 3 against the final local/remote head and reapply
-   every gate decision. Between that final receipt and the merge command, run
-   no command that can change the PR head. Invoke `gh pr merge` with the exact
-   PR, `--match-head-commit <receipt-head>`, `--body-file <file>`, and the
-   selected method; add GitHub's `--admin` only for the one
-   freshly named and confirmed check bypass. A match-head refusal is terminal
-   and requires a new preflight, never a retry without the guard. Confirm the
-   squash title carries `(#N)` when the repository expects it. Honor `## Merge`
-   post-merge steps.
+   — squash when allowed. Build exact merge subject/body bytes (prose summary,
+   no checklists), append the trailers the repository's commit convention
+   requires, and confirm the squash subject carries `(#N)` when the repository
+   expects it. Execute the irreversible step only through the installed
+   merge-pr TypeScript entrypoint beside the preflight entrypoint. Require the
+   same regular, non-symlink collection-root binding and pass this skill's
+   loader-provided absolute `SKILL.md` path. Feed its closed
+   request on stdin, binding the final title/body, merge subject/body, method,
+   receipt target, reasoned named gate waivers, blast-radius decision, fresh
+   high-risk confirmation, and at most one named admin check. The command reruns
+   preflight, verifies metadata, issues exactly one guarded merge, and reconciles
+   a strict post-merge receipt. Between final request construction and the
+   command, run nothing that can change the PR head. An expected-head refusal is
+   terminal and requires a new transaction. Honor `## Merge` post-merge steps.
+   `merge_uncertain` is terminal: inspect the PR and never retry blindly.
    **Complete when:** the merge is confirmed on the base branch.
 
 7. **Report.** Merged SHA, the method, and what the pre-merge worklist did.
