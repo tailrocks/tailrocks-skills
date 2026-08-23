@@ -136,7 +136,7 @@ export async function beginBrainstorm(
   const nextItem = `${item.slice(0, itemStatus.start)}- **Status**: SHAPING${item.slice(itemStatus.end)}`;
   const nextIndex = index.replace(
     indexed.row,
-    `| ${slug} | ${indexed.title} | SHAPING | ${indexed.remaining} |`,
+    `| [${slug}](${slug}/README.md) | ${indexed.title} | SHAPING | ${indexed.remaining} |`,
   );
   await atomicWriteFiles(
     [

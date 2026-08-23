@@ -77,7 +77,7 @@ ${overrides.deferred ?? ""}
 }
 
 function index(status = "SHAPING"): string {
-  return `# Roadmap\n\n| Slug | Title | Status | Remaining |\n|---|---|---|---|\n| ${slug} | Typed finalize | ${status} | — |\n`;
+  return `# Roadmap\n\n| Slug | Title | Status | Remaining |\n|---|---|---|---|\n| [${slug}](${slug}/README.md) | Typed finalize | ${status} | — |\n`;
 }
 
 async function repository(status = "SHAPING", itemBody = item(status)) {

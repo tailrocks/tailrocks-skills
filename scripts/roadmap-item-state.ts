@@ -44,7 +44,10 @@ export function parseRoadmapItemStatus(item: string): ItemStatus {
 
 export function parseRoadmapIndexStatus(index: string, slug: string): IndexStatus {
   const escaped = slug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const pattern = new RegExp(`^\\| ${escaped} \\| ([^|\\n]+) \\| ([^|\\n]+) \\| ([^|\\n]+) \\|$`, "gm");
+  const pattern = new RegExp(
+    `^\\| \\[${escaped}\\]\\(${escaped}/README\\.md\\) \\| ([^|\\n]+) \\| ([^|\\n]+) \\| ([^|\\n]+) \\|$`,
+    "gm",
+  );
   const matches = [...index.matchAll(pattern)];
   if (matches.length !== 1) throw new Error(`index must contain exactly one row for ${slug}`);
   return {
@@ -162,7 +165,7 @@ export async function publishRoadmapStatus(
   const nextItem = `${item.slice(0, itemStatus.start)}- **Status**: ${to}${item.slice(itemStatus.end)}`;
   const nextIndex = index.replace(
     indexed.row,
-    `| ${slug} | ${indexed.title} | ${to} | ${indexed.remaining} |`,
+    `| [${slug}](${slug}/README.md) | ${indexed.title} | ${to} | ${indexed.remaining} |`,
   );
   await atomicWriteFiles(
     [

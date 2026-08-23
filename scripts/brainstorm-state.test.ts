@@ -26,7 +26,7 @@ import {
 
 const item = (status: string) => `# Item\n\n- **Status**: ${status}\n\n## Decisions\n\n## Open questions\n`;
 const index = (status: string) =>
-  `# Roadmap\n\n| Slug | Title | Status | Remaining |\n|------|-------|--------|-----------|\n| item | Item title | ${status} | — |\n`;
+  `# Roadmap\n\n| Slug | Title | Status | Remaining |\n|------|-------|--------|-----------|\n| [item](item/README.md) | Item title | ${status} | — |\n`;
 
 async function tree(itemStatus = "DRAFT", indexState = itemStatus) {
   const root = await realpath(await mkdtemp(path.join(tmpdir(), "brainstorm-state-")));
@@ -103,6 +103,12 @@ test("missing, mismatched, malformed, and READY-or-later states refuse without m
   await rm(path.join(missing, "roadmap", "item", "README.md"));
   await expect(beginBrainstorm(missing, "item")).rejects.toThrow();
   expect(await readFile(path.join(missing, "roadmap", "README.md"), "utf8")).toBe(index("DRAFT"));
+
+  const deprecated = await tree();
+  const deprecatedIndex = index("DRAFT").replace("[item](item/README.md)", "item");
+  await writeFile(path.join(deprecated, "roadmap", "README.md"), deprecatedIndex);
+  await expect(beginBrainstorm(deprecated, "item")).rejects.toThrow("exactly one row");
+  expect(await readFile(path.join(deprecated, "roadmap", "README.md"), "utf8")).toBe(deprecatedIndex);
 });
 
 test("symlinked root, item, and index refuse before reading target content", async () => {

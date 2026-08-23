@@ -1482,9 +1482,29 @@ all terminal checks pass, and the final literal marker is changed to
     tests/5,726 assertions and every static/generated check; only the same two
     unrelated macOS GUI activation cases failed, owned by P09.15. No evals run
     or inspected.
-- [ ] [IN_PROGRESS] P09.12 `tailrocks-idea`: atomic capture success/refusal/boundary
+- [x] [COMPLETED] P09.12 `tailrocks-idea`: atomic capture success/refusal/boundary
   tests using temporary repositories.
-- [ ] [TODO] P09.13 `tailrocks-improve`: deterministic route selection,
+  - Evidence receipt (2026-08-23): added a loader-bound bootstrap and installed
+    capture core that exclusively create the branch before repository writes,
+    construct and atomically publish the canonical DRAFT item and linked index
+    row, stage exactly those files, commit once, and compose the hardened
+    immutable push/draft-PR transaction. Closed inputs, anchored state checks,
+    exact actor/base/branch/PR collision proofs, symlink and replacement guards,
+    bounded I/O, identity-safe rollback, and typed refusal/recovery receipts now
+    cover local commits plus authoritative remote-ref and PR evidence. Temporary
+    Git repositories prove success, absent/existing-index cases, stale and
+    concurrent boundaries, atomic rollback, commit/push/PR uncertainty, branch
+    before both directory creations, and refusal before hostile local helpers
+    load. Downstream state commands now accept only canonical linked index rows;
+    the deprecated plain-row route is rejected and no compatibility alias
+    remains. Focused proof passed 37 tests/243 assertions; validator passed 84
+    skills; references checked 88 sources/258 byte-identical destinations; docs
+    checked 256 files; formatting and protected paths passed; fresh subagent
+    verdict: PASS. The non-eval migration gate passed 519 tests/5,800 assertions
+    before the final recovery-only test addition; only the same two unrelated
+    macOS GUI activation cases failed, owned by P09.15. No evals run or
+    inspected.
+- [ ] [IN_PROGRESS] P09.13 `tailrocks-improve`: deterministic route selection,
   correctness-first ranking, rejected-finding handling, and typed receipts.
 - [ ] [TODO] P09.14 `tailrocks-macos-design`: live-render requirement,
   bounded-baseline authority, exclusive review/systematize outputs.
