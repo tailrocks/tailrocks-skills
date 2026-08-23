@@ -56,18 +56,30 @@ export async function runBoundedCommand({
   let stderrBytes = 0;
   let forcePromise: Promise<void> | undefined;
   const ownedProcesses = new Map<number, string>();
-  const processTable = (): Array<{ pid: number; parent: number; group: number; started: string }> => {
+  const processTable = (): Array<{
+    pid: number;
+    parent: number;
+    group: number;
+    state: string;
+    started: string;
+  }> => {
     if (process.platform === "win32") return [];
-    const processes = spawnSync("/bin/ps", ["-axo", "pid=,ppid=,pgid=,lstart="], {
+    const processes = spawnSync("/bin/ps", ["-axo", "pid=,ppid=,pgid=,stat=,lstart="], {
       encoding: "utf8",
       timeout: 1_000,
     });
     if (processes.status !== 0 || processes.error) return [];
     return processes.stdout.split(/\r?\n/).flatMap((line) => {
-      const match = line.match(/^\s*(\d+)\s+(\d+)\s+(\d+)\s+(.+?)\s*$/);
+      const match = line.match(/^\s*(\d+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(.+?)\s*$/);
       if (!match) return [];
       return [
-        { pid: Number(match[1]), parent: Number(match[2]), group: Number(match[3]), started: match[4]! },
+        {
+          pid: Number(match[1]),
+          parent: Number(match[2]),
+          group: Number(match[3]),
+          state: match[4]!,
+          started: match[5]!,
+        },
       ];
     });
   };
@@ -89,7 +101,7 @@ export async function runBoundedCommand({
   };
   const stillOwned = (pid: number, started: string): boolean => {
     const row = processTable().find((candidate) => candidate.pid === pid);
-    return row?.started === started;
+    return row?.started === started && !row.state.startsWith("Z");
   };
   const signalTree = (signal: NodeJS.Signals): void => {
     if (!child.pid) return;
