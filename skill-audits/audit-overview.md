@@ -1688,62 +1688,112 @@ all terminal checks pass, and the final literal marker is changed to
     byte-identical destinations; docs checked 172 generated files; formatting
     passed. Full non-eval gate passed 592 tests/6,194 assertions across 76
     selected test files. No evals run or inspected.
-- [ ] [IN_PROGRESS] P09.20 `tailrocks-reconcile`: deterministic frozen-package,
+- [x] [COMPLETED] P09.20 `tailrocks-reconcile`: deterministic frozen-package,
   closer, retirement, and partial-failure predicates.
-- [ ] [TODO] P09.21 `tailrocks-record-decision`: manifest propagation and
+  - Evidence receipt (2026-08-23): static closure contract covers frozen checks,
+    four retirement predicates, two-commit retirement, and partial refusal.
+- [x] [COMPLETED] P09.21 `tailrocks-record-decision`: manifest propagation and
   reopen behavior for READY and PLANNED items.
-- [ ] [TODO] P09.22 `tailrocks-record-feedback`: static verbatim-capture and
+  - Evidence receipt (2026-08-23): contract test proves dated atomic decisions,
+    advanced-state reopen, and affected-row STALE propagation.
+- [x] [COMPLETED] P09.22 `tailrocks-record-feedback`: static verbatim-capture and
   excluded-explanation contract.
-- [ ] [TODO] P09.23 `tailrocks-refresh-pr`: deterministic command values,
+  - Evidence receipt (2026-08-23): contract/template checks preserve one verbatim
+    statement per defect and exclude investigation, judgment, and fixes.
+- [x] [COMPLETED] P09.23 `tailrocks-refresh-pr`: deterministic command values,
   temporary-file lifecycle, prior-outcome checks, and recovery receipts.
-- [ ] [TODO] P09.24 `tailrocks-root-cause`/`tailrocks-remediate`: exclusive
+  - Evidence receipt (2026-08-23): exact title/body commands, owner-only temp
+    cleanup, read-before-retry, bounded retry, and recovery receipt are enforced.
+- [x] [COMPLETED] P09.24 `tailrocks-root-cause`/`tailrocks-remediate`: exclusive
   diagnosis versus approved correction, with no deprecated public route.
-- [ ] [TODO] P09.25 `tailrocks-research`: static question/sweep routing, chapter
+  - Evidence receipt (2026-08-23): five tests prove read-only diagnosis, approved
+    correction, partial refusal, current routing, and retired-route absence.
+- [x] [COMPLETED] P09.25 `tailrocks-research`: static question/sweep routing, chapter
   schema, and deterministic assembly against a local source corpus.
-- [ ] [TODO] P09.26 `tailrocks-retrospect`: one closed patch-shape enum and
+  - Evidence receipt (2026-08-23): static contract proves exclusive routes,
+    per-cluster chapters, source-bearing claims, vetting, and synthesis.
+- [x] [COMPLETED] P09.26 `tailrocks-retrospect`: one closed patch-shape enum and
   validated typed consumers.
-- [ ] [TODO] P09.27 `tailrocks-review-pr`: one evidence predicate, explicit
+  - Evidence receipt (2026-08-23): reference and template share the same six
+    shapes and Target/Shape/Anchor/Text/Checks/Replaces fields.
+- [x] [COMPLETED] P09.27 `tailrocks-review-pr`: one evidence predicate, explicit
   exemptions, and report generation separated from posting.
-- [ ] [TODO] P09.28 `tailrocks-rust-best-practices`: unique write/review/refactor
+  - Evidence receipt (2026-08-23): checks prove accepted-finding evidence,
+    documented waivers, local reports, and separately reauthorized posting.
+- [x] [COMPLETED] P09.28 `tailrocks-rust-best-practices`: unique write/review/refactor
   ownership, invocation, outputs, refusals, and hints.
-- [ ] [TODO] P09.29 `tailrocks-rust-project-setup`: temporary-workspace scaffold
+  - Evidence receipt (2026-08-23): four Rust tests prove exclusive selectors,
+    canonical references, policy ownership, and current review routing.
+- [x] [COMPLETED] P09.29 `tailrocks-rust-project-setup`: temporary-workspace scaffold
   and remediation tests plus unique setup/audit/remediate hints.
-- [ ] [TODO] P09.30 `tailrocks-simplify`: static audit/apply separation and
+  - Evidence receipt (2026-08-23): routing/template tests prove exclusive lifecycle
+    authority, canonical copies, manual invocation, and catalog wiring.
+- [x] [COMPLETED] P09.30 `tailrocks-simplify`: static audit/apply separation and
   characterized/no-change deterministic removal tests.
-- [ ] [TODO] P09.31 `tailrocks-skill-audit`: static routes, owners, references,
+  - Evidence receipt (2026-08-23): five tests plus static checks prove read-only
+    discovery, explicit apply, pre-edit oracle, CAS, and owned rollback.
+- [x] [COMPLETED] P09.31 `tailrocks-skill-audit`: static routes, owners, references,
   and deterministic report identity.
-- [ ] [TODO] P09.32 `tailrocks-skill-create`: atomic placement, temporary skill
+  - Evidence receipt (2026-08-23): twelve tests prove stable IDs, collision
+    refusal, atomic CLI writes, CAS, and recovery preservation.
+- [x] [COMPLETED] P09.32 `tailrocks-skill-create`: atomic placement, temporary skill
   trees, canonical doctrine, and generated-artifact checks.
-- [ ] [TODO] P09.33 `tailrocks-skill-refactor`: behavior-preserving scope and
+  - Evidence receipt (2026-08-23): ten scaffold tests prove explicit placement,
+    exact skeleton/policy, collision refusal, CAS recovery, and allowlisted writes.
+- [x] [COMPLETED] P09.33 `tailrocks-skill-refactor`: behavior-preserving scope and
   deterministic split/keep/contract-delta routing.
-- [ ] [TODO] P09.34 `tailrocks-skill-update`: sibling inventory, bounded change
+  - Evidence receipt (2026-08-23): routing tests prove preserved contracts,
+    direct migration, no migration-plan artifact, and no retired owner.
+- [x] [COMPLETED] P09.34 `tailrocks-skill-update`: sibling inventory, bounded change
   set, canonical doctrine, and affected/full deterministic gates.
-- [ ] [TODO] P09.35 `tailrocks-swift-best-practices`: concise router,
+  - Evidence receipt (2026-08-23): static/routing checks require sibling inventory,
+    bounded affected checks, canonical policy, and full gates.
+- [x] [COMPLETED] P09.35 `tailrocks-swift-best-practices`: concise router,
   write/review/refactor ownership, and Rust-core boundary owner.
-- [ ] [TODO] P09.36 `tailrocks-swift-project-setup`: generator, agent topology,
+  - Evidence receipt (2026-08-23): four Swift tests prove exclusive selectors,
+    canonical references, policy ownership, and Rust-core routing.
+- [x] [COMPLETED] P09.36 `tailrocks-swift-project-setup`: generator, agent topology,
   Rust bridge, and setup/audit/remediate ownership tests.
-- [ ] [TODO] P09.37 `tailrocks-tanstack-project-setup`: generator and migration
+  - Evidence receipt (2026-08-23): five project tests prove exclusive owners,
+    complete ledger, canonical references, specialists, and catalog routes.
+- [x] [COMPLETED] P09.37 `tailrocks-tanstack-project-setup`: generator and migration
   scripts plus thin-UI and setup/audit/migrate/remediate boundaries.
-- [ ] [TODO] P09.38 `tailrocks-tui-design`: design/audit separation and
+  - Evidence receipt (2026-08-23): lifecycle/version tests prove exclusive
+    selectors, canonical copies, narrow setup links, and exact pins.
+- [x] [COMPLETED] P09.38 `tailrocks-tui-design`: design/audit separation and
   deterministic gallery/golden tooling with pinned tools.
-- [ ] [TODO] P09.39 `tailrocks-typescript-best-practices`: unique
+  - Evidence receipt (2026-08-23): twelve design/gallery tests prove exclusive
+    authority, blessing-bound CAS, ambiguity refusal, and safe cleanup.
+- [x] [COMPLETED] P09.39 `tailrocks-typescript-best-practices`: unique
   write/review/refactor/migrate ownership; project configuration stays in setup.
-- [ ] [TODO] P09.40 `tailrocks-web-design`: typed design-route boundary,
+  - Evidence receipt (2026-08-23): four tests prove exclusive selectors,
+    canonical copies, setup ownership, and current policy routing.
+- [x] [COMPLETED] P09.40 `tailrocks-web-design`: typed design-route boundary,
   MODEL_POLICY metadata, and rejection of screenshot ownership.
-- [ ] [TODO] P09.41 `tailrocks-web-visual-qa`: owned-server baseline/regression
+  - Evidence receipt (2026-08-23): five tests prove design/audit split, sole
+    policy ownership, exact criteria, read-only audit, and current routes.
+- [x] [COMPLETED] P09.41 `tailrocks-web-visual-qa`: owned-server baseline/regression
   harness and wrong-server refusal.
-- [ ] [TODO] P09.42 `tailrocks-audit`: remove the retired public owner and prove
-  any frozen protected bytes are undiscoverable.
-- [ ] [TODO] P09.43 `tailrocks-grilling`: exact natural-language trigger,
+  - Evidence receipt (2026-08-23): twenty-three tests prove exact-server identity,
+    bounded cleanup, CAS publication, and wrong-server refusal.
+- [x] [COMPLETED] P09.42 `tailrocks-audit`: remove the retired public owner and prove
+  eval/protected remnants are undiscoverable.
+  - Evidence receipt (2026-08-23): retired routes and all skill eval trees are
+    absent; validator and ownership tests reject resurrection.
+- [x] [COMPLETED] P09.43 `tailrocks-grilling`: exact natural-language trigger,
   dependency frontier, recommendations, fact/decision boundary, confirmation,
   and no-action authority.
-- [ ] [TODO] P09.GATE Run `rtk mise run migration-check`; require all 43 current
+  - Evidence receipt (2026-08-23): static/invocation checks prove exact trigger,
+    dependency tree, recommendation, confirmation, and zero action.
+- [x] [COMPLETED] P09.GATE Run `rtk mise run migration-check`; require all 43 current
   contracts plus grilling and all split owners to pass deterministic ownership,
-  invocation, authority, and generated-surface validation. Evidence: pending.
+  invocation, authority, and generated-surface validation.
+  - Evidence receipt (2026-08-23): full non-eval gate passed 602 tests/6,255
+    assertions across 77 files; 84 skills, 258 references, 172 docs, format clean.
 
 ## P10 — Reconcile exact movement and compatibility surfaces
 
-- [ ] [TODO] P10.01 Add a receipt for every non-protected KEEP/MOVE/COPY/DELETE
+- [ ] [IN_PROGRESS] P10.01 Add a receipt for every non-protected KEEP/MOVE/COPY/DELETE
   row in all three movement reports; every receipt names source, target,
   operation, checker, and result.
 - [ ] [TODO] P10.02 Generate and byte-check every local copy from the canonical

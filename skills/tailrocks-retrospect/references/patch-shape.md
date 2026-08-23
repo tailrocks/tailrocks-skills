@@ -5,7 +5,7 @@ enough that the skill that owns editing can land it without re-deriving the
 finding, and additive enough that landing it cannot damage behavior the
 finding never examined.
 
-## The four legal shapes
+## The six legal shapes
 
 1. **A Boundaries bullet** — a scope or permission the skill was silent
    about. Use when the divergence was the skill doing something it should
@@ -34,7 +34,7 @@ mechanically and reviewed without hunting:
 
 ```text
 Target:   skills/<name>/SKILL.md
-Shape:    Boundaries bullet | appended step | final-gate clause | reference + router line
+Shape:    Boundaries bullet | appended step | final-gate clause | reference + router line | template slot | acceptance check
 Anchor:   after the "<exact heading or bullet>" that currently ends with "<quoted tail>"
 Text:     <the exact prose to insert, in the target's voice and line width>
 Checks:   <non-protected acceptance-check or evidence IDs governing the patched behavior>

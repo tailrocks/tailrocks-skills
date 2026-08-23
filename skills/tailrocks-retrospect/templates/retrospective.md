@@ -73,8 +73,9 @@ record's own references ambiguous against the item it audits.
 
 ```text
 Target:   skills/<name>/SKILL.md
-Shape:    <Boundaries bullet | appended step | final-gate clause | reference + router line>
+Shape:    <Boundaries bullet | appended step | final-gate clause | reference + router line | template slot | acceptance check>
 Anchor:   after "<exact heading or bullet>"
+Text:     <the exact prose to insert, in the target's voice and line width>
 Replaces: <nothing | the exact lines removed, and why>
 Checks:   <non-protected acceptance-check or evidence IDs at risk>
 ```

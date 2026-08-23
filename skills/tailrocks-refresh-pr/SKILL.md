@@ -70,13 +70,27 @@ command whose stdout is the fresh skeleton for the current diff.
    scope in the repository's convention? If the PR grew — a `fix:` that now
    ships a feature — update via `gh pr edit <PR> --title`. Surface a
    scope-shifting title change before it sticks if the operator might not
-   have noticed.
+   have noticed. The complete mutation is `gh pr edit <PR> --title
+   <new-title>`; pass each value as one argument, never through shell
+   interpolation.
    **Complete when:** the title matches the shipped scope.
 
-6. **Write and verify.** Build the reconciled body in a temp file,
-   `gh pr edit <PR> --body-file`, then `gh pr view <PR> --json body -q .body`
-   — no stray `` \` `` or `\$`.
-   **Complete when:** the rendered body matches the reconciliation.
+6. **Write and verify.** Create an owner-only temporary directory, write the
+   reconciled body to `<temp>/body.md`, then run `gh pr edit <PR> --body-file
+   <temp>/body.md`. Remove the temporary directory on success and every
+   failure path. Verify with `gh pr view <PR> --json title,body`; require both
+   remote values to equal the intended values byte-for-byte — no stray
+   `` \` `` or `\$`.
+
+   A timeout or lost response is an uncertain outcome, not a failed edit.
+   Re-read title and body first: if both already match, record success; if
+   neither changed, one bounded retry may repeat the exact command; if only
+   one changed or the retry remains uncertain, stop with `RECOVERY_REQUIRED`.
+   Report the PR number, intended title/body digests, observed remote values,
+   exact command outcome, retry count, and temporary-path cleanup as the
+   recovery receipt. Never blindly retry a mutation.
+   **Complete when:** the rendered title and body match, temporary bytes are
+   removed, and the mutation or recovery receipt is complete.
 
 7. **Report.** Name what moved: sections added or dropped, prose rewritten,
    the title change (old and new) and why. Do not ask permission to refresh —
@@ -85,5 +99,6 @@ command whose stdout is the fresh skeleton for the current diff.
 ## Final gate
 
 Finish only when every body section matches the current diff, no authored
-content was replaced by a placeholder, nothing accurate was rewritten, and
-the render check passed.
+content was replaced by a placeholder, nothing accurate was rewritten, the
+render check passed, temporary bytes were removed, and no uncertain remote
+outcome remains unreported.
