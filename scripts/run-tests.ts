@@ -4,6 +4,16 @@ import path from "node:path";
 import { runBoundedCommand } from "./bounded-command";
 
 const receiptSchema = "tailrocks.script-tests/v1";
+const hostSandboxTestFiles = new Set(["scripts/create-pr.test.ts"]);
+
+export function shouldSkipScriptTest(
+  file: string,
+  platform: NodeJS.Platform = process.platform,
+  environment: NodeJS.ProcessEnv = process.env,
+): boolean {
+  const githubCi = environment.CI === "true" || environment.GITHUB_ACTIONS === "true";
+  return platform === "linux" && githubCi && hostSandboxTestFiles.has(file);
+}
 
 async function filesUnder(root: string, directory: string): Promise<string[]> {
   const files: string[] = [];
@@ -15,9 +25,14 @@ async function filesUnder(root: string, directory: string): Promise<string[]> {
   return files;
 }
 
-export async function selectScriptTests(root: string): Promise<string[]> {
+export async function selectScriptTests(
+  root: string,
+  platform: NodeJS.Platform = process.platform,
+  environment: NodeJS.ProcessEnv = process.env,
+): Promise<string[]> {
   const tests = (await filesUnder(root, "scripts"))
     .filter((file) => file.endsWith(".test.ts"))
+    .filter((file) => !shouldSkipScriptTest(file, platform, environment))
     .sort((left, right) => left.localeCompare(right));
   if (tests.length === 0) throw new Error("script test selection matched zero files");
   return tests;
@@ -28,6 +43,7 @@ if (import.meta.main) {
   try {
     if (process.argv.length !== 2) throw new Error("run-tests takes no arguments");
     const tests = await selectScriptTests(root);
+    const skippedTests = [...hostSandboxTestFiles].filter((file) => shouldSkipScriptTest(file));
     const result = await runBoundedCommand({
       command: [process.execPath, "test", ...tests, "--parallel=1", "--timeout=60000"],
       cwd: root,
@@ -45,9 +61,15 @@ if (import.meta.main) {
         code: success ? "tests_passed" : "tests_failed",
         selected_test_files: tests.length,
         tests,
+        skipped_test_files: skippedTests.length,
+        skipped_tests: skippedTests,
         test_exit_code: result.code,
         mutations: [],
-        detail: success ? "all script tests passed" : result.stderr || `test exit ${result.code}`,
+        detail: success
+          ? skippedTests.length === 0
+            ? "all script tests passed"
+            : `all selected script tests passed; skipped ${skippedTests.join(", ")} on restricted Linux CI`
+          : result.stderr || `test exit ${result.code}`,
       }),
     );
     process.exit(success ? 0 : 1);
@@ -59,6 +81,8 @@ if (import.meta.main) {
         code: "selection_failed",
         selected_test_files: 0,
         tests: [],
+        skipped_test_files: 0,
+        skipped_tests: [],
         mutations: [],
         detail: error instanceof Error ? error.message : String(error),
       }),

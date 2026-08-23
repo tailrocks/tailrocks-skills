@@ -3,7 +3,7 @@ import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
-import { selectScriptTests } from "./run-tests";
+import { selectScriptTests, shouldSkipScriptTest } from "./run-tests";
 
 test("selects only script test entrypoints", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "tailrocks-script-tests-"));
@@ -12,8 +12,24 @@ test("selects only script test entrypoints", async () => {
     await writeFile(path.join(root, "scripts/a.test.ts"), "");
     await writeFile(path.join(root, "scripts/templates/b.test.ts"), "");
     await writeFile(path.join(root, "scripts/templates/c.spec.ts"), "");
-    expect(await selectScriptTests(root)).toEqual(["scripts/a.test.ts", "scripts/templates/b.test.ts"]);
+    await writeFile(path.join(root, "scripts/create-pr.test.ts"), "");
+    expect(await selectScriptTests(root, "linux", { CI: "true" })).toEqual([
+      "scripts/a.test.ts",
+      "scripts/templates/b.test.ts",
+    ]);
+    expect(await selectScriptTests(root, "darwin", { CI: "true" })).toEqual([
+      "scripts/a.test.ts",
+      "scripts/create-pr.test.ts",
+      "scripts/templates/b.test.ts",
+    ]);
   } finally {
     await rm(root, { recursive: true, force: true });
   }
+});
+
+test("skips host sandbox integration only on Linux CI", () => {
+  expect(shouldSkipScriptTest("scripts/create-pr.test.ts", "linux", { CI: "true" })).toBe(true);
+  expect(shouldSkipScriptTest("scripts/create-pr.test.ts", "darwin", { CI: "true" })).toBe(false);
+  expect(shouldSkipScriptTest("scripts/create-pr.test.ts", "linux", {})).toBe(false);
+  expect(shouldSkipScriptTest("scripts/create-pr-ownership.test.ts", "linux", { CI: "true" })).toBe(false);
 });

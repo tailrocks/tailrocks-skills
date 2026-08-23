@@ -43,6 +43,8 @@ jobs:
         run: find skills scripts -type d -name evals -prune -o -path '*/templates/*.swift' -type f -print0 | xargs -0 -n1 swiftc -parse
       - name: Run native macOS harness tests
         run: bun test scripts/macos-visual-qa/install.test.ts --timeout=60000
+      - name: Run macOS PR sandbox integration tests
+        run: bun test scripts/create-pr.test.ts --timeout=60000
       - name: Verify capture refuses a missing application
         run: |
           set +e
