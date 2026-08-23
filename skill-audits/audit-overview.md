@@ -1386,9 +1386,28 @@ all terminal checks pass, and the final literal marker is changed to
     assertions and every static/generated check; only the same two unrelated
     macOS GUI activation cases failed, owned by P09.15. No evals run or
     inspected.
-- [ ] [IN_PROGRESS] P09.07 `tailrocks-create-pr`: bounded non-vacuous pre-open gate and
+- [x] [COMPLETED] P09.07 `tailrocks-create-pr`: bounded non-vacuous pre-open gate and
   mocked remote receipts.
-- [ ] [TODO] P09.08 `tailrocks-document`: deterministic final-order predicate and
+  - Evidence receipt (2026-08-23): added the direct installed
+    `scripts/create-pr.ts` entrypoint, focused integration and ownership tests,
+    command documentation, updated source skill, and generated documentation.
+    The closed input binds actor/head ownership, repository, exact local and
+    remote base/head SHAs, immutable HTTPS push URL, title, draft state,
+    required trailers, fatal-UTF-8 body digest, and bounded gate/proof argv.
+    Gates run with scrubbed Git materialization in an exact disposable clone,
+    network denial, secret scrubbing, and confined writes; failed or zero-unit
+    gates reach no remote mutation. Remote receipts prove actor, base, absent
+    existing PR, immutable SHA push, post-failure remote discovery, a final
+    immediately-pre-create head check, immutable body stdin, and rendered PR
+    identity. Adversarial tests cover mutation, network, secrets, global smudge
+    config, local/remote races, body replacement, invalid UTF-8, partial push,
+    and render mismatch. Focused proof passed 20 tests/66 assertions; validator
+    passed 84 skills; references checked 88 sources/258 byte-identical
+    destinations; docs checked 256 files; fresh subagent verdict: PASS. The
+    non-eval migration gate passed 488 tests/5,496 assertions and every
+    static/generated check; only the same two unrelated macOS GUI activation
+    cases failed, owned by P09.15. No evals run or inspected.
+- [ ] [IN_PROGRESS] P09.08 `tailrocks-document`: deterministic final-order predicate and
   documentation discovery tests.
 - [ ] [TODO] P09.09 `tailrocks-finalize`: machine-owned readiness/state
   transitions for DRAFT, SHAPING, READY, live, and batch paths.

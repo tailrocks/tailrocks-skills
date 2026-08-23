@@ -69,11 +69,12 @@ convention discovery, never an error.
    **Complete when:** the current branch is not the base, belongs to this work,
    and backs no existing PR.
 
-3. **Commit and push.** Uncommitted changes → commit inline: subject in the
+3. **Commit.** Uncommitted changes → commit inline: subject in the
    repository's convention, sign-off (`git commit -s`) when the repository
    requires DCO, other required trailers included. Already committed → skip.
-   Then push with upstream set.
-   **Complete when:** the branch is on the remote and the tree is clean.
+   Do not push here.
+   **Complete when:** the tree is clean, the branch differs from base, and
+   every commit in the range carries every required trailer.
 
 4. **Build the body.** Read
    [`references/pr-body.md`](references/pr-body.md). If the conventions file
@@ -88,19 +89,42 @@ convention discovery, never an error.
    **Complete when:** every remaining section is filled and specific to this
    change.
 
-5. **Create.** `gh pr create --body-file <file>` with the title, base, and
-   draft flag resolved above.
-   **Complete when:** the PR URL exists.
+5. **Gate, push, create, and verify.** Resolve this installed skill's plugin
+   root from the loader-provided absolute `SKILL.md` path. Run its
+   `scripts/create-pr.ts --skill-file <that absolute path>` entrypoint with
+   one closed `tailrocks.create-pr-input/v1` JSON object on stdin. Bind the
+   exact repository, authenticated actor, remote name and HTTPS URL, base and
+   head refs and SHAs, title, external body path and SHA-256, draft flag,
+   required trailer names, and gates. Include every repository-required
+   check and a body-validation check. Each bounded gate has an absolute argv
+   command plus an absolute proof argv; the proof must emit exactly one
+   `tailrocks.gate-proof/v1` JSON object whose `units` is a positive count of
+   executed tests, files, or checks. Do not call `git push`, `gh pr create`,
+   or `gh pr edit` separately.
 
-6. **Verify the render.** `gh pr view <PR> --json body -q .body` — confirm no
-   stray `` \` `` or `\$` and no leftover placeholder. Fix with
-   `gh pr edit --body-file`.
-   **Complete when:** the rendered body matches what you wrote.
+   The entrypoint materializes the bound revision locally with global/system Git
+   configuration, templates, and LFS smudge disabled, then runs every gate in
+   that disposable subject with network denied, ambient secrets removed, and
+   writes confined to the copy. It fails closed before mutation when the sandbox is
+   unavailable or a gate fails or proves zero units. On success it requires the
+   actor to own the head, proves the target base SHA and absence of an existing
+   PR, rechecks live repository identity, pushes the immutable head SHA to the
+   exact HTTPS URL without force, and verifies the remote SHA. It repeats the
+   remote pre-create proof, rechecks the exact remote head immediately before
+   creation, streams the fatal-UTF-8-validated and already-hashed body bytes through
+   `--body-file -`, and verifies body, head SHA, base, URL, title, draft state,
+   author, and open state. A
+   `recovery_required` receipt means remote work partially happened: report
+   its exact action receipts and stop instead of retrying blindly.
+   **Complete when:** one `tailrocks.create-pr/v1` receipt reports `opened`.
 
-7. **Report.** The PR URL, the branch, and the verify commands from the body.
+6. **Report.** The receipt's PR URL, branch, gate unit counts, and the verify
+   commands from the body.
 
 ## Final gate
 
-Finish only when the PR exists on a non-base branch, the body came from the
-repository's template or generator with no unfilled placeholder, required
-trailers are on every commit, and the render check passed.
+Finish only when the entrypoint proves positive gate units, exact remote head,
+new open PR identity, and rendered body on a non-base branch. Failed or vacuous
+gates must leave zero remote mutations. The body came from the repository's
+template or generator with no unfilled placeholder, and every commit carries
+all required trailers.
