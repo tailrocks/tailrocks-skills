@@ -44,7 +44,7 @@ Replaces: <nothing | the exact lines this patch removes, and why>
 `Checks` is not optional. A router edit can affect every behavior in the file,
 so the applying skill reruns all affected deterministic checks; naming the
 claims nearest the patch identifies load-bearing wording without touching the
-frozen legacy eval tree.
+durable evidence record.
 
 ## Additive discipline
 

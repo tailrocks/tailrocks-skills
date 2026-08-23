@@ -62,10 +62,9 @@ artifacts; cite location and type only.
    not.
    **Complete when:** each surviving edit names the failure it fixes.
 
-4. **Preserve frozen evidence.** Read canonical
+4. **Preserve evidence.** Read canonical
    `skills/tailrocks-skill-audit/references/testing-doctrine.md` directly.
-   Map target failure and affected invariants to existing evidence. This task
-   never inspects or changes frozen legacy eval artifacts under its explicit exclusion.
+   Map target failure and affected invariants to existing durable evidence.
    **Complete when:** the behavioral delta has prior discriminating evidence and
    the complete public-contract snapshot is unchanged.
 
@@ -94,8 +93,7 @@ Never ship a behavioral edit whose failure was not observed. Never
 reword an evidence-pinned line without checking its acceptance claims. Never append
 past the router budget. Never change any public-contract field or absorb a
 separately invokable responsibility in an update. Never create a migration-plan
-artifact or perform direct migration. Never inspect, require, modify, move,
-execute, or certify frozen legacy eval infrastructure. Report every check
+artifact or perform direct migration. Never create a per-skill eval tree. Report every check
 skipped. Return exactly one `UPDATED`, `BLOCKED`, `REFUSED`,
 `DIRECT_MIGRATION_REQUIRED`, or `RECOVERY_REQUIRED` receipt. A contract delta is
 conversation-only: name its changed fields, compatibility and rollback

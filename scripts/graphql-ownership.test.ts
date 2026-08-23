@@ -137,10 +137,16 @@ test("GraphQL manifest, registry, and PR review route are exact", async () => {
   const choosing = await readFile(path.join(root, "docs/content/docs/choosing.mdx"), "utf8");
   expect(choosing).toContain("A public GraphQL API must evolve");
   expect(choosing).toContain("needs read-only schema, server, SDL-gate, and generated-client findings");
-  const evolveReadme = await source("tailrocks-graphql-best-practices", "README.md");
-  const reviewReadme = await source("tailrocks-graphql-review", "README.md");
-  expect(evolveReadme).toContain("Arguments: `<public GraphQL API evolution>`");
-  expect(reviewReadme).toContain("Arguments: `<GraphQL diff, module, or whole API surface>`");
+  const evolvePage = await readFile(
+    path.join(root, "docs/content/docs/skills/tailrocks-graphql-best-practices/index.mdx"),
+    "utf8",
+  );
+  const reviewPage = await readFile(
+    path.join(root, "docs/content/docs/skills/tailrocks-graphql-review/index.mdx"),
+    "utf8",
+  );
+  expect(evolvePage).toContain("Arguments: `<public GraphQL API evolution>`");
+  expect(reviewPage).toContain("Arguments: `<GraphQL diff, module, or whole API surface>`");
   expect(
     await readFile(
       path.join(root, "docs/content/docs/skills/tailrocks-graphql-best-practices/definition.mdx"),

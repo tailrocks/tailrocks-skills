@@ -104,9 +104,6 @@ describe("scaffoldSkill", () => {
       { skill: "deploy-check", class: "MANUAL_ONLY" },
       { skill: "tailrocks-skill-create", class: "MANUAL_ONLY" },
     ]);
-    expect(
-      await Bun.file(path.join(root, ".agent-skills/deploy-check/evals/evals.json")).exists(),
-    ).toBeFalse();
   });
 
   test("requires an explicit MODEL_POLICY request and writes the exact profile", async () => {

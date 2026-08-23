@@ -1662,9 +1662,33 @@ all terminal checks pass, and the final literal marker is changed to
     passed; fresh subagent verdict: PASS. The non-eval migration gate passed 589
     tests/6,173 assertions across 76 selected test files. No evals run or
     inspected.
-- [ ] [IN_PROGRESS] P09.19 `tailrocks-prove`: capability drivers against local
+- [x] [COMPLETED] P09.19 `tailrocks-prove`: capability drivers against local
   CLI/application/browser programs with machine-readable receipts.
-- [ ] [TODO] P09.20 `tailrocks-reconcile`: deterministic frozen-package,
+  - Evidence receipt (2026-08-23): added one loader-bound private capability driver with strict
+    prepare/run/assemble schemas. Prepare binds canonical root identity, full
+    source-byte snapshot, exact HEAD/status, a no-hardlink local checkout,
+    bounded build fact, prepared artifact hashes, and immutable inventory. Each
+    CLI/application/browser row executes in its own copied workspace with owned
+    HOME/TMPDIR, scrubbed named environment digests, bounded process-tree
+    cleanup, complete before/after byte snapshots that catch ignored writes,
+    hashed streams/decisive lines/artifacts, capability adapter facts, and no
+    semantic `WORKS` claim. Machine-owned 0600 receipt persistence prevents
+    assembly from trusting submitted prose or fabricated facts; assembly accepts
+    only row/path/digest references, deeply validates the persisted partition,
+    includes inventory/build/prepared facts, rechecks source bytes, quarantines
+    cleanup by inode identity, and returns structured recovery on refusal.
+    Replacement, tamper, hostile environment, reversed/concurrent order,
+    failed-build, timeout, saturation, malformed adapter, source drift, and
+    installed-loader cases pass. Shared bounded-command cleanup now tracks
+    exact PID/start identities instead of reusing a potentially reassigned
+    process-group ID. Public docs state filesystem/process isolation accurately
+    without claiming a network sandbox. Focused proof passed 19 tests/66
+    assertions plus 10 repeated bounded-command rounds and 3 repeated driver
+    rounds. Validator passed 84 skills; references checked 88 sources/258
+    byte-identical destinations; docs checked 172 generated files; formatting
+    passed. Full non-eval gate passed 592 tests/6,194 assertions across 76
+    selected test files. No evals run or inspected.
+- [ ] [IN_PROGRESS] P09.20 `tailrocks-reconcile`: deterministic frozen-package,
   closer, retirement, and partial-failure predicates.
 - [ ] [TODO] P09.21 `tailrocks-record-decision`: manifest propagation and
   reopen behavior for READY and PLANNED items.

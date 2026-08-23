@@ -69,3 +69,12 @@ first even when one of the others is more severe.
 | Surface | Obstacle | Claims left unproven |
 |---|---|---|
 | <surface> | <no device, no credential, no environment> | <what nobody knows yet> |
+
+## Machine evidence
+
+Exact stdout bundle from `prove-driver assemble`; do not reformat or truncate
+it. The bundle contains mechanical execution facts, not semantic verdicts.
+
+```json
+<tailrocks.prove-evidence-bundle/v1 JSON>
+```

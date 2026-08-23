@@ -114,7 +114,6 @@ async function validateRetiredRoutes(root: string, errors: string[]): Promise<vo
   for (const directory of ["docs/content", "docs/design"]) {
     for (const file of await filesUnder(path.join(root, directory))) {
       const relative = path.relative(root, file);
-      if (relative === "docs/design/eval-runner-design.md") continue;
       surfaces.add(relative);
     }
   }
@@ -124,9 +123,18 @@ async function validateRetiredRoutes(root: string, errors: string[]): Promise<vo
     for (const entry of await readdir(skillsRoot, { withFileTypes: true })) {
       if (!entry.isDirectory()) continue;
       const skillRoot = path.join(skillsRoot, entry.name);
+      const entries = await readdir(skillRoot, { withFileTypes: true });
+      for (const packageEntry of entries) {
+        const relative = path.relative(root, path.join(skillRoot, packageEntry.name));
+        if (packageEntry.isDirectory() && packageEntry.name === "evals") {
+          errors.push(`${relative}: skill eval directories are forbidden`);
+        }
+        if (packageEntry.isFile() && packageEntry.name === "README.md") {
+          errors.push(`${relative}: per-skill README files are forbidden; use public documentation`);
+        }
+      }
       if (retiredSkillNames.has(entry.name)) {
-        for (const residue of await readdir(skillRoot, { withFileTypes: true })) {
-          if (residue.isDirectory() && residue.name === "evals") continue;
+        for (const residue of entries) {
           if (residue.isDirectory() && (await filesUnder(path.join(skillRoot, residue.name))).length === 0)
             continue;
           errors.push(
@@ -136,8 +144,8 @@ async function validateRetiredRoutes(root: string, errors: string[]): Promise<vo
         continue;
       }
       if (!(await exists(path.join(skillRoot, "SKILL.md")))) continue;
-      for (const packageEntry of await readdir(skillRoot, { withFileTypes: true })) {
-        if (packageEntry.isDirectory() && packageEntry.name === "evals") continue;
+      for (const packageEntry of entries) {
+        if (packageEntry.name === "evals" || packageEntry.name === "README.md") continue;
         const packagePath = path.join(skillRoot, packageEntry.name);
         if (packageEntry.isDirectory()) {
           for (const file of await filesUnder(packagePath)) surfaces.add(path.relative(root, file));
@@ -356,10 +364,6 @@ const releaseAgeRefusalPattern =
 const modelBrandPattern =
   /\b(?:fable\s*\d|mythos\s*\d|opus\s*\d|sonnet\s*\d|haiku\s*\d|claude-(?:opus|sonnet|haiku|fable|mythos)|gpt-\d|gemini-\d|llama\s*\d|mistral-\w)\b/i;
 
-// The frozen legacy eval runtime is outside ordinary authoring. Prose *about*
-// that exclusion has to be able to name the command, so only a fenced block
-// matches — a fenced command is a copy-paste invocation and therefore an
-// attempt to execute excluded infrastructure.
 function bannedTermLines(source: string, pattern: RegExp): string[] {
   return source.split("\n").filter((line) => pattern.test(line) && !negationPattern.test(line));
 }

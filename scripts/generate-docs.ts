@@ -201,31 +201,6 @@ function assetSection(skill: Skill, link: (file: string) => string): string {
   return lines.join("\n");
 }
 
-function invocation(skill: Skill): string {
-  if (skill.invocationClass === "MODEL_POLICY") {
-    const lines = [
-      "## Invocation",
-      "",
-      "This model-policy skill may load automatically only when its exact trigger",
-      "matches work already in scope. Selection grants no authority beyond the",
-      "active task. Direct invocation remains available where the client supports it:",
-      "",
-      `> Use \`${skill.name}\` …`,
-    ];
-    if (skill.argumentHint !== undefined) lines.push("", `Arguments: \`${skill.argumentHint}\``);
-    return lines.join("\n");
-  }
-  const lines = [
-    "## Invocation",
-    "",
-    "This skill never activates on its own. Name it in your request:",
-    "",
-    `> Use \`${skill.name}\` …`,
-  ];
-  if (skill.argumentHint !== undefined) lines.push("", `Arguments: \`${skill.argumentHint}\``);
-  return lines.join("\n");
-}
-
 /** The documentation-site variant: the invocation is written for the reader's own client. */
 function invocationPage(skill: Skill): string {
   const args = skill.argumentHint ?? "";
@@ -257,25 +232,6 @@ function escapeAttribute(value: string): string {
   return value.replaceAll('"', "'");
 }
 
-export function renderReadme(skill: Skill): string {
-  return `${banner}
-
-# Tailrocks: ${skill.title}
-
-\`${skill.name}\` — part of [tailrocks-skills](../../README.md) · [documentation](${siteUrl}/docs/skills/${skill.name})
-
-${skill.description}
-
-${invocation(skill)}
-
-## Skill definition
-
-The instructions this skill loads live in [\`SKILL.md\`](SKILL.md), beside this
-file. They are not copied here — one source, and no chance of the two drifting.
-${assetSection(skill, (file) => file)}
-`;
-}
-
 /**
  * The part of the description the page has not already shown. Fumadocs renders the
  * frontmatter description under the title, so repeating it in the body is duplication —
@@ -295,7 +251,7 @@ description: ${JSON.stringify(skill.summary)}
 
 {/* ${banner.replace(/^<!--\s*|\s*-->$/g, "")} */}
 
-\`${skill.name}\` · [source](${base}/SKILL.md) · [README](${base}/README.md)
+\`${skill.name}\` · [source](${base}/SKILL.md)
 ${beyondSummary(skill)}
 ${invocationPage(skill)}
 
@@ -375,7 +331,7 @@ export function renderSkillMeta(grouped: readonly GroupedSkills[]): string {
 
 export function renderRootList(grouped: readonly GroupedSkills[]): string {
   const sections = grouped
-    .map((entry) => groupTable(entry, (skill) => `skills/${skill.name}/README.md`))
+    .map((entry) => groupTable(entry, (skill) => `${siteUrl}/docs/skills/${skill.name}`))
     .join("\n\n");
   return `${listStart}
 
@@ -428,7 +384,6 @@ export async function generate(root: string): Promise<Generated[]> {
 
   const output: Generated[] = [];
   for (const skill of skills) {
-    output.push({ file: path.join("skills", skill.name, "README.md"), content: renderReadme(skill) });
     output.push({
       file: path.join("docs", "content", "docs", "skills", skill.name, "index.mdx"),
       content: renderSkillOverview(skill),

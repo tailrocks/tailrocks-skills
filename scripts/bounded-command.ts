@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 
 export interface BoundedCommandOptions {
   readonly command: readonly string[];
@@ -55,13 +55,58 @@ export async function runBoundedCommand({
   let stdoutBytes = 0;
   let stderrBytes = 0;
   let forcePromise: Promise<void> | undefined;
+  const ownedProcesses = new Map<number, string>();
+  const processTable = (): Array<{ pid: number; parent: number; group: number; started: string }> => {
+    if (process.platform === "win32") return [];
+    const processes = spawnSync("/bin/ps", ["-axo", "pid=,ppid=,pgid=,lstart="], {
+      encoding: "utf8",
+      timeout: 1_000,
+    });
+    if (processes.status !== 0 || processes.error) return [];
+    return processes.stdout.split(/\r?\n/).flatMap((line) => {
+      const match = line.match(/^\s*(\d+)\s+(\d+)\s+(\d+)\s+(.+?)\s*$/);
+      if (!match) return [];
+      return [
+        { pid: Number(match[1]), parent: Number(match[2]), group: Number(match[3]), started: match[4]! },
+      ];
+    });
+  };
+  const captureTree = (): void => {
+    if (!child.pid) return;
+    const rows = processTable();
+    const selected = new Set<number>([child.pid]);
+    for (let pass = 0; pass < rows.length; pass += 1) {
+      let changed = false;
+      for (const row of rows) {
+        if (row.pid === process.pid || selected.has(row.pid)) continue;
+        if (row.group === child.pid || selected.has(row.parent)) {
+          selected.add(row.pid);
+          changed = true;
+        }
+      }
+      if (!changed) break;
+    }
+    for (const row of rows) if (selected.has(row.pid)) ownedProcesses.set(row.pid, row.started);
+  };
+  const stillOwned = (pid: number, started: string): boolean => {
+    const row = processTable().find((candidate) => candidate.pid === pid);
+    return row?.started === started;
+  };
   const signalTree = (signal: NodeJS.Signals): void => {
     if (!child.pid) return;
-    try {
-      if (process.platform === "win32") child.kill(signal);
-      else process.kill(-child.pid, signal);
-    } catch (error) {
-      if ((error as NodeJS.ErrnoException).code !== "ESRCH") throw error;
+    captureTree();
+    if (process.platform === "win32") {
+      child.kill(signal);
+      return;
+    }
+    for (const [pid, started] of [...ownedProcesses].sort(([left], [right]) => right - left)) {
+      if (!stillOwned(pid, started)) continue;
+      try {
+        process.kill(pid, signal);
+      } catch (memberError) {
+        if ((memberError as NodeJS.ErrnoException).code !== "ESRCH" && stillOwned(pid, started))
+          throw memberError;
+      }
     }
   };
   const stop = (): void => {
@@ -70,12 +115,7 @@ export async function runBoundedCommand({
       signalTree("SIGKILL");
       if (process.platform === "win32" || !child.pid) return;
       for (let attempt = 0; attempt < 50; attempt += 1) {
-        try {
-          process.kill(-child.pid, 0);
-        } catch (error) {
-          if ((error as NodeJS.ErrnoException).code === "ESRCH") return;
-          throw error;
-        }
+        if ([...ownedProcesses].every(([pid, started]) => !stillOwned(pid, started))) return;
         await new Promise((resolve) => setTimeout(resolve, 10));
       }
       throw new Error("command process group survived SIGKILL");

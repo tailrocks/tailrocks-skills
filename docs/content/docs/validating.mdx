@@ -50,8 +50,8 @@ mise run ci      # lint + generated-file drift check + tests
 
 Three more checks sit beside them:
 
-- `mise run docs:check` fails when a generated file — a skill's README, a
-  documentation page, the root README's skill table — is stale against its
+- `mise run docs:check` fails when a generated documentation page or the root
+  README's skill table is stale against its
   `SKILL.md` source. Regenerate with `mise run docs`; never edit a generated
   file.
 - `claude --plugin-dir .` loads the collection locally, the smoke test that
@@ -61,15 +61,12 @@ Three more checks sit beside them:
   57/100 with the full artifact chain. A change that alters what the skills
   produce is checked against what those examples froze.
 
-## Behavioral evidence outside the frozen tree
+## Behavioral evidence
 
-Ordinary work records the observed failure and deterministic acceptance checks
-in non-protected evidence artifacts. The legacy eval runtime is frozen and
-excluded: validation, authoring, scaffolding, documentation generation, and
-release work do not inspect, require, modify, move, execute, or certify it.
-Watching a behavior fail before a change and pass after remains valid evidence;
-record both without converting that observation into authority over excluded
-paths.
+Ordinary work records observed failures and deterministic acceptance checks in
+durable evidence artifacts. Per-skill eval trees are not part of this
+repository. Watching behavior fail before a change and pass after remains valid
+evidence; record both.
 
 ## The release re-verification
 

@@ -74,10 +74,8 @@ Stop immediately for an unmatched error, unavailable tool, or exhausted bound;
 preserve current state, report exact failure and prior mutations, and never
 claim completion.
 
-Frozen legacy eval infrastructure is not a house-wiring obligation. Ordinary
-validation, authoring, scaffolding, generated docs, and release work never
-inspect, require, modify, move, execute, or certify it. Behavioral claims use
-non-protected evidence records and deterministic acceptance checks.
+Per-skill eval trees are forbidden. Behavioral claims use durable evidence
+records and deterministic acceptance checks.
 
 ## Update-mode obligations
 

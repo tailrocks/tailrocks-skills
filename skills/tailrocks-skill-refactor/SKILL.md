@@ -85,8 +85,8 @@ artifacts; cite location and type only.
 Never split by size alone. Never lose or duplicate a responsibility silently.
 Never remove a source before preservation proof. Never change a public contract.
 Never create a migration-plan artifact or treat migration authorization as
-refactor authorization. Never invoke audit automatically or self-verify. Never inspect, require,
-modify, move, execute, or certify frozen legacy eval infrastructure. Report
+refactor authorization. Never invoke audit automatically or self-verify. Never
+create a per-skill eval tree. Report
 every skipped check. Return exactly one `REFACTORED`, `BLOCKED`, `REFUSED`,
 `DIRECT_MIGRATION_REQUIRED`, or `RECOVERY_REQUIRED` receipt with frozen-contract
 hashes, source-to-target mapping, exact mutations, proof commands/counts, and

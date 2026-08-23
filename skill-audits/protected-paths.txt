@@ -1,6 +1,0 @@
-# Frozen paths excluded from skill-audits/audit-overview.md
-# Source SHA: 2626d51827747c3b3e0e76cd20a7d38363c82648
-skills/*/evals/**
-scripts/run-evals.ts
-scripts/run-evals.test.ts
-docs/design/eval-runner-design.md

@@ -47,9 +47,9 @@ test("diagnosis owns moved doctrine and no retired public surface remains", asyn
       false,
     );
   }
-  for (const relative of ["SKILL.md", "README.md", "agents/openai.yaml"])
+  for (const relative of ["SKILL.md", "agents/openai.yaml"])
     expect(await Bun.file(path.join(root, "skills/tailrocks-rethink", relative)).exists()).toBe(false);
-  for (const relative of ["SKILL.md", "README.md", "agents/openai.yaml"])
+  for (const relative of ["SKILL.md", "agents/openai.yaml"])
     expect(await Bun.file(path.join(root, "skills/tailrocks-checkout-pr", relative)).exists()).toBe(false);
 });
 

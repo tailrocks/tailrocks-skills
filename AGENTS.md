@@ -829,7 +829,7 @@ none of the four authoring skills executes direct migration under any selector.
 - **tailrocks-skill-update** — an in-place semantic edit that preserves every
   public-contract field: evidence-pinned lines checked before a gate is
   reworded, strengthen over append, replace past the router budget, and rerun
-  deterministic acceptance checks outside the frozen legacy eval tree.
+  deterministic acceptance checks recorded in durable evidence.
   Definition: `skills/tailrocks-skill-update/SKILL.md`
 - **tailrocks-skill-audit** — the doctrine authority and the read-only judge:
   audits one skill or sweeps the tree with one read-only subagent per skill,
@@ -976,12 +976,9 @@ Load the plugin locally in Claude Code:
 claude --plugin-dir .
 ```
 
-**Frozen legacy eval infrastructure is outside ordinary work.** Validation,
-authoring, scaffolding, documentation generation, and release work never
-inspect, require, modify, move, execute, or certify the paths listed in
-`skill-audits/protected-paths.txt`. Behavioral evidence lives in non-protected
-records and deterministic checks. A manual observation may establish the red
-bar; it never authorizes touching the frozen tree.
+Per-skill `README.md` and `evals/` trees are forbidden. Public documentation
+owns skill purpose and usage. Behavioral evidence lives in durable records and
+deterministic checks.
 
 ## Documentation
 
@@ -1060,5 +1057,5 @@ footer in the body.
    and refresh its verified date.
 7. Re-verify macOS platform baselines against Apple DocC availability data and
    `gdmf.apple.com/v2/pmv`, and refresh their verification stamps. Use
-   `examples/macos-screen/` as the rendered regression corpus. Frozen legacy
-   eval infrastructure is not a release input and remains untouched.
+   `examples/macos-screen/` as the rendered regression corpus. Per-skill eval
+   trees are absent and are not release inputs.

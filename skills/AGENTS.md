@@ -71,20 +71,15 @@ Rules for changing a `SKILL.md`:
   contents. A router section that reads like a table of contents is dilution with
   no benefit; the reference already says all of it, better.
 - Adding a section to a router is a change to **every** behavior in that file.
-- **Frozen legacy eval infrastructure is excluded.** Ordinary validation,
-  authoring, scaffolding, documentation generation, and release work never
-  inspect, require, modify, move, execute, or certify `skills/*/evals/**`,
-  `scripts/run-evals.ts`, `scripts/run-evals.test.ts`, or
-  `docs/design/eval-runner-design.md`. Behavioral changes instead cite a
-  non-protected evidence record and deterministic acceptance checks. A manual
-  observation may establish the red bar; it never becomes authority to touch
-  the frozen tree.
+- Per-skill `README.md` and `evals/` trees are forbidden. Public documentation
+  owns purpose and usage. Behavioral changes cite durable evidence plus
+  deterministic acceptance checks.
 - Prefer strengthening an existing section over adding one. Two sections that
   both gesture at the same obligation are weaker than one that states it.
 - When a router grows past roughly 200 lines, the next addition should replace
   something rather than append.
 - Load-bearing router lines — ones a recorded acceptance claim depends on — are
-  not edited casually. Re-open the non-protected evidence record before
+  not edited casually. Re-open the durable evidence record before
   rewording a gate, rejection rule, or "complete when" clause.
 - **A load-bearing requirement gets a structural cue, not a mid-paragraph
   clause.** A requirement an acceptance claim depends on needs a named bullet, a heading, or

@@ -804,7 +804,7 @@
     {
       "source": "skill-authoring/references/house-wiring.md",
       "destination": "skills/tailrocks-skill-create/references/house-wiring.md",
-      "sha256": "624dfe030b7dc24624a45d2d53d802cd296406f2329f3f514cb78c6c2dc642e5"
+      "sha256": "ec1f55e523a6d2c2366a593e065d1740d59bfed1976fe6895d97481d318a026d"
     },
     {
       "source": "skill-authoring/references/operational-contract.md",
@@ -824,7 +824,7 @@
     {
       "source": "skill-authoring/references/house-wiring.md",
       "destination": "skills/tailrocks-skill-refactor/references/house-wiring.md",
-      "sha256": "624dfe030b7dc24624a45d2d53d802cd296406f2329f3f514cb78c6c2dc642e5"
+      "sha256": "ec1f55e523a6d2c2366a593e065d1740d59bfed1976fe6895d97481d318a026d"
     },
     {
       "source": "skill-authoring/references/operational-contract.md",
@@ -849,7 +849,7 @@
     {
       "source": "skill-authoring/references/house-wiring.md",
       "destination": "skills/tailrocks-skill-update/references/house-wiring.md",
-      "sha256": "624dfe030b7dc24624a45d2d53d802cd296406f2329f3f514cb78c6c2dc642e5"
+      "sha256": "ec1f55e523a6d2c2366a593e065d1740d59bfed1976fe6895d97481d318a026d"
     },
     {
       "source": "skill-authoring/references/operational-contract.md",

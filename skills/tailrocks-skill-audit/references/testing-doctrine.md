@@ -31,9 +31,7 @@ costs more than its test).
 Watching a fresh agent attempt a behavior task, or running an executable
 contract/security check for a preventive task, establishes the evidence law's
 red bar. Record the input, environment, observable result, and irrelevant
-control in a non-protected evidence artifact. Frozen legacy eval infrastructure
-is never inspected, required, modified, moved, executed, or certified by
-ordinary authoring or audit work.
+control in a durable evidence artifact. Per-skill eval trees are forbidden.
 
 ## Test to the skill's type
 

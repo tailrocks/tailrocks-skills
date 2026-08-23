@@ -59,9 +59,8 @@ prompts, or artifacts; cite location and type only.
 3. **Freeze acceptance, then scaffold.** Read canonical
    `skills/tailrocks-skill-audit/references/testing-doctrine.md` directly.
    Freeze baseline/control, normal, boundary, refusal, and checker intent in the
-   non-protected evidence record before router prose. Frozen legacy eval
-   infrastructure is excluded: never inspect, require, modify, move, execute,
-   or certify it. Derive target policy from its instruction files, existing skill
+   durable evidence record before router prose. Per-skill eval trees are
+   forbidden. Derive target policy from its instruction files, existing skill
    siblings, validators, manifests, and catalogs. Record it as
    `.skill-authoring.json` using `templates/skill-authoring-policy.json`; never
    infer unsupported client metadata. Create or select the repository's own
@@ -124,8 +123,7 @@ Never ship a skill without admissible evidence and an executable acceptance
 check. Never summarize
 a workflow in a description or a reference in a router. Never leave a
 new skill unwired or a validator red. Never author two skills owning one
-responsibility. Never inspect, require, modify, move, execute, or certify the
-frozen legacy eval tree. That exclusion never excuses evidence:
+responsibility. Never create a per-skill eval tree. That rule never excuses evidence:
 controlled-baseline claims need a hand-
 observed red bar; preventive security or external-contract claims need the
 executable acceptance gap they were admitted on, never a fabricated failure.

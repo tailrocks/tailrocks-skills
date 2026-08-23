@@ -22,7 +22,6 @@ async function source(skill: string, relative = "SKILL.md"): Promise<string> {
 test("retired combined audit owner is absent from every public surface", async () => {
   for (const relative of [
     "skills/tailrocks-audit/SKILL.md",
-    "skills/tailrocks-audit/README.md",
     "skills/tailrocks-audit/agents/openai.yaml",
     "skills/tailrocks-audit/references/audit-lanes.md",
     "skills/tailrocks-audit/references/execution-loop.md",

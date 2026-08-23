@@ -9,10 +9,6 @@ bun = "1.4.0"
 description = "Validate every skill, manifest, catalog group, and reverse catalog"
 run = "bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts"
 
-[tasks."protected-paths:check"]
-description = "Fail when any frozen audit-migration path differs from its source SHA"
-run = "bun run scripts/check-protected-paths.ts"
-
 [tasks."audit-plan-state:check"]
 description = "Validate audit migration row state and atomic closure"
 run = "bun run scripts/check-audit-plan-state.ts --mode progress"
@@ -26,16 +22,16 @@ description = "Format the TypeScript this repository owns"
 run = "oxfmt scripts docs/src docs/scripts docs/vite.config.ts docs/source.config.ts"
 
 [tasks."migration-check"]
-description = "Prove audit-migration safety, ownership, generated docs, formatting, and deterministic tests"
-run = "bun run scripts/check-protected-paths.ts && bun run scripts/check-audit-plan-state.ts --mode progress && bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && oxfmt --check scripts docs/src docs/scripts docs/vite.config.ts docs/source.config.ts && bun run scripts/run-migration-tests.ts"
+description = "Prove audit progress, ownership, generated docs, formatting, and deterministic tests"
+run = "bun run scripts/check-audit-plan-state.ts --mode progress && bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && oxfmt --check scripts docs/src docs/scripts docs/vite.config.ts docs/source.config.ts && bun run scripts/run-tests.ts"
 
 [tasks.ci]
 description = "Everything CI runs: lint, generated-file drift check, script tests"
-run = "bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && bun run scripts/run-migration-tests.ts"
+run = "bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && bun run scripts/run-tests.ts"
 
 [tasks.test]
 description = "Run the script test suite"
-run = "bun run scripts/run-migration-tests.ts"
+run = "bun run scripts/run-tests.ts"
 
 [tasks."pr:checkout"]
 description = "Resolve, guard, switch, and verify one pull request checkout"
@@ -54,11 +50,11 @@ description = "Consume an exact authorized merge request and reconcile its recei
 run = "bun run scripts/merge-pr.ts --skill-file $MISE_PROJECT_ROOT/skills/tailrocks-merge-pr/SKILL.md"
 
 [tasks.docs]
-description = "Regenerate skill READMEs and documentation pages from SKILL.md"
+description = "Regenerate documentation pages from SKILL.md"
 run = "bun run scripts/generate-references.ts --write && bun run scripts/generate-docs.ts"
 
 [tasks."docs:check"]
-description = "Fail when a generated README or documentation page is out of date"
+description = "Fail when a generated documentation page or root catalog is out of date"
 run = "bun run scripts/generate-references.ts --check && bun run scripts/generate-docs.ts --check"
 
 [tasks."docs:dev"]

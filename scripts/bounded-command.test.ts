@@ -1,4 +1,5 @@
 import { expect, test } from "bun:test";
+import { randomUUID } from "node:crypto";
 import { mkdtemp, realpath } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -58,12 +59,13 @@ test("output saturation kills the child and returns no partial text", async () =
 
 test("timeout proves a TERM-resistant descendant is gone before return", async () => {
   const root = await realpath(await mkdtemp(path.join(tmpdir(), "bounded-command-")));
+  const token = `tailrocks-descendant-${randomUUID()}`;
   const started = performance.now();
   const result = await runBoundedCommand({
     command: [
       "bun",
       "-e",
-      "const c=Bun.spawn(['bun','-e',\"process.on('SIGTERM',()=>{});setInterval(()=>{},1000)\"],{stdout:'ignore',stderr:'ignore'});console.log(c.pid);setInterval(()=>{},1000)",
+      `const c=Bun.spawn(['bun','-e',\"process.on('SIGTERM',()=>{});setInterval(()=>{},1000)\",${JSON.stringify(token)}],{stdout:'ignore',stderr:'ignore'});console.log(c.pid);setInterval(()=>{},1000)`,
     ],
     cwd: root,
     timeoutMilliseconds: 50,
@@ -71,6 +73,7 @@ test("timeout proves a TERM-resistant descendant is gone before return", async (
   });
   expect(result).toMatchObject({ code: 124, timedOut: true });
   const descendant = Number(result.stdout.trim());
-  expect(() => process.kill(descendant, 0)).toThrow();
+  const processes = Bun.spawnSync(["/bin/ps", "-axo", "pid=,command="]).stdout.toString();
+  expect(processes).not.toMatch(new RegExp(`^\\s*${descendant}\\s+.*${token}`, "m"));
   expect(performance.now() - started).toBeLessThan(2_000);
 });

@@ -141,14 +141,16 @@ describe("validate", () => {
     expect(await validate(root)).toEqual([]);
   });
 
-  test("ordinary validation does not require or inspect the frozen legacy eval subtree", async () => {
+  test("rejects skill eval directories without reading their contents", async () => {
     await write(`skills/${skill}/evals/evals.json`, "not json and deliberately ignored\n");
-    expect(await validate(root)).toEqual([]);
+    expect(await validate(root)).toContain(`skills/${skill}/evals: skill eval directories are forbidden`);
   });
 
-  test("an eval-only retired audit directory stays inactive without reading frozen bytes", async () => {
-    await write("skills/tailrocks-audit/evals/evals.json", "not json and deliberately ignored\n");
-    expect(await validate(root)).toEqual([]);
+  test("rejects per-skill README files", async () => {
+    await write(`skills/${skill}/README.md`, "duplicate documentation\n");
+    expect(await validate(root)).toContain(
+      `skills/${skill}/README.md: per-skill README files are forbidden; use public documentation`,
+    );
   });
 
   test("a retired directory without SKILL.md is not a published skill", async () => {

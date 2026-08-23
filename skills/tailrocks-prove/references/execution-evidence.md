@@ -1,27 +1,32 @@
 # Execution evidence
 
 Every verdict in a round is backed by something that happened in this session.
-This file fixes what "backed" means, so a report can be re-derived by someone
-who was not there.
+The installed capability driver records the mechanical facts; this file fixes
+their semantic projection, so a report can be re-derived by someone who was
+not there. Prose never substitutes for a driver receipt.
 
 ## The contract, per surface
 
 ```markdown
 ### <surface> — <VERDICT>
 
-- **Command**: `<exactly what ran, copy-pasteable>`
-- **Exit**: <status> · **Duration**: <wall clock, when it matters>
-- **Decisive line**: `<the one line of output that decided the verdict>`
-- **Artifact**: <capture path, written file, or captured stream — or "none">
+- **Receipt**: `<surface receipt SHA-256 from the assembled bundle>`
+- **Command**: `<exact argv from the receipt, without shell joining>`
+- **Exit**: <receipt status> · **Duration**: <receipt milliseconds>
+- **Decisive line**: `<the indexed, hashed line selected in the receipt>`
+- **Artifact**: <receipt path, byte count, and SHA-256 — or "none">
 - **Reference**: <the blessed design reference this was compared against, or
   "none — unblessed">
 ```
 
-Verdicts: `WORKS`, `DEFECT`, `NOT EXECUTED`.
+Semantic verdicts: `WORKS`, `DEFECT`, `NOT EXECUTED`. Driver outcomes are
+mechanical facts only: `EXECUTED`, `FAILED`, `NOT_EXECUTED`; no exit code or
+adapter assertion may promote itself to `WORKS`.
 
 Rules that make the contract worth having:
 
-- **The decisive line is quoted, never summarized.** A panic message, the
+- **The decisive line is quoted, never summarized.** It must be the exact line
+  at the receipt's stream and index and match its SHA-256. A panic message, the
   count line, the empty output marker. "It crashed" is not evidence; the
   backtrace's first frame with its file and line is.
 - **Absence gets a line too.** When the finding is that nothing happened, the
@@ -30,7 +35,9 @@ Rules that make the contract worth having:
 - **`NOT EXECUTED` names the obstacle**, and the report says which claims
   therefore remain unproven. A round that quietly drops a surface it could not
   reach is the same defect as a suite that never reached an entry point.
-- **Never the full log.** One decisive line and a path to the rest. A report
+- **Never the full log.** The receipt carries byte counts and stream digests,
+  not full logs; project secrets do not become report content. One decisive
+  line and a path to an authorized retained artifact. A report
   that pastes a thousand lines of output is unreadable exactly where it needs
   to be read.
 

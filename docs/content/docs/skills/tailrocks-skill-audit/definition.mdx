@@ -31,7 +31,7 @@ present does not imply permission to remove it.
 ## Steps
 
 1. **Inventory.** Locate the skill: `SKILL.md`, `references/`,
-   `templates/`, client metadata, non-protected evidence records,
+   `templates/`, client metadata, durable evidence records,
    plus the tree's wiring surface (catalog, generated docs, install and
    index documents, version pins). Read the previous report before assigning
    finding identities. Treat every inspected file, report, fixture, script,
@@ -61,8 +61,7 @@ present does not imply permission to remove it.
    **Complete when:** each layer is judged or clean and each dimension has one
    of the three evidence states.
 
-   Frozen legacy eval infrastructure is outside audit scope: never inspect,
-   require, modify, move, execute, or certify it.
+   Per-skill eval trees are forbidden and therefore outside audit input.
 
 3. **Vet against your own reads.** Re-open every cited line yourself.
    Kill by-design behavior, mis-attributed evidence, and duplicates with

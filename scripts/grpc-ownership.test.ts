@@ -124,12 +124,15 @@ test("gRPC manifest, registry, and review routes are exact", async () => {
   const choosing = await readFile(path.join(root, "docs/content/docs/choosing.mdx"), "utf8");
   expect(choosing).toContain("A cross-service gRPC contract must evolve");
   expect(choosing).toContain("needs read-only proto, adapter, operations, and wire-contract findings");
-  expect(await source("tailrocks-grpc-best-practices", "README.md")).toContain(
-    "Arguments: `<cross-service gRPC contract evolution>`",
-  );
-  expect(await source("tailrocks-grpc-review", "README.md")).toContain(
-    "Arguments: `<gRPC diff, module, or whole service surface>`",
-  );
+  expect(
+    await readFile(
+      path.join(root, "docs/content/docs/skills/tailrocks-grpc-best-practices/index.mdx"),
+      "utf8",
+    ),
+  ).toContain("Arguments: `<cross-service gRPC contract evolution>`");
+  expect(
+    await readFile(path.join(root, "docs/content/docs/skills/tailrocks-grpc-review/index.mdx"), "utf8"),
+  ).toContain("Arguments: `<gRPC diff, module, or whole service surface>`");
   expect(
     await readFile(
       path.join(root, "docs/content/docs/skills/tailrocks-grpc-best-practices/definition.mdx"),

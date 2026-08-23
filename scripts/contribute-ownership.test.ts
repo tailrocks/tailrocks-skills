@@ -67,8 +67,8 @@ test("outward legal and mutation boundaries require fresh exact approval", async
   expect(respond).toContain("deduplicate by immutable remote ID/body hash before retry");
 });
 
-test("old public contribution owner is absent and frozen remnant is inactive", async () => {
-  for (const relative of ["SKILL.md", "README.md", "agents/openai.yaml"])
+test("old public contribution owner is absent", async () => {
+  for (const relative of ["SKILL.md", "agents/openai.yaml"])
     expect(await Bun.file(path.join(root, "skills/tailrocks-contribute", relative)).exists()).toBe(false);
   for (const file of ["AGENTS.md", "INSTALL.md", "README.md", "catalog.json", "invocation-registry.json"])
     expect(await readFile(path.join(root, file), "utf8")).not.toMatch(/tailrocks-contribute(?:["`\s/]|$)/);
