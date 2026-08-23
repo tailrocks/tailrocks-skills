@@ -71,9 +71,8 @@ export async function runBoundedCommand({
       ];
     });
   };
-  const captureTree = (): void => {
+  const captureTree = (rows = processTable()): void => {
     if (!child.pid) return;
-    const rows = processTable();
     const selected = new Set<number>([child.pid]);
     for (let pass = 0; pass < rows.length; pass += 1) {
       let changed = false;
@@ -94,10 +93,20 @@ export async function runBoundedCommand({
   };
   const signalTree = (signal: NodeJS.Signals): void => {
     if (!child.pid) return;
-    captureTree();
+    const rows = processTable();
+    captureTree(rows);
     if (process.platform === "win32") {
       child.kill(signal);
       return;
+    }
+    const childRow = rows.find((row) => row.pid === child.pid);
+    if (childRow?.group === child.pid) {
+      try {
+        process.kill(-child.pid, signal);
+      } catch (groupError) {
+        const code = (groupError as NodeJS.ErrnoException).code;
+        if (code !== "ESRCH" && code !== "EPERM" && stillOwned(child.pid, childRow.started)) throw groupError;
+      }
     }
     for (const [pid, started] of [...ownedProcesses].sort(([left], [right]) => right - left)) {
       if (!stillOwned(pid, started)) continue;
