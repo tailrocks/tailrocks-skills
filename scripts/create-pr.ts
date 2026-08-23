@@ -394,30 +394,40 @@ function isolatedGateRunner(workspace: string): CreatePrRunner {
   }
   if (process.platform === "linux") {
     const bubblewrap = "/usr/bin/bwrap";
+    const sudo = "/usr/bin/sudo";
+    const environmentArguments = Object.entries(environment).flatMap(([name, value]) => [name, value]);
+    const bubblewrapArguments = [
+      "--unshare-net",
+      "--die-with-parent",
+      "--new-session",
+      "--ro-bind",
+      "/",
+      "/",
+      "--bind",
+      workspace,
+      workspace,
+      "--chdir",
+      workspace,
+    ];
     return async ({ command }) => {
       await safeExecutable(bubblewrap);
-      return runBoundedCommand({
-        command: [
-          bubblewrap,
-          "--unshare-net",
-          "--die-with-parent",
-          "--new-session",
-          "--ro-bind",
-          "/",
-          "/",
-          "--bind",
-          workspace,
-          workspace,
-          "--chdir",
-          workspace,
-          ...command,
-        ],
-        cwd: workspace,
-        timeoutMilliseconds: 120_000,
-        maximumOutputBytes: 4_000_000,
-        env: environment,
-        inheritEnvironment: false,
-      });
+      const run = (prefix: readonly string[]) =>
+        runBoundedCommand({
+          command: [...prefix, ...bubblewrapArguments, ...command],
+          cwd: workspace,
+          timeoutMilliseconds: 120_000,
+          maximumOutputBytes: 4_000_000,
+          env: environment,
+          inheritEnvironment: false,
+        });
+      const direct = await run([bubblewrap]);
+      if (
+        direct.code === 0 ||
+        !/(?:no permissions|operation not permitted|permission denied).*namespace/i.test(direct.stderr)
+      )
+        return direct;
+      await safeExecutable(sudo);
+      return run([sudo, "-n", "/usr/bin/env", "-i", ...environmentArguments, bubblewrap]);
     };
   }
   throw new Error("a supported network-denied gate sandbox is unavailable");
