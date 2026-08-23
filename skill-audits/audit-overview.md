@@ -1429,9 +1429,26 @@ all terminal checks pass, and the final literal marker is changed to
     tests/5,537 assertions and every static/generated check; only the same two
     unrelated macOS GUI activation cases failed, owned by P09.15. No evals run
     or inspected.
-- [ ] [IN_PROGRESS] P09.09 `tailrocks-finalize`: machine-owned readiness/state
+- [x] [COMPLETED] P09.09 `tailrocks-finalize`: machine-owned readiness/state
   transitions for DRAFT, SHAPING, READY, live, and batch paths.
-- [ ] [TODO] P09.10 `tailrocks-graphql-best-practices`: unique evolution/review
+  - Evidence receipt (2026-08-23): added the installed
+    `finalize-state.ts` command as sole `SHAPING` → `READY` writer and extracted
+    the shared anchored roadmap state primitive already used by brainstorming.
+    Closed digest-bound input and terminal receipt schemas cover DRAFT routing,
+    SHAPING assessment/publication, READY idempotence, later and mismatched
+    refusal, deterministic interactive versus batch frontiers, exact live-human
+    answer receipts, per-checklist live-section evidence, and exact planning
+    inventories extracted from the bound item. Compare-and-swap publication
+    changes only item and index statuses together; unsafe installed identities,
+    symlinks, stale state, malformed sections, unconsumed prose, fabricated
+    inventories, and directory replacement races fail closed. No deprecated
+    route or alias was retained. Focused proof passed 27 tests/165 assertions;
+    validator passed 84 skills; references checked 88 sources/258
+    byte-identical destinations; docs checked 256 files; fresh subagent verdict:
+    PASS. The non-eval migration gate passed 506 tests/5,609 assertions and
+    every static/generated check; only the same two unrelated macOS GUI
+    activation cases failed, owned by P09.15. No evals run or inspected.
+- [ ] [IN_PROGRESS] P09.10 `tailrocks-graphql-best-practices`: unique evolution/review
   ownership, invocation, output, refusal, and hints.
 - [ ] [TODO] P09.11 `tailrocks-grpc-best-practices`: unique evolution/review
   ownership, invocation, output, refusal, and hints.

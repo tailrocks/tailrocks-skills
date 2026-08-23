@@ -404,6 +404,10 @@ test("loader-derived staged installed entrypoint runs and symlink lookalikes fai
     path.resolve(import.meta.dir, "atomic-file-transaction.ts"),
     path.join(scriptsDirectory, "atomic-file-transaction.ts"),
   );
+  await copyFile(
+    path.resolve(import.meta.dir, "roadmap-item-state.ts"),
+    path.join(scriptsDirectory, "roadmap-item-state.ts"),
+  );
   const derived = path.join(
     path.dirname(path.dirname(path.dirname(installedSkill))),
     "scripts",
