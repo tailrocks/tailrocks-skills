@@ -7,12 +7,14 @@ const templates = path.join(import.meta.dir, "templates");
 test("capture binds process and window by exact executable and pid with bounded waits", async () => {
   const source = await readFile(path.join(templates, "capture.sh"), "utf8");
   expect(source).not.toMatch(/\b(?:pgrep|pkill)\b/);
-  expect(source).toContain('owned() { "$PROCESS_TOOL" list "$EXECUTABLE_REAL"; }');
+  expect(source).toContain('IDENTITY=$("$LAUNCHER_TOOL" "$APP" "$EXECUTABLE_REAL" "$@")');
+  expect(source).not.toContain("for row in $(owned)");
   expect(source).toContain('"$WINDOW_TOOL" "$PID"');
   expect(source).toContain('attempt" -lt 40');
-  expect(source).toContain("ambiguous exact-owned processes");
+  expect(source).toContain('launch_code" -eq 0');
   expect(source).toContain('[ "$stable" -ge 3 ] && break');
   expect(source).toContain('"$PROCESS_TOOL" verify "$EXECUTABLE_REAL" "$PID" "$TOKEN"');
+  expect(source).toContain('"$PROCESS_TOOL" request-activation "$EXECUTABLE_REAL" "$PID" "$TOKEN"');
   expect(source).toContain("symlink app bundle refused");
   expect(source).toContain("unsafe CFBundleExecutable");
   expect(source).toContain("Contents escaped app bundle");
@@ -29,8 +31,43 @@ test("capture binds process and window by exact executable and pid with bounded 
   expect(source).toContain("output parent identity changed after publication");
   expect(source).toContain('capture_bytes" -le 67108864');
   expect(source).toContain('pixel_width" -le 16384');
-  expect(source).toContain('open -n "$APP" --args "$@"');
+  expect(source).not.toContain('open -n "$APP"');
   expect(source).not.toContain("screencapture -R");
+});
+
+test("activation is a bounded request while exact windows remain the ownership gate", async () => {
+  const source = await readFile(path.join(templates, "process-owner.swift"), "utf8");
+  expect(source).toContain('"request-activation"');
+  expect(source).toContain("app.isActive || app.activate");
+  expect(source).toContain('"requested": requested');
+  expect(source).not.toContain('case "activate"');
+  expect(source).not.toContain("activation failed");
+});
+
+test("native launcher refuses preexisting and concurrent exact owners while cleaning only its launch", async () => {
+  const source = await readFile(path.join(templates, "app-launcher.swift"), "utf8");
+  expect(source).toContain("guard owners(executable).isEmpty");
+  expect(source).toContain("preexisting exact-owned process");
+  expect(source).toContain("openApplication(at:");
+  expect(source).toContain("configuration.createsNewApplicationInstance = true");
+  expect(source).toContain("stopOwned(application)");
+  expect(source.match(/stopOwned\(application\)/g)).toHaveLength(3);
+  expect(source).toContain("launch returned invalid application identity");
+  expect(source).toContain("owned app launch became ambiguous");
+});
+
+test("permission preflight never requests grants and runs before operation spawn", async () => {
+  const permissions = await readFile(path.join(templates, "permissions.swift"), "utf8");
+  const supervisor = await readFile(path.join(templates, "run.ts"), "utf8");
+  expect(permissions).toContain("CGPreflightScreenCaptureAccess()");
+  expect(permissions).toContain("AXIsProcessTrusted()");
+  expect(permissions).toContain("AEDeterminePermissionToAutomateTarget");
+  expect(permissions).toContain("false)");
+  expect(permissions).not.toContain("CGRequestScreenCaptureAccess");
+  expect(supervisor.indexOf("preflightPermission(permission")).toBeLessThan(
+    supervisor.indexOf('spawn("/bin/sh"'),
+  );
+  expect(supervisor).toContain('code: "permission_blocked"');
 });
 
 test("window and AX helpers refuse ambiguity and AX traversal is bounded", async () => {

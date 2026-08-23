@@ -439,7 +439,7 @@
     {
       "source": "scripts/macos-visual-qa/README.md",
       "destination": "skills/tailrocks-macos-visual-baseline/references/harness-contract.md",
-      "sha256": "abededc3ee7103e029092b8bc04daaa65eb3382f02af4b4fd9e81f8091dc3687"
+      "sha256": "2812badb21d8bf0134fd5db7d51cc34fe6099d01f501eaf317a5e5883168c37e"
     },
     {
       "source": "skills/tailrocks-macos-visual-qa/references/interaction.md",
@@ -479,7 +479,7 @@
     {
       "source": "scripts/macos-visual-qa/README.md",
       "destination": "skills/tailrocks-macos-visual-qa/references/harness-contract.md",
-      "sha256": "abededc3ee7103e029092b8bc04daaa65eb3382f02af4b4fd9e81f8091dc3687"
+      "sha256": "2812badb21d8bf0134fd5db7d51cc34fe6099d01f501eaf317a5e5883168c37e"
     },
     {
       "source": "shared/references/runtime-trust.md",
@@ -494,7 +494,7 @@
     {
       "source": "scripts/macos-visual-qa/README.md",
       "destination": "skills/tailrocks-macos-visual-regression/references/harness-contract.md",
-      "sha256": "abededc3ee7103e029092b8bc04daaa65eb3382f02af4b4fd9e81f8091dc3687"
+      "sha256": "2812badb21d8bf0134fd5db7d51cc34fe6099d01f501eaf317a5e5883168c37e"
     },
     {
       "source": "skills/tailrocks-macos-visual-qa/references/interaction.md",

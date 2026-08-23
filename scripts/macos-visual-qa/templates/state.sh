@@ -9,6 +9,7 @@ com.apple.universalaccess|differentiateWithoutColor|-bool
 NSGlobalDomain|AppleInterfaceStyle|-string
 NSGlobalDomain|AppleInterfaceStyleSwitchesAutomatically|-bool'
 DEFAULTS=/usr/bin/defaults
+OSASCRIPT=/usr/bin/osascript
 read_value() { domain=$1; [ "$domain" = NSGlobalDomain ] && domain=-g; "$DEFAULTS" read "$domain" "$2" 2>/dev/null; }
 snapshot() {
   umask 077; file=$1; printf '%s\n' "$SCHEMA" > "$file"; chmod 600 "$file"
@@ -49,8 +50,8 @@ apply_state() {
     reduce-transparency) write_verified com.apple.universalaccess reduceTransparency -bool 1 ;;
     reduce-motion) write_verified com.apple.universalaccess reduceMotion -bool 1 ;;
     differentiate-without-color) write_verified com.apple.universalaccess differentiateWithoutColor -bool 1 ;;
-    dark) write_verified NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically -bool 0 && write_verified NSGlobalDomain AppleInterfaceStyle -string Dark ;;
-    light) write_verified NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically -bool 0 && delete_verified NSGlobalDomain AppleInterfaceStyle ;;
+    dark) write_verified NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically -bool 0 && "$OSASCRIPT" -e 'tell application "System Events" to tell appearance preferences to set dark mode to true' && [ "$(read_value NSGlobalDomain AppleInterfaceStyle)" = Dark ] ;;
+    light) write_verified NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically -bool 0 && "$OSASCRIPT" -e 'tell application "System Events" to tell appearance preferences to set dark mode to false' && ! read_value NSGlobalDomain AppleInterfaceStyle >/dev/null 2>&1 ;;
     *) echo "unknown state: $1" >&2; return 2 ;;
   esac
 }
@@ -67,7 +68,7 @@ restore_once() {
   done
 }
 report_recovery() { encoded=$(printf '%s' "$1" | /usr/bin/base64 | /usr/bin/tr -d '\n'); printf 'tailrocks-recovery-artifact-base64:%s\n' "$encoded" >&2; }
-restore() { attempt=1; while [ "$attempt" -le 3 ]; do restore_once "$1" "$2" && return 0; attempt=$((attempt + 1)); sleep 1; done; echo "restore failed after 3 attempts" >&2; report_recovery "$1"; report_recovery "$2"; return 1; }
+restore() { attempt=1; while [ "$attempt" -le 3 ]; do restore_once "$1" "$2" && { echo "tailrocks-state-restoration:restored" >&2; return 0; }; attempt=$((attempt + 1)); sleep 1; done; echo "tailrocks-state-restoration:recovery-required" >&2; echo "restore failed after 3 attempts" >&2; report_recovery "$1"; report_recovery "$2"; return 1; }
 command=${1:?snapshot|recover|with required}
 case "$command" in
   snapshot) snapshot "${2:?snapshot file required}" ;;

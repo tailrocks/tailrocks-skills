@@ -17,6 +17,12 @@ const allowedStates = new Set([
   "dark",
   "light",
 ]);
+const allowedPermissions = new Set([
+  "session",
+  "screen-recording",
+  "accessibility",
+  "automation-system-events",
+]);
 const timeoutOverride = process.env.TAILROCKS_VISUAL_QA_TIMEOUT_MILLISECONDS;
 const timeoutMilliseconds = timeoutOverride === undefined ? undefined : Number(timeoutOverride);
 const killGraceOverride = process.env.TAILROCKS_VISUAL_QA_KILL_GRACE_MILLISECONDS;
@@ -38,8 +44,12 @@ function refusal(detail: string): never {
   process.exit(2);
 }
 
-if ((command !== "capture" && command !== "state") || separator !== "--" || forwarded.length === 0)
-  refusal("usage: bun run.ts capture|state -- ARGV...");
+if (
+  (command !== "capture" && command !== "state" && command !== "preflight") ||
+  separator !== "--" ||
+  forwarded.length === 0
+)
+  refusal("usage: bun run.ts capture|state|preflight -- ARGV...");
 if (
   timeoutMilliseconds !== undefined &&
   (!Number.isSafeInteger(timeoutMilliseconds) || timeoutMilliseconds < 10 || timeoutMilliseconds > 600_000)
@@ -64,6 +74,8 @@ function validateCapture(arguments_: readonly string[]): void {
   }
 }
 if (command === "capture") validateCapture(forwarded);
+if (command === "preflight" && (forwarded.length !== 1 || !allowedPermissions.has(forwarded[0]!)))
+  refusal("preflight requires one known permission");
 if (command === "state" && !["recover", "with"].includes(forwarded[0]!))
   refusal("state requires recover or with");
 if (command === "state" && forwarded[0] === "recover" && forwarded.length !== 3)
@@ -78,6 +90,62 @@ if (command === "state" && forwarded[0] === "with") {
 let recoveryDirectory: string | undefined;
 let recoveryPaths: string[] = [];
 const ownedLocks: Array<{ path: string; token: string }> = [];
+interface PermissionFact {
+  readonly schema: "tailrocks.macos-permission/v1";
+  readonly permission: string;
+  readonly outcome: "granted" | "blocked";
+  readonly detail: string;
+}
+class PermissionPreflightError extends Error {
+  constructor(readonly fact: PermissionFact) {
+    super(fact.detail);
+  }
+}
+async function preflightPermission(
+  permission: string,
+  environment: Record<string, string>,
+): Promise<PermissionFact> {
+  const child = spawn("/usr/bin/swift", [`${import.meta.dir}/permissions.swift`, permission], {
+    cwd: import.meta.dir,
+    env: environment,
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  const output = { stdout: "", stderr: "" };
+  child.stdout.on("data", (chunk: Buffer) => {
+    output.stdout = (output.stdout + chunk.toString()).slice(0, 100_001);
+  });
+  child.stderr.on("data", (chunk: Buffer) => {
+    output.stderr = (output.stderr + chunk.toString()).slice(0, 100_001);
+  });
+  const timer = setTimeout(() => child.kill("SIGKILL"), 15_000);
+  const exit = await new Promise<number>((resolve, reject) => {
+    child.once("error", reject);
+    child.once("close", (code) => resolve(code ?? 1));
+  });
+  clearTimeout(timer);
+  if (output.stdout.length > 100_000 || output.stderr.length > 100_000)
+    throw new Error(`permission preflight output saturated: ${permission}`);
+  let receipt: unknown;
+  try {
+    receipt = JSON.parse(exit === 0 ? output.stdout : output.stderr);
+  } catch {
+    throw new Error(`permission preflight malformed: ${permission}`);
+  }
+  if (!receipt || typeof receipt !== "object" || Array.isArray(receipt))
+    throw new Error(`permission preflight malformed: ${permission}`);
+  const fact = receipt as Record<string, unknown>;
+  if (
+    fact.schema !== "tailrocks.macos-permission/v1" ||
+    fact.permission !== (permission === "session" ? "interactive-session" : permission) ||
+    !["granted", "blocked"].includes(fact.outcome as string) ||
+    typeof fact.detail !== "string" ||
+    Object.keys(fact).sort().join("|") !== "detail|outcome|permission|schema"
+  )
+    throw new Error(`permission preflight malformed: ${permission}`);
+  const parsed = fact as unknown as PermissionFact;
+  if (exit !== 0 || parsed.outcome !== "granted") throw new PermissionPreflightError(parsed);
+  return parsed;
+}
 async function releaseLocks(): Promise<void> {
   for (const lock of ownedLocks.reverse()) {
     try {
@@ -88,6 +156,63 @@ async function releaseLocks(): Promise<void> {
   }
 }
 try {
+  const childEnvironment: Record<string, string> = {
+    PATH: "/usr/bin:/bin:/usr/sbin:/sbin",
+    HOME: process.env.HOME ?? "",
+    USER: process.env.USER ?? "",
+    LOGNAME: process.env.LOGNAME ?? "",
+    TMPDIR: process.env.TMPDIR ?? tmpdir(),
+    LANG: "C.UTF-8",
+  };
+  const requiredPermissions =
+    command === "preflight"
+      ? [forwarded[0]!]
+      : command === "capture"
+        ? ["session", "screen-recording"]
+        : forwarded[0] === "with"
+          ? [
+              "session",
+              "screen-recording",
+              ...(["dark", "light"].includes(forwarded[1]!) ? ["automation-system-events"] : []),
+            ]
+          : [];
+  const permissionFacts: PermissionFact[] = [];
+  try {
+    for (const permission of requiredPermissions)
+      permissionFacts.push(await preflightPermission(permission, childEnvironment));
+  } catch (error) {
+    if (error instanceof PermissionPreflightError) permissionFacts.push(error.fact);
+    console.log(
+      JSON.stringify({
+        schema,
+        outcome: "blocked",
+        code: "permission_blocked",
+        command,
+        permissions: permissionFacts,
+        mutations: [],
+        system_mutations: [],
+        recovery_artifacts: [],
+        detail: error instanceof Error ? error.message : String(error),
+      }),
+    );
+    process.exit(3);
+  }
+  if (command === "preflight") {
+    console.log(
+      JSON.stringify({
+        schema,
+        outcome: "success",
+        code: "preflight_completed",
+        command,
+        permissions: permissionFacts,
+        mutations: [],
+        system_mutations: [],
+        recovery_artifacts: [],
+        detail: "permission preflight passed without prompting",
+      }),
+    );
+    process.exit(0);
+  }
   const script = `${import.meta.dir}/${command === "capture" ? "capture.sh" : "state.sh"}`;
   const lockKeys = command === "state" ? ["state"] : [];
   if (command === "capture" || (command === "state" && forwarded[0] === "with")) {
@@ -110,14 +235,6 @@ try {
       refusal(`operation lock unavailable: ${lockPath}`);
     }
   }
-  const childEnvironment: Record<string, string> = {
-    PATH: "/usr/bin:/bin:/usr/sbin:/sbin",
-    HOME: process.env.HOME ?? "",
-    USER: process.env.USER ?? "",
-    LOGNAME: process.env.LOGNAME ?? "",
-    TMPDIR: process.env.TMPDIR ?? tmpdir(),
-    LANG: "C.UTF-8",
-  };
   let childArguments = forwarded;
   if (command === "state" && forwarded[0] === "with") {
     recoveryDirectory = await mkdtemp(path.join(tmpdir(), "tailrocks-state-"));
@@ -242,8 +359,19 @@ try {
   ];
   const systemMutations =
     command === "state" && (forwarded[0] === "with" || forwarded[0] === "recover")
-      ? preferenceKeys.map((key) => ({ key, restored: success }))
+      ? preferenceKeys.map((key) => ({
+          key,
+          restored: stderr.includes("tailrocks-state-restoration:restored"),
+        }))
       : [];
+  const restoration =
+    command !== "state"
+      ? "not-required"
+      : stderr.includes("tailrocks-state-restoration:restored")
+        ? "restored"
+        : stderr.includes("tailrocks-state-restoration:recovery-required")
+          ? "recovery-required"
+          : "not-reached";
   const decodedRecoveryPaths = [
     ...stderr.matchAll(/^tailrocks-recovery-artifact-base64:([A-Za-z0-9+/=]+)$/gm),
   ]
@@ -284,6 +412,8 @@ try {
       mutations,
       system_mutations: systemMutations,
       recovery_artifacts: retained,
+      permissions: permissionFacts,
+      restoration,
       data,
       detail: success
         ? `${command} completed`

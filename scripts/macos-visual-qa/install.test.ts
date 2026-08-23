@@ -18,6 +18,16 @@ import path from "node:path";
 import { runBoundedCommand } from "../bounded-command";
 import { install } from "./install";
 
+const grantedPermissions = `import Foundation
+let requested = CommandLine.arguments[1]
+let permission = requested == "session" ? "interactive-session" : requested
+let data = try! JSONSerialization.data(withJSONObject: ["schema":"tailrocks.macos-permission/v1","permission":permission,"outcome":"granted","detail":"preflight passed without prompting"], options:[.sortedKeys])
+FileHandle.standardOutput.write(data); FileHandle.standardOutput.write(Data("\\n".utf8))
+`;
+async function grantPermissions(harness: string): Promise<void> {
+  await writeFile(path.join(harness, "permissions.swift"), grantedPermissions);
+}
+
 async function temporary(): Promise<string> {
   return realpath(await mkdtemp(path.join(tmpdir(), "macos-visual-qa-install-")));
 }
@@ -28,8 +38,10 @@ test("installs the complete hardened harness with shell internals behind the sup
   expect(receipt).toMatchObject({ outcome: "installed", code: "installed" });
   expect(receipt.files).toEqual([
     "AuditTests.swift",
+    "app-launcher.swift",
     "ax-drive.swift",
     "capture.sh",
+    "permissions.swift",
     "process-owner.swift",
     "run.ts",
     "state.sh",
@@ -94,6 +106,7 @@ test("installed supervisor emits one terminal receipt for success and recovery f
   const root = await temporary();
   expect((await install(root)).outcome).toBe("installed");
   const harness = path.join(root, "Scripts/TailrocksVisualQA");
+  await grantPermissions(harness);
   const app = path.join(root, "App.app");
   const output = path.join(root, "capture.png");
   await mkdir(app);
@@ -145,7 +158,10 @@ test("installed supervisor emits one terminal receipt for success and recovery f
     '#!/bin/sh\nprintf png > "$2"\nprintf \'{"pid":42}\\n\' > "$2.json"\nprintf \'{"pid":42}\\n\'\n',
   );
   const state = path.join(harness, "state.sh");
-  await writeFile(state, '#!/bin/sh\nshift 3\nexec "$@"\n');
+  await writeFile(
+    state,
+    '#!/bin/sh\nshift 3\n"$@"\nstatus=$?\necho tailrocks-state-restoration:restored >&2\nexit "$status"\n',
+  );
   const stateResult = await runBoundedCommand({
     command: ["bun", "run.ts", "state", "--", "with", "dark", "--", "capture", app, output],
     cwd: harness,
@@ -264,6 +280,7 @@ test("supervisor reports known recovery paths after timeout", async () => {
   const root = await temporary();
   expect((await install(root)).outcome).toBe("installed");
   const harness = path.join(root, "Scripts/TailrocksVisualQA");
+  await grantPermissions(harness);
   const app = path.join(root, "App.app");
   await mkdir(app);
   await writeFile(

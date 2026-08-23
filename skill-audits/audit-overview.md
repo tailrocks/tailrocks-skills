@@ -1556,9 +1556,30 @@ all terminal checks pass, and the final literal marker is changed to
     paths passed; fresh subagent verdict: PASS. The non-eval migration gate passed
     536 tests/5,936 assertions; only the same two macOS GUI activation cases failed,
     now active P09.15. No evals run or inspected.
-- [ ] [IN_PROGRESS] P09.15 `tailrocks-macos-visual-qa`: owned-app ambiguity,
+- [x] [COMPLETED] P09.15 `tailrocks-macos-visual-qa`: owned-app ambiguity,
   permission, decoy, and restoration tests through the harness.
-- [ ] [TODO] P09.16 `tailrocks-merge-pr`: temporary histories and mocked
+  - Evidence receipt (2026-08-23): replaced kill-all/open discovery with a
+    native launcher that refuses preexisting exact executable owners, returns
+    one invocation-owned PID/launch token, cleans every returned live app on
+    post-launch refusal, and terminates only that identity after capture.
+    Activation is bounded evidence rather than a window gate; exact PID/window
+    identity, stable-window selection, decoy isolation, and multi-window refusal
+    remain mandatory. Added non-prompting interactive-session, Screen Recording,
+    Accessibility, and Automation preflights before locks, app launch, settings,
+    or output; typed receipts distinguish permission blocking. Appearance rows
+    now mutate through the installed supervisor, restore the exact six-key typed
+    registry independently of capture success, and report restored versus
+    recovery-required state plus every mutation. Public-harness tests exercise
+    a wrong returned identity, preexisting owner, similar-name decoy, ambiguous
+    windows, permission denial, capture failure, retrying restoration, forged
+    recovery, and publication races. Canonical and generated contracts expose
+    only the typed preflight/capture/state routes; no deprecated route remains.
+    Focused proof passed 29 tests/234 assertions; validator passed 84 skills;
+    references checked 88 sources/258 byte-identical destinations; docs checked
+    256 files; formatting and protected paths passed; fresh subagent verdict:
+    PASS. The non-eval migration gate passed 542 tests/5,990 assertions. No evals
+    run or inspected.
+- [ ] [IN_PROGRESS] P09.16 `tailrocks-merge-pr`: temporary histories and mocked
   check/merge/documentation receipts.
 - [ ] [TODO] P09.17 `tailrocks-plan`: runnable proof-producing commands,
   client-neutral handoff, research-gap manifest, and deterministic resume.

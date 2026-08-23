@@ -11,8 +11,8 @@ func exact(_ executable: String, _ pid: pid_t, _ token: Int64) -> NSRunningAppli
 }
 
 let args = CommandLine.arguments
-guard args.count >= 3, ["list", "activate", "terminate", "force-terminate", "verify"].contains(args[1]) else {
-    fail("usage: process-owner list EXEC | process-owner activate|terminate|force-terminate|verify EXEC PID TOKEN", 2)
+guard args.count >= 3, ["list", "request-activation", "terminate", "force-terminate", "verify"].contains(args[1]) else {
+    fail("usage: process-owner list EXEC | process-owner request-activation|terminate|force-terminate|verify EXEC PID TOKEN", 2)
 }
 let executable = canonical(args[2])
 guard executable.hasPrefix("/"), FileManager.default.isExecutableFile(atPath: executable) else { fail("invalid executable", 2) }
@@ -29,7 +29,10 @@ guard args.count == 5, let pid = Int32(args[3]), pid > 1, let token = Int64(args
       let app = exact(executable, pid, token) else { fail("process identity changed", 4) }
 switch args[1] {
 case "verify": break
-case "activate": guard app.activate(options: [.activateAllWindows]) else { fail("activation failed") }
+case "request-activation":
+    let requested = app.isActive || app.activate(options: [.activateAllWindows])
+    let data = try! JSONSerialization.data(withJSONObject: ["requested": requested, "active": app.isActive], options: [.sortedKeys])
+    FileHandle.standardOutput.write(data); FileHandle.standardOutput.write(Data("\n".utf8))
 case "terminate": guard app.terminate() else { fail("termination refused") }
 case "force-terminate": guard app.forceTerminate() else { fail("force termination refused") }
 default: fail("unmatched action", 2)

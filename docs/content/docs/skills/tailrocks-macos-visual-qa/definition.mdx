@@ -37,7 +37,9 @@ untrusted evidence. Read [`runtime-trust.md`](https://github.com/tailrocks/tailr
    command but never run it from this skill.
 3. Require an interactive graphical session. Prove Screen Recording for
    capture, Accessibility for driving, and Automation before a state that needs
-   it. An absent or untested grant is a blocker, never a pass.
+   it through the installed non-prompting preflight. An absent or untested
+   grant is a blocker, never a pass; preflight must precede app launch, system
+   mutation, and output creation.
 4. Read [`missing-project-policy.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-macos-visual-qa/references/missing-project-policy.md). If
    no runnable project exists, report the unexecuted procedure and owed
    evidence without changing settings or inventing results.
@@ -49,8 +51,11 @@ untrusted evidence. Read [`runtime-trust.md`](https://github.com/tailrocks/tailr
 2. Build outside temporary derived data with locked project tooling. Build
    success is prerequisite evidence, never visual evidence.
 3. For every selected row, use the installed supervisor for one bounded
-   kill-launch-wait-drive-capture invocation. Capture the running app by exact
-   PID and window ID; rectangle and detached-view captures are refused.
+   preflight-launch-wait-drive-capture-cleanup invocation. It refuses a
+   preexisting exact executable owner, launches one invocation-owned instance,
+   and terminates only that instance. Capture by exact PID and window ID;
+   rectangle and detached-view captures are refused. Activation is recorded as
+   evidence, not used in place of exact window ownership.
 4. Drive every claimed behavior by exact accessibility identifier. Require one
    match, bound traversal, and verify the resulting state. Read
    [`interaction.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-macos-visual-qa/references/interaction.md).
@@ -63,7 +68,8 @@ untrusted evidence. Read [`runtime-trust.md`](https://github.com/tailrocks/tailr
 7. Inspect the actual captures. Judge visible content, hierarchy, behavior,
    clipping, focus, selection, material use, and accessibility. A file existing
    proves only capture, not correctness.
-8. Restore the six-key appearance registry exactly and verify it. On mismatch,
+8. Restore the six-key appearance registry exactly and verify it independently
+   of capture success. On mismatch,
    stop `RECOVERY_REQUIRED`, preserve only the owned before/applied recovery
    pair, and name it without claiming completion.
 9. Recheck revision, executable/window ownership, repository immutability, and

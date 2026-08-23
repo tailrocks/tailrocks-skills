@@ -6,8 +6,10 @@ import { atomicWriteFiles, atomicRecoveryArtifacts } from "../atomic-file-transa
 const schema = "tailrocks.macos-visual-qa-install/v1";
 const templates = [
   "AuditTests.swift",
+  "app-launcher.swift",
   "ax-drive.swift",
   "capture.sh",
+  "permissions.swift",
   "process-owner.swift",
   "run.ts",
   "state.sh",

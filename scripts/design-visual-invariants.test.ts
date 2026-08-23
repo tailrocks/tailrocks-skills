@@ -41,9 +41,12 @@ test("human blessing remains external and blocks both baseline owners", async ()
 
 test("macOS capture binds exact process and window identities", async () => {
   const capture = await read("scripts/macos-visual-qa/templates/capture.sh");
+  const launcher = await read("scripts/macos-visual-qa/templates/app-launcher.swift");
   const processOwner = await read("scripts/macos-visual-qa/templates/process-owner.swift");
   const window = await read("scripts/macos-visual-qa/templates/window-id.swift");
-  expect(capture).toContain("ambiguous exact-owned processes");
+  expect(launcher).toContain("preexisting exact-owned process");
+  expect(launcher).toContain("owned app launch became ambiguous");
+  expect(capture).toContain('"$PROCESS_TOOL" terminate "$EXECUTABLE_REAL" "$cleanup_pid" "$cleanup_token"');
   expect(capture).toContain('screencapture -x -o -l "$WID"');
   expect(capture).toContain('"$PROCESS_TOOL" verify');
   expect(processOwner).toContain("process identity changed");

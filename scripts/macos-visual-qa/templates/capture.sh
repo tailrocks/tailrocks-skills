@@ -34,14 +34,14 @@ OUT="$OUT_ANCHOR/$OUT_NAME"; SIDECAR="$OUT_ANCHOR/$SIDECAR_NAME"
 [ ! -e "$OUT" ] && [ ! -L "$OUT" ] && [ ! -e "$SIDECAR" ] && [ ! -L "$SIDECAR" ] || { echo "output exists" >&2; exit 2; }
 
 TOOLS=$(mktemp -d "${TMPDIR:-/tmp}/tailrocks-visual-qa-tools.XXXXXX"); chmod 700 "$TOOLS"
-PROCESS_TOOL="$TOOLS/process-owner"; WINDOW_TOOL="$TOOLS/window-id"
+PROCESS_TOOL="$TOOLS/process-owner"; WINDOW_TOOL="$TOOLS/window-id"; LAUNCHER_TOOL="$TOOLS/app-launcher"
 TMP_OUT=""; PRE_JSON=""; POST_JSON=""; PUBLISHED_SIDECAR=0; PUBLISHED_OUT=0; SIDECAR_ID=""; OUT_ID=""; IDENTITY=""; SUCCESS=0
 report_recovery() {
   encoded=$(printf '%s' "$1" | /usr/bin/base64 | /usr/bin/tr -d '\n')
   printf 'tailrocks-recovery-artifact-base64:%s\n' "$encoded" >&2
 }
 cleanup() {
-  if [ "$SUCCESS" -eq 0 ] && [ -n "$IDENTITY" ] && [ -x "$PROCESS_TOOL" ]; then
+  if [ -n "$IDENTITY" ] && [ -x "$PROCESS_TOOL" ]; then
     cleanup_pid=${IDENTITY%%|*}; cleanup_token=${IDENTITY#*|}
     "$PROCESS_TOOL" terminate "$EXECUTABLE_REAL" "$cleanup_pid" "$cleanup_token" >/dev/null 2>&1 || true
     cleanup_attempt=0
@@ -61,31 +61,15 @@ cleanup() {
     if [ "$current" = "$SIDECAR_ID" ]; then rm -f "$SIDECAR" || report_recovery "$OUT_PARENT/$SIDECAR_NAME"
     else report_recovery "$OUT_PARENT/$SIDECAR_NAME"; fi
   fi
-  rm -f "$PROCESS_TOOL" "$WINDOW_TOOL" "$TOOLS/window-error" "$TOOLS/window-candidate"; rmdir "$TOOLS" 2>/dev/null || true
+  rm -f "$PROCESS_TOOL" "$WINDOW_TOOL" "$LAUNCHER_TOOL" "$TOOLS/window-error" "$TOOLS/window-candidate"; rmdir "$TOOLS" 2>/dev/null || true
 }
 trap cleanup EXIT INT TERM
-swiftc -O "$HERE/process-owner.swift" -o "$PROCESS_TOOL"; swiftc -O "$HERE/window-id.swift" -o "$WINDOW_TOOL"
+swiftc -O "$HERE/process-owner.swift" -o "$PROCESS_TOOL"; swiftc -O "$HERE/window-id.swift" -o "$WINDOW_TOOL"; swiftc -O "$HERE/app-launcher.swift" -o "$LAUNCHER_TOOL"
 
-owned() { "$PROCESS_TOOL" list "$EXECUTABLE_REAL"; }
-for row in $(owned); do pid=${row%%|*}; token=${row#*|}; "$PROCESS_TOOL" terminate "$EXECUTABLE_REAL" "$pid" "$token"; done
-attempt=0
-while [ -n "$(owned)" ] && [ "$attempt" -lt 20 ]; do sleep 0.25; attempt=$((attempt + 1)); done
-for row in $(owned); do pid=${row%%|*}; token=${row#*|}; "$PROCESS_TOOL" force-terminate "$EXECUTABLE_REAL" "$pid" "$token"; done
-attempt=0
-while [ -n "$(owned)" ] && [ "$attempt" -lt 20 ]; do sleep 0.25; attempt=$((attempt + 1)); done
-[ -z "$(owned)" ] || { echo "owned process survived bounded recovery" >&2; exit 1; }
-
-open -n "$APP" --args "$@"
-attempt=0
-while [ "$attempt" -lt 40 ]; do
-  rows=$(owned); count=$(printf '%s\n' "$rows" | awk 'NF { n++ } END { print n+0 }')
-  [ "$count" -gt 1 ] && { echo "ambiguous exact-owned processes" >&2; exit 4; }
-  [ "$count" -eq 1 ] && { IDENTITY=$rows; break; }
-  sleep 0.25; attempt=$((attempt + 1))
-done
-[ -n "$IDENTITY" ] || { echo "launch timed out after 10 seconds" >&2; exit 1; }
+set +e; IDENTITY=$("$LAUNCHER_TOOL" "$APP" "$EXECUTABLE_REAL" "$@"); launch_code=$?; set -e
+[ "$launch_code" -eq 0 ] || exit "$launch_code"
 PID=${IDENTITY%%|*}; TOKEN=${IDENTITY#*|}
-"$PROCESS_TOOL" activate "$EXECUTABLE_REAL" "$PID" "$TOKEN"
+ACTIVATION=$("$PROCESS_TOOL" request-activation "$EXECUTABLE_REAL" "$PID" "$TOKEN")
 
 PRE_JSON=$(mktemp "$OUT_ANCHOR/.tailrocks-window-pre.XXXXXX")
 WINDOW_CANDIDATE="$TOOLS/window-candidate"; attempt=0; code=1; stable=0
@@ -120,6 +104,8 @@ if [ -n "$WINDOW_NAME" ]; then "$WINDOW_TOOL" "$PID" "$WINDOW_NAME" --json > "$P
 cmp -s "$PRE_JSON" "$POST_JSON" || { echo "window identity changed during capture" >&2; exit 1; }
 "$PROCESS_TOOL" verify "$EXECUTABLE_REAL" "$PID" "$TOKEN"
 plutil -replace pixelDimensions -json "{\"width\":$pixel_width,\"height\":$pixel_height}" "$PRE_JSON"
+plutil -replace activation -json "$ACTIVATION" "$PRE_JSON"
+plutil -replace permissions -json '{"interactiveSession":"granted","screenRecording":"granted","accessibility":"not-checked","automation":"not-required"}' "$PRE_JSON"
 [ "$(stat -f '%d:%i' "$OUT_PARENT")" = "$OUT_PARENT_ID" ] || { echo "output parent identity changed" >&2; exit 2; }
 SIDECAR_ID=$(stat -f '%d:%i' "$PRE_JSON")
 OUT_ID=$(stat -f '%d:%i' "$TMP_OUT")
