@@ -110,6 +110,13 @@ test("finds nested README API alternate content and base-deleted surfaces", () =
 });
 
 test("rejects unsafe duplicate symlink submodule and saturated inventories", () => {
+  expect(() =>
+    discoverDocumentation([
+      entry("head", "docs/AGENTS.md"),
+      entry("head", "docs/CLAUDE.md", "120000"),
+      entry("head", "docs/GEMINI.md", "120000"),
+    ]),
+  ).not.toThrow();
   expect(() => discoverDocumentation([entry("head", "docs/link.md", "120000")])).toThrow("unsafe tree modes");
   expect(() => discoverDocumentation([entry("head", "docs", "160000", "commit")])).toThrow(
     "unsafe tree modes",

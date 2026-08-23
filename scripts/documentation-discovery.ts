@@ -38,6 +38,7 @@ const siteMarker =
   /^(?:docusaurus\.config\.[^.]+|mkdocs\.ya?ml|book\.toml|source\.config\.[^.]+|docs\.config\.[^.]+)$/i;
 const navigation = /^(?:sidebars?\.[^.]+|_sidebar\.md|summary\.md|docs\.json|mint\.json|meta\.json)$/i;
 const instruction = /^(?:agents|contributing)(?:\.[^.]+)?\.(?:md|mdx|rst|adoc)$/i;
+const clientInstructionAlias = /^(?:claude|gemini)\.md$/i;
 const commandSource = /^(?:package\.json|mise\.toml|makefile|justfile|taskfile\.ya?ml|cargo\.toml)$/i;
 const prose = /\.(?:md|mdx|rst|adoc)$/i;
 
@@ -115,12 +116,23 @@ export function discoverDocumentation(entries: readonly DocumentationTreeEntry[]
     if (seen.has(key)) throw new Error("documentation tree path is duplicated");
     seen.add(key);
   }
-  const regular = ordered.filter(
+  // The agent-topology gate owns the target proof for these client aliases.
+  // Keep their symlink mode out of documentation surfaces while rejecting all
+  // other unsafe documentation tree entries below.
+  const documentationEntries = ordered.filter(
+    (entry) =>
+      !(
+        entry.type === "blob" &&
+        entry.mode === "120000" &&
+        clientInstructionAlias.test(path.posix.basename(entry.path))
+      ),
+  );
+  const regular = documentationEntries.filter(
     (entry) => entry.type === "blob" && ["100644", "100755"].includes(entry.mode),
   );
   const seeds = new Map<string, { kind: DocumentationSurface["kind"]; root: string; exacts: Set<string> }>();
   const unmatched = new Set<string>();
-  for (const entry of ordered) {
+  for (const entry of documentationEntries) {
     const basename = path.posix.basename(entry.path);
     const root = path.posix.dirname(entry.path);
     const docsRoot = nearestDocsRoot(entry.path);
@@ -143,7 +155,7 @@ export function discoverDocumentation(entries: readonly DocumentationTreeEntry[]
   }
   if (unmatched.size > 0)
     throw new Error(`documentation candidates have unsafe tree modes: ${[...unmatched].sort().join(", ")}`);
-  const unsafeOwned = ordered
+  const unsafeOwned = documentationEntries
     .filter(
       (entry) =>
         (entry.type !== "blob" || !["100644", "100755"].includes(entry.mode)) &&
