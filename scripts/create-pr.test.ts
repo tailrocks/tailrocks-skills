@@ -42,7 +42,8 @@ async function fixture(): Promise<Fixture> {
   await command(["/bin/mkdir", root], parent);
   const git = Bun.which("git");
   if (!git || !path.isAbsolute(git)) throw new Error("absolute git is required");
-  const runGit = (...args: string[]) => command([git, ...args], root);
+  const canonicalGit = await realpath(git);
+  const runGit = (...args: string[]) => command([canonicalGit, ...args], root);
   await runGit("init", "-b", "main");
   await writeFile(path.join(root, "work.txt"), "base\n");
   await runGit("add", "work.txt");
@@ -73,7 +74,7 @@ async function fixture(): Promise<Fixture> {
     body,
     base,
     head,
-    git,
+    git: canonicalGit,
     input: {
       schema: createPrInputSchema,
       repo_root: root,
