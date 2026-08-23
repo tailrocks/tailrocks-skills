@@ -29,6 +29,7 @@ test("selects only script test entrypoints", async () => {
 
 test("skips host sandbox integration only on Linux CI", () => {
   expect(shouldSkipScriptTest("scripts/create-pr.test.ts", "linux", { CI: "true" })).toBe(true);
+  expect(shouldSkipScriptTest("scripts/create-pr.test.ts", "linux", { GITHUB_ACTIONS: "true" })).toBe(true);
   expect(shouldSkipScriptTest("scripts/create-pr.test.ts", "darwin", { CI: "true" })).toBe(false);
   expect(shouldSkipScriptTest("scripts/create-pr.test.ts", "linux", {})).toBe(false);
   expect(shouldSkipScriptTest("scripts/create-pr-ownership.test.ts", "linux", { CI: "true" })).toBe(false);
