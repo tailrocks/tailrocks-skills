@@ -31,11 +31,15 @@ drive the app. `--tr-reduce` previews a reduction substitution per process
 through the app's own accessibility hooks — legitimate alongside the
 visual-qa real-settings matrix, never a substitute for it.
 
-**The blessing gate.** The user signs off the running prototype; the agent
-never does. The user walks every scenario, both appearances, the declared
-sizes — live — and the sign-off is recorded in `SIGNOFF.md` with its date and
-the design artifacts' revision. Until then the prototype is a draft that binds
-nobody, and a run that ends without one says so with the Blessed row pending.
+**The blessing gate.** First obtain an independent acceptance `PASS` from
+`tailrocks-macos-design-review` against a named live-render session for this
+exact prototype revision; static or frozen evidence cannot supply that verdict.
+Then the user signs off the same running prototype; the agent never does. The
+user walks every scenario, both appearances, the declared sizes — live — and
+the sign-off is recorded in `SIGNOFF.md` with its date and the design artifacts'
+revision. Until then the prototype is a draft that binds nobody, and a run that
+ends without one says so with the Blessed row pending. Only after both gates may
+`tailrocks-macos-visual-baseline` capture and freeze its bounded output.
 
 ## The six steps
 

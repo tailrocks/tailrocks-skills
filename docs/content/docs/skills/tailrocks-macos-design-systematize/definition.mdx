@@ -24,10 +24,10 @@ targets.
 ## Systematize
 
 1. Bind the exact approved screen/prototype revision, live user sign-off,
-   independent passing review hash, current product corpus root, allowed paths,
-   and existing bytes. Refuse self-approval, failed/stale review, missing
-   rendered states, ambiguous ownership, or a request to edit this installed
-   skill's references.
+   independent passing review hash and its live-session identity, current
+   product corpus root, allowed paths, and existing bytes. Refuse self-approval,
+   failed/stale/static-only review, missing rendered states, ambiguous ownership,
+   or a request to edit this installed skill's references.
    **Complete when:** provenance, approval, review, and write allowlist are
    immutable.
 2. Build a promotion ledger with a stable learned-item ID, accepted/rejected
@@ -46,7 +46,11 @@ targets.
    owning record instead of appending a rival rule.
    **Complete when:** no learned item is unowned or duplicated.
 4. Stage the complete product-owned postimages and publish sequentially by
-   expected-preimage-to-owned-postimage CAS. On failure, restore a preimage only
+   expected-preimage-to-owned-postimage CAS through `bun
+   scripts/macos-design-systematize.ts --skill-file &lt;absolute installed skill
+   path>`. The loader-bound command accepts only paths beneath the declared
+   `Design/System/` product root and rejects prototype, baseline, review,
+   production, and installed-policy paths. On failure, restore a preimage only
    while current bytes equal this invocation's postimage; preserve concurrent
    replacements and report recovery artifacts. Never claim multi-file atomicity.
    **Complete when:** every declared path is current or surviving partial state

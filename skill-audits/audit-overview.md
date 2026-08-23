@@ -1533,9 +1533,30 @@ all terminal checks pass, and the final literal marker is changed to
     tests/5,893 assertions and every static/generated check; only the same two
     unrelated macOS GUI activation cases failed, owned by P09.15. No evals run
     or inspected.
-- [ ] [IN_PROGRESS] P09.14 `tailrocks-macos-design`: live-render requirement,
+- [x] [COMPLETED] P09.14 `tailrocks-macos-design`: live-render requirement,
   bounded-baseline authority, exclusive review/systematize outputs.
-- [ ] [TODO] P09.15 `tailrocks-macos-visual-qa`: owned-app ambiguity,
+  - Evidence receipt (2026-08-23): split the macOS design transaction across
+    three loader-bound commands with one closed contract: review is byte-read-only,
+    blessing may CAS only the canonical feature `SIGNOFF.md`, and systematize may
+    CAS only accepted ledger paths beneath a canonical product `Design/System/`
+    root. Acceptance now requires the exhaustive canonical 20-state live matrix,
+    exact 8-category scoring with per-category floors, all 7 cap checks, all 18
+    hard-failure checks, a distinct reviewer, current revision/package identity,
+    and a non-capturing live-session receipt. Blessing revalidates the exact PASS
+    receipt and digest plus a same-invocation live-user receipt; impossible dates,
+    stale state sets, aliases, capture/baseline/review paths, and production writes
+    refuse. Systematize parses the exact blessed-record grammar, binds every
+    review and human field, proves SIGNOFF and unchanged paths in its CAS read-set,
+    and reports every ledger before/after hash plus exact rollback terminal state
+    without overwriting concurrent replacements. CLI input is incrementally
+    bounded with a deadline and installed dependency identity checks. No deprecated
+    route or compatibility alias remains. Focused proof passed 17 tests/153
+    assertions; validator passed 84 skills; references checked 88 sources/258
+    byte-identical destinations; docs checked 256 files; formatting and protected
+    paths passed; fresh subagent verdict: PASS. The non-eval migration gate passed
+    536 tests/5,936 assertions; only the same two macOS GUI activation cases failed,
+    now active P09.15. No evals run or inspected.
+- [ ] [IN_PROGRESS] P09.15 `tailrocks-macos-visual-qa`: owned-app ambiguity,
   permission, decoy, and restoration tests through the harness.
 - [ ] [TODO] P09.16 `tailrocks-merge-pr`: temporary histories and mocked
   check/merge/documentation receipts.

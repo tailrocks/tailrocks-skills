@@ -118,8 +118,11 @@ semantics live in [`launch-contract.md`](references/launch-contract.md).
 - **The blessing gate.** First obtain a separate
   `tailrocks-macos-design-review acceptance` PASS on the running prototype. Then
   the user signs off that same reviewed revision — every scenario, both
-  appearances, the declared sizes — recorded in `SIGNOFF.md` with date and
-  revisions. The design owner writes neither review verdict nor blessing;
+  appearances, the declared sizes — recorded only through `bun
+  scripts/macos-design-bless.ts --skill-file <absolute installed skill path>`.
+  That loader-bound CAS consumes the typed PASS and live user receipt and may
+  write only `Design/Prototypes/<Feature>/SIGNOFF.md`; it cannot capture, freeze,
+  write a review, or edit production. The design owner writes no review verdict;
   without both, the prototype binds nobody and the run ends pending.
 
 Build the committed `Design/Prototypes/<Feature>/` package on the

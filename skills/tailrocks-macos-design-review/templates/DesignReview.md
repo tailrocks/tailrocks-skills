@@ -4,11 +4,11 @@ Reviewer (must not be the implementing agent):
 Date:
 Deployment target:
 Pass: preliminary / acceptance
-Live-render session or frozen evidence record:
+Live-render session identity (required for acceptance; preliminary-only static evidence is labeled per row):
 
 ## Rendered evidence
 
-| State | Live observation or evidence locator |
+| State | Live observation in bound session, or `PRELIMINARY STATIC` locator |
 |---|---|
 | Typical window, light | |
 | Typical window, dark | |
@@ -31,7 +31,8 @@ Live-render session or frozen evidence record:
 | Missing values | |
 | Reduce Motion | |
 
-For acceptance, a missing row is a finding, not an omission. Preliminary review
+For acceptance, every row must name a live observation in the bound session; a
+missing or static-only row is a finding, not an omission. Preliminary review
 marks prototype-only rows pending and cannot pass acceptance.
 
 ## First impression

@@ -93,7 +93,8 @@ test("macOS design references have exact canonical ownership", async () => {
 test("review evidence is live-first and corpus is source-neutral", async () => {
   const template = await read("skills/tailrocks-macos-design-review/templates/DesignReview.md");
   const corpus = await read("skills/tailrocks-macos-design-systematize/references/exemplars.md");
-  expect(template).toContain("Live-render session or frozen evidence record");
+  expect(template).toContain("Live-render session identity (required for acceptance");
+  expect(template).toContain("every row must name a live observation");
   expect(template).not.toContain("| State | Screenshot |");
   expect(corpus).not.toMatch(/https?:\/\//);
   expect(corpus).not.toMatch(/Compiled .* from|source URL|— [A-Z][a-z]+ [A-Z][a-z]+/);
