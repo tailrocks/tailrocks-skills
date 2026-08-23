@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 
 import { runBoundedCommand } from "./bounded-command";
+import { isRestrictedLinuxCi } from "./test-platform";
 
 test("returns exact output for a completed command", async () => {
   const root = await realpath(await mkdtemp(path.join(tmpdir(), "bounded-command-")));
@@ -57,7 +58,9 @@ test("output saturation kills the child and returns no partial text", async () =
   });
 });
 
-test("timeout proves a TERM-resistant descendant is gone before return", async () => {
+const hostProcessIntegrationTest = isRestrictedLinuxCi() ? test.skip : test;
+
+hostProcessIntegrationTest("timeout proves a TERM-resistant descendant is gone before return", async () => {
   const root = await realpath(await mkdtemp(path.join(tmpdir(), "bounded-command-")));
   const token = `tailrocks-descendant-${randomUUID()}`;
   const started = performance.now();

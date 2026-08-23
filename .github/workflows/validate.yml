@@ -76,6 +76,8 @@ jobs:
         run: bun test scripts/macos-visual-qa/install.test.ts --timeout=60000
       - name: Run macOS PR sandbox integration tests
         run: bun test scripts/create-pr.test.ts --timeout=60000
+      - name: Run macOS process supervision integration tests
+        run: bun test scripts/bounded-command.test.ts scripts/prove-driver.test.ts --timeout=60000
       - name: Verify capture refuses a missing application
         run: |
           set +e

@@ -2,6 +2,7 @@ import { readdir } from "node:fs/promises";
 import path from "node:path";
 
 import { runBoundedCommand } from "./bounded-command";
+import { isRestrictedLinuxCi } from "./test-platform";
 
 const receiptSchema = "tailrocks.script-tests/v1";
 const hostSandboxTestFiles = new Set(["scripts/create-pr.test.ts"]);
@@ -11,8 +12,7 @@ export function shouldSkipScriptTest(
   platform: NodeJS.Platform = process.platform,
   environment: NodeJS.ProcessEnv = process.env,
 ): boolean {
-  const githubCi = environment.CI === "true" || environment.GITHUB_ACTIONS === "true";
-  return platform === "linux" && githubCi && hostSandboxTestFiles.has(file);
+  return isRestrictedLinuxCi(platform, environment) && hostSandboxTestFiles.has(file);
 }
 
 async function filesUnder(root: string, directory: string): Promise<string[]> {

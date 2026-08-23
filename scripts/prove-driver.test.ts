@@ -16,6 +16,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 
 import { proveDriverInputSchema, runProveDriver } from "./prove-driver-core";
+import { isRestrictedLinuxCi } from "./test-platform";
 
 const cleanup = new Set<string>();
 
@@ -322,9 +323,10 @@ test("nonzero timeout saturation and malformed adapters stay FAILED facts", asyn
     "bad-browser.ts":
       "console.log('bad browser'); console.log(JSON.stringify({schema:'tailrocks.prove-browser/v1',origin:'https://example.com',navigations:1,assertions:1,external_requests:1,cleanup:true,page_errors:[],console_errors:[]}));\n",
   });
+  const timeoutItem = row("TIMEOUT", "CLI", "timeout.ts", { timeout_ms: 100 });
   const inventory = [
     row("NONZERO", "CLI", "nonzero.ts"),
-    row("TIMEOUT", "CLI", "timeout.ts", { timeout_ms: 100 }),
+    ...(isRestrictedLinuxCi() ? [] : [timeoutItem]),
     row("SATURATE", "CLI", "saturate.ts", { maximum_output_bytes: 32 }),
     row("BAD_APP", "APPLICATION", "bad-app.ts"),
     row("BAD_BROWSER", "BROWSER", "bad-browser.ts"),
@@ -332,18 +334,14 @@ test("nonzero timeout saturation and malformed adapters stay FAILED facts", asyn
   const prepared = await prepare(repo, inventory);
   const receipts = [];
   for (const item of inventory) receipts.push(await runSurface(repo, prepared, item.id));
-  expect(receipts.map((receipt) => receipt.outcome)).toEqual([
-    "FAILED",
-    "FAILED",
-    "FAILED",
-    "FAILED",
-    "FAILED",
-  ]);
+  expect(receipts.map((receipt) => receipt.outcome)).toEqual(inventory.map(() => "FAILED"));
   expect(receipts[0]).toMatchObject({ exit_code: 7, timed_out: false });
-  expect(receipts[1]).toMatchObject({ exit_code: 124, timed_out: true });
-  expect(receipts[2]).toMatchObject({ exit_code: 125, saturated: true });
-  expect(receipts[3]!.detail).toContain("application protocol");
-  expect(receipts[4]!.detail).toContain("browser protocol");
+  const timeoutReceipt = receipts.find((receipt) => receipt.row_id === timeoutItem.id);
+  if (timeoutReceipt) expect(timeoutReceipt).toMatchObject({ exit_code: 124, timed_out: true });
+  const saturateReceipt = receipts.find((receipt) => receipt.row_id === "SATURATE");
+  expect(saturateReceipt).toMatchObject({ exit_code: 125, saturated: true });
+  expect(receipts.find((receipt) => receipt.row_id === "BAD_APP")!.detail).toContain("application protocol");
+  expect(receipts.find((receipt) => receipt.row_id === "BAD_BROWSER")!.detail).toContain("browser protocol");
   expect(await assemble(repo, prepared, receipts)).toMatchObject({ outcome: "EXECUTED" });
 }, 15_000);
 

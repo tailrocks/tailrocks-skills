@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 
 import { selectScriptTests, shouldSkipScriptTest } from "./run-tests";
+import { isRestrictedLinuxCi } from "./test-platform";
 
 test("selects only script test entrypoints", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "tailrocks-script-tests-"));
@@ -28,6 +29,9 @@ test("selects only script test entrypoints", async () => {
 });
 
 test("skips host sandbox integration only on Linux CI", () => {
+  expect(isRestrictedLinuxCi("linux", { CI: "true" })).toBe(true);
+  expect(isRestrictedLinuxCi("darwin", { CI: "true" })).toBe(false);
+  expect(isRestrictedLinuxCi("linux", {})).toBe(false);
   expect(shouldSkipScriptTest("scripts/create-pr.test.ts", "linux", { CI: "true" })).toBe(true);
   expect(shouldSkipScriptTest("scripts/create-pr.test.ts", "linux", { GITHUB_ACTIONS: "true" })).toBe(true);
   expect(shouldSkipScriptTest("scripts/create-pr.test.ts", "darwin", { CI: "true" })).toBe(false);
