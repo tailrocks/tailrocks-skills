@@ -45,6 +45,20 @@ Apply [`runtime-trust.md`](references/runtime-trust.md),
    equal this invocation's owned postimage; preserve concurrent replacements and
    report surviving paths/recovery artifacts.
 
+## Machine transition
+
+Obtain the loader-provided absolute path of this installed `SKILL.md`; ignore
+ambient path variables and target-repository lookalikes. After local commits and
+gates, run its sibling `scripts/contribute-prepare.ts --skill-file
+<that-absolute-SKILL.md>` with exactly one bounded
+`tailrocks.contribution-stage-input/v1` JSON object on stdin. The helper proves
+the canonical clean fork HEAD, exact base diff and sorted changed-path allowlist,
+refuses handoff or agent metadata in that diff, rejects every approval, external
+action, and remote receipt, binds exact recon/proposal predecessors, and
+publishes exactly `prepare-receipt.json`, `pr_description.md`, and append-only
+`log.md` bytes by CAS. Only its `tailrocks.contribution-stage/v1` success receipt
+permits `PREPARED`; refusal or recovery state is terminal.
+
 ## Output and final gate
 
 Return exactly one `PREPARED`, `BLOCKED`, `REFUSED`, or `RECOVERY_REQUIRED`

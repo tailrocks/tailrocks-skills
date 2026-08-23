@@ -10,6 +10,10 @@ export interface AtomicFileWrite {
   readonly expected: string | Uint8Array | null;
   readonly mode?: number;
 }
+export interface AtomicFileCheck {
+  readonly file: string;
+  readonly expected: string | Uint8Array;
+}
 export interface AtomicFileRuntime {
   readonly afterPublish?: (file: string, index: number) => Promise<void>;
   readonly beforeMutation?: (file: string, operation: string) => Promise<void>;
@@ -265,11 +269,12 @@ async function removeOwned(
 export async function atomicWriteFiles(
   writes: readonly AtomicFileWrite[],
   runtime: AtomicFileRuntime = {},
+  checks: readonly AtomicFileCheck[] = [],
 ): Promise<void> {
   if (writes.length === 0) return;
   const transaction = randomUUID();
-  const unique = new Set(writes.map((item) => path.resolve(item.file)));
-  if (unique.size !== writes.length) throw new Error("transaction contains duplicate paths");
+  const unique = new Set([...writes, ...checks].map((item) => path.resolve(item.file)));
+  if (unique.size !== writes.length + checks.length) throw new Error("transaction contains duplicate paths");
   const anchors = new Map<string, DirectoryAnchor>();
   try {
     for (const file of unique) {
@@ -296,6 +301,28 @@ export async function atomicWriteFiles(
         installedIdentity: undefined as Identity | undefined,
       };
     });
+    const readSet = checks.map((item) => {
+      const file = path.resolve(item.file);
+      return {
+        ...item,
+        file,
+        name: path.basename(file),
+        anchor: anchors.get(path.dirname(file))!,
+        expectedIdentity: undefined as Identity | undefined,
+      };
+    });
+    for (const item of readSet) {
+      item.expectedIdentity = await identity(item.anchor, item.name);
+      if (item.expectedIdentity.sha256 !== digest(item.expected))
+        throw new Error(`transaction read-set precondition changed: ${item.file}`);
+    }
+    const verifyReadSet = async (): Promise<void> => {
+      for (const item of readSet) {
+        const current = await identity(item.anchor, item.name);
+        if (!same(current, item.expectedIdentity!))
+          throw new Error(`transaction read-set changed: ${item.file}`);
+      }
+    };
     const mutate = async (
       item: (typeof staged)[number],
       op: string,
@@ -319,6 +346,7 @@ export async function atomicWriteFiles(
         item.temporaryIdentity = await identity(item.anchor, item.temporary);
       }
       for (const [index, item] of staged.entries()) {
+        await verifyReadSet();
         if (item.expectedIdentity) {
           await mutate(item, "rename", [item.name, item.backup]);
           item.backupIdentity = await identity(item.anchor, item.backup);
@@ -330,7 +358,9 @@ export async function atomicWriteFiles(
         if (!same(item.installedIdentity, item.temporaryIdentity!))
           throw new Error(`transaction target raced: ${item.file}`);
         await runtime.afterPublish?.(item.file, index);
+        await verifyReadSet();
       }
+      await verifyReadSet();
       for (const item of staged) {
         await removeOwned(item.anchor, item.temporary, item.temporaryIdentity!, transaction);
         item.temporaryIdentity = undefined;

@@ -46,6 +46,21 @@ Apply [`runtime-trust.md`](https://github.com/tailrocks/tailrocks-skills/blob/ma
    awaiting-review, merged, withdrawn, or rejected truth; preserve concurrent
    local replacements and name recovery artifacts.
 
+## Machine transition
+
+Obtain the loader-provided absolute path of this installed `SKILL.md`; ignore
+ambient path variables and target-repository lookalikes. After each separately
+approved action has an immutable remote receipt, run its sibling
+`scripts/contribute-respond.ts --skill-file <that-absolute-SKILL.md>` with exactly one bounded
+`tailrocks.contribution-stage-input/v1` JSON object on stdin. The helper proves
+the canonical clean fork/base/HEAD/diff, binds every action's host, target,
+payload and before-state hash to one unique approval no longer than five minutes
+and one unique successful receipt, requires a current `GET` receipt, binds the
+exact submitted predecessor, and publishes exactly `response.json` plus
+append-only `log.md` bytes by CAS. Only its
+`tailrocks.contribution-stage/v1` success receipt permits the recorded response
+state; refusal or recovery state is terminal and grants no retry authority.
+
 ## Output and final gate
 
 Return exactly one `UPDATED`, `DRAFTED`, `BLOCKED`, `REFUSED`, or

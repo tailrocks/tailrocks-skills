@@ -1363,9 +1363,30 @@ all terminal checks pass, and the final literal marker is changed to
     non-eval migration gate passed 455 tests/5,230 assertions and every
     static/generated check; only the same two unrelated macOS GUI activation
     cases failed, owned by P09.15. No evals run or inspected.
-- [ ] [IN_PROGRESS] P09.06 `tailrocks-contribute`: five stage scripts with temporary
+- [x] [COMPLETED] P09.06 `tailrocks-contribute`: five stage scripts with temporary
   repository state and mocked external receipts.
-- [ ] [TODO] P09.07 `tailrocks-create-pr`: bounded non-vacuous pre-open gate and
+  - Evidence receipt (2026-08-23): added five direct installed entrypoints over
+    one closed stage-transition core; no umbrella dispatcher or deprecated route
+    remains, and validation/scaffolding now forbid resurrecting the retired
+    owner while preserving its five current descendants. Real temporary Git
+    repositories prove the complete recon → propose → prepare → submit → respond
+    chain against exact fork/target remotes, base ancestry, clean HEAD, sorted
+    diff, and handoff separation. Local-only propose/prepare reject every action,
+    approval, and receipt; outward stages bind canonical repository target,
+    actor, credential scope, purpose, payload, before-state, five-minute unique
+    approval, and immutable successful receipt. Fixed-system Git, scrubbed
+    configuration, loader-owned pre-import bootstraps, complete copied-lookalike
+    refusal, hashed runtime dependencies, incremental capped/deadlined stdin,
+    exact producer-stage predecessors, successor-state refusal, empty recon,
+    replay rejection, anchored predecessor read-sets, CAS rollback, and exact
+    partial/recovery receipts close the trust and race boundaries. Focused proof
+    passed 95 tests/641 assertions; validator passed 84 skills; references checked
+    88 sources/258 byte-identical destinations; docs checked 256 files; fresh
+    subagent verdict: PASS. The non-eval migration gate passed 468 tests/5,430
+    assertions and every static/generated check; only the same two unrelated
+    macOS GUI activation cases failed, owned by P09.15. No evals run or
+    inspected.
+- [ ] [IN_PROGRESS] P09.07 `tailrocks-create-pr`: bounded non-vacuous pre-open gate and
   mocked remote receipts.
 - [ ] [TODO] P09.08 `tailrocks-document`: deterministic final-order predicate and
   documentation discovery tests.

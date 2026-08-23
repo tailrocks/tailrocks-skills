@@ -46,6 +46,21 @@ Apply [`runtime-trust.md`](references/runtime-trust.md),
    Remote actions are irreversible here: never claim rollback. On failure stop,
    name exact local/remote partial state and the safe resume or recovery action.
 
+## Machine transition
+
+Obtain the loader-provided absolute path of this installed `SKILL.md`; ignore
+ambient path variables and target-repository lookalikes. After each separately
+approved action has an immutable remote receipt, run its sibling
+`scripts/contribute-submit.ts --skill-file <that-absolute-SKILL.md>` with exactly one bounded
+`tailrocks.contribution-stage-input/v1` JSON object on stdin. The helper proves
+the canonical clean fork/base/HEAD/diff, binds every action's host, target,
+payload and before-state hash to one unique approval no longer than five minutes
+and one unique successful receipt, requires distinct `PUSH` and `CREATE_PR`
+receipts, binds exact preparation predecessors, and publishes exactly
+`submission.json` plus append-only `log.md` bytes by CAS. Only its
+`tailrocks.contribution-stage/v1` success receipt permits `SUBMITTED`; refusal
+or recovery state is terminal and grants no retry authority.
+
 ## Output and final gate
 
 Return exactly one `SUBMITTED`, `BLOCKED`, `REFUSED`, or `RECOVERY_REQUIRED`

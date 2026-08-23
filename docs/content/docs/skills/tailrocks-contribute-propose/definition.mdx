@@ -42,6 +42,19 @@ Apply [`runtime-trust.md`](https://github.com/tailrocks/tailrocks-skills/blob/ma
    predecessor hashes. Preserve concurrent replacements and expose partial
    mutation/recovery artifacts.
 
+## Machine transition
+
+Obtain the loader-provided absolute path of this installed `SKILL.md`; ignore
+ambient path variables and target-repository lookalikes. Run its sibling
+`scripts/contribute-propose.ts --skill-file <that-absolute-SKILL.md>` with exactly one bounded
+`tailrocks.contribution-stage-input/v1` JSON object on stdin. The helper proves
+the canonical clean Git identity and exact changed-path set, rejects every
+approval, external action, and remote receipt, binds the immutable contribution
+plus exact recon predecessors, and publishes exactly `proposal.md` and
+append-only `log.md` bytes by CAS. Only its
+`tailrocks.contribution-stage/v1` success receipt permits `PROPOSED` or the
+recorded hard-stop result; refusal or recovery state is terminal.
+
 ## Output and final gate
 
 Return exactly one `PROPOSED`, `REDIRECTED`, `BLOCKED`, or `REFUSED` receipt with exact

@@ -85,3 +85,24 @@ test("all five owners are manual-only catalogued and generated", async () => {
     expect(await source(owner, "agents/openai.yaml")).toContain("allow_implicit_invocation: false");
   }
 });
+
+test("five direct stage entrypoints share one closed core without an umbrella dispatcher", async () => {
+  const core = await readFile(path.join(root, "scripts/contribution-stage-core.ts"), "utf8");
+  expect(core).toContain(
+    'export type ContributionStage = "recon" | "propose" | "prepare" | "submit" | "respond"',
+  );
+  expect(core).toContain("propose: []");
+  expect(core).toContain("prepare: []");
+  expect(core).toContain('submit: ["PUSH", "CREATE_PR"]');
+  expect(core).toContain('respond: ["GET"]');
+  for (const owner of owners) {
+    const stage = owner.replace("tailrocks-contribute-", "");
+    const entrypoint = `scripts/contribute-${stage}.ts`;
+    expect(await Bun.file(path.join(root, "skills", owner, entrypoint)).exists()).toBe(true);
+    expect(await source(owner)).toContain(entrypoint);
+    expect(await source(owner)).toContain("`tailrocks.contribution-stage-input/v1`");
+    expect(await source(owner)).toContain("`tailrocks.contribution-stage/v1`");
+  }
+  expect(await Bun.file(path.join(root, "skills/tailrocks-contribute/SKILL.md")).exists()).toBe(false);
+  expect(await Bun.file(path.join(root, "scripts/contribute.ts")).exists()).toBe(false);
+});

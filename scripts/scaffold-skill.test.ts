@@ -48,6 +48,7 @@ describe("scaffoldSkill", () => {
       for (const name of [
         "tailrocks-audit",
         "tailrocks-checkout-pr",
+        "tailrocks-contribute",
         "tailrocks-skill-migrate",
         "tailrocks-web-visual-qa",
       ]) {

@@ -152,7 +152,9 @@ async function validateRetiredRoutes(root: string, errors: string[]): Promise<vo
     if (!(await exists(file))) continue;
     const source = await readFile(file, "utf8");
     for (const name of retiredSkillNames) {
-      if (source.includes(name)) errors.push(`${relative}: retired skill route is forbidden: ${name}`);
+      const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      if (new RegExp(`${escaped}(?![A-Za-z0-9-])`).test(source))
+        errors.push(`${relative}: retired skill route is forbidden: ${name}`);
     }
   }
   const docsRoot = path.join(root, "docs/content/docs/skills");

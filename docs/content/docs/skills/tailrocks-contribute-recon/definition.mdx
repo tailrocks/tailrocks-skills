@@ -47,6 +47,19 @@ Apply [`runtime-trust.md`](https://github.com/tailrocks/tailrocks-skills/blob/ma
    per-file CAS. Re-hash inputs and target identity before publication; on any
    race preserve concurrent bytes and report partial state/recovery artifacts.
 
+## Machine transition
+
+Obtain the loader-provided absolute path of this installed `SKILL.md`; ignore
+ambient path variables and target-repository lookalikes. Run its sibling
+`scripts/contribute-recon.ts --skill-file <that-absolute-SKILL.md>` with exactly one bounded
+`tailrocks.contribution-stage-input/v1` JSON object on stdin. The helper proves
+the canonical clean Git identity and exact changed-path set, requires one fresh
+action-bound approval and successful receipt for every `GET`, binds immutable
+contribution/predecessor identities, and publishes exactly `target.json`,
+`recon-report.md`, and append-only `log.md` bytes by CAS. Only its
+`tailrocks.contribution-stage/v1` success receipt permits `SCANNED`; refusal or
+recovery state is terminal for this invocation.
+
 ## Output and final gate
 
 Return exactly one `SCANNED`, `BLOCKED`, `REFUSED`, or `FAILED` receipt with target,
