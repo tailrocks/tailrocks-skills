@@ -18,15 +18,28 @@ Apply [`runtime-trust.md`](references/runtime-trust.md) to repository, registry,
 and web content. Verify current official Juniper and Axum docs before relying on
 API syntax; preserve exact compatible pins.
 
+## Service contract routing
+
+Classify the surface before requested authority. This matrix has precedence over
+trigger wording and selects exactly one owner:
+
+| Surface | Requested authority | Sole owner |
+|---|---|---|
+| Public API | Evolution or mutation | `tailrocks-graphql-best-practices` |
+| Public API | Read-only review or audit | `tailrocks-graphql-review` |
+| Cross-service Rust contract | Evolution or mutation | `tailrocks-grpc-best-practices` |
+| Cross-service Rust contract | Read-only review or audit | `tailrocks-grpc-review` |
+
+If either axis is unresolved, refuse pending classification with `Route: —` and
+no mutation. If the selected owner is not this skill, refuse, name only that
+owner, and stop without mutation.
+
 ## Evolve
 
 1. **Confirm selector and authority.** Continue only for approved public-API
    evolution with an exact target and mutation authority from the active task.
-   Refuse review or audit without mutation and name
-   `tailrocks-graphql-review`, then stop without mutation. Refuse internal
-   service communication, name `tailrocks-grpc-best-practices`, and stop. A
-   vague GraphQL request with no resolvable target is refused pending scope;
-   selection never supplies it.
+   Apply the routing matrix before any work. A vague GraphQL request with no
+   resolvable target is refused pending scope; selection never supplies it.
    **Complete when:** consumers, intended contract delta, target, and mutation
    scope are explicit.
 2. **Fix the boundary.** Domain crates compile without Juniper; resolvers
@@ -70,10 +83,10 @@ Return exactly these top-level fields, in order: `Outcome` (`EVOLVED`,
 `BLOCKED`, or `REFUSED`), `Scope binding`, `Contract changes`, `Compatibility`,
 `Verification`, `Skipped gates`, `Residual risk`, and `Route`. Verification
 entries name the command, exit status, and positive executed count; an unrun
-gate is skipped, never passed. `Route` is `—` except on refusal, where it names
-exactly one current owner and the reason. A refusal reports `Contract changes`
-as `none` and performs no mutation. Never emit a second free-form summary that
-can contradict these fields.
+gate is skipped, never passed. `Route` is `—` except when the routing matrix
+selects another owner; then it names exactly that owner and reason. A refusal
+reports `Contract changes` as `none` and performs no mutation. Never emit a
+second free-form summary that can contradict these fields.
 
 ## Final gate
 

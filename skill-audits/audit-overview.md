@@ -1464,9 +1464,25 @@ all terminal checks pass, and the final literal marker is changed to
     PASS. The non-eval migration gate passed 507 tests/5,656 assertions and
     every static/generated check; only the same two unrelated macOS GUI
     activation cases failed, owned by P09.15. No evals run or inspected.
-- [ ] [IN_PROGRESS] P09.11 `tailrocks-grpc-best-practices`: unique evolution/review
+- [x] [COMPLETED] P09.11 `tailrocks-grpc-best-practices`: unique evolution/review
   ownership, invocation, output, refusal, and hints.
-- [ ] [TODO] P09.12 `tailrocks-idea`: atomic capture success/refusal/boundary
+  - Evidence receipt (2026-08-23): made cross-service evolution and read-only
+    findings mutually exclusive, terminal authorities with distinct closed
+    `gRPC Evolution Report` and `gRPC Findings` grammars, positive gate counts,
+    honest skips, exact hints, prompts, invocation classes, catalog/docs, PR
+    dispatch, and canonical-reference assertions. A shared ordered matrix now
+    classifies domain before authority across all four GraphQL/gRPC owners:
+    public mutation, public read-only, cross-service mutation, and cross-service
+    read-only each select exactly one current owner; an unresolved axis refuses
+    with no mutation or guessed route. No deprecated route or alias remains.
+    Focused gRPC proof passed 4 tests/83 assertions; combined service-routing
+    proof passed 8 tests/167 assertions; validator passed 84 skills; references
+    checked 88 sources/258 byte-identical destinations; docs checked 256 files;
+    fresh subagent verdict: PASS. The non-eval migration gate passed 508
+    tests/5,726 assertions and every static/generated check; only the same two
+    unrelated macOS GUI activation cases failed, owned by P09.15. No evals run
+    or inspected.
+- [ ] [IN_PROGRESS] P09.12 `tailrocks-idea`: atomic capture success/refusal/boundary
   tests using temporary repositories.
 - [ ] [TODO] P09.13 `tailrocks-improve`: deterministic route selection,
   correctness-first ranking, rejected-finding handling, and typed receipts.

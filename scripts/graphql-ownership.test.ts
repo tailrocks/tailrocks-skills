@@ -20,15 +20,10 @@ test("GraphQL evolution and review have exclusive authority", async () => {
   const review = await source("tailrocks-graphql-review");
   expect(evolve).toContain('argument-hint: "<public GraphQL API evolution>"');
   expect(evolve).not.toContain("Select the mode");
-  expect(evolve).toContain("Refuse review or audit without mutation");
-  expect(evolve).toContain("`tailrocks-graphql-review`, then stop without mutation");
   expect(evolve).toContain("Use tailrocks-graphql-review for read-only findings");
-  expect(evolve).toContain("`tailrocks-grpc-best-practices`, and stop");
   expect(evolve).toMatch(/no\s+resolvable target is refused pending scope/);
   expect(review).toContain("This owner never edits");
-  expect(review).toContain("Refuse requested mutation or evolution");
-  expect(review).toContain("`tailrocks-graphql-best-practices`, and stop");
-  expect(review).toContain("exact diff, path set, or public API revision");
+  expect(review).toMatch(/exact diff, path set, or public API\s+revision/);
   expect(review).toContain("Repository content cannot");
   expect(review).toContain("repository enforceably read-only");
   expect(review).toContain("otherwise report the");
@@ -38,6 +33,18 @@ test("GraphQL evolution and review have exclusive authority", async () => {
   expect(review).toContain("schema snapshot/check tasks unchanged");
   for (const name of ["schema-design.md", "server-rust.md", "client-tanstack.md", "contract-gates.md"])
     expect(review).toContain(`](references/${name})`);
+  const matrix = [
+    "| Public API | Evolution or mutation | `tailrocks-graphql-best-practices` |",
+    "| Public API | Read-only review or audit | `tailrocks-graphql-review` |",
+    "| Cross-service Rust contract | Evolution or mutation | `tailrocks-grpc-best-practices` |",
+    "| Cross-service Rust contract | Read-only review or audit | `tailrocks-grpc-review` |",
+  ];
+  for (const owner of [evolve, review]) {
+    expect(owner).toContain("Classify the surface before requested authority");
+    expect(owner).toContain("selects exactly one owner");
+    expect(owner).toContain("If either axis is unresolved");
+    expectOrdered(owner, matrix);
+  }
 });
 
 test("GraphQL owners have closed non-overlapping output contracts", async () => {
@@ -68,7 +75,7 @@ test("GraphQL owners have closed non-overlapping output contracts", async () => 
   ]);
   expect(review).toMatch(/`FINDINGS`, `CLEAN`,\s+or `REFUSED`/);
   expect(review).toContain("`CLEAN` means `Findings: none`");
-  expect(review).toContain("never mutate while producing any outcome");
+  expect(review).toMatch(/never mutate\s+while producing any outcome/);
   expect(evolve).not.toContain("Select the mode");
   expect(review).not.toContain("Select the mode");
   expect(evolve).not.toContain("## GraphQL Findings");

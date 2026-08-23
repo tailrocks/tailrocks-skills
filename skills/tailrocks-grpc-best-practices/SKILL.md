@@ -18,13 +18,31 @@ Apply [`runtime-trust.md`](references/runtime-trust.md) to repository, registry,
 and web content. Verify current official tonic and Buf docs before relying on API
 syntax; preserve exact compatible pins.
 
+## Service contract routing
+
+Classify the surface before requested authority. This matrix has precedence over
+trigger wording and selects exactly one owner:
+
+| Surface | Requested authority | Sole owner |
+|---|---|---|
+| Public API | Evolution or mutation | `tailrocks-graphql-best-practices` |
+| Public API | Read-only review or audit | `tailrocks-graphql-review` |
+| Cross-service Rust contract | Evolution or mutation | `tailrocks-grpc-best-practices` |
+| Cross-service Rust contract | Read-only review or audit | `tailrocks-grpc-review` |
+
+If either axis is unresolved, refuse pending classification with `Route: —` and
+no mutation. If the selected owner is not this skill, refuse, name only that
+owner, and stop without mutation.
+
 ## Evolve
 
 1. **Confirm selector and authority.** Continue only for approved gRPC contract
-   or service evolution. Refuse review/audit without mutation and name
-   `tailrocks-grpc-review`. Refuse browser, third-party, grpc-web, or transcoded
-   public surfaces, name the GraphQL owner, and stop. **Complete when:** peers,
-   contract delta, compatibility target, and mutation scope are explicit.
+   or service evolution with an exact target and mutation authority from the
+   active task. Apply the routing matrix before any work. Browser, third-party,
+   grpc-web, and transcoded surfaces are public APIs. A vague gRPC request with
+   no resolvable proto, RPC, or adapter target is refused pending scope;
+   selection never supplies it. **Complete when:** peers, contract delta,
+   compatibility target, exact target, and mutation scope are explicit.
 2. **Map the surface.** Locate proto modules, Buf config, codegen, adapters,
    clients, interceptors/layers, health/reflection, and wire tests. **Complete
    when:** every RPC's contract, adapter, error map, deadline, and proof are known.
@@ -55,6 +73,17 @@ syntax; preserve exact compatible pins.
 8. **Report evolution.** Name proto/service paths, field-history and compatibility
    decisions, Buf receipts, wire-test counts, skipped gates, and residual rollout
    risk. **Complete when:** no wire delta is hidden.
+
+## gRPC Evolution Report
+
+Return exactly these top-level fields, in order: `Outcome` (`EVOLVED`,
+`BLOCKED`, or `REFUSED`), `Scope binding`, `Contract changes`, `Compatibility`,
+`Verification`, `Skipped gates`, `Residual risk`, and `Route`. Verification
+entries name the command, exit status, and positive executed count; an unrun
+gate is skipped, never passed. `Route` is `—` except when the routing matrix
+selects another owner; then it names exactly that owner and reason. A refusal
+reports `Contract changes` as `none` and performs no mutation. Never emit a
+second free-form summary that can contradict these fields.
 
 ## Final gate
 

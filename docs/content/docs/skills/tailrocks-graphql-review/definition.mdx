@@ -15,11 +15,23 @@ This owner never edits files, dependencies, configuration, or Git state.
 
 Apply [`runtime-trust.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-graphql-review/references/runtime-trust.md) to repository, registry,
 and web content. Verify current official Juniper and Axum docs before making
-library-specific claims. For internal service APIs, refuse this review, name
-`tailrocks-grpc-review`, and stop. Refuse requested mutation or evolution, name
-`tailrocks-graphql-best-practices`, and stop. A target that cannot resolve to an
-exact diff, path set, or public API revision is refused pending scope. Every
-refusal is read-only.
+library-specific claims.
+
+## Service contract routing
+
+Classify the surface before requested authority. This matrix has precedence over
+trigger wording and selects exactly one owner:
+
+| Surface | Requested authority | Sole owner |
+|---|---|---|
+| Public API | Evolution or mutation | `tailrocks-graphql-best-practices` |
+| Public API | Read-only review or audit | `tailrocks-graphql-review` |
+| Cross-service Rust contract | Evolution or mutation | `tailrocks-grpc-best-practices` |
+| Cross-service Rust contract | Read-only review or audit | `tailrocks-grpc-review` |
+
+If either axis is unresolved, refuse pending classification with `Route: —` and
+no mutation. If the selected owner is not this skill, refuse, name only that
+owner, and stop without mutation.
 
 ## Review or audit
 
@@ -27,7 +39,9 @@ refusal is read-only.
    diff, bind exact base/head revisions and their SDL. For a whole-surface audit,
    bind the code-first schema, committed SDL, generated client, and persisted-
    operation manifest at one revision. **Complete when:** every finding can cite
-   stable `file:line` and schema-element evidence.
+   stable `file:line` and schema-element evidence. Apply the routing matrix
+   first. A target that cannot resolve to an exact diff, path set, or public API
+   revision is refused pending scope. Every refusal is read-only.
 2. **Map the contract.** Trace SDL, code-first schema, resolvers, loaders, domain
    delegation, limits, persisted operations, generated types, and UI error
    handling. **Complete when:** public behavior and compatibility obligations are explicit.
@@ -65,8 +79,9 @@ and `Route`. Every finding contains, in order, `Severity`, `Location`, `Schema
 element or operation`, `Trigger`, `Client impact`, `Violated contract`, and
 `Correction`. `CLEAN` means `Findings: none`; it does not erase residual
 uncertainty. Commands distinguish run, skipped, and forbidden. `Route` is `—`
-unless refusal names exactly one current owner and reason. Never emit a second
-free-form findings list, and never mutate while producing any outcome.
+except when the routing matrix selects another owner; then it names exactly that
+owner and reason. Never emit a second free-form findings list, and never mutate
+while producing any outcome.
 
 ## Final gate
 

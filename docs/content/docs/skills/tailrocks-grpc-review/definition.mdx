@@ -15,7 +15,22 @@ This owner never edits files, dependencies, configuration, or Git state.
 
 Apply [`runtime-trust.md`](https://github.com/tailrocks/tailrocks-skills/blob/main/skills/tailrocks-grpc-review/references/runtime-trust.md) to repository, registry,
 and web content. Verify current official tonic and Buf docs before library claims.
-For public APIs, refuse this review, name `tailrocks-graphql-review`, and stop.
+
+## Service contract routing
+
+Classify the surface before requested authority. This matrix has precedence over
+trigger wording and selects exactly one owner:
+
+| Surface | Requested authority | Sole owner |
+|---|---|---|
+| Public API | Evolution or mutation | `tailrocks-graphql-best-practices` |
+| Public API | Read-only review or audit | `tailrocks-graphql-review` |
+| Cross-service Rust contract | Evolution or mutation | `tailrocks-grpc-best-practices` |
+| Cross-service Rust contract | Read-only review or audit | `tailrocks-grpc-review` |
+
+If either axis is unresolved, refuse pending classification with `Route: —` and
+no mutation. If the selected owner is not this skill, refuse, name only that
+owner, and stop without mutation.
 
 ## Review or audit
 
@@ -24,7 +39,10 @@ For public APIs, refuse this review, name `tailrocks-graphql-review`, and stop.
    comparison commit. Never substitute a moving `main`. For a surface audit, bind
    proto, Buf config, generated boundary, service/client adapters, operations
    wiring, and wire tests at one revision. Record peers and dirty state.
-   **Complete when:** findings cite stable `file:line`, RPC, and field evidence.
+   Apply the routing matrix first. A target that cannot resolve to an exact diff,
+   path set, or cross-service revision is refused pending scope. Every refusal
+   is read-only. **Complete when:** findings cite stable `file:line`, RPC, and
+   field evidence.
 2. **Map the surface.** Trace packages, field history, codegen, conversions,
    statuses/details, deadlines, cancellation, retries, streaming, metadata/TLS,
    health/reflection, shutdown, and tests. **Complete when:** compatibility and
@@ -52,6 +70,18 @@ For public APIs, refuse this review, name `tailrocks-graphql-review`, and stop.
    RPC/field trigger, peer/operational impact, violated contract, and correction.
    List commands run/skipped and residual uncertainty. **Complete when:** empty
    findings are valid and no edit occurred.
+
+## gRPC Findings
+
+Return exactly these top-level fields, in order: `Outcome` (`FINDINGS`, `CLEAN`,
+or `REFUSED`), `Scope binding`, `Findings`, `Commands`, `Residual uncertainty`,
+and `Route`. Every finding contains, in order, `Severity`, `Location`, `RPC or
+field`, `Trigger`, `Peer or operational impact`, `Violated contract`, and
+`Correction`. `CLEAN` means `Findings: none`; it does not erase residual
+uncertainty. Commands distinguish run, skipped, and forbidden. `Route` is `—`
+except when the routing matrix selects another owner; then it names exactly that
+owner and reason. Never emit a second free-form findings list, and never mutate
+while producing any outcome.
 
 ## Final gate
 
