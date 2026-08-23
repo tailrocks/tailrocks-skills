@@ -409,6 +409,7 @@ function isolatedGateRunner(workspace: string): CreatePrRunner {
       "--chdir",
       workspace,
     ];
+    let privileged = false;
     return async ({ command }) => {
       await safeExecutable(bubblewrap);
       const run = (prefix: readonly string[]) =>
@@ -420,13 +421,20 @@ function isolatedGateRunner(workspace: string): CreatePrRunner {
           env: environment,
           inheritEnvironment: false,
         });
+      if (privileged) {
+        await safeExecutable(sudo);
+        return run([sudo, "-n", "/usr/bin/env", "-i", ...environmentArguments, bubblewrap]);
+      }
       const direct = await run([bubblewrap]);
       if (
         direct.code === 0 ||
-        !/(?:no permissions|operation not permitted|permission denied).*namespace/i.test(direct.stderr)
+        !/(?:namespace.*(?:no permissions|operation not permitted|permission denied)|(?:no permissions|operation not permitted|permission denied).*namespace)/i.test(
+          direct.stderr,
+        )
       )
         return direct;
       await safeExecutable(sudo);
+      privileged = true;
       return run([sudo, "-n", "/usr/bin/env", "-i", ...environmentArguments, bubblewrap]);
     };
   }
