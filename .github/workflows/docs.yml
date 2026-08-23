@@ -6,6 +6,12 @@ on:
     branches: [main]
   merge_group:
   workflow_dispatch:
+    inputs:
+      lanes:
+        description: velnor (default) | github | both
+        type: choice
+        default: velnor
+        options: [velnor, github, both]
   schedule:
     - cron: "37 4 * * *"
 
@@ -22,7 +28,16 @@ concurrency:
 jobs:
   build:
     if: github.event_name != 'schedule'
-    runs-on: ${{ 'ubuntu-26.04' }}
+    name: build (${{ matrix.config.lane }})
+    strategy:
+      fail-fast: false
+      matrix:
+        # Velnor is the default lane. Post-merge push routes to the GitHub lane
+        # because the fleet rejects merged-push occupancy (merged_push_occupancy);
+        # dispatch selects lanes explicitly, `both` runs each fleet from this one
+        # definition with identical steps.
+        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || github.event_name == 'push' && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
+    runs-on: ${{ matrix.config.velnor_default_runner }}
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -49,7 +64,15 @@ jobs:
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: build
-    runs-on: ${{ 'ubuntu-26.04' }}
+    name: deploy (${{ matrix.config.lane }})
+    strategy:
+      fail-fast: false
+      matrix:
+        # Deploy is a post-merge push job, so it always runs on the GitHub lane
+        # (merged_push_occupancy); the expression stays lane-aware so the
+        # workflow definition remains identical across fleets.
+        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || github.event_name == 'push' && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
+    runs-on: ${{ matrix.config.velnor_default_runner }}
     timeout-minutes: 20
     permissions:
       pages: write
@@ -62,7 +85,7 @@ jobs:
         uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
 
   verify-deployed:
-    name: Verify deployed documentation
+    name: Verify deployed documentation (${{ matrix.config.lane }})
     if: >-
       always() &&
       (github.event_name == 'schedule' ||
@@ -70,7 +93,11 @@ jobs:
         github.event_name == 'push' &&
         needs.deploy.result == 'success'))
     needs: deploy
-    runs-on: ${{ 'ubuntu-26.04' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || github.event_name == 'push' && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
+    runs-on: ${{ matrix.config.velnor_default_runner }}
     timeout-minutes: 10
     steps:
       - name: Verify custom-domain site

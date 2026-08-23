@@ -3,6 +3,12 @@ on:
   schedule:
     - cron: "43 4 * * 1"
   workflow_dispatch:
+    inputs:
+      lanes:
+        description: velnor (default) | github | both
+        type: choice
+        default: velnor
+        options: [velnor, github, both]
 
 permissions:
   contents: read
@@ -13,7 +19,16 @@ concurrency:
 
 jobs:
   refresh:
-    runs-on: ${{ 'ubuntu-26.04' }}
+    name: refresh (${{ matrix.config.lane }})
+    strategy:
+      fail-fast: false
+      matrix:
+        # Velnor is the default lane; dispatch selects lanes explicitly and
+        # `both` runs each fleet from this one definition with identical steps.
+        # Exactly one matrix leg is the writer so a `both` run never opens or
+        # updates the pull request twice.
+        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
+    runs-on: ${{ matrix.config.velnor_default_runner }}
     timeout-minutes: 15
     permissions:
       contents: write
@@ -31,6 +46,7 @@ jobs:
       - name: Prove the refreshed tree still passes its own gates
         run: mise run ci
       - name: Open or update the refresh pull request
+        if: matrix.config.writer
         env:
           GH_TOKEN: ${{ github.token }}
           BRANCH: chore/refresh-template-pins
