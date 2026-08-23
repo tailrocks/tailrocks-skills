@@ -4,6 +4,13 @@ on:
     branches: [main]
   schedule:
     - cron: "17 3 * * *"
+  workflow_dispatch:
+    inputs:
+      lanes:
+        description: velnor (default) | github | both
+        type: choice
+        default: velnor
+        options: [velnor, github, both]
 
 permissions:
   contents: read
@@ -15,7 +22,16 @@ concurrency:
 jobs:
   validate:
     if: github.event_name != 'schedule'
-    runs-on: ${{ fromJSON('["self-hosted","velnor-target-mvp"]') }}
+    name: validate (${{ matrix.config.lane }})
+    strategy:
+      fail-fast: false
+      matrix:
+        # Velnor is the default lane. Post-merge push routes to the GitHub lane
+        # because the fleet rejects merged-push occupancy (merged_push_occupancy);
+        # dispatch selects lanes explicitly, `both` runs each fleet from this one
+        # definition with identical steps.
+        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || github.event_name == 'push' && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
+    runs-on: ${{ matrix.config.velnor_default_runner }}
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -31,7 +47,12 @@ jobs:
         run: find skills scripts -type d -name evals -prune -o -path '*/templates/*.sh' -type f -print0 | xargs -0 -n1 sh -n
 
   latest-stable:
-    runs-on: ${{ fromJSON('["self-hosted","velnor-target-mvp"]') }}
+    name: latest-stable (${{ matrix.config.lane }})
+    strategy:
+      fail-fast: false
+      matrix:
+        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || github.event_name == 'push' && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
+    runs-on: ${{ matrix.config.velnor_default_runner }}
     timeout-minutes: 10
     permissions:
       contents: read
@@ -46,7 +67,7 @@ jobs:
       - run: bun skills/tailrocks-tanstack-project-setup/scripts/resolve-package-versions.ts --check-template skills/tailrocks-tanstack-project-setup/templates/package.json
       - run: bun scripts/check-baseline-age.ts
       - name: Open or update scheduled-gate issue
-        if: failure() && github.event_name == 'schedule'
+        if: failure() && github.event_name == 'schedule' && matrix.config.writer
         env:
           GH_TOKEN: ${{ github.token }}
           TITLE: "Scheduled latest-stable gate failed"
@@ -60,8 +81,17 @@ jobs:
           fi
 
   templates-macos:
-    if: github.event_name != 'schedule'
-    runs-on: macos-26
+    # No macOS runner exists on the Velnor fleet and these gates fundamentally
+    # need macOS (swiftc, the visual-QA capture harness), so this job is
+    # excluded from the Velnor default and runs only on the non-default GitHub
+    # dispatch lane (lanes=github or both).
+    if: github.event_name == 'workflow_dispatch' && inputs.lanes != 'velnor'
+    name: templates-macos (${{ matrix.config.lane }})
+    strategy:
+      fail-fast: false
+      matrix:
+        config: ${{ fromJSON('[{"lane":"GitHub","velnor_default_runner":"macos-26"}]') }}
+    runs-on: ${{ matrix.config.velnor_default_runner }}
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

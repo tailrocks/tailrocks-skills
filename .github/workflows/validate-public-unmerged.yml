@@ -3,6 +3,13 @@ on:
   pull_request:
     branches: [main]
   merge_group:
+  workflow_dispatch:
+    inputs:
+      lanes:
+        description: velnor (default) | github | both
+        type: choice
+        default: velnor
+        options: [velnor, github, both]
 
 permissions:
   contents: read
@@ -12,7 +19,15 @@ concurrency:
   cancel-in-progress: true
 jobs:
   validate:
-    runs-on: ${{ 'ubuntu-26.04' }}
+    name: validate (${{ matrix.config.lane }})
+    strategy:
+      fail-fast: false
+      matrix:
+        # Velnor is the default lane for pull requests, merge groups, and
+        # dispatch; `both` runs each fleet from this one definition with
+        # identical steps.
+        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
+    runs-on: ${{ matrix.config.velnor_default_runner }}
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -30,7 +45,17 @@ jobs:
       - run: bun scripts/refresh-template-pins.ts --check-consistency
 
   templates-macos:
-    runs-on: macos-26
+    # No macOS runner exists on the Velnor fleet and these gates fundamentally
+    # need macOS (swiftc, the visual-QA capture harness), so this job is
+    # excluded from the Velnor default and runs only on the non-default GitHub
+    # dispatch lane (lanes=github or both).
+    if: github.event_name == 'workflow_dispatch' && inputs.lanes != 'velnor'
+    name: templates-macos (${{ matrix.config.lane }})
+    strategy:
+      fail-fast: false
+      matrix:
+        config: ${{ fromJSON('[{"lane":"GitHub","velnor_default_runner":"macos-26"}]') }}
+    runs-on: ${{ matrix.config.velnor_default_runner }}
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
