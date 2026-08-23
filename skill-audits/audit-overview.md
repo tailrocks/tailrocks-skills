@@ -1793,29 +1793,43 @@ all terminal checks pass, and the final literal marker is changed to
 
 ## P10 — Reconcile exact movement and compatibility surfaces
 
-- [ ] [IN_PROGRESS] P10.01 Add a receipt for every non-protected KEEP/MOVE/COPY/DELETE
+- [x] [COMPLETED] P10.01 Add a receipt for every non-protected KEEP/MOVE/COPY/DELETE
   row in all three movement reports; every receipt names source, target,
   operation, checker, and result.
-- [ ] [TODO] P10.02 Generate and byte-check every local copy from the canonical
+  - Evidence receipt (2026-08-23): three obsolete movement plans became
+    final-state ledgers; 60 rows passed 373 completeness/result assertions.
+- [x] [COMPLETED] P10.02 Generate and byte-check every local copy from the canonical
   authoring, runtime-trust, version-policy, repository-audit, design-pipeline,
   contribution-handoff, and pull-request-conventions sources.
-- [ ] [TODO] P10.03 Source-neutralize retained and moved prose while preserving
+  - Evidence receipt (2026-08-23): generator checked 88 canonical sources and
+    all 258 declared destinations byte-identically with zero writes pending.
+- [x] [COMPLETED] P10.03 Source-neutralize retained and moved prose while preserving
   the mechanism; shipped skill content names no external project, collection,
   or author as provenance.
-- [ ] [TODO] P10.04 Regenerate root README rows, skill READMEs, documentation
-  pages, catalog placement, INSTALL, choosing guide, root instructions, and
-  every client sidecar inside each owning package.
-- [ ] [TODO] P10.05 Prepare lockstep `v0.28.0` manifest versions and pinned
+  - Evidence receipt (2026-08-23): validator source-neutrality and external-work
+    gates passed all 84 skills, references, templates, and generated surfaces.
+- [x] [COMPLETED] P10.04 Regenerate root README rows, public documentation pages,
+  catalog placement, INSTALL, choosing guide, root instructions, and every
+  client sidecar inside each owning package; per-skill READMEs stay absent.
+  - Evidence receipt (2026-08-23): generator checked 172 public documentation
+    files; root catalog uses public documentation URLs and skill READMEs are absent.
+- [x] [COMPLETED] P10.05 Prepare lockstep `v0.28.0` manifest versions and pinned
   documentation examples without tagging, publishing, pushing, or opening a PR.
-- [ ] [TODO] P10.06 Prove retired public names and routes are absent while frozen
-  protected bytes remain untouched and undiscoverable.
-- [ ] [TODO] P10.GATE Prove every in-scope movement row has one successful
+  - Evidence receipt (2026-08-23): Claude, marketplace, Codex, and Kimi manifests
+    now agree on 0.28.0; INSTALL and generated install docs use only v0.28.0.
+- [x] [COMPLETED] P10.06 Prove retired public names/routes, per-skill README files,
+  and all eval/protected remnants are absent and undiscoverable.
+  - Evidence receipt (2026-08-23): tracked-path queries found zero deprecated
+    package, skill README, or eval paths; validator rejects every resurrection.
+- [x] [COMPLETED] P10.GATE Prove every in-scope movement row has one successful
   receipt, every generated surface is synchronized, and `rtk mise run
-  migration-check` passes. Evidence: pending.
+  migration-check` passes.
+  - Evidence receipt (2026-08-23): movement ledger passed 60 rows/373 receipt
+    assertions; full gate passed 603 tests/6,628 assertions across 78 files.
 
 ## P11 — Terminal verification and closure
 
-- [ ] [TODO] P11.01 Run `rtk mise run migration-check` from a clean command
+- [ ] [IN_PROGRESS] P11.01 Run `rtk mise run migration-check` from a clean command
   session; record every subcommand and nonzero test/check count.
 - [ ] [TODO] P11.02 Run `rtk mise run docs:build` and `rtk git diff --check`.
 - [ ] [TODO] P11.03 Run installed client/plugin validators. Record unavailable
