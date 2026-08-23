@@ -1407,9 +1407,29 @@ all terminal checks pass, and the final literal marker is changed to
     non-eval migration gate passed 488 tests/5,496 assertions and every
     static/generated check; only the same two unrelated macOS GUI activation
     cases failed, owned by P09.15. No evals run or inspected.
-- [ ] [IN_PROGRESS] P09.08 `tailrocks-document`: deterministic final-order predicate and
+- [x] [COMPLETED] P09.08 `tailrocks-document`: deterministic final-order predicate and
   documentation discovery tests.
-- [ ] [TODO] P09.09 `tailrocks-finalize`: machine-owned readiness/state
+  - Evidence receipt (2026-08-23): added the bounded typed
+    `documentation-discovery.ts` tree inventory and made both the document-only
+    check and full merge preflight consume it with the same ancestry predicate.
+    Merge-base ∪ HEAD discovery retains deleted surfaces; covers nested README
+    sets, docs and alternate content trees, API contracts, assets, navigation,
+    every generator marker, governing rules, and command sources; exposes
+    unmatched prose; and rejects unsafe paths, symlinks, submodules, duplicates,
+    and saturation. Unknown paths remain doc-worthy. The shared predicate now
+    validates unique history ending at exact HEAD before `not_needed`, and
+    `--check` explicitly consumes it rather than using a weaker prose oracle.
+    Real temporary Git histories prove byte-identical document/merge predicate
+    fields for covered, stale, not-needed, and merge-graph cases. Updated the
+    source skill, merge command documentation, generated documentation, and
+    ownership tests; no deprecated route or alias was added. Focused proof
+    passed 25 tests/89 assertions; validator passed 84 skills; references
+    checked 88 sources/258 byte-identical destinations; docs checked 256 files;
+    fresh subagent verdict: PASS. The non-eval migration gate passed 495
+    tests/5,537 assertions and every static/generated check; only the same two
+    unrelated macOS GUI activation cases failed, owned by P09.15. No evals run
+    or inspected.
+- [ ] [IN_PROGRESS] P09.09 `tailrocks-finalize`: machine-owned readiness/state
   transitions for DRAFT, SHAPING, READY, live, and batch paths.
 - [ ] [TODO] P09.10 `tailrocks-graphql-best-practices`: unique evolution/review
   ownership, invocation, output, refusal, and hints.

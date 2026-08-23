@@ -57,6 +57,12 @@ class FakeHost {
     if (key === `git ls-tree -r -z ${mergeBase} -- roadmap delivery`)
       return ok(this.trees.get(mergeBase) ?? "");
     if (key === `git ls-tree -r -z ${head} -- roadmap delivery`) return ok(this.trees.get(head) ?? "");
+    if (key === `git ls-tree -r -z --full-tree ${mergeBase} --`)
+      return ok(`100644 blob ${"d".repeat(40)}\tdocs/app.md\0`);
+    if (key === `git ls-tree -r -z --full-tree ${head} --`)
+      return ok(
+        `100644 blob ${"d".repeat(40)}\tdocs/app.md\0` + `100644 blob ${"e".repeat(40)}\tsrc/app.ts\0`,
+      );
     if (args[0] === "git" && args[1] === "show" && args[2]?.includes(":"))
       return ok(this.blobs.get(args[2]) ?? "");
     if (key === `git rev-list --topo-order --reverse ${mergeBase}..${head}`) return ok(`${head}\n`);

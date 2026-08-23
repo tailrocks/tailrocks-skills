@@ -43,10 +43,19 @@ never assumed.
 ## Steps
 
 1. **Locate the documentation and its rules.** Find every documentation
-   surface — a `docs/` site and its generator, README files, API
-   references, wikis — and read the rules that govern each: an `AGENTS.md`
-   in the documentation subtree, contribution docs, generation and
-   validation commands (`mise` tasks, package scripts, make targets).
+   surface. Resolve the collection-owned merge-preflight TypeScript
+   entrypoint from this installed skill as a regular non-symlink, then run its
+   `documentation` subcommand against the resolved PR number before manual
+   recon. Its typed receipt inventories the merge-base ∪ HEAD trees, so deleted
+   base-only surfaces cannot disappear from the obligation set. Read every
+   reported surface, governing rule, navigation file, generator marker, and
+   command source; inspect those sources for the exact generation and
+   validation commands. Inspect every unmatched prose candidate and classify
+   it rather than silently dropping it. Unknown paths stay doc-worthy rather
+   than being guessed away. Supplement the repository-backed inventory with external or
+   hosted documentation named by repository or PR evidence.
+   Surfaces include a `docs/` site and its generator, nested/monorepo README
+   sets, alternate documentation/content roots, API references, and wikis.
    A repository with no docs project has one surface: its README set. External
    or hosted documentation is a report-only obligation unless the user supplies
    an explicitly in-scope repository-backed checkout; never mutate it here.
@@ -91,8 +100,7 @@ never assumed.
    holds only internal-only changes, commit nothing: report the
    nothing-to-document verdict with the per-change reasons, and leave the
    merge gate to confirm it.
-   Resolve the collection-owned merge-preflight TypeScript entrypoint from this installed
-   skill as a regular non-symlink, then run its `documentation` subcommand
+   Re-run the same collection-owned merge-preflight `documentation` subcommand
    against the resolved PR number. It binds the live repository, base, merge
    base, and exact local/remote head. When any doc-worthy commit exists, this
    shared predicate requires the trailer to descend from every doc-worthy and
@@ -103,13 +111,13 @@ never assumed.
    **Complete when:** the typed documentation receipt passes, or the verdict
    names why no documentation was needed.
 
-`--check` runs steps 1, 2, and 5 only and reports the unresolved
-obligations without writing — the dry run for a branch you suspect is
-already documented.
+`--check` runs steps 1, 2, 5, and the read-only shared predicate in step 6,
+then reports unresolved obligations without writing. It never claims the
+branch is documented when the final-order trailer is absent or stale.
 
 ## Merge contract
 
-`tailrocks-merge-pr` consumes the same command predicate. When a pull request
+`tailrocks-merge-pr` consumes the same discovery and command predicate. When a pull request
 has any doc-worthy commit, every doc-worthy and documentation-surface commit
 must be covered by a descendant `Tailrocks-Skill: tailrocks-document` commit or
 merge stops and routes here. A diff with nothing doc-worthy passes with the

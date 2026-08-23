@@ -2,6 +2,11 @@ import { lstat, realpath } from "node:fs/promises";
 import path from "node:path";
 
 import { runBoundedCommand } from "./bounded-command";
+import {
+  discoverDocumentation,
+  type DocumentationDiscovery,
+  type DocumentationTreeEntry,
+} from "./documentation-discovery";
 
 export const mergePreflightSchema = "tailrocks.merge-preflight/v1";
 
@@ -93,7 +98,10 @@ export interface MergePreflightReceipt {
     readonly touched: boolean;
     readonly findings: readonly DeliveryFinding[];
   };
-  readonly documentation?: DocumentationResult & { readonly status: "not_needed" | "pass" | "blocked" };
+  readonly documentation?: DocumentationResult & {
+    readonly status: "not_needed" | "pass" | "blocked";
+    readonly discovery: DocumentationDiscovery;
+  };
   readonly commands: readonly (readonly string[])[];
   readonly detail: string;
 }
@@ -539,8 +547,9 @@ export function evaluateDelivery(input: DeliveryInput): DeliveryFinding[] {
   });
 }
 
-function documentationPath(pathname: string): boolean {
+function documentationPath(pathname: string, discovered?: ReadonlySet<string>): boolean {
   return (
+    discovered?.has(pathname) === true ||
     pathname === "README.md" ||
     pathname === "INSTALL.md" ||
     pathname === "CONTRIBUTING.md" ||
@@ -557,9 +566,9 @@ function testPath(pathname: string): boolean {
   );
 }
 
-function ignoredForDocumentation(pathname: string): boolean {
+function ignoredForDocumentation(pathname: string, discovered?: ReadonlySet<string>): boolean {
   return (
-    documentationPath(pathname) ||
+    documentationPath(pathname, discovered) ||
     testPath(pathname) ||
     pathname.startsWith("roadmap/") ||
     pathname.startsWith("delivery/") ||
@@ -567,8 +576,13 @@ function ignoredForDocumentation(pathname: string): boolean {
   );
 }
 
-export function evaluateDocumentation(commits: readonly CommitState[], head: string): DocumentationResult {
+export function evaluateDocumentation(
+  commits: readonly CommitState[],
+  head: string,
+  discoveredPaths?: ReadonlySet<string>,
+): DocumentationResult {
   const bySha = new Map(commits.map((commit) => [commit.sha, commit]));
+  if (bySha.size !== commits.length) throw new Error("commit history contains duplicate identities");
   const isAncestor = (ancestor: string, descendant: string): boolean => {
     const pending = [descendant];
     const seen = new Set<string>();
@@ -588,15 +602,17 @@ export function evaluateDocumentation(commits: readonly CommitState[], head: str
       commit.paths.length > maxPaths
     )
       throw new Error("commit history has an unmatched shape");
-    const docWorthy = commit.paths.some((pathname) => !ignoredForDocumentation(pathname));
-    const documentationSurface = commit.paths.some(documentationPath);
+    const docWorthy = commit.paths.some((pathname) => !ignoredForDocumentation(pathname, discoveredPaths));
+    const documentationSurface = commit.paths.some((pathname) =>
+      documentationPath(pathname, discoveredPaths),
+    );
     const trailer = hasExactTrailer(commit.message, "Tailrocks-Skill", "tailrocks-document");
     return { ...commit, docWorthy, documentationSurface, trailer };
   });
+  if (ordered.at(-1)?.sha !== head) throw new Error("commit history does not terminate at HEAD");
   const docWorthyCommits = ordered.filter((commit) => commit.docWorthy).map((commit) => commit.sha);
   if (docWorthyCommits.length === 0)
     return { docWorthyCommits, headCovered: true, reason: "no commit changes a doc-worthy surface" };
-  if (ordered.at(-1)?.sha !== head) throw new Error("commit history does not terminate at HEAD");
   const obligations = ordered.filter((commit) => commit.docWorthy || commit.documentationSurface);
   const trailer = [...ordered]
     .reverse()
@@ -747,6 +763,46 @@ async function loadCommits(
   return commits;
 }
 
+function parseDocumentationTree(raw: string, revision: "base" | "head"): DocumentationTreeEntry[] {
+  const records = raw.split("\0");
+  if (records.at(-1) === "") records.pop();
+  if (records.length > 20_000) throw new Error("documentation tree is saturated");
+  return records.map((record) => {
+    const match = record.match(/^(\d{6}) (blob|commit) [0-9a-f]{40}\t([^]*)$/);
+    if (!match || !safeTreePath(match[3]!)) throw new Error("documentation tree entry is invalid");
+    return {
+      revision,
+      mode: match[1]!,
+      type: match[2]! as "blob" | "commit",
+      path: match[3]!,
+    };
+  });
+}
+
+async function loadDocumentationDiscovery(
+  root: string,
+  target: Pick<PullRequest, "mergeBase" | "head">,
+  runner: CommandRunner,
+  commands: (readonly string[])[],
+): Promise<DocumentationDiscovery> {
+  const [baseTree, headTree] = await Promise.all([
+    requireCommand(runner, commands, root, [
+      "git",
+      "ls-tree",
+      "-r",
+      "-z",
+      "--full-tree",
+      target.mergeBase,
+      "--",
+    ]),
+    requireCommand(runner, commands, root, ["git", "ls-tree", "-r", "-z", "--full-tree", target.head, "--"]),
+  ]);
+  return discoverDocumentation([
+    ...parseDocumentationTree(baseTree, "base"),
+    ...parseDocumentationTree(headTree, "head"),
+  ]);
+}
+
 export async function runDocumentationCheck(
   rootInput: string,
   pr: number,
@@ -769,9 +825,15 @@ export async function runDocumentationCheck(
   const runner = runtime.runner ?? defaultRunner;
   try {
     const target = await verifyTarget(root, pr, undefined, runner, commands);
-    const result = evaluateDocumentation(await loadCommits(root, target, runner, commands), target.head);
+    const discovery = await loadDocumentationDiscovery(root, target, runner, commands);
+    const result = evaluateDocumentation(
+      await loadCommits(root, target, runner, commands),
+      target.head,
+      new Set(discovery.documentation_paths),
+    );
     const documentation = {
       ...result,
+      discovery,
       status: (result.docWorthyCommits.length === 0
         ? "not_needed"
         : result.headCovered
@@ -867,12 +929,15 @@ export async function runMergePreflight(
       touched: deliveryTouched,
       findings: deliveryFindings,
     };
+    const discovery = await loadDocumentationDiscovery(root, target, runner, commands);
     const documentationResult = evaluateDocumentation(
       await loadCommits(root, target, runner, commands),
       target.head,
+      new Set(discovery.documentation_paths),
     );
     documentation = {
       ...documentationResult,
+      discovery,
       status:
         documentationResult.docWorthyCommits.length === 0
           ? "not_needed"

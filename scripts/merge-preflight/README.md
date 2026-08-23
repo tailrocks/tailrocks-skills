@@ -22,8 +22,10 @@ check result without changing the raw blocker fields. This flag grants no
 waiver and cannot merge.
 
 The documentation subcommand binds the same ancestry-based predicate to the
-live PR's repository, base, merge base, and exact local/remote head. Unknown
-paths are doc-worthy; commit labels never suppress an obligation. When any
+live PR's repository, base, merge base, and exact local/remote head. Its typed
+discovery inventories documentation surfaces, rules, navigation, generator
+markers, and command sources from both merge-base and HEAD trees, including
+deleted base-only paths. Unknown paths are doc-worthy; commit labels never suppress an obligation. When any
 doc-worthy commit exists, a document trailer must descend from every doc-worthy
 and documentation-surface commit. Later tests, CI, and delivery artifacts do
 not stale it; later source or documentation does. With no doc-worthy commit,
