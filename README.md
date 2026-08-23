@@ -33,7 +33,8 @@ Everything else lives in the documentation, once:
   idea to verified truth, walked end to end for
   [a native macOS app](https://skills.tailrocks.com/docs/delivery/macos-app),
   [a TanStack feature on an Axum backend](https://skills.tailrocks.com/docs/delivery/tanstack-feature),
-  and [a Rust service with gRPC and GraphQL](https://skills.tailrocks.com/docs/delivery/rust-backend).
+  [an internal Rust gRPC/PostgreSQL service](https://skills.tailrocks.com/docs/delivery/rust-backend),
+  and [a public Juniper GraphQL backend](https://skills.tailrocks.com/docs/delivery/graphql-backend).
 - [Validating, repeatedly](https://skills.tailrocks.com/docs/validating) —
   the verification loop that proves shipped work, and the gates that prove
   this collection.

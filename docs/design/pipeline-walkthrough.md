@@ -12,7 +12,11 @@ work is finished, the folder is deleted and git carries the record.
 
 ```mermaid
 flowchart LR
-  seed["seed-roadmap"] --> brainstorm --> finalize --> design["design stage"] --> plan --> exec["execution"]
+  verified["verified finding or approved plan"] --> seed["seed-roadmap"]
+  idea["raw idea"] --> capture["idea"]
+  seed --> draft["DRAFT"]
+  capture --> draft
+  draft --> brainstorm --> finalize --> design["design stage"] --> plan --> exec["execution"]
   exec --> feedback["record-feedback"] --> prove --> reconcile
   reconcile -->|Remaining not empty| exec
   reconcile -->|Remaining empty| done["DONE"] --> retire["retired — report kept at delivery/<slug>.md, folder deleted"]
