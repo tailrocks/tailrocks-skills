@@ -5,17 +5,11 @@ import { boundedFetchJson } from "../../../scripts/bounded-fetch";
 
 const schema = "tailrocks.package-version-resolution/v1";
 
-type RegistryResponse = {
-  "dist-tags"?: Record<string, string>;
+type VersionResponse = {
   homepage?: string;
   repository?: string | { url?: string };
-  versions?: Record<
-    string,
-    {
-      peerDependencies?: Record<string, string>;
-      peerDependenciesMeta?: Record<string, { optional?: boolean }>;
-    }
-  >;
+  peerDependencies?: Record<string, string>;
+  peerDependenciesMeta?: Record<string, { optional?: boolean }>;
 };
 
 type Parsed = { readonly template?: string; readonly packages: readonly string[] };
@@ -89,11 +83,23 @@ async function main(args: readonly string[]): Promise<number> {
   const results = await Promise.all(
     packages.map(async (name) => {
       try {
-        const body = await boundedFetchJson<RegistryResponse>(
-          `https://registry.npmjs.org/${encodeURIComponent(name)}`,
-          { maximumBytes: 10_000_000 },
+        // A full packument grows with every release a package has ever
+        // published, so any fixed byte budget eventually fails for long-lived
+        // packages (typescript, tailwindcss, vite already exceed 10 MB).
+        // Resolve through the bounded dist-tags index plus the single
+        // latest-version document instead; both stay small by construction.
+        const distTags = await boundedFetchJson<Record<string, string>>(
+          `https://registry.npmjs.org/-/package/${encodeURIComponent(name)}/dist-tags`,
+          { maximumBytes: 100_000 },
         );
-        const latest = body["dist-tags"]?.latest ?? null;
+        const latest = distTags.latest ?? null;
+        const version =
+          latest === null
+            ? null
+            : await boundedFetchJson<VersionResponse>(
+                `https://registry.npmjs.org/${encodeURIComponent(name)}/${encodeURIComponent(latest)}`,
+                { maximumBytes: 2_000_000 },
+              );
         const prerelease = latest !== null && /-[0-9A-Za-z]/.test(latest);
         return {
           ecosystem: "npm-registry-via-bun",
@@ -102,12 +108,14 @@ async function main(args: readonly string[]): Promise<number> {
           pinned: pinned.get(name) ?? null,
           current: pinned.has(name) ? pinned.get(name) === latest : null,
           selected_channel: latest === null ? "prerelease-or-unknown" : prerelease ? "prerelease" : "stable",
-          dist_tags: body["dist-tags"] ?? {},
-          peer_dependencies: latest === null ? {} : (body.versions?.[latest]?.peerDependencies ?? {}),
-          peer_dependencies_meta:
-            latest === null ? {} : (body.versions?.[latest]?.peerDependenciesMeta ?? {}),
-          homepage: body.homepage ?? null,
-          repository: typeof body.repository === "string" ? body.repository : (body.repository?.url ?? null),
+          dist_tags: distTags,
+          peer_dependencies: version?.peerDependencies ?? {},
+          peer_dependencies_meta: version?.peerDependenciesMeta ?? {},
+          homepage: version?.homepage ?? null,
+          repository:
+            typeof version?.repository === "string"
+              ? version.repository
+              : (version?.repository?.url ?? null),
         };
       } catch (error) {
         return {
