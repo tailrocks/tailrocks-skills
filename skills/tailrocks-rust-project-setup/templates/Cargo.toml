@@ -26,7 +26,7 @@ tower = { version = "0.5.3", features = ["limit", "load-shed", "timeout", "util"
 tower-http = { version = "0.7.0", features = ["catch-panic", "compression-gzip", "cors", "limit", "request-id", "sensitive-headers", "timeout", "trace"] }
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.23", features = ["env-filter", "json"] }
-uuid = { version = "1.24.1", features = ["serde", "v7"] }
+uuid = { version = "1.25.0", features = ["serde", "v7"] }
 
 [workspace.lints.rust]
 rust_2024_compatibility = { level = "deny", priority = -1 }
