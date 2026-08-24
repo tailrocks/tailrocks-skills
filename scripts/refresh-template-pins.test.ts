@@ -2,6 +2,7 @@ import { expect, test } from "bun:test";
 
 import {
   applyMiseBun,
+  applyMiseOxfmt,
   applyPins,
   consistencyMismatches,
   ledgerRows,
@@ -45,6 +46,13 @@ test("syncs the repository's own bun to the template's packageManager", () => {
   expect(applyMiseBun(mise, "1.4.0")).toContain(`bun = "1.4.0"`);
   // Only the bun line moves; other pinned tools are not this script's business.
   expect(applyMiseBun(mise, "1.4.0")).toContain(`"npm:oxfmt" = "0.63.0"`);
+});
+
+test("syncs the repository's own oxfmt to the template's devDependency", () => {
+  const mise = `[tools]\nbun = "1.4.0"\n"npm:oxfmt" = "0.63.0"\n`;
+  expect(applyMiseOxfmt(mise, "0.65.0")).toContain(`"npm:oxfmt" = "0.65.0"`);
+  // Only the oxfmt line moves; other pinned tools are not this helper's business.
+  expect(applyMiseOxfmt(mise, "0.65.0")).toContain(`bun = "1.4.0"`);
 });
 
 test("reads the bun version out of a template's packageManager field", () => {

@@ -115,6 +115,18 @@ export function applyMiseBun(mise: string, version: string): string {
   );
 }
 
+/**
+ * Same duty for oxfmt: the repository formats with the exact version the
+ * template ships, so a template-only bump leaves `mise install` running one
+ * release while the template advertises another.
+ */
+export function applyMiseOxfmt(mise: string, version: string): string {
+  return mise.replace(
+    /^("npm:oxfmt" = ")[^"]+(")$/m,
+    (_match, head: string, tail: string) => `${head}${version}${tail}`,
+  );
+}
+
 /** The bun version a template's `packageManager` field commits to. */
 export function templateBun(template: string): string | null {
   return (
@@ -309,7 +321,10 @@ async function refresh(): Promise<{ mutations: string[]; packages: number; crate
   const misePath = path.join(ROOT, MISE);
   const miseBefore = await Bun.file(misePath).text();
   const bun = templateBun(templateAfter);
-  const miseAfter = bun === null ? miseBefore : applyMiseBun(miseBefore, bun);
+  const templatePins = JSON.parse(templateAfter) as { devDependencies?: Record<string, string> };
+  let miseAfter = bun === null ? miseBefore : applyMiseBun(miseBefore, bun);
+  const oxfmt = templatePins.devDependencies?.oxfmt;
+  if (oxfmt !== undefined) miseAfter = applyMiseOxfmt(miseAfter, oxfmt);
 
   const channel = rustStableChannel(await boundedFetchText(RUST_CHANNEL_URL, { maximumBytes: 5_000_000 }));
   if (channel === null) throw new Error("stable Rust channel manifest is invalid");
