@@ -3,7 +3,7 @@ lockfile = true
 
 [tools]
 bun = "1.4.0"
-"npm:oxfmt" = "0.64.0"
+"npm:oxfmt" = "0.65.0"
 
 [tasks.lint]
 description = "Validate every skill, manifest, catalog group, and reverse catalog"
