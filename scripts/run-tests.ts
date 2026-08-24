@@ -45,7 +45,10 @@ if (import.meta.main) {
     const tests = await selectScriptTests(root);
     const skippedTests = [...hostSandboxTestFiles].filter((file) => shouldSkipScriptTest(file));
     const result = await runBoundedCommand({
-      command: [process.execPath, "test", ...tests, "--parallel=1", "--timeout=60000"],
+      // Sequential in-process execution: bun's --parallel worker mode (even with
+      // N=1, which adds no concurrency) deadlocks intermittently right after
+      // startup (oven-sh/bun#29519), stalling CI until the 900s bound trips.
+      command: [process.execPath, "test", ...tests, "--timeout=60000"],
       cwd: root,
       timeoutMilliseconds: 900_000,
       killGraceMilliseconds: 5_000,
