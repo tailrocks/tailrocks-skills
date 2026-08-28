@@ -259,6 +259,12 @@ codex plugin marketplace add tailrocks/tailrocks-skills@v0.28.0
   a plugin install plus a `~/.agents/skills/` copy shows the skill twice.
   Keep the plugin as the only channel. (`~/.codex/skills/` still loads but
   is deprecated.)
+- This install has marketplace name equal to plugin name
+  (`tailrocks-skills@tailrocks-skills`), the precondition of an open Codex
+  path-flattening bug (openai/codex#35648) where the client may drop a path
+  segment when loading skill files; if a skill file or one of its references
+  fails to load with a path missing a directory segment, that is the client,
+  not the install.
 - Per-skill kill switch: `[[skills.config]]` entries (`name` or `path` +
   `enabled`) in `~/.codex/config.toml`.
 

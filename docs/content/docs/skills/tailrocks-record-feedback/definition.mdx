@@ -67,6 +67,8 @@ item, the plan, or a status.
    **Complete when:** the file exists with every statement, and no statement
    carries a verdict, a cause, or a fix.
 
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
+
 5. **Commit and hand off.** One commit on the item's existing branch —
    `docs(roadmap): <slug> feedback round <NN>` with the trailer
    `Tailrocks-Skill: tailrocks-record-feedback` — then push. The item already
