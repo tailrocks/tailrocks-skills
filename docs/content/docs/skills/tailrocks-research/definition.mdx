@@ -88,6 +88,7 @@ the skill that produced it.
    argument and every `--for`).
    **Complete when:** the topic has a slug, a question list, and its linked
    items (possibly none) are known.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 2. **Fan out.** Dispatch independent parallel investigators, one per
    question cluster, each writing its own `research/<topic>/NN-<chapter>.md`

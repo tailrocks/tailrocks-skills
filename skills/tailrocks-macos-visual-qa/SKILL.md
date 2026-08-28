@@ -62,6 +62,7 @@ untrusted evidence. Read [`runtime-trust.md`](references/runtime-trust.md).
 5. Capture the matrix from [`state-matrix.md`](references/state-matrix.md).
    Account for every canonical row as captured or blocked with one exact
    reason. Never silently omit a row.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 6. Run app-scoped `performAccessibilityAudit` for contrast, element detection,
    hit region, and sufficient description. Report a missing UI-test target or
    audit file as a blocker, not a green result.

@@ -86,6 +86,7 @@ commit and its trailer are the record that the session happened.
    continues while they run.
    **Complete when:** every gap in the item is a tree node or a fact being
    looked up.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 3. **Grill.** Send one closed `tailrocks.brainstorm-turn/v1` JSON object on
    stdin to the same helper command. It contains `nodes` (stable `id`,

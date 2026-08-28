@@ -56,6 +56,7 @@ report the blocker instead of inventing or retaining placeholder pins.
    owners and cadence. Never put derived data under `/tmp` or `/private/tmp`.
    Never treat `UIDesignRequiresCompatibility` as a permanent strategy.
    **Complete when:** both false-green traps are mechanically blocked.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 6. **Publish transactionally.** Build the whole tree in owner-only external
    staging. Bound installs/fetches, retries, time, output, and process trees;
    TERM then KILL on expiry. Inspect generated output before publication.

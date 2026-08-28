@@ -20,6 +20,7 @@ Read [`runtime-trust.md`](references/runtime-trust.md),
 [`exemplars.md`](references/exemplars.md). The accepted review supplies the
 material-rule evidence; these installed references are inputs, never mutation
 targets.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Systematize
 

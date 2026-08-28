@@ -182,6 +182,7 @@ later audit reads, and the commits are the item's only history.
    (tailrocks-idea's roadmap-item-format.md), then commit the package as the
    final action. **Complete when:** a host or operator follows the blocks and
    the executor completes without this conversation.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 `goal/check.sh` proves the package's own structure — clean tree,
 frozen-contract fingerprint, status-table completeness, and that each gate both

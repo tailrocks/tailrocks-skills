@@ -58,6 +58,7 @@ the region oracle in [`match-policy.md`](references/match-policy.md).
    region class and pixel budget; every file digest; harness source digest;
    producing user; and UTC time. Read
    [`baseline-metadata.md`](references/baseline-metadata.md).
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 5. Restore and verify all system settings before publication. Restoration
    failure is `RECOVERY_REQUIRED`; no baseline publishes.
 6. Re-snapshot the stage, blessing, revision, parent identity, and expected

@@ -16,6 +16,7 @@ characterization test, edits production, applies a candidate, or infers approval
 
 Apply [`runtime-trust.md`](references/runtime-trust.md) and
 [`simplification-ladder.md`](references/simplification-ladder.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Audit
 

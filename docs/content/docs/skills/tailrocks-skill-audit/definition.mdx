@@ -88,6 +88,7 @@ present does not imply permission to remove it.
    **Complete when:** the receipt reports nonzero reconciliation work when
    findings exist, the report file has no `-NEW` heading, and every finding has
    an ID and a fix.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Boundaries
 

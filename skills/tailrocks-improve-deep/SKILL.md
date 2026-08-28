@@ -15,6 +15,7 @@ Own exhaustive non-security repository audit. Apply
 [`repository-audit-lanes.md`](references/repository-audit-lanes.md). This owner
 is read-only and returns one report; it never plans, implements, reconciles, or
 seeds delivery work.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 No category means the whole-repository deep route. One accepted category means
 the focused deep route. `--batch` may accompany either form. The caller does not

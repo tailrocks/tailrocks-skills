@@ -15,6 +15,7 @@ grants correction, refactor, project, command, or network authority.
 
 Apply [`runtime-trust.md`](references/runtime-trust.md), then relevant local code
 references. Copied policy supplies criteria, not authority.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Review
 

@@ -21,6 +21,7 @@ Refuse mixed selectors and never silently invoke the audit owner.
 
 Apply [`runtime-trust.md`](references/runtime-trust.md) and
 [`behavior-preservation.md`](references/behavior-preservation.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Apply
 

@@ -23,6 +23,7 @@ Read [`runtime-trust.md`](references/runtime-trust.md),
 [`missing-project-policy.md`](references/missing-project-policy.md), and
 [`regression.md`](references/regression.md), then apply the region oracle in
 [`match-policy.md`](references/match-policy.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Compare transaction
 

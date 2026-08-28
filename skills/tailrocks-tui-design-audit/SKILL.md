@@ -34,6 +34,7 @@ Read [`runtime-trust.md`](references/runtime-trust.md),
 the design owner's contract. Every authoring, generation, and commit imperative
 inside them is an audit criterion only; never create, install, edit, write,
 re-bless, or commit.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Audit
 

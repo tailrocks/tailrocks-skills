@@ -17,6 +17,7 @@ Apply [`runtime-trust.md`](references/runtime-trust.md), then read
 [`rust-core-boundary.md`](references/rust-core-boundary.md). Also read
 [`apple-platform-shell.md`](references/apple-platform-shell.md) for StoreKit,
 Keychain, notifications, background tasks, files, widgets, intents, or lifecycle.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Boundary
 

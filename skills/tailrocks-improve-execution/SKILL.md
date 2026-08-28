@@ -14,6 +14,7 @@ Own one approved standalone plan's implementation transaction. Apply
 [`runtime-trust.md`](references/runtime-trust.md) and
 [`execution-loop.md`](references/execution-loop.md). Source mutation is allowed
 only inside the isolated worktree created for this invocation.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 Pass the standalone plan path directly; a retained `execute` selector is
 invalid. `--deep` requires the second independent diff review in step 4. `--batch`

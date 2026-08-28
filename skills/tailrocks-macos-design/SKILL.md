@@ -185,6 +185,7 @@ construction.
 Before acceptance review, apply the running-state matrix and per-surface record
 in [`verification.md`](references/verification.md); missing live evidence stays
 blocking and cannot be converted into design-owner judgment.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Final gate
 

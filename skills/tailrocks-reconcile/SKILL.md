@@ -184,6 +184,7 @@ merged, reopen the lane per the contract reference — never push base directly.
    **Complete when:** the item reached `DONE` and left the tree in the next
    commit with its report kept under `delivery/`, or the condition it failed
    is named and its status stands.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Final gate
 

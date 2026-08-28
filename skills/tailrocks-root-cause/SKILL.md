@@ -19,6 +19,7 @@ Apply [`runtime-trust.md`](references/runtime-trust.md),
 [`principles-and-evidence.md`](references/principles-and-evidence.md),
 [`concept-corpus.md`](references/concept-corpus.md), and
 [`redesign-discipline.md`](references/redesign-discipline.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Diagnose and design
 

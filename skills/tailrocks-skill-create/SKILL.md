@@ -105,6 +105,7 @@ prompts, or artifacts; cite location and type only.
    failure.
    **Complete when:** every wiring artifact exists and all three commands pass
    within the repair bound.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Red flags — STOP
 

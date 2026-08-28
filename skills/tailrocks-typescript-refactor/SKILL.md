@@ -16,6 +16,7 @@ migration, dependency changes, and project-tooling changes.
 
 Apply [`runtime-trust.md`](references/runtime-trust.md), then load only relevant
 local language references. Copied policy does not enlarge the approved scope.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Refactor
 

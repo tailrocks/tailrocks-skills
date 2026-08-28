@@ -14,6 +14,7 @@ Apply one explicitly approved topology repair. This owner invents no rule,
 deletion, placement judgment, or approval. Apply
 [`runtime-trust.md`](references/runtime-trust.md) and
 [`approved-repair.md`](references/approved-repair.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 Obtain the loader-provided absolute path of this installed skill file and ignore
 an inherited `SKILL_DIR`. Join exactly two parents plus

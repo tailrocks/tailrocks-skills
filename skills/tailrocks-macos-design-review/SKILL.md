@@ -37,6 +37,7 @@ Read [`runtime-trust.md`](references/runtime-trust.md),
 [`review-mode.md`](references/review-mode.md), and
 [`rubric.md`](references/rubric.md). Use the local generated material and taste
 references named by those contracts; never link a sibling's private file.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Review
 

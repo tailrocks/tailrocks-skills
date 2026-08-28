@@ -151,6 +151,7 @@ roadmap/<slug>/`), read every artifact from its parent (`git show
    **Complete when:** the record stands alone for a reader who never saw the
    item, every finding carries a proposed patch or a stated reason there is
    none, and no patch is missing its `Checks` field.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 7. **Hand off.** Report the record path, the findings ranked by how much
    future divergence each patch prevents, and per patch the exact next

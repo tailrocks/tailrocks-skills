@@ -75,6 +75,7 @@ artifacts; cite location and type only.
    exhaustion. Never claim completion after failure.
    **Complete when:** validation is green within the bound and no generated file
    is stale.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Red flags — STOP
 

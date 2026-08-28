@@ -17,6 +17,7 @@ back to `tailrocks-contribute-recon` without invoking it.
 Apply [`runtime-trust.md`](references/runtime-trust.md),
 [`contribution-handoff.md`](references/contribution-handoff.md), and
 [`etiquette-and-hard-stops.md`](references/etiquette-and-hard-stops.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Propose
 

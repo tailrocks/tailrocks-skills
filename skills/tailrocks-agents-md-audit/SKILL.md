@@ -15,6 +15,7 @@ Own one read-only instruction audit. Apply
 [`topology-audit.md`](references/topology-audit.md), and
 [`deletion-evidence.md`](references/deletion-evidence.md). Findings authorize no
 add, deletion, relocation, or repair.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Audit
 

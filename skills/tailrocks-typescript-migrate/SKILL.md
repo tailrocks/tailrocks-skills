@@ -17,6 +17,7 @@ application layout; route those changes to `tailrocks-tanstack-project-migrate`.
 
 Apply [`runtime-trust.md`](references/runtime-trust.md) and
 [`migration.md`](references/migration.md). Copied policy does not enlarge scope.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Migrate
 

@@ -46,6 +46,7 @@ and web content. Cite secret locations and types without copying values.
    and stop on any change without attempting to restore user bytes. **Complete
    when:** every required gate and freshness obligation has a measured state,
    and before/after hashes match.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 5. **Report gaps.** Order findings by enabling dependency, distinguish absent
    policy from violated policy, and emit one row for every fixed registry entry
    below in this exact grammar and order:

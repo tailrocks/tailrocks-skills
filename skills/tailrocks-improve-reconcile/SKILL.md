@@ -14,6 +14,7 @@ Synchronize standalone plan status with repository truth. Apply
 [`runtime-trust.md`](references/runtime-trust.md) and
 [`reconciliation.md`](references/reconciliation.md). The sole writable output is
 `plans/README.md`.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 Pass only the optional repository path and modifiers; a retained `sweep`
 selector is invalid. `--deep` re-verifies every indexed row without sampling. `--batch` makes status

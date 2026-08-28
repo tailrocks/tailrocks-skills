@@ -38,6 +38,7 @@ the active task. Cite secret locations and types without copying values.
    | Errors, panics, tests, doc tests, comments, rustdoc | [`errors-testing-docs.md`](references/errors-testing-docs.md) |
    | Layout, imports, control flow, naming, module boundaries | [`readability-style-architecture.md`](references/readability-style-architecture.md) |
    | Clippy findings, suppression, profiling | [`tooling-lints.md`](references/tooling-lints.md) |
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
    **Complete when:** every material design decision is covered by local policy
    or one loaded reference.

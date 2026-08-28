@@ -18,6 +18,7 @@ otherwise explain the rule and route without mutation. Audit routes to
 Apply [`runtime-trust.md`](references/runtime-trust.md),
 [`placement-and-topology.md`](references/placement-and-topology.md), and
 [`rule-writing.md`](references/rule-writing.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 Legacy `audit` prints `Use tailrocks-agents-md-audit` and stops unchanged.
 Legacy `sync` prints `Use tailrocks-agents-md-sync` and stops unchanged. Refuse

@@ -53,6 +53,7 @@ owner, and stop without mutation.
    | Proto style, field history, presence, pagination, Buf gates | [`proto-contracts.md`](references/proto-contracts.md) |
    | Codegen, seams, conversions, status, channels, TLS, interceptors | [`tonic-server-client.md`](references/tonic-server-client.md) |
    | Deadlines, retries, streaming, health, shutdown, observability, wire tests | [`operations.md`](references/operations.md) |
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
    **Complete when:** every material wire, adapter, and operational decision has policy.
 4. **Contract first.** CI runs Buf lint and breaking gates; generated Rust is

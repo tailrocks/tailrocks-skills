@@ -79,6 +79,7 @@ settings, and this skill's defaults govern.
    **Complete when:** the typed receipt is bound to the current head, every
    non-waived static predicate passes, and required checks are green or one
    exact named bypass was freshly confirmed.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 4. **Pre-merge worklist.** Run the repository's `## Before merge` items —
    changelog entry, docs updates, version checks, whatever the file names —

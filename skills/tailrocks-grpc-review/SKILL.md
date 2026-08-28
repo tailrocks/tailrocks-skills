@@ -52,6 +52,7 @@ owner, and stop without mutation.
    [`tonic-server-client.md`](references/tonic-server-client.md), and
    [`operations.md`](references/operations.md). **Complete when:** every
    suspected defect has a named contract.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 4. **Adversarially re-derive.** Prove reachability and impact. Check breaking
    fields, reserved history, presence, status leaks, missing deadlines,
    non-idempotent retries, cancellation/drain races, unbounded streams, metadata,

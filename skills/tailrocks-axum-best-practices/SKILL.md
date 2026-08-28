@@ -35,6 +35,7 @@ API syntax. Preserve exact compatible pins; never silently choose an older line.
    | Extractors, validation, errors, response contracts | [`extractors-and-errors.md`](references/extractors-and-errors.md) |
    | Tower order, limits, auth, CORS, tracing, request IDs | [`middleware-and-security.md`](references/middleware-and-security.md) |
    | Serving, shutdown, task ownership, blocking work, tests | [`lifecycle-and-testing.md`](references/lifecycle-and-testing.md) |
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
    **Complete when:** local policy or a loaded reference governs every material
    HTTP decision.

@@ -17,6 +17,7 @@ fresh action-specific approval immediately before execution.
 Apply [`runtime-trust.md`](references/runtime-trust.md),
 [`contribution-handoff.md`](references/contribution-handoff.md), and
 [`submission-protocol.md`](references/submission-protocol.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Submit
 
