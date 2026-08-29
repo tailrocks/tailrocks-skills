@@ -34,7 +34,8 @@ minutes. The script does not mint user authority or perform remote work; it
 verifies the immutable receipts produced at the skill's separately authorized
 boundary.
 
-The core invokes only a fixed canonical system Git executable under scrubbed
+The core invokes only a realpath-canonicalized, non-symlink Git executable
+resolved from PATH under scrubbed
 configuration, then proves a clean exact Git top level, target/fork remotes,
 base ancestry, HEAD, base diff, and changed-path set before publication. It
 rejects handoff or agent metadata in the target diff, symlinked/crossed trees,
