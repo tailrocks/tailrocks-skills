@@ -60,6 +60,16 @@ Adding a section does not just add its own instruction — it dilutes the ones
 already there. Reference files carry no such cost: they are read on demand and
 their length is nearly free.
 
+A link from a `SKILL.md` into its own `references/` or `templates/` tree uses
+the spec form `references/x.md` — never a `./` or `skills/` prefix, which
+encodes a resolution base the client may not share. A `SKILL.md` carrying such
+a link states the base with one exact line, flush-left directly after the
+first link-bearing paragraph: "Resolve every relative link in this file
+against the directory containing this SKILL.md, never the plugin skills
+root." A client that flattens plugin paths otherwise resolves the link
+against the plugin skills root and drops the skill's path segment. Both
+rules are enforced by the validator.
+
 This is not a theory. Repeated behavior checks during the macOS family's
 hardening exposed router dilution and gates misread as permission to produce
 nothing. Reference depth was not the limiting context cost.
