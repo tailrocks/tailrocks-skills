@@ -225,7 +225,6 @@ function parseInput(raw: unknown): CreatePrInput {
   if (!/^[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$/.test(actor)) throw new Error("actor is invalid");
   const headOwner = safeText(value.head_owner, "head_owner", 39);
   if (!/^[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$/.test(headOwner)) throw new Error("head_owner is invalid");
-  if (actor.toLowerCase() !== headOwner.toLowerCase()) throw new Error("actor must own the head branch");
   const remoteName = safeText(value.remote_name, "remote_name", 64);
   if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(remoteName)) throw new Error("remote_name is invalid");
   const remoteUrl = canonicalRemote(value.remote_url);
