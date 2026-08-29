@@ -14,6 +14,7 @@ import {
   type CreatePrReceipt,
   type CreatePrRuntime,
 } from "./create-pr";
+import { resolveExecutable } from "./resolve-executable";
 import { roadmapSlugPattern } from "./roadmap-item-state";
 
 export const ideaCaptureInputSchema = "tailrocks.idea-capture-input/v1" as const;
@@ -161,7 +162,6 @@ function parseInput(raw: unknown): IdeaInput {
   if (!repositoryPattern.test(repository)) throw new Error("repository is invalid");
   const actor = safeLine(value.actor, "actor", 39);
   const headOwner = safeLine(value.head_owner, "head_owner", 39);
-  if (actor.toLowerCase() !== headOwner.toLowerCase()) throw new Error("actor must own head branch");
   const remoteName = safeLine(value.remote_name, "remote_name", 64);
   if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(remoteName)) throw new Error("remote_name is invalid");
   const remoteUrl = safeLine(value.remote_url, "remote_url", 300);
@@ -244,20 +244,6 @@ async function safeExecutable(file: string): Promise<void> {
   const info = await lstat(file);
   if (!info.isFile() || info.isSymbolicLink() || (await realpath(file)) !== file)
     throw new Error(`unsafe executable: ${file}`);
-}
-
-async function fixedExecutable(name: "git" | "gh"): Promise<string> {
-  const candidates =
-    name === "git"
-      ? ["/usr/bin/git", "/opt/homebrew/bin/git"]
-      : ["/opt/homebrew/bin/gh", "/usr/local/bin/gh", "/usr/bin/gh"];
-  for (const candidate of candidates) {
-    try {
-      await safeExecutable(candidate);
-      return candidate;
-    } catch {}
-  }
-  throw new Error(`trusted ${name} executable is unavailable`);
 }
 
 const defaultLocalRunner = ({ command, cwd, stdin }: CreatePrCommandRequest) =>
@@ -505,16 +491,11 @@ export async function captureIdea(
   try {
     root = path.resolve(rootInput);
     await directoryIdentity(root);
-    if (
-      (await runText(runner, runtime.gitExecutable ?? "/usr/bin/git", root, [
-        "rev-parse",
-        "--show-toplevel",
-      ])) !== root
-    )
-      throw new Error("root is not exact Git top level");
-    git = runtime.gitExecutable ?? (await fixedExecutable("git"));
-    gh = runtime.ghExecutable ?? (await fixedExecutable("gh"));
+    git = runtime.gitExecutable ?? (await resolveExecutable("git"));
+    gh = runtime.ghExecutable ?? (await resolveExecutable("gh"));
     await Promise.all([safeExecutable(git), safeExecutable(gh)]);
+    if ((await runText(runner, git, root, ["rev-parse", "--show-toplevel"])) !== root)
+      throw new Error("root is not exact Git top level");
     if ((await runText(runner, git, root, ["symbolic-ref", "--short", "HEAD"])) !== input.base_branch)
       throw new Error("capture must start on exact base branch");
     if ((await runText(runner, git, root, ["rev-parse", "HEAD"])) !== input.base_sha)

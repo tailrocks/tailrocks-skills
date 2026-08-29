@@ -19,6 +19,7 @@ async function safeInstalledPackage(entrypoint: string, skillFile: string): Prom
     [path.join(scripts, "atomic-file-transaction.ts"), "file"],
     [path.join(scripts, "create-pr.ts"), "file"],
     [path.join(scripts, "bounded-command.ts"), "file"],
+    [path.join(scripts, "resolve-executable.ts"), "file"],
     [path.join(scripts, "roadmap-item-state.ts"), "file"],
   ] as const) {
     const info = await lstat(candidate);

@@ -3,6 +3,7 @@ import { lstat, readFile, readlink, readdir, realpath } from "node:fs/promises";
 import path from "node:path";
 
 import { runBoundedCommand as runSharedBoundedCommand } from "./bounded-command";
+import { resolveExecutable } from "./resolve-executable";
 
 export const planPackageInputSchema = "tailrocks.plan-package-input/v1" as const;
 export const planPackageReceiptSchema = "tailrocks.plan-package/v1" as const;
@@ -85,7 +86,7 @@ async function repositoryGitEnvironment(
 ): Promise<Record<string, string>> {
   const discovered = await runtime.run(
     [
-      "/usr/bin/git",
+      await resolveExecutable("git"),
       "config",
       "--local",
       "--name-only",
@@ -299,8 +300,9 @@ async function safeRoot(
   if (!info.isDirectory() || info.isSymbolicLink()) throw new Error("root is unsafe");
   if (typeof expectedHead !== "string" || !headPattern.test(expectedHead))
     throw new Error("expected_head is invalid");
+  const git = await resolveExecutable("git");
   const top = await runtime.run(
-    ["/usr/bin/git", "-c", "core.fsmonitor=false", "rev-parse", "--show-toplevel"],
+    [git, "-c", "core.fsmonitor=false", "rev-parse", "--show-toplevel"],
     root,
     10_000,
     hardenedGitEnvironment,
@@ -308,7 +310,7 @@ async function safeRoot(
   if (top.exit_code !== 0 || top.stdout.trim() !== root)
     throw new Error("root is not the exact Git worktree");
   const headResult = await runtime.run(
-    ["/usr/bin/git", "-c", "core.fsmonitor=false", "rev-parse", "HEAD"],
+    [git, "-c", "core.fsmonitor=false", "rev-parse", "HEAD"],
     root,
     10_000,
     hardenedGitEnvironment,
@@ -744,8 +746,9 @@ async function resume(
   const binding = await safeRoot(raw.root, raw.expected_head, runtime);
   const before = await workspaceDigest(binding.root, []);
   const gitEnvironment = await repositoryGitEnvironment(binding.root, runtime);
+  const git = await resolveExecutable("git");
   const dirty = await runtime.run(
-    ["/usr/bin/git", "-c", "core.fsmonitor=false", "status", "--porcelain=v1", "--untracked-files=all"],
+    [git, "-c", "core.fsmonitor=false", "status", "--porcelain=v1", "--untracked-files=all"],
     binding.root,
     10_000,
     gitEnvironment,
@@ -755,7 +758,7 @@ async function resume(
   await verifyGoalContract(binding.root, raw.manifest_path as string, runtime, gitEnvironment);
   const manifestDigest = digest(manifest.bytes);
   const latestCommit = await runtime.run(
-    ["/usr/bin/git", "-c", "core.fsmonitor=false", "log", "-1", "--format=%B", "HEAD"],
+    [git, "-c", "core.fsmonitor=false", "log", "-1", "--format=%B", "HEAD"],
     binding.root,
     10_000,
     gitEnvironment,

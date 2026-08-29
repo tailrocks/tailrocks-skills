@@ -86,6 +86,7 @@ async function fixture(): Promise<Fixture> {
 function runtime(
   f: Fixture,
   mutate?: (request: CreatePrCommandRequest, count: number) => CreatePrCommandResult | undefined,
+  actor = "fixture",
 ) {
   let pushed = "";
   let body = "";
@@ -96,7 +97,7 @@ function runtime(
     const changed = mutate?.(request, count++);
     if (changed) return changed;
     const args = request.command;
-    if (args[1] === "api" && args[2] === "user") return ok("fixture\n");
+    if (args[1] === "api" && args[2] === "user") return ok(`${actor}\n`);
     if (args[1] === "api" && args[2] === "repos/fixture/repo/git/ref/heads/main")
       return ok(JSON.stringify({ ref: "refs/heads/main", sha: f.base, type: "commit" }));
     if (args[1] === "api" && args[2] === "repos/fixture/repo/pulls") return ok("[[]]\n");
@@ -120,7 +121,7 @@ function runtime(
           url: "https://github.com/fixture/repo/pull/7",
           title: "docs(roadmap): Capture exact idea",
           isDraft: true,
-          author: { login: "fixture" },
+          author: { login: actor },
           state: "OPEN",
         }),
       );
@@ -207,6 +208,15 @@ test("existing roadmap bytes and rows are preserved while one canonical row is a
     `${existing}| [${slug}](${slug}/README.md) | Capture exact idea | DRAFT | — |\n`,
   );
   expect(await readFile(path.join(f.root, "roadmap", "other", "README.md"), "utf8")).toBe("other\n");
+});
+
+test("same-repository head with a non-owner actor captures and opens the draft PR", async () => {
+  const f = await fixture();
+  const input = { ...f.input, actor: "collaborator" };
+  const mock = runtime(f, undefined, "collaborator");
+  const receipt = await captureIdea(f.root, slug, input, mock.value);
+  expect(receipt.outcome).toBe("captured");
+  expect(receipt.code).toBe("captured");
 });
 
 test("invalid payload, dirty tree, collisions, and stale index refuse before capture writes", async () => {
@@ -416,6 +426,7 @@ test("installed CLI emits one refusal receipt and symlink lookalikes fail identi
       "atomic-file-transaction.ts",
       "bounded-command.ts",
       "create-pr.ts",
+      "resolve-executable.ts",
       "roadmap-item-state.ts",
     ])
       await cp(path.join(sourceRoot, "scripts", name), path.join(root, "scripts", name));

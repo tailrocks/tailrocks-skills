@@ -4,6 +4,7 @@ import path from "node:path";
 
 import { atomicRecoveryArtifacts, atomicWriteFiles, type AtomicFileRuntime } from "./atomic-file-transaction";
 import { runBoundedCommand } from "./bounded-command";
+import { resolveExecutable } from "./resolve-executable";
 
 export const requestSchema = "tailrocks.pr-template-target-request/v1" as const;
 export const receiptSchema = "tailrocks.pr-template-target/v1" as const;
@@ -99,14 +100,15 @@ async function safeRoot(
     LANG: "C.UTF-8",
     PATH: "/usr/bin:/bin:/usr/sbin:/sbin",
   };
+  const git = await resolveExecutable("git");
   const top = await runBoundedCommand({
-    command: ["/usr/bin/git", "-c", "core.fsmonitor=false", "rev-parse", "--show-toplevel"],
+    command: [git, "-c", "core.fsmonitor=false", "rev-parse", "--show-toplevel"],
     cwd: rawRoot,
     env: environment,
     inheritEnvironment: false,
   });
   const head = await runBoundedCommand({
-    command: ["/usr/bin/git", "-c", "core.fsmonitor=false", "rev-parse", "HEAD"],
+    command: [git, "-c", "core.fsmonitor=false", "rev-parse", "HEAD"],
     cwd: rawRoot,
     env: environment,
     inheritEnvironment: false,

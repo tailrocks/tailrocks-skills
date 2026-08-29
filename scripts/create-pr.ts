@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 
 import { runBoundedCommand } from "./bounded-command";
+import { resolveExecutable } from "./resolve-executable";
 
 export const createPrInputSchema = "tailrocks.create-pr-input/v1" as const;
 export const createPrReceiptSchema = "tailrocks.create-pr/v1" as const;
@@ -315,22 +316,6 @@ async function safeExecutable(file: string): Promise<void> {
   const info = await lstat(file);
   if (!info.isFile() || info.isSymbolicLink() || (await realpath(file)) !== file)
     throw new Error(`unsafe command executable: ${file}`);
-}
-
-export async function resolveExecutable(name: "git" | "gh"): Promise<string> {
-  for (const directory of (process.env.PATH ?? "").split(path.delimiter)) {
-    if (!directory) continue;
-    const candidate = path.join(directory, name);
-    try {
-      const canonical = await realpath(candidate);
-      const info = await lstat(canonical);
-      if (!info.isFile() || info.isSymbolicLink() || (info.mode & 0o111) === 0) continue;
-      return canonical;
-    } catch {
-      // Absent or unusable in this directory; the next PATH entry decides.
-    }
-  }
-  throw new Error(`trusted ${name} executable is unavailable on PATH`);
 }
 
 const defaultLocalRunner: CreatePrRunner = async ({ command, cwd }) => {
@@ -926,6 +911,7 @@ async function verifyEntrypoint(entrypoint: string, skillFile: string): Promise<
   for (const [candidate, kind] of [
     [resolved, "file"],
     [expectedSkill, "file"],
+    [path.join(path.dirname(resolved), "resolve-executable.ts"), "file"],
     [path.dirname(resolved), "directory"],
     [plugin, "directory"],
   ] as const) {

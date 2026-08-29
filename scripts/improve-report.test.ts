@@ -330,6 +330,7 @@ test("installed CLI emits one typed refusal and rejects symlink lookalikes", asy
       "improve-route-resolver.ts",
       "improve-route-schema.ts",
       "bounded-command.ts",
+      "resolve-executable.ts",
     ])
       await cp(path.join(sourceRoot, "scripts", name), path.join(root, "scripts", name));
     const entrypoint = path.join(root, "scripts", "improve-report.ts");
@@ -392,6 +393,7 @@ test("installed CLI emits one typed refusal and rejects symlink lookalikes", asy
     "improve-route-resolver.ts",
     "improve-route-schema.ts",
     "bounded-command.ts",
+    "resolve-executable.ts",
   ])
     await cp(path.join(sourceRoot, "scripts", name), path.join(plugin, "scripts", name));
   const installedSkill = path.join(plugin, "skills", "tailrocks-improve", "SKILL.md");
