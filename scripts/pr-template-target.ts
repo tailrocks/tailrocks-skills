@@ -19,6 +19,7 @@ async function verifyLoader(): Promise<void> {
     [path.join(scripts, "pr-template-target-core.ts"), "file"],
     [path.join(scripts, "atomic-file-transaction.ts"), "file"],
     [path.join(scripts, "bounded-command.ts"), "file"],
+    [path.join(scripts, "resolve-executable.ts"), "file"],
     [skill, "file"],
     [path.join(plugin, "skills/tailrocks-pr-template/references/PULL_REQUEST_TEMPLATE.md"), "file"],
   ] as const) {

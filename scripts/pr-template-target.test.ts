@@ -58,6 +58,7 @@ async function stagedPackage(): Promise<{ root: string; entry: string; skill: st
     "pr-template-target-core.ts",
     "atomic-file-transaction.ts",
     "bounded-command.ts",
+    "resolve-executable.ts",
   ])
     await copyFile(path.join(import.meta.dir, name), path.join(root, "scripts", name));
   await copyFile(

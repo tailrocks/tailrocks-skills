@@ -19,6 +19,7 @@ async function verifyInstalled(entrypoint: string, skillFile: string): Promise<v
     [path.join(scripts, "improve-route-resolver.ts"), "file"],
     [path.join(scripts, "improve-route-schema.ts"), "file"],
     [path.join(scripts, "bounded-command.ts"), "file"],
+    [path.join(scripts, "resolve-executable.ts"), "file"],
   ] as const) {
     const info = await lstat(candidate);
     if (

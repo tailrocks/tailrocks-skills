@@ -4,6 +4,7 @@ import path from "node:path";
 
 import { atomicRecoveryArtifacts, atomicWriteFiles, type AtomicFileRuntime } from "./atomic-file-transaction";
 import { runBoundedCommand } from "./bounded-command";
+import { resolveExecutable } from "./resolve-executable";
 
 export const contributionStageInputSchema = "tailrocks.contribution-stage-input/v1" as const;
 export const contributionStageReceiptSchema = "tailrocks.contribution-stage/v1" as const;
@@ -727,16 +728,7 @@ async function defaultGit(args: readonly string[], cwd: string) {
 }
 
 async function trustedGitExecutable(): Promise<string> {
-  for (const candidate of ["/usr/bin/git", "/usr/local/bin/git", "/opt/homebrew/bin/git"]) {
-    try {
-      const info = await lstat(candidate);
-      if (info.isFile() && !info.isSymbolicLink() && (await realpath(candidate)) === candidate)
-        return candidate;
-    } catch {
-      // Try the next fixed system location. Ambient PATH never participates.
-    }
-  }
-  throw new Error("trusted Git executable is unavailable");
+  return resolveExecutable("git");
 }
 
 async function verifyRepository(
@@ -976,6 +968,7 @@ export async function verifyContributionStageEntrypoint(
   const core = path.join(plugin, "scripts", "contribution-stage-core.ts");
   const bounded = path.join(plugin, "scripts", "bounded-command.ts");
   const atomic = path.join(plugin, "scripts", "atomic-file-transaction.ts");
+  const resolver = path.join(plugin, "scripts", "resolve-executable.ts");
   const manifest = path.join(plugin, ".codex-plugin", "plugin.json");
   const expectedSkillFile = path.join(skill, "SKILL.md");
   if (path.resolve(skillFile) !== expectedSkillFile)
@@ -992,6 +985,7 @@ export async function verifyContributionStageEntrypoint(
     [core, "file"],
     [bounded, "file"],
     [atomic, "file"],
+    [resolver, "file"],
     [manifest, "file"],
   ] as const) {
     const info = await lstat(candidate);

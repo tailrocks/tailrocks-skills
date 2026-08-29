@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 
 import { runBoundedCommand } from "./bounded-command";
+import { resolveExecutable } from "./resolve-executable";
 
 export const createPrInputSchema = "tailrocks.create-pr-input/v1" as const;
 export const createPrReceiptSchema = "tailrocks.create-pr/v1" as const;
@@ -225,7 +226,6 @@ function parseInput(raw: unknown): CreatePrInput {
   if (!/^[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$/.test(actor)) throw new Error("actor is invalid");
   const headOwner = safeText(value.head_owner, "head_owner", 39);
   if (!/^[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$/.test(headOwner)) throw new Error("head_owner is invalid");
-  if (actor.toLowerCase() !== headOwner.toLowerCase()) throw new Error("actor must own the head branch");
   const remoteName = safeText(value.remote_name, "remote_name", 64);
   if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(remoteName)) throw new Error("remote_name is invalid");
   const remoteUrl = canonicalRemote(value.remote_url);
@@ -316,22 +316,6 @@ async function safeExecutable(file: string): Promise<void> {
   const info = await lstat(file);
   if (!info.isFile() || info.isSymbolicLink() || (await realpath(file)) !== file)
     throw new Error(`unsafe command executable: ${file}`);
-}
-
-async function fixedExecutable(name: "git" | "gh"): Promise<string> {
-  const candidates =
-    name === "git"
-      ? ["/usr/bin/git", "/usr/local/bin/git", "/opt/homebrew/bin/git"]
-      : ["/usr/local/bin/gh", "/opt/homebrew/bin/gh", "/usr/bin/gh"];
-  for (const candidate of candidates) {
-    try {
-      await safeExecutable(candidate);
-      return candidate;
-    } catch {
-      // Fixed locations only; ambient PATH never selects outward tools.
-    }
-  }
-  throw new Error(`trusted ${name} executable is unavailable`);
 }
 
 const defaultLocalRunner: CreatePrRunner = async ({ command, cwd }) => {
@@ -659,9 +643,9 @@ export async function createPullRequest(
     if (digest(bodyBytes) !== input.body_sha256) throw new Error("body_file hash drifted");
     if (!body.trim() || /<!--|<placeholder>|{{[^}\n]+}}|\b(?:TODO|TBD)\b/i.test(body))
       throw new Error("body_file contains an empty or unfilled template");
-    const gitExecutable = runtime.gitExecutable ?? (await fixedExecutable("git"));
+    const gitExecutable = runtime.gitExecutable ?? (await resolveExecutable("git"));
     await safeExecutable(gitExecutable);
-    const ghExecutable = runtime.ghExecutable ?? (await fixedExecutable("gh"));
+    const ghExecutable = runtime.ghExecutable ?? (await resolveExecutable("gh"));
     await safeExecutable(ghExecutable);
     const localRunner = runtime.localRunner ?? defaultLocalRunner;
     const remoteRunner = runtime.remoteRunner ?? defaultRemoteRunner;
@@ -927,6 +911,7 @@ async function verifyEntrypoint(entrypoint: string, skillFile: string): Promise<
   for (const [candidate, kind] of [
     [resolved, "file"],
     [expectedSkill, "file"],
+    [path.join(path.dirname(resolved), "resolve-executable.ts"), "file"],
     [path.dirname(resolved), "directory"],
     [plugin, "directory"],
   ] as const) {

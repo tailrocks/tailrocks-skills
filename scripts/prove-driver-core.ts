@@ -17,13 +17,15 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 
 import { runBoundedCommand, type BoundedCommandResult } from "./bounded-command";
+import { resolveExecutable } from "./resolve-executable";
 
 export const proveDriverInputSchema = "tailrocks.prove-driver-input/v1" as const;
 export const proveDriverReceiptSchema = "tailrocks.prove-driver/v1" as const;
 const sessionSchema = "tailrocks.prove-session/v1" as const;
 const applicationProtocolSchema = "tailrocks.prove-application/v1" as const;
 const browserProtocolSchema = "tailrocks.prove-browser/v1" as const;
-const git = "/usr/bin/git";
+let gitExecutable: Promise<string> | undefined;
+const git = (): Promise<string> => (gitExecutable ??= resolveExecutable("git"));
 const sha256Pattern = /^[a-f0-9]{64}$/;
 const headPattern = /^[a-f0-9]{40}(?:[a-f0-9]{24})?$/;
 const maximumInventory = 256;
@@ -303,8 +305,11 @@ async function canonicalRoot(
   const rootIdentity = `${info.dev}:${info.ino}`;
   if (rawIdentity !== undefined && rawIdentity !== rootIdentity)
     throw new Error("repository root identity changed");
-  const top = await command([git, "-c", "core.hooksPath=/dev/null", "rev-parse", "--show-toplevel"], root);
-  const head = await command([git, "-c", "core.hooksPath=/dev/null", "rev-parse", "HEAD"], root);
+  const top = await command(
+    [await git(), "-c", "core.hooksPath=/dev/null", "rev-parse", "--show-toplevel"],
+    root,
+  );
+  const head = await command([await git(), "-c", "core.hooksPath=/dev/null", "rev-parse", "HEAD"], root);
   const status = await repositoryStatus(root);
   if (
     top.code !== 0 ||
@@ -319,7 +324,7 @@ async function canonicalRoot(
 async function repositoryStatus(root: string): Promise<string> {
   const result = await command(
     [
-      git,
+      await git(),
       "-c",
       "core.hooksPath=/dev/null",
       "-c",
@@ -338,7 +343,7 @@ async function repositoryStatus(root: string): Promise<string> {
 async function filterOverrides(root: string): Promise<string[]> {
   const result = await command(
     [
-      git,
+      await git(),
       "config",
       "--local",
       "--no-includes",
@@ -524,8 +529,8 @@ async function loadManifest(
     path.dirname(manifestPath) !== path.dirname(manifest.workspace)
   )
     throw new Error("session workspace identity changed");
-  const cloneHead = await command([git, "rev-parse", "HEAD"], manifest.workspace),
-    origin = await command([git, "remote", "get-url", "origin"], manifest.workspace);
+  const cloneHead = await command([await git(), "rev-parse", "HEAD"], manifest.workspace),
+    origin = await command([await git(), "remote", "get-url", "origin"], manifest.workspace);
   if (
     cloneHead.code !== 0 ||
     cloneHead.stdout.trim() !== manifest.head ||
@@ -570,7 +575,7 @@ async function prepare(input: Record<string, unknown>): Promise<Record<string, u
   try {
     const clone = await command(
       [
-        git,
+        await git(),
         "-c",
         "protocol.file.allow=always",
         "clone",
@@ -591,7 +596,7 @@ async function prepare(input: Record<string, unknown>): Promise<Record<string, u
       throw new Error("exact-HEAD local clone failed");
     const checkout = await command(
       [
-        git,
+        await git(),
         ...(await filterOverrides(binding.root)),
         "-c",
         "filter.lfs.smudge=",
@@ -814,7 +819,7 @@ async function run(input: Record<string, unknown>): Promise<RunReceipt> {
   await cp(session.workspace, rowWorkspace, { recursive: true, verbatimSymlinks: true });
   await mkdir(home, { recursive: true, mode: 0o700 });
   await mkdir(temporary, { recursive: true, mode: 0o700 });
-  const cloneHead = await command([git, "rev-parse", "HEAD"], rowWorkspace);
+  const cloneHead = await command([await git(), "rev-parse", "HEAD"], rowWorkspace);
   if (cloneHead.code !== 0 || cloneHead.stdout.trim() !== session.head)
     throw new Error("workspace HEAD changed");
   const beforeStatus = await repositoryStatus(rowWorkspace),

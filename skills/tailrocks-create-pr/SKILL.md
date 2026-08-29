@@ -107,10 +107,9 @@ convention discovery, never an error.
    configuration, templates, and LFS smudge disabled, then runs every gate in
    that disposable subject with network denied, ambient secrets removed, and
    writes confined to the copy. It fails closed before mutation when the sandbox is
-   unavailable or a gate fails or proves zero units. On success it requires the
-   actor to own the head, proves the target base SHA and absence of an existing
-   PR, rechecks live repository identity, pushes the immutable head SHA to the
-   exact HTTPS URL without force, and verifies the remote SHA. It repeats the
+   unavailable or a gate fails or proves zero units. On success it proves the
+   target base SHA and absence of an existing PR, rechecks live repository
+   identity, pushes the immutable head SHA to the exact HTTPS URL without force, and verifies the remote SHA. It repeats the
    remote pre-create proof, rechecks the exact remote head immediately before
    creation, streams the fatal-UTF-8-validated and already-hashed body bytes through
    `--body-file -`, and verifies body, head SHA, base, URL, title, draft state,

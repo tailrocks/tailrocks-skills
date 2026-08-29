@@ -224,17 +224,42 @@ test("actor mismatch and existing PR refuse before mutation", async () => {
   }
 });
 
-test("head owner must be the authenticated actor", async () => {
+test("same-repo head with a non-owner actor is accepted", async () => {
   const f = await fixture();
-  const input = { ...f.input, head_owner: "someone-else" };
+  await command([f.git, "remote", "set-url", "origin", "https://github.com/owner/repo.git"], f.root);
+  const input = {
+    ...f.input,
+    head_owner: "owner",
+    remote_url: "https://github.com/owner/repo.git",
+  };
   const mock = remote(f);
   const receipt = await createPullRequest(input, {
     gitExecutable: f.git,
     ghExecutable: process.execPath,
     remoteRunner: mock.runner,
   });
-  expect(receipt.code).toBe("invalid_input");
-  expect(mock.commands).toHaveLength(0);
+  expect(receipt.outcome).toBe("success");
+  const create = mock.commands.find((entry) => entry[1] === "pr" && entry[2] === "create")!;
+  expect(create).toContain("owner:feature/work");
+});
+
+test("a head owned by neither actor nor repository owner is accepted", async () => {
+  const f = await fixture();
+  await command([f.git, "remote", "set-url", "origin", "https://github.com/someone-else/repo.git"], f.root);
+  const input = {
+    ...f.input,
+    head_owner: "someone-else",
+    remote_url: "https://github.com/someone-else/repo.git",
+  };
+  const mock = remote(f);
+  const receipt = await createPullRequest(input, {
+    gitExecutable: f.git,
+    ghExecutable: process.execPath,
+    remoteRunner: mock.runner,
+  });
+  expect(receipt.outcome).toBe("success");
+  const create = mock.commands.find((entry) => entry[1] === "pr" && entry[2] === "create")!;
+  expect(create).toContain("someone-else:feature/work");
 });
 
 test("remote base drift refuses before push", async () => {

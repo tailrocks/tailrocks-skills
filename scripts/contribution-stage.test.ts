@@ -504,7 +504,7 @@ test("stdin reader refuses oversized or stalled streams before unbounded bufferi
   await expect(readBoundedContributionStdin(stalled, 10, 10)).rejects.toThrow("deadline");
 });
 
-test("ambient PATH Git shim cannot forge repository proof", async () => {
+test("PATH-resolved Git is used, and its failure refuses the stage", async () => {
   const state = await fixture();
   const shim = path.join(state.root, "shim");
   const marker = path.join(state.root, "shim-ran");
@@ -515,6 +515,15 @@ test("ambient PATH Git shim cannot forge repository proof", async () => {
   const previousPath = process.env.PATH;
   try {
     process.env.PATH = shim;
+    expect((await runContributionStage(await stageInput("recon", state), "recon")).outcome).not.toBe(
+      "success",
+    );
+    expect(await Bun.file(marker).exists()).toBe(true);
+    await rm(marker, { force: true });
+    await chmod(fakeGit, 0o644);
+    const realGit = Bun.which("git");
+    if (!realGit) throw new Error("git is required on PATH");
+    process.env.PATH = [shim, path.dirname(realGit)].join(path.delimiter);
     expect((await runContributionStage(await stageInput("recon", state), "recon")).outcome).toBe("success");
     expect(await Bun.file(marker).exists()).toBe(false);
   } finally {
@@ -587,6 +596,10 @@ test("CLI rejects malformed and symlink-lookalike entrypoints with one typed rec
         path.join(copiedRoot, "scripts/contribution-stage-core.ts"),
       ],
       [path.join(import.meta.dir, "bounded-command.ts"), path.join(copiedRoot, "scripts/bounded-command.ts")],
+      [
+        path.join(import.meta.dir, "resolve-executable.ts"),
+        path.join(copiedRoot, "scripts/resolve-executable.ts"),
+      ],
       [
         path.join(import.meta.dir, "atomic-file-transaction.ts"),
         path.join(copiedRoot, "scripts/atomic-file-transaction.ts"),

@@ -13,6 +13,7 @@ async function verifyLoader(): Promise<void> {
     expected = path.join(plugin, "..", "skills", "tailrocks-plan", "SKILL.md"),
     core = path.join(plugin, "plan-package-core.ts"),
     bounded = path.join(plugin, "bounded-command.ts"),
+    resolver = path.join(plugin, "resolve-executable.ts"),
     checker = path.join(plugin, "..", "skills", "tailrocks-plan", "templates", "check.sh");
   if (path.normalize(args[1]!) !== path.normalize(expected))
     throw new Error("loader is not bound to tailrocks-plan owner");
@@ -25,7 +26,7 @@ async function verifyLoader(): Promise<void> {
     )
       throw new Error("installed plan-package directory is unsafe");
   }
-  for (const candidate of [script, core, bounded, expected, checker]) {
+  for (const candidate of [script, core, bounded, resolver, expected, checker]) {
     const info = await lstat(candidate);
     if (!info.isFile() || info.isSymbolicLink() || (await realpath(candidate)) !== path.normalize(candidate))
       throw new Error("installed plan-package command is unsafe");

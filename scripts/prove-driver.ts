@@ -17,6 +17,7 @@ async function verifyLoader(): Promise<void> {
     script,
     path.join(scripts, "prove-driver-core.ts"),
     path.join(scripts, "bounded-command.ts"),
+    path.join(scripts, "resolve-executable.ts"),
     path.join(scripts, "bounded-json-stdin.ts"),
     expected,
   ]) {

@@ -14,9 +14,9 @@ must emit exactly one `tailrocks.gate-proof/v1` JSON object with positive
 
 Gates run from an exact-revision local clone materialized with Git configuration,
 templates, and LFS smudge disabled; network is denied, ambient secrets are
-scrubbed, and writes stay confined to the clone. The command then requires
-the actor to own the head, proves the target base SHA and that no open PR owns
-the exact head, rechecks local identity, pushes the immutable SHA to the bound
+scrubbed, and writes stay confined to the clone. The command then proves
+the target base SHA and that no open PR owns the exact head, rechecks local
+identity, pushes the immutable SHA to the bound
 HTTPS URL without force, and verifies the remote ref. It repeats the remote
 proof, rechecks the remote head immediately before creation, streams the
 fatal-UTF-8-validated body bytes through `--body-file -`, and verifies

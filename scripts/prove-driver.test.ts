@@ -430,6 +430,7 @@ test("installed loader refuses wrong owner and symlinked dependencies before imp
     "prove-driver-core.ts",
     "bounded-command.ts",
     "bounded-json-stdin.ts",
+    "resolve-executable.ts",
   ])
     await cp(path.join(import.meta.dir, name), path.join(stage, "scripts", name));
   await cp(

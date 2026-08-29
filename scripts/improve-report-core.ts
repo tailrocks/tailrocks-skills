@@ -5,6 +5,7 @@ import path from "node:path";
 
 import { runBoundedCommand } from "./bounded-command";
 import { resolveImproveRoute, type ImproveRouteResolution } from "./improve-route-resolver";
+import { resolveExecutable } from "./resolve-executable";
 
 export const improveReportInputSchema = "tailrocks.improve-report-input/v1" as const;
 export const improveReportReceiptSchema = "tailrocks.improve-report/v1" as const;
@@ -460,17 +461,6 @@ async function evidenceIdentity(root: string, citation: Citation): Promise<Evide
   };
 }
 
-async function fixedGit(): Promise<string> {
-  for (const candidate of ["/usr/bin/git", "/opt/homebrew/bin/git", "/usr/local/bin/git"]) {
-    try {
-      const info = await lstat(candidate);
-      if (info.isFile() && !info.isSymbolicLink() && (await realpath(candidate)) === candidate)
-        return candidate;
-    } catch {}
-  }
-  throw new Error("trusted git executable unavailable");
-}
-
 const defaultRunner = async (command: readonly string[], cwd: string): Promise<CommandResult> =>
   runBoundedCommand({
     command,
@@ -576,7 +566,7 @@ export async function finalizeImproveReport(
       input.root !== root
     )
       throw new Error("target root identity mismatch");
-    git = runtime.gitExecutable ?? (await fixedGit());
+    git = runtime.gitExecutable ?? (await resolveExecutable("git"));
     const gitInfo = await lstat(git);
     if (!gitInfo.isFile() || gitInfo.isSymbolicLink() || (await realpath(git)) !== git)
       throw new Error("unsafe git executable");

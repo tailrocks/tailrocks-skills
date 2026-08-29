@@ -604,7 +604,12 @@ test("staged installed package binds every executable dependency", async () => {
   roots.push(installed);
   await mkdir(path.join(installed, "scripts"));
   await mkdir(path.join(installed, "skills/tailrocks-plan/templates"), { recursive: true });
-  for (const file of ["plan-package.ts", "plan-package-core.ts", "bounded-command.ts"])
+  for (const file of [
+    "plan-package.ts",
+    "plan-package-core.ts",
+    "bounded-command.ts",
+    "resolve-executable.ts",
+  ])
     await copyFile(path.join(import.meta.dir, file), path.join(installed, "scripts", file));
   await copyFile(
     path.join(import.meta.dir, "../skills/tailrocks-plan/SKILL.md"),
