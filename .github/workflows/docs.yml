@@ -72,7 +72,7 @@ jobs:
         # Deploy is a post-merge push job, so it always runs on the GitHub lane
         # (merged_push_occupancy); the expression stays lane-aware so the
         # workflow definition remains identical across fleets.
-        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || github.event_name == 'push' && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
+        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || (github.event_name == 'push' || github.event_name == 'pull_request') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
     runs-on: ${{ matrix.config.velnor_default_runner }}
     timeout-minutes: 20
     permissions:
@@ -97,7 +97,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || github.event_name == 'push' && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
+        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || (github.event_name == 'push' || github.event_name == 'pull_request') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
     runs-on: ${{ matrix.config.velnor_default_runner }}
     timeout-minutes: 10
     steps:
