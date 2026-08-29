@@ -21,18 +21,21 @@ concurrency:
 
 jobs:
   validate:
-    if: github.event_name != 'schedule'
+    # Dispatch-only: post-merge push and pull requests already run every one of
+    # these checks (validate-skills, generated-docs drift, script tests, shell
+    # template parse) through the generated CI lane's gate tasks, so a second
+    # copy here would re-execute them per commit. Dispatch keeps a manual
+    # full-validation lane outside the CI workflow's own dispatch surface.
+    if: github.event_name == 'workflow_dispatch'
     name: validate (${{ matrix.config.lane }})
     strategy:
       fail-fast: false
       matrix:
-        # Velnor is the default lane. Post-merge push routes to the GitHub lane
-        # because the fleet rejects merged-push occupancy (merged_push_occupancy);
-        # dispatch selects lanes explicitly, `both` runs each fleet from this one
-        # definition with identical steps.
-        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || github.event_name == 'push' && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
+        # Velnor is the default lane; dispatch selects lanes explicitly, `both`
+        # runs each fleet from this one definition with identical steps.
+        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
     runs-on: ${{ matrix.config.velnor_default_runner }}
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -40,11 +43,7 @@ jobs:
       - uses: jdx/mise-action@3c2e0cf82a5b2e5249f0d3635a4d83d0ae861518 # v4.2.5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - run: bun run scripts/validate-skills.ts
-      - run: bun run scripts/generate-docs.ts --check
-      - run: mise run test
-      - name: Parse shell templates
-        run: find skills scripts -type d -name evals -prune -o -path '*/templates/*.sh' -type f -print0 | xargs -0 -n1 sh -n
+      - run: mise run ci
 
   latest-stable:
     name: latest-stable (${{ matrix.config.lane }})

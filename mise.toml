@@ -5,9 +5,18 @@ lockfile = true
 bun = "1.4.0"
 "npm:oxfmt" = "0.65.0"
 
+[tasks.install]
+description = "Provision every pinned tool from mise.lock"
+run = "mise install --locked"
+
+[tasks.build]
+description = "Install docs dependencies and build the static documentation site"
+dir = "docs"
+run = "bun install --frozen-lockfile && bun run types:check && bun run build"
+
 [tasks.lint]
-description = "Validate every skill, manifest, catalog group, and reverse catalog"
-run = "bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts"
+description = "Validate every skill, manifest, catalog group, reverse catalog, generated docs, and shell templates"
+run = "bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && find skills scripts -type d -name evals -prune -o -path '*/templates/*.sh' -type f -print0 | xargs -0 -n1 sh -n"
 
 [tasks."audit-plan-state:check"]
 description = "Validate audit migration row state and atomic closure"
@@ -26,8 +35,8 @@ description = "Prove audit progress, ownership, generated docs, formatting, and 
 run = "bun run scripts/check-audit-plan-state.ts --mode progress && bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && oxfmt --check scripts docs/src docs/scripts docs/vite.config.ts docs/source.config.ts && bun run scripts/run-tests.ts"
 
 [tasks.ci]
-description = "Everything CI runs: lint, generated-file drift check, script tests"
-run = "bun run scripts/generate-references.ts --check && bun run scripts/validate-skills.ts && bun run scripts/generate-docs.ts --check && bun run scripts/run-tests.ts"
+description = "Human aggregate: every gate the CI lane runs"
+depends = ["install", "build", "test", "lint", "fmt"]
 
 [tasks.test]
 description = "Run the script test suite"
@@ -61,11 +70,6 @@ run = "bun run scripts/generate-references.ts --check && bun run scripts/generat
 description = "Run the documentation site locally with hot reload"
 dir = "docs"
 run = "bun install --frozen-lockfile && bun run dev"
-
-[tasks."docs:build"]
-description = "Build the static documentation site"
-dir = "docs"
-run = "bun install --frozen-lockfile && bun run build"
 
 [tasks."docs:preview"]
 description = "Serve the built documentation site as GitHub Pages will"

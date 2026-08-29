@@ -7,7 +7,7 @@ From the repository root, through mise:
 
 ```sh
 mise run docs:dev      # run the site locally on http://localhost:5173
-mise run docs:build    # static build, shell promotion, output smoke check
+mise run build         # static build, type check, shell promotion, output smoke check
 mise run docs:preview  # serve the built output
 mise run docs          # regenerate the pages derived from SKILL.md
 ```
@@ -45,8 +45,10 @@ Repository design notes live in [`design/`](design/) and are not published.
 
 ## Deployment
 
-`.github/workflows/docs.yml` builds on every pull request and deploys `main` to
-GitHub Pages. `public/CNAME` holds the custom domain; the workflow then fetches
+`.github/workflows/docs.yml` builds and deploys `main` to GitHub Pages.
+Pull requests verify the same `mise run build` gate once per commit in the
+generated CI lane, so the docs workflow runs only where its artifact is
+consumed. `public/CNAME` holds the custom domain; the workflow then fetches
 the live site and fails if the deployed HTML does not contain the expected
 content. The build asserts that every skill has a prerendered page, so a new
 skill cannot silently miss the site.

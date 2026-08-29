@@ -1001,7 +1001,7 @@ renders each skill through generated public `index.mdx` and `definition.mdx`
 pages. `scripts/generate-docs.ts` derives those pages, the skill index,
 `docs/content/docs/install.mdx`, and the root `README.md` table. Never edit a
 generated file — edit the skill and run `mise run docs`.
-CI runs `mise run docs:check` and fails when a generated file is stale.
+CI runs `mise run lint` and fails when a generated file is stale.
 
 Rules that belong to the site itself — which pages are generated, the MDX-only
 requirement, what `design/` is — live in `docs/AGENTS.md`, next to the code they
