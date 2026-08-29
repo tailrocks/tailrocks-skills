@@ -9,6 +9,7 @@ import {
   createPrInputSchema,
   createPullRequest,
   gateProofSchema,
+  resolveExecutable,
   type CreatePrCommandRequest,
   type CreatePrCommandResult,
 } from "./create-pr";
@@ -471,6 +472,40 @@ test("gate sandbox does not inherit ambient secrets", async () => {
     expect(receipt.outcome).toBe("success");
   } finally {
     delete process.env.CREATE_PR_TEST_SECRET;
+  }
+});
+
+test("executables resolve from PATH with symlinks canonicalized", async () => {
+  const parent = await realpath(await mkdtemp(path.join(tmpdir(), "create-pr-path-")));
+  const real = path.join(parent, "real");
+  const linked = path.join(parent, "linked");
+  await command(["/bin/mkdir", real], parent);
+  await command(["/bin/mkdir", linked], parent);
+  const target = path.join(real, "gh");
+  await writeFile(target, "#!/bin/sh\n");
+  await command(["/bin/chmod", "755", target], parent);
+  await command(["/bin/ln", "-s", target, path.join(linked, "gh")], parent);
+  const saved = process.env.PATH;
+  process.env.PATH = [linked, real].join(path.delimiter);
+  try {
+    expect(await resolveExecutable("gh")).toBe(await realpath(target));
+  } finally {
+    process.env.PATH = saved;
+  }
+});
+
+test("PATH resolution skips non-executables and fails closed when absent", async () => {
+  const parent = await realpath(await mkdtemp(path.join(tmpdir(), "create-pr-path-")));
+  const plain = path.join(parent, "gh");
+  await writeFile(plain, "#!/bin/sh\n");
+  await command(["/bin/chmod", "644", plain], parent);
+  const saved = process.env.PATH;
+  process.env.PATH = parent;
+  try {
+    await expect(resolveExecutable("gh")).rejects.toThrow("unavailable on PATH");
+    await expect(resolveExecutable("git")).rejects.toThrow("unavailable on PATH");
+  } finally {
+    process.env.PATH = saved;
   }
 });
 

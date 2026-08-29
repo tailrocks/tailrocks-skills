@@ -317,20 +317,20 @@ async function safeExecutable(file: string): Promise<void> {
     throw new Error(`unsafe command executable: ${file}`);
 }
 
-async function fixedExecutable(name: "git" | "gh"): Promise<string> {
-  const candidates =
-    name === "git"
-      ? ["/usr/bin/git", "/usr/local/bin/git", "/opt/homebrew/bin/git"]
-      : ["/usr/local/bin/gh", "/opt/homebrew/bin/gh", "/usr/bin/gh"];
-  for (const candidate of candidates) {
+export async function resolveExecutable(name: "git" | "gh"): Promise<string> {
+  for (const directory of (process.env.PATH ?? "").split(path.delimiter)) {
+    if (!directory) continue;
+    const candidate = path.join(directory, name);
     try {
-      await safeExecutable(candidate);
-      return candidate;
+      const canonical = await realpath(candidate);
+      const info = await lstat(canonical);
+      if (!info.isFile() || info.isSymbolicLink() || (info.mode & 0o111) === 0) continue;
+      return canonical;
     } catch {
-      // Fixed locations only; ambient PATH never selects outward tools.
+      // Absent or unusable in this directory; the next PATH entry decides.
     }
   }
-  throw new Error(`trusted ${name} executable is unavailable`);
+  throw new Error(`trusted ${name} executable is unavailable on PATH`);
 }
 
 const defaultLocalRunner: CreatePrRunner = async ({ command, cwd }) => {
@@ -658,9 +658,9 @@ export async function createPullRequest(
     if (digest(bodyBytes) !== input.body_sha256) throw new Error("body_file hash drifted");
     if (!body.trim() || /<!--|<placeholder>|{{[^}\n]+}}|\b(?:TODO|TBD)\b/i.test(body))
       throw new Error("body_file contains an empty or unfilled template");
-    const gitExecutable = runtime.gitExecutable ?? (await fixedExecutable("git"));
+    const gitExecutable = runtime.gitExecutable ?? (await resolveExecutable("git"));
     await safeExecutable(gitExecutable);
-    const ghExecutable = runtime.ghExecutable ?? (await fixedExecutable("gh"));
+    const ghExecutable = runtime.ghExecutable ?? (await resolveExecutable("gh"));
     await safeExecutable(ghExecutable);
     const localRunner = runtime.localRunner ?? defaultLocalRunner;
     const remoteRunner = runtime.remoteRunner ?? defaultRemoteRunner;
