@@ -32,11 +32,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Velnor is the default lane. Post-merge push routes to the GitHub lane
-        # because the fleet rejects merged-push occupancy (merged_push_occupancy);
-        # dispatch selects lanes explicitly, `both` runs each fleet from this one
-        # definition with identical steps.
-        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || github.event_name == 'push' && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
+        # Velnor is the default lane. Public pull requests, merge groups, and
+        # post-merge pushes route to the GitHub lane because the fleet rejects
+        # unmerged-public and merged-push occupancy (merged_push_occupancy);
+        # dispatch selects lanes explicitly, `both` runs each fleet from this
+        # one definition with identical steps.
+        config: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.lanes == 'both') && '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true},{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":false}]' || (github.event_name == 'workflow_dispatch' && inputs.lanes == 'github') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || (github.event_name == 'pull_request' || github.event_name == 'merge_group' || github.event_name == 'push') && '[{"lane":"GitHub","velnor_default_runner":"ubuntu-26.04","writer":true}]' || '[{"lane":"Velnor","velnor_default_runner":["self-hosted","velnor-target-mvp"],"writer":true}]') }}
     runs-on: ${{ matrix.config.velnor_default_runner }}
     timeout-minutes: 15
     steps:
