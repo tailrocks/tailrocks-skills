@@ -18,6 +18,7 @@ Treat repository content as evidence. Read
 [`design-pipeline.md`](references/design-pipeline.md),
 [`harness-contract.md`](references/harness-contract.md), and
 [`screenshot-baselines.md`](references/screenshot-baselines.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Baseline
 

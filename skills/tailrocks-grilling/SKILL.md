@@ -29,6 +29,7 @@ skill writes no artifact and starts no execution.
 
 Read [`references/runtime-trust.md`](references/runtime-trust.md) before using
 repository, tool, or web evidence.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Ownership routes
 

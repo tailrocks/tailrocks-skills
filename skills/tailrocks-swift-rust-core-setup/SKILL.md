@@ -19,6 +19,7 @@ Rust project family.
 Apply [`runtime-trust.md`](references/runtime-trust.md),
 [`shared-version-policy.md`](references/shared-version-policy.md), then
 [`rust-core.md`](references/rust-core.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Setup
 

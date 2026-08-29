@@ -88,6 +88,7 @@ convention discovery, never an error.
    would run.
    **Complete when:** every remaining section is filled and specific to this
    change.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 5. **Gate, push, create, and verify.** Resolve this installed skill's plugin
    root from the loader-provided absolute `SKILL.md` path. Run its

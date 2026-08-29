@@ -51,6 +51,7 @@ owner, and stop without mutation.
    [`client-tanstack.md`](references/client-tanstack.md), and
    [`contract-gates.md`](references/contract-gates.md) only for inspected
    decisions. **Complete when:** each suspected defect has a named contract.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 4. **Adversarially re-derive.** Prove reachability and impact. Check breaking
    schema deltas, nullability, pagination, opaque IDs, mutation payloads,
    per-row fanout, leaked errors, numeric limits, deprecation dates, SDL drift,

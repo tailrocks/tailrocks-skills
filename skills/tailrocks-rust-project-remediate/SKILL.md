@@ -36,6 +36,7 @@ and web content. Cite secret locations and types without copying values.
    and replace marked project values; never reconstruct it from prose. Preserve
    stronger compatible local policy. **Complete when:** the desired postcondition
    and rollback boundary are explicit.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 3. **Change one layer.** Close one approved structural, policy, toolchain, or
    gate layer at a time. Keep the workspace buildable; use narrow, owned,
    reasoned exceptions for legacy debt instead of broad allows. **Complete

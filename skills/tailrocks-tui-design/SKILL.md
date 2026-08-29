@@ -105,6 +105,8 @@ baseline failure this gate exists to stop.
    **Complete when:** every screen has named states, two pinned sizes, and
    fixture values — not fixture descriptions.
 
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
+
 2. **Build or extend the gallery.** Read
    [`gallery.md`](references/gallery.md); copy the crate skeleton from
    [`templates/gallery/`](templates/gallery/) rather than deriving it. The

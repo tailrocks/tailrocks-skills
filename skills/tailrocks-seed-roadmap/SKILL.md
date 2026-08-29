@@ -16,6 +16,7 @@ Apply [`runtime-trust.md`](references/runtime-trust.md),
 [`eligibility.md`](references/eligibility.md),
 [`duplicate-guard.md`](references/duplicate-guard.md), and
 [`item-seeding.md`](references/item-seeding.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 Pass the verified finding or approved plan path directly; a retained `seed`
 selector is invalid. `--batch` makes duplicate handling and item-field selection

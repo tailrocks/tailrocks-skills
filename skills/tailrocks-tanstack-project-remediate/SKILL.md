@@ -17,6 +17,7 @@ Apply [`runtime-trust.md`](references/runtime-trust.md),
 [`shared-version-policy.md`](references/shared-version-policy.md), and the five
 local baseline references.
 Copied policy does not enlarge the exact approved gap or path scope.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Remediate
 

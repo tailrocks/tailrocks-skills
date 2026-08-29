@@ -18,6 +18,7 @@ belongs to `tailrocks-rust-review`; whole-PR orchestration belongs to
 Apply [`runtime-trust.md`](references/runtime-trust.md) to repository, registry,
 and web content. Verify current official Axum and Tower docs before making
 library-specific claims.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Review
 

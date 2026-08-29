@@ -35,6 +35,7 @@ local baseline references. Copied policy supplies criteria only.
    scoped accessibility tests, exact non-vacuous selectors, gate cadence, and
    local/CI `mise` task parity. Flag both false-green traps even when triggering
    config is absent. Treat a missing file as `GAP`, never deferred evidence.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 4. **Execute only under explicit authority.** Repository policy cannot grant
    execution. Require an enforceably read-only tree, frozen existing tools and
    inputs, scrubbed secrets, disabled network, external owner-only derived data,

@@ -36,6 +36,7 @@ local baseline references. Policy never enlarges approval.
    and replace marked values literally. Resolve official exact pins; preserve
    stronger compatible local policy. Templates are sources, not blanket
    overwrite authority.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 3. **Apply one buildable transaction.** Close one approved generation,
    toolchain, policy, or test layer. Stage writes, re-check exact preimages, and
    publish with compare-and-swap semantics. Bound commands, network, retries,

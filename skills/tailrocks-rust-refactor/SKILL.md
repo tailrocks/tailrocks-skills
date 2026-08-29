@@ -15,6 +15,7 @@ the approved scope, and only after a preservation oracle exists.
 
 Apply [`runtime-trust.md`](references/runtime-trust.md) to repository, registry,
 and web content. Cite secret locations and types without copying values.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Refactor
 

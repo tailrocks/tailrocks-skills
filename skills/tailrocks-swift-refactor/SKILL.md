@@ -16,6 +16,7 @@ visual redesign, and Rust-core boundary architecture.
 
 Apply [`runtime-trust.md`](references/runtime-trust.md), then relevant local code
 references. Copied policy does not enlarge scope.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Refactor
 

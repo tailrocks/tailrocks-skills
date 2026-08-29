@@ -30,6 +30,7 @@ code reference:
 | Narrow capability-only AppKit bridge | [`appkit-interop.md`](references/appkit-interop.md) |
 | Typed failure, API and availability | [`errors-and-api.md`](references/errors-and-api.md) |
 | Semantics, focus, keyboard, verification IDs | [`accessibility.md`](references/accessibility.md) |
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Write
 

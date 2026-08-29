@@ -70,6 +70,7 @@ carries the reason.
    ownership.
    **Complete when:** the gap between the item and the readiness checklist
    is mapped into a decision tree.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 2. **Grill to closure.** Walk the frontier dependencies parent-first, one
    question at a time per the Boundaries contract. Priority order: screens and flows first (the heaviest

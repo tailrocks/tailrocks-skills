@@ -17,6 +17,7 @@ Generic Rust restructuring belongs to `tailrocks-rust-refactor`.
 Apply [`runtime-trust.md`](references/runtime-trust.md) to repository, registry,
 and web content. Verify current official Axum and Tower docs before relying on
 API-specific behavior.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Refactor
 

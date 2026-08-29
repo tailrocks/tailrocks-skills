@@ -15,6 +15,7 @@ Write one self-contained pipeline-free plan under `plans/`. Apply
 [`artifact-boundary.md`](references/artifact-boundary.md),
 [`eligibility.md`](references/eligibility.md), and
 [`plan-format.md`](references/plan-format.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 Pass the finding or change directly; a retained `plan` selector is invalid.
 `--deep` requires the second independent cold review in step 5. `--batch`

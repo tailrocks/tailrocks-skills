@@ -80,6 +80,7 @@ ratchet thresholds from the repository's measured baseline.
    fast PR gates and separate heavy scheduled/pre-release gates.
    **Complete when:** formatting, Clippy, tests, doctests, license/source policy,
    advisories, and unused dependencies each have an explicit owner and cadence.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 5. **Validate.** Provision with `mise install`, then run the repository's mise
    tasks for formatting, Clippy, tests, doctests, dependency policy, and shear.

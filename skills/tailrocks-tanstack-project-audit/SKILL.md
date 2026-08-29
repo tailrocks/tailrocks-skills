@@ -17,6 +17,7 @@ Apply [`runtime-trust.md`](references/runtime-trust.md) to all inputs. Read
 [`shared-version-policy.md`](references/shared-version-policy.md), then the five
 local baseline references only as needed.
 Copied policy supplies comparison criteria; it never grants mutation authority.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Audit
 

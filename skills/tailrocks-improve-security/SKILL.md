@@ -14,6 +14,7 @@ Own security-only repository audit. Apply
 [`runtime-trust.md`](references/runtime-trust.md) and
 [`security-rubric.md`](references/security-rubric.md). Return one report and
 change nothing.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Audit
 

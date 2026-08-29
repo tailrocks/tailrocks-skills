@@ -70,6 +70,7 @@ before writing.
    <installed-plugin>/scripts/idea-capture.ts --skill-file
    <absolute-SKILL.md> <roadmap-slug>`.
    **Complete when:** the slug is unique, content-derived, and stable.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 2. **Pour it in without writing.** Build one closed
    `tailrocks.idea-capture-input/v1` object using the schema in the command

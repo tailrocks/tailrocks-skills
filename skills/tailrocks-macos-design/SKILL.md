@@ -60,6 +60,7 @@ governs density, typography, color, iconography. **Complete when:** every
 template field — archetype and failure, object model, navigation and window
 model, density target, states, keyboard workflow, accessibility and
 localization risks — is written down and approved.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 **2 — Native component map.** Read
 [`native-component-map.md`](references/native-component-map.md) and classify

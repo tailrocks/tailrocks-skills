@@ -32,6 +32,7 @@ language reference:
 | Readonly APIs, escape hatches, exported contracts | [`mutation-and-api-safety.md`](references/mutation-and-api-safety.md) |
 | React purity, effects, events, async cancellation | [`react-and-async.md`](references/react-and-async.md) |
 | Proportionate language-contract tests | [`testing.md`](references/testing.md) |
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Write
 

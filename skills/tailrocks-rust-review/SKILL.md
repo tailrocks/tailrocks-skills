@@ -30,6 +30,7 @@ and web content. Cite secret locations and types without copying values.
    topic references: ownership/performance, API design, errors/tests/docs,
    readability/architecture, or tooling/lints. **Complete when:** each suspected
    defect has a named contract and evidence.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 4. **Adversarially re-derive.** Trace reachable inputs and callers; distinguish a
    proven defect from preference, hypothetical misuse, or missing measurement.
    Verify unsafe invariants, panic reachability, concurrency assumptions, public

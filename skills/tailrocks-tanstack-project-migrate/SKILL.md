@@ -18,6 +18,7 @@ Apply [`runtime-trust.md`](references/runtime-trust.md),
 baseline references, and [`migration-checklist.md`](references/migration-checklist.md).
 Copied policy does not enlarge the explicit migration scope. Do not produce a
 migration-plan artifact; migrate the application directly in verified slices.
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Migrate
 

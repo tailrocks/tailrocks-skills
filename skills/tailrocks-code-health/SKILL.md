@@ -55,6 +55,7 @@ target-repository lookalike.
    receipt exclusively decides exact baseline, growth, stale generosity,
    establish proposal, tighten legality, latest-stable state, highest-fixed
    vulnerability state, incompatibility, prerelease, and delay refusal.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 3. **Select canonical bytes.** Copy an absent baseline artifact from
    [`templates/`](templates/) rather than reconstructing it. Preserve stronger
    compatible local rules. The bound comes only from this repository's measured

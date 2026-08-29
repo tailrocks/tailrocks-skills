@@ -154,6 +154,7 @@ to drift.
    its printed digest must match. **Complete when:** the round is committed,
    the handoff is named, the workspace is gone with no recovery artifact, and
    no status, plan row, or source file was written by this skill.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## What this refuses
 

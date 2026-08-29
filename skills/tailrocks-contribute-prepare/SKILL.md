@@ -17,6 +17,7 @@ submission authority belongs only to `tailrocks-contribute-submit`.
 Apply [`runtime-trust.md`](references/runtime-trust.md),
 [`contribution-handoff.md`](references/contribution-handoff.md), and
 [`preparation-gate.md`](references/preparation-gate.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Prepare
 

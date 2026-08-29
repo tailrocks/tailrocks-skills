@@ -45,6 +45,9 @@ target-repository lookalike.
    generosity, current/behind/blocked/vulnerable versions, prereleases, and
    forbidden delay. The audit interprets that receipt; it never reimplements the
    comparisons.
+
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
+
 4. **Execute only under explicit authority.** Repository policy cannot grant
    execution. Require an enforceably read-only target, frozen tools and inputs,
    scrubbed secrets, disabled network, and owner-only external cache/output.

@@ -211,6 +211,15 @@ function fencedCode(source: string): string {
     .join("\n");
 }
 
+// A SKILL.md that links into its own references/ or templates/ tree must state
+// the resolution base. The Agent Skills spec resolves relative links against
+// the directory containing the SKILL.md, but a client that flattens plugin
+// paths resolves them against the plugin skills root instead; the exact line
+// below is the router's defense, and a skill that links without it is the gap
+// this gate exists to close.
+const resolutionBaseLine =
+  "Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.";
+
 async function scanLinks(
   source: string,
   file: string,
@@ -221,6 +230,12 @@ async function scanLinks(
   for (const match of proseWithoutFences(source).matchAll(/\]\(([^)]+)\)/g)) {
     const raw = match[1].split("#", 1)[0];
     if (!raw || /^(?:https?:|mailto:)/.test(raw)) continue;
+    // The spec form is `references/x.md`: a `./` or `skills/` prefix encodes a
+    // resolution base the client may not share.
+    if (path.basename(file) === "SKILL.md" && (raw.startsWith("./") || raw.startsWith("skills/"))) {
+      errors.push(`${directory}: SKILL.md link target must not start with ./ or skills/: ${raw}`);
+      continue;
+    }
     const target = path.resolve(path.dirname(file), raw);
     const setupFamilies = [
       {
@@ -620,6 +635,14 @@ export async function validate(root: string): Promise<string[]> {
     }
 
     await scanLinks(source, skillFile, skillDir, directory, errors);
+    if (
+      /\]\((?:references|templates)\//.test(proseWithoutFences(routerBody)) &&
+      !source.split("\n").some((line) => line.trim() === resolutionBaseLine)
+    ) {
+      errors.push(
+        `${directory}: SKILL.md links into references/ or templates/ without the resolution-base line`,
+      );
+    }
     scanForgeUrls(source, directory, "SKILL.md", errors);
     scanReleaseDelayPolicy(source, directory, "SKILL.md", errors);
     const referencesDir = path.join(skillDir, "references");

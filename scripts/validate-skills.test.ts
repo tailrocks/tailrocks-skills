@@ -505,6 +505,34 @@ policy:
     expect(await validate(root)).toContain(`${skill}: reference escapes skill directory: ../outside.md`);
   });
 
+  test("requires the resolution-base line when SKILL.md links into references/ or templates/", async () => {
+    const resolutionBaseLine =
+      "Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.";
+    await write(`skills/${skill}/references/method.md`, "# Method\n");
+    const file = `skills/${skill}/SKILL.md`;
+    const base = await Bun.file(path.join(root, file)).text();
+    await write(file, `${base}\nRead [method](references/method.md) first.\n`);
+    expect(await validate(root)).toContain(
+      `${skill}: SKILL.md links into references/ or templates/ without the resolution-base line`,
+    );
+    await write(file, `${base}\nRead [method](references/method.md) first.\n${resolutionBaseLine}\n`);
+    expect(await validate(root)).toEqual([]);
+  });
+
+  test("rejects ./ and skills/ link prefixes in SKILL.md", async () => {
+    const resolutionBaseLine =
+      "Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.";
+    await write(`skills/${skill}/references/method.md`, "# Method\n");
+    const file = `skills/${skill}/SKILL.md`;
+    const base = await Bun.file(path.join(root, file)).text();
+    for (const raw of ["./references/method.md", `skills/${skill}/references/method.md`]) {
+      await write(file, `${base}\n[method](${raw})\n${resolutionBaseLine}\n`);
+      expect(await validate(root)).toContain(
+        `${skill}: SKILL.md link target must not start with ./ or skills/: ${raw}`,
+      );
+    }
+  });
+
   test("allows only exact TanStack family template and resolver sibling links", async () => {
     await rm(path.join(root, "skills", skill), { recursive: true, force: true });
     const members = [
@@ -870,7 +898,7 @@ policy:
     );
     await write(
       `skills/${skill}/SKILL.md`,
-      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[Routing](references/routing.md)\n`,
+      `${await Bun.file(path.join(root, `skills/${skill}/SKILL.md`)).text()}\n[Routing](references/routing.md)\nResolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.\n`,
     );
     expect(await validate(root)).toEqual([]);
   });

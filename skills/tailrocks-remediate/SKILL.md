@@ -20,6 +20,7 @@ omitted, `analyze`, `rebuild`, mixed, or unknown selectors unchanged; this owner
 is not a compatibility router.
 
 Apply [`runtime-trust.md`](references/runtime-trust.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Apply the correction
 

@@ -18,6 +18,7 @@ Read [`runtime-trust.md`](references/runtime-trust.md),
 [`harness-contract.md`](references/harness-contract.md),
 [`screenshot-baselines.md`](references/screenshot-baselines.md), and
 [`regression-policy.md`](references/regression-policy.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 Bind Git HEAD and source digest; the baseline record's design blessing,
 environment, matrix, masks, budgets, and excused cells; and the exact requested

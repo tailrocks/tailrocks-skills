@@ -53,6 +53,7 @@ owner, and stop without mutation.
    | Juniper layout, loaders, errors, limits, persisted operations | [`server-rust.md`](references/server-rust.md) |
    | Codegen, TanStack Query, fragments, client errors | [`client-tanstack.md`](references/client-tanstack.md) |
    | SDL snapshot, breaking diff, deprecation, evolution | [`contract-gates.md`](references/contract-gates.md) |
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
    **Complete when:** every material schema, server, client, and evolution
    decision has governing policy.

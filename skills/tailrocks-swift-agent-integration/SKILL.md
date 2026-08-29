@@ -15,6 +15,7 @@ scaffold the project, audit its baseline, or choose design taste.
 
 Apply [`runtime-trust.md`](references/runtime-trust.md), then read
 [`agent-integration.md`](references/agent-integration.md).
+Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 
 ## Integrate
 

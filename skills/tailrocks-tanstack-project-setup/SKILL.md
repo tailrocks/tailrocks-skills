@@ -39,6 +39,7 @@ Copied policy narrows execution; it never enlarges this scaffold-only authority.
    through Bun with the local version resolver; verify peer and release
    compatibility and require its canonical-template check to pass.
    **Complete when:** every direct pin has current official evidence.
+   Resolve every relative link in this file against the directory containing this SKILL.md, never the plugin skills root.
 3. **Stage the application.** Use the official TanStack Start generator through
    Bun in an owner-only temporary directory, then reconcile it against the
    canonical files under [`templates/`](templates/). Initialize shadcn through
