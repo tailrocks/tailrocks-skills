@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  ci-required:
+    name: ci-required
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate umbrella registry
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -d skills
+          test ! -d scripts
+          jq empty catalog.json
+          test "$(jq '.repositories | length' catalog.json)" -eq 8
+          jq -e 'all(.repositories[]; (.repository | endswith("-skills")) and (.url | startswith("https://github.com/tailrocks/")) and ((.skills | length) > 0))' catalog.json >/dev/null
+          test "$(jq '[.repositories[].skills[]] | length' catalog.json)" -eq 84
+          test "$(jq '[.repositories[].skills[]] | unique | length' catalog.json)" -eq 84
