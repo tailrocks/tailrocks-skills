@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Skill Audit"
-  short_description: "Audit skill behavior, architecture, efficiency, and safety"
-  default_prompt: "Use $tailrocks-skill-audit on the named skill or whole portfolio."
-policy:
-  allow_implicit_invocation: false

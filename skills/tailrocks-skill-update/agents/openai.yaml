@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Skill Update"
-  short_description: "Improve a skill while preserving its public contract"
-  default_prompt: "Use $tailrocks-skill-update on the named skill and evidence."
-policy:
-  allow_implicit_invocation: false

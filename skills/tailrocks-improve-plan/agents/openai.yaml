@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Improve Plan"
-  short_description: "Write one standalone plans/ package"
-  default_prompt: "Use $tailrocks-improve-plan to turn this one verified finding or described change into one executor-ready standalone plan and index row."
-policy:
-  allow_implicit_invocation: false

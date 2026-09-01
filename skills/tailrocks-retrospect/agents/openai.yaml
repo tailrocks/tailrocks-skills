@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Retrospect"
-  short_description: "Turn a shipped roadmap item's history into proposed skill patches"
-  default_prompt: "Use $tailrocks-retrospect on the named roadmap item: rebuild which skills ran from the commit trailers, diff that against its Decisions, Must not, spec IDs, and verification rounds, and write the record of proposed skill patches."
-policy:
-  allow_implicit_invocation: false

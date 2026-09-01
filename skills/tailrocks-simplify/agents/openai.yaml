@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Simplify"
-  short_description: "Apply approved behavior-preserving removals"
-  default_prompt: "Use $tailrocks-simplify apply to perform only this explicitly approved removal set under a proven behavior oracle, with per-removal rollback and no scope expansion."
-policy:
-  allow_implicit_invocation: false
