@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Skill Refactor"
-  short_description: "Restructure skill ownership without behavior change"
-  default_prompt: "Use $tailrocks-skill-refactor for this behavior-preserving structural change."
-policy:
-  allow_implicit_invocation: false

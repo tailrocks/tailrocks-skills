@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Grilling"
-  short_description: "Stress-test a decision before action"
-  default_prompt: "Use $tailrocks-grilling to challenge this before action. Stay conversation-only and read-only, retrieve facts yourself, leave every decision to me, require my explicit confirmation, and do not execute."
-policy:
-  allow_implicit_invocation: true

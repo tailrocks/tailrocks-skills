@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Refresh PR"
-  short_description: "Reconcile a PR's title and body against the current diff"
-  default_prompt: "Use $tailrocks-refresh-pr to bring this pull request's title and body back in line with what the branch ships now."
-policy:
-  allow_implicit_invocation: false

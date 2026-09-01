@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Seed Roadmap"
-  short_description: "Seed one verified finding into delivery"
-  default_prompt: "Use $tailrocks-seed-roadmap to convert this one verified finding or approved plan into one DRAFT roadmap item on its single delivery branch and pull request."
-policy:
-  allow_implicit_invocation: false

@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Code Health Audit"
-  short_description: "Measure one debt class read-only"
-  default_prompt: "Use $tailrocks-code-health-audit to measure this selected debt class read-only and emit the fixed evidence ledger without installing or editing."
-policy:
-  allow_implicit_invocation: false

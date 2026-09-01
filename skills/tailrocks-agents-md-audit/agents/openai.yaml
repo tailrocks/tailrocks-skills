@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Agents MD Audit"
-  short_description: "Audit instruction files read-only"
-  default_prompt: "Use $tailrocks-agents-md-audit to audit every instruction file, rule placement, deletion evidence, topology, and load cost without editing."
-policy:
-  allow_implicit_invocation: false

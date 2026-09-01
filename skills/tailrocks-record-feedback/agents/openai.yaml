@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Record Feedback"
-  short_description: "Capture what a user found wrong with shipped work, verbatim"
-  default_prompt: "Use $tailrocks-record-feedback to capture the user's report of what is wrong with the named roadmap item's shipped work, verbatim and unjudged."
-policy:
-  allow_implicit_invocation: false

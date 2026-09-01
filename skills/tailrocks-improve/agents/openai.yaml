@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Improve"
-  short_description: "Audit a repository read-only"
-  default_prompt: "Use $tailrocks-improve to audit this repository through bounded non-security lanes, verify every candidate, and return one read-only report."
-policy:
-  allow_implicit_invocation: false

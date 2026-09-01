@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Improve Deep"
-  short_description: "Audit every non-security lane exhaustively"
-  default_prompt: "Use $tailrocks-improve-deep to audit this repository exhaustively, independently refute every retained candidate, and return one read-only report."
-policy:
-  allow_implicit_invocation: false

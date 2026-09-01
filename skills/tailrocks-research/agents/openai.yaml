@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Research"
-  short_description: "Deep-research a question or roadmap item into a reusable topic"
-  default_prompt: "Use $tailrocks-research on this question or roadmap item to produce a vetted, sourced research topic under research/."
-policy:
-  allow_implicit_invocation: false

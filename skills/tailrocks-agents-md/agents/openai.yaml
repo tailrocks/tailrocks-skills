@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Agents Instructions"
-  short_description: "Place one non-obvious instruction rule"
-  default_prompt: "Apply $tailrocks-agents-md policy when in-scope work touches instruction rules or topology. Do not mutate from selection; add only one task-authorized rule and route audit or sync."
-policy:
-  allow_implicit_invocation: true

@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Review PR"
-  short_description: "Review a pull request with verified, high-signal findings"
-  default_prompt: "Use $tailrocks-review-pr on this pull request: verify every correctness finding against the code before reporting it, run the structural pass with a named restructure per finding, trigger only the specialist lanes the diff touches, and route each finding to the house skill that fixes its class. Report only; do not post, edit, approve, or merge."
-policy:
-  allow_implicit_invocation: false

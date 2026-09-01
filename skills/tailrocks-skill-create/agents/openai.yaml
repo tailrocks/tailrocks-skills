@@ -1,6 +1,0 @@
-interface:
-  display_name: "Tailrocks: Skill Create"
-  short_description: "Create a new, evidence-backed skill contract"
-  default_prompt: "Use $tailrocks-skill-create on this capability and evidence."
-policy:
-  allow_implicit_invocation: false
