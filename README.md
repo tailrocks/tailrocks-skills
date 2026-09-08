@@ -13,8 +13,6 @@ Umbrella directory for the independently installable Tailrocks skill repositorie
 | [tailrocks-code-quality-skills](https://github.com/tailrocks/tailrocks-code-quality-skills) | Code health, improvement, security, instruction topology, simplification, root cause, remediation |
 | [tailrocks-open-source-skills](https://github.com/tailrocks/tailrocks-open-source-skills) | Open-source contribution lifecycle |
 
-Legacy repositories `tailrocks/rust-best-practices` and `tailrocks/review-crucible` are retired and are not migration sources.
-
 ## License
 
 Apache-2.0
