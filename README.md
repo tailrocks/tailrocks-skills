@@ -7,8 +7,7 @@ Umbrella directory for the independently installable Tailrocks skill repositorie
 | [tailrocks-rust-skills](https://github.com/tailrocks/tailrocks-rust-skills) | Rust, Axum, GraphQL, gRPC, terminal UI |
 | [tailrocks-typescript-skills](https://github.com/tailrocks/tailrocks-typescript-skills) | TypeScript, React, Bun, TanStack, web UI |
 | [tailrocks-macos-skills](https://github.com/tailrocks/tailrocks-macos-skills) | Swift, SwiftUI, Rust-core boundary, macOS and Liquid Glass, visual QA |
-| [tailrocks-pull-request-skills](https://github.com/tailrocks/tailrocks-pull-request-skills) | Pull request lifecycle |
-| [tailrocks-repository-skills](https://github.com/tailrocks/tailrocks-repository-skills) | Target-bound repository audit, convergence, pull-request composition, and scoped cleanup |
+| [tailrocks-repository-skills](https://github.com/tailrocks/tailrocks-repository-skills) | Repository management and pull-request lifecycle |
 | [tailrocks-roadmap-skills](https://github.com/tailrocks/tailrocks-roadmap-skills) | Roadmap, delivery, verification, reconciliation, decision support |
 | [tailrocks-skill-authoring-skills](https://github.com/tailrocks/tailrocks-skill-authoring-skills) | Skill creation, update, audit, refactor |
 | [tailrocks-code-quality-skills](https://github.com/tailrocks/tailrocks-code-quality-skills) | Code health, improvement, security, instruction topology, simplification, root cause, remediation |
