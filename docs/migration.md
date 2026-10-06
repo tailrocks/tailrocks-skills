@@ -21,6 +21,11 @@ Record this rule before authoring starts.
 | D4 | Keep the name `tailrocks-skill-authoring-skills`. |
 | D5 | Keep the skill ID `asd-ste100`. Keep the ASD-STE100 repository private. |
 | D6 | Repository renames stay pending until the Phase B name review. |
+| D7 | Rename `tailrocks-open-source-skills` to `tailrocks-contribution-skills`. Target is available. Reason: the package holds only contribution procedures. |
+| D8 | Rename `tailrocks/asd-ste100-skill` to `tailrocks-asd-ste100-skills`. The repository stays private. The skill ID `asd-ste100` stays unchanged. |
+| D9 | Pin alint v0.17.0, velnor-actions 0.1.0, markdownlint-cli2 0.23.3, zizmor 1.30.1. |
+| D10 | Accept common design v2. A fresh independent reviewer gave ACCEPT on 2026-10-07. All 15 v1 defects are fixed. |
+| D11 | Carry 4 minor review notes into implementation: profile reject lines, file-length owner row, template coverage lines, per-installer private auth evidence. |
 
 ## Current revisions (Phase A, 2026-10-07 UTC)
 
@@ -51,8 +56,8 @@ outside installed inventories.
 ## Phase checkpoints
 
 - Phase A (current state): complete. Evidence: `docs/verification.md`.
-  Next action: Phase B common design.
-- Phase B (common design): not started.
+- Phase B (common design): complete. Evidence: `docs/verification.md`.
+  Next action: Phase C shared distribution and checks.
 - Phase C (distribution and checks): not started.
 - Phase D (rewrite packages): not started.
 - Phase E (migration): not started.
@@ -66,11 +71,11 @@ outside installed inventories.
 - [x] Read the relevant open PRs.
 - [x] Record every current installable skill.
 - [x] Count templates separately.
-- [ ] Record one final disposition for every original skill.
+- [x] Record one final disposition for every original skill.
 - [ ] Keep every retained responsibility.
-- [ ] Give each active skill one owner.
-- [ ] Complete the repository and plugin name review.
-- [ ] Complete every affected consumer mapping.
+- [x] Give each active skill one owner.
+- [x] Complete the repository and plugin name review.
+- [x] Complete every affected consumer mapping.
 - [ ] Keep the ASD-STE100 repository's visibility.
 
 ### Shared distribution

@@ -35,6 +35,28 @@ Evidence files (temporary, kept until final cleanup):
 
 No skill evaluation ran. No model task ran during checks.
 
+## Phase B evidence (2026-10-07 UTC)
+
+Method: one research workflow (8 agent-install tracks plus alint,
+Velnor, name-review, and STE tracks), one design author, one
+independent reviewer (REJECT with 15 defects), one reviser, one
+fresh re-reviewer (ACCEPT).
+
+- Research: 12 files at `/tmp/phase-b-agent-*.md`,
+  `/tmp/phase-b-alint.md`, `/tmp/phase-b-velnor.md`,
+  `/tmp/phase-b-names.md`, `/tmp/phase-b-ste.md`.
+- Design: `/tmp/phase-b-design.md` (v1, rejected),
+  `/tmp/phase-b-design-v2.md` (accepted, 101 lines).
+- Reviews: `/tmp/phase-b-design-review.md` (REJECT, 15 defects),
+  `/tmp/phase-b-design-review-v2.md` (ACCEPT, all 15 fixed,
+  4 minor implementation notes).
+- Name availability: both `gh repo view` checks return exit 1
+  with the exact GraphQL not-found output on 2026-10-07.
+- alint v0.17.0 confirmed as latest release on 2026-10-07.
+- All 16 cited rule kinds verified in the v0.17.0 schema.
+
+No skill evaluation ran. No model task ran during checks.
+
 ## Later phases
 
 No evidence yet. This section grows with each phase.
