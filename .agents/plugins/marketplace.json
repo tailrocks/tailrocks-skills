@@ -1,0 +1,125 @@
+{
+  "interface": {
+    "displayName": "Tailrocks"
+  },
+  "name": "tailrocks",
+  "plugins": [
+    {
+      "category": "Productivity",
+      "name": "tailrocks-skill-authoring-skills",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "ref": "95348b233ae53b4ea1f805b5e03843cbebcdbacd",
+        "source": "url",
+        "url": "https://github.com/tailrocks/tailrocks-skill-authoring-skills"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "tailrocks-repository-skills",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "ref": "759849769249b5a4ada95595914ab8e81daf618b",
+        "source": "url",
+        "url": "https://github.com/tailrocks/tailrocks-repository-skills"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "tailrocks-typescript-skills",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "ref": "0652a50fce67c4a11f01ebb960a50fd5e283e0a9",
+        "source": "url",
+        "url": "https://github.com/tailrocks/tailrocks-typescript-skills"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "tailrocks-macos-skills",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "ref": "eb0be5522fe0c1c9c74d41ee354446a011b10c74",
+        "source": "url",
+        "url": "https://github.com/tailrocks/tailrocks-macos-skills"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "tailrocks-roadmap-skills",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "ref": "98d23280cd562c9298ce13ae40bd0eb73a3e376a",
+        "source": "url",
+        "url": "https://github.com/tailrocks/tailrocks-roadmap-skills"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "tailrocks-open-source-skills",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "ref": "3e51bc5c91949f361ed926d8f760bcb16edef111",
+        "source": "url",
+        "url": "https://github.com/tailrocks/tailrocks-open-source-skills"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "tailrocks-code-quality-skills",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "ref": "e63a82f28b688a7fada418e615aa9ec0eeec4c04",
+        "source": "url",
+        "url": "https://github.com/tailrocks/tailrocks-code-quality-skills"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "tailrocks-rust-skills",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "ref": "0317f100714dc66285c01c24f7967134375b5ac5",
+        "source": "url",
+        "url": "https://github.com/tailrocks/tailrocks-rust-skills"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "asd-ste100",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "ref": "0572839a13afc145083535b3e29c79b78489af40",
+        "source": "url",
+        "url": "https://github.com/tailrocks/asd-ste100-skill"
+      }
+    }
+  ]
+}
