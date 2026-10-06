@@ -1,0 +1,50 @@
+{
+  "plugins": [
+    {
+      "displayName": "Skill Authoring Skills",
+      "id": "tailrocks-skill-authoring-skills",
+      "source": "https://github.com/tailrocks/tailrocks-skill-authoring-skills/commit/95348b233ae53b4ea1f805b5e03843cbebcdbacd"
+    },
+    {
+      "displayName": "Repository Skills",
+      "id": "tailrocks-repository-skills",
+      "source": "https://github.com/tailrocks/tailrocks-repository-skills/commit/759849769249b5a4ada95595914ab8e81daf618b"
+    },
+    {
+      "displayName": "TypeScript Skills",
+      "id": "tailrocks-typescript-skills",
+      "source": "https://github.com/tailrocks/tailrocks-typescript-skills/commit/0652a50fce67c4a11f01ebb960a50fd5e283e0a9"
+    },
+    {
+      "displayName": "macOS Skills",
+      "id": "tailrocks-macos-skills",
+      "source": "https://github.com/tailrocks/tailrocks-macos-skills/commit/eb0be5522fe0c1c9c74d41ee354446a011b10c74"
+    },
+    {
+      "displayName": "Roadmap Skills",
+      "id": "tailrocks-roadmap-skills",
+      "source": "https://github.com/tailrocks/tailrocks-roadmap-skills/commit/98d23280cd562c9298ce13ae40bd0eb73a3e376a"
+    },
+    {
+      "displayName": "Open Source Skills",
+      "id": "tailrocks-open-source-skills",
+      "source": "https://github.com/tailrocks/tailrocks-open-source-skills/commit/3e51bc5c91949f361ed926d8f760bcb16edef111"
+    },
+    {
+      "displayName": "Code Quality Skills",
+      "id": "tailrocks-code-quality-skills",
+      "source": "https://github.com/tailrocks/tailrocks-code-quality-skills/commit/e63a82f28b688a7fada418e615aa9ec0eeec4c04"
+    },
+    {
+      "displayName": "Rust Skills",
+      "id": "tailrocks-rust-skills",
+      "source": "https://github.com/tailrocks/tailrocks-rust-skills/commit/0317f100714dc66285c01c24f7967134375b5ac5"
+    },
+    {
+      "displayName": "ASD-STE100: Clear Technical English",
+      "id": "asd-ste100",
+      "source": "https://github.com/tailrocks/asd-ste100-skill/commit/0572839a13afc145083535b3e29c79b78489af40"
+    }
+  ],
+  "version": "2"
+}
