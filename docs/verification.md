@@ -57,6 +57,23 @@ fresh re-reviewer (ACCEPT).
 
 No skill evaluation ran. No model task ran during checks.
 
+## Phase C part 1 evidence (2026-10-07 UTC)
+
+- Central catalogs: commit `b08398d` (`catalog.json` with 9
+  plugins and pinned revs, `scripts/generate-catalogs.py`, 3
+  native catalogs). Generator runs are byte-identical.
+  Strict JSON parse passes for all 4 files.
+- Shared policy: commit `d54adec` (`standards/alint/` active,
+  marketplace, and retired profiles, plus `.alint.yml`).
+  `alint check` passes with 0 errors and 36 passing rules.
+- Velnor vectors: `tailrocks/velnor-new` branch
+  `standardize/verify-vectors`, commit `47c7b5b2e` (29 files,
+  new `[workflow.verify]` vectors with tests). `cargo test`
+  passes for all three generator crates.
+- Synthesis: `/tmp/phase-c-part1-synthesis.md` (all PASS).
+
+No skill evaluation ran. No model task ran during checks.
+
 ## Later phases
 
 No evidence yet. This section grows with each phase.

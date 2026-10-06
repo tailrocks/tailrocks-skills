@@ -57,8 +57,10 @@ outside installed inventories.
 
 - Phase A (current state): complete. Evidence: `docs/verification.md`.
 - Phase B (common design): complete. Evidence: `docs/verification.md`.
-  Next action: Phase C shared distribution and checks.
-- Phase C (distribution and checks): not started.
+- Phase C (distribution and checks): part 1 complete (central
+  catalogs, shared policy, Velnor vectors).
+  Evidence: `docs/verification.md`. Next action: representative
+  package check, then Phase D package rewrites.
 - Phase D (rewrite packages): not started.
 - Phase E (migration): not started.
 - Phase F (verify and finish): not started.
