@@ -1,0 +1,9 @@
+# Marketplace repository alint configuration (alint v0.17.0).
+# Extends the shared marketplace profile by local path. After the
+# profile revision is pushed, replace this with the immutable URL
+# form plus the required SHA-256 pin:
+# extends:
+#   - https://raw.githubusercontent.com/tailrocks/tailrocks-skills/<REV>/standards/alint/marketplace.yml#sha256-<HASH>
+version: 1
+extends:
+  - ./standards/alint/marketplace.yml
