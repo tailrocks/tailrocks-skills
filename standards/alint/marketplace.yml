@@ -1,0 +1,270 @@
+# Shared alint profile: central marketplace (goal Section 8.2).
+# Consumed via `extends` with an immutable URL plus SHA-256 pin.
+# alint v0.17.0 (asamarts/alint). Every `kind` below exists in the
+# v0.17.0 schema (schemas/v1/config.json at tag v0.17.0).
+#
+# Fetched-config limits: no nested `extends`, no `command` rules,
+# no custom facts, no `allow_out_of_root`, no `baseline`.
+#
+# The marketplace lists packages; it never duplicates their
+# instructions. This profile rejects active skill payloads.
+version: 1
+rules:
+  # Required marketplace paths (design Section 2).
+  - id: req-readme
+    kind: file_exists
+    level: error
+    paths: "README.md"
+    message: "Marketplace must keep README.md."
+  - id: req-license
+    kind: file_exists
+    level: error
+    paths: "LICENSE"
+    message: "Marketplace must keep LICENSE."
+  - id: req-catalog-source
+    kind: file_exists
+    level: error
+    paths: "catalog.json"
+    message: "Marketplace must keep catalog.json."
+  - id: req-claude-catalog
+    kind: file_exists
+    level: error
+    paths: ".claude-plugin/marketplace.json"
+    message: "Marketplace must keep the Claude catalog."
+  - id: req-codex-catalog
+    kind: file_exists
+    level: error
+    paths: ".agents/plugins/marketplace.json"
+    message: "Marketplace must keep the Codex catalog."
+  - id: req-kimi-catalog
+    kind: file_exists
+    level: error
+    paths: ".kimi-plugin/marketplace.json"
+    message: "Marketplace must keep the Kimi catalog."
+  - id: req-catalog-generator
+    kind: file_exists
+    level: error
+    paths: "scripts/generate-catalogs.py"
+    message: "Marketplace must keep scripts/generate-catalogs.py."
+  - id: req-alint-config
+    kind: file_exists
+    level: error
+    paths: ".alint.yml"
+    message: "Marketplace must keep .alint.yml."
+  - id: req-velnor-config
+    kind: file_exists
+    level: error
+    paths: ".velnor/config.toml"
+    message: "Marketplace must keep .velnor/config.toml."
+  - id: req-migration-record
+    kind: file_exists
+    level: error
+    paths: "docs/migration.md"
+    message: "Marketplace must keep docs/migration.md."
+  - id: req-verification-record
+    kind: file_exists
+    level: error
+    paths: "docs/verification.md"
+    message: "Marketplace must keep docs/verification.md."
+  - id: req-active-profile
+    kind: file_exists
+    level: error
+    paths: "standards/alint/active.yml"
+    message: "Marketplace must keep the active profile."
+  - id: req-marketplace-profile
+    kind: file_exists
+    level: error
+    paths: "standards/alint/marketplace.yml"
+    message: "Marketplace must keep the marketplace profile."
+  - id: req-retired-profile
+    kind: file_exists
+    level: error
+    paths: "standards/alint/retired.yml"
+    message: "Marketplace must keep the retired profile."
+  # Shared structure and writing rules (design Section 2). Warning
+  # until the planned directory lands; then promote to error.
+  - id: req-standards-docs
+    kind: dir_exists
+    level: warning
+    paths: "docs/standards"
+    message: "Marketplace must keep docs/standards (planned structure)."
+
+  # Reject active skill payloads (review note).
+  - id: no-skills-dir
+    kind: dir_absent
+    level: error
+    paths: "skills"
+    message: "Marketplace must not carry a skills directory."
+  - id: no-plugin-manifests
+    kind: file_absent
+    level: error
+    paths:
+      - "plugin.json"
+      - ".claude-plugin/plugin.json"
+      - ".kimi-plugin/plugin.json"
+      - ".codex-plugin/plugin.json"
+      - ".muse-plugin/plugin.json"
+    message: "Marketplace must not carry plugin manifests."
+
+  # Defect 9: a catalog entry with the wrong name or revision.
+  # catalog.json is the source of truth; native inventory commands
+  # compare installed IDs against these entries.
+  - id: catalog-rev-shape
+    kind: json_path_matches
+    level: error
+    paths: "catalog.json"
+    path: "$.plugins[*].rev"
+    matches: "^[0-9a-f]{40}$"
+    message: "Catalog revisions must be full 40-character commit SHAs."
+  - id: catalog-repo-shape
+    kind: json_path_matches
+    level: error
+    paths: "catalog.json"
+    path: "$.plugins[*].repo"
+    matches: "^tailrocks/[a-z0-9-]+$"
+    message: "Catalog repos must name tailrocks repositories."
+  - id: catalog-id-shape
+    kind: json_path_matches
+    level: error
+    paths: "catalog.json"
+    path: "$.plugins[*].id"
+    matches: "^[a-z0-9-]+$"
+    message: "Catalog IDs must use only lowercase letters, digits, and dashes."
+  - id: claude-market-name
+    kind: json_path_equals
+    level: error
+    paths: ".claude-plugin/marketplace.json"
+    path: "$.name"
+    equals: "tailrocks"
+    message: "Claude catalog must use the tailrocks marketplace name."
+  - id: codex-market-name
+    kind: json_path_equals
+    level: error
+    paths: ".agents/plugins/marketplace.json"
+    path: "$.name"
+    equals: "tailrocks"
+    message: "Codex catalog must use the tailrocks marketplace name."
+  - id: kimi-market-version
+    kind: json_path_equals
+    level: error
+    paths: ".kimi-plugin/marketplace.json"
+    path: "$.version"
+    equals: "2"
+    message: "Kimi catalog must use JSON version 2."
+  - id: claude-source-kind
+    kind: json_path_equals
+    level: error
+    paths: ".claude-plugin/marketplace.json"
+    path: "$.plugins[*].source.source"
+    equals: "github"
+    message: "Claude catalog entries must use github sources."
+  - id: claude-ref-shape
+    kind: json_path_matches
+    level: error
+    paths: ".claude-plugin/marketplace.json"
+    path: "$.plugins[*].source.ref"
+    matches: "^[0-9a-f]{40}$"
+    message: "Claude catalog refs must be full 40-character commit SHAs."
+  - id: codex-source-kind
+    kind: json_path_equals
+    level: error
+    paths: ".agents/plugins/marketplace.json"
+    path: "$.plugins[*].source.source"
+    equals: "url"
+    message: "Codex catalog entries must use url sources."
+  - id: codex-ref-shape
+    kind: json_path_matches
+    level: error
+    paths: ".agents/plugins/marketplace.json"
+    path: "$.plugins[*].source.ref"
+    matches: "^[0-9a-f]{40}$"
+    message: "Codex catalog refs must be full 40-character commit SHAs."
+  - id: codex-installation-policy
+    kind: json_path_equals
+    level: error
+    paths: ".agents/plugins/marketplace.json"
+    path: "$.plugins[*].policy.installation"
+    equals: "AVAILABLE"
+    message: "Codex catalog entries must carry installation AVAILABLE."
+  - id: codex-auth-policy
+    kind: json_path_equals
+    level: error
+    paths: ".agents/plugins/marketplace.json"
+    path: "$.plugins[*].policy.authentication"
+    equals: "ON_INSTALL"
+    message: "Codex catalog entries must carry authentication ON_INSTALL."
+  - id: codex-category
+    kind: json_path_equals
+    level: error
+    paths: ".agents/plugins/marketplace.json"
+    path: "$.plugins[*].category"
+    equals: "Productivity"
+    message: "Codex catalog entries must carry the Productivity category."
+  - id: kimi-source-shape
+    kind: json_path_matches
+    level: error
+    paths: ".kimi-plugin/marketplace.json"
+    path: "$.plugins[*].source"
+    matches: "^https://github\\.com/tailrocks/[a-z0-9-]+/commit/[0-9a-f]{40}$"
+    message: "Kimi catalog sources must be commit-pinned GitHub URLs."
+  - id: catalog-ids-agree
+    kind: cross_file
+    level: error
+    source: {file: "catalog.json", extract: {json: "$.plugins[*].id"}}
+    targets:
+      - {file: ".claude-plugin/marketplace.json", extract: {json: "$.plugins[*].name"}}
+      - {file: ".agents/plugins/marketplace.json", extract: {json: "$.plugins[*].name"}}
+      - {file: ".kimi-plugin/marketplace.json", extract: {json: "$.plugins[*].id"}}
+    relation: set_equals
+    message: "Every catalog must list exactly the plugin IDs from catalog.json."
+  - id: catalog-revs-agree
+    kind: cross_file
+    level: error
+    source: {file: "catalog.json", extract: {json: "$.plugins[*].rev"}}
+    targets:
+      - {file: ".claude-plugin/marketplace.json", extract: {json: "$.plugins[*].source.ref"}}
+      - {file: ".agents/plugins/marketplace.json", extract: {json: "$.plugins[*].source.ref"}}
+      - {file: ".kimi-plugin/marketplace.json", extract: {regex: "/commit/([0-9a-f]{40})"}}
+    relation: set_equals
+    message: "Every catalog must pin exactly the revisions from catalog.json."
+
+  # Defect 5 (marketplace prose): backticked workspace paths in
+  # records must resolve. Real Markdown links belong to the link
+  # checker.
+  - id: doc-backtick-paths
+    kind: markdown_paths_resolve
+    level: error
+    paths:
+      - "README.md"
+      - "AGENTS.md"
+      - "docs/**/*.md"
+    prefixes:
+      - "standards/"
+      - "docs/"
+      - "scripts/"
+      - "catalog.json"
+    message: "Backticked workspace paths in marketplace prose must resolve."
+
+  # Defect 11: prohibited runtime or generated copies.
+  - id: no-mcp-config
+    kind: file_absent
+    level: error
+    paths: ".mcp.json"
+    message: "Marketplace must not carry MCP server configuration."
+  - id: no-eval-dirs
+    kind: dir_absent
+    level: error
+    paths:
+      - "eval"
+      - "evals"
+      - "benchmarks"
+    message: "Marketplace must not carry evaluation fixtures."
+  - id: denied-tracked-paths
+    kind: git_no_denied_paths
+    level: error
+    denied:
+      - "**/node_modules/**"
+      - "**/__pycache__/**"
+      - "**/*.pyc"
+      - "**/dist/**"
+    message: "Marketplace must not track caches, artifacts, or build output."
