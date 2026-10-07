@@ -189,6 +189,21 @@ rules:
     level: error
     paths: ["skills/-*"]
     message: "Skill IDs must not start with a dash."
+  - id: skill-id-trailing-dash
+    kind: dir_absent
+    level: error
+    paths: ["skills/*-"]
+    message: "Skill IDs must not end with a dash."
+  - id: skill-id-double-dash
+    kind: dir_absent
+    level: error
+    paths: ["skills/*--*"]
+    message: "Skill IDs must not contain a double dash."
+  - id: skill-id-too-long
+    kind: dir_absent
+    level: error
+    paths: ["skills/?????????????????????????????????????????????????????????????????*"]
+    message: "Skill IDs must not exceed 64 characters."
   - id: skill-ids-unique
     kind: unique_by
     level: error

@@ -10,3 +10,18 @@
 version: 1
 extends:
   - https://raw.githubusercontent.com/tailrocks/tailrocks-skills/d54adec8f3188962cdd2b8298350d24114b87079/standards/alint/marketplace.yml#sha256-346f7552f066ccdcf963cc406ef837e1a79181da5e5d21b111592cff0c054923
+rules:
+  # The catalog-*-agree rules compare ID and revision sets only, so a
+  # URL, version, description, or displayName change without regen
+  # slips through. This rule re-runs the generator and fails when any
+  # generated catalog differs. It lives here because fetched profiles
+  # cannot carry command rules.
+  - id: catalogs-fresh
+    kind: generated_file_fresh
+    level: error
+    command: ["python3", "scripts/generate-catalogs.py"]
+    outputs:
+      - ".claude-plugin/marketplace.json"
+      - ".agents/plugins/marketplace.json"
+      - ".kimi-plugin/marketplace.json"
+    message: "Generated catalogs are stale. Run scripts/generate-catalogs.py."
