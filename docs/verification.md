@@ -239,4 +239,10 @@ No evidence yet. This section grows with each phase.
   The same wrapper also fails the velnor-host
   publish job. A portable wrapper fix is in
   progress on `standardize/attest-timeout`.
+- PR #104 (portable bash watchdog) merges
+  as `2c23e4c95`. Review verdict: Ready
+  with zero blocking findings. CI is fully
+  green (21 checks).
+- Release dispatch from `2c23e4c95` is next.
+  Freshness evidence of 14:38Z stays valid.
 - No skill evaluations ran.
