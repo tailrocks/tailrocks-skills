@@ -174,3 +174,19 @@ No evidence yet. This section grows with each phase.
   generated workflows. No release-manifest warnings.
 - docs/standards: 3 files, markdownlint 0 issues, no
   semicolons or contractions. No skill evaluations.
+
+## Phase E second pass and final corrections (2026-10-07)
+
+- Second-pass corrections verified in tree by direct
+  read before commit: 18/18 docs fixes, then all five
+  mapped install, CI, and naming fixes.
+- Gate re-run by the owner after all corrections: alint
+  53/53 in all nine actives, 37/37 marketplace, 15/15
+  retired. Strict JSON passes on all 27 manifests.
+  Frontmatter and ID agreement passes on all 85 skills.
+  markdownlint reports 0 issues in all nine actives.
+- Generation comparison: empty diff in all 11 repos
+  with `velnor-actions` 0.1.0 (`61df27df...ecb36`).
+- Measured roadmap maxima: longest name 25 characters,
+  longest description 342 characters (`tailrocks-idea`).
+- No skill evaluations ran.
