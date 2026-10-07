@@ -190,3 +190,24 @@ No evidence yet. This section grows with each phase.
 - Measured roadmap maxima: longest name 25 characters,
   longest description 342 characters (`tailrocks-idea`).
 - No skill evaluations ran.
+
+## Velnor release evidence (2026-10-07)
+
+- PR #99 merged to main as `8f1b7f02a`. All
+  checks passed except informational DCO. PR #98
+  closed as superseded.
+- Independent port review: APPROVE-WITH-NOTES.
+  The scope note is accepted after verification.
+- Generator acceptance: 11/11 consumer repos
+  generate cleanly. The alint job emission is
+  byte-identical.
+- PR #100 refreshed freshness evidence and
+  merged as `6f06bb95c`. Local gate: 215 rows,
+  0 failing.
+- Release run 37641126742 fails at
+  `build-macos-intel`. Upstream `mr-boxington`
+  provides no Intel-Mac artifact.
+- Linux and macos-arm builds passed. Images and
+  velnor-host graphs fail independently and do
+  not block v0.1.1.
+- No skill evaluations ran.
