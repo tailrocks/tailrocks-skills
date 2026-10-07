@@ -429,3 +429,30 @@ PR process. Then re-dispatch
 `product-release.yml` from the new main tip.
 Refresh the freshness evidence again if its
 24h clock expires.
+
+## Velnor qualify repair (2026-10-07)
+
+The `nested` failure has two pre-existing
+causes. Both predate all recent merges.
+First, qualify installs no tools, so
+`generate` fails closed in validation.
+Second, the harness never normalizes the
+manifest commit, so all fixture goldens
+mismatch.
+
+PR #102 fixes both causes and merges to main
+as `1255ef672`. The review verdict is Ready.
+All CI checks pass.
+
+Release run 37663014979 proves both fixes.
+All four fixtures match on all platforms.
+The run then fails at dogfood `generate`.
+The candidate exits nonzero on the dogfood
+repo. The squash tree is identical to the
+reviewed PR head, so tree content is not the
+cause. Diagnosis of the dogfood failure is
+in progress.
+
+Block VELNOR-REL-3: dogfood `generate`
+fails on all platforms. Do not dispatch
+again before the fix merges.
