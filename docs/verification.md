@@ -252,4 +252,13 @@ No evidence yet. This section grows with each phase.
 - `publish-generator` waits for donbeave
   environment approval. Agent approval is
   blocked by self-review prevention.
+- v0.1.1 publishes as release 406234998
+  from `2c23e4c95`. Tag, immutable mode,
+  20/20 assets, and acceptance verify.
+- Linux SHA:
+  `3cb6e96e04c34e325a55c28f89d477a7c092808842ef8625ab3e7b157a26d7a2`.
+- ARM64 SHA:
+  `9377495853678ea5d47a45adc09291b27b9cfc17afc2540ab158d1261d039c74`.
+- Intel SHA:
+  `abd721a1a4ae982bc50980b7d14b530d6a84f983c23a6469db8afd59c2c055e4`.
 - No skill evaluations ran.

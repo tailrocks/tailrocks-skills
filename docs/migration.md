@@ -527,3 +527,27 @@ on `generator-release` and approved the
 deployment in the UI. `publish-generator`
 now runs. VELNOR-REL-5 is clear. The next
 step is SHA collection after publish.
+
+## Velnor v0.1.1 published (2026-10-08)
+
+The publish job uploaded all 20 assets
+to draft v0.1.1, then exited 1 with no
+message. The cause is a GitHub race:
+the new draft reported a placeholder
+`html_url` with an `untagged-` tag, so
+the silent draft-metadata check failed.
+The tag and all assets were correct.
+
+Recovery: local digest, size, manifest,
+and version checks all passed. The
+approved publish completed with the same
+PATCH the script would run. GitHub then
+set the normal tag URL and immutable
+mode. All post-publish checks passed:
+metadata, names, 20/20 assets, tag
+source, and acceptance record.
+
+Block VELNOR-REL-6 (publish race) is
+clear. The v0.1.1 SHAs are in the
+verification record. Manifest updates
+across the 11 packages are next.
