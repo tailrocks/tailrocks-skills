@@ -260,3 +260,38 @@ with the released binary.
 The retire branch holds commits `b53e3f2` and `e69205a`,
 pushed. The moved review criteria hold commit `21efdf0`
 in the repository package, pushed.
+
+## Phase E CI rollout (2026-10-07)
+
+All 11 repositories now declare the alint verification job
+in `.velnor/config.toml` and carry regenerated CI whose
+required gate covers it. The generator is `velnor-actions`
+0.1.0 from `velnor-new` at `47c7b5b2e`. Rollout commits:
+authoring `93e0054`, repository `480f376`, contribution
+`802b192`, typescript `019a0c6`, macos `54f6d13`, roadmap
+`4ee6019`, code-quality `c298e9e`, rust `1b7e037`, asd
+`485fb6c`, retire `9857806`, marketplace `86b4950`. All
+pushed. The PR template header now records the proven
+preserve behavior in all nine active packages (asd
+`23e20f4`, rust `25a37cb`, rest inside the rollout
+commits). The marketplace gained `docs/standards/`
+(`3b7a24e`), which clears the last alint warning.
+
+Decision D21: the marketplace keeps no PR template. Its
+role structure does not list one, and its profile does
+not require one.
+
+Decision D22: keep `req-standards-docs` at warning level.
+CI fails on warnings, so the rule still enforces. A
+level change would churn the shared pin in all 11 repos.
+
+Finding VELNOR-PIN-SKEW (post-release): generated CI pins
+the alint action input at v0.16.1 while the local gate
+uses v0.17.0. Both pins are fixed and deterministic. The
+Velnor maintainer aligns them at release time.
+
+Note: one transient generation-comparison mismatch
+appeared in six runs with no input change and no
+recurrence. Retries into fresh preview dirs pass. If it
+recurs, investigate the generator before trusting a red
+comparison.
