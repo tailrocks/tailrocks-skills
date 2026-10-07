@@ -511,9 +511,13 @@ is independent and does not block v0.1.1.
 
 Block VELNOR-REL-5: `publish-generator`
 waits for environment approval. The sole
-reviewer is donbeave. Self-review
-prevention blocks agent approval. Only
-the user can approve the deployment in
-the GitHub UI. Do not dispatch again.
-Wait for the approval. Then collect the
-three generator SHAs.
+reviewer is donbeave. The run actor is
+also donbeave, because the dispatch used
+the user credential. Self-review
+prevention blocks every approval path,
+UI and API. Nobody can approve run
+37689782569 under the current rule. The
+user must relax the rule or use another
+dispatcher. Do not dispatch again before
+that change. Then collect the three
+generator SHAs.
