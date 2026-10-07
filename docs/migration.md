@@ -26,6 +26,9 @@ Record this rule before authoring starts.
 | D9 | Pin alint v0.17.0, velnor-actions 0.1.0, markdownlint-cli2 0.23.3, zizmor 1.30.1. |
 | D10 | Accept common design v2. A fresh independent reviewer gave ACCEPT on 2026-10-07. All 15 v1 defects are fixed. |
 | D11 | Carry 4 minor review notes into implementation: profile reject lines, file-length owner row, template coverage lines, per-installer private auth evidence. |
+| D12 | Keep the 3-field Claude host manifest. Plain `validate` passes. The `claude --strict` author warning is advisory. |
+| D13 | Merge and release Velnor PR #98 before Phase E CI regeneration. Repositories consume the generator through release pins. |
+| D14 | Keep the manually added PR template content through the next Velnor regeneration. |
 
 ## Current revisions (Phase A, 2026-10-07 UTC)
 
@@ -57,10 +60,10 @@ outside installed inventories.
 
 - Phase A (current state): complete. Evidence: `docs/verification.md`.
 - Phase B (common design): complete. Evidence: `docs/verification.md`.
-- Phase C (distribution and checks): part 1 complete (central
-  catalogs, shared policy, Velnor vectors).
-  Evidence: `docs/verification.md`. Next action: representative
-  package check, then Phase D package rewrites.
+- Phase C (distribution and checks): complete.
+  Evidence: `docs/verification.md`. Next action: Phase D
+  package rewrites. Tracked: Velnor PR #98 merge plus release
+  before Phase E regeneration.
 - Phase D (rewrite packages): not started.
 - Phase E (migration): not started.
 - Phase F (verify and finish): not started.

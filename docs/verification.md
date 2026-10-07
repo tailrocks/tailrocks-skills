@@ -74,6 +74,24 @@ No skill evaluation ran. No model task ran during checks.
 
 No skill evaluation ran. No model task ran during checks.
 
+## Phase C part 2 evidence (2026-10-07 UTC)
+
+- Representative package: `tailrocks-repository-skills` branch
+  `standardize/common-package`, commits `af60546`, `bdf5f20`,
+  `7178bfc` (manifests plus policy, docs, link repair).
+- `alint check` passes: 53/53 rules, exit 0 (confirmed by an
+  independent verifier and a parent re-run).
+- Strict JSON: 4/4 files pass. Frontmatter: 7/7 names match
+  directories. markdownlint 0.23.3: 0 issues in new files.
+- Trial install lifecycle with Claude Code 2.1.289 in an
+  isolated HOME: add, install, list (7 skills), uninstall,
+  and remove all pass. `muse validate` returns valid true.
+- Velnor PR: `tailrocks/velnor-new` PR #98 opened for the
+  verify vectors. Regeneration waits for merge plus release.
+- Synthesis: `/tmp/phase-c-part2-synthesis.md` (both PASS).
+
+No skill evaluation ran. No model task ran during checks.
+
 ## Later phases
 
 No evidence yet. This section grows with each phase.
