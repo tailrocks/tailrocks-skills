@@ -227,4 +227,16 @@ No evidence yet. This section grows with each phase.
   all 4 fixtures match, hostile negative
   matches. Dogfood `generate` fails on all
   3 platforms.
+- PR #103 (dogfood cargo fetch) merges as
+  `c9554ab14`. Review verdict: Ready. CI is
+  green after an inline clippy-lint fix.
+- Release run 37675185350: all three builds
+  pass, all three qualifies pass,
+  attest-linux passes. Both macOS attest
+  legs fail with `timeout: command not
+  found`.
+- GNU `timeout` is absent on macOS runners.
+  The same wrapper also fails the velnor-host
+  publish job. A portable wrapper fix is in
+  progress on `standardize/attest-timeout`.
 - No skill evaluations ran.
