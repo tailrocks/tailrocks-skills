@@ -220,4 +220,11 @@ No evidence yet. This section grows with each phase.
 - Generator graph needs only eligibility and
   prepare jobs. Host and images failures do
   not block v0.1.1.
+- PR #102 (qualify tools + commit
+  normalization) merges as `1255ef672`.
+  Review verdict: Ready. CI is fully green.
+- Release run 37663014979: all builds pass,
+  all 4 fixtures match, hostile negative
+  matches. Dogfood `generate` fails on all
+  3 platforms.
 - No skill evaluations ran.
