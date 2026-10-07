@@ -521,3 +521,9 @@ user must relax the rule or use another
 dispatcher. Do not dispatch again before
 that change. Then collect the three
 generator SHAs.
+
+The user unchecked prevent-self-review
+on `generator-release` and approved the
+deployment in the UI. `publish-generator`
+now runs. VELNOR-REL-5 is clear. The next
+step is SHA collection after publish.
