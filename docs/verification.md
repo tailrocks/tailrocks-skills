@@ -104,9 +104,10 @@ No skill evaluation ran. No model task ran during checks.
 - Open-source: `tailrocks-open-source-skills` branch
   `standardize/package-rewrite`, commits `2fa4c72`,
   `f7b1f21`, `1ad116b`. alint 53/53, 5/5 frontmatter.
-- asd-ste100: rewrite written on `standardize/package-rewrite`,
-  alint 53/53. Body-order fix-up running per D16. Metadata
-  only in this record.
+- asd-ste100: `asd-ste100-skill` branch
+  `standardize/package-rewrite`, commits `15fcd7b`, `9d9b400`.
+  alint 53/53, body order applied per D16, modes distinct.
+  Metadata only in this record.
 - Synthesis: `/tmp/phase-d-b1-synthesis.md` (3 PASS, 1 PASS
   with the §10 deviation now in fix-up).
 - Push note: SSH signing through the 1Password agent started
