@@ -331,6 +331,59 @@ URL and hash (`d54adec`,
 `sha256-346f7552f066ccdcf963cc406ef837e1a79181da5e5d21b111592cff0c054923`).
 This clears CI-MKT-1.
 
-Next action: open package PRs, squash-merge, tag
-releases, update the central catalog to the release
-revisions, run install checks, then Phase F.
+Done: all 11 package PRs are open. Nine
+package PRs, one marketplace PR (#120), and one
+retired PR (#5) are open. The package PRs are
+authoring #7, repository #18, typescript #3, macos
+#3, roadmap #3, contribution #3, code-quality #3,
+rust #3, and asd-ste100 #1. Alint and Actionlint
+pass. Plan waits for the v0.1.1 release. DCO fails
+on all PRs (informational, branches unprotected,
+no sign-off authority).
+
+## Velnor release checkpoint (2026-10-07)
+
+The verify-vectors change reached `velnor-new`
+main as `8f1b7f02a` (PR #99, successor of
+conflicting PR #98). The port passed an
+independent review with one scope note. The note
+is accepted after verification. Acceptance
+passed 11/11 against consumer configs.
+
+The first v0.1.1 dispatch failed at the
+release-freshness gate on stale evidence. PR
+#100 refreshed the evidence (12 pins
+re-verified live, 2 artifact actions held with
+covering holds to 2026-10-21) and merged as
+`6f06bb95c`.
+
+Block VELNOR-REL-1: the second dispatch (run
+37641126742) fails at `build-macos-intel`.
+Upstream `mr-boxington` provides no
+`darwin/x86_64` artifact at 1.21.1 or at latest
+v1.22.0, so the Intel build cannot install its
+build tool. The publish step requires all three
+attestations. This defect is in the owners'
+release infrastructure. It is outside the
+permitted change scope.
+
+Required prerequisite: the owner repairs the
+Intel build first. Candidate repairs are
+cross-compilation from the aarch64 runner,
+qualification of an Intel MBX, or removal of
+the intel target. Then re-dispatch
+`product-release.yml` from the new main tip
+after fresh CI. Refresh the freshness evidence
+again at dispatch time (24h clock from
+2026-10-07T14:38Z).
+
+Decision D26: do not change the generator
+target set or the release matrix. Record the
+defect as a separate finding per §2. Do not
+invent release asset hashes.
+
+Next action: after v0.1.1 publishes, collect
+the three generator SHAs and update the 11
+release manifests. Then regenerate and verify
+green Plan CI. Then continue with merges,
+releases, catalog, install checks, and Phase F.
