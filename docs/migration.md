@@ -334,9 +334,10 @@ This clears CI-MKT-1.
 Done: all 11 package PRs are open. Nine
 package PRs, one marketplace PR (#120), and one
 retired PR (#5) are open. The package PRs are
-authoring #7, repository #18, typescript #3, macos
-#3, roadmap #3, contribution #3, code-quality #3,
-rust #3, and asd-ste100 #1. Alint and Actionlint
+authoring #7, repository #18, typescript #3,
+macos #3, roadmap #3, contribution #3,
+code-quality #3, rust #3, and asd-ste100 #1.
+Alint and Actionlint
 pass. Plan waits for the v0.1.1 release. DCO fails
 on all PRs (informational, branches unprotected,
 no sign-off authority).
@@ -351,8 +352,8 @@ is accepted after verification. Acceptance
 passed 11/11 against consumer configs.
 
 The first v0.1.1 dispatch failed at the
-release-freshness gate on stale evidence. PR
-#100 refreshed the evidence (12 pins
+release-freshness gate on stale evidence. Then
+PR #100 refreshed the evidence (12 pins
 re-verified live, 2 artifact actions held with
 covering holds to 2026-10-21) and merged as
 `6f06bb95c`.
