@@ -295,3 +295,42 @@ appeared in six runs with no input change and no
 recurrence. Retries into fresh preview dirs pass. If it
 recurs, investigate the generator before trusting a red
 comparison.
+
+## Phase E second pass and final corrections (2026-10-07)
+
+The second review pass covered seven subjects: docs,
+install, naming, no-eval, CI, and two STE samples. The
+docs subject found 18 findings. All 18 fixes are in the
+trees. The install subject passed 8 of 9 guides. The asd
+guide held one HIGH finding (INSTALL-ASD-1, stale
+checkout paths) and one LOW finding (catalog pin drift).
+The naming subject passed with one LOW note. The no-eval
+subject passed. The CI subject passed conditionally with
+one MEDIUM finding (CI-MKT-1, marketplace local-path
+extends). The STE samples passed.
+
+Corrections, all committed and pushed: asd `9521486`,
+`9ae552a`, `195d7a1`; code-quality `865eeaf`; macos
+`7f4c40e`; contribution `20a69f8`, `7014a45`;
+repository `194f508`; roadmap `b94f181`, `da137e0`;
+rust `d78bfaf`; authoring `1e521d3`; typescript
+`7707f93`; marketplace `81d082e`.
+
+Decision D23: restate measured cap facts with exact
+maxima. The roadmap package uses 25 characters for the
+longest name and 342 characters for the longest
+description (`tailrocks-idea`).
+
+Decision D24: align the asd install guide catalog pin
+with the other eight guides
+(`c401bb7f8aeb77cc8d0cec0b99ce2ab2e0427f3e`). The
+release wave re-pins all nine guides together.
+
+Decision D25: pin the marketplace profile by immutable
+URL and hash (`d54adec`,
+`sha256-346f7552f066ccdcf963cc406ef837e1a79181da5e5d21b111592cff0c054923`).
+This clears CI-MKT-1.
+
+Next action: open package PRs, squash-merge, tag
+releases, update the central catalog to the release
+revisions, run install checks, then Phase F.
