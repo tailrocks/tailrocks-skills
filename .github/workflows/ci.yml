@@ -45,6 +45,23 @@ jobs:
         with:
           key: mise-v1-x86_64-unknown-linux-gnu-2026.9.18-75c77caa4018556f
           path: ~/.local/share/mise
+  alint:
+    name: Alint
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: "false"
+      - name: Run Alint
+        uses: asamarts/alint@9f9d34ba0eae3888299b9e570f43338b0e7f2cdb
+        with:
+          config: .alint.yml
+          fail-on-warning: "true"
+          format: github
+          path: .
+          version: v0.16.1
   plan:
     name: Plan
     runs-on: ubuntu-26.04
@@ -219,6 +236,7 @@ jobs:
     needs:
       - plan
       - actionlint
+      - alint
     if: always()
     steps:
       - name: Setup Mise
@@ -274,14 +292,14 @@ jobs:
         env:
           VELNOR_INTERNAL_OP: write-request-v1
           VELNOR_NEEDS_JSON: ${{ toJSON(needs) }}
-          VELNOR_NEEDS_EXPECTED: "[\"actionlint\",\"plan\"]"
+          VELNOR_NEEDS_EXPECTED: "[\"actionlint\",\"alint\",\"plan\"]"
           VELNOR_REQUEST_FILE: ${{ runner.temp }}/velnor/request/merge-v1-request.json
         run: "\"$RUNNER_TEMP/velnor/bin/velnor-actions-0.1.0\""
       - name: Merge reports
         env:
           VELNOR_INTERNAL_OP: merge-v1
           VELNOR_NEEDS_JSON: ${{ toJSON(needs) }}
-          VELNOR_NEEDS_EXPECTED: "[\"actionlint\",\"plan\"]"
+          VELNOR_NEEDS_EXPECTED: "[\"actionlint\",\"alint\",\"plan\"]"
           VELNOR_REQUEST_FILE: ${{ runner.temp }}/velnor/request/merge-v1-request.json
         run: "\"$RUNNER_TEMP/velnor/bin/velnor-actions-0.1.0\""
       - name: Save Mise tools
