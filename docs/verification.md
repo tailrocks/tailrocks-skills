@@ -118,3 +118,24 @@ No skill evaluation ran. No model task ran during checks.
 ## Later phases
 
 No evidence yet. This section grows with each phase.
+
+## Phase D batch 2 (2026-10-07)
+
+- rust: PASS. alint 53/53 on `1fd1396`. Strict JSON x3.
+  Frontmatter 15/15. Max 182 lines. 16 keys verified.
+- roadmap: PASS. alint 53/53. Strict JSON x3. Frontmatter
+  12/12. Native probes match the expected state.
+- code-quality: PASS with an owner ruling. alint 53/53.
+  Strict JSON x4 with 0.28.0 agreement. Frontmatter 14/14.
+  markdownlint 0/69. Vendored copies byte-identical. The
+  count is 14, not 15, per decision D19.
+- typescript: PASS. alint 53/53 re-run by the owner. Strict
+  JSON x3. Frontmatter 12/12. Links 0 broken. markdownlint
+  0/87. Native probes pass with the expected warning.
+- macos: PASS. alint 53/53 re-run by the owner. Strict JSON
+  3/3. Frontmatter 15/15. Refs 200/200. markdownlint 0/24.
+  Residual STE classes stay open for Phase E.
+- Drift: the owner checked all five remote heads through
+  the GitHub API. No drift exists.
+- Install checks: not run. Compatibility rows stay not-run
+  with reasons. No skill evaluations, per the goal.

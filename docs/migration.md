@@ -186,3 +186,30 @@ outside installed inventories.
 
 - `/tmp/<repository>-inventory.json` (11 files, Phase A evidence)
 - `/tmp/phase-a-synthesis.md` (Phase A checkpoint)
+
+## Phase D batch 2 checkpoint (2026-10-07)
+
+All five package rewrites pass. Writers worked on
+`standardize/package-rewrite` atop clean bases. The owner verified
+the remote heads through the GitHub API, so no drift exists.
+
+- rust: commits `8c45cff`, `b675e40`, `1fd1396`. alint 53/53 on
+  HEAD. 15 skills, max 182 lines. Pushed.
+- roadmap: commits `b1a9fcf`, `a617678`, `1528fd9`. alint 53/53
+  on HEAD. 12 skills. Pushed.
+- code-quality: commits `2e2ed28`, `fc66e03`, `26619ea`.
+  alint 53/53 on HEAD. 14 skills: the improve trio merges to
+  audit plus security-audit, with deep work as `--deep`.
+  Vendored files are byte-identical. Pushed.
+- typescript: commits `bcbfe48`, `e1f38ec`, `2d02c95`.
+  alint 53/53 verified before commit. 12 skills, 114-163
+  lines. Pushed.
+- macos: commits `b496a7f`, `74af176`, `622834b`. alint 53/53
+  verified before commit. 15 skills, 93-260 lines. Pushed.
+
+Decision D19: accept 14 code-quality skills. The goal merges
+improve-deep into improve-audit through a coverage option, so
+the stale expectation of 15 does not apply.
+
+The macOS residual STE vocabulary classes move to the Phase E
+final editorial review. The Kimi pins move at release.
