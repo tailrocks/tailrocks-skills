@@ -213,3 +213,27 @@ the stale expectation of 15 does not apply.
 
 The macOS residual STE vocabulary classes move to the Phase E
 final editorial review. The Kimi pins move at release.
+
+## Phase E renames (2026-10-07)
+
+Both reviewed renames are complete on GitHub. The owner
+verified that each target name was free before the rename.
+Old URLs redirect to the new names.
+
+- `tailrocks-open-source-skills` becomes
+  `tailrocks-contribution-skills` (public). Reason: the
+  package holds only contribution procedures. Plugin name
+  changes with the repository. Skill IDs do not change.
+  Branch commit `9de71a1`, pushed.
+- `tailrocks/asd-ste100-skill` becomes
+  `tailrocks-asd-ste100-skills` (private). Reason: the goal
+  mandates the team name form. Only repository URLs change.
+  The plugin name `asd-ste100-skill` and the skill ID
+  `asd-ste100` do not change. Branch commit `cb54957`,
+  pushed.
+
+Affected consumers, all inside this work set: the two
+package manifests, READMEs, and docs guides; the central
+catalog files (names and revisions update with the final
+catalog step); this work record. No outside consumer is
+known. The local directory names do not change.

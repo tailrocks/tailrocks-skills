@@ -139,3 +139,11 @@ No evidence yet. This section grows with each phase.
   the GitHub API. No drift exists.
 - Install checks: not run. Compatibility rows stay not-run
   with reasons. No skill evaluations, per the goal.
+
+## Phase E renames (2026-10-07)
+
+- Both target names returned HTTP 404 before the rename.
+- After the rename, both new names resolve with the
+  expected visibility (contribution public, asd private).
+- alint 53/53 passes on both rename commits (`9de71a1`,
+  `cb54957`). No skill evaluation ran.
