@@ -147,3 +147,17 @@ No evidence yet. This section grows with each phase.
   expected visibility (contribution public, asd private).
 - alint 53/53 passes on both rename commits (`9de71a1`,
   `cb54957`). No skill evaluation ran.
+
+## Phase E first pass and corrections (2026-10-07)
+
+- First pass: 9/9 branches reviewed with named skill
+  coverage. No-eval CLEAN in 8 branches; 1 violation in
+  macos, now deleted and verified absent.
+- Corrections: alint 53/53 re-run by the owner on all 9
+  trees before commit. Strict JSON, frontmatter, and
+  markdownlint gates pass per writer evidence. Added-line
+  eval greps are clean.
+- Blocked: asd-F16 (absent CI workflows) and rust-F7
+  (absent alint job) wait on supported regeneration,
+  now in progress with the verified local binary.
+- Install checks: not run, by plan. No skill evaluations.

@@ -237,3 +237,26 @@ package manifests, READMEs, and docs guides; the central
 catalog files (names and revisions update with the final
 catalog step); this work record. No outside consumer is
 known. The local directory names do not change.
+
+## Phase E first pass and corrections (2026-10-07)
+
+The first review pass covered all nine rewritten packages
+with a named record for each skill. It found one critical
+defect: a section-15 comparison requirement in the macOS
+agent-integration reference. The correction round fixed 199
+findings, rejected 17 with evidence, and left 2 blocked on
+Velnor regeneration. All nine correction commits are pushed:
+authoring `7024993`, repository `be92ee0`, contribution
+`9cfd02d`, asd `b9c8fe0`, typescript `aeaafd8`, macos
+`217aaa2`, roadmap `0f64930`, code-quality `ae4b1f3`, rust
+`2307bc4`.
+
+Decision D20: regenerate with the locally built
+`velnor-actions` 0.1.0 from `velnor-new` at `47c7b5b2e`
+(the Velnor change branch). The owner verified the binary
+identity and version. The post-release wave re-verifies
+with the released binary.
+
+The retire branch holds commits `b53e3f2` and `e69205a`,
+pushed. The moved review criteria hold commit `21efdf0`
+in the repository package, pushed.
