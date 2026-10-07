@@ -29,6 +29,10 @@ Record this rule before authoring starts.
 | D12 | Keep the 3-field Claude host manifest. Plain `validate` passes. The `claude --strict` author warning is advisory. |
 | D13 | Merge and release Velnor PR #98 before Phase E CI regeneration. Repositories consume the generator through release pins. |
 | D14 | Keep the manually added PR template content through the next Velnor regeneration. |
+| D15 | Rename the central catalog asd entry id to `asd-ste100-skill` at the Phase E update. The skill ID `asd-ste100` stays unchanged. |
+| D16 | The asd-ste100 SKILL.md must use the Section 10 common body order. Practical and Strict modes stay distinct. |
+| D17 | Shard-tail finals stay open for the Phase E private review. They need the source holder. |
+| D18 | Push through gh HTTPS auth while 1Password SSH signing refuses. Keep remotes unchanged. |
 
 ## Current revisions (Phase A, 2026-10-07 UTC)
 
@@ -61,9 +65,12 @@ outside installed inventories.
 - Phase A (current state): complete. Evidence: `docs/verification.md`.
 - Phase B (common design): complete. Evidence: `docs/verification.md`.
 - Phase C (distribution and checks): complete.
-  Evidence: `docs/verification.md`. Next action: Phase D
-  package rewrites. Tracked: Velnor PR #98 merge plus release
-  before Phase E regeneration.
+  Evidence: `docs/verification.md`.
+- Phase D batch 1 (authoring, repository, open-source,
+  asd-ste100): complete. Evidence: `docs/verification.md`.
+  Next action: Phase D batch 2 rewrites. Tracked: Velnor PR
+  #98 merge plus release; asd-ste100 body-order fix-up;
+  1Password SSH signing refused, gh HTTPS fallback in use.
 - Phase D (rewrite packages): not started.
 - Phase E (migration): not started.
 - Phase F (verify and finish): not started.
