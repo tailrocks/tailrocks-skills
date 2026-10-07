@@ -210,4 +210,14 @@ No evidence yet. This section grows with each phase.
 - Linux and macos-arm builds passed. Images and
   velnor-host graphs fail independently and do
   not block v0.1.1.
+- PR #101 (Intel cross-compile) merges as
+  `8b2b5527e`. Review verdict: Ready. CI is
+  fully green, including DCO.
+- Release run 37652850835: all three builds
+  pass, including `build-macos-intel`. All
+  three qualify jobs fail with `FATAL: release
+  candidate generate failed for nested`.
+- Generator graph needs only eligibility and
+  prepare jobs. Host and images failures do
+  not block v0.1.1.
 - No skill evaluations ran.

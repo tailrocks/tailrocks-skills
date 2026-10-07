@@ -388,3 +388,44 @@ the three generator SHAs and update the 11
 release manifests. Then regenerate and verify
 green Plan CI. Then continue with merges,
 releases, catalog, install checks, and Phase F.
+
+## Velnor Intel repair (2026-10-07)
+
+Decision D27: cross-compile the Intel leg on
+the ARM runner. Keep all pins. Keep native
+Intel qualify and attest. This repair changes
+only how the build runner makes the x86_64
+bytes. It does not change the target set.
+
+PR #101 implements D27 and merges to main as
+`8b2b5527e`. The review verdict is Ready. All
+CI checks pass, including DCO.
+
+Release run 37652850835 proves the repair.
+All three builds pass, including
+`build-macos-intel` on hosted `macos-15`.
+The run then fails in qualify. All three
+qualify jobs report the same error: the
+release candidate `generate` fails for the
+`nested` golden case.
+
+Block VELNOR-REL-2: qualify fails for the
+`nested` case on all platforms. This failure
+is platform-independent. It is not an
+Intel-only defect. Diagnosis is in progress.
+Do not dispatch again before the fix merges.
+
+Separate findings (other products, not
+blocking v0.1.1): the velnor-host publish
+fails because `timeout` is absent on the
+macOS runner. The runner-images build fails
+in an image probe assertion. The generator
+graph needs neither product. Record both
+defects per §2. Do not change them.
+
+Next action: diagnose the `nested` qualify
+failure. Fix it on main through the normal
+PR process. Then re-dispatch
+`product-release.yml` from the new main tip.
+Refresh the freshness evidence again if its
+24h clock expires.
