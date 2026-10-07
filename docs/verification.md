@@ -161,3 +161,16 @@ No evidence yet. This section grows with each phase.
   (absent alint job) wait on supported regeneration,
   now in progress with the verified local binary.
 - Install checks: not run, by plan. No skill evaluations.
+
+## Phase E CI rollout (2026-10-07)
+
+- Generation comparisons: clean in all 11 repos,
+  re-verified by the owner in 9 after the template
+  header refresh. PR template sha identical in all
+  nine active packages (`44a7c92b6d1b`).
+- alint re-run by the owner: 53/53 in all nine active
+  packages, 15/15 retired, 37/37 marketplace.
+- Required gates cover the alint job in all 11
+  generated workflows. No release-manifest warnings.
+- docs/standards: 3 files, markdownlint 0 issues, no
+  semicolons or contractions. No skill evaluations.
