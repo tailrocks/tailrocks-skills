@@ -92,6 +92,28 @@ No skill evaluation ran. No model task ran during checks.
 
 No skill evaluation ran. No model task ran during checks.
 
+## Phase D batch 1 evidence (2026-10-07 UTC)
+
+- Authoring: `tailrocks-skill-authoring-skills` branch
+  `standardize/package-rewrite`, commits `6f779b5`, `25ca59f`,
+  `6ad844e`. alint 53/53, 4/4 frontmatter, template moved.
+- Repository content: `tailrocks-repository-skills` branch
+  `standardize/common-package`, commit `a635822` (7 skills).
+  alint 53/53, 7/7 frontmatter, `--method GET` and `--draft`
+  fixes present.
+- Open-source: `tailrocks-open-source-skills` branch
+  `standardize/package-rewrite`, commits `2fa4c72`,
+  `f7b1f21`, `1ad116b`. alint 53/53, 5/5 frontmatter.
+- asd-ste100: rewrite written on `standardize/package-rewrite`,
+  alint 53/53. Body-order fix-up running per D16. Metadata
+  only in this record.
+- Synthesis: `/tmp/phase-d-b1-synthesis.md` (3 PASS, 1 PASS
+  with the §10 deviation now in fix-up).
+- Push note: SSH signing through the 1Password agent started
+  to refuse; pushes use gh HTTPS auth per D18.
+
+No skill evaluation ran. No model task ran during checks.
+
 ## Later phases
 
 No evidence yet. This section grows with each phase.
