@@ -456,3 +456,28 @@ in progress.
 Block VELNOR-REL-3: dogfood `generate`
 fails on all platforms. Do not dispatch
 again before the fix merges.
+
+## Velnor dogfood repair (2026-10-07)
+
+PR #103 adds `cargo fetch --locked` for
+both workspaces in the harness script.
+The command fills an empty cargo cache
+before the locked metadata call. The
+review verdict is Ready. CI is green
+after an inline clippy-lint correction.
+PR #103 merges to main as `c9554ab14`.
+
+Release run 37675185350 proves both prior
+repairs. All three builds pass. All three
+qualifies pass. Attest-linux passes. The
+two macOS attest legs fail with `timeout:
+command not found`. GNU `timeout` is absent
+on macOS runners. The same wrapper also
+fails the velnor-host publish job. The
+emission site is the shared `gh_function`.
+A portable-timeout fix is in progress on
+`standardize/attest-timeout`.
+
+Block VELNOR-REL-4: the macOS attest legs
+need a portable `gh` wrapper. Do not
+dispatch again before the fix merges.
