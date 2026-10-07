@@ -245,4 +245,11 @@ No evidence yet. This section grows with each phase.
   green (21 checks).
 - Release dispatch from `2c23e4c95` is next.
   Freshness evidence of 14:38Z stays valid.
+- Release run 37689782569: all generator
+  builds, qualifies, and attests pass.
+  Velnor-host publishes. Runner-images
+  build fails independently.
+- `publish-generator` waits for donbeave
+  environment approval. Agent approval is
+  blocked by self-review prevention.
 - No skill evaluations ran.

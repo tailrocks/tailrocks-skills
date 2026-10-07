@@ -496,3 +496,24 @@ head exactly.
 The v0.1.1 release dispatch from the new
 main tip is next. The freshness evidence
 of 14:38Z stays valid.
+
+## Velnor v0.1.1 release run (2026-10-07)
+
+Release run 37689782569 dispatches from
+`2c23e4c95`. Every generator job passes:
+all three builds, all three qualifies,
+all three attests, and the manifest
+attest. The portable watchdog works on
+hosted macOS runners. The velnor-host
+graph also builds, attests, and publishes.
+The runner-images build fails. That graph
+is independent and does not block v0.1.1.
+
+Block VELNOR-REL-5: `publish-generator`
+waits for environment approval. The sole
+reviewer is donbeave. Self-review
+prevention blocks agent approval. Only
+the user can approve the deployment in
+the GitHub UI. Do not dispatch again.
+Wait for the approval, then collect the
+three generator SHAs.
