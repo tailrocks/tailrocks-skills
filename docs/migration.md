@@ -515,5 +515,5 @@ reviewer is donbeave. Self-review
 prevention blocks agent approval. Only
 the user can approve the deployment in
 the GitHub UI. Do not dispatch again.
-Wait for the approval, then collect the
+Wait for the approval. Then collect the
 three generator SHAs.
