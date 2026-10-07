@@ -481,3 +481,18 @@ A portable-timeout fix is in progress on
 Block VELNOR-REL-4: the macOS attest legs
 need a portable `gh` wrapper. Do not
 dispatch again before the fix merges.
+
+## Velnor attest repair (2026-10-07)
+
+PR #104 replaces the GNU `timeout` call
+with a pure-bash watchdog. The wrapper
+runs on runners without GNU `timeout`.
+The review verdict is Ready with zero
+blocking findings. CI is fully green.
+PR #104 merges to main as `2c23e4c95`.
+The squash tree matches the reviewed
+head exactly.
+
+The v0.1.1 release dispatch from the new
+main tip is next. The freshness evidence
+of 14:38Z stays valid.
