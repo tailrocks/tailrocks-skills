@@ -6,7 +6,7 @@
       "id": "tailrocks-skill-authoring-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-skill-authoring-skills",
-      "rev": "95348b233ae53b4ea1f805b5e03843cbebcdbacd",
+      "rev": "85340f66cd81bb39015d01fa933c1411fd23ddd5",
       "version": "0.28.0"
     },
     {
@@ -15,7 +15,7 @@
       "id": "tailrocks-repository-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-repository-skills",
-      "rev": "759849769249b5a4ada95595914ab8e81daf618b",
+      "rev": "d47cb6700720a0623c491ff9f31d1b06d6e6a475",
       "version": "0.4.0"
     },
     {
@@ -24,7 +24,7 @@
       "id": "tailrocks-typescript-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-typescript-skills",
-      "rev": "0652a50fce67c4a11f01ebb960a50fd5e283e0a9",
+      "rev": "92f5dffb36d0c95c9c36056ee74caf29576621d6",
       "version": "0.28.0"
     },
     {
@@ -33,7 +33,7 @@
       "id": "tailrocks-macos-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-macos-skills",
-      "rev": "eb0be5522fe0c1c9c74d41ee354446a011b10c74",
+      "rev": "22b5ce7f174a68d6bda0e28368eef668c6f7dbf8",
       "version": "0.28.0"
     },
     {
@@ -42,25 +42,25 @@
       "id": "tailrocks-roadmap-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-roadmap-skills",
-      "rev": "98d23280cd562c9298ce13ae40bd0eb73a3e376a",
+      "rev": "e18fa33c6d0793ec91e4a3d60802639a024c31be",
       "version": "0.28.0"
     },
     {
-      "description": "Controlled open-source contribution workflows from repository reconnaissance through proposal, preparation, submission, and review response.",
-      "displayName": "Open Source Skills",
-      "id": "tailrocks-open-source-skills",
+      "description": "Contribution procedures for external projects, from reconnaissance and proposal through preparation, submission, and review response.",
+      "displayName": "Contribution Skills",
+      "id": "tailrocks-contribution-skills",
       "private": false,
-      "repo": "tailrocks/tailrocks-open-source-skills",
-      "rev": "3e51bc5c91949f361ed926d8f760bcb16edef111",
+      "repo": "tailrocks/tailrocks-contribution-skills",
+      "rev": "be0bf7fd1d213a4790edd2d8a95afdf765682e4b",
       "version": "0.28.0"
     },
     {
-      "description": "Evidence-driven code-health audits, root-cause diagnosis, simplification, remediation, and repository instruction topology.",
+      "description": "Evidence-driven code audits, root-cause diagnosis, simplification, remediation, improvement plans, and repository instruction policy.",
       "displayName": "Code Quality Skills",
       "id": "tailrocks-code-quality-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-code-quality-skills",
-      "rev": "e63a82f28b688a7fada418e615aa9ec0eeec4c04",
+      "rev": "004c96080dc518e7f452650491004ce04f776cf5",
       "version": "0.28.0"
     },
     {
@@ -69,16 +69,16 @@
       "id": "tailrocks-rust-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-rust-skills",
-      "rev": "0317f100714dc66285c01c24f7967134375b5ac5",
+      "rev": "64fa3a96c0cec96d25dabf1d8e1008bd400c35e6",
       "version": "0.28.0"
     },
     {
       "description": "Clear technical English skill with Practical default and Strict ASD-STE100 Issue 9 profiles.",
       "displayName": "ASD-STE100: Clear Technical English",
-      "id": "asd-ste100",
+      "id": "asd-ste100-skill",
       "private": true,
-      "repo": "tailrocks/asd-ste100-skill",
-      "rev": "0572839a13afc145083535b3e29c79b78489af40",
+      "repo": "tailrocks/tailrocks-asd-ste100-skills",
+      "rev": "240dbecda9e741aad4f9d205c6faef3cdfe6d9a6",
       "version": "0.1.0"
     }
   ]
