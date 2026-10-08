@@ -6,8 +6,9 @@
       "id": "tailrocks-skill-authoring-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-skill-authoring-skills",
-      "rev": "85340f66cd81bb39015d01fa933c1411fd23ddd5",
-      "version": "0.28.0"
+      "rev": "a5b25695bd35fc5265894529ab7c85d87162ae42",
+      "tag": "v0.28.1",
+      "version": "0.28.1"
     },
     {
       "description": "Target-bound repository orchestration plus pull-request lifecycle: template, create, refresh, review, and guarded merge.",
@@ -15,8 +16,9 @@
       "id": "tailrocks-repository-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-repository-skills",
-      "rev": "d47cb6700720a0623c491ff9f31d1b06d6e6a475",
-      "version": "0.4.0"
+      "rev": "4926eb7dee53b6cd4f772cc205e03af7ef5664b3",
+      "tag": "v0.4.1",
+      "version": "0.4.1"
     },
     {
       "description": "Strict TypeScript, React, and TanStack workflows for project setup, migration, remediation, refactoring, review, web design, and visual regression.",
@@ -24,8 +26,9 @@
       "id": "tailrocks-typescript-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-typescript-skills",
-      "rev": "92f5dffb36d0c95c9c36056ee74caf29576621d6",
-      "version": "0.28.0"
+      "rev": "41768afec4886fee610b6cfbfcbb2205cb01bba2",
+      "tag": "v0.28.1",
+      "version": "0.28.1"
     },
     {
       "description": "Native macOS Swift and SwiftUI workflows for Liquid Glass design, project setup, Rust-core integration, visual QA, and regression control.",
@@ -33,8 +36,9 @@
       "id": "tailrocks-macos-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-macos-skills",
-      "rev": "22b5ce7f174a68d6bda0e28368eef668c6f7dbf8",
-      "version": "0.28.0"
+      "rev": "af78c8ff21c9df8b00f9fd8046f00a3a5ced7f85",
+      "tag": "v0.28.1",
+      "version": "0.28.1"
     },
     {
       "description": "Evidence-bound roadmap delivery from idea capture and research through shaping, planning, execution proof, reconciliation, and retrospection.",
@@ -42,8 +46,9 @@
       "id": "tailrocks-roadmap-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-roadmap-skills",
-      "rev": "e18fa33c6d0793ec91e4a3d60802639a024c31be",
-      "version": "0.28.0"
+      "rev": "c273c8645860a5d0aebfdc73dd61f825e0e30bf9",
+      "tag": "v0.28.1",
+      "version": "0.28.1"
     },
     {
       "description": "Contribution procedures for external projects, from reconnaissance and proposal through preparation, submission, and review response.",
@@ -51,8 +56,9 @@
       "id": "tailrocks-contribution-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-contribution-skills",
-      "rev": "be0bf7fd1d213a4790edd2d8a95afdf765682e4b",
-      "version": "0.28.0"
+      "rev": "25a3f6a9a66937ff5d70cbc35909cb2904a5b7d5",
+      "tag": "v0.28.1",
+      "version": "0.28.1"
     },
     {
       "description": "Evidence-driven code audits, root-cause diagnosis, simplification, remediation, improvement plans, and repository instruction policy.",
@@ -60,8 +66,9 @@
       "id": "tailrocks-code-quality-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-code-quality-skills",
-      "rev": "004c96080dc518e7f452650491004ce04f776cf5",
-      "version": "0.28.0"
+      "rev": "d14832f9d3cf0690851f3ecaaa7f9de32c0d1096",
+      "tag": "v0.28.1",
+      "version": "0.28.1"
     },
     {
       "description": "Strict Rust engineering workflows covering Axum, GraphQL, gRPC, TUI design, project baselines, review, refactoring, and remediation.",
@@ -69,8 +76,9 @@
       "id": "tailrocks-rust-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-rust-skills",
-      "rev": "64fa3a96c0cec96d25dabf1d8e1008bd400c35e6",
-      "version": "0.28.0"
+      "rev": "a2cfae1b8a4d1b29247e1b2a3bfd4fe6f30d23a7",
+      "tag": "v0.28.1",
+      "version": "0.28.1"
     },
     {
       "description": "Clear technical English skill with Practical default and Strict ASD-STE100 Issue 9 profiles.",
@@ -78,8 +86,9 @@
       "id": "asd-ste100-skill",
       "private": true,
       "repo": "tailrocks/tailrocks-asd-ste100-skills",
-      "rev": "240dbecda9e741aad4f9d205c6faef3cdfe6d9a6",
-      "version": "0.1.0"
+      "rev": "8a35d406a8f293d0ee6651f3677c36dd6d6d2479",
+      "tag": "v0.1.1",
+      "version": "0.1.1"
     }
   ]
 }
