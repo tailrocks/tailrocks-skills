@@ -551,3 +551,45 @@ Block VELNOR-REL-6 (publish race) is
 clear. The v0.1.1 SHAs are in the
 verification record. Manifest updates
 across the 11 packages are next.
+
+## CLAUDE.md retirement decision (2026-10-08)
+
+The first install checks found two
+blockers. Muse rejects every
+`.github/CLAUDE.md` symlink, local and
+remote. Claude accepts a tag pin but
+rejects a SHA pin. Codex passes 9/9.
+
+The user asked for symlinks, never file
+copies. Separate research verified the
+installer behavior. A symlink inside a
+consumed repository fails in Muse in
+both routes. The subdir copy adds no
+proven benefit over `AGENTS.md`, which
+every installer already reads.
+
+Decision: the generator retires
+`.github/CLAUDE.md`. It no longer emits
+the path. It deletes stale copies on
+regeneration. The retired path stays
+generator-owned through a retirement
+list. A new lint rule rejects the path
+in both symlink and file forms.
+
+The implementation is in velnor-new PR
+106. The local gates pass: format,
+clippy under the CI Rust version, all
+Rust suites, lint validation, and a
+clean regeneration with one deleted
+symlink as the sole delta. The root
+`CLAUDE.md` is a symlink again. Nobody
+consumes the velnor-new repository
+through an installer, so the root form
+is safe.
+
+The next steps are fixed. Merge PR 106.
+Release velnor-new 0.1.3. Regenerate
+all 9 packages. Publish patch releases.
+Point the catalog at immutable tags.
+Re-run the Muse, Claude, and Codex
+install checks. Then finish Phase F.

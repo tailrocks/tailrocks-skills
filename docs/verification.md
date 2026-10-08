@@ -261,4 +261,23 @@ No evidence yet. This section grows with each phase.
   `9377495853678ea5d47a45adc09291b27b9cfc17afc2540ab158d1261d039c74`.
 - Intel SHA:
   `abd721a1a4ae982bc50980b7d14b530d6a84f983c23a6469db8afd59c2c055e4`.
+- Catalog PR #122 merged as `a37365b`.
+  All catalog entries use immutable
+  release revisions.
+- Install checks, first round: Codex
+  9/9 pass. Muse 0/9: the installer
+  rejects the `.github/CLAUDE.md`
+  symlink. Claude: a tag pin passes, a
+  SHA pin fails.
+- OMIT implementation on velnor-new
+  branch `fix/claude-md-regular-file`:
+  retirement list, tree count 4 to 3,
+  two new retirement tests, five golden
+  previews updated, new
+  `no-github-claude-md` lint rule,
+  clean regeneration with verdict
+  `identical`.
+- Negative control: the new rule fires
+  on the symlink form and on the file
+  form of the retired path.
 - No skill evaluations ran.
