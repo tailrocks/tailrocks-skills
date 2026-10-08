@@ -8,91 +8,91 @@
       "description": "Create, audit, update, and refactor agent skills while preserving clear ownership, contracts, routing, evidence, and portability.",
       "name": "tailrocks-skill-authoring-skills",
       "source": {
-        "ref": "85340f66cd81bb39015d01fa933c1411fd23ddd5",
+        "ref": "a5b25695bd35fc5265894529ab7c85d87162ae42",
         "repo": "tailrocks/tailrocks-skill-authoring-skills",
         "source": "github"
       },
-      "version": "0.28.0"
+      "version": "0.28.1"
     },
     {
       "description": "Target-bound repository orchestration plus pull-request lifecycle: template, create, refresh, review, and guarded merge.",
       "name": "tailrocks-repository-skills",
       "source": {
-        "ref": "d47cb6700720a0623c491ff9f31d1b06d6e6a475",
+        "ref": "4926eb7dee53b6cd4f772cc205e03af7ef5664b3",
         "repo": "tailrocks/tailrocks-repository-skills",
         "source": "github"
       },
-      "version": "0.4.0"
+      "version": "0.4.1"
     },
     {
       "description": "Strict TypeScript, React, and TanStack workflows for project setup, migration, remediation, refactoring, review, web design, and visual regression.",
       "name": "tailrocks-typescript-skills",
       "source": {
-        "ref": "92f5dffb36d0c95c9c36056ee74caf29576621d6",
+        "ref": "41768afec4886fee610b6cfbfcbb2205cb01bba2",
         "repo": "tailrocks/tailrocks-typescript-skills",
         "source": "github"
       },
-      "version": "0.28.0"
+      "version": "0.28.1"
     },
     {
       "description": "Native macOS Swift and SwiftUI workflows for Liquid Glass design, project setup, Rust-core integration, visual QA, and regression control.",
       "name": "tailrocks-macos-skills",
       "source": {
-        "ref": "22b5ce7f174a68d6bda0e28368eef668c6f7dbf8",
+        "ref": "af78c8ff21c9df8b00f9fd8046f00a3a5ced7f85",
         "repo": "tailrocks/tailrocks-macos-skills",
         "source": "github"
       },
-      "version": "0.28.0"
+      "version": "0.28.1"
     },
     {
       "description": "Evidence-bound roadmap delivery from idea capture and research through shaping, planning, execution proof, reconciliation, and retrospection.",
       "name": "tailrocks-roadmap-skills",
       "source": {
-        "ref": "e18fa33c6d0793ec91e4a3d60802639a024c31be",
+        "ref": "c273c8645860a5d0aebfdc73dd61f825e0e30bf9",
         "repo": "tailrocks/tailrocks-roadmap-skills",
         "source": "github"
       },
-      "version": "0.28.0"
+      "version": "0.28.1"
     },
     {
       "description": "Contribution procedures for external projects, from reconnaissance and proposal through preparation, submission, and review response.",
       "name": "tailrocks-contribution-skills",
       "source": {
-        "ref": "be0bf7fd1d213a4790edd2d8a95afdf765682e4b",
+        "ref": "25a3f6a9a66937ff5d70cbc35909cb2904a5b7d5",
         "repo": "tailrocks/tailrocks-contribution-skills",
         "source": "github"
       },
-      "version": "0.28.0"
+      "version": "0.28.1"
     },
     {
       "description": "Evidence-driven code audits, root-cause diagnosis, simplification, remediation, improvement plans, and repository instruction policy.",
       "name": "tailrocks-code-quality-skills",
       "source": {
-        "ref": "004c96080dc518e7f452650491004ce04f776cf5",
+        "ref": "d14832f9d3cf0690851f3ecaaa7f9de32c0d1096",
         "repo": "tailrocks/tailrocks-code-quality-skills",
         "source": "github"
       },
-      "version": "0.28.0"
+      "version": "0.28.1"
     },
     {
       "description": "Strict Rust engineering workflows covering Axum, GraphQL, gRPC, TUI design, project baselines, review, refactoring, and remediation.",
       "name": "tailrocks-rust-skills",
       "source": {
-        "ref": "64fa3a96c0cec96d25dabf1d8e1008bd400c35e6",
+        "ref": "a2cfae1b8a4d1b29247e1b2a3bfd4fe6f30d23a7",
         "repo": "tailrocks/tailrocks-rust-skills",
         "source": "github"
       },
-      "version": "0.28.0"
+      "version": "0.28.1"
     },
     {
       "description": "Clear technical English skill with Practical default and Strict ASD-STE100 Issue 9 profiles.",
       "name": "asd-ste100-skill",
       "source": {
-        "ref": "240dbecda9e741aad4f9d205c6faef3cdfe6d9a6",
+        "ref": "8a35d406a8f293d0ee6651f3677c36dd6d6d2479",
         "repo": "tailrocks/tailrocks-asd-ste100-skills",
         "source": "github"
       },
-      "version": "0.1.0"
+      "version": "0.1.1"
     }
   ]
 }
