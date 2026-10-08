@@ -116,6 +116,13 @@ rules:
     path: "$.plugins[*].rev"
     matches: "^[0-9a-f]{40}$"
     message: "Catalog revisions must be full 40-character commit SHAs."
+  - id: catalog-tag-shape
+    kind: json_path_matches
+    level: error
+    paths: "catalog.json"
+    path: "$.plugins[*].tag"
+    matches: "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+    message: "Catalog tags must be release tags. Claude Code resolves them as refs."
   - id: catalog-repo-shape
     kind: json_path_matches
     level: error
@@ -229,7 +236,7 @@ rules:
     level: error
     source: {file: "catalog.json", extract: {json: "$.plugins[*].rev"}}
     targets:
-      - {file: ".claude-plugin/marketplace.json", extract: {json: "$.plugins[*].source.ref"}}
+      - {file: ".claude-plugin/marketplace.json", extract: {json: "$.plugins[*].source.sha"}}
       - {file: ".agents/plugins/marketplace.json", extract: {json: "$.plugins[*].source.ref"}}
       - {file: ".kimi-plugin/marketplace.json", extract: {regex: "/commit/([0-9a-f]{40})"}}
     relation: set_equals
