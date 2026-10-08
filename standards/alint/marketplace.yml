@@ -163,8 +163,15 @@ rules:
     level: error
     paths: ".claude-plugin/marketplace.json"
     path: "$.plugins[*].source.ref"
+    matches: "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+    message: "Claude catalog refs must be release tags. Claude Code resolves ref as a branch or tag only."
+  - id: claude-sha-shape
+    kind: json_path_matches
+    level: error
+    paths: ".claude-plugin/marketplace.json"
+    path: "$.plugins[*].source.sha"
     matches: "^[0-9a-f]{40}$"
-    message: "Claude catalog refs must be full 40-character commit SHAs."
+    message: "Claude catalog shas must be full 40-character commit SHAs."
   - id: codex-source-kind
     kind: json_path_equals
     level: error

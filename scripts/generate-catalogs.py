@@ -25,7 +25,7 @@ CLAUDE_PATH = ROOT / ".claude-plugin" / "marketplace.json"
 CODEX_PATH = ROOT / ".agents" / "plugins" / "marketplace.json"
 KIMI_PATH = ROOT / ".kimi-plugin" / "marketplace.json"
 
-REQUIRED_FIELDS = ("id", "repo", "rev", "version", "description", "displayName", "private")
+REQUIRED_FIELDS = ("id", "repo", "rev", "tag", "version", "description", "displayName", "private")
 
 
 def load_catalog(path):
@@ -52,8 +52,9 @@ def build_claude(plugins):
                 "description": entry["description"],
                 "name": entry["id"],
                 "source": {
-                    "ref": entry["rev"],
+                    "ref": entry["tag"],
                     "repo": entry["repo"],
+                    "sha": entry["rev"],
                     "source": "github",
                 },
                 "version": entry["version"],
