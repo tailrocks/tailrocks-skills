@@ -551,3 +551,61 @@ Block VELNOR-REL-6 (publish race) is
 clear. The v0.1.1 SHAs are in the
 verification record. Manifest updates
 across the 11 packages are next.
+
+## Phase E releases and install verification (2026-10-08)
+
+Velnor v0.1.4 published as release
+406452151. It emits the CLAUDE.md
+pointer file with body `@AGENTS.md`.
+All 11 packages regenerated against it
+and merged. Each active package then
+shipped a patch release for the pointer
+change. Seven packages use 0.28.1. The
+repository package uses 0.4.1. The ASD
+package uses 0.1.1.
+
+Catalog PR #125 pointed all 9 catalog
+entries at the release tags and
+revisions. Install round 1 then passed
+for Codex (9/9) and Muse (9/9), but
+Claude Code failed all 9 installs. The
+cause is a generator defect: it wrote
+the 40-character SHA into `source.ref`,
+which Claude Code resolves as a branch
+or tag only. A positive control with
+`ref` set to the tag and `sha` set to
+the commit installed with success.
+
+PR #126 fixes the generator and the
+marketplace profile. The Claude catalog
+now carries `ref` set to the release tag
+and `sha` set to the pinned commit. The
+Codex and Kimi catalogs are byte
+identical to the previous output. The
+self pin moved to the main merge commit
+in PR #127. Both PRs merged with green
+CI. Marketplace main is now `4eec8d1`.
+
+Install round 2 used the fixed catalog.
+Claude Code passed 9/9. Muse passed 9/9
+with digests identical to round 1. The
+Codex 9/9 result stands, because its
+catalog did not change. Grok and Kimi
+checks did not run. Their CLIs are
+absent. Amp, OpenCode, and Antigravity
+have file checks only. No skill
+evaluations ran.
+
+The macOS and Rust install guides need
+no 0.28.2 release. macOS states the
+complete package requirement in four
+notes that match its checkout relative
+contract. Rust copies whole directories,
+so its sibling links survive. No
+verbatim follower gets a broken install.
+The remaining polish folds into the next
+scheduled release.
+
+Phase F does the final review, the
+default branch CI check, the temporary
+path cleanup, and the section 21 report.
