@@ -262,3 +262,43 @@ No evidence yet. This section grows with each phase.
 - Intel SHA:
   `abd721a1a4ae982bc50980b7d14b530d6a84f983c23a6469db8afd59c2c055e4`.
 - No skill evaluations ran.
+
+## Phase E release and install evidence (2026-10-08 UTC)
+
+- Velnor v0.1.4: release 406452151
+  from `d3590d32`. All 20 assets verify
+  byte identical with sidecars.
+- Regen v3: 11/11 PRs merged on all
+  package mains.
+- Patch releases: `v0.28.1` on 7
+  packages, `v0.4.1` on repository,
+  `v0.1.1` on ASD. All tags point at
+  their final main SHAs.
+- Catalog #125 merged as `e0c09d1`.
+  All 9 entries pin tag plus revision.
+- Tagref fix #126 merged as `0d7c9e7`.
+  Re-pin #127 merged as `4eec8d1`.
+  Profile hash `c0d650d6...` verified
+  against the raw fetch.
+- Claude Code 2.1.289, macOS 27.0.1:
+  9/9 PASS through catalog `4eec8d1`.
+  Two-revision cycles on roadmap, rust,
+  and contribution show genuine updates.
+  Logs: `/tmp/iso-claude/_logs/`.
+- Muse Code 1.4.3 (1.4.3-R5018.1),
+  macOS 27.0.1 build 26A434: 9/9 PASS
+  through catalog `4eec8d1`. All 9
+  digests match round 1. Installs pin
+  to SHAs, not floating tags. Logs:
+  `/tmp/iso-muse/logs/`.
+- Codex 0.161.0: 9/9 PASS stands. Its
+  catalog is byte identical across the
+  tagref change.
+- File checks: 85/85 inventoried for
+  Amp, OpenCode, and Antigravity.
+  Native discovery stays unverified.
+- Grok and Kimi: not run. Their CLIs
+  are absent.
+- Marketplace main CI: success on
+  `e0c09d1`, `0d7c9e7`, `4eec8d1`.
+- No skill evaluations ran.
