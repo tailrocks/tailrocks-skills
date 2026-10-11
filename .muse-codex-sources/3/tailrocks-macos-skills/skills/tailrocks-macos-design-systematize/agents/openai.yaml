@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: macOS Design Systematize"
+  short_description: "Persist approved macOS design-system learning"
+  default_prompt: "Use $tailrocks-macos-design-systematize to persist reusable learning from the named user-approved macOS design and independent passing review; do not design, review, bless, capture, or edit production."
+policy:
+  allow_implicit_invocation: false

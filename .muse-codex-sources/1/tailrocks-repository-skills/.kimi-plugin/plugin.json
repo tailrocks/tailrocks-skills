@@ -1,0 +1,12 @@
+{
+  "name": "tailrocks-repository-skills",
+  "version": "0.4.1",
+  "description": "Target-bound repository orchestration plus pull-request lifecycle: template, create, refresh, review, and guarded merge.",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Repository Skills",
+    "shortDescription": "Target-bound repository and pull-request lifecycle workflows.",
+    "developerName": "tailrocks",
+    "websiteURL": "https://github.com/tailrocks/tailrocks-repository-skills"
+  }
+}

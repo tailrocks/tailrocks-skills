@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: TanStack Project Setup"
+  short_description: "Scaffold a strict TanStack Start application"
+  default_prompt: "Use $tailrocks-tanstack-project-setup to scaffold a new Bun-only TanStack Start application at this empty destination with exact pins, TypeScript 7, Oxc, Router/Query ownership, shadcn/ui, Tailwind CSS v4, tests, and CI gates."
+policy:
+  allow_implicit_invocation: false

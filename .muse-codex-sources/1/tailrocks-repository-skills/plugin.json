@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "tailrocks-repository-skills",
+  "version": "0.4.1",
+  "description": "Target-bound repository orchestration plus pull-request lifecycle: template, create, refresh, review, and guarded merge.",
+  "author": {
+    "name": "tailrocks",
+    "url": "https://github.com/tailrocks"
+  },
+  "homepage": "https://github.com/tailrocks/tailrocks-repository-skills",
+  "repository": "https://github.com/tailrocks/tailrocks-repository-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "repository",
+    "pull-request",
+    "review",
+    "merge",
+    "pr-template",
+    "github"
+  ]
+}

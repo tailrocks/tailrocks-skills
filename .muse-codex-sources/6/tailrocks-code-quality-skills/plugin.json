@@ -1,0 +1,24 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "tailrocks-code-quality-skills",
+  "version": "0.28.1",
+  "description": "Evidence-driven code audits, root-cause diagnosis, simplification, remediation, improvement plans, and repository instruction policy.",
+  "author": {
+    "name": "tailrocks",
+    "url": "https://github.com/tailrocks"
+  },
+  "homepage": "https://github.com/tailrocks/tailrocks-code-quality-skills",
+  "repository": "https://github.com/tailrocks/tailrocks-code-quality-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "code-quality",
+    "code-health",
+    "audit",
+    "root-cause",
+    "remediation",
+    "simplification",
+    "security",
+    "AGENTS.md",
+    "technical-debt"
+  ]
+}

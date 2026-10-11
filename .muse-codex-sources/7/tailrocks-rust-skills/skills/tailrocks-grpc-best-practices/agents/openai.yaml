@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: gRPC Best Practices"
+  short_description: "Cross-service gRPC contracts and tonic services for Rust"
+  default_prompt: "Use $tailrocks-grpc-best-practices to evolve this cross-service proto contract and tonic service with Buf compatibility gates, canonical statuses, deadlines, and wire tests."
+policy:
+  allow_implicit_invocation: true

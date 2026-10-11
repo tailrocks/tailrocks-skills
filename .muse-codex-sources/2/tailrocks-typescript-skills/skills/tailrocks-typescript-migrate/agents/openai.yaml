@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: TypeScript Migrate"
+  short_description: "Migrate source to strict TypeScript 7"
+  default_prompt: "Use $tailrocks-typescript-migrate to migrate this exact JavaScript/TypeScript source scope directly to strict TypeScript 7 semantics in compatibility-safe slices after project tooling is established."
+policy:
+  allow_implicit_invocation: false

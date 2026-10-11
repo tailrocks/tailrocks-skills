@@ -1,0 +1,51 @@
+{
+  "name": "your-app",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.0",
+  "scripts": {
+    "dev": "bun --bun vite dev",
+    "build": "bun --bun vite build",
+    "start": "bun --bun vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint --type-aware --deny-warnings .",
+    "arch": "depcruise --config dependency-cruiser.config.mjs src",
+    "hygiene": "knip",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "test": "bun test",
+    "test:coverage": "bun test --coverage",
+    "shadcn": "bunx --bun shadcn"
+  },
+  "trustedDependencies": [],
+  "dependencies": {
+    "@tanstack/react-query": "5.102.8",
+    "@tanstack/react-query-devtools": "5.102.8",
+    "@tanstack/react-router": "1.170.32",
+    "@tanstack/react-router-devtools": "1.167.1",
+    "@tanstack/react-start": "1.168.49",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@happy-dom/global-registrator": "20.12.0",
+    "@tailwindcss/vite": "4.3.3",
+    "@testing-library/dom": "10.4.1",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.3",
+    "@types/bun": "1.4.0",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "@vitejs/plugin-react": "6.1.1",
+    "dependency-cruiser": "18.2.0",
+    "happy-dom": "20.12.0",
+    "knip": "6.33.0",
+    "oxfmt": "0.65.0",
+    "oxlint": "1.80.0",
+    "shadcn": "4.19.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2",
+    "vite": "8.2.2"
+  }
+}

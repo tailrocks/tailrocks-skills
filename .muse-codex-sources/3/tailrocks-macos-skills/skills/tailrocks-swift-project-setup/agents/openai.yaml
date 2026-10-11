@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Swift Project Setup"
+  short_description: "Scaffold a strict native macOS Swift app baseline"
+  default_prompt: "Use $tailrocks-swift-project-setup to scaffold this new macOS app with declarative generation, exact toolchain and SDK lanes, ad-hoc signing, strict gates, non-vacuous tests, and mise task parity."
+policy:
+  allow_implicit_invocation: false

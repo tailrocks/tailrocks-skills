@@ -1,0 +1,12 @@
+# cargo-audit policy. Copy to the repository root as `.cargo/audit.toml`.
+# Run: cargo audit --deny warnings
+# cargo-audit owns advisory review: RustSec advisories plus yanked,
+# unmaintained, and unsound crates. cargo-deny owns licenses, bans, and
+# sources. Record advisory exceptions here only, never in deny.toml.
+
+[advisories]
+# Accept a specific advisory only with a written reason and a revisit trigger.
+# ignore = [
+#     # No safe upgrade yet; not reachable in our usage. Revisit on <dep> bump.
+#     "RUSTSEC-YYYY-NNNN",
+# ]

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Swift Agent Integration"
+  short_description: "Wire Xcode agent integration safely"
+  default_prompt: "Use $tailrocks-swift-agent-integration to wire this Swift/Xcode project for agent-driven work with one owner per responsibility and pinned read-only knowledge."
+policy:
+  allow_implicit_invocation: false

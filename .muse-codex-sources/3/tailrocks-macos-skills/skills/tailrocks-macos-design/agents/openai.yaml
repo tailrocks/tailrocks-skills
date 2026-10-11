@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: macOS Design"
+  short_description: "Design a macOS feature and bless it as a running Liquid Glass prototype"
+  default_prompt: "Use $tailrocks-macos-design to design or prototype the macOS work already in scope. Route scoring to $tailrocks-macos-design-review and system learning to $tailrocks-macos-design-systematize. Do not bless, freeze, capture, or mutate production without active-task authority and live user sign-off."
+policy:
+  allow_implicit_invocation: true

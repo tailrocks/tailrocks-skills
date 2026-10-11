@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Web Visual Regression"
+  short_description: "Compare web screens to blessed baselines"
+  default_prompt: "Use $tailrocks-web-visual-regression only for the explicit regress request. Keep project source and baselines read-only; never install, update snapshots, design, bless, or approve."
+policy:
+  allow_implicit_invocation: false

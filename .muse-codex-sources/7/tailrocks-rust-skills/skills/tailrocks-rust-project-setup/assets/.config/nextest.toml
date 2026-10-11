@@ -1,0 +1,23 @@
+# cargo-nextest configuration. Copy to `.config/nextest.toml` at the repository
+# root. nextest is the default test runner (`cargo nextest run`); doctests are
+# not run by nextest, so keep a separate `cargo test --doc` step (see mise.toml).
+
+[profile.default]
+# Flag hung tests: warn at 60s, kill after three such periods.
+slow-timeout = { period = "60s", terminate-after = 3, grace-period = "5s" }
+# Print output from failing tests immediately and again in the final summary.
+failure-output = "immediate-final"
+
+# Serialize tests that must not run concurrently (shared ports, containers, the
+# filesystem). Tag them with `test-group` overrides:
+# [test-groups]
+# serial = { max-threads = 1 }
+#
+# [[profile.default.overrides]]
+# filter = 'test(/_serial$/)'
+# test-group = 'serial'
+
+# A CI profile with retries for flaky-network suites:
+# [profile.ci]
+# retries = 2
+# fail-fast = false

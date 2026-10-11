@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Agents Instructions"
+  short_description: "Add one instruction rule under the shared policy"
+  default_prompt: "Use $tailrocks-agents-md when this work touches AGENTS.md, client entries, or rule placement: place one rule with its governed paths under the shared instruction policy."
+policy:
+  allow_implicit_invocation: true

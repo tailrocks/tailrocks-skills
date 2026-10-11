@@ -1,0 +1,23 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "tailrocks-skill-authoring-skills",
+  "version": "0.28.1",
+  "description": "Create, audit, update, and refactor agent skills while preserving clear ownership, contracts, routing, evidence, and portability.",
+  "author": {
+    "name": "tailrocks",
+    "url": "https://github.com/tailrocks"
+  },
+  "homepage": "https://github.com/tailrocks/tailrocks-skill-authoring-skills",
+  "repository": "https://github.com/tailrocks/tailrocks-skill-authoring-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "agent-skills",
+    "skill-authoring",
+    "skill-audit",
+    "skill-design",
+    "skill-refactor",
+    "skill-update",
+    "routing",
+    "contracts"
+  ]
+}

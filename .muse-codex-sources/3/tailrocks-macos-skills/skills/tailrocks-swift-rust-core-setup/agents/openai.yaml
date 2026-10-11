@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Swift Rust-Core Setup"
+  short_description: "Wire the Swift project Rust-core lane"
+  default_prompt: "Use $tailrocks-swift-rust-core-setup to add the approved Rust-core project lane with one-way generated bindings, drift proof, and shared pipeline gates."
+policy:
+  allow_implicit_invocation: false

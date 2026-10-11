@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Rust Best Practices"
+  short_description: "Write correct, explicit Rust behavior"
+  default_prompt: "Use $tailrocks-rust-best-practices to write this Rust behavior with explicit ownership, failure, API, test, and performance contracts."
+policy:
+  allow_implicit_invocation: true

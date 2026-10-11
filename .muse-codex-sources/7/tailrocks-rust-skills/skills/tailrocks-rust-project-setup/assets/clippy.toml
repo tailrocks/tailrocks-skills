@@ -1,0 +1,35 @@
+# Pairs with the workspace lint table. Keep MSRV equal to workspace.package.
+msrv = "1.98.0"
+check-incompatible-msrv-in-tests = true
+avoid-breaking-exported-api = true
+
+# Tests retain explicit expect/panic helpers but not silent unwraps or printing.
+allow-expect-in-tests = true
+allow-panic-in-tests = true
+allow-print-in-tests = false
+allow-unwrap-in-tests = false
+
+# Ratchet from measured repository maxima; never raise to silence new code.
+too-many-lines-threshold = 120
+cognitive-complexity-threshold = 30
+excessive-nesting-threshold = 4
+too-many-arguments-threshold = 6
+future-size-threshold = 16_384
+
+await-holding-invalid-types = [
+    { path = "std::cell::Ref", reason = "a Ref borrow must end before await" },
+    { path = "std::cell::RefMut", reason = "a RefMut borrow must end before await" },
+    { path = "std::sync::MutexGuard", reason = "a blocking mutex guard must end before await" },
+    { path = "std::sync::RwLockReadGuard", reason = "a blocking read guard must end before await" },
+    { path = "std::sync::RwLockWriteGuard", reason = "a blocking write guard must end before await" },
+]
+
+disallowed-methods = [
+    { path = "std::thread::sleep", reason = "use tokio::time::sleep on runtime threads" },
+    { path = "std::process::Command::output", reason = "use tokio::process or spawn_blocking" },
+    { path = "std::process::Command::status", reason = "use tokio::process or spawn_blocking" },
+    { path = "std::fs::read", reason = "use tokio::fs or spawn_blocking" },
+    { path = "std::fs::read_to_string", reason = "use tokio::fs or spawn_blocking" },
+    { path = "std::fs::write", reason = "use tokio::fs or spawn_blocking" },
+    { path = "std::net::TcpStream::connect", reason = "use tokio::net on runtime threads" },
+]

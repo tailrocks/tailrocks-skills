@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Simplify Apply"
+  short_description: "Apply one approved removal set safely"
+  default_prompt: "Use $tailrocks-simplify to apply one explicitly approved removal set from the current simplification audit, one removal at a time with proof."
+policy:
+  allow_implicit_invocation: false

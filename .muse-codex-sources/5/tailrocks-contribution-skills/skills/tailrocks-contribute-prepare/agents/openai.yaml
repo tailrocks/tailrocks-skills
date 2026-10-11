@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Contribute Prepare"
+  short_description: "Prepare one approved contribution in a fork"
+  default_prompt: "Use $tailrocks-contribute-prepare to implement this approved proposal in the dedicated fork and produce a local submission package without pushing or posting."
+policy:
+  allow_implicit_invocation: false

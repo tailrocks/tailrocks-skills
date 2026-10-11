@@ -1,0 +1,43 @@
+# cargo-deny policy. Copy to the repository root.
+# Run: cargo deny check licenses bans sources
+# cargo-deny owns licenses, bans, and sources. cargo-audit owns advisories
+# and yanked releases. Record advisory exceptions in `.cargo/audit.toml`
+# only, never here.
+
+[licenses]
+# Allowlist only. A dependency under any other license fails the gate until you
+# add a version-pinned exception with a comment.
+allow = ["Apache-2.0", "MIT"]
+confidence-threshold = 0.8
+# exceptions = [
+#     { crate = "some-crate@1.2.3", allow = ["BSD-3-Clause"] },
+# ]
+
+[bans]
+# Surface new duplicate versions without failing on existing transitive debt.
+multiple-versions = "warn"
+# A `*` version requirement is never acceptable.
+wildcards = "deny"
+deny = [
+    { crate = "openssl", reason = "Prefer rustls / aws-lc-rs-backed TLS." },
+]
+# Record current duplicate-version debt as pinned skips so only *new* drift trips
+# the gate:
+# skip = [
+#     { crate = "hashbrown@0.14.5", reason = "transitive duplicate debt; revisit on dep bump." },
+# ]
+
+# Workspace-dependency hygiene: fail when a member declares a `path =` sibling it
+# never uses, and flag duplicate workspace-dependency declarations.
+[bans.workspace-dependencies]
+duplicates = "warn"
+include-path-dependencies = true
+unused = "deny"
+
+[sources]
+# crates.io is the only registry; no git or unknown sources without an explicit
+# allow entry.
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []

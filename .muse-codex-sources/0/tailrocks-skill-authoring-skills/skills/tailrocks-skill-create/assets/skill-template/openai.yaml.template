@@ -1,0 +1,11 @@
+interface:
+  display_name: "<Display Name>"
+  # short_description: one picker line, ~25-64 chars. Display only,
+  # never a trigger.
+  short_description: "<one line naming the behavior this skill changes>"
+  # default_prompt: bare $<skill-name> only — never $plugin:skill (not
+  # a documented Codex invocation). Picker-UI framing only; implicit
+  # matching reads the SKILL.md description, not this field.
+  default_prompt: "Use $<skill-name> on <scope>: <the core behavior in one sentence>."
+policy:
+  allow_implicit_invocation: false

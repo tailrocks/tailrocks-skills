@@ -1,0 +1,6 @@
+interface:
+  display_name: "ASD-STE100: Clear Technical English"
+  short_description: "Clear responses with practical and strict STE profiles"
+  default_prompt: "Use $asd-ste100 to make this response clear and precise. Apply full Issue 9 constraints only when explicitly requested."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Simplify Audit"
+  short_description: "Find measured code removals read-only"
+  default_prompt: "Use $tailrocks-simplify-audit to audit this pull request, branch, or diff read-only for measured code removals that preserve behavior."
+policy:
+  allow_implicit_invocation: false

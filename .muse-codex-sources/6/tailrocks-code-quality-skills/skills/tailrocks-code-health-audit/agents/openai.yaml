@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Code Health Audit"
+  short_description: "Audit one debt class read-only with fixed-ID evidence"
+  default_prompt: "Use $tailrocks-code-health-audit to audit one selected debt class read-only: inventory gates, measure the baseline, and emit fixed-ID evidence."
+policy:
+  allow_implicit_invocation: false

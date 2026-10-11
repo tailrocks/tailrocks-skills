@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Web Design Audit"
+  short_description: "Audit web screens against blessed design routes"
+  default_prompt: "Use $tailrocks-web-design-audit only for the explicitly requested read-only audit. Bind the exact subject and live evidence; do not design, fix, bless, freeze, capture, or mutate."
+policy:
+  allow_implicit_invocation: false

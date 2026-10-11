@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Contribute Propose"
+  short_description: "Draft one evidenced external contribution proposal"
+  default_prompt: "Use $tailrocks-contribute-propose to turn this current recon into one local proposal or hard-stop redirect without contacting anyone."
+policy:
+  allow_implicit_invocation: false

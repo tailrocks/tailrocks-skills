@@ -1,0 +1,12 @@
+{
+  "name": "tailrocks-skill-authoring-skills",
+  "version": "0.28.1",
+  "description": "Create, audit, update, and refactor agent skills while preserving clear ownership, contracts, routing, evidence, and portability.",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Skill Authoring Skills",
+    "shortDescription": "Create, audit, update, and refactor agent skills.",
+    "developerName": "tailrocks",
+    "websiteURL": "https://github.com/tailrocks/tailrocks-skill-authoring-skills"
+  }
+}

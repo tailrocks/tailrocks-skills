@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Axum Refactor"
+  short_description: "Refactor Axum with HTTP preservation proof"
+  default_prompt: "Use $tailrocks-axum-refactor to restructure this Axum target while proving routes, transport contracts, middleware policy, and lifecycle behavior remain unchanged."
+policy:
+  allow_implicit_invocation: false

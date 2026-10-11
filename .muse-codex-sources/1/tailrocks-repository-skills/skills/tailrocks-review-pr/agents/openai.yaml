@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Review PR"
+  short_description: "Review a pull request with verified, high-signal findings"
+  default_prompt: "Use $tailrocks-review-pr on this pull request: state the intended result, search existing code before accepting new logic, check every applicable review area with concrete evidence per finding, and return Ready, Changes required, or Incomplete. Report only; do not post, edit, approve, or merge."
+policy:
+  allow_implicit_invocation: true

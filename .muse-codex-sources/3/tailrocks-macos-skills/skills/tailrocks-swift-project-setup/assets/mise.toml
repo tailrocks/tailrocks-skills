@@ -1,0 +1,77 @@
+# Tool pins and task entry points for a native macOS app.
+# Replace each <pin> with the latest stable version resolved now (`mise ls-remote
+# <tool>`); bracketed values are the 2026-08-11 verified baseline. Never
+# scaffold with older versions.
+#
+# swift-format is NOT pinned here on purpose: it ships with Xcode and is invoked
+# through `xcrun`. Installing a second copy makes it disagree with the one the
+# editor uses.
+
+[tools]
+swiftlint = "<0.65.0>"
+xcodegen = "<2.46.0>"
+xcbeautify = "<3.2.1>"
+periphery = "<3.8.0>"
+
+[env]
+# Must NOT be under /tmp or /private/tmp: an app bundle launched from a
+# temporary directory loses its windows within seconds, which breaks UI tests
+# and every visual verification downstream.
+DERIVED_DATA = "{{env.HOME}}/Library/Developer/AppBuild"
+SCHEME = "<App>"
+PROJECT = "<App>.xcodeproj"
+# Raise monotonically as the suite grows; the scaffold ships two unit tests.
+MIN_TESTS = "2"
+
+[tasks.generate]
+description = "Regenerate the Xcode project from project.yml"
+run = "xcodegen generate"
+
+[tasks.format]
+description = "Format sources in place"
+run = "xcrun swift-format format -i -r -p Sources Tests UITests"
+
+[tasks."format:check"]
+description = "Fail on formatting violations"
+# --strict is mandatory: without it violations print and the run exits 0.
+run = "xcrun swift-format lint --strict -r -p Sources Tests UITests"
+
+[tasks.lint]
+description = "Fail on lint violations"
+run = "swiftlint --strict"
+
+[tasks.build]
+description = "Build the app"
+depends = ["generate"]
+run = "set -o pipefail && xcodebuild -project $PROJECT -scheme $SCHEME -configuration Debug -derivedDataPath $DERIVED_DATA build | xcbeautify"
+
+[tasks.test]
+description = "Run unit tests and reject a zero/low test count"
+depends = ["generate"]
+run = '''
+set -o pipefail
+RESULT="$DERIVED_DATA/TestResults.xcresult"
+rm -rf "$RESULT"
+xcodebuild test -project "$PROJECT" -scheme "$SCHEME-Unit" -destination 'platform=macOS' -derivedDataPath "$DERIVED_DATA" -resultBundlePath "$RESULT" | xcbeautify
+xcrun xcresulttool get test-results summary --path "$RESULT" --compact | jq -e '.totalTestCount >= (env.MIN_TESTS | tonumber)' >/dev/null
+'''
+
+[tasks."test:ui"]
+description = "Run UI tests (needs GUI plus Screen Recording, Accessibility, and Automation grants)"
+depends = ["generate"]
+run = "set -o pipefail && xcodebuild test -project $PROJECT -scheme $SCHEME -destination 'platform=macOS' -only-testing:${SCHEME}UITests -derivedDataPath $DERIVED_DATA | xcbeautify"
+
+[tasks."build:next"]
+description = "Forward-validation build against the beta SDK"
+depends = ["generate"]
+run = "test -x /Applications/Xcode-beta.app/Contents/Developer/usr/bin/xcodebuild && DEVELOPER_DIR=/Applications/Xcode-beta.app/Contents/Developer xcodebuild -version && DEVELOPER_DIR=/Applications/Xcode-beta.app/Contents/Developer xcodebuild -showsdks | grep -q macosx27 && set -o pipefail && DEVELOPER_DIR=/Applications/Xcode-beta.app/Contents/Developer xcodebuild -project $PROJECT -scheme $SCHEME -configuration Debug -derivedDataPath $DERIVED_DATA-next build | xcbeautify"
+
+[tasks.deadcode]
+description = "Scan for unused declarations"
+depends = ["generate"]
+run = "periphery scan"
+
+[tasks.check]
+description = "Full pull-request gate"
+# Cheapest-first and ordered; build and test share derived data.
+run = ["mise run format:check", "mise run lint", "mise run build", "mise run test"]

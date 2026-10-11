@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Remediate"
+  short_description: "Apply one approved root-cause correction"
+  default_prompt: "Use $tailrocks-remediate to apply one explicitly approved root-cause correction from the current diagnosis contract, and prove instance and class prevention."
+policy:
+  allow_implicit_invocation: false

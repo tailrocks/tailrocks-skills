@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: TanStack Project Remediate"
+  short_description: "Close approved TanStack baseline gaps"
+  default_prompt: "Use $tailrocks-tanstack-project-remediate to close these exact approved TANSTACK gap rows in verified transactional slices without widening scope."
+policy:
+  allow_implicit_invocation: false

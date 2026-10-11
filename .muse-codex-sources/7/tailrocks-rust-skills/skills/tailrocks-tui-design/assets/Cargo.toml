@@ -1,0 +1,13 @@
+# Gallery crate — rename `app` to the application crate and add this
+# member to the workspace. Private by design.
+[package]
+name = "app-gallery"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+app = { path = "../app" }
+ratatui = "0.30"
+
+[dev-dependencies]

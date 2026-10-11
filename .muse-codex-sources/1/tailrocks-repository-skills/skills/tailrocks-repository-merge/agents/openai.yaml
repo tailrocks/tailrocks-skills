@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Repository Merge"
+  short_description: "Coordinate target-bound repository integration"
+  default_prompt: "Use $tailrocks-repository-merge for the explicitly selected repository sources and exact target. Preserve scope, verify the target, and report blockers."
+policy:
+  allow_implicit_invocation: false
