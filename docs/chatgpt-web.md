@@ -32,6 +32,6 @@ All nine packages have a portable root `plugin.json`, a `skills/` tree, and skil
 | `tailrocks-contribution-skills` | 5 | GitHub operations may be covered by a connected app; local clones and test runs need an execution environment. |
 | `tailrocks-code-quality-skills` | 14 | Repository-wide shell, build, and static-analysis procedures need an execution environment. |
 | `tailrocks-rust-skills` | 15 | Cargo, Git, local test/build, and native toolchain procedures need an execution environment. |
-| `asd-ste100-skill` | 1 | Both writing profiles are packaged; testing bundled private references requires a successful private-repository import. |
+| `tailrocks-asd-ste100-skill` | 1 | Both writing profiles are packaged; testing bundled private references requires a successful private-repository import. |
 
 The skill counts and structural findings come from the repository audit. They do not prove that an imported plugin is visible, enabled, invokable, or free of a **Desktop only** label in a specific workspace. Verify those in a normal ChatGPT web chat after import. Do not copy or publish the private ASD-STE100 reference material as part of that check.

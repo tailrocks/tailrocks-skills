@@ -69,7 +69,7 @@
       }
     },
     {
-      "name": "asd-ste100-skill",
+      "name": "tailrocks-asd-ste100-skill",
       "source": {
         "ref": "main",
         "repo": "tailrocks/tailrocks-asd-ste100-skills",

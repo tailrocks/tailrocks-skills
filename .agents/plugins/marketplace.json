@@ -110,7 +110,7 @@
     },
     {
       "category": "Productivity",
-      "name": "asd-ste100-skill",
+      "name": "tailrocks-asd-ste100-skill",
       "policy": {
         "authentication": "ON_INSTALL",
         "installation": "AVAILABLE"

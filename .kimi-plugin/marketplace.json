@@ -42,7 +42,7 @@
     },
     {
       "displayName": "ASD-STE100: Clear Technical English",
-      "id": "asd-ste100-skill",
+      "id": "tailrocks-asd-ste100-skill",
       "source": "https://github.com/tailrocks/tailrocks-asd-ste100-skills/commit/786da0d583c22958372697c1f35709e7c6d90284"
     }
   ],

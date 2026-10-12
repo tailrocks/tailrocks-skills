@@ -33,6 +33,7 @@ Record this rule before authoring starts.
 | D16 | The asd-ste100 SKILL.md must use the Section 10 common body order. Practical and Strict modes stay distinct. |
 | D17 | Shard-tail finals stay open for the Phase E private review. They need the source holder. |
 | D18 | Push through gh HTTPS auth while 1Password SSH signing refuses. Keep remotes unchanged. |
+| D20 | Rename the ASD-STE100 plugin ID from `asd-ste100-skill` to `tailrocks-asd-ste100-skill`. Keep the skill ID `tailrocks-asd-ste100`. Release package version 0.2.0 after the source change merges. |
 
 ## Current revisions (Phase A, 2026-10-07 UTC)
 
