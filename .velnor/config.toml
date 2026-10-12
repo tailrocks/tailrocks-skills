@@ -10,7 +10,7 @@ schema = 1
 default_branch = "main"              # Push branch; required because CI checkouts have no origin/HEAD.
 
 [workflow.verify]
-jobs = ["alint"]
+jobs = ["alint", "strict-json"]
 
 [discovery]
 exclude = ["skills/**/templates/**"]

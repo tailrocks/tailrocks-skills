@@ -11,7 +11,10 @@ Umbrella directory for the independently installable Tailrocks skill repositorie
 | [tailrocks-roadmap-skills](https://github.com/tailrocks/tailrocks-roadmap-skills) | Roadmap, delivery, verification, reconciliation, decision support |
 | [tailrocks-skill-authoring-skills](https://github.com/tailrocks/tailrocks-skill-authoring-skills) | Skill creation, update, audit, refactor |
 | [tailrocks-code-quality-skills](https://github.com/tailrocks/tailrocks-code-quality-skills) | Code health, improvement, security, instruction topology, simplification, root cause, remediation |
-| [tailrocks-open-source-skills](https://github.com/tailrocks/tailrocks-open-source-skills) | Open-source contribution lifecycle |
+| [tailrocks-contribution-skills](https://github.com/tailrocks/tailrocks-contribution-skills) | Open-source contribution lifecycle |
+| [tailrocks-asd-ste100-skills](https://github.com/tailrocks/tailrocks-asd-ste100-skills) | ASD-STE100 writing profiles (private) |
+
+For workspace-admin GitHub import into ChatGPT web, follow [docs/chatgpt-web.md](docs/chatgpt-web.md). This route requires an eligible workspace and GitHub access to every referenced repository, including the private ASD-STE100 package.
 
 ## License
 

@@ -215,6 +215,7 @@ jobs:
       - plan
       - actionlint
       - alint
+      - strict-json
     if: always()
     steps:
       - name: Setup Mise
@@ -249,14 +250,14 @@ jobs:
         env:
           VELNOR_INTERNAL_OP: write-request-v1
           VELNOR_NEEDS_JSON: ${{ toJSON(needs) }}
-          VELNOR_NEEDS_EXPECTED: "[\"actionlint\",\"alint\",\"plan\"]"
+          VELNOR_NEEDS_EXPECTED: "[\"actionlint\",\"alint\",\"plan\",\"strict-json\"]"
           VELNOR_REQUEST_FILE: ${{ runner.temp }}/velnor/request/merge-v1-request.json
         run: "\"$RUNNER_TEMP\"'/velnor/bin/velnor-actions-0.1.4'"
       - name: Merge reports
         env:
           VELNOR_INTERNAL_OP: merge-v1
           VELNOR_NEEDS_JSON: ${{ toJSON(needs) }}
-          VELNOR_NEEDS_EXPECTED: "[\"actionlint\",\"alint\",\"plan\"]"
+          VELNOR_NEEDS_EXPECTED: "[\"actionlint\",\"alint\",\"plan\",\"strict-json\"]"
           VELNOR_REQUEST_FILE: ${{ runner.temp }}/velnor/request/merge-v1-request.json
         run: "\"$RUNNER_TEMP\"'/velnor/bin/velnor-actions-0.1.4'"
       - name: Publish final report
@@ -267,3 +268,41 @@ jobs:
           name: velnor-final-r${{ github.run_id }}-a${{ github.run_attempt }}
           path: ${{ runner.temp }}/velnor/r${{ github.run_id }}-a${{ github.run_attempt }}/final-report.json
           retention-days: "30"
+  strict-json:
+    name: Strict JSON
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: "false"
+      - name: V2 identity
+        id: v2
+        uses: ./.github/actions/velnor-tools-prelude-u26 # zizmor: ignore[self-repository]
+        with:
+          d: 003d63eaf3fb979685fdcc7ae19a4598258383ec9ce8bf208e5d1dd0ba055959
+      - name: Restore Mise tools
+        if: steps.v2.outputs.enabled == 'true'
+        uses: ./.github/actions/velnor-tools-cache-restore # zizmor: ignore[self-repository]
+        with:
+          key: mise-tools-v2-${{steps.v2.outputs.identity}}
+      - name: Setup Mise
+        uses: jdx/mise-action@9149ea85001c7435d5a66bb127d6a1b6227cb0a5
+        with:
+          cache: "false"
+          cache_save: "false"
+          env: "false"
+          install: "false"
+          sha256: d24fe0bf7e613824ad99f7b8dac3f2b381a37b9f75f84dd250855217095a8de4
+          version: 2026.9.18
+      - name: Prepare pinned tools
+        run: mise --no-config --no-env --no-hooks install node@24.21.0
+      - name: Check strict JSON
+        run: "mise --no-config --no-env --no-hooks exec node@24.21.0 -- node -e 'const fs = require(\"fs\"), path = require(\"path\"); let fail = 0; const skip = new Set([\".git\", \"node_modules\", \"target\"]); function walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) { if (!skip.has(e.name)) walk(p); } else if (e.name.endsWith(\".json\")) check(p); } } function check(f) { const s = fs.readFileSync(f, \"utf8\"); try { JSON.parse(s); } catch (e) { console.log(\"invalid-json:\" + f + \":\" + e.message); fail = 1; return; } const d = dups(s); if (d !== null) { console.log(\"duplicate-key:\" + f + \":\" + d); fail = 1; } } function dups(s) { const st = [new Set()]; let i = 0; while (i < s.length) { const c = s[i]; if (c === \"\\\"\") { let j = i + 1; while (j < s.length) { if (s[j] === \"\\\\\") { j += 2; continue; } if (s[j] === \"\\\"\") break; j++; } let k = j + 1; while (k < s.length && /\\s/.test(s[k])) k++; if (s[k] === \":\") { const t = st[st.length - 1]; const v = JSON.parse(s.slice(i, j + 1)); if (t.has(v)) return v; t.add(v); } i = j + 1; continue; } if (c === \"{\") st.push(new Set()); else if (c === \"}\") st.pop(); i++; } return null; } walk(\".\"); process.exitCode = fail;'"
+      - name: Save Mise tools
+        if: success() && github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && github.ref_protected == true && steps.v2.outputs.enabled == 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          key: mise-tools-v2-${{steps.v2.outputs.identity}}
+          path: "~/.local/share/mise\n${{ runner.temp }}/velnor/rustup\n${{ runner.temp }}/velnor/cargo/.crates.toml\n${{ runner.temp }}/velnor/cargo/.crates2.json\n${{ runner.temp }}/velnor/cargo/bin"

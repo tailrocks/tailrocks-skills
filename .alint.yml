@@ -1,15 +1,14 @@
 # Marketplace repository alint configuration (alint v0.17.0).
 # Extends the shared marketplace profile by immutable URL plus SHA-256 pin.
 # Profile source: tailrocks/tailrocks-skills commit
-# 0d7c9e7935f2d77cc23ae5903f108fb6faf949cf ("Emit tag refs with SHA
-# pins in the Claude catalog (#126)"). Pin computed 2026-10-08 with
-# `shasum -a 256` over the raw response body; the raw body is
-# byte-identical to `git show 0d7c9e7:standards/alint/marketplace.yml`.
+# f9d27326c81186ebb0c670562469a421e2e76515 (Claude release-tag refs,
+# Codex source-following refs). Pin computed with `shasum -a 256` over
+# the raw response body; it matches the committed profile bytes.
 # Bump rule: one PR updates the REV and HASH together, then re-runs
 # `alint check`.
 version: 1
 extends:
-  - https://raw.githubusercontent.com/tailrocks/tailrocks-skills/0d7c9e7935f2d77cc23ae5903f108fb6faf949cf/standards/alint/marketplace.yml#sha256-c0d650d6db8fe67b11b5aac674950fb9ccd2c521eea10378205dcae71f050755
+  - https://raw.githubusercontent.com/tailrocks/tailrocks-skills/f9d27326c81186ebb0c670562469a421e2e76515/standards/alint/marketplace.yml#sha256-e81912943a5344deedf17885868173b86bc8a45003020c919c2e048ddbedb00b
 rules:
   # The catalog-*-agree rules compare ID and revision sets only, so a
   # URL, version, description, or displayName change without regen
@@ -25,3 +24,8 @@ rules:
       - ".agents/plugins/marketplace.json"
       - ".kimi-plugin/marketplace.json"
     message: "Generated catalogs are stale. Run scripts/generate-catalogs.py."
+  - id: marketplace-catalog-valid
+    kind: command_idempotent
+    level: error
+    command: ["python3", "scripts/validate-marketplace.py"]
+    message: "Marketplace catalogs, source refs, IDs, and privacy inventory must validate."
