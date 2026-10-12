@@ -52,8 +52,9 @@ def build_claude(plugins):
                 "description": entry["description"],
                 "name": entry["id"],
                 "source": {
-                    "ref": entry["sourceRef"],
+                    "ref": entry["tag"],
                     "repo": entry["repo"],
+                    "sha": entry["rev"],
                     "source": "github",
                 },
                 "version": entry["version"],
@@ -76,7 +77,7 @@ def build_codex(plugins):
                     "installation": "AVAILABLE",
                 },
                 "source": {
-                    "ref": entry["sourceRef"],
+                    "ref": entry["rev"],
                     "source": "url",
                     "url": "https://github.com/" + entry["repo"],
                 },

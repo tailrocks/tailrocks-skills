@@ -40,7 +40,7 @@ def expected_codex(plugins):
                 "name": item["id"],
                 "policy": {"authentication": "ON_INSTALL", "installation": "AVAILABLE"},
                 "source": {
-                    "ref": item["sourceRef"],
+                    "ref": item["rev"],
                     "source": "url",
                     "url": f"https://github.com/{item['repo']}",
                 },
@@ -59,8 +59,9 @@ def expected_claude(plugins):
                 "description": item["description"],
                 "name": item["id"],
                 "source": {
-                    "ref": item["sourceRef"],
+                    "ref": item["tag"],
                     "repo": item["repo"],
+                    "sha": item["rev"],
                     "source": "github",
                 },
                 "version": item["version"],
@@ -116,7 +117,7 @@ def main():
         require(item["repo"] not in repos, f"duplicate source repository: {item['repo']}")
         require(re.fullmatch(r"[0-9a-f]{40}", item["rev"]) is not None, f"invalid pinned revision for {item['id']}")
         require(item["tag"] == f"v{item['version']}", f"tag/version mismatch for {item['id']}")
-        require(item["sourceRef"] == "main", f"ChatGPT/Claude source ref must follow main for {item['id']}")
+        require(item["sourceRef"] == "main", f"release updater source branch must be main for {item['id']}")
         require(re.fullmatch(r"tailrocks/[A-Za-z0-9._-]+", item["repo"]) is not None, f"invalid GitHub repository: {item['repo']}")
         ids.add(item["id"])
         repos.add(item["repo"])

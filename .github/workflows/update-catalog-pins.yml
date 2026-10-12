@@ -1,0 +1,93 @@
+name: Update marketplace release pins
+"on":
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  update:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: "false"
+      - name: Check for an open catalog pin update
+        id: existing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          open_pr=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --json headRefName --jq 'map(select(.headRefName | startswith("automation/catalog-release-pins-"))) | length > 0')
+          printf 'open_pr=%s\n' "$open_pr" >> "$GITHUB_OUTPUT"
+      - name: Read released source pins and regenerate catalogs
+        if: steps.existing.outputs.open_pr != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.TAILROCKS_MARKETPLACE_SYNC_TOKEN }}
+        run: |
+          test -n "$GH_TOKEN" || { echo "::error::Configure TAILROCKS_MARKETPLACE_SYNC_TOKEN with source read and central repository write/pull-request access."; exit 1; }
+          python3 scripts/update-catalog-pins.py
+          python3 scripts/generate-catalogs.py
+          python3 scripts/validate-marketplace.py
+      - name: Open catalog pin update PR
+        if: steps.existing.outputs.open_pr != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.TAILROCKS_MARKETPLACE_SYNC_TOKEN }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- catalog.json .claude-plugin/marketplace.json .agents/plugins/marketplace.json .kimi-plugin/marketplace.json; then
+            echo "All marketplace pins already match the latest stable releases."
+            exit 0
+          fi
+          branch="automation/catalog-release-pins-${GITHUB_RUN_ID}"
+          git switch -c "$branch"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog.json .claude-plugin/marketplace.json .agents/plugins/marketplace.json .kimi-plugin/marketplace.json
+          git diff --cached --check
+          git commit -m "chore: update marketplace release pins"
+          gh auth setup-git
+          git push origin "$branch"
+          cat > "$RUNNER_TEMP/pull-request-body.md" <<'EOF'
+          # Pull request
+
+          ## Summary
+
+          Update immutable marketplace pins to the latest stable releases published by the original Tailrocks source repositories.
+
+          ## What ships
+
+          Regenerate the Claude, Codex, and Kimi marketplace catalogs from `catalog.json`.
+
+          ## Behavior changes
+
+          Plugin clients continue to use immutable release refs. The GitHub marketplace sync can deliver these updated pins after this PR is reviewed and merged.
+
+          ## What this addresses
+
+          Keep source release updates moving through the central GitHub-backed marketplace without relying on a fixed SHA to advance itself.
+
+          ## Verify locally
+
+          ### Checkout
+
+          ```sh
+          git status --short --branch
+          ```
+
+          ### Static checks
+
+          ```sh
+          python3 scripts/generate-catalogs.py
+          python3 scripts/validate-marketplace.py
+          actionlint -color
+          git diff --check
+          ```
+
+          ## Related pull requests
+
+          Generated automatically from the latest stable releases; review the release refs in the diff.
+          EOF
+          gh pr create --repo "$GITHUB_REPOSITORY" --base main --head "$branch" --title "chore: update marketplace release pins" --body-file "$RUNNER_TEMP/pull-request-body.md"
