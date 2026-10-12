@@ -165,20 +165,13 @@ rules:
     path: "$.plugins[*].source.source"
     equals: "github"
     message: "Claude catalog entries must use github sources."
-  - id: claude-ref-shape
+  - id: claude-source-following-ref
     kind: json_path_matches
     level: error
     paths: ".claude-plugin/marketplace.json"
     path: "$.plugins[*].source.ref"
-    matches: "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
-    message: "Claude catalog refs must be release tags. Claude Code resolves ref as a branch or tag only."
-  - id: claude-sha-shape
-    kind: json_path_matches
-    level: error
-    paths: ".claude-plugin/marketplace.json"
-    path: "$.plugins[*].source.sha"
-    matches: "^[0-9a-f]{40}$"
-    message: "Claude catalog shas must be full 40-character commit SHAs."
+    matches: "^main$"
+    message: "Claude catalog refs must follow the audited source branch."
   - id: codex-source-kind
     kind: json_path_equals
     level: error
@@ -186,13 +179,13 @@ rules:
     path: "$.plugins[*].source.source"
     equals: "url"
     message: "Codex catalog entries must use url sources."
-  - id: codex-ref-shape
+  - id: codex-source-following-ref
     kind: json_path_matches
     level: error
     paths: ".agents/plugins/marketplace.json"
     path: "$.plugins[*].source.ref"
-    matches: "^[0-9a-f]{40}$"
-    message: "Codex catalog refs must be full 40-character commit SHAs."
+    matches: "^main$"
+    message: "Codex catalog refs must follow the audited source branch."
   - id: codex-installation-policy
     kind: json_path_equals
     level: error
@@ -236,11 +229,9 @@ rules:
     level: error
     source: {file: "catalog.json", extract: {json: "$.plugins[*].rev"}}
     targets:
-      - {file: ".claude-plugin/marketplace.json", extract: {json: "$.plugins[*].source.sha"}}
-      - {file: ".agents/plugins/marketplace.json", extract: {json: "$.plugins[*].source.ref"}}
       - {file: ".kimi-plugin/marketplace.json", extract: {regex: "/commit/([0-9a-f]{40})"}}
     relation: set_equals
-    message: "Every catalog must pin exactly the revisions from catalog.json."
+    message: "The Kimi catalog must pin exactly the revisions from catalog.json."
 
   # Defect 5 (marketplace prose): backticked workspace paths in
   # records must resolve. Real Markdown links belong to the link

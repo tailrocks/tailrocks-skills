@@ -25,3 +25,8 @@ rules:
       - ".agents/plugins/marketplace.json"
       - ".kimi-plugin/marketplace.json"
     message: "Generated catalogs are stale. Run scripts/generate-catalogs.py."
+  - id: marketplace-catalog-valid
+    kind: command_idempotent
+    level: error
+    command: ["python3", "scripts/validate-marketplace.py"]
+    message: "Marketplace catalogs, source refs, IDs, and privacy inventory must validate."

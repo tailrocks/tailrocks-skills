@@ -12,12 +12,5 @@ default_branch = "main"              # Push branch; required because CI checkout
 [workflow.verify]
 jobs = ["alint", "strict-json"]
 
-[[workflow.tasks]]
-id = "marketplace-catalog"
-kind = "verification"
-mise_task = "validate-marketplace"
-runner = "linux-x64"
-timeout_minutes = 10
-
 [discovery]
 exclude = ["skills/**/templates/**"]

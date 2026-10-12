@@ -49,15 +49,12 @@ def build_claude(plugins):
         "owner": {"name": MARKETPLACE_OWNER},
         "plugins": [
             {
-                "description": entry["description"],
                 "name": entry["id"],
                 "source": {
-                    "ref": entry["tag"],
+                    "ref": entry["sourceRef"],
                     "repo": entry["repo"],
-                    "sha": entry["rev"],
                     "source": "github",
                 },
-                "version": entry["version"],
             }
             for entry in plugins
         ],
@@ -77,7 +74,7 @@ def build_codex(plugins):
                     "installation": "AVAILABLE",
                 },
                 "source": {
-                    "ref": entry["rev"],
+                    "ref": entry["sourceRef"],
                     "source": "url",
                     "url": "https://github.com/" + entry["repo"],
                 },

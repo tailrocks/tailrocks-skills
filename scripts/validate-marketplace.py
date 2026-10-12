@@ -40,7 +40,7 @@ def expected_codex(plugins):
                 "name": item["id"],
                 "policy": {"authentication": "ON_INSTALL", "installation": "AVAILABLE"},
                 "source": {
-                    "ref": item["rev"],
+                    "ref": item["sourceRef"],
                     "source": "url",
                     "url": f"https://github.com/{item['repo']}",
                 },
@@ -56,15 +56,12 @@ def expected_claude(plugins):
         "owner": {"name": "tailrocks"},
         "plugins": [
             {
-                "description": item["description"],
                 "name": item["id"],
                 "source": {
-                    "ref": item["tag"],
+                    "ref": item["sourceRef"],
                     "repo": item["repo"],
-                    "sha": item["rev"],
                     "source": "github",
                 },
-                "version": item["version"],
             }
             for item in plugins
         ],
@@ -101,7 +98,8 @@ def check_remote(plugins):
 
 def main():
     verify_github = "--verify-github" in sys.argv[1:]
-    require(set(sys.argv[1:]) <= {"--verify-github"}, "usage: validate-marketplace.py [--verify-github]")
+    check_only = "--check" in sys.argv[1:]
+    require(set(sys.argv[1:]) <= {"--verify-github", "--check"}, "usage: validate-marketplace.py [--check] [--verify-github]")
     catalog = read_json(CATALOG)
     plugins = catalog.get("plugins")
     require(isinstance(plugins, list) and len(plugins) == 9, "catalog must contain exactly nine plugins")
@@ -117,7 +115,7 @@ def main():
         require(item["repo"] not in repos, f"duplicate source repository: {item['repo']}")
         require(re.fullmatch(r"[0-9a-f]{40}", item["rev"]) is not None, f"invalid pinned revision for {item['id']}")
         require(item["tag"] == f"v{item['version']}", f"tag/version mismatch for {item['id']}")
-        require(item["sourceRef"] == "main", f"release updater source branch must be main for {item['id']}")
+        require(item["sourceRef"] == "main", f"plugin source-following ref must be main for {item['id']}")
         require(re.fullmatch(r"tailrocks/[A-Za-z0-9._-]+", item["repo"]) is not None, f"invalid GitHub repository: {item['repo']}")
         ids.add(item["id"])
         repos.add(item["repo"])
@@ -139,7 +137,8 @@ def main():
         check_remote(plugins)
 
     suffix = ", live GitHub branches/tags/privacy" if verify_github else ""
-    print(f"validated {len(plugins)} unique plugins, GitHub source refs, and 3 generated catalogs{suffix}")
+    if not check_only:
+        print(f"validated {len(plugins)} unique plugins, GitHub source refs, and 3 generated catalogs{suffix}")
 
 
 if __name__ == "__main__":
