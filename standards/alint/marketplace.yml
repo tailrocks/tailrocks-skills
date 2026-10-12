@@ -165,13 +165,20 @@ rules:
     path: "$.plugins[*].source.source"
     equals: "github"
     message: "Claude catalog entries must use github sources."
-  - id: claude-source-following-ref
+  - id: claude-release-tag-ref
     kind: json_path_matches
     level: error
     paths: ".claude-plugin/marketplace.json"
     path: "$.plugins[*].source.ref"
-    matches: "^main$"
-    message: "Claude catalog refs must follow the audited source branch."
+    matches: "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+    message: "Claude catalog refs must use version tags to preserve release semantics."
+  - id: claude-source-sha
+    kind: json_path_matches
+    level: error
+    paths: ".claude-plugin/marketplace.json"
+    path: "$.plugins[*].source.sha"
+    matches: "^[0-9a-f]{40}$"
+    message: "Claude catalog entries must pin the commit resolved by their release tag."
   - id: codex-source-kind
     kind: json_path_equals
     level: error
@@ -229,9 +236,10 @@ rules:
     level: error
     source: {file: "catalog.json", extract: {json: "$.plugins[*].rev"}}
     targets:
+      - {file: ".claude-plugin/marketplace.json", extract: {json: "$.plugins[*].source.sha"}}
       - {file: ".kimi-plugin/marketplace.json", extract: {regex: "/commit/([0-9a-f]{40})"}}
     relation: set_equals
-    message: "The Kimi catalog must pin exactly the revisions from catalog.json."
+    message: "Claude and Kimi catalogs must pin exactly the revisions from catalog.json."
 
   # Defect 5 (marketplace prose): backticked workspace paths in
   # records must resolve. Real Markdown links belong to the link
