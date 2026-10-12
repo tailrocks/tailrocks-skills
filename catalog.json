@@ -7,6 +7,7 @@
       "private": false,
       "repo": "tailrocks/tailrocks-skill-authoring-skills",
       "rev": "a5b25695bd35fc5265894529ab7c85d87162ae42",
+      "sourceRef": "main",
       "tag": "v0.28.1",
       "version": "0.28.1"
     },
@@ -17,6 +18,7 @@
       "private": false,
       "repo": "tailrocks/tailrocks-repository-skills",
       "rev": "4926eb7dee53b6cd4f772cc205e03af7ef5664b3",
+      "sourceRef": "main",
       "tag": "v0.4.1",
       "version": "0.4.1"
     },
@@ -27,6 +29,7 @@
       "private": false,
       "repo": "tailrocks/tailrocks-typescript-skills",
       "rev": "41768afec4886fee610b6cfbfcbb2205cb01bba2",
+      "sourceRef": "main",
       "tag": "v0.28.1",
       "version": "0.28.1"
     },
@@ -37,6 +40,7 @@
       "private": false,
       "repo": "tailrocks/tailrocks-macos-skills",
       "rev": "af78c8ff21c9df8b00f9fd8046f00a3a5ced7f85",
+      "sourceRef": "main",
       "tag": "v0.28.1",
       "version": "0.28.1"
     },
@@ -47,6 +51,7 @@
       "private": false,
       "repo": "tailrocks/tailrocks-roadmap-skills",
       "rev": "c273c8645860a5d0aebfdc73dd61f825e0e30bf9",
+      "sourceRef": "main",
       "tag": "v0.28.1",
       "version": "0.28.1"
     },
@@ -57,6 +62,7 @@
       "private": false,
       "repo": "tailrocks/tailrocks-contribution-skills",
       "rev": "25a3f6a9a66937ff5d70cbc35909cb2904a5b7d5",
+      "sourceRef": "main",
       "tag": "v0.28.1",
       "version": "0.28.1"
     },
@@ -67,6 +73,7 @@
       "private": false,
       "repo": "tailrocks/tailrocks-code-quality-skills",
       "rev": "d14832f9d3cf0690851f3ecaaa7f9de32c0d1096",
+      "sourceRef": "main",
       "tag": "v0.28.1",
       "version": "0.28.1"
     },
@@ -77,6 +84,7 @@
       "private": false,
       "repo": "tailrocks/tailrocks-rust-skills",
       "rev": "a2cfae1b8a4d1b29247e1b2a3bfd4fe6f30d23a7",
+      "sourceRef": "main",
       "tag": "v0.28.1",
       "version": "0.28.1"
     },
@@ -87,6 +95,7 @@
       "private": true,
       "repo": "tailrocks/tailrocks-asd-ste100-skills",
       "rev": "8a35d406a8f293d0ee6651f3677c36dd6d6d2479",
+      "sourceRef": "main",
       "tag": "v0.1.1",
       "version": "0.1.1"
     }

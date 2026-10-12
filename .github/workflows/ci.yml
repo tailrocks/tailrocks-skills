@@ -22,13 +22,7 @@ env:
   GH_HOST: ""
   GH_TOKEN: ""
   GITHUB_TOKEN: ""
-  MISE_AUTO_INSTALL: "false"
-  MISE_EXEC_AUTO_INSTALL: "false"
   MISE_GITHUB_TOKEN: ""
-  MISE_LOCKFILE: "0"
-  MISE_NO_CONFIG: "1"
-  MISE_NO_ENV: "1"
-  MISE_NO_HOOKS: "1"
   NODE_AUTH_TOKEN: ""
   NPM_TOKEN: ""
 concurrency:
@@ -64,6 +58,11 @@ jobs:
           sha256: d24fe0bf7e613824ad99f7b8dac3f2b381a37b9f75f84dd250855217095a8de4
           version: 2026.9.18
       - name: Prepare pinned tools
+        env:
+          MISE_LOCKFILE: "0"
+          MISE_NO_CONFIG: "1"
+          MISE_NO_ENV: "1"
+          MISE_NO_HOOKS: "1"
         run: mise --no-config --no-env --no-hooks install actionlint@1.7.12 shellcheck@0.11.0
       - name: Run actionlint
         run: env -u ACTIONS_ID_TOKEN_REQUEST_TOKEN -u ACTIONS_ID_TOKEN_REQUEST_URL -u ACTIONS_RUNTIME_TOKEN -u GITHUB_TOKEN -u MISE_GITHUB_TOKEN -u GH_TOKEN -u GH_HOST -u GH_CONFIG_DIR mise --no-config --no-env --no-hooks exec actionlint@1.7.12 shellcheck@0.11.0 -- actionlint -color
@@ -131,6 +130,11 @@ jobs:
           sha256: d24fe0bf7e613824ad99f7b8dac3f2b381a37b9f75f84dd250855217095a8de4
           version: 2026.9.18
       - name: Prepare pinned tools
+        env:
+          MISE_LOCKFILE: "0"
+          MISE_NO_CONFIG: "1"
+          MISE_NO_ENV: "1"
+          MISE_NO_HOOKS: "1"
         run: mise --no-config --no-env --no-hooks install actionlint@1.7.12 shellcheck@0.11.0 zizmor@1.30.1
       - name: Acquire Velnor
         run: "sh -c 'unset ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL ACTIONS_RUNTIME_TOKEN GITHUB_TOKEN MISE_GITHUB_TOKEN GH_TOKEN GH_HOST GH_CONFIG_DIR; d=\"$RUNNER_TEMP/velnor/bin/velnor-actions-0.1.4\"&&mkdir -p \"${d%/*}\"&&s=\"/opt/velnor/seed/generator/${d##*/}\"&&p=\"$VELNOR_ASSET_SHA256  \"&&if [ -f \"$s\" ]&&echo \"$p$s\"|sha256sum -c -;then cp \"$s\" \"$d\";else curl -fsSL --retry 5 --retry-all-errors --proto '\\''=https'\\'' --tlsv1.2 \"$VELNOR_ASSET_URL\" -o \"$d\"&&echo \"$p$d\"|sha256sum -c -;fi&&chmod +x \"$d\"'"
@@ -140,12 +144,25 @@ jobs:
           VELNOR_REQUEST_FILE: ${{ runner.temp }}/velnor/request/plan-v1-request.json
         run: "\"$RUNNER_TEMP\"'/velnor/bin/velnor-actions-0.1.4'"
       - name: Check generated files
+        env:
+          MISE_AUTO_INSTALL: "false"
+          MISE_EXEC_AUTO_INSTALL: "false"
+          MISE_LOCKFILE: "0"
+          MISE_NO_CONFIG: "1"
+          MISE_NO_ENV: "1"
+          MISE_NO_HOOKS: "1"
         run: "sh -c 'unset ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL ACTIONS_RUNTIME_TOKEN GITHUB_TOKEN MISE_GITHUB_TOKEN GH_TOKEN GH_HOST GH_CONFIG_DIR; $RUNNER_TEMP/velnor/bin/velnor-actions-0.1.4 generate --output-dir \"$RUNNER_TEMP/velnor-actions-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}\" && diff -r --brief .github \"$RUNNER_TEMP/velnor-actions-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}/.github\"'"
       - name: Plan
         id: plan
         env:
           VELNOR_INTERNAL_OP: plan-v1
           VELNOR_REQUEST_FILE: ${{ runner.temp }}/velnor/request/plan-v1-request.json
+          MISE_AUTO_INSTALL: "false"
+          MISE_EXEC_AUTO_INSTALL: "false"
+          MISE_LOCKFILE: "0"
+          MISE_NO_CONFIG: "1"
+          MISE_NO_ENV: "1"
+          MISE_NO_HOOKS: "1"
         run: "\"$RUNNER_TEMP\"'/velnor/bin/velnor-actions-0.1.4'"
       - name: Publish plan
         if: always()
@@ -212,9 +229,11 @@ jobs:
       contents: read
       actions: read
     needs:
-      - plan
       - actionlint
       - alint
+      - plan
+      - strict-json
+      - task-marketplace-catalog
     if: always()
     steps:
       - name: Setup Mise
@@ -231,6 +250,10 @@ jobs:
       - name: Prepare pinned tools
         env:
           MISE_CARGO_HOME: ${{ runner.temp }}/velnor/cargo
+          MISE_LOCKFILE: "0"
+          MISE_NO_CONFIG: "1"
+          MISE_NO_ENV: "1"
+          MISE_NO_HOOKS: "1"
           MISE_RUSTUP_HOME: ${{ runner.temp }}/velnor/rustup
         run: mise --no-config --no-env --no-hooks install gh@2.102.0
       - name: Download plan
@@ -249,14 +272,14 @@ jobs:
         env:
           VELNOR_INTERNAL_OP: write-request-v1
           VELNOR_NEEDS_JSON: ${{ toJSON(needs) }}
-          VELNOR_NEEDS_EXPECTED: "[\"actionlint\",\"alint\",\"plan\"]"
+          VELNOR_NEEDS_EXPECTED: "[\"actionlint\",\"alint\",\"plan\",\"strict-json\",\"task-marketplace-catalog\"]"
           VELNOR_REQUEST_FILE: ${{ runner.temp }}/velnor/request/merge-v1-request.json
         run: "\"$RUNNER_TEMP\"'/velnor/bin/velnor-actions-0.1.4'"
       - name: Merge reports
         env:
           VELNOR_INTERNAL_OP: merge-v1
           VELNOR_NEEDS_JSON: ${{ toJSON(needs) }}
-          VELNOR_NEEDS_EXPECTED: "[\"actionlint\",\"alint\",\"plan\"]"
+          VELNOR_NEEDS_EXPECTED: "[\"actionlint\",\"alint\",\"plan\",\"strict-json\",\"task-marketplace-catalog\"]"
           VELNOR_REQUEST_FILE: ${{ runner.temp }}/velnor/request/merge-v1-request.json
         run: "\"$RUNNER_TEMP\"'/velnor/bin/velnor-actions-0.1.4'"
       - name: Publish final report
@@ -267,3 +290,65 @@ jobs:
           name: velnor-final-r${{ github.run_id }}-a${{ github.run_attempt }}
           path: ${{ runner.temp }}/velnor/r${{ github.run_id }}-a${{ github.run_attempt }}/final-report.json
           retention-days: "30"
+  strict-json:
+    name: Strict JSON
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: "false"
+      - name: V2 identity
+        id: v2
+        uses: ./.github/actions/velnor-tools-prelude-u26 # zizmor: ignore[self-repository]
+        with:
+          d: 003d63eaf3fb979685fdcc7ae19a4598258383ec9ce8bf208e5d1dd0ba055959
+      - name: Restore Mise tools
+        if: steps.v2.outputs.enabled == 'true'
+        uses: ./.github/actions/velnor-tools-cache-restore # zizmor: ignore[self-repository]
+        with:
+          key: mise-tools-v2-${{steps.v2.outputs.identity}}
+      - name: Setup Mise
+        uses: jdx/mise-action@9149ea85001c7435d5a66bb127d6a1b6227cb0a5
+        with:
+          cache: "false"
+          cache_save: "false"
+          env: "false"
+          install: "false"
+          sha256: d24fe0bf7e613824ad99f7b8dac3f2b381a37b9f75f84dd250855217095a8de4
+          version: 2026.9.18
+      - name: Prepare pinned tools
+        run: mise --no-config --no-env --no-hooks install node@24.21.0
+      - name: Check strict JSON
+        run: "mise --no-config --no-env --no-hooks exec node@24.21.0 -- node -e 'const fs = require(\"fs\"), path = require(\"path\"); let fail = 0; const skip = new Set([\".git\", \"node_modules\", \"target\"]); function walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) { if (!skip.has(e.name)) walk(p); } else if (e.name.endsWith(\".json\")) check(p); } } function check(f) { const s = fs.readFileSync(f, \"utf8\"); try { JSON.parse(s); } catch (e) { console.log(\"invalid-json:\" + f + \":\" + e.message); fail = 1; return; } const d = dups(s); if (d !== null) { console.log(\"duplicate-key:\" + f + \":\" + d); fail = 1; } } function dups(s) { const st = [new Set()]; let i = 0; while (i < s.length) { const c = s[i]; if (c === \"\\\"\") { let j = i + 1; while (j < s.length) { if (s[j] === \"\\\\\") { j += 2; continue; } if (s[j] === \"\\\"\") break; j++; } let k = j + 1; while (k < s.length && /\\s/.test(s[k])) k++; if (s[k] === \":\") { const t = st[st.length - 1]; const v = JSON.parse(s.slice(i, j + 1)); if (t.has(v)) return v; t.add(v); } i = j + 1; continue; } if (c === \"{\") st.push(new Set()); else if (c === \"}\") st.pop(); i++; } return null; } walk(\".\"); process.exitCode = fail;'"
+      - name: Save Mise tools
+        if: success() && github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && github.ref_protected == true && steps.v2.outputs.enabled == 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          key: mise-tools-v2-${{steps.v2.outputs.identity}}
+          path: "~/.local/share/mise\n${{ runner.temp }}/velnor/rustup\n${{ runner.temp }}/velnor/cargo/.crates.toml\n${{ runner.temp }}/velnor/cargo/.crates2.json\n${{ runner.temp }}/velnor/cargo/bin"
+  task-marketplace-catalog:
+    name: Verify marketplace-catalog
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: "false"
+      - name: Setup Mise
+        uses: jdx/mise-action@9149ea85001c7435d5a66bb127d6a1b6227cb0a5
+        with:
+          cache: "false"
+          cache_save: "false"
+          env: "false"
+          install: "false"
+          sha256: d24fe0bf7e613824ad99f7b8dac3f2b381a37b9f75f84dd250855217095a8de4
+          version: 2026.9.18
+      - name: Run declared Mise task
+        env:
+          MISE_CARGO_BINSTALL_ONLY: "1"
+        run: "bash -c 'unset ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL ACTIONS_RUNTIME_TOKEN GITHUB_TOKEN MISE_GITHUB_TOKEN GH_TOKEN GH_HOST GH_CONFIG_DIR; set -euo pipefail; for name in ${!MISE_@}; do unset \"$name\"; done; umask 077; task_root=\"${RUNNER_TEMP}/velnor-verification-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-marketplace-catalog\"; test -n \"$RUNNER_TEMP\" && test -n \"$GITHUB_WORKSPACE\" && test -n \"$GITHUB_RUN_ID\" && test -n \"$GITHUB_RUN_ATTEMPT\"; [[ \"$GITHUB_RUN_ID\" =~ ^[0-9]+$ ]]; [[ \"$GITHUB_RUN_ATTEMPT\" =~ ^[0-9]+$ ]]; cd -P \"$GITHUB_WORKSPACE\"; workspace_root=\"$PWD\"; cd -P \"$workspace_root\"; /bin/mkdir -m 700 \"$task_root\"; /bin/mkdir -m 700 \"$task_root/home\" \"$task_root/home/config\" \"$task_root/home/data\" \"$task_root/home/cache\" \"$task_root/home/state\" \"$task_root/config\" \"$task_root/data\" \"$task_root/cache\" \"$task_root/state\" \"$task_root/cargo\" \"$task_root/rustup\"; : > \"$task_root/global.toml\"; : > \"$task_root/system.toml\"; export HOME=\"$task_root/home\"; export XDG_CONFIG_HOME=\"$task_root/home/config\"; export XDG_DATA_HOME=\"$task_root/home/data\"; export XDG_CACHE_HOME=\"$task_root/home/cache\"; export XDG_STATE_HOME=\"$task_root/home/state\"; export MISE_CONFIG_DIR=\"$task_root/config\"; export MISE_DATA_DIR=\"$task_root/data\"; export MISE_CACHE_DIR=\"$task_root/cache\"; export MISE_STATE_DIR=\"$task_root/state\"; export CARGO_HOME=\"$task_root/cargo\"; export RUSTUP_HOME=\"$task_root/rustup\"; export MISE_GLOBAL_CONFIG_FILE=\"$task_root/global.toml\"; export MISE_SYSTEM_CONFIG_FILE=\"$task_root/system.toml\"; export MISE_AUTO_INSTALL=false; export MISE_EXEC_AUTO_INSTALL=false; export MISE_TASK_RUN_AUTO_INSTALL=false; export MISE_AUTO_ENV=false; export MISE_NO_ENV=1; export MISE_CEILING_PATHS=\"$workspace_root\"; export MISE_TRUSTED_CONFIG_PATHS=\"$workspace_root\"; export MISE_NO_HOOKS=1; export MISE_CARGO_BINSTALL_ONLY=1; unset MISE_CONFIG_FILE MISE_ENV MISE_ENV_FILE; test -f \"$workspace_root/mise.toml\"; test ! -L \"$workspace_root/mise.toml\"; /usr/bin/sha256sum  \"$workspace_root/mise.toml\" > \"$task_root/sha256.txt\"; read actual rest < \"$task_root/sha256.txt\"; test \"$actual\" = \"2681b8c82f18c52aaf6cf5222b842b33c39615e5e2b102811f64109c5c08dcd5\"; test ! -e \"$workspace_root/mise.lock\" && test ! -L \"$workspace_root/mise.lock\"; test ! -e \"$workspace_root/rust-toolchain.toml\" && test ! -L \"$workspace_root/rust-toolchain.toml\"; cd -P \"$workspace_root\"; command -v jq > \"$task_root/jq_path.txt\"; IFS= read -r jq_path < \"$task_root/jq_path.txt\"; test -n \"$jq_path\"; test -x \"$jq_path\"; \"$jq_path\" --version | /usr/bin/grep -Fqx '\\''jq-1.8.2'\\''; mise --no-env --no-hooks config ls --json | \"$jq_path\" -r '\\''.[].path'\\'' | LC_ALL=C /usr/bin/sort > \"$task_root/mise_configs.txt\"; workspace_config_found=false; while IFS= read -r path; do case \"$path\" in \"$workspace_root/mise.toml\") workspace_config_found=true ;; \"$workspace_root/rust-toolchain.toml\"|\"$task_root/global.toml\"|\"$task_root/system.toml\") ;; *) exit 1 ;; esac; done < \"$task_root/mise_configs.txt\"; [[ \"$workspace_config_found\" == true ]]; mise --no-env --no-hooks run --skip-tools validate-marketplace'"
