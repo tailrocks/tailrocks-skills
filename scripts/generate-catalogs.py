@@ -51,8 +51,9 @@ def build_claude(plugins):
             {
                 "name": entry["id"],
                 "source": {
-                    "ref": entry["sourceRef"],
+                    "ref": entry["tag"],
                     "repo": entry["repo"],
+                    "sha": entry["rev"],
                     "source": "github",
                 },
             }

@@ -58,8 +58,9 @@ def expected_claude(plugins):
             {
                 "name": item["id"],
                 "source": {
-                    "ref": item["sourceRef"],
+                    "ref": item["tag"],
                     "repo": item["repo"],
+                    "sha": item["rev"],
                     "source": "github",
                 },
             }
