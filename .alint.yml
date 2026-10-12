@@ -9,7 +9,7 @@
 # `alint check`.
 version: 1
 extends:
-  - https://raw.githubusercontent.com/tailrocks/tailrocks-skills/0d7c9e7935f2d77cc23ae5903f108fb6faf949cf/standards/alint/marketplace.yml#sha256-c0d650d6db8fe67b11b5aac674950fb9ccd2c521eea10378205dcae71f050755
+  - https://raw.githubusercontent.com/tailrocks/tailrocks-skills/fad5881c1aa470920c51e68f1c9991fa3a4fd3cf/standards/alint/marketplace.yml#sha256-970713d7d71a67f7752620ca12e801217e4e6f50819722e2ebe93a0e42ff71b2
 rules:
   # The catalog-*-agree rules compare ID and revision sets only, so a
   # URL, version, description, or displayName change without regen
