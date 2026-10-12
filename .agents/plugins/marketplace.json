@@ -116,7 +116,7 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "ref": "8a35d406a8f293d0ee6651f3677c36dd6d6d2479",
+        "ref": "786da0d583c22958372697c1f35709e7c6d90284",
         "source": "url",
         "url": "https://github.com/tailrocks/tailrocks-asd-ste100-skills"
       }

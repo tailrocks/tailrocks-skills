@@ -94,10 +94,10 @@
       "id": "asd-ste100-skill",
       "private": true,
       "repo": "tailrocks/tailrocks-asd-ste100-skills",
-      "rev": "8a35d406a8f293d0ee6651f3677c36dd6d6d2479",
+      "rev": "786da0d583c22958372697c1f35709e7c6d90284",
       "sourceRef": "main",
-      "tag": "v0.1.1",
-      "version": "0.1.1"
+      "tag": "v0.1.2",
+      "version": "0.1.2"
     }
   ]
 }
