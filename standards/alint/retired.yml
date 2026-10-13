@@ -1,0 +1,119 @@
+# Shared alint profile: retired repository (goal Section 8.3).
+# Consumed via `extends` with an immutable URL plus SHA-256 pin.
+# alint v0.17.0 (asamarts/alint). Every `kind` below exists in the
+# v0.17.0 schema (schemas/v1/config.json at tag v0.17.0).
+#
+# Fetched-config limits: no nested `extends`, no `command` rules,
+# no custom facts, no `allow_out_of_root`, no `baseline`.
+#
+# A retired repository keeps only its migration notice, required
+# notices, and maintenance configuration. All skill payloads,
+# plugin manifests, and catalogs are deleted.
+version: 1
+rules:
+  # Required retired paths (design Section 2).
+  - id: req-readme
+    kind: file_exists
+    level: error
+    paths: "README.md"
+    message: "Retired repository must keep README.md."
+  - id: req-license
+    kind: file_exists
+    level: error
+    paths: "LICENSE"
+    message: "Retired repository must keep LICENSE."
+  - id: req-changelog
+    kind: file_exists
+    level: error
+    paths: "CHANGELOG.md"
+    message: "Retired repository must keep CHANGELOG.md."
+  - id: req-alint-config
+    kind: file_exists
+    level: error
+    paths: ".alint.yml"
+    message: "Retired repository must keep .alint.yml."
+  - id: req-velnor-config
+    kind: file_exists
+    level: error
+    paths: ".velnor/config.toml"
+    message: "Retired repository must keep .velnor/config.toml."
+  - id: req-github-dir
+    kind: dir_exists
+    level: error
+    paths: ".github"
+    message: "Retired repository must keep the minimal generated .github directory."
+
+  # Reject retired payloads (review note): no skills, no plugin
+  # manifests, no catalogs.
+  - id: no-skills-dir
+    kind: dir_absent
+    level: error
+    paths: "skills"
+    message: "Retired repository must not carry a skills directory."
+  - id: no-plugin-manifests
+    kind: file_absent
+    level: error
+    paths:
+      - "plugin.json"
+      - ".claude-plugin/plugin.json"
+      - ".kimi-plugin/plugin.json"
+      - ".codex-plugin/plugin.json"
+      - ".muse-plugin/plugin.json"
+    message: "Retired repository must not carry plugin manifests."
+  - id: no-plugin-manifest-dirs
+    kind: dir_absent
+    level: error
+    paths:
+      - ".claude-plugin"
+      - ".kimi-plugin"
+      - ".codex-plugin"
+      - ".muse-plugin"
+      - ".agents"
+    message: "Retired repository must not carry plugin manifest directories."
+  - id: no-catalogs
+    kind: file_absent
+    level: error
+    paths:
+      - "catalog.json"
+      - ".claude-plugin/marketplace.json"
+      - ".agents/plugins/marketplace.json"
+      - ".kimi-plugin/marketplace.json"
+    message: "Retired repository must not carry catalogs."
+
+  # The README carries the migration notice with the canonical link.
+  - id: readme-migration-notice
+    kind: file_content_matches
+    level: error
+    paths: "README.md"
+    pattern: '(?i)(migrat|retir)'
+    message: "Retired README.md must carry the migration notice."
+  - id: readme-canonical-link
+    kind: file_content_matches
+    level: error
+    paths: "README.md"
+    pattern: 'github\.com/tailrocks/'
+    message: "Retired README.md must link the canonical Tailrocks location."
+
+  # Defect 11: prohibited runtime or generated copies.
+  - id: no-mcp-config
+    kind: file_absent
+    level: error
+    paths: ".mcp.json"
+    message: "Retired repository must not carry MCP server configuration."
+  - id: no-eval-dirs
+    kind: dir_absent
+    level: error
+    paths:
+      - "eval"
+      - "evals"
+      - "benchmarks"
+    message: "Retired repository must not carry evaluation fixtures."
+  - id: denied-tracked-paths
+    kind: git_no_denied_paths
+    level: error
+    denied:
+      - "**/node_modules/**"
+      - "**/__pycache__/**"
+      - "**/*.pyc"
+      - "**/dist/**"
+    message: "Retired repository must not track caches, artifacts, or build output."
