@@ -1,0 +1,404 @@
+# Shared alint profile: active skill package (goal Section 8.1).
+# Consumed via `extends` with an immutable URL plus SHA-256 pin.
+# alint v0.17.0 (asamarts/alint). Every `kind` below exists in the
+# v0.17.0 schema (schemas/v1/config.json at tag v0.17.0).
+#
+# Fetched-config limits: no nested `extends`, no `command` rules,
+# no custom facts, no `allow_out_of_root`, no `baseline`.
+#
+# Verified tool facts this profile relies on:
+# - `file_exists` with an array accepts ANY entry, so each required
+#   path gets its own rule.
+# - The walker yields regular files only, so `filename_*` rules can
+#   never see skill-ID directory names. Skill-ID shape is enforced
+#   with `dir_absent` character-class globs instead. `filename_case`
+#   has no valid target under these facts and is unused here.
+# - `unique_by` keys are path templates only (`{parent_name}`).
+#   Frontmatter name/dir agreement belongs to the Agent Skills
+#   validator, not alint.
+# - Required CI jobs (defect 12) belong to Velnor generation-diff
+#   plus required status, not alint.
+version: 1
+rules:
+  # Required paths (goal Section 8.1). One rule per path.
+  - id: req-readme
+    kind: file_exists
+    level: error
+    paths: "README.md"
+    message: "Active package must keep README.md."
+  - id: req-license
+    kind: file_exists
+    level: error
+    paths: "LICENSE"
+    message: "Active package must keep LICENSE."
+  - id: req-changelog
+    kind: file_exists
+    level: error
+    paths: "CHANGELOG.md"
+    message: "Active package must keep CHANGELOG.md."
+  - id: req-agents
+    kind: file_exists
+    level: error
+    paths: "AGENTS.md"
+    message: "Active package must keep AGENTS.md."
+  - id: req-plugin-manifest
+    kind: file_exists
+    level: error
+    paths: "plugin.json"
+    message: "Active package must keep the portable plugin.json."
+  - id: req-claude-manifest
+    kind: file_exists
+    level: error
+    paths: ".claude-plugin/plugin.json"
+    message: "Active package must keep .claude-plugin/plugin.json."
+  - id: req-kimi-manifest
+    kind: file_exists
+    level: error
+    paths: ".kimi-plugin/plugin.json"
+    message: "Active package must keep .kimi-plugin/plugin.json."
+  - id: req-alint-config
+    kind: file_exists
+    level: error
+    paths: ".alint.yml"
+    message: "Active package must keep .alint.yml."
+  - id: req-velnor-config
+    kind: file_exists
+    level: error
+    paths: ".velnor/config.toml"
+    message: "Active package must keep .velnor/config.toml."
+  - id: req-pr-template
+    kind: file_exists
+    level: error
+    paths: ".github/PULL_REQUEST_TEMPLATE.md"
+    message: "Active package must keep .github/PULL_REQUEST_TEMPLATE.md."
+  - id: req-github-dir
+    kind: dir_exists
+    level: error
+    paths: ".github"
+    message: "Active package must keep the generated .github directory."
+  - id: req-docs-readme
+    kind: file_exists
+    level: error
+    paths: "docs/README.md"
+    message: "Active package must keep docs/README.md."
+  - id: req-docs-installation
+    kind: file_exists
+    level: error
+    paths: "docs/installation.md"
+    message: "Active package must keep docs/installation.md."
+  - id: req-docs-usage
+    kind: file_exists
+    level: error
+    paths: "docs/usage.md"
+    message: "Active package must keep docs/usage.md."
+  - id: req-docs-compatibility
+    kind: file_exists
+    level: error
+    paths: "docs/compatibility.md"
+    message: "Active package must keep docs/compatibility.md."
+  - id: req-docs-maintenance
+    kind: file_exists
+    level: error
+    paths: "docs/maintenance.md"
+    message: "Active package must keep docs/maintenance.md."
+  - id: req-docs-troubleshooting
+    kind: file_exists
+    level: error
+    paths: "docs/troubleshooting.md"
+    message: "Active package must keep docs/troubleshooting.md."
+  - id: req-skills-dir
+    kind: dir_exists
+    level: error
+    paths: "skills"
+    message: "Active package must keep the skills directory."
+  - id: req-one-skill
+    kind: file_exists
+    level: error
+    paths: "skills/*/SKILL.md"
+    message: "Active package must ship at least one skills/<skill-id>/SKILL.md."
+
+  # Defect 1: a component marketplace.
+  - id: no-component-marketplaces
+    kind: file_absent
+    level: error
+    paths:
+      - ".claude-plugin/marketplace.json"
+      - ".kimi-plugin/marketplace.json"
+    message: "Only the central marketplace may carry a marketplace catalog."
+  - id: no-foreign-plugin-dirs
+    kind: dir_absent
+    level: error
+    paths:
+      - ".agents/plugins"
+      - ".codex-plugin"
+      - ".muse-plugin"
+      - ".grok-plugin"
+    message: "Active package must not carry component marketplace or removed host-manifest directories."
+
+  # Defect 2: an unexpected skill location.
+  - id: no-root-skill
+    kind: file_absent
+    level: error
+    paths:
+      - "SKILL.md"
+      - "skills/SKILL.md"
+    message: "SKILL.md must live at skills/<skill-id>/SKILL.md, never at the repository root or directly under skills."
+  - id: skill-root-files
+    kind: dir_only_contains
+    level: error
+    select: "skills/*"
+    allow: ["SKILL.md"]
+    message: "The only direct child file of a skill directory is SKILL.md."
+  - id: skill-max-depth
+    kind: max_directory_depth
+    level: error
+    paths: "skills/**"
+    max_depth: 5
+    message: "Skill payloads must not nest deeper than skills/<id>/references/<topic>/<file>."
+
+  # Template coverage (review note): the stored authoring template must
+  # use the .template form, never a discoverable SKILL.md.
+  - id: no-template-skill-md
+    kind: file_absent
+    level: error
+    paths: "skills/*/assets/skill-template/SKILL.md"
+    message: "The stored authoring template must be SKILL.md.template, not a discoverable SKILL.md."
+
+  # Defect 3: a missing SKILL.md (malformed SKILL.md belongs to the
+  # Agent Skills validator).
+  - id: each-skill-has-file
+    kind: dir_contains
+    level: error
+    select: "skills/*"
+    require: "SKILL.md"
+    message: "Every directory under skills must contain SKILL.md."
+  - id: skill-not-empty
+    kind: no_empty_files
+    level: error
+    paths: "skills/*/SKILL.md"
+    message: "SKILL.md must not be empty."
+
+  # Defect 4: an invalid or duplicate active skill ID.
+  - id: skill-id-chars
+    kind: dir_absent
+    level: error
+    paths: ["skills/*[^/a-z0-9-]*"]
+    message: "Skill IDs must use only lowercase letters, digits, and dashes."
+  - id: skill-id-leading-dash
+    kind: dir_absent
+    level: error
+    paths: ["skills/-*"]
+    message: "Skill IDs must not start with a dash."
+  - id: skill-id-trailing-dash
+    kind: dir_absent
+    level: error
+    paths: ["skills/*-"]
+    message: "Skill IDs must not end with a dash."
+  - id: skill-id-double-dash
+    kind: dir_absent
+    level: error
+    paths: ["skills/*--*"]
+    message: "Skill IDs must not contain a double dash."
+  - id: skill-id-too-long
+    kind: dir_absent
+    level: error
+    paths: ["skills/?????????????????????????????????????????????????????????????????*"]
+    message: "Skill IDs must not exceed 64 characters."
+  - id: skill-ids-unique
+    kind: unique_by
+    level: error
+    select: "skills/**/SKILL.md"
+    key: "{parent_name}"
+    case_insensitive: true
+    message: "Skill IDs must be unique, including across letter case."
+  - id: reference-names-portable
+    kind: filename_regex
+    level: error
+    paths: "skills/*/references/**"
+    pattern: "[a-z0-9][a-z0-9._-]*"
+    message: "Reference files must use portable lowercase names."
+
+  # Defect 5: a missing required resource. Real Markdown links belong
+  # to the link checker; alint covers the Kimi skills registry and
+  # backticked workspace paths in prose.
+  - id: kimi-skills-registry
+    kind: registry_paths_resolve
+    level: error
+    source: ".kimi-plugin/plugin.json"
+    extract: {json: "$.skills"}
+    expect: dir
+    base: lint_root
+    message: "The Kimi manifest skills path must resolve to the skills directory."
+  - id: doc-backtick-paths
+    kind: markdown_paths_resolve
+    level: error
+    paths:
+      - "README.md"
+      - "AGENTS.md"
+      - "CHANGELOG.md"
+      - "docs/**/*.md"
+    prefixes:
+      - "skills/"
+      - "docs/"
+      - "references/"
+      - "assets/"
+    message: "Backticked workspace paths in prose must resolve to real files or directories."
+
+  # Defect 6: a path that escapes the installed package. Native
+  # validators own SKILL.md prose; alint guards manifests and agent
+  # metadata against parent-directory references.
+  - id: no-escape-manifests
+    kind: file_content_forbidden
+    level: error
+    paths:
+      - "plugin.json"
+      - ".claude-plugin/plugin.json"
+      - ".kimi-plugin/plugin.json"
+      - "skills/*/agents/**"
+    pattern: '\.\.'
+    message: "Manifests and agent metadata must not contain parent-directory references."
+
+  # Defect 7: an obsolete active skill alias. The retired pull-request
+  # plugin must not persist as installable payload.
+  - id: no-retired-alias
+    kind: file_content_forbidden
+    level: error
+    paths:
+      - "skills/**"
+      - "plugin.json"
+      - ".claude-plugin/plugin.json"
+      - ".kimi-plugin/plugin.json"
+    pattern: 'tailrocks-pull-request-skills'
+    message: "The retired pull-request plugin must not appear in active skill payloads."
+
+  # Defect 8: a missing README section (8 required headings).
+  - id: readme-title
+    kind: file_content_matches
+    level: error
+    paths: "README.md"
+    pattern: '(?m)^# \S'
+    message: "README.md must start with a title and purpose."
+  - id: readme-skills
+    kind: file_content_matches
+    level: error
+    paths: "README.md"
+    pattern: '(?m)^## Skills\s*$'
+    message: "README.md must carry a Skills section."
+  - id: readme-install
+    kind: file_content_matches
+    level: error
+    paths: "README.md"
+    pattern: '(?m)^## Install\s*$'
+    message: "README.md must carry an Install section."
+  - id: readme-use
+    kind: file_content_matches
+    level: error
+    paths: "README.md"
+    pattern: '(?m)^## Use\s*$'
+    message: "README.md must carry a Use section."
+  - id: readme-documentation
+    kind: file_content_matches
+    level: error
+    paths: "README.md"
+    pattern: '(?m)^## Documentation\s*$'
+    message: "README.md must carry a Documentation section."
+  - id: readme-update-remove
+    kind: file_content_matches
+    level: error
+    paths: "README.md"
+    pattern: '(?m)^## Update and remove\s*$'
+    message: "README.md must carry an Update and remove section."
+  - id: readme-contribute
+    kind: file_content_matches
+    level: error
+    paths: "README.md"
+    pattern: '(?m)^## Contribute\s*$'
+    message: "README.md must carry a Contribute section."
+  - id: readme-license
+    kind: file_content_matches
+    level: error
+    paths: "README.md"
+    pattern: '(?m)^## License\s*$'
+    message: "README.md must carry a License section."
+
+  # Defect 10: a manifest version that differs from its package
+  # version. The portable root manifest is the source of truth.
+  - id: manifest-version-agree
+    kind: cross_file
+    level: error
+    source: {file: "plugin.json", extract: {json: "$.version"}}
+    targets:
+      - {file: ".claude-plugin/plugin.json", extract: {json: "$.version"}}
+      - {file: ".kimi-plugin/plugin.json", extract: {json: "$.version"}}
+    relation: equals
+    message: "Host manifests must carry the same version as plugin.json."
+  - id: manifest-name-agree
+    kind: cross_file
+    level: error
+    source: {file: "plugin.json", extract: {json: "$.name"}}
+    targets:
+      - {file: ".claude-plugin/plugin.json", extract: {json: "$.name"}}
+      - {file: ".kimi-plugin/plugin.json", extract: {json: "$.name"}}
+    relation: equals
+    message: "Host manifests must carry the same name as plugin.json."
+  - id: manifest-description-agree
+    kind: cross_file
+    level: error
+    source: {file: "plugin.json", extract: {json: "$.description"}}
+    targets:
+      - {file: ".claude-plugin/plugin.json", extract: {json: "$.description"}}
+      - {file: ".kimi-plugin/plugin.json", extract: {json: "$.description"}}
+    relation: equals
+    message: "Host manifests must carry the same description as plugin.json."
+  - id: kimi-skills-field
+    kind: json_path_equals
+    level: error
+    paths: ".kimi-plugin/plugin.json"
+    path: "$.skills"
+    equals: "./skills/"
+    message: "The Kimi manifest must point its skills field at ./skills/."
+  - id: root-no-skills-field
+    kind: json_path_absent
+    level: error
+    paths: "plugin.json"
+    path: "$.skills"
+    message: "The portable plugin.json must not carry a skills field."
+
+  # Defect 11: a prohibited runtime or generated definition copy.
+  - id: no-mcp-config
+    kind: file_absent
+    level: error
+    paths: ".mcp.json"
+    message: "Skill packages must not carry MCP server configuration."
+  - id: no-eval-dirs
+    kind: dir_absent
+    level: error
+    paths:
+      - "eval"
+      - "evals"
+      - "benchmarks"
+    message: "Skill packages must not carry evaluation fixtures."
+  - id: skills-not-executable
+    kind: executable_bit
+    level: error
+    paths: "skills/**"
+    require: false
+    message: "Skill payloads must not carry executable wrappers."
+  - id: denied-tracked-paths
+    kind: git_no_denied_paths
+    level: error
+    denied:
+      - "**/node_modules/**"
+      - "**/__pycache__/**"
+      - "**/*.pyc"
+      - "**/dist/**"
+    message: "Skill packages must not track caches, artifacts, or build output."
+
+  # Maximum skill file length (review note): SKILL.md stays under
+  # 500 lines.
+  - id: skill-max-lines
+    kind: file_max_lines
+    level: error
+    paths: "skills/*/SKILL.md"
+    max_lines: 500
+    message: "SKILL.md must stay under 500 lines."

@@ -1,0 +1,50 @@
+{
+  "plugins": [
+    {
+      "displayName": "Skill Authoring Skills",
+      "id": "tailrocks-skill-authoring-skills",
+      "source": "https://github.com/tailrocks/tailrocks-skill-authoring-skills/commit/a5b25695bd35fc5265894529ab7c85d87162ae42"
+    },
+    {
+      "displayName": "Repository Skills",
+      "id": "tailrocks-repository-skills",
+      "source": "https://github.com/tailrocks/tailrocks-repository-skills/commit/4926eb7dee53b6cd4f772cc205e03af7ef5664b3"
+    },
+    {
+      "displayName": "TypeScript Skills",
+      "id": "tailrocks-typescript-skills",
+      "source": "https://github.com/tailrocks/tailrocks-typescript-skills/commit/41768afec4886fee610b6cfbfcbb2205cb01bba2"
+    },
+    {
+      "displayName": "macOS Skills",
+      "id": "tailrocks-macos-skills",
+      "source": "https://github.com/tailrocks/tailrocks-macos-skills/commit/af78c8ff21c9df8b00f9fd8046f00a3a5ced7f85"
+    },
+    {
+      "displayName": "Roadmap Skills",
+      "id": "tailrocks-roadmap-skills",
+      "source": "https://github.com/tailrocks/tailrocks-roadmap-skills/commit/c273c8645860a5d0aebfdc73dd61f825e0e30bf9"
+    },
+    {
+      "displayName": "Contribution Skills",
+      "id": "tailrocks-contribution-skills",
+      "source": "https://github.com/tailrocks/tailrocks-contribution-skills/commit/25a3f6a9a66937ff5d70cbc35909cb2904a5b7d5"
+    },
+    {
+      "displayName": "Code Quality Skills",
+      "id": "tailrocks-code-quality-skills",
+      "source": "https://github.com/tailrocks/tailrocks-code-quality-skills/commit/d14832f9d3cf0690851f3ecaaa7f9de32c0d1096"
+    },
+    {
+      "displayName": "Rust Skills",
+      "id": "tailrocks-rust-skills",
+      "source": "https://github.com/tailrocks/tailrocks-rust-skills/commit/a2cfae1b8a4d1b29247e1b2a3bfd4fe6f30d23a7"
+    },
+    {
+      "displayName": "ASD-STE100: Clear Technical English",
+      "id": "asd-ste100-skill",
+      "source": "https://github.com/tailrocks/tailrocks-asd-ste100-skills/commit/8a35d406a8f293d0ee6651f3677c36dd6d6d2479"
+    }
+  ],
+  "version": "2"
+}
