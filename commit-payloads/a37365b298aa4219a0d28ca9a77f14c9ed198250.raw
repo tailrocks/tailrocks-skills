@@ -1,0 +1,31 @@
+tree 7a86e133ec4bb6fc434fab0b4194cd9bbcce7af8
+parent b5c159ca08b7c1557a1e4255f044d03c3ece0195
+author Alexey Zhokhov <alexey@zhokhov.com> 1791422441 +0700
+committer GitHub <noreply@github.com> 1791422441 +0700
+gpgsig -----BEGIN PGP SIGNATURE-----
+ 
+ wsFcBAABCAAQBQJqxu/pCRC1aQ7uu5UhlAAAYLMQABSgHje04mtBocJpL3+D664l
+ HxsxnprgH5ujjPbHmo4FU+ULIIJNuZQjfThvvzqAau4JKSZBh0YsrtkoAhDGilR2
+ SF9WEkj8NGmIkgQuXlHm3E4ue2C4DwbiTXbUfJ6DeZD9uGH+cMfxlC0KwOKrZfNb
+ 28+356WlcSgc6IetULgkMCEG7kaGDxqzseSbxEOIm9DPMdkenYoMhZTWmTLwVckQ
+ iClMFfK8EcQzF9aca6EzAr6hgmatZbAL9oi5p6d1N1Joww+k046fV9RlywotM/6T
+ yJUT/RYurKzeXl+X9NpC59ocJWWyd50JDHI/MeUqamhx8Y/39mk3viECRoChuzVM
+ /dHJ1+B+sugpBRT4EckgJ6UOeqJIXV52WscNKgrG9/J4earh4t79cQ5gnoARIfER
+ jNqy81GQHzMNbIseObFYX6jVQ6ZuJ4uFuFMKXSuxmASonlUh00xOzVqOnLPipYgc
+ hg9ymmdrXrWCGF6A+abHj6GpCLM3Bw1gtjb4DEM6kn7PVWf2HZSDalVSdbx0tfxT
+ ExLZ7kjmXqEBAIgMkwiWr5lCoUjYOHj1fNnIB5L5PksFZTkt1PhcarSbyoygjZIZ
+ IB5ntWHmg3j6tged7g2m2tnDosJvO+x1l9EB9FxWN3V8zFKwu9jggTgT6XUNOP6j
+ Uw4IJgfXP5hh5r42g4Jb
+ =gFbu
+ -----END PGP SIGNATURE-----
+ 
+
+Point central catalog at immutable release revisions (#122)
+
+All 9 package releases exist and each tag resolves to the listed rev.
+This change updates catalog.json revs, aligns the contribution entry
+with the renamed repo and plugin name, aligns the ASD entry id with the
+installed plugin name asd-ste100-skill, and regenerates the three native
+catalogs from the central source. Local alint check passes (38 rules).
+
+Signed-off-by: donbeave <donbeave@gmail.com>
