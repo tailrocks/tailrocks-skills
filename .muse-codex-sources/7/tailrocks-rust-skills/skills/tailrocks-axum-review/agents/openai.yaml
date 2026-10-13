@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Axum Review"
+  short_description: "Review Axum adapters without mutation"
+  default_prompt: "Use $tailrocks-axum-review to review this Axum target read-only and report only verified HTTP-boundary, Tower-policy, lifecycle, and transport-test findings."
+policy:
+  allow_implicit_invocation: false

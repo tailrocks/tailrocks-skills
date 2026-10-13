@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: TypeScript Best Practices"
+  short_description: "Write strict, explicit TypeScript and React contracts"
+  default_prompt: "Use $tailrocks-typescript-best-practices to write this in-scope TypeScript 7 or React behavior with explicit state, validation, failure, mutation, and async ownership while keeping business logic in Rust."
+policy:
+  allow_implicit_invocation: true

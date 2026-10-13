@@ -1,0 +1,77 @@
+---
+name: <skill-name>
+description: >-
+  Use only when the user explicitly requests this skill. <Triggers only:
+  the user own verbs, symptoms, situations, and artifact names that
+  select this skill, plus the do-not-use boundary that names the
+  owning skill. Third person, at most 1024 chars total, key triggers
+  first. Never a workflow summary.>
+# when_to_use: extra trigger phrases — 2-4 example user requests in
+# the user own words plus sibling routing ("Not for <sibling
+# trigger> — that belongs to <owning skill>"). Appended to
+# description in the listing; counts toward the same 1536-char cap.
+# Kimi: whenToUse. Grok: when-to-use plus paths.
+# Amp: model-invoked; repo dir name must equal frontmatter name.
+# OpenCode v2 and Antigravity ignore unknown keys (manual-only flags
+# dead there — the guard sentence alone holds the boundary). Muse
+# ids allow underscore; validate with `muse skills validate <path>`.
+# Portable keys: name, description, license, compatibility,
+# metadata, allowed-tools. argument-hint, disable-model-invocation,
+# user-invocable, and when_to_use are host extensions. Kimi: use
+# arguments: with $<name> expansion instead of argument-hint; never
+# type: flow on an invokable skill.
+# arguments:        # Kimi named params, e.g. `target mode` — the body
+#   - target        # reads each as $<name> (uncomment when the body
+#   - mode          # takes named arguments).
+argument-hint: "<arguments>"
+disable-model-invocation: true
+license: Apache-2.0
+user-invocable: true
+---
+
+# <Title>
+
+## Use this skill
+
+<Selection conditions: when the user selects this skill, its
+argument shape, and its exclusions that name the owning skills.>
+
+## Before you start
+
+<Get the inputs from the user invocation. State key facts and
+authority: what the skill reads, writes, and never touches.>
+
+The user instructions take precedence over the guidelines in this
+skill. When explicit user instructions conflict with the skill
+instructions, prioritize the user instructions. A turn-level
+instruction never lifts a refusal or stop boundary. Only the
+separately scoped authorization that the boundary names lifts it.
+
+## Procedure
+
+### 1. <Step name>
+
+<Instruction: one obligation per step, reason stated. Route
+references from the relevant step by when to read them, never
+summarized here.>
+
+### 2. <Step name>
+
+<Next instruction.>
+
+## Result
+
+<The intended output: deliverable, destination, and downstream
+reader.>
+
+## Completion checks
+
+- <Checkable condition that proves the work finished.>
+- <No stale or partial output remains.>
+
+## References
+
+<When references exist: one when-to-read line per file. When the
+skill ships no references, delete this section.>
+
+- Read `references/<file>.md` for <the question it answers>.

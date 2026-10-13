@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Web Design"
+  short_description: "Design TanStack screens as blessed in-app design routes"
+  default_prompt: "Use $tailrocks-web-design to apply web visual-design policy to design work already in scope. Do not audit, self-approve, bless, freeze baselines, capture, or mutate production without active-task authority and the required user decision; route explicit audit requests to $tailrocks-web-design-audit."
+policy:
+  allow_implicit_invocation: true

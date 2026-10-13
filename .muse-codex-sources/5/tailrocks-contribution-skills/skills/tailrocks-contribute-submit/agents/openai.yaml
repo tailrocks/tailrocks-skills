@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Contribute Submit"
+  short_description: "Submit one prepared contribution under fresh approvals"
+  default_prompt: "Use $tailrocks-contribute-submit to revalidate and submit this prepared contribution, asking fresh approval at each legal and outward boundary."
+policy:
+  allow_implicit_invocation: false

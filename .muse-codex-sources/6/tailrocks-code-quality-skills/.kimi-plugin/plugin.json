@@ -1,0 +1,12 @@
+{
+  "name": "tailrocks-code-quality-skills",
+  "version": "0.28.1",
+  "description": "Evidence-driven code audits, root-cause diagnosis, simplification, remediation, improvement plans, and repository instruction policy.",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Code Quality Skills",
+    "shortDescription": "Evidence-driven code audits, remediation, and instruction policy.",
+    "developerName": "tailrocks",
+    "websiteURL": "https://github.com/tailrocks/tailrocks-code-quality-skills"
+  }
+}

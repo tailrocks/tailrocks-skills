@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Repository Recover"
+  short_description: "Find and preserve one repository's local work"
+  default_prompt: "Use $tailrocks-repository-recover on the explicitly selected repository: find Git copies and loose files, preserve unique work remotely, verify, and clean only when authorized."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,5 @@
+{
+  "name": "tailrocks-rust-skills",
+  "version": "0.28.1",
+  "description": "Strict Rust engineering workflows covering Axum, GraphQL, gRPC, TUI design, project baselines, review, refactoring, and remediation."
+}

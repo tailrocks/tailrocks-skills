@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Agents Instructions Sync"
+  short_description: "Apply one approved instruction-topology repair"
+  default_prompt: "Use $tailrocks-agents-md-sync to apply one explicitly approved instruction-topology repair from the current audit, and verify exact parity."
+policy:
+  allow_implicit_invocation: false

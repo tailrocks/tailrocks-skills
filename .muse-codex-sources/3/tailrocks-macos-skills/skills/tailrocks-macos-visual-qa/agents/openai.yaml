@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: macOS Current-render Verification"
+  short_description: "Drive and judge the current macOS render"
+  default_prompt: "Use $tailrocks-macos-visual-qa verify to drive and judge these exact current macOS screens without installing a harness, freezing a baseline, or running regression comparison."
+policy:
+  allow_implicit_invocation: false

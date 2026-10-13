@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Agents Instructions Audit"
+  short_description: "Audit repository instruction files read-only"
+  default_prompt: "Use $tailrocks-agents-md-audit to audit every instruction file in this repository for placement, duplication, topology, and deletion evidence, and return one read-only report."
+policy:
+  allow_implicit_invocation: false

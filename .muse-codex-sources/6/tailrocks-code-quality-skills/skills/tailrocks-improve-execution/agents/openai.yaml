@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Improve Execution"
+  short_description: "Execute one approved plan in isolation"
+  default_prompt: "Use $tailrocks-improve-execution to execute one approved standalone plan in a disposable worktree, re-run its criteria, and return one verdict."
+policy:
+  allow_implicit_invocation: false

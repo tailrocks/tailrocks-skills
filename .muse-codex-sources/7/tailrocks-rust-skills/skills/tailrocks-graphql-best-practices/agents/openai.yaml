@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: GraphQL Best Practices"
+  short_description: "Public GraphQL APIs: schema shape, Juniper on Axum, typed clients, contract gates"
+  default_prompt: "Use $tailrocks-graphql-best-practices to evolve this service's public GraphQL API with an additive schema, committed SDL contract, Juniper boundary, and generated client types."
+policy:
+  allow_implicit_invocation: true

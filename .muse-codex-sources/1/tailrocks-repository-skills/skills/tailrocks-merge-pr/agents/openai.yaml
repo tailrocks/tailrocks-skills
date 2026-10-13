@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Merge PR"
+  short_description: "Land one pull request through the guarded merge policy"
+  default_prompt: "Use $tailrocks-merge-pr to land one exact pull request. Report blocked, pending, queued, merged, failed, or uncertain. Never delete sources."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: TypeScript Refactor"
+  short_description: "Refactor TypeScript with preservation proof"
+  default_prompt: "Use $tailrocks-typescript-refactor to restructure this exact TypeScript/React scope under the supplied preservation oracle without changing observable behavior."
+policy:
+  allow_implicit_invocation: false

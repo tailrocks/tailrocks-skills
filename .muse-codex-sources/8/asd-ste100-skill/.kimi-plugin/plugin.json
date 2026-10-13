@@ -1,0 +1,12 @@
+{
+  "name": "asd-ste100-skill",
+  "version": "0.1.1",
+  "description": "Clear technical English skill with Practical default and Strict ASD-STE100 Issue 9 profiles.",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "ASD-STE100: Clear Technical English",
+    "shortDescription": "Clear responses with practical and strict STE profiles.",
+    "developerName": "tailrocks",
+    "websiteURL": "https://github.com/tailrocks/tailrocks-asd-ste100-skills"
+  }
+}

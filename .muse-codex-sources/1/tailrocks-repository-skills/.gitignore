@@ -1,0 +1,7 @@
+helper/target/
+.DS_Store
+.firecrawl/
+.tmp/
+.local/
+state/
+dist/

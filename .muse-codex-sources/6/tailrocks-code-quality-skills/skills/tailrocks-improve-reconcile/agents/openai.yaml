@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Improve Reconcile"
+  short_description: "Reconcile the standalone plans/ backlog"
+  default_prompt: "Use $tailrocks-improve-reconcile to reconcile the standalone plans/ backlog against current repository truth, and update only plans/README.md."
+policy:
+  allow_implicit_invocation: false

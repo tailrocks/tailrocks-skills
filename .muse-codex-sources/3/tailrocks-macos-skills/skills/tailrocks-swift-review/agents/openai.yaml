@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Swift Review"
+  short_description: "Review Swift code read-only"
+  default_prompt: "Use $tailrocks-swift-review to review this exact Swift/SwiftUI scope read-only for verified code-contract defects. Do not edit, install, or mutate."
+policy:
+  allow_implicit_invocation: false

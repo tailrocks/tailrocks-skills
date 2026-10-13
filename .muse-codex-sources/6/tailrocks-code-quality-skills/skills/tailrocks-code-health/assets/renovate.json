@@ -1,0 +1,37 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:best-practices"],
+  "dependencyDashboard": true,
+  "vulnerabilityAlerts": {
+    "vulnerabilityFixStrategy": "highest"
+  },
+  "packageRules": [
+    {
+      "description": "Pin direct frontend and tooling dependencies",
+      "matchFileNames": ["package.json"],
+      "rangeStrategy": "pin"
+    },
+    {
+      "description": "Pin the current stable Rust toolchain",
+      "matchManagers": ["rust-toolchain"],
+      "matchDepTypes": ["toolchain"],
+      "rangeStrategy": "pin"
+    },
+    {
+      "groupName": "tanstack",
+      "matchPackageNames": ["@tanstack/**"]
+    },
+    {
+      "groupName": "react",
+      "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"]
+    },
+    {
+      "groupName": "typescript and oxc",
+      "matchPackageNames": ["typescript", "oxlint", "oxfmt"]
+    },
+    {
+      "groupName": "shadcn and tailwind",
+      "matchPackageNames": ["shadcn", "tailwindcss", "@tailwindcss/**"]
+    }
+  ]
+}

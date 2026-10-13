@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Rust Review"
+  short_description: "Review Rust correctness without mutation"
+  default_prompt: "Use $tailrocks-rust-review to review this Rust target read-only and report only verified, actionable findings."
+policy:
+  allow_implicit_invocation: false

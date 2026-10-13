@@ -1,0 +1,5 @@
+{
+  "name": "tailrocks-repository-skills",
+  "version": "0.4.1",
+  "description": "Target-bound repository orchestration plus pull-request lifecycle: template, create, refresh, review, and guarded merge."
+}

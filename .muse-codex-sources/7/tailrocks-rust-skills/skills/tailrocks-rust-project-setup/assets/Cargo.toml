@@ -1,0 +1,156 @@
+# Tailrocks Rust 2024 workspace baseline. Every member inherits package policy,
+# dependencies, and lints from this virtual root.
+
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.98.0"
+# Open source? Uncomment and set your SPDX identifier — members inherit it with
+# `license.workspace = true`. Leave it commented for a private workspace; cargo
+# only requires the field when publishing to a registry.
+# license = "Apache-2.0"
+repository = "https://github.com/your-org/your-repo"
+
+[workspace.dependencies]
+# House HTTP stack. Keep compatible upgrades in one lockfile change.
+axum = "0.8.9"
+http-body-util = "0.1.5"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+thiserror = "2.0.20"
+tokio = { version = "1.53.1", features = ["macros", "rt-multi-thread", "signal"] }
+tower = { version = "0.5.3", features = ["limit", "load-shed", "timeout", "util"] }
+tower-http = { version = "0.7.0", features = ["catch-panic", "compression-gzip", "cors", "limit", "request-id", "sensitive-headers", "timeout", "trace"] }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter", "json"] }
+uuid = { version = "1.25.0", features = ["serde", "v7"] }
+
+[workspace.lints.rust]
+rust_2024_compatibility = { level = "deny", priority = -1 }
+future_incompatible = { level = "deny", priority = -1 }
+rust_2018_idioms = { level = "deny", priority = -1 }
+nonstandard_style = { level = "deny", priority = -1 }
+unused = { level = "deny", priority = -1 }
+unsafe_code = "forbid"
+unsafe_op_in_unsafe_fn = "deny"
+unsafe_attr_outside_unsafe = "deny"
+missing_unsafe_on_extern = "deny"
+never_type_fallback_flowing_into_unsafe = "deny"
+dead_code = "deny"
+elided_lifetimes_in_paths = "deny"
+explicit_outlives_requirements = "deny"
+let_underscore_drop = "deny"
+macro_use_extern_crate = "deny"
+meta_variable_misuse = "deny"
+non_ascii_idents = "deny"
+redundant_lifetimes = "deny"
+single_use_lifetimes = "deny"
+trivial_casts = "deny"
+trivial_numeric_casts = "deny"
+unit_bindings = "deny"
+unnameable_types = "deny"
+unreachable_pub = "deny"
+unused_crate_dependencies = "allow" # cargo-shear owns this class across targets.
+unused_imports = "deny"
+unused_lifetimes = "deny"
+unused_must_use = "deny"
+unused_qualifications = "deny"
+unused_variables = "deny"
+unexpected_cfgs = { level = "warn", check-cfg = ["cfg(coverage,coverage_nightly)"] }
+missing_debug_implementations = "deny"
+missing_docs = "warn"
+unfulfilled_lint_expectations = "deny"
+
+[workspace.lints.rustdoc]
+broken_intra_doc_links = "deny"
+private_intra_doc_links = "warn"
+redundant_explicit_links = "warn"
+unescaped_backticks = "warn"
+
+[workspace.lints.clippy]
+all = { level = "deny", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+cargo = { level = "warn", priority = -1 }
+
+# Correctness, async, and panic policy.
+await_holding_lock = "deny"
+await_holding_refcell_ref = "deny"
+assertions_on_result_states = "deny"
+dbg_macro = "deny"
+expect_used = "deny"
+get_unwrap = "deny"
+indexing_slicing = "deny"
+let_underscore_future = "deny"
+let_underscore_must_use = "deny"
+map_err_ignore = "deny"
+mem_forget = "deny"
+panic = "deny"
+panic_in_result_fn = "deny"
+string_slice = "deny"
+todo = "deny"
+unimplemented = "deny"
+unwrap_in_result = "deny"
+unwrap_used = "deny"
+unused_result_ok = "deny"
+
+# API, architecture, and maintainability policy.
+allow_attributes_without_reason = "deny"
+clone_on_ref_ptr = "deny"
+debug_assert_with_mut_call = "deny"
+disallowed_methods = "deny"
+error_impl_error = "deny"
+expl_impl_clone_on_copy = "deny"
+future_not_send = "deny"
+impl_trait_in_params = "warn"
+infallible_try_from = "deny"
+invalid_upcast_comparisons = "deny"
+iter_not_returning_iterator = "deny"
+large_futures = "warn"
+lossy_float_literal = "deny"
+missing_assert_message = "warn"
+mod_module_files = "deny"
+multiple_inherent_impl = "warn"
+multiple_unsafe_ops_per_block = "deny"
+print_stderr = "deny"
+print_stdout = "deny"
+rest_pat_in_fully_bound_structs = "deny"
+rc_mutex = "deny"
+tests_outside_test_module = "deny"
+undocumented_unsafe_blocks = "deny"
+verbose_file_reads = "deny"
+wildcard_enum_match_arm = "deny"
+wildcard_imports = "deny"
+
+# Numeric conversions and comparisons must make loss/rounding explicit.
+cast_possible_truncation = "warn"
+cast_possible_wrap = "warn"
+cast_precision_loss = "warn"
+cast_sign_loss = "deny"
+float_cmp = "deny"
+float_cmp_const = "deny"
+
+# Measured complexity ceilings from clippy.toml.
+cognitive_complexity = "warn"
+excessive_nesting = "warn"
+fn_params_excessive_bools = "warn"
+large_enum_variant = "warn"
+result_large_err = "warn"
+struct_excessive_bools = "warn"
+too_many_lines = "warn"
+
+# Narrow intentional exceptions to pedantic/cargo policy.
+module_name_repetitions = "allow"
+needless_pass_by_value = "allow"
+similar_names = "allow"
+struct_field_names = "allow"
+multiple_crate_versions = "allow" # cargo-deny owns duplicate-version policy.
+
+[profile.dev]
+debug = 1
+
+[profile.release]
+lto = "thin"
+strip = "symbols"

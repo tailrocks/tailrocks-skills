@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Swift Best Practices"
+  short_description: "Write Swift and SwiftUI native behavior"
+  default_prompt: "Use $tailrocks-swift-best-practices to write this exact native Swift or SwiftUI behavior with strict concurrency, correct state ownership, narrow AppKit bridges, typed failures, guarded availability, accessibility, and focused tests."
+policy:
+  allow_implicit_invocation: true

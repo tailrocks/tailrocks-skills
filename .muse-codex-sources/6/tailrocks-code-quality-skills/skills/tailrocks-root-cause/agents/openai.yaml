@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Root Cause"
+  short_description: "Diagnose one defect read-only with correction options"
+  default_prompt: "Use $tailrocks-root-cause to diagnose this proven defect read-only: derive the bounded causal class and return practical correction options."
+policy:
+  allow_implicit_invocation: false

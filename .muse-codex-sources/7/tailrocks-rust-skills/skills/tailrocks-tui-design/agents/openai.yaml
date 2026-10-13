@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: TUI Design"
+  short_description: "Design terminal UI screens as blessed ratatui golden frames"
+  default_prompt: "Use $tailrocks-tui-design to apply terminal visual-design policy to design work already in scope. Do not audit, self-approve, write gallery or golden artifacts, bless, freeze, capture, or mutate production without active-task authority and the required user decision; route explicit audit requests to $tailrocks-tui-design-audit."
+policy:
+  allow_implicit_invocation: true

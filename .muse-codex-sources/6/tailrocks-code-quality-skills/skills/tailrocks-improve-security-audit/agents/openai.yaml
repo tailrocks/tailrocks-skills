@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Improve Security Audit"
+  short_description: "Audit a repository read-only for security defects"
+  default_prompt: "Use $tailrocks-improve-security-audit to audit this repository for security defects with bounded threat analysis and secret-safe evidence, and return one read-only report."
+policy:
+  allow_implicit_invocation: false

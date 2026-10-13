@@ -1,0 +1,12 @@
+{
+  "name": "tailrocks-macos-skills",
+  "version": "0.28.1",
+  "description": "Native macOS Swift and SwiftUI workflows for Liquid Glass design, project setup, Rust-core integration, visual QA, and regression control.",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "macOS Skills",
+    "shortDescription": "Swift, SwiftUI, Liquid Glass, and native macOS workflows.",
+    "developerName": "tailrocks",
+    "websiteURL": "https://github.com/tailrocks/tailrocks-macos-skills"
+  }
+}

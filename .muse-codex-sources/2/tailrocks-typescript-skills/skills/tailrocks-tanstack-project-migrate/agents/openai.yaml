@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: TanStack Project Migrate"
+  short_description: "Migrate a frontend in never-broken slices"
+  default_prompt: "Use $tailrocks-tanstack-project-migrate to move this existing frontend to the Bun/TanStack Start baseline in rollback-safe slices while preserving behavior and accessibility."
+policy:
+  allow_implicit_invocation: false

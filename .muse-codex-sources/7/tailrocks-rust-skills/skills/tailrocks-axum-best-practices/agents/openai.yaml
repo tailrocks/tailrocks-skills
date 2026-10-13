@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Axum Best Practices"
+  short_description: "Build production Axum HTTP services"
+  default_prompt: "Use $tailrocks-axum-best-practices to build this Axum HTTP behavior with typed boundaries, ordered Tower policy, owned lifecycle, and transport contract tests."
+policy:
+  allow_implicit_invocation: true

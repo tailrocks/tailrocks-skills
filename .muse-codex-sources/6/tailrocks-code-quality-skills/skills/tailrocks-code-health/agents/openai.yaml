@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Code Health Ratchet"
+  short_description: "Establish or tighten one shrink-only quality bound"
+  default_prompt: "Use $tailrocks-code-health to establish or tighten one explicitly approved shrink-only ratchet for the selected debt class."
+policy:
+  allow_implicit_invocation: false

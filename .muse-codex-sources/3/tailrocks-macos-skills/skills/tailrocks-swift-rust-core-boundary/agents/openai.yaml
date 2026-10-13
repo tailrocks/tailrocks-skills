@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tailrocks: Swift Rust-Core Boundary"
+  short_description: "Own the Swift shell over a Rust core"
+  default_prompt: "Use $tailrocks-swift-rust-core-boundary to establish or inspect this exact SwiftUI-to-Rust application boundary with one main-actor store, generated FFI, immutable snapshots, semantic actions, and durable Apple effects."
+policy:
+  allow_implicit_invocation: false

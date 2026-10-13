@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "asd-ste100-skill",
+  "version": "0.1.1",
+  "description": "Clear technical English skill with Practical default and Strict ASD-STE100 Issue 9 profiles.",
+  "author": {
+    "name": "tailrocks",
+    "url": "https://github.com/tailrocks"
+  },
+  "homepage": "https://github.com/tailrocks/tailrocks-asd-ste100-skills",
+  "repository": "https://github.com/tailrocks/tailrocks-asd-ste100-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "asd-ste100",
+    "simplified-technical-english",
+    "technical-writing",
+    "ste100",
+    "skills"
+  ]
+}
