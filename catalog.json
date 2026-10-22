@@ -83,10 +83,10 @@
       "id": "tailrocks-rust-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-rust-skills",
-      "rev": "a2cfae1b8a4d1b29247e1b2a3bfd4fe6f30d23a7",
+      "rev": "18467d1531760a017d425509ce461569a306895e",
       "sourceRef": "main",
-      "tag": "v0.28.1",
-      "version": "0.28.1"
+      "tag": "v0.29.0",
+      "version": "0.29.0"
     },
     {
       "description": "Clear technical English skill with Practical default and Strict ASD-STE100 Issue 9 profiles.",
