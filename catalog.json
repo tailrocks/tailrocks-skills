@@ -105,10 +105,10 @@
       "id": "tailrocks-agent-policy-skills",
       "private": true,
       "repo": "tailrocks/tailrocks-agent-policy-skills",
-      "rev": "fae01a308aa87e864ecb996fa5fb8bc06d7a8978",
+      "rev": "c13e0e0227290af912c63a44cae0175def3267fd",
       "sourceRef": "main",
-      "tag": "v0.2.0",
-      "version": "0.2.0"
+      "tag": "v0.3.0",
+      "version": "0.3.0"
     }
   ]
 }
