@@ -48,7 +48,7 @@
     {
       "displayName": "Agent Policy Skills",
       "id": "tailrocks-agent-policy-skills",
-      "source": "https://github.com/tailrocks/tailrocks-agent-policy-skills/commit/c13e0e0227290af912c63a44cae0175def3267fd"
+      "source": "https://github.com/tailrocks/tailrocks-agent-policy-skills/commit/521e524e829aa8aff570cf6e7d0272cea02f8dd6"
     }
   ],
   "version": "2"
