@@ -120,6 +120,19 @@
         "source": "url",
         "url": "https://github.com/tailrocks/tailrocks-asd-ste100-skills"
       }
+    },
+    {
+      "category": "Productivity",
+      "name": "tailrocks-agent-policy-skills",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "ref": "main",
+        "source": "url",
+        "url": "https://github.com/tailrocks/tailrocks-agent-policy-skills"
+      }
     }
   ]
 }
