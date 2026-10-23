@@ -98,6 +98,17 @@
       "sourceRef": "main",
       "tag": "v0.1.2",
       "version": "0.1.2"
+    },
+    {
+      "description": "Reusable agent execution policies for delegation orchestration, subagent model routing, commit cadence, pre-commit secret scanning, autonomous operation, incremental delivery, security review gates, and emergency stop.",
+      "displayName": "Agent Policy Skills",
+      "id": "tailrocks-agent-policy-skills",
+      "private": true,
+      "repo": "tailrocks/tailrocks-agent-policy-skills",
+      "rev": "04acb7970a300b084c389481fdc51345cd9001b1",
+      "sourceRef": "main",
+      "tag": "v0.3.2",
+      "version": "0.3.2"
     }
   ]
 }

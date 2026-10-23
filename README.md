@@ -13,6 +13,7 @@ Umbrella directory for the independently installable Tailrocks skill repositorie
 | [tailrocks-code-quality-skills](https://github.com/tailrocks/tailrocks-code-quality-skills) | Code health, improvement, security, instruction topology, simplification, root cause, remediation |
 | [tailrocks-contribution-skills](https://github.com/tailrocks/tailrocks-contribution-skills) | Open-source contribution lifecycle |
 | [tailrocks-asd-ste100-skills](https://github.com/tailrocks/tailrocks-asd-ste100-skills) | ASD-STE100 writing profiles (private) |
+| [tailrocks-agent-policy-skills](https://github.com/tailrocks/tailrocks-agent-policy-skills) | Agent execution policies: delegation, model routing, commit cadence, secret scan, autonomy, incremental delivery, security review, emergency stop (private) |
 
 For workspace-admin GitHub import into ChatGPT web, follow [docs/chatgpt-web.md](docs/chatgpt-web.md). This route requires an eligible workspace and GitHub access to every referenced repository, including the private ASD-STE100 package.
 

@@ -44,6 +44,11 @@
       "displayName": "ASD-STE100: Clear Technical English",
       "id": "tailrocks-asd-ste100-skill",
       "source": "https://github.com/tailrocks/tailrocks-asd-ste100-skills/commit/786da0d583c22958372697c1f35709e7c6d90284"
+    },
+    {
+      "displayName": "Agent Policy Skills",
+      "id": "tailrocks-agent-policy-skills",
+      "source": "https://github.com/tailrocks/tailrocks-agent-policy-skills/commit/04acb7970a300b084c389481fdc51345cd9001b1"
     }
   ],
   "version": "2"
