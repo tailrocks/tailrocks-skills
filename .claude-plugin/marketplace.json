@@ -88,9 +88,9 @@
     {
       "name": "tailrocks-agent-policy-skills",
       "source": {
-        "ref": "v0.1.0",
+        "ref": "v0.2.0",
         "repo": "tailrocks/tailrocks-agent-policy-skills",
-        "sha": "4970efdd0c7fa676424e35dfaaf47254d14b79fd",
+        "sha": "fae01a308aa87e864ecb996fa5fb8bc06d7a8978",
         "source": "github"
       }
     }
