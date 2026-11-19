@@ -42,6 +42,13 @@ The registry returned the installed file paths, bodies, and invocation flags.
 A second run installed the fixture from a pinned local Git source.
 The Amp fixture exercised its registrar with a test double.
 
+All 11 Antigravity manifests passed the [official schema][agy-schema].
+A native test used `agy` 1.5.12 and [contribution 0.29.1 at f8a276a4][agy-test].
+The CLI validated the package, installed it, and listed all five skills as
+part of the enabled plugin. It loaded `.antigravity-plugin/plugin.json` ahead
+of the portable manifest. Antigravity loads plugin rules from `rules/`. The
+root `AGENTS.md` remains a repository maintenance file.
+
 Package verification records identify the revision, commands, client versions,
 and outcomes for individual packages. A registry entry establishes discovery.
 Account access, model behavior, and workflow results require separate evidence.
@@ -57,3 +64,5 @@ The [verification history](verification.md) records earlier migration checks.
 [agy]: https://antigravity.google/docs/plugins
 [pi]: https://docs.pi.dev/latest/packages
 [kimi]: https://www.kimi.com/code/docs/en/kimi-code-cli/customization/plugins
+[agy-schema]: https://antigravity.google/schemas/v1/plugin.json
+[agy-test]: https://github.com/tailrocks/tailrocks-contribution-skills/tree/f8a276a401ca58855e2c687f2bb60c120e25acc4

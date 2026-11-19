@@ -19,7 +19,7 @@ The helper only reads the catalog and prints commands.
 | --- | --- | --- |
 | Claude Code | `claude` | Register the Git marketplace, then install the qualified plugin in user scope. |
 | Codex | `codex` | Register the Git marketplace, then add the qualified plugin. |
-| Grok Build | `grok` | Register the Git marketplace, then install the plugin with explicit trust. |
+| Grok Build | `grok` | Install the reviewed plugin from the Git marketplace. |
 | Muse Code | `muse` | Add the Git marketplace as `tailrocks`, then install from its snapshot. |
 | omp | `omp` | Register the Git marketplace, then install the qualified plugin in user scope. |
 | OpenCode V2 | `opencode` | Install the Git package at the catalog revision with `opencode plugin add`. |
@@ -43,9 +43,10 @@ claude plugin install tailrocks-repository-skills@tailrocks --scope user
 Use `/tailrocks-repository-skills:tailrocks-pr-status` in a Claude session.
 Inspect the installed plugins with `claude plugin list`.
 
-Before running Grok's `--trust` command, review the selected source.
-Grok grants runtime trust to the installed extension. In Muse, inspect skipped
-entries if a private package is missing from the marketplace snapshot.
+Review the selected Grok plugin before installation. The printed command uses
+`--trust` to grant trust immediately and skip confirmation.
+The tested managed install enabled the plugin. In Muse, inspect skipped entries
+if a private package is missing from the marketplace snapshot.
 
 ## Direct package installation
 
@@ -57,9 +58,10 @@ For example, print the exact OpenCode Git specifier for the repository package.
 python3 scripts/install-command.py tailrocks-repository-skills --agent opencode
 ```
 
-Amp loads the checked-out directory from its plugin root. Antigravity accepts
-a local package path. Keep that checkout in place after installation.
-Install the entire package so sibling skills and package-root scripts resolve.
+Amp loads the checked-out directory from its plugin root. Antigravity installs
+the local package into its managed plugin directory. Use `agy plugin list --json`
+to inspect its enabled state, version, and installed skills. Keep the checkout
+for updates. Install the entire package so its relative resource paths resolve.
 
 ## Access, updates, and removal
 

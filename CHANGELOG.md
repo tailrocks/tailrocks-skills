@@ -2,6 +2,10 @@
 
 ## 2026-11-20
 
+- Reconciled the existing agent-format audit and recorded native Antigravity evidence.
+
+- Adopted all eleven standardized component releases at verified merge commits.
+
 - Removed super-linear regex parsing from the shared package validator.
 - Required a shipped dependency lockfile and pinned Bun 1.4.4 across all packages.
 - Added shared native packaging for nine requested coding hosts and Kimi Code.

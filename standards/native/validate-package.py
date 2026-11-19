@@ -26,6 +26,8 @@ ADAPTER_HASHES = {
 }
 SLUG = r"[a-z0-9]+(?:-[a-z0-9]+)*"
 TOP_KEY = re.compile(r"[a-zA-Z][\w.-]*")
+BLOCK_SCALAR = re.compile(r"[|>]([1-9][+-]?|[+-][1-9]?)?(?:[ \t]+#.*)?")
+YAML_COMMENT = re.compile(r"(?<!\S)#")
 VISUAL_FILES = {
     "tailrocks-macos-skills": (
         "macos-visual-qa/install.ts", "macos-visual-qa/templates/AuditTests.swift",
@@ -79,7 +81,9 @@ def yaml_fields(lines, path):
     result = {}
     current = None
     for line in lines:
-        if not line.strip() or line.lstrip().startswith("#"):
+        if not line.strip():
+            continue
+        if line.lstrip().startswith("#") and (current != "description" or not line.startswith(" ")):
             continue
         if line.startswith(" "):
             require(current is not None, f"{path}: unexpected indented metadata")
@@ -94,6 +98,42 @@ def yaml_fields(lines, path):
         require(current not in result, f"{path}: duplicate {current}")
         result[current] = [value.lstrip(" \t")]
     return result
+
+
+def description_text(lines):
+    """Extract the text of a block-style or inline YAML description."""
+    header, *continuation = lines
+    block = BLOCK_SCALAR.fullmatch(header.rstrip())
+    if block:
+        first = continuation[0] if continuation else ""
+        indent = len(first) - len(first.lstrip(" "))
+        for flag in block[1] or "":
+            if flag.isdigit():
+                indent = int(flag)
+        prefix = " " * indent
+        return " ".join(line for line in continuation if line.startswith(prefix)).strip()
+
+    value = " ".join(lines).strip()
+    quote = value[:1]
+    if quote not in ("'", '"'):
+        parts = (YAML_COMMENT.split(line, maxsplit=1)[0] for line in lines)
+        return " ".join(parts).strip()
+
+    index = 1
+    while index < len(value):
+        char = value[index]
+        escaped = quote == '"' and char == "\\"
+        doubled = quote == "'" and value[index:index + 2] == "''"
+        if escaped or doubled:
+            index += 2
+            continue
+        if char == quote:
+            suffix = value[index + 1:]
+            if not suffix or (suffix[:1].isspace() and suffix.lstrip().startswith("#")):
+                return value[1:index].strip()
+            break
+        index += 1
+    return value
 
 
 def invocation_policy(path):
@@ -169,14 +209,16 @@ def inspect_skill(directory, vitalik):
     path = directory / "SKILL.md"
     require(len(name) <= 64 and re.fullmatch(SLUG, name), f"invalid skill directory {name!r}")
     text = path.read_text(encoding="utf-8")
+    require(len(text.splitlines()) <= 500, f"{path}: skill must have at most 500 total lines")
     match = re.match(r"\A---\n(.*?)\n---\n", text, re.S)
     require(match is not None, f"{path}: missing frontmatter")
     fields = yaml_fields(match[1].splitlines(), path)
     require({"name", "description"} <= fields.keys() <= {"name", "description", "license", "metadata"}, f"{path}: invalid frontmatter keys")
     value = fields['name']
     require(len(value) == 1 and re.fullmatch(rf'''(["']?){re.escape(name)}\1''', value[0].strip()), f"{path}: name must match the directory")
-    description = " ".join(fields["description"]).strip(" \t\"'|>+-")
+    description = description_text(fields["description"])
     require(description and len(description) <= 1024, f"{path}: missing or oversized description")
+    require("<" not in description and ">" not in description, f"{path}: description contains an angle bracket")
     explicit = invocation_policy(directory / "agents/openai.yaml")
     reference = (directory / MODEL_REFERENCE).read_bytes()
     require(f"({MODEL_REFERENCE})" in text, f"{path}: link the bundled model guide")
@@ -186,7 +228,6 @@ def inspect_skill(directory, vitalik):
     if vitalik:
         require(name == "vitalik-mode" and explicit, "Vitalik activation must require a user invocation")
         require("explicit" in description.lower() and "same goal" in description.lower(), "Vitalik activation or same-goal guard is missing")
-        require(len(text.splitlines()) < 500, "Vitalik skill exceeds its size limit")
         headings = re.findall(r"^## (.+)$", text[match.end():], re.M)
         require(headings == ["Use this skill", "Before you start", "Procedure", "Result", "Completion checks", "References"], "Vitalik heading order differs")
         for resource in ("references/mode-state.md", "references/planner-contract.md", "assets/goal-record.md"):

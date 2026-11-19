@@ -20,7 +20,7 @@ Use only documented differences for role or subject.
 | CHANGELOG.md | Package changes and migration information |
 | AGENTS.md | Short instructions for maintenance |
 | plugin.json | The portable plugin manifest |
-| .claude-plugin/plugin.json | The necessary Claude manifest |
+| .claude-plugin/plugin.json | Claude manifest required by Tailrocks |
 | .kimi-plugin/plugin.json | Kimi manifest with the skills directory |
 | .antigravity-plugin/plugin.json | Native Antigravity manifest |
 | package.json | OpenCode exports and dependencies, pi skill paths, and package files |
@@ -50,6 +50,9 @@ Use only documented differences for role or subject.
 | docs/troubleshooting.md | Known failures and recovery steps |
 
 In the table, ID means the skill ID.
+Tailrocks requires its Claude manifest for consistent distribution metadata.
+Claude itself can discover a standard plugin layout without that manifest.
+See the [Claude manifest reference](https://code.claude.com/docs/en/plugins-reference#manifest-file).
 Before you create an optional skill directory, make sure that its
 planned files are necessary.
 Record other necessary files in the shared structure policy.
@@ -215,7 +218,7 @@ Put the intended output before the completion checks.
 Put important side effects before the applicable action.
 Keep failure handling near the action that can fail.
 
-Keep each SKILL.md file below 500 lines.
+Keep each `SKILL.md` file at most 500 total lines, including frontmatter.
 When possible, use shorter text.
 Move conditional detail to focused reference files.
 Give the selection conditions for each reference.
