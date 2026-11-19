@@ -1,6 +1,22 @@
 # tailrocks-skills
 
-Umbrella directory for the independently installable Tailrocks skill repositories.
+This marketplace lists 11 independently installable Tailrocks packages.
+Each catalog entry identifies the owning repository and its exact Git commit.
+
+## Install
+
+From this checkout, print the native commands for your package and host.
+
+```sh
+python3 scripts/install-command.py tailrocks-repository-skills --agent claude
+```
+
+Claude Code, Codex, Grok Build, Muse Code, and omp use the shared marketplace.
+OpenCode V2, Amp, Antigravity, and pi use native package or directory installs.
+Kimi Code also has a native catalog.
+See [installation](docs/installation.md) and [host compatibility](docs/compatibility.md).
+
+## Packages
 
 | Repository | Ownership |
 |---|---|
@@ -16,7 +32,17 @@ Umbrella directory for the independently installable Tailrocks skill repositorie
 | [tailrocks-asd-ste100-skills](https://github.com/tailrocks/tailrocks-asd-ste100-skills) | ASD-STE100 writing profiles (private) |
 | [tailrocks-agent-policy-skills](https://github.com/tailrocks/tailrocks-agent-policy-skills) | Agent execution policies: delegation, model routing, commit cadence, secret scan, autonomy, incremental delivery, security review, emergency stop (private) |
 
-For workspace-admin GitHub import into ChatGPT web, follow [docs/chatgpt-web.md](docs/chatgpt-web.md). This route requires an eligible workspace and GitHub access to every referenced repository, including the private ASD-STE100 package.
+## Documentation
+
+- [Documentation index](docs/README.md)
+- [Package inventory and exact revisions](catalog.json)
+- [Native distribution and catalog maintenance](docs/standards/distribution.md)
+- [Package structure](docs/standards/structure.md)
+- [ChatGPT workspace import](docs/chatgpt-web.md)
+
+An eligible ChatGPT workspace and its GitHub connector need access to each
+selected source. The ASD-STE100 and agent-policy repositories require private
+read access.
 
 ## License
 

@@ -12,3 +12,9 @@ It also gives manifest rules, skill body order, and README order.
 [writing.md](writing.md) gives the shared writing guide.
 It lists the 15 strict ASD-STE100 Issue 9 rules.
 It also gives term meanings and software verb meanings.
+
+[distribution.md](distribution.md) records native host routes and commit pins.
+
+The [model guide](../../standards/models/model-routing.md) records provider
+identities, reasoning controls, and economical route selection.
+The [maintenance guide](../maintenance.md) describes shared package generation.

@@ -23,6 +23,55 @@ Keep the version in each Claude-compatible catalog entry.
 omp uses that field for batch upgrade discovery.
 Keep the manifest version and catalog version equal.
 
+## Native package and directory sources
+
+The command printer selects the same package ID, repository, and revision as
+the native catalogs. Run it from a checkout of this repository.
+
+```sh
+python3 scripts/install-command.py tailrocks-repository-skills --agent opencode
+```
+
+| Host | Direct source | Loader |
+| --- | --- | --- |
+| OpenCode V2 | GitHub package specifier with a full commit after `#` | OpenCode package installer and server registrar |
+| Amp | Complete Git checkout at the catalog commit in the native plugin directory | Root directory plugin registers the bundled skill paths. |
+| Antigravity | Persistent Git checkout at the catalog commit | Native CLI installs the local package by path. |
+| pi | Git package with a full commit after `@` | The package declares its skills under `pi.skills`. |
+
+Preserve each complete skill tree, including its references, assets, scripts,
+and sibling skills. Some skills also use files from the package root.
+Keep those paths in the package's npm file list.
+See [installation](../installation.md) for scope and access requirements.
+
+## Synchronize package files
+
+Keep the marketplace and package repositories in one parent directory.
+Maintain subject-specific instructions and resources in the package that owns
+them. The portable root manifest supplies package identity and version.
+
+Run the shared generator after changing native templates, invocation metadata,
+the model-routing reference, or the package inventory.
+
+```sh
+python3 scripts/sync-packages.py --workspace ..
+python3 scripts/sync-packages.py --workspace .. --check
+```
+
+To limit either command to one plugin, add `--only` and its catalog ID.
+The generator updates host metadata, native registrars, routing references,
+installation and compatibility guides, and the package validator.
+Run the package's local validation from its checkout.
+
+```sh
+python3 scripts/validate-package.py --check
+alint check
+```
+
+The shared Alint profile checks structure and identity. Each package keeps its
+local validator command in its own Alint configuration. The validator examines
+packaged resources, repeated metadata, invocation flags, and generated registrars.
+
 ## Update the catalogs
 
 Merge the package change before selecting its source revision.
@@ -63,8 +112,8 @@ Muse installed the newer branch when the fixture supplied only `sha`.
 The shared Codex and Muse catalog therefore uses `ref` with the full commit.
 Grok skipped the Claude-compatible GitHub shorthand source in the fixture.
 The shared Claude, Grok, and omp catalog therefore uses a Git URL source.
-These results establish the exercised source-selection behavior.
-They do not establish every workflow, model route, or account permission.
+These results cover source selection in the four tested client versions.
+The [host compatibility guide](../compatibility.md) records additional evidence and limits.
 
 ## Primary references
 

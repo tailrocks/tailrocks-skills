@@ -1,0 +1,8 @@
+// Native Amp directory plugin for __PLUGIN_ID__.
+const skillEntries = __SKILL_ENTRIES__
+
+export default async function (amp) {
+  for (const { id, explicitOnly } of skillEntries) {
+    await amp.registerSkill({ path: `skills/${id}`, listed: !explicitOnly })
+  }
+}

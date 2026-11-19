@@ -21,7 +21,12 @@ Use only documented differences for role or subject.
 | AGENTS.md | Short instructions for maintenance |
 | plugin.json | The portable plugin manifest |
 | .claude-plugin/plugin.json | The necessary Claude manifest |
-| .kimi-plugin/plugin.json | The necessary Kimi manifest |
+| .kimi-plugin/plugin.json | Kimi manifest with the skills directory |
+| .antigravity-plugin/plugin.json | Native Antigravity manifest |
+| package.json | OpenCode exports and dependencies, pi skill paths, and package files |
+| index.js | Amp directory plugin that registers the canonical skill paths |
+| adapters/opencode/index.js | OpenCode V2 server plugin that registers the canonical skills |
+| scripts/validate-package.py | Deterministic validation of manifests, registrars, and packaged resources |
 | .alint.yml | Shared policy references, narrow local settings |
 | .velnor/config.toml | The supported source configuration for CI |
 | .github/ | Files from the supported CI generation method |
@@ -29,11 +34,16 @@ Use only documented differences for role or subject.
 | skills/ID/SKILL.md | The authoritative skill instructions |
 | skills/ID/references/ | Necessary detailed agent references |
 | skills/ID/assets/ | Necessary static examples and templates |
-| skills/ID/agents/ | Documented optional agent metadata |
+| skills/ID/agents/openai.yaml | Codex presentation and invocation policy |
+| skills/ID/references/model-routing.md | Installed copy of the shared model-routing reference |
+| scripts/, lib/, schemas/, examples/, assets/, references/ | Package-root resources when a workflow requires them |
 | docs/README.md | Documentation index |
-| docs/installation.md | Installation for all eight agents |
+| docs/installation.md | Host-specific install, update, and removal commands |
 | docs/usage.md | Use cases, inputs, and examples |
 | docs/compatibility.md | Versions, evidence, and limitations |
+| docs/architecture.md | Package layout, runtime resources, and native registrars |
+| docs/models.md | Model choices, effort, and host controls |
+| docs/verification.md | Commands, versions, measured results, and limits |
 | docs/maintenance.md | Contribution, verification, release steps |
 | docs/troubleshooting.md | Known failures and recovery steps |
 
@@ -47,20 +57,23 @@ Use the same location for each notice type across active packages.
 Before you keep tool configuration, make sure that a documented
 maintenance command needs it.
 Use one common filename for each retained configuration.
-If a language build file is not necessary for maintenance, do not
-add it.
+Keep a language package file when a native installer or maintenance command
+requires it.
 
 Keep task procedures in skills and their required resources.
 Keep manifests, project documentation, and maintenance files in the
 source package.
 Do not add an archive build only to remove them.
 Keep maintenance configuration separate from agent procedures.
-Remove unnecessary index adapters, copied scripts, build output, and
-obsolete lockfiles.
+Generate the two native registrars from the canonical skill inventory.
+OpenCode reads the Markdown body and registers its installed file path.
+Amp registers the skill directory. Preserve the invocation policy for each
+skill in both registrars. Keep tools, hooks, MCP, and background processes
+outside these instruction packages.
 
-Do not create MCP servers, hooks, background processes, or executable
-plugins for these instruction packages.
-Do not keep an executable wrapper only to load Markdown.
+Preserve the package-root scripts, vendored libraries, schemas, and licenses
+that installed workflows require. Include these files in the npm package.
+Keep installed script paths valid from the skill that invokes them.
 
 ## Marketplace additions
 
@@ -68,6 +81,8 @@ Use the common README and documentation conventions.
 Add only the central inventory, native catalogs, shared policy, and
 their maintenance configuration.
 Put shared alint rules under standards/alint/.
+Keep native templates and the package validator under standards/native/.
+Keep the canonical model-routing reference under standards/models/.
 Put the common structure and writing rules under docs/standards/.
 Use .alint.yml with the marketplace profile.
 Make that profile reject active skill payloads.
@@ -81,6 +96,7 @@ Use [native distribution](distribution.md) for source pins and catalog updates.
 The marketplace keeps these files:
 
 - README.md
+- docs/installation.md and docs/compatibility.md
 - docs/migration.md
 - docs/verification.md
 - docs/standards/
@@ -88,6 +104,8 @@ The marketplace keeps these files:
 - standards/alint/marketplace.yml
 - standards/alint/retired.yml
 - catalog.json and the generated native catalogs
+- scripts/install-command.py to print native commands
+- scripts/sync-packages.py to synchronize generated package files
 - .alint.yml with the marketplace profile
 - .velnor/config.toml
 - .github/ from the supported generation method
@@ -122,7 +140,7 @@ The skills location is fixed.
 
 Keep one maintained value for name, version, description, repository,
 and license.
-Make necessary host manifests agree with those values.
+Make Claude, Kimi, Antigravity, and npm agree on name, version, and description.
 Use deterministic generation or exact consistency checks for repeated
 metadata.
 
@@ -134,8 +152,9 @@ Do not create both Kimi manifest alternatives.
 Remove redundant Muse or Codex manifests when the portable method
 replaces them.
 Before removal, examine the declared minimum client version.
-Do not give the portable root manifest an Antigravity schema.
-Use the native skill method for Antigravity.
+Give Antigravity its native schema in .antigravity-plugin/plugin.json.
+Keep the portable schema in the root manifest. Point the OpenCode package
+export at its server registrar. Set pi.skills to an array containing ./skills.
 
 Make all package paths resolve within the installed package.
 Do not make a developer checkout outside that package necessary.
@@ -178,7 +197,14 @@ Use this common body order:
 5. Completion checks
 6. References
 
-Use References only when references are necessary.
+The six script-backed pull-request command companions in Repository Skills
+retain their command-reference headings.
+These headings describe modes, returned states, exit codes, and script checks.
+Keep selection conditions, inputs, commands, safeguards, outcomes, and references
+explicit in those companions.
+Use the common order for other authored instruction skills.
+
+Link the bundled model-routing guide where the task requires model selection.
 Put the required inputs before the procedure.
 Put the intended output before the completion checks.
 Put important side effects before the applicable action.
@@ -231,7 +257,7 @@ Give one entry for each current skill.
 Give each skill a short task description.
 Link to its authoritative file.
 
-In Install, show all eight agents in a compact table.
+In Install, show the nine supported agents and the additional Kimi route.
 Link each row to the exact installation section.
 Show a useful quick-start example.
 
