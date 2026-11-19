@@ -3,8 +3,8 @@
 
 Source: catalog.json (central inventory, design §4).
 Outputs (exact design §4 shapes):
-  .claude-plugin/marketplace.json  (Claude Code; also read by Muse and Grok)
-  .agents/plugins/marketplace.json (Codex)
+  .claude-plugin/marketplace.json  (Claude Code, Grok Build, and omp)
+  .agents/plugins/marketplace.json (Codex and Muse Code)
   .kimi-plugin/marketplace.json    (Kimi Code, JSON v2)
 
 Deterministic: entry order follows catalog.json, object keys sorted,

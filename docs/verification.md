@@ -3,6 +3,69 @@
 This file records verification evidence for the standardization work.
 `docs/migration.md` records decisions and the completion checklist.
 
+## Native distribution foundation (2026-11-20)
+
+PR #138 merged at `10e9ab1e59c220eacfea19ef2142d469d9925275`.
+DCO and the required CI checks passed before merge.
+The catalogs now use verified immutable source formats.
+
+The shared native package generator produces 295 files across eleven component
+repositories and 98 skills.
+A second generation pass found no drift.
+Portable frontmatter validation preserved 71 explicit-only policies and 27
+implicit policies.
+The npm file inventory included every declared runtime resource.
+Private maintainer directories were excluded from the archive inventory.
+
+The shared package validator passed a clean fixture.
+Sixteen deliberate changes failed validation.
+They covered malformed JSON, mismatched identity, missing resources, altered
+registrars, invocation policies, model identities, and symlinks.
+A separate Vitalik fixture rejected loss of its activation and goal guards.
+
+The [distribution guide](standards/distribution.md#native-evidence) records four
+actual client pin-selection experiments.
+A separate OpenCode 2.3.2 fixture loaded an installed three-skill package through
+its live registry.
+The Amp registrar used an API test double.
+These checks establish installation and discovery behavior, not model outcomes.
+
+All twelve repositories use Velnor Actions 0.1.80.
+Fresh generator previews matched their generated files.
+Jactionlint, ShellCheck, and local file-and-fragment link checks passed.
+The marketplace's updated Alint profile passed all 57 applicable rules.
+
+Component publication and final catalog adoption are recorded in the subsequent
+release evidence.
+
+## Candidate native installation (2026-11-20)
+
+The eleven release candidates installed successfully in four native clients.
+Claude Code 2.1.328, Codex 0.167.0-alpha.4, Grok Build 1.0.89, and Muse Code
+1.4.24-R9131.1 each loaded all eleven packages.
+Their actual registries reported all 98 expected plugin and skill pairs.
+The installed copies preserved all 1,655 compared runtime, skill, and manifest
+files with no digest differences.
+Muse offered eleven marketplace entries and skipped none.
+
+The fixtures used isolated local mirrors and synthetic immutable commits of the
+candidate trees.
+They did not claim new public release commits or private GitHub authentication.
+No model task ran.
+
+Codex returned qualified skill names in the form `plugin-id:skill-id`.
+The installation guides use those qualified names for explicit selection.
+Grok returned bare skill names for globally distinct IDs.
+Its `invocableAs` field provides the resolved shortcut when names collide.
+
+OpenCode 2.3.2 loaded all eleven packed candidates in its live loopback server.
+Its registry returned the exact 98 installed paths, descriptions, and bodies.
+It preserved 71 explicit-only flags and 27 implicit-selection flags.
+All bundled model references resolved from those installed paths.
+Both visual harness contracts and 21 package-root resource files matched.
+The server could not start outbound connections and made no model calls.
+This run covers local package registration, not eleven remote Git installs.
+
 ## Phase A evidence (2026-10-07 UTC)
 
 Method: one inventory workflow with 11 parallel read-only agents plus

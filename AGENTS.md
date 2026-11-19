@@ -8,3 +8,17 @@
   - Before fixing a bug, identify why the architecture permitted it and whether the same structure permits related bugs.
   - Prefer fixes that remove the enabling condition. Use a symptom-layer patch only when the root fix is proven infeasible or belongs in a separate change, and name the deferred root cause.
 
+## Shared maintenance
+
+Read [maintenance](docs/maintenance.md) before changing distribution.
+Use `catalog.json` for approved component revisions.
+Generate native catalogs with `scripts/generate-catalogs.py`.
+Generate shared component files with `scripts/sync-packages.py`.
+Keep private package content inside its private repository.
+Preserve explicit model, effort, invocation, and domain policy choices.
+Record actual native installation evidence separately from skill execution.
+Use DCO sign-offs for authored commits.
+
+Change CI through `.velnor/config.toml` and the pinned Velnor generator.
+Do not hand-edit generated files under `.github/`.
+

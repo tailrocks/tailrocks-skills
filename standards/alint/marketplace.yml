@@ -1,7 +1,6 @@
 # Shared alint profile: central marketplace (goal Section 8.2).
 # Consumed via `extends` with an immutable URL plus SHA-256 pin.
-# alint v0.17.0 (asamarts/alint). Every `kind` below exists in the
-# v0.17.0 schema (schemas/v1/config.json at tag v0.17.0).
+# Schema kinds are validated with alint v0.22.1 (asamarts/alint).
 #
 # Fetched-config limits: no nested `extends`, no `command` rules,
 # no custom facts, no `allow_out_of_root`, no `baseline`.
@@ -81,13 +80,12 @@ rules:
     level: error
     paths: "standards/alint/retired.yml"
     message: "Marketplace must keep the retired profile."
-  # Shared structure and writing rules (design Section 2). Warning
-  # until the planned directory lands; then promote to error.
+  # Shared structure and writing rules.
   - id: req-standards-docs
     kind: dir_exists
-    level: warning
+    level: error
     paths: "docs/standards"
-    message: "Marketplace must keep docs/standards (planned structure)."
+    message: "Marketplace must keep docs/standards."
 
   # Reject active skill payloads (review note).
   - id: no-skills-dir
@@ -104,6 +102,7 @@ rules:
       - ".kimi-plugin/plugin.json"
       - ".codex-plugin/plugin.json"
       - ".muse-plugin/plugin.json"
+      - ".antigravity-plugin/plugin.json"
     message: "Marketplace must not carry plugin manifests."
 
   # Defect 9: a catalog entry with the wrong name or revision.
@@ -282,3 +281,83 @@ rules:
       - "**/*.pyc"
       - "**/dist/**"
     message: "Marketplace must not track caches, artifacts, or build output."
+  - id: req-agents
+    kind: file_exists
+    level: error
+    paths: "AGENTS.md"
+    message: "Marketplace must keep AGENTS.md."
+  - id: req-changelog
+    kind: file_exists
+    level: error
+    paths: "CHANGELOG.md"
+    message: "Marketplace must keep CHANGELOG.md."
+  - id: req-package-generator
+    kind: file_exists
+    level: error
+    paths: "scripts/sync-packages.py"
+    message: "Marketplace must keep scripts/sync-packages.py."
+  - id: req-native-command-helper
+    kind: file_exists
+    level: error
+    paths: "scripts/install-command.py"
+    message: "Marketplace must keep scripts/install-command.py."
+  - id: req-model-guide
+    kind: file_exists
+    level: error
+    paths: "standards/models/model-routing.md"
+    message: "Marketplace must keep standards/models/model-routing.md."
+  - id: req-native-validator-template
+    kind: file_exists
+    level: error
+    paths: "standards/native/validate-package.py"
+    message: "Marketplace must keep standards/native/validate-package.py."
+  - id: req-amp-template
+    kind: file_exists
+    level: error
+    paths: "standards/native/amp-index.js.template"
+    message: "Marketplace must keep standards/native/amp-index.js.template."
+  - id: req-opencode-template
+    kind: file_exists
+    level: error
+    paths: "standards/native/opencode-index.js.template"
+    message: "Marketplace must keep standards/native/opencode-index.js.template."
+  - id: req-installation-template
+    kind: file_exists
+    level: error
+    paths: "standards/native/installation.md.template"
+    message: "Marketplace must keep standards/native/installation.md.template."
+  - id: req-compatibility-template
+    kind: file_exists
+    level: error
+    paths: "standards/native/compatibility.md.template"
+    message: "Marketplace must keep standards/native/compatibility.md.template."
+  - id: req-docs-readme
+    kind: file_exists
+    level: error
+    paths: "docs/README.md"
+    message: "Marketplace must keep docs/README.md."
+  - id: req-docs-installation
+    kind: file_exists
+    level: error
+    paths: "docs/installation.md"
+    message: "Marketplace must keep docs/installation.md."
+  - id: req-docs-compatibility
+    kind: file_exists
+    level: error
+    paths: "docs/compatibility.md"
+    message: "Marketplace must keep docs/compatibility.md."
+  - id: req-docs-architecture
+    kind: file_exists
+    level: error
+    paths: "docs/architecture.md"
+    message: "Marketplace must keep docs/architecture.md."
+  - id: req-docs-models
+    kind: file_exists
+    level: error
+    paths: "docs/models.md"
+    message: "Marketplace must keep docs/models.md."
+  - id: req-docs-maintenance
+    kind: file_exists
+    level: error
+    paths: "docs/maintenance.md"
+    message: "Marketplace must keep docs/maintenance.md."
