@@ -1,14 +1,8 @@
-# Marketplace repository alint configuration (alint v0.17.0).
-# Extends the shared marketplace profile by immutable URL plus SHA-256 pin.
-# Profile source: tailrocks/tailrocks-skills commit
-# f9d27326c81186ebb0c670562469a421e2e76515 (Claude release-tag refs,
-# Codex source-following refs). Pin computed with `shasum -a 256` over
-# the raw response body; it matches the committed profile bytes.
-# Bump rule: one PR updates the REV and HASH together, then re-runs
-# `alint check`.
+# The marketplace owns this profile. Validate the version in this checkout.
+# Child packages pin the separately published active-package profile.
 version: 1
 extends:
-  - https://raw.githubusercontent.com/tailrocks/tailrocks-skills/f9d27326c81186ebb0c670562469a421e2e76515/standards/alint/marketplace.yml#sha256-e81912943a5344deedf17885868173b86bc8a45003020c919c2e048ddbedb00b
+  - standards/alint/marketplace.yml
 rules:
   # The catalog-*-agree rules compare ID and revision sets only, so a
   # URL, version, description, or displayName change without regen

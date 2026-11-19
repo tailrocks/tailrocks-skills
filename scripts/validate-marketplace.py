@@ -40,7 +40,7 @@ def expected_codex(plugins):
                 "name": item["id"],
                 "policy": {"authentication": "ON_INSTALL", "installation": "AVAILABLE"},
                 "source": {
-                    "ref": item["sourceRef"],
+                    "ref": item["rev"],
                     "source": "url",
                     "url": f"https://github.com/{item['repo']}",
                 },
@@ -57,11 +57,11 @@ def expected_claude(plugins):
         "plugins": [
             {
                 "name": item["id"],
+                "version": item["version"],
                 "source": {
-                    "ref": item["tag"],
-                    "repo": item["repo"],
+                    "url": f"https://github.com/{item['repo']}.git",
                     "sha": item["rev"],
-                    "source": "github",
+                    "source": "url",
                 },
             }
             for item in plugins
@@ -89,12 +89,14 @@ def check_remote(plugins):
         repo = item["repo"]
         metadata = json.loads(subprocess.check_output(["gh", "api", f"repos/{repo}"], text=True))
         require(metadata["private"] is item["private"], f"GitHub privacy mismatch for {repo}")
-        source = json.loads(subprocess.check_output(["gh", "api", f"repos/{repo}/commits/{item['sourceRef']}"], text=True))
-        require(bool(source.get("sha")), f"source ref does not resolve for {repo}")
         pin = json.loads(subprocess.check_output(["gh", "api", f"repos/{repo}/commits/{item['rev']}"], text=True))
         require(pin.get("sha") == item["rev"], f"pinned commit does not resolve for {repo}")
-        tag = json.loads(subprocess.check_output(["gh", "api", f"repos/{repo}/commits/{item['tag']}"], text=True))
-        require(tag.get("sha") == item["rev"], f"release tag/revision mismatch for {repo}")
+        manifest = json.loads(subprocess.check_output([
+            "gh", "api", f"repos/{repo}/contents/plugin.json?ref={item['rev']}",
+            "-H", "Accept: application/vnd.github.raw+json",
+        ], text=True))
+        require(manifest.get("name") == item["id"], f"pinned plugin identity mismatch for {repo}")
+        require(manifest.get("version") == item["version"], f"pinned plugin version mismatch for {repo}")
 
 
 def main():
@@ -103,20 +105,21 @@ def main():
     require(set(sys.argv[1:]) <= {"--verify-github", "--check"}, "usage: validate-marketplace.py [--check] [--verify-github]")
     catalog = read_json(CATALOG)
     plugins = catalog.get("plugins")
-    require(isinstance(plugins, list) and len(plugins) == 10, "catalog must contain exactly ten plugins")
+    require(isinstance(plugins, list) and len(plugins) == 11, "catalog must contain exactly eleven plugins")
 
     ids = set()
     repos = set()
     private_repos = set()
     for item in plugins:
-        for field in ("id", "repo", "rev", "sourceRef", "tag", "version", "description", "displayName", "private"):
+        fields = {"id", "repo", "rev", "version", "description", "displayName", "private"}
+        require(set(item) == fields, f"invalid catalog fields for {item.get('id', '<unknown>')}")
+        for field in fields:
             require(field in item, f"{item.get('id', '<unknown>')} is missing {field}")
         require(re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", item["id"]) is not None, f"invalid plugin ID: {item['id']}")
         require(item["id"] not in ids, f"duplicate plugin ID: {item['id']}")
         require(item["repo"] not in repos, f"duplicate source repository: {item['repo']}")
         require(re.fullmatch(r"[0-9a-f]{40}", item["rev"]) is not None, f"invalid pinned revision for {item['id']}")
-        require(item["tag"] == f"v{item['version']}", f"tag/version mismatch for {item['id']}")
-        require(item["sourceRef"] == "main", f"plugin source-following ref must be main for {item['id']}")
+        require(re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", item["version"]) is not None, f"invalid plugin version for {item['id']}")
         require(re.fullmatch(r"tailrocks/[A-Za-z0-9._-]+", item["repo"]) is not None, f"invalid GitHub repository: {item['repo']}")
         ids.add(item["id"])
         repos.add(item["repo"])
@@ -137,7 +140,7 @@ def main():
     if verify_github:
         check_remote(plugins)
 
-    suffix = ", live GitHub branches/tags/privacy" if verify_github else ""
+    suffix = ", live GitHub commits/manifests/privacy" if verify_github else ""
     if not check_only:
         print(f"validated {len(plugins)} unique plugins, GitHub source refs, and 3 generated catalogs{suffix}")
 

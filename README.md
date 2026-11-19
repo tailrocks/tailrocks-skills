@@ -8,6 +8,7 @@ Umbrella directory for the independently installable Tailrocks skill repositorie
 | [tailrocks-typescript-skills](https://github.com/tailrocks/tailrocks-typescript-skills) | TypeScript, React, Bun, TanStack, web UI |
 | [tailrocks-macos-skills](https://github.com/tailrocks/tailrocks-macos-skills) | Swift, SwiftUI, Rust-core boundary, macOS and Liquid Glass, visual QA |
 | [tailrocks-repository-skills](https://github.com/tailrocks/tailrocks-repository-skills) | Repository management and pull-request lifecycle |
+| [tailrocks-vitalik-mode-skills](https://github.com/tailrocks/tailrocks-vitalik-mode-skills) | Time-to-market priority, strong-model whole-plan analysis, contextual practices, and tracked recovery |
 | [tailrocks-roadmap-skills](https://github.com/tailrocks/tailrocks-roadmap-skills) | Roadmap, delivery, verification, reconciliation, decision support |
 | [tailrocks-skill-authoring-skills](https://github.com/tailrocks/tailrocks-skill-authoring-skills) | Skill creation, update, audit, refactor |
 | [tailrocks-code-quality-skills](https://github.com/tailrocks/tailrocks-code-quality-skills) | Code health, improvement, security, instruction topology, simplification, root cause, remediation |
