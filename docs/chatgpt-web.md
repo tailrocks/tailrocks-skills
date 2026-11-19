@@ -38,7 +38,7 @@ being used.
 | Plugin | Skills | Tool requirement |
 | --- | ---: | --- |
 | `tailrocks-skill-authoring-skills` | 4 | Local repository and shell workflows need a connected repository/files tool. |
-| `tailrocks-repository-skills` | 7 | Local Git and `gh` operations need connected repository tools; GitHub actions depend on available app access. |
+| `tailrocks-repository-skills` | 10 | Local Git and `gh` operations need connected repository tools; GitHub actions depend on available app access. |
 | `tailrocks-typescript-skills` | 12 | Local package management, builds, tests, Playwright, and screenshot baselines need an execution environment. |
 | `tailrocks-macos-skills` | 15 | Xcode, macOS application control, and native visual QA are unavailable in ordinary web chats. |
 | `tailrocks-roadmap-skills` | 12 | Repository execution and durable project-file access need connected tools. |
