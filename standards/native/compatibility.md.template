@@ -39,7 +39,7 @@ Each host controls implicit skill selection and runtime permissions. Preserve
 any explicit-user-invocation rule in the skill. Discovering or registering a
 skill supplies no authority to perform the actions in its instructions.
 
-## Verified scope
+__COMPATIBILITY_INVOCATION__## Verified scope
 
 __VERIFICATION_NOTES__
 

@@ -13,7 +13,7 @@ __RUNTIME_NOTES__
 Private packages require Git credentials with read access to the source.
 Hosted imports also require the host's GitHub connection to have access.
 
-## Claude Code
+__INSTALL_INVOCATION__## Claude Code
 
 Register the marketplace once, then install this package in user scope.
 
