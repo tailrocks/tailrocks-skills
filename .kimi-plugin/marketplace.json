@@ -11,6 +11,11 @@
       "source": "https://github.com/tailrocks/tailrocks-repository-skills/commit/55278526dd8760fcb7f96af7fa62fa917603a9cf"
     },
     {
+      "displayName": "Vitalik Mode",
+      "id": "tailrocks-vitalik-mode-skills",
+      "source": "https://github.com/tailrocks/tailrocks-vitalik-mode-skills/commit/3a3590055a8f1b1b1cd63c1ed47a59431a45a349"
+    },
+    {
       "displayName": "TypeScript Skills",
       "id": "tailrocks-typescript-skills",
       "source": "https://github.com/tailrocks/tailrocks-typescript-skills/commit/41768afec4886fee610b6cfbfcbb2205cb01bba2"
@@ -43,7 +48,7 @@
     {
       "displayName": "ASD-STE100: Clear Technical English",
       "id": "tailrocks-asd-ste100-skill",
-      "source": "https://github.com/tailrocks/tailrocks-asd-ste100-skills/commit/786da0d583c22958372697c1f35709e7c6d90284"
+      "source": "https://github.com/tailrocks/tailrocks-asd-ste100-skills/commit/77c477b4e80dc3df07adceeaf8eaddb688a09038"
     },
     {
       "displayName": "Agent Policy Skills",

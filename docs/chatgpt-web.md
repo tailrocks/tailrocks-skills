@@ -21,13 +21,27 @@ and [plugin guide](https://help.openai.com/en/articles/20001256-plugins-in-chatg
 
 ## Source update policy
 
-The ChatGPT-facing Codex catalog uses the `main` branch for every source plugin. OpenAI’s marketplace importer syncs the root marketplace from its selected branch daily; use **Sync now** for an immediate update. Codex therefore follows source branches instead of freezing each plugin commit. Confirm source refresh in the intended workspace after import. The Claude catalog keeps release-tag refs plus commit SHA pins. Claude Code uses the plugin manifest version when one exists, so source branch updates with an unchanged version remain cached. The Kimi catalog remains pinned to immutable GitHub commit URLs.
+Every catalog selects the immutable commit in `catalog.json`.
+Claude-compatible clients read `source.sha`.
+Codex and Muse read the full commit through `source.ref`.
+Kimi reads the commit URL.
+A release tag is optional and does not control installation.
 
-Review and merge source changes under their normal checks and DCO policy. Claude and Kimi pins advance when the central catalog is deliberately updated; the prior scheduled pin updater was removed when this repository adopted branch-following refs. Run `python3 scripts/generate-catalogs.py` and `python3 scripts/validate-marketplace.py` after catalog edits. Central Alint CI checks marketplace IDs, client-specific refs, generated catalog consistency, and privacy inventory. Each source package CI validates strict JSON, frontmatter/IDs, and bundled links where maintained. `python3 scripts/validate-marketplace.py --verify-github` checks live branch and release refs plus repository visibility when run by a GitHub-authenticated maintainer with access to the private package; CI does not claim credential-free access to the private package.
+Merge source changes before updating the central commit and version.
+Run `python3 scripts/generate-catalogs.py` after catalog edits.
+Run `python3 scripts/validate-marketplace.py` before publication.
+The validator requires identical package identities and revisions across catalogs.
+With GitHub authentication, `--verify-github` also examines remote commits,
+manifest identities, versions, and repository privacy.
+
+Sync the workspace marketplace after a catalog update.
+Confirm the installed revision through the intended client.
+For native installation evidence and source formats, see
+[distribution](standards/distribution.md).
 
 ## ChatGPT desktop and web compatibility
 
-All nine packages have a portable root `plugin.json`, a `skills/` tree, and
+All eleven packages have a portable root `plugin.json`, a `skills/` tree, and
 skill frontmatter. The audited packages have no `mcp.json` or `.mcp.json` and
 no lifecycle hooks, so their manifests do not declare MCP servers or a Desktop
 only dependency. Installing these skill-only plugins does not add shell, Git,
@@ -39,13 +53,15 @@ being used.
 | --- | ---: | --- |
 | `tailrocks-skill-authoring-skills` | 4 | Local repository and shell workflows need a connected repository/files tool. |
 | `tailrocks-repository-skills` | 10 | Local Git and `gh` operations need connected repository tools; GitHub actions depend on available app access. |
+| `tailrocks-vitalik-mode-skills` | 1 | Explicit activation reassesses the whole current plan. Practice selection depends on the goal. Planner routing and persistence depend on the host. |
 | `tailrocks-typescript-skills` | 12 | Local package management, builds, tests, Playwright, and screenshot baselines need an execution environment. |
 | `tailrocks-macos-skills` | 15 | Xcode, macOS application control, and native visual QA are unavailable in ordinary web chats. |
 | `tailrocks-roadmap-skills` | 12 | Repository execution and durable project-file access need connected tools. |
 | `tailrocks-contribution-skills` | 5 | GitHub operations may be covered by a connected app; local clones and test runs need an execution environment. |
 | `tailrocks-code-quality-skills` | 14 | Repository-wide shell, build, and static-analysis procedures need an execution environment. |
-| `tailrocks-rust-skills` | 15 | Cargo, Git, local test/build, and native toolchain procedures need an execution environment. |
+| `tailrocks-rust-skills` | 16 | Cargo, Git, local test/build, and native toolchain procedures need an execution environment. |
 | `tailrocks-asd-ste100-skill` | 1 | Both writing profiles are packaged; testing bundled private references requires a successful private-repository import. |
+| `tailrocks-agent-policy-skills` | 8 | Private policy instructions require authorized repository access and the host capabilities needed by each policy. |
 
 The skill counts and structural findings come from the repository audit. They
 do not prove that an imported plugin is visible, enabled, invokable, or free of

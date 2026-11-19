@@ -12,7 +12,7 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "ref": "main",
+        "ref": "a5b25695bd35fc5265894529ab7c85d87162ae42",
         "source": "url",
         "url": "https://github.com/tailrocks/tailrocks-skill-authoring-skills"
       }
@@ -25,9 +25,22 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "ref": "main",
+        "ref": "55278526dd8760fcb7f96af7fa62fa917603a9cf",
         "source": "url",
         "url": "https://github.com/tailrocks/tailrocks-repository-skills"
+      }
+    },
+    {
+      "category": "Productivity",
+      "name": "tailrocks-vitalik-mode-skills",
+      "policy": {
+        "authentication": "ON_INSTALL",
+        "installation": "AVAILABLE"
+      },
+      "source": {
+        "ref": "3a3590055a8f1b1b1cd63c1ed47a59431a45a349",
+        "source": "url",
+        "url": "https://github.com/tailrocks/tailrocks-vitalik-mode-skills"
       }
     },
     {
@@ -38,7 +51,7 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "ref": "main",
+        "ref": "41768afec4886fee610b6cfbfcbb2205cb01bba2",
         "source": "url",
         "url": "https://github.com/tailrocks/tailrocks-typescript-skills"
       }
@@ -51,7 +64,7 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "ref": "main",
+        "ref": "af78c8ff21c9df8b00f9fd8046f00a3a5ced7f85",
         "source": "url",
         "url": "https://github.com/tailrocks/tailrocks-macos-skills"
       }
@@ -64,7 +77,7 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "ref": "main",
+        "ref": "c273c8645860a5d0aebfdc73dd61f825e0e30bf9",
         "source": "url",
         "url": "https://github.com/tailrocks/tailrocks-roadmap-skills"
       }
@@ -77,7 +90,7 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "ref": "main",
+        "ref": "25a3f6a9a66937ff5d70cbc35909cb2904a5b7d5",
         "source": "url",
         "url": "https://github.com/tailrocks/tailrocks-contribution-skills"
       }
@@ -90,7 +103,7 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "ref": "main",
+        "ref": "d14832f9d3cf0690851f3ecaaa7f9de32c0d1096",
         "source": "url",
         "url": "https://github.com/tailrocks/tailrocks-code-quality-skills"
       }
@@ -103,7 +116,7 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "ref": "main",
+        "ref": "18467d1531760a017d425509ce461569a306895e",
         "source": "url",
         "url": "https://github.com/tailrocks/tailrocks-rust-skills"
       }
@@ -116,7 +129,7 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "ref": "main",
+        "ref": "77c477b4e80dc3df07adceeaf8eaddb688a09038",
         "source": "url",
         "url": "https://github.com/tailrocks/tailrocks-asd-ste100-skills"
       }
@@ -129,7 +142,7 @@
         "installation": "AVAILABLE"
       },
       "source": {
-        "ref": "main",
+        "ref": "04acb7970a300b084c389481fdc51345cd9001b1",
         "source": "url",
         "url": "https://github.com/tailrocks/tailrocks-agent-policy-skills"
       }

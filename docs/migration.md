@@ -610,3 +610,27 @@ scheduled release.
 Phase F does the final review, the
 default branch CI check, the temporary
 path cleanup, and the section 21 report.
+
+## 2026-11-20: immutable native catalog sources
+
+This change supersedes the release-tag dependency in the earlier install record.
+The inventory now selects one reachable commit and manifest version per package.
+Claude, Grok, and omp share Git URL sources with independent SHA pins.
+Codex and Muse share Git URL sources with full commits in `ref`.
+Kimi retains commit URLs.
+
+Native isolated fixtures found two failures in otherwise accepted catalogs.
+Grok skipped Claude GitHub shorthand sources.
+Muse ignored a SHA-only source and selected the newer default branch.
+The generated formats now avoid both failures.
+All four clients installed the intended older untagged fixture commit.
+They also installed all nine public package pins with the expected skill inventory.
+
+The marketplace validates its own current profile through a local reference.
+Child packages continue to pin the published active-package profile.
+See [native distribution](standards/distribution.md) for evidence and update commands.
+
+The remote manifest audit also found a stale writing-package pin.
+Its advertised identity and version did not match the selected source.
+The inventory now selects the existing version 0.2.0 source with the correct identity.
+The package remains private.

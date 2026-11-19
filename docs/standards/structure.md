@@ -76,6 +76,7 @@ The marketplace lists packages.
 It does not duplicate their instructions.
 Do not add a marketplace plugin.json file.
 Do not add a fake skills directory.
+Use [native distribution](distribution.md) for source pins and catalog updates.
 
 The marketplace keeps these files:
 
