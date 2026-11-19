@@ -100,10 +100,10 @@ def outputs_for(entry, workspace):
     npm = json.loads(npm_path.read_text(encoding="utf-8")) if npm_path.exists() else {}
     resources = ["skills", "adapters", "index.js", "plugin.json", ".claude-plugin",
                  ".kimi-plugin", ".antigravity-plugin", "docs", "README.md", "AGENTS.md",
-                 "CHANGELOG.md", "LICENSE", "scripts"]
+                 "CHANGELOG.md", "LICENSE", "scripts", "bun.lock"]
     resources.extend(name for name in ("lib", "schemas", "examples", "assets", "references",
                                       "THIRD-PARTY-NOTICES.md") if (directory / name).exists())
-    npm.update({**identity, "private": True, "type": "module",
+    npm.update({**identity, "private": True, "type": "module", "packageManager": "bun@1.4.4",
                 "exports": {".": "./adapters/opencode/index.js"}, "files": resources})
     for key in ("license", "repository"):
         if key in portable:

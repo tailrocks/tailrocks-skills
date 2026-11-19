@@ -23,6 +23,8 @@ Each component keeps its identity in its root `plugin.json`.
 Each skill keeps its procedure in `skills/<id>/SKILL.md`.
 References, assets, and scripts stay beside their maintained owner.
 Package-root resources remain in their original locations.
+The package manifest pins Bun 1.4.4 for dependency maintenance.
+Each component commits and ships its resolved dependency lockfile.
 
 Host manifests and registrars expose that same skill tree.
 OpenCode and Amp require small registration modules.

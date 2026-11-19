@@ -19,6 +19,28 @@
 #   plus required status, not alint.
 version: 1
 rules:
+  - id: req-mise-config
+    kind: file_exists
+    level: error
+    paths: "mise.toml"
+    message: "Native packages must pin dependency verification tooling."
+  - id: req-mise-lock
+    kind: file_exists
+    level: error
+    paths: "mise.lock"
+    message: "Native packages must lock dependency verification tooling."
+  - id: req-bun-lock
+    kind: file_exists
+    level: error
+    paths: "bun.lock"
+    message: "Native packages must commit the resolved dependency lockfile."
+  - id: native-package-manager
+    kind: json_path_equals
+    level: error
+    paths: "package.json"
+    path: "$.packageManager"
+    equals: "bun@1.4.4"
+    message: "Native packages must use the same pinned dependency manager."
   # Required paths (goal Section 8.1). One rule per path.
   - id: req-readme
     kind: file_exists
