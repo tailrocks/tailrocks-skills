@@ -51,6 +51,13 @@ A separate OpenCode `2.3.2` fixture loaded skills through its live server
 registry and resolved installed script paths. The Amp registrar fixture used
 an API test double. These are distinct from package-specific verification.
 
+All 11 Antigravity manifests passed the [official schema][agy-schema].
+A native test used `agy` 1.5.12 and [contribution 0.29.1 at f8a276a4][agy-test].
+The CLI validated the package, installed it, and listed all five skills as
+part of the enabled plugin. It loaded `.antigravity-plugin/plugin.json` ahead
+of the portable manifest. Antigravity loads plugin rules from `rules/`. The
+root `AGENTS.md` remains a repository maintenance file.
+
 A registry listing establishes discovery. To verify a workflow, exercise its
 specified inputs, permissions, and expected result in the intended host.
 Private Git sources and hosted workspace installations require separate access.
@@ -61,3 +68,5 @@ source formats and test evidence.
 
 [muse]: https://meta-models.github.io/muse-code-sdk/1.4/guides/plugins/concepts/compatibility/
 [distribution]: https://github.com/tailrocks/tailrocks-skills/blob/main/docs/standards/distribution.md
+[agy-schema]: https://antigravity.google/schemas/v1/plugin.json
+[agy-test]: https://github.com/tailrocks/tailrocks-contribution-skills/tree/f8a276a401ca58855e2c687f2bb60c120e25acc4

@@ -3,6 +3,47 @@
 This file records verification evidence for the standardization work.
 `docs/migration.md` records decisions and the completion checklist.
 
+## Final component adoption (2026-11-20)
+
+All eleven corrected component pull requests merged after Required CI, Bun
+verification, and DCO passed at their exact heads.
+Vitalik Mode also passed its security quality gate with zero annotations.
+Each actual merge commit has the same Git tree as its independently reviewed
+release candidate.
+Authenticated GitHub reads confirmed every pinned manifest's identity, version,
+description, and repository visibility: nine public sources and two private ones.
+
+The marketplace adopts these immutable commits:
+
+| Component | Version | Merged change | Source commit |
+| --- | --- | --- | --- |
+| Skill Authoring Skills | 0.29.2 | [#18](https://github.com/tailrocks/tailrocks-skill-authoring-skills/pull/18) | [c32581071fd9](https://github.com/tailrocks/tailrocks-skill-authoring-skills/commit/c32581071fd9b3d2a327a6b01cfe4e365df8a3d3) |
+| Repository Skills | 0.6.2 | [#40](https://github.com/tailrocks/tailrocks-repository-skills/pull/40) | [fd2a47ca25d0](https://github.com/tailrocks/tailrocks-repository-skills/commit/fd2a47ca25d04527e38ca20ffcaf57bbf9653811) |
+| Vitalik Mode | 0.2.1 | [#6](https://github.com/tailrocks/tailrocks-vitalik-mode-skills/pull/6) | [d1e57b5ec051](https://github.com/tailrocks/tailrocks-vitalik-mode-skills/commit/d1e57b5ec0516c23b2c18d77846d7f2ee96674d3) |
+| TypeScript Skills | 0.29.2 | [#14](https://github.com/tailrocks/tailrocks-typescript-skills/pull/14) | [4c13f9c634b6](https://github.com/tailrocks/tailrocks-typescript-skills/commit/4c13f9c634b6d065184b54664e3d1a76619eda7f) |
+| macOS Skills | 0.29.2 | [#14](https://github.com/tailrocks/tailrocks-macos-skills/pull/14) | [9a178fe129b8](https://github.com/tailrocks/tailrocks-macos-skills/commit/9a178fe129b83ed94c6ca1a09ffe51a3d5a45ead) |
+| Roadmap Skills | 0.29.2 | [#14](https://github.com/tailrocks/tailrocks-roadmap-skills/pull/14) | [8bf6289976bc](https://github.com/tailrocks/tailrocks-roadmap-skills/commit/8bf6289976bc822a0b9a22682e3661af0b07110e) |
+| Contribution Skills | 0.29.2 | [#13](https://github.com/tailrocks/tailrocks-contribution-skills/pull/13) | [0f79bfb848cc](https://github.com/tailrocks/tailrocks-contribution-skills/commit/0f79bfb848cc48ca38e9df081cce42999f4b73f1) |
+| Code Quality Skills | 0.29.2 | [#14](https://github.com/tailrocks/tailrocks-code-quality-skills/pull/14) | [c62b336b15ba](https://github.com/tailrocks/tailrocks-code-quality-skills/commit/c62b336b15baead7ac1880602c22261445169fb4) |
+| Rust Skills | 0.30.1 | [#14](https://github.com/tailrocks/tailrocks-rust-skills/pull/14) | [8a4496558168](https://github.com/tailrocks/tailrocks-rust-skills/commit/8a4496558168dad4e4e7d34b9c8b1c206eecd305) |
+| ASD-STE100: Clear Technical English | 0.3.1 | [#13](https://github.com/tailrocks/tailrocks-asd-ste100-skills/pull/13) | [0ec06542f12f](https://github.com/tailrocks/tailrocks-asd-ste100-skills/commit/0ec06542f12f0e5cdab73c0596e66a98595ef888) |
+| Agent Policy Skills | 0.4.1 | [#2](https://github.com/tailrocks/tailrocks-agent-policy-skills/pull/2) | [b8b3fe96d74a](https://github.com/tailrocks/tailrocks-agent-policy-skills/commit/b8b3fe96d74ac5b1755053fc570239b2d8479c40) |
+
+The shared foundation merged in [PR #139](https://github.com/tailrocks/tailrocks-skills/pull/139)
+at `5b2fc308a6f5a48d0c0e85c18e8db43c97e06433`.
+Its package integrity correction merged in [PR #140](https://github.com/tailrocks/tailrocks-skills/pull/140)
+at `d7ace6576342d796094ab6f52cd2f6f5a4823ede`.
+Every component pins that corrected shared profile and its verified digest.
+
+The integrity-correction archive fixture packed all eleven candidates.
+All 1,666 required files matched their source bytes, including every Bun lockfile.
+This archive count is separate from the earlier four-client installation count.
+The repository runtime suite passed 1,389 tests with 4,158 assertions.
+
+Native installation evidence retains the limits recorded below.
+Kimi's current route has no native runtime verification in this round.
+No model task was part of the installation tests.
+
 ## Native distribution foundation (2026-11-20)
 
 PR #138 merged at `10e9ab1e59c220eacfea19ef2142d469d9925275`.
@@ -78,10 +119,22 @@ These runs establish representative route behavior, not eleven-package coverage.
 All eleven Antigravity manifests passed Google's official Draft 2020-12 schema.
 The downloaded schema SHA-256 was
 `0eea5e483af6f03fa099f32b065d2924a323f1a616ed0323cfa0b7a74ff9543c`.
-Native Antigravity installation remains outside these checks.
+A later native check used Antigravity CLI 1.5.12 and the public contribution
+package at `f8a276a401ca58855e2c687f2bb60c120e25acc4` (version 0.29.1).
+The official Linux executable matched its published SHA-512.
+Native validate, install, and list commands succeeded in a disposable profile.
+The enabled registry entry contained all five expected skills, whose installed
+bodies matched the source bytes.
+This is representative route coverage, not eleven native Antigravity installs.
+The validator warned that its native manifest takes precedence over the portable
+root manifest and that root AGENTS.md is not a native rules file.
+No login, browser, or model task was required.
+
 Amp's registrar passed its API fixture.
 Amp's CLI could not complete native registry discovery in the offline profile.
 Its global plugin service required network access.
+Representative live checks on public packages are tracked in
+[#141](https://github.com/tailrocks/tailrocks-skills/issues/141).
 
 ## Package integrity correction (2026-11-20)
 
@@ -104,8 +157,29 @@ Offline frozen-lock verification passed without dependency lifecycle scripts.
 A deliberately stale dependency failed the frozen check.
 Missing, non-file, or omitted lockfiles and an incorrect manager also failed
 package validation.
-Native skill bodies and registrar behavior remain as measured in the candidate
-installation checks.
+At this phase, native skill bodies and registrar behavior remained as measured
+in the candidate installation checks.
+
+## Existing audit reconciliation (2026-11-20)
+
+The refactor was checked against all findings in
+[issue #135](https://github.com/tailrocks/tailrocks-skills/issues/135).
+The [resolution record](audit-resolution.md) accounts for every distinct finding.
+The follow-up correction aligned authoring guidance with the shared package
+contract and enforced literal angle-bracket rejection in skill descriptions.
+It also corrected three macOS harness references and three code-quality
+instruction-policy workflows.
+
+The documented macOS setup command ran from an unrelated directory into a
+project path with spaces.
+All nine installed harness files matched their packaged templates.
+The code-quality policy now recognizes a verified native import of the canonical
+sibling AGENTS.md when its loader supports that syntax.
+The generated eleven-byte Claude import satisfied that policy.
+
+These source and resource checks complement the earlier native client fixtures.
+Later instruction-body and reference changes are not presented as new full-client
+installation runs.
 
 ## Phase A evidence (2026-10-07 UTC)
 

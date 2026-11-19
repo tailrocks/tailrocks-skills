@@ -3,57 +3,57 @@
     {
       "displayName": "Skill Authoring Skills",
       "id": "tailrocks-skill-authoring-skills",
-      "source": "https://github.com/tailrocks/tailrocks-skill-authoring-skills/commit/a5b25695bd35fc5265894529ab7c85d87162ae42"
+      "source": "https://github.com/tailrocks/tailrocks-skill-authoring-skills/commit/c32581071fd9b3d2a327a6b01cfe4e365df8a3d3"
     },
     {
       "displayName": "Repository Skills",
       "id": "tailrocks-repository-skills",
-      "source": "https://github.com/tailrocks/tailrocks-repository-skills/commit/55278526dd8760fcb7f96af7fa62fa917603a9cf"
+      "source": "https://github.com/tailrocks/tailrocks-repository-skills/commit/fd2a47ca25d04527e38ca20ffcaf57bbf9653811"
     },
     {
       "displayName": "Vitalik Mode",
       "id": "tailrocks-vitalik-mode-skills",
-      "source": "https://github.com/tailrocks/tailrocks-vitalik-mode-skills/commit/3a3590055a8f1b1b1cd63c1ed47a59431a45a349"
+      "source": "https://github.com/tailrocks/tailrocks-vitalik-mode-skills/commit/d1e57b5ec0516c23b2c18d77846d7f2ee96674d3"
     },
     {
       "displayName": "TypeScript Skills",
       "id": "tailrocks-typescript-skills",
-      "source": "https://github.com/tailrocks/tailrocks-typescript-skills/commit/41768afec4886fee610b6cfbfcbb2205cb01bba2"
+      "source": "https://github.com/tailrocks/tailrocks-typescript-skills/commit/4c13f9c634b6d065184b54664e3d1a76619eda7f"
     },
     {
       "displayName": "macOS Skills",
       "id": "tailrocks-macos-skills",
-      "source": "https://github.com/tailrocks/tailrocks-macos-skills/commit/af78c8ff21c9df8b00f9fd8046f00a3a5ced7f85"
+      "source": "https://github.com/tailrocks/tailrocks-macos-skills/commit/9a178fe129b83ed94c6ca1a09ffe51a3d5a45ead"
     },
     {
       "displayName": "Roadmap Skills",
       "id": "tailrocks-roadmap-skills",
-      "source": "https://github.com/tailrocks/tailrocks-roadmap-skills/commit/c273c8645860a5d0aebfdc73dd61f825e0e30bf9"
+      "source": "https://github.com/tailrocks/tailrocks-roadmap-skills/commit/8bf6289976bc822a0b9a22682e3661af0b07110e"
     },
     {
       "displayName": "Contribution Skills",
       "id": "tailrocks-contribution-skills",
-      "source": "https://github.com/tailrocks/tailrocks-contribution-skills/commit/25a3f6a9a66937ff5d70cbc35909cb2904a5b7d5"
+      "source": "https://github.com/tailrocks/tailrocks-contribution-skills/commit/0f79bfb848cc48ca38e9df081cce42999f4b73f1"
     },
     {
       "displayName": "Code Quality Skills",
       "id": "tailrocks-code-quality-skills",
-      "source": "https://github.com/tailrocks/tailrocks-code-quality-skills/commit/d14832f9d3cf0690851f3ecaaa7f9de32c0d1096"
+      "source": "https://github.com/tailrocks/tailrocks-code-quality-skills/commit/c62b336b15baead7ac1880602c22261445169fb4"
     },
     {
       "displayName": "Rust Skills",
       "id": "tailrocks-rust-skills",
-      "source": "https://github.com/tailrocks/tailrocks-rust-skills/commit/18467d1531760a017d425509ce461569a306895e"
+      "source": "https://github.com/tailrocks/tailrocks-rust-skills/commit/8a4496558168dad4e4e7d34b9c8b1c206eecd305"
     },
     {
       "displayName": "ASD-STE100: Clear Technical English",
       "id": "tailrocks-asd-ste100-skill",
-      "source": "https://github.com/tailrocks/tailrocks-asd-ste100-skills/commit/77c477b4e80dc3df07adceeaf8eaddb688a09038"
+      "source": "https://github.com/tailrocks/tailrocks-asd-ste100-skills/commit/0ec06542f12f0e5cdab73c0596e66a98595ef888"
     },
     {
       "displayName": "Agent Policy Skills",
       "id": "tailrocks-agent-policy-skills",
-      "source": "https://github.com/tailrocks/tailrocks-agent-policy-skills/commit/04acb7970a300b084c389481fdc51345cd9001b1"
+      "source": "https://github.com/tailrocks/tailrocks-agent-policy-skills/commit/b8b3fe96d74ac5b1755053fc570239b2d8479c40"
     }
   ],
   "version": "2"

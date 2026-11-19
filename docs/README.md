@@ -6,6 +6,7 @@
 - [Models](models.md): Model identity, effort, delegation, and economical defaults.
 - [Maintenance](maintenance.md): Change and publication procedure.
 - [Verification](verification.md): Recorded checks and their limits.
+- [Audit resolution](audit-resolution.md): Agent-format findings and fixes.
 - [Shared standards](standards/README.md): Structure, writing, and distribution.
 - [ChatGPT installation](chatgpt-web.md): Supported installation in ChatGPT.
 - [Migration history](migration.md): Earlier consolidation decisions.
