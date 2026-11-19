@@ -26,6 +26,8 @@ Pass only documented options to domain commands and scripts.
 When authorized to select a new route, choose a capable, economical model.
 Consider task difficulty, latency, expected token use, and likely rework.
 Use explicit `medium` or a documented balanced equivalent for ordinary work.
+This is the package policy for new routes; provider defaults can differ.
+The same effort label does not mean the same amount of work across models.
 Use lower effort for well-specified work when its acceptance check suffices.
 Preserve any explicit effort. Resolve `highest`, when requested, against the
 levels available for that model and role. Select paid speed tiers separately.
@@ -42,12 +44,18 @@ Use session controls within scope and leave persistent host settings alone.
 - **Opus 5.5** (`claude-opus-5-5`) suits general coding and knowledge work.
   The Claude API defaults to `medium`.
 
-Both use adaptive thinking. Claude API `output_config.effort` accepts `low`,
+Both use always-on adaptive thinking; `thinking.type: disabled` is invalid.
+Claude API `output_config.effort` accepts `low`,
 `medium`, `high`, `xhigh`, and `max`. Specify what finishes a long run.
 Collect outstanding results before treating a progress update as completion.
 Give Fable clear delegation boundaries when the host offers subagents.
 Claude Code's Agent call accepts a model alias. A custom agent definition
 can name the exact version. Environment settings can override child effort.
+
+Keep API history append-only, including prior thinking blocks. Changes to earlier
+system instructions, tools, or messages can fail Fable's prefix check. Use
+supported context editing or compaction. Put new guidance in the newest turn.
+Supported per-message `output_config.effort` changes preserve the prompt cache.
 
 [Models][claude-models] · [Effort][claude-effort] · [Fable prompting][fable] ·
 [Opus prompting][opus] · [Claude Code subagents][claude-agents]
@@ -61,8 +69,13 @@ can name the exact version. Environment settings can override child effort.
 
 Both support `low`, `medium`, `high`, `xhigh`, and `max` on the OpenAI API.
 Use `reasoning.effort` in Responses or `reasoning_effort` in Chat Completions.
+The API does not support `none` or `minimal`; host `Ultra` is not API effort.
+Omit `temperature`, `top_p`, and `top_logprobs`. In Chat Completions, also omit
+`logprobs`; in Responses, remove `message.output_text.logprobs` from `include`.
 Tool calls use Responses. Its multi-agent beta children share the request's
-model and available tools. Keep reusable instructions stable across turns.
+model and available tools. Put reusable instructions in the first `developer`
+message. When replaying history, retain prior output items unchanged and in
+order, including reasoning items. Keep reusable instructions stable across turns.
 Append new evidence and instructions to preserve earlier reasoning and cache.
 Codex and ChatGPT Work can expose `Ultra` for parallel subagent work.
 OpenAI API `Ultrafast` selects a service tier with separate pricing.
@@ -81,9 +94,17 @@ OpenAI API `Ultrafast` selects a service tier with separate pricing.
   It supports `low`, `medium`, `high` (default), and `xhigh`.
 
 Use `generation_config.thinking_level` in the Gemini Interactions API.
+For GenerateContent, use `thinking_config.thinking_level` in SDK config.
 Use the selected surface's spelling. Google Cloud GenerateContent documents
 uppercase values. Lower thinking effort to save tokens and leave enough
 output capacity for the answer. A short output cap can truncate verification.
+Budget the unified 1,048,576 tokens across input, thinking, tool calls, and output.
+Use supported continuation for longer output. Preserve each `thought_signature`
+in its original GenerateContent part, including across parallel calls.
+For Interactions, use `store: true` with `previous_interaction_id`, or replay
+complete thought and tool steps with their signatures unchanged.
+Remove `thinking_budget` and `minimal` thinking levels. Remove `temperature`,
+`top_p`, and `top_k`; Gemini 4 ignores these sampling settings.
 
 [Thinking levels][gemini-thinking] · [Argon][argon] · [Carbon][carbon] ·
 [Neon and API controls][neon]
@@ -98,7 +119,8 @@ output capacity for the answer. A short output cap can truncate verification.
   still runs the base model. Meta Model API offers only the base variant.
 
 Base Wonder's API efforts are `minimal`, `low`, `medium`, `high`, `xhigh`,
-and `max`. Muse Code custom agents inherit omitted model and effort settings.
+and `max`. Meta's API rejects `none`; a host's wider list is not an API contract.
+Muse Code custom agents inherit omitted model and effort settings.
 Inspect `/models` and the custom agent's `effort` field before launch.
 An unavailable profile model can fall back to the lead. Inspect the child model
 in `muse export` when the requested identity matters.

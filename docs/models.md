@@ -18,6 +18,8 @@ Keep the primary session unchanged when the user selects a planning subagent.
 When choosing a new route, use a capable model with economical effort.
 Use explicit `medium` or the host's documented balanced equivalent for ordinary
 work.
+This is Tailrocks policy for new routes. Provider defaults differ, and the same
+effort label can allocate different amounts of work across models.
 Account for latency, token use, likely rework, and the required result.
 Higher effort remains available through the host's actual controls.
 

@@ -11,7 +11,7 @@ The marketplace owns shared standards, distribution templates, and catalog pins.
 | `catalog.json` | Approved package IDs, revisions, versions, and visibility |
 | `standards/alint/` | Shared rules for active, marketplace, and retired repositories |
 | `standards/models/model-routing.md` | Provider identities and model selection guidance |
-| `standards/native/` | Native registrars, installation guides, and package validator |
+| `standards/native/` | Native registrars, install and release guides, and package validator |
 | `scripts/generate-catalogs.py` | Native marketplace catalogs |
 | `scripts/sync-packages.py` | Shared files in checked-out component repositories |
 | `scripts/install-command.py` | Native commands for one approved package revision |

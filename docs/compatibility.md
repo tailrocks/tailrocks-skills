@@ -22,13 +22,29 @@ In the table, `ID` means the plugin ID and `SKILL` means the skill ID.
 | [Kimi Code][kimi] | Additional JSON v2 marketplace and Kimi plugin | `/skill:ID:SKILL` |
 
 OpenCode registers the installed Markdown body and its canonical file path.
-Amp registers the installed skill directory. Both registrars preserve explicit
-selection requirements. Loading either registrar starts no background task.
+Amp registers the installed skill directory. Both registrars apply each skill's
+discovery setting. Loading either registrar starts no background task.
 A selected workflow can use its own scripts when its instructions require them.
 
 A host controls discovery, permission prompts, model availability, and user
 scope. Read the package's model guide for supported routes and effort levels.
 A catalog listing grants no account access or additional permissions.
+
+## Invocation controls and authorization
+
+A public skill marked user-only requires an explicit human request on every
+host. Codex reads `policy.allow_implicit_invocation` from `agents/openai.yaml`.
+The generated OpenCode and Amp registrars map that policy to `autoinvoke` and
+`listed`, respectively.
+
+Public skills do not set `disable-model-invocation` in `SKILL.md`. On other
+hosts, their descriptions and workflow instructions carry the user-only rule.
+Uniform native suppression of model discovery is not established. [Muse][muse-skills]
+and [pi][pi-skills] document separate frontmatter controls for that purpose.
+
+Discovery settings are not permission controls. A visible or loaded skill does
+not authorize its workflow. Preserve the user's scope and each skill's explicit
+invocation requirement even when the host can load a known skill ID.
 
 ## Explicit-only policy skills
 
@@ -71,11 +87,13 @@ The [verification history](verification.md) records earlier migration checks.
 [codex]: https://developers.openai.com/plugins/build/plugins
 [grok]: https://github.com/xai-org/grok-build/blob/main/crates/codegen/xai-grok-pager/docs/user-guide/09-plugins.md
 [muse]: https://meta-models.github.io/muse-code-sdk/1.4/guides/plugins/concepts/compatibility/
+[muse-skills]: https://meta-models.github.io/muse-code-sdk/1.4/guides/extend/skills/
 [omp]: https://github.com/can1357/oh-my-pi/blob/main/docs/marketplace.md
 [opencode]: https://opencode.ai/docs/build/plugins/server/
 [amp]: https://ampcode.com/docs/customize/plugins
 [agy]: https://antigravity.google/docs/plugins
 [pi]: https://docs.pi.dev/latest/packages
+[pi-skills]: https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md
 [kimi]: https://www.kimi.com/code/docs/en/kimi-code-cli/customization/plugins
 [agy-schema]: https://antigravity.google/schemas/v1/plugin.json
 [agy-test]: https://github.com/tailrocks/tailrocks-contribution-skills/tree/f8a276a401ca58855e2c687f2bb60c120e25acc4

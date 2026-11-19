@@ -22,6 +22,8 @@ Keep marketplace files here and domain instructions in their component packages.
 Use repeated `--only <plugin-id>` arguments for a subset of local checkouts.
 Keep private source material inside its private repository.
 Publish only public templates and metadata in this marketplace.
+The shared release template updates each package's release procedure while
+preserving its domain checks and private-content instructions.
 
 Use Bun 1.4.4 when changing a component's dependencies.
 Update its lockfile with `bun install --lockfile-only --ignore-scripts`.

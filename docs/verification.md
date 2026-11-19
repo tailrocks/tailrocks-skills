@@ -3,6 +3,71 @@
 This file records verification evidence for the standardization work.
 `docs/migration.md` records decisions and the completion checklist.
 
+## Native contract completion (2026-11-20)
+
+An authenticated inventory found thirteen skill repositories: this marketplace,
+ten active packages with 98 skills, and two retired repositories. PR #138 had
+already merged at 2026-11-19 19:30:35 UTC. Current provider and host documentation
+confirmed the existing native distribution formats and all nine requested model
+identities. The active package procedures and invocation settings remain unchanged.
+
+The shared update adds the missing API parameter and reasoning-state controls.
+It separates provider defaults from package effort policy and native discovery
+from workflow authorization. It also generates Claude author attribution and a
+common release procedure. Full commit pins remain sufficient; tags are optional.
+
+All ten package candidates passed their package validators and Claude Code
+`2.1.328` strict native validation. The original Claude manifest failed strict
+validation for missing author metadata. The corrected manifests retain the
+portable author and expose the expected 98 skill IDs.
+
+Shared generation covers 296 files and reports zero drift. Bun `1.4.4` frozen
+offline lockfile checks and npm package inventories passed for every package.
+The inventories retain each model reference and runtime resource, and exclude
+private maintainer records. Repository Skills passed TypeScript validation and
+all 1,389 Bun tests. Independent review found no blocking issue.
+
+The parent passed 57 Alint rules. Each active package passed its 70 applicable
+rules using the exact immutable profile bytes, verified against the configured
+SHA-256. Direct Alint profile download was unavailable through the local proxy;
+the committed remote configuration was not changed. Local files and Markdown
+fragments passed offline Lychee checks. Native validation establishes package
+discovery and metadata; it does not establish model task execution.
+
+The retired pull-request repository now uses the same maintenance structure,
+profile, and Velnor `0.1.80` inputs as the retired Vitalik repository. Its generated
+GitHub files match that retirement baseline. All 17 retirement rules passed, and
+the source contains no active skill, manifest, or native package entry point.
+
+All ten active package changes and the retirement update merged after their
+exact final heads passed Required CI and DCO. Every merged Git tree matches
+its validated candidate. Authenticated reads verified the identity, version,
+and description of every active manifest at its merge commit. The catalog
+retains eight public sources and two private sources and adopts these commits:
+
+| Component | Version | Merged change | Source commit |
+| --- | --- | --- | --- |
+| Skill Authoring Skills | 0.29.4 | [#20](https://github.com/tailrocks/tailrocks-skill-authoring-skills/pull/20) | [6f6f302e7f56](https://github.com/tailrocks/tailrocks-skill-authoring-skills/commit/6f6f302e7f56f054fec0a0c7f40d5e68fbd57c40) |
+| Repository Skills | 0.6.4 | [#42](https://github.com/tailrocks/tailrocks-repository-skills/pull/42) | [d66f3bb8879f](https://github.com/tailrocks/tailrocks-repository-skills/commit/d66f3bb8879f4dbf890958d19e21b8724c07491e) |
+| TypeScript Skills | 0.29.4 | [#16](https://github.com/tailrocks/tailrocks-typescript-skills/pull/16) | [511499cde848](https://github.com/tailrocks/tailrocks-typescript-skills/commit/511499cde848eaa69b76d9d6a654ffb1657ef0f9) |
+| macOS Skills | 0.29.4 | [#16](https://github.com/tailrocks/tailrocks-macos-skills/pull/16) | [3c7f0e2b267c](https://github.com/tailrocks/tailrocks-macos-skills/commit/3c7f0e2b267c057eeff7edc181e0e9dca610c074) |
+| Roadmap Skills | 0.29.4 | [#16](https://github.com/tailrocks/tailrocks-roadmap-skills/pull/16) | [2c65b4bd4196](https://github.com/tailrocks/tailrocks-roadmap-skills/commit/2c65b4bd4196aa54a125d1f35f4cd2c67586e65b) |
+| Contribution Skills | 0.29.4 | [#15](https://github.com/tailrocks/tailrocks-contribution-skills/pull/15) | [e6f2f5343db6](https://github.com/tailrocks/tailrocks-contribution-skills/commit/e6f2f5343db6efddc5a9520757e716c687b1d16d) |
+| Code Quality Skills | 0.29.4 | [#16](https://github.com/tailrocks/tailrocks-code-quality-skills/pull/16) | [e16474b557f6](https://github.com/tailrocks/tailrocks-code-quality-skills/commit/e16474b557f628636fc8afa14b911bfb78128fe2) |
+| Rust Skills | 0.30.3 | [#16](https://github.com/tailrocks/tailrocks-rust-skills/pull/16) | [b04fcb1c4b11](https://github.com/tailrocks/tailrocks-rust-skills/commit/b04fcb1c4b11242eca9e478bad19988560f7ddd5) |
+| ASD-STE100: Clear Technical English | 0.3.3 | [#15](https://github.com/tailrocks/tailrocks-asd-ste100-skills/pull/15) | [8abf0be01a9d](https://github.com/tailrocks/tailrocks-asd-ste100-skills/commit/8abf0be01a9dfeba623ddcd718254455c85f3015) |
+| Agent Policy Skills | 0.5.1 | [#4](https://github.com/tailrocks/tailrocks-agent-policy-skills/pull/4) | [fa74533c9b02](https://github.com/tailrocks/tailrocks-agent-policy-skills/commit/fa74533c9b02ad681ec251f658be30c550cadccc) |
+
+The retirement update merged in
+[PR #11](https://github.com/tailrocks/tailrocks-pull-request-skills/pull/11)
+at `264f0897ff81b688f8b81783aaca23f80fcc21db`.
+The existing standalone Vitalik retirement remains in place.
+
+The installation helper still covers all 100 package and host combinations.
+Its 90 shell outputs passed syntax checks with the adopted source commits.
+Current native installation limits remain in [compatibility](compatibility.md).
+This maintenance pass did not rerun every full-client installation or a model task.
+
 ## Agent Policy consolidation (2026-11-20)
 
 The active catalog contains ten packages and 98 skills. Agent Policy owns
