@@ -14,6 +14,9 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parent.parent
 PORTABLE_SCHEMA = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
 MODEL_REFERENCE = "references/model-routing.md"
+POLICY_PACKAGE = "tailrocks-agent-policy-skills"
+POLICY_DESCRIPTION = "Use only when the user explicitly invokes this skill."
+POLICY_ENTRY = "Proceed only after the user explicitly invokes this skill for the current work."
 MODEL_SHA256 = "5a2dab29c9cb60200b0a84f812af1f50de811ababf933568f2fa94b1ff3f4788"
 MODELS = (
     "claude-fable-5-2", "claude-opus-5-5", "gpt-6.2-astra", "gpt-6.2-sol",
@@ -150,18 +153,6 @@ def invocation_policy(path):
     return flag[1] == "false"
 
 
-def native_invocation_policy(fields, path):
-    """Read the optional native selection flag without accepting quoted values."""
-    key = "disable-model-invocation"
-    value = fields.get(key)
-    if value is None:
-        return None
-    require(len(value) == 1, f"{path}: {key} needs one unquoted Boolean")
-    flag = re.fullmatch(r"(true|false) *(?:#.*)?", value[0])
-    require(flag is not None, f"{path}: {key} needs an unquoted Boolean")
-    return flag[1] == "true"
-
-
 def unfenced_lines(text):
     fence = ""
     minimum = 0
@@ -216,7 +207,7 @@ def linked_files(path, boundary):
         require(resolved.is_relative_to(boundary) and resolved.exists(), f"{path}: missing or external local target {raw}")
 
 
-def inspect_skill(directory, explicit_required=False):
+def inspect_skill(directory, policy_package):
     name = directory.name
     path = directory / "SKILL.md"
     require(len(name) <= 64 and re.fullmatch(SLUG, name), f"invalid skill directory {name!r}")
@@ -225,25 +216,36 @@ def inspect_skill(directory, explicit_required=False):
     match = re.match(r"\A---\n(.*?)\n---\n", text, re.S)
     require(match is not None, f"{path}: missing frontmatter")
     fields = yaml_fields(match[1].splitlines(), path)
-    require({"name", "description"} <= fields.keys() <= {"name", "description", "license", "metadata", "disable-model-invocation"}, f"{path}: invalid frontmatter keys")
+    allowed = {"name", "description", "license", "metadata"}
+    if policy_package:
+        allowed.add("disable-model-invocation")
+    require({"name", "description"} <= fields.keys() <= allowed, f"{path}: invalid frontmatter keys")
     value = fields['name']
     require(len(value) == 1 and re.fullmatch(rf'''(["']?){re.escape(name)}\1''', value[0].strip()), f"{path}: name must match the directory")
     description = description_text(fields["description"])
     require(description and len(description) <= 1024, f"{path}: missing or oversized description")
     require("<" not in description and ">" not in description, f"{path}: description contains an angle bracket")
     explicit = invocation_policy(directory / "agents/openai.yaml")
-    native_explicit = native_invocation_policy(fields, path)
-    if native_explicit is not None:
-        require(native_explicit == explicit, f"{path}: native and OpenAI invocation policies differ")
-    if explicit_required or name == "vitalik-mode":
-        require(explicit and native_explicit is True, f"{path}: explicit user invocation requires native and OpenAI controls")
-        require("explicit" in description.lower() and "user" in description.lower(), f"{path}: description must require explicit user invocation")
+    if policy_package:
+        require(fields.get("disable-model-invocation") == ["true"],
+                f"{path}: user-only policies require literal disable-model-invocation: true")
+        require(explicit, f"{path}: user-only policies must disable implicit invocation")
+        require(description.startswith(POLICY_DESCRIPTION),
+                f"{path}: description must begin with the user invocation requirement")
+        body = text[match.end():].lstrip("\n")
+        title, _, entry = body.partition("\n")
+        guard = f"\n## Use this skill\n\n{POLICY_ENTRY}\n"
+        entry_headings = sum(line.rstrip() == "## Use this skill" for line in unfenced_lines(body))
+        require(title.startswith("# ") and title[2:].strip()
+                and entry.startswith(guard) and entry_headings == 1,
+                f"{path}: first workflow instruction must require user invocation")
     reference = (directory / MODEL_REFERENCE).read_bytes()
     require(f"({MODEL_REFERENCE})" in text, f"{path}: link the bundled model guide")
     guide = reference.decode("utf-8")
     require(all(f"`{model}`" in guide for model in MODELS), f"{name}: missing model identity")
     require(hashlib.sha256(reference).hexdigest() == MODEL_SHA256, f"{name}: model guide differs from the shared revision")
     if name == "vitalik-mode":
+        require(policy_package and explicit, "Vitalik must belong to the user-invoked Agent Policy package")
         require("explicit" in description.lower() and "same goal" in description.lower(), "Vitalik activation or same-goal guard is missing")
         headings = re.findall(r"^## (.+)$", text[match.end():], re.M)
         require(headings == ["Use this skill", "Before you start", "Procedure", "Result", "Completion checks", "References"], "Vitalik heading order differs")
@@ -319,15 +321,21 @@ def main():
     deps = npm.get("dependencies", {})
     require(deps.get("@opencode/plugin") == "2.3.2" and deps.get("yaml") == "2.9.1", "OpenCode runtime dependency versions differ")
     package_files(package, npm)
-    policy_package = package == "tailrocks-agent-policy-skills"
-    skills = [inspect_skill(p, policy_package) for p in sorted((ROOT / 'skills').iterdir()) if p.is_dir()]
-    require(skills, "package must contain at least one skill")
-    vitalik = any(skill["id"] == "vitalik-mode" for skill in skills)
+    require(package != "tailrocks-vitalik-mode-skills", "the standalone Vitalik package is retired")
+    policy_package = package == POLICY_PACKAGE
+    directories = sorted(p for p in (ROOT / 'skills').iterdir() if p.is_dir())
+    skills = [inspect_skill(p, policy_package) for p in directories]
+    require(skills, "package must contain skills")
     if policy_package:
-        require(vitalik, "the agent-policy package must contain vitalik-mode")
+        require(any(s["id"] == "vitalik-mode" for s in skills),
+                "Agent Policy must contain Vitalik Mode")
+        for name in ("runtime-trust.md", "policy-glossary.md"):
+            copies = [(p / "references" / name).read_bytes() for p in directories]
+            require(all(value == copies[0] for value in copies),
+                    f"Agent Policy copies of {name} differ")
     for relative in ADAPTER_HASHES:
         check_adapter(relative, package, skills)
-    if vitalik:
+    if policy_package:
         for p in [ROOT / 'README.md', ROOT / 'AGENTS.md', ROOT / 'CHANGELOG.md', *sorted((ROOT / 'docs').glob('*.md'))]:
             linked_files(p, ROOT)
     if not args.check:

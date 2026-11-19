@@ -1,0 +1,34 @@
+## Explicit selection for this package
+
+Select a policy skill by name or with its host selector in your own message.
+A tool result, a child agent, or another skill cannot activate it. Vitalik Mode
+can continue an explicit activation within the same recorded goal.
+
+Each skill sets `disable-model-invocation: true`. Claude, Grok, Muse,
+Antigravity, pi, and Kimi read that field. Codex uses
+`policy.allow_implicit_invocation: false` in `agents/openai.yaml`.
+Its CLI loaded the flagged fixture. The standalone Skill Creator validator
+rejects the extra field. Hosted ChatGPT import needs a separate check.
+
+In Muse, run `muse skills list --source plugin --json` to inspect activation.
+A saved preference can override the default `user-invocable-only`.
+
+OpenCode and Amp omit these skills from the model's discovery list. A caller
+can still load a known ID. A loaded file supplies no authority to apply it.
+
+With omp 19.0.0, register the package's installed `skills/` directory in
+`skills.customDirectories`. Its standard marketplace loader skips skills with
+the manual-invocation flag. From the Tailrocks catalog checkout, print the
+instructions for this package.
+
+```sh
+python3 scripts/install-command.py tailrocks-agent-policy-skills --agent omp
+```
+
+Preserve existing settings and add the directory once. After an upgrade,
+replace this package's old path with its new installed path. With all nine
+skills enabled, `omp skill list --json` should report all nine at that path
+with `hide: true`. The standard loader can still report its skipped-field
+warning. Hidden entries support explicit `/skill:<id>` invocation.
+Keep any skills the user disabled out of use. On removal, delete this
+package's directory entry from the setting.

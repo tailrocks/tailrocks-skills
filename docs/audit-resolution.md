@@ -99,8 +99,8 @@ Tailrocks verifies its pinned local-checkout route.
 - **K6 — Resolved.** The required Alint job invokes the shared validator to
   check the portable field subset and description characters. The generator's
   identity check remains a separate check.
-- **K8 — Resolved.** Current catalog, validator, and ChatGPT installation
-  inventory contain all eleven packages.
+- **K8 — Resolved.** At audit closure, the catalog, validator, and ChatGPT installation
+  inventory contained all eleven packages.
 
 The remaining duplicate rows in the audit are instances of the findings above.
 Authoring version instructions also now cover every generated native manifest

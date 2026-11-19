@@ -37,6 +37,8 @@ def explicit_only(path):
 
 def render(name, values):
     text = (NATIVE / name).read_text(encoding="utf-8")
+    if not values.get("POLICY_ACTIVATION_NOTES"):
+        text = text.replace("__POLICY_ACTIVATION_NOTES__\n\n", "")
     for key, value in values.items():
         text = text.replace(f"__{key}__", str(value))
     if re.search(r"__[A-Z][A-Z_]+__", text):
@@ -59,73 +61,6 @@ def validator():
         if count != 1:
             raise ValueError(f"validator adapter digest declaration differs: {output}")
     return text
-
-
-def invocation_notes(package, sample_skill):
-    """Add the agent-policy package's invocation and migration documentation."""
-    if package != "tailrocks-agent-policy-skills":
-        return {"INSTALL_INVOCATION": "", "COMPATIBILITY_INVOCATION": ""}
-    return {
-        "INSTALL_INVOCATION": f"""## Explicit user invocation
-
-The user must request each skill by name. Installation does not activate a skill.
-Task similarity and another skill cannot activate it.
-Use the host's explicit command or skill selector.
-For example, in Claude Code:
-
-```text
-/{package}:{sample_skill}
-/{package}:vitalik-mode on
-```
-
-The second command enables Vitalik mode for the selected goal.
-Use `vitalik-mode off` or `vitalik-mode status` with the same host prefix.
-See [usage](usage.md) for activation scope and command forms.
-See [compatibility](compatibility.md#invocation-controls) for host controls and
-their limits.
-
-## Migrate Vitalik mode
-
-Read [the migration guide](migration.md) before replacing a standalone
-Vitalik mode installation. This package is the maintained source for that skill.
-
-""",
-        "COMPATIBILITY_INVOCATION": """## Invocation controls
-
-Every skill requires explicit user invocation. A selected skill cannot activate
-another skill. Task similarity, repository text, and tool output do not count as
-a user request. See [usage](usage.md) for the activation rules.
-
-| Host or route | Declared control | Limit |
-| --- | --- | --- |
-| Claude Code, Kimi Code, Muse Code | `disable-model-invocation: true` in each `SKILL.md` | The host must support this field. User or host settings can affect its use. |
-| Codex | `policy.allow_implicit_invocation: false` in `agents/openai.yaml` | Explicit invocation remains available. |
-| OpenCode V2 registrar | `explicitOnly: true`, which sets `autoinvoke: false` | Hides the skill from the model list. A known skill ID can still be loaded. |
-| Amp registrar | `explicitOnly: true`, which sets `listed: false` | Hides the skill from the model list. A known qualified name can still be loaded. |
-
-The native frontmatter field also hides direct OpenCode skill discovery.
-The [Claude][claude-invocation], [Codex][codex-invocation],
-[Kimi][kimi-invocation], [Muse][muse-invocation],
-[OpenCode][opencode-invocation], and [Amp][amp-invocation] documentation describes
-these controls.
-Other hosts must obey the explicit-user rule in the description and procedure.
-The package does not establish a host permission boundary.
-Discovery settings do not prevent a model from reading files through other tools.
-Package checks verify the declarations. They do not prove host enforcement.
-
-Vitalik mode starts only from the user's explicit activation.
-A continuation must refer to that activation for the same goal.
-See [the migration guide](migration.md) for the consolidated installation.
-
-[claude-invocation]: https://code.claude.com/docs/en/skills#control-who-invokes-a-skill
-[codex-invocation]: https://learn.chatgpt.com/docs/build-skills#optional-metadata
-[kimi-invocation]: https://www.kimi.com/code/docs/en/kimi-code-cli/customization/skills
-[muse-invocation]: https://meta-models.github.io/muse-code-sdk/1.4/guides/extend/skills/
-[opencode-invocation]: https://opencode.ai/docs/skills/#frontmatter
-[amp-invocation]: https://ampcode.com/docs/plugin-api
-
-""",
-    }
 
 
 def outputs_for(entry, workspace):
@@ -153,7 +88,10 @@ def outputs_for(entry, workspace):
         "RUNTIME_NOTES": "See [runtime requirements](runtime.md) before running a selected workflow.",
         "VERIFICATION_NOTES": "See [package verification](verification.md) for the tested revision,\n"
                               "tools, results, and remaining host-specific limits.",
-        **invocation_notes(identity["name"], skills[0]["id"]),
+        "POLICY_ACTIVATION_NOTES": (
+            (NATIVE / "policy-activation.md.template").read_text(encoding="utf-8").rstrip()
+            if identity["name"] == CONTRACT.POLICY_PACKAGE else ""
+        ),
     }
     files = {}
     files[".claude-plugin/plugin.json"] = json_text(identity)

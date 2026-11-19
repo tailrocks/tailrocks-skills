@@ -4,11 +4,28 @@
 import argparse
 import json
 import re
+import shlex
 from pathlib import Path
 
 CATALOG = Path(__file__).resolve().parents[1] / "catalog.json"
 MARKETPLACE = "tailrocks/tailrocks-skills"
 AGENTS = ("claude", "codex", "grok", "muse", "opencode", "omp", "amp", "antigravity", "pi", "kimi")
+
+
+# Printed for the operator to run against their local omp registry.
+OMP_USER_SKILLS_QUERY = """import json
+import sys
+from pathlib import Path
+
+groups = json.load(sys.stdin)["marketplace"]
+entries = [entry for group in groups if group["id"] == sys.argv[1]
+           for entry in group["entries"] if entry["scope"] == "user"]
+if len(entries) != 1:
+    sys.exit("Expected exactly one matching user-scope package.")
+directory = Path(entries[0]["installPath"]) / "skills"
+if not directory.is_absolute() or not directory.is_dir():
+    sys.exit("The installed skills directory is unavailable.")
+print(json.dumps(str(directory)))"""
 
 
 def load_package(plugin_id):
@@ -49,6 +66,16 @@ def install_commands(agent, item):
                  f"/plugins install https://github.com/{repo}/commit/{rev}",
                  "/reload"),
     }
+    if agent == "omp" and plugin_id == "tailrocks-agent-policy-skills":
+        return (
+            *routes["omp"],
+            "# Print this user installation's skills directory as a quoted YAML value.",
+            f"omp plugin list --json | python3 -c {shlex.quote(OMP_USER_SKILLS_QUERY)} {qualified}",
+            "# Add the quoted path once under skills.customDirectories in ~/.omp/agent/config.yml.",
+            "# Preserve other settings. Replace this package's old path after an upgrade.",
+            "# After editing the setting, verify each enabled skill at that path has hide: true.",
+            "omp skill list --json",
+        )
     if agent in routes:
         return routes[agent]
 

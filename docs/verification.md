@@ -3,7 +3,46 @@
 This file records verification evidence for the standardization work.
 `docs/migration.md` records decisions and the completion checklist.
 
-## Final component adoption (2026-11-20)
+## Agent Policy consolidation (2026-11-20)
+
+The active catalog contains ten packages and 98 skills. Agent Policy owns
+Vitalik Mode and contains nine skills that require explicit user invocation.
+There are eight public source repositories and two private source repositories.
+The former standalone Vitalik package is absent from all three native catalogs.
+Its retired source retains history, the license, and a migration notice.
+
+All ten component pull requests merged after their exact final heads passed
+Required CI, dependency checks, and DCO. Each merged Git tree matched its
+reviewed candidate. Authenticated GitHub reads verified every pinned manifest's
+identity, version, description, and visibility. The [catalog](../catalog.json)
+records those immutable merge commits. Agent Policy's consolidation merged in
+[PR #3](https://github.com/tailrocks/tailrocks-agent-policy-skills/pull/3).
+
+The shared generator covers 286 files across the ten active packages and reports
+zero drift. The shared validator requires each policy's native Boolean flag,
+OpenAI explicit-selection setting, description, and first operative instruction
+to agree. It also checks the shared reference copies and Vitalik's owner.
+Negative fixtures rejected malformed or missing controls, an operative preamble,
+a misnested or duplicate heading, a fenced gate, altered references, and the
+retired catalog entry.
+
+All ten package validators and their 70 applicable Alint rules passed.
+The marketplace's 57 Alint rules, local file and fragment checks, catalog checks,
+and generated installation commands passed. All 89 non-policy skill bodies
+retained their original bytes. The nine supporting patch releases refresh the
+same validator and their version metadata; they do not change those workflows.
+
+The command helper covers all 100 package and host combinations. Its 90 shell
+outputs passed syntax checks. Native direct-install routes contain the exact
+catalog source commit. The Agent Policy omp route prints its additional
+same-directory discovery setting without changing the user's configuration.
+
+Host capability limits remain explicit in [compatibility](compatibility.md).
+User selection grants authority; a known-ID lookup does not. The migration
+changes no user's installed package, saved preference, or active goal by itself.
+Use the [migration guide](policy-migration.md) to replace an installed copy.
+
+## Previous component adoption (2026-11-20)
 
 All eleven corrected component pull requests merged after Required CI, Bun
 verification, and DCO passed at their exact heads.
@@ -13,7 +52,7 @@ release candidate.
 Authenticated GitHub reads confirmed every pinned manifest's identity, version,
 description, and repository visibility: nine public sources and two private ones.
 
-The marketplace adopts these immutable commits:
+The marketplace adopted these immutable commits before policy consolidation:
 
 | Component | Version | Merged change | Source commit |
 | --- | --- | --- | --- |

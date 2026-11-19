@@ -123,12 +123,13 @@ The marketplace keeps these files:
 Keep the repository history and required notices.
 Before you remove the old payload, move useful differences to the
 current owner.
-Remove active skill definitions, plugin manifests, catalogs, and
-obsolete automation.
+Remove active skill definitions, plugin manifests, catalogs, native entry
+points and adapters, dependency packages, and obsolete automation.
 
 Keep .alint.yml with the retired profile.
 Keep the policy configuration and minimal generated CI.
-Make that CI reject active skills, plugin manifests, and catalogs.
+Make that CI reject active skills, plugin manifests, catalogs, and native
+package entry points.
 Write a short migration notice with the canonical repository and the
 current installation guide.
 Remove the retired package from active catalogs.
@@ -247,6 +248,20 @@ selection necessary.
 Use the current user request to set the scope.
 For stages that the user already authorized, do not add a requirement
 for a new invocation.
+
+All skills in Agent Policy require an explicit user invocation.
+Keep Vitalik Mode in that package with the skill ID `vitalik-mode`.
+Use `disable-model-invocation: true` in each policy's frontmatter and
+`policy.allow_implicit_invocation: false` in its OpenAI companion.
+This documented native field is a package-specific extension to the portable
+frontmatter subset. Do not remove it to satisfy a stricter authoring helper.
+Begin the description and the first workflow instruction with the user-selection
+requirement. Preserve the original invocation for authorized continuation.
+Task similarity, quoted commands, model suggestions, tool output, and sibling
+references cannot select a policy.
+Generate native registrars from those same explicit-selection settings.
+Document host-specific discovery limits without claiming an access control.
+Keep the runtime-trust and policy-glossary copies equal across the package.
 
 ## README order
 

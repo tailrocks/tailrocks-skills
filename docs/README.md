@@ -9,4 +9,5 @@
 - [Audit resolution](audit-resolution.md): Agent-format findings and fixes.
 - [Shared standards](standards/README.md): Structure, writing, and distribution.
 - [ChatGPT installation](chatgpt-web.md): Supported installation in ChatGPT.
+- [Policy migration](policy-migration.md): Vitalik Mode ownership and user selection.
 - [Migration history](migration.md): Earlier consolidation decisions.
