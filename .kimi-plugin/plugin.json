@@ -1,0 +1,12 @@
+{
+  "name": "tailrocks-vitalik-mode-skills",
+  "version": "0.1.0",
+  "description": "Goal-scoped delivery mode with strong-model diagnosis, fast execution, temporary red CI, and tracked review deferrals.",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Vitalik Mode",
+    "shortDescription": "Deliver faster with evidence and tracked follow-up.",
+    "developerName": "tailrocks",
+    "websiteURL": "https://github.com/tailrocks/tailrocks-vitalik-mode-skills"
+  }
+}

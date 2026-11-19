@@ -2,37 +2,18 @@
 
 ## Summary
 
-Describe the change and why it is needed.
+<!-- Explain the problem, the change, and the resulting behavior. -->
 
-## What ships
+## Skills touched
 
-List the marketplace catalog, documentation, and automation changes included in this PR.
+<!-- List the changed skill or state that this change concerns package files. -->
 
-## Behavior changes
+## Verification
 
-Describe any changes to how catalogs resolve or update plugin sources.
+<!-- Record commands, results, and any limits. -->
 
-## What this addresses
-
-Explain the user or maintenance problem this change solves.
-
-## Verify locally
-
-### Checkout
-
-```sh
-git status --short --branch
-```
-
-### Static checks
-
-```sh
-python3 scripts/generate-catalogs.py
-python3 scripts/validate-marketplace.py
-actionlint -color
-git diff --check
-```
-
-## Related pull requests
-
-List related PRs in plugin source repositories, or write `None`.
+- [ ] `python3 scripts/validate-package.py` passes.
+- [ ] `alint check` passes.
+- [ ] Generated CI matches `.velnor/config.toml`.
+- [ ] New and changed prose obeys the shared writing rules.
+- [ ] Compatibility claims distinguish documentation from observed execution.

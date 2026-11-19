@@ -1,10 +1,30 @@
-# Rules
+# Maintenance rules
 
-- No legacy code. Finish every migration: remove old paths completely—no compatibility shims, aliases, or deprecation periods. Breaking changes are preferred.
-- This is a research project. It is unsafe and expected to contain breaking changes; never treat it as production-ready. Break things when needed and deliver new implementations fast.
-- Always apply these principles:
-  - Judge work by correctness, consistency, and project fit. Never defer a known-wrong state because of ROI, cost, effort, or claims that it is low-value, marginal, or an edge case.
-  - Stop only when the required change is proven impossible with the available tools or model. When uncertain, inspect, test, and measure first.
-  - Before fixing a bug, identify why the architecture permitted it and whether the same structure permits related bugs.
-  - Prefer fixes that remove the enabling condition. Use a symptom-layer patch only when the root fix is proven infeasible or belongs in a separate change, and name the deferred root cause.
+This package contains one instruction skill: `vitalik-mode`.
+Keep its procedure in `skills/vitalik-mode/SKILL.md`.
+Keep required resources inside that skill directory.
+Keep installation and maintenance details in `docs/`.
 
+## Package structure
+
+- Use `plugin.json` as the source of package identity and version.
+- Keep the Claude and Kimi manifests consistent with that source.
+- Keep skill frontmatter limited to `name`, `description`, and `license`.
+- Keep explicit activation in the description and skill procedure.
+- Keep `policy.allow_implicit_invocation: false` in `agents/openai.yaml`.
+- Do not add runtime hooks, background processes, or executable skill wrappers.
+- Do not store an active goal or operator configuration in this package.
+
+## Changes and verification
+
+Obey the central
+[structure and writing rules](https://github.com/tailrocks/tailrocks-skills/tree/main/docs/standards)
+.
+Use short, direct instructions with one action per sentence.
+Read [the maintenance guide](docs/maintenance.md) before release.
+Run `python3 scripts/validate-package.py` and `alint check` before publication.
+
+Change CI through `.velnor/config.toml` and `velnor-actions generate`.
+Do not hand-edit generator-owned files under `.github/`.
+Keep model reviews separate from static package verification.
+Do not describe documentation or a sample task as runtime compatibility proof.

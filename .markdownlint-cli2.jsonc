@@ -1,0 +1,13 @@
+{
+  "ignores": [
+    ".github/AGENTS.md",
+    ".github/CLAUDE.md"
+  ],
+  "config": {
+    "MD013": {
+      "line_length": 80,
+      "tables": false,
+      "code_blocks": false
+    }
+  }
+}

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Vitalik Mode"
+  short_description: "Deliver faster with evidence and tracked follow-up"
+  default_prompt: "Use $vitalik-mode on for this goal. Select the strongest available planning subagent and keep the current main agent."
+policy:
+  allow_implicit_invocation: false

@@ -1,31 +1,5 @@
-# Marketplace repository alint configuration (alint v0.17.0).
-# Extends the shared marketplace profile by immutable URL plus SHA-256 pin.
-# Profile source: tailrocks/tailrocks-skills commit
-# f9d27326c81186ebb0c670562469a421e2e76515 (Claude release-tag refs,
-# Codex source-following refs). Pin computed with `shasum -a 256` over
-# the raw response body; it matches the committed profile bytes.
-# Bump rule: one PR updates the REV and HASH together, then re-runs
-# `alint check`.
+# Shared active-package profile from the central Tailrocks marketplace.
+# Update the source revision and SHA-256 together.
 version: 1
 extends:
-  - https://raw.githubusercontent.com/tailrocks/tailrocks-skills/f9d27326c81186ebb0c670562469a421e2e76515/standards/alint/marketplace.yml#sha256-e81912943a5344deedf17885868173b86bc8a45003020c919c2e048ddbedb00b
-rules:
-  # The catalog-*-agree rules compare ID and revision sets only, so a
-  # URL, version, description, or displayName change without regen
-  # slips through. This rule re-runs the generator and fails when any
-  # generated catalog differs. It lives here because fetched profiles
-  # cannot carry command rules.
-  - id: catalogs-fresh
-    kind: generated_file_fresh
-    level: error
-    command: ["python3", "scripts/generate-catalogs.py"]
-    outputs:
-      - ".claude-plugin/marketplace.json"
-      - ".agents/plugins/marketplace.json"
-      - ".kimi-plugin/marketplace.json"
-    message: "Generated catalogs are stale. Run scripts/generate-catalogs.py."
-  - id: marketplace-catalog-valid
-    kind: command_idempotent
-    level: error
-    command: ["python3", "scripts/validate-marketplace.py"]
-    message: "Marketplace catalogs, source refs, IDs, and privacy inventory must validate."
+  - https://raw.githubusercontent.com/tailrocks/tailrocks-skills/7b2f3cb6b7896621696b49a43a7d00c96cb48e42/standards/alint/active.yml#sha256-dae9e8f91ac3f5e6a28fb56d67f230fc4c23cc4fbab4763ecc5cc5477a903fba
