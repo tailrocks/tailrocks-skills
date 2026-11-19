@@ -8,7 +8,10 @@ Import this repository through **ChatGPT Admin Console → Plugins → Add → I
 - Path: leave empty
 - Branch: `main`
 
-The GitHub account used for the import must be able to read this repository and every source listed in the catalogs. That includes the private `tailrocks/tailrocks-asd-ste100-skills` repository and any required GitHub organization approvals. A ChatGPT workspace admin must perform the import. A personal plan without an eligible workspace does not gain workspace import access from these repository changes.
+The GitHub connection must be able to read this repository and each source
+in the catalogs. Confirm access to both private sources, including any
+required organization approval. A ChatGPT workspace admin performs the
+import. Workspace import requires an eligible plan.
 
 After import, review each plugin result. Set its workspace installation policy to **Available** or **Installed** for the intended users and enable required apps separately. Repository policy metadata is not applied automatically. Keep daily sync enabled; select **Sync now** after a GitHub change when you need immediate confirmation. Do not delete the marketplace to reconnect GitHub.
 
@@ -18,6 +21,18 @@ ChatGPT's Plugins directory on web or desktop. Desktop users do not import a
 separate copy of the marketplace. See [OpenAI's GitHub marketplace import
 guide](https://help.openai.com/en/articles/20001504-importing-and-syncing-plugin-marketplaces-from-github)
 and [plugin guide](https://help.openai.com/en/articles/20001256-plugins-in-chatgpt).
+
+## Explicit-only policy skills
+
+The private agent-policy package contains nine skills that require explicit
+user selection. Vitalik Mode uses the host's planner and persistence.
+Native Codex CLI accepted a synthetic skill with the manual-invocation field
+and OpenAI sidecar policy. Hosted marketplace import
+and explicit selection in a ChatGPT workspace require separate verification.
+Use the workspace import result and the member's picker to check availability.
+Keep the manual-invocation controls if the importer reports an error.
+The standalone Skill Creator validator rejects this host-specific frontmatter
+field. The tested Codex CLI loads it.
 
 ## Source update policy
 
@@ -41,7 +56,7 @@ For native installation evidence and source formats, see
 
 ## ChatGPT desktop and web compatibility
 
-All eleven packages have a portable root `plugin.json`, a `skills/` tree, and
+All active packages have a portable root `plugin.json`, a `skills/` tree, and
 skill frontmatter. The audited packages have no `mcp.json` or `.mcp.json` and
 no lifecycle hooks, so their manifests do not declare MCP servers or a Desktop
 only dependency. Installing these skill-only plugins does not add shell, Git,
@@ -53,7 +68,6 @@ being used.
 | --- | ---: | --- |
 | `tailrocks-skill-authoring-skills` | 4 | Local repository and shell workflows need a connected repository/files tool. |
 | `tailrocks-repository-skills` | 10 | Local Git and `gh` operations need connected repository tools; GitHub actions depend on available app access. |
-| `tailrocks-vitalik-mode-skills` | 1 | Explicit activation reassesses the whole current plan. Practice selection depends on the goal. Planner routing and persistence depend on the host. |
 | `tailrocks-typescript-skills` | 12 | Local package management, builds, tests, Playwright, and screenshot baselines need an execution environment. |
 | `tailrocks-macos-skills` | 15 | Xcode, macOS application control, and native visual QA are unavailable in ordinary web chats. |
 | `tailrocks-roadmap-skills` | 12 | Repository execution and durable project-file access need connected tools. |
@@ -61,7 +75,7 @@ being used.
 | `tailrocks-code-quality-skills` | 14 | Repository-wide shell, build, and static-analysis procedures need an execution environment. |
 | `tailrocks-rust-skills` | 16 | Cargo, Git, local test/build, and native toolchain procedures need an execution environment. |
 | `tailrocks-asd-ste100-skill` | 1 | Both writing profiles are packaged; testing bundled private references requires a successful private-repository import. |
-| `tailrocks-agent-policy-skills` | 8 | Private policy instructions require authorized repository access and the host capabilities needed by each policy. |
+| `tailrocks-agent-policy-skills` | 9 | Manual policies and Vitalik Mode. |
 
 The skill counts and structural findings come from the repository audit. They
 do not prove that an imported plugin is visible, enabled, invokable, or free of

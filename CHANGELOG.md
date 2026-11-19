@@ -1,5 +1,12 @@
 # Changelog
 
+## Agent Policy consolidation - 2026-11-20
+
+- Move Vitalik Mode into Agent Policy and remove its standalone catalog entry.
+- Require explicit user selection for all nine Agent Policy skills.
+- Align native registration, host installation notes, and shared validation.
+- Preserve the former repository as a retired source with migration guidance.
+
 ## 2026-11-20
 
 - Require retired repositories to remove every supported native plugin entry point.

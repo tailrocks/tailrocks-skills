@@ -1,6 +1,6 @@
 # tailrocks-skills
 
-This marketplace lists 11 independently installable Tailrocks packages.
+This marketplace lists 10 independently installable Tailrocks packages.
 Each catalog entry identifies the owning repository and its exact Git commit.
 
 ## Install
@@ -24,13 +24,16 @@ See [installation](docs/installation.md) and [host compatibility](docs/compatibi
 | [tailrocks-typescript-skills](https://github.com/tailrocks/tailrocks-typescript-skills) | TypeScript, React, Bun, TanStack, web UI |
 | [tailrocks-macos-skills](https://github.com/tailrocks/tailrocks-macos-skills) | Swift, SwiftUI, Rust-core boundary, macOS and Liquid Glass, visual QA |
 | [tailrocks-repository-skills](https://github.com/tailrocks/tailrocks-repository-skills) | Repository management and pull-request lifecycle |
-| [tailrocks-vitalik-mode-skills](https://github.com/tailrocks/tailrocks-vitalik-mode-skills) | Time-to-market priority, strong-model whole-plan analysis, contextual practices, and tracked recovery |
 | [tailrocks-roadmap-skills](https://github.com/tailrocks/tailrocks-roadmap-skills) | Roadmap, delivery, verification, reconciliation, decision support |
 | [tailrocks-skill-authoring-skills](https://github.com/tailrocks/tailrocks-skill-authoring-skills) | Skill creation, update, audit, refactor |
 | [tailrocks-code-quality-skills](https://github.com/tailrocks/tailrocks-code-quality-skills) | Code health, improvement, security, instruction topology, simplification, root cause, remediation |
 | [tailrocks-contribution-skills](https://github.com/tailrocks/tailrocks-contribution-skills) | Open-source contribution lifecycle |
 | [tailrocks-asd-ste100-skills](https://github.com/tailrocks/tailrocks-asd-ste100-skills) | ASD-STE100 writing profiles (private) |
-| [tailrocks-agent-policy-skills](https://github.com/tailrocks/tailrocks-agent-policy-skills) | Agent execution policies: delegation, model routing, commit cadence, secret scan, autonomy, incremental delivery, security review, emergency stop (private) |
+| [tailrocks-agent-policy-skills](https://github.com/tailrocks/tailrocks-agent-policy-skills) | User-invoked execution policies, including Vitalik Mode, delegation, model routing, commit cadence, secret scan, autonomy, incremental delivery, security review, and emergency stop (private) |
+
+All nine Agent Policy skills require explicit user selection.
+Vitalik Mode is part of that private package; its former standalone package is retired.
+See the [migration guide](docs/policy-migration.md).
 
 ## Documentation
 

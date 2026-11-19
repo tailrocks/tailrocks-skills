@@ -48,6 +48,12 @@ Review the selected Grok plugin before installation. The printed command uses
 The tested managed install enabled the plugin. In Muse, inspect skipped entries
 if a private package is missing from the marketplace snapshot.
 
+For the private agent-policy package, omp 19.0.0 needs a second discovery
+step. Run the helper with `tailrocks-agent-policy-skills --agent omp`. It
+prints the commands that identify the installed directory and the existing
+setting to update. Preserve unrelated directories and refresh this entry
+after a package upgrade.
+
 ## Direct package installation
 
 OpenCode, Amp, Antigravity, and pi install each package directly.

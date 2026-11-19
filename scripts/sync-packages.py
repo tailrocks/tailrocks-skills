@@ -37,6 +37,8 @@ def explicit_only(path):
 
 def render(name, values):
     text = (NATIVE / name).read_text(encoding="utf-8")
+    if not values.get("POLICY_ACTIVATION_NOTES"):
+        text = text.replace("__POLICY_ACTIVATION_NOTES__\n\n", "")
     for key, value in values.items():
         text = text.replace(f"__{key}__", str(value))
     if re.search(r"__[A-Z][A-Z_]+__", text):
@@ -86,6 +88,10 @@ def outputs_for(entry, workspace):
         "RUNTIME_NOTES": "See [runtime requirements](runtime.md) before running a selected workflow.",
         "VERIFICATION_NOTES": "See [package verification](verification.md) for the tested revision,\n"
                               "tools, results, and remaining host-specific limits.",
+        "POLICY_ACTIVATION_NOTES": (
+            (NATIVE / "policy-activation.md.template").read_text(encoding="utf-8").rstrip()
+            if identity["name"] == CONTRACT.POLICY_PACKAGE else ""
+        ),
     }
     files = {}
     files[".claude-plugin/plugin.json"] = json_text(identity)

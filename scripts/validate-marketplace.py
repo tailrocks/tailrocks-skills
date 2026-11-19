@@ -105,7 +105,7 @@ def main():
     require(set(sys.argv[1:]) <= {"--verify-github", "--check"}, "usage: validate-marketplace.py [--check] [--verify-github]")
     catalog = read_json(CATALOG)
     plugins = catalog.get("plugins")
-    require(isinstance(plugins, list) and len(plugins) == 11, "catalog must contain exactly eleven plugins")
+    require(isinstance(plugins, list) and len(plugins) == 10, "catalog must contain exactly ten plugins")
 
     ids = set()
     repos = set()
@@ -127,6 +127,9 @@ def main():
             private_repos.add(item["repo"])
 
     require(private_repos == {"tailrocks/tailrocks-asd-ste100-skills", "tailrocks/tailrocks-agent-policy-skills"}, "private source inventory changed; review before updating policy")
+    require("tailrocks-vitalik-mode-skills" not in ids and
+            "tailrocks/tailrocks-vitalik-mode-skills" not in repos,
+            "Vitalik Mode belongs to Agent Policy; do not register its retired package")
 
     outputs = {
         ROOT / ".agents/plugins/marketplace.json": expected_codex(plugins),

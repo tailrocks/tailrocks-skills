@@ -30,6 +30,19 @@ A host controls discovery, permission prompts, model availability, and user
 scope. Read the package's model guide for supported routes and effort levels.
 A catalog listing grants no account access or additional permissions.
 
+## Explicit-only policy skills
+
+The private agent-policy package requires a user to select a skill. Its
+manual-invocation flag and native metadata control discovery. Amp and
+OpenCode V2 still allow a caller to load a known ID. In Muse, an explicit
+host preference can override the default. Applying the policy requires
+user authorization on each host.
+
+On omp 19.0.0, the standard package loader skips skills with the
+manual-invocation field. Adding the installed skill directory to
+`skills.customDirectories` keeps the same files available for explicit
+selection. See the [installation guide](installation.md).
+
 ## Evidence and scope
 
 Isolated historical-commit fixtures passed in Claude Code `2.1.328`, Codex
