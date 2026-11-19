@@ -17,10 +17,10 @@
       "id": "tailrocks-repository-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-repository-skills",
-      "rev": "ebfd46c4799f628fc7700901ae6c532dbc722b43",
+      "rev": "55278526dd8760fcb7f96af7fa62fa917603a9cf",
       "sourceRef": "main",
-      "tag": "v0.5.0",
-      "version": "0.5.0"
+      "tag": "v0.5.1",
+      "version": "0.5.1"
     },
     {
       "description": "Strict TypeScript, React, and TanStack workflows for project setup, migration, remediation, refactoring, review, web design, and visual regression.",

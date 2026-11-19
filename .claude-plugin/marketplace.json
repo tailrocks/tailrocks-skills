@@ -16,9 +16,9 @@
     {
       "name": "tailrocks-repository-skills",
       "source": {
-        "ref": "v0.5.0",
+        "ref": "v0.5.1",
         "repo": "tailrocks/tailrocks-repository-skills",
-        "sha": "ebfd46c4799f628fc7700901ae6c532dbc722b43",
+        "sha": "55278526dd8760fcb7f96af7fa62fa917603a9cf",
         "source": "github"
       }
     },
