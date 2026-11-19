@@ -2,6 +2,8 @@
 
 ## 2026-11-20
 
+- Require retired repositories to remove every supported native plugin entry point.
+
 - Reconciled the existing agent-format audit and recorded native Antigravity evidence.
 
 - Adopted all eleven standardized component releases at verified merge commits.

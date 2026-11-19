@@ -123,12 +123,13 @@ The marketplace keeps these files:
 Keep the repository history and required notices.
 Before you remove the old payload, move useful differences to the
 current owner.
-Remove active skill definitions, plugin manifests, catalogs, and
-obsolete automation.
+Remove active skill definitions, plugin manifests, catalogs, native entry
+points and adapters, dependency packages, and obsolete automation.
 
 Keep .alint.yml with the retired profile.
 Keep the policy configuration and minimal generated CI.
-Make that CI reject active skills, plugin manifests, and catalogs.
+Make that CI reject active skills, plugin manifests, catalogs, and native
+package entry points.
 Write a short migration notice with the canonical repository and the
 current installation guide.
 Remove the retired package from active catalogs.

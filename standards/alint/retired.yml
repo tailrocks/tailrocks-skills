@@ -59,6 +59,8 @@ rules:
       - ".kimi-plugin/plugin.json"
       - ".codex-plugin/plugin.json"
       - ".muse-plugin/plugin.json"
+      - ".antigravity-plugin/plugin.json"
+      - ".grok-plugin/plugin.json"
     message: "Retired repository must not carry plugin manifests."
   - id: no-plugin-manifest-dirs
     kind: dir_absent
@@ -68,6 +70,8 @@ rules:
       - ".kimi-plugin"
       - ".codex-plugin"
       - ".muse-plugin"
+      - ".antigravity-plugin"
+      - ".grok-plugin"
       - ".agents"
     message: "Retired repository must not carry plugin manifest directories."
   - id: no-catalogs
@@ -79,6 +83,20 @@ rules:
       - ".agents/plugins/marketplace.json"
       - ".kimi-plugin/marketplace.json"
     message: "Retired repository must not carry catalogs."
+
+  - id: no-native-entrypoints
+    kind: file_absent
+    level: error
+    paths:
+      - "index.js"
+      - "package.json"
+      - "bun.lock"
+    message: "Retired repository must not expose native package entry points."
+  - id: no-native-adapters
+    kind: dir_absent
+    level: error
+    paths: "adapters"
+    message: "Retired repository must not carry native plugin adapters."
 
   # The README carries the migration notice with the canonical link.
   - id: readme-migration-notice
