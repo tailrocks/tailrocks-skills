@@ -24,6 +24,8 @@ Use only documented differences for role or subject.
 | .kimi-plugin/plugin.json | Kimi manifest with the skills directory |
 | .antigravity-plugin/plugin.json | Native Antigravity manifest |
 | package.json | OpenCode exports and dependencies, pi skill paths, and package files |
+| bun.lock | Resolved dependency graph, maintained with Bun 1.4.4 |
+| mise.toml and mise.lock | Pinned tools and frozen dependency verification task |
 | index.js | Amp directory plugin that registers the canonical skill paths |
 | adapters/opencode/index.js | OpenCode V2 server plugin that registers the canonical skills |
 | scripts/validate-package.py | Deterministic validation of manifests, registrars, and packaged resources |
@@ -74,6 +76,9 @@ outside these instruction packages.
 Preserve the package-root scripts, vendored libraries, schemas, and licenses
 that installed workflows require. Include these files in the npm package.
 Keep installed script paths valid from the skill that invokes them.
+Commit the dependency lockfile with the package manifest.
+Use the pinned Bun version for lockfile changes and frozen verification.
+Include the lockfile in the package archive.
 
 ## Marketplace additions
 

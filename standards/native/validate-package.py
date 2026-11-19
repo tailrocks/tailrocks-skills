@@ -25,7 +25,7 @@ ADAPTER_HASHES = {
     "adapters/opencode/index.js": "200a15c5a39cc583cc143508d13d36c6955aaf9630515ca7a71acf6c729486de",
 }
 SLUG = r"[a-z0-9]+(?:-[a-z0-9]+)*"
-TOP_KEY = re.compile(r"^([a-zA-Z][\w.-]*):(?:[ \t]+(.*)|$)")
+TOP_KEY = re.compile(r"[a-zA-Z][\w.-]*")
 VISUAL_FILES = {
     "tailrocks-macos-skills": (
         "macos-visual-qa/install.ts", "macos-visual-qa/templates/AuditTests.swift",
@@ -85,11 +85,14 @@ def yaml_fields(lines, path):
             require(current is not None, f"{path}: unexpected indented metadata")
             result[current].append(line)
             continue
-        key = TOP_KEY.fullmatch(line)
-        require(key is not None, f"{path}: expected a block-style top-level key")
-        current = key[1]
+        key, separator, value = line.partition(":")
+        require(
+            separator and TOP_KEY.fullmatch(key) and (not value or value[0] in " \t"),
+            f"{path}: expected a block-style top-level key",
+        )
+        current = key
         require(current not in result, f"{path}: duplicate {current}")
-        result[current] = [key[2] or ""]
+        result[current] = [value.lstrip(" \t")]
     return result
 
 
@@ -107,10 +110,53 @@ def invocation_policy(path):
     return flag[1] == "false"
 
 
+def unfenced_lines(text):
+    fence = ""
+    minimum = 0
+    for line in text.splitlines(keepends=True):
+        stripped = line.lstrip(" ")
+        if len(line) - len(stripped) <= 3 and stripped.startswith(("```", "~~~")):
+            marker = stripped[0]
+            suffix = stripped.lstrip(marker)
+            width = len(stripped) - len(suffix)
+            if not fence and (marker == "~" or "`" not in suffix):
+                fence, minimum = marker, width
+                continue
+            if marker == fence and width >= minimum and not suffix.strip(" \t\r\n"):
+                fence = ""
+                continue
+        if not fence:
+            yield line
+
+
+def link_targets(text):
+    """Yield inline destinations and skip optional titles in one forward scan."""
+    label_open = False
+    index = 0
+    while index < len(text):
+        char = text[index]
+        index += 1
+        if char == "[":
+            label_open = True
+        elif char == "\n":
+            label_open = False
+        elif char == "]":
+            follows_label, label_open = label_open, False
+            if not follows_label or text[index:index + 1] != "(":
+                continue
+            start = index + 1
+            if start == len(text) or text[start] == ")" or text[start].isspace():
+                continue
+            end = text.find(")", start)
+            if end == -1:
+                break
+            yield text[start:end].split(maxsplit=1)[0]
+            index = end + 1
+
+
 def linked_files(path, boundary):
     text = path.read_text(encoding="utf-8")
-    text = re.sub(r"(?ms)^(`{3,}|~{3,})[^\n]*\n.*?^\1\s*$", "", text)
-    for raw in re.findall(r"\[[^\]\n]*\]\(([^\s)]+)(?:\s+[^)]+)?\)", text):
+    for raw in link_targets("".join(unfenced_lines(text))):
         url = urlsplit(raw)
         if url.scheme or url.netloc or not url.path:
             continue
@@ -172,7 +218,7 @@ def package_files(package, npm):
         paths.add(path)
     runtime = list(map(Path, (
         "skills", "adapters", "index.js", "plugin.json", ".claude-plugin", ".kimi-plugin",
-        ".antigravity-plugin", "docs", "README.md", "LICENSE", *ADAPTER_HASHES,
+        ".antigravity-plugin", "docs", "README.md", "LICENSE", "bun.lock", *ADAPTER_HASHES,
     )))
     for item in ("scripts", "lib", "schemas", "examples", "assets", "references", "THIRD-PARTY-NOTICES.md"):
         if (ROOT / item).exists():
@@ -208,6 +254,8 @@ def main():
     require(antigravity.get("$schema") == "https://antigravity.google/schemas/v1/plugin.json", "Antigravity manifest schema differs")
     require(manifests[".kimi-plugin/plugin.json"].get("skills") == "./skills/", "Kimi skills path differs")
     npm = manifests["package.json"]
+    require(npm.get("packageManager") == "bun@1.4.4", "package.json: packageManager must be bun@1.4.4")
+    require((ROOT / "bun.lock").is_file(), "missing Bun lockfile")
     require(npm.get("type") == "module" and npm.get("exports", {}).get(".") == "./adapters/opencode/index.js", "OpenCode ESM entry differs")
     require(npm.get("pi", {}).get("skills") == ["./skills"], "pi skills path differs")
     deps = npm.get("dependencies", {})

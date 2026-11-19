@@ -23,6 +23,13 @@ Use repeated `--only <plugin-id>` arguments for a subset of local checkouts.
 Keep private source material inside its private repository.
 Publish only public templates and metadata in this marketplace.
 
+Use Bun 1.4.4 when changing a component's dependencies.
+Update its lockfile with `bun install --lockfile-only --ignore-scripts`.
+Verify the committed graph with a frozen lockfile before publication.
+Each component's CI performs that verification offline.
+Keep the lockfile in the installed package.
+Do not run dependency lifecycle scripts for lockfile maintenance.
+
 ## Update the marketplace
 
 Merge validated component changes first.

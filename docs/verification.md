@@ -66,6 +66,47 @@ Both visual harness contracts and 21 package-root resource files matched.
 The server could not start outbound connections and made no model calls.
 This run covers local package registration, not eleven remote Git installs.
 
+## Additional native routes (2026-11-20)
+
+omp 19.0.0 installed the contribution package through the shared Claude catalog.
+Its native registry returned all five expected skills at installed paths.
+Pi 1.5.2 installed the same package from a full-commit Git source.
+Its resource loader returned all five expected skills at installed paths.
+Both runs used isolated local Git mirrors and made no model calls.
+These runs establish representative route behavior, not eleven-package coverage.
+
+All eleven Antigravity manifests passed Google's official Draft 2020-12 schema.
+The downloaded schema SHA-256 was
+`0eea5e483af6f03fa099f32b065d2924a323f1a616ed0323cfa0b7a74ff9543c`.
+Native Antigravity installation remains outside these checks.
+Amp's registrar passed its API fixture.
+Amp's CLI could not complete native registry discovery in the offline profile.
+Its global plugin service required network access.
+
+## Package integrity correction (2026-11-20)
+
+The security scan on Vitalik PR #5 identified three backtracking regexes in the
+shared validator and a missing dependency lockfile.
+The correction applies to every component through the shared source.
+No scanner exclusion or rating suppression was added.
+
+The validator now parses YAML keys, fenced text, and inline link targets with
+bounded forward scans.
+The new link parser preserved destinations across thirty actual Vitalik documents.
+It continued to reject missing paths, encoded traversal, absolute paths, and
+escaping symlinks.
+Adversarial inputs up to five million characters completed within 0.31 seconds
+in the local fixture.
+The fixture compared several input sizes to examine scaling.
+
+Every package now pins Bun 1.4.4 and commits and ships its dependency lockfile.
+Offline frozen-lock verification passed without dependency lifecycle scripts.
+A deliberately stale dependency failed the frozen check.
+Missing, non-file, or omitted lockfiles and an incorrect manager also failed
+package validation.
+Native skill bodies and registrar behavior remain as measured in the candidate
+installation checks.
+
 ## Phase A evidence (2026-10-07 UTC)
 
 Method: one inventory workflow with 11 parallel read-only agents plus

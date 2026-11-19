@@ -2,6 +2,8 @@
 
 ## 2026-11-20
 
+- Removed super-linear regex parsing from the shared package validator.
+- Required a shipped dependency lockfile and pinned Bun 1.4.4 across all packages.
 - Added shared native packaging for nine requested coding hosts and Kimi Code.
 - Added model guidance for nine provider variants with configurable effort.
 - Added deterministic package generation and package resource validation.
