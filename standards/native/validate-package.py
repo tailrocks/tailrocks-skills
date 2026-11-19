@@ -310,6 +310,11 @@ def main():
     for relative, m in manifests.items():
         for key in ("name", "version", "description"):
             require(m.get(key) == portable[key], f"{relative}: {key} disagrees with portable manifest")
+    author = portable.get("author")
+    require(isinstance(author, dict) and isinstance(author.get("name"), str)
+            and author["name"].strip(), "portable author name is required")
+    require(manifests[".claude-plugin/plugin.json"].get("author") == author,
+            "Claude author disagrees with portable manifest")
     antigravity = manifests[".antigravity-plugin/plugin.json"]
     require(antigravity.get("$schema") == "https://antigravity.google/schemas/v1/plugin.json", "Antigravity manifest schema differs")
     require(manifests[".kimi-plugin/plugin.json"].get("skills") == "./skills/", "Kimi skills path differs")

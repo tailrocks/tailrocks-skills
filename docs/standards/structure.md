@@ -51,6 +51,8 @@ Use only documented differences for role or subject.
 
 In the table, ID means the skill ID.
 Tailrocks requires its Claude manifest for consistent distribution metadata.
+Generate its author from the portable manifest with its name, version, and
+description. This also avoids a missing-author warning in Claude validation.
 Claude itself can discover a standard plugin layout without that manifest.
 See the [Claude manifest reference](https://code.claude.com/docs/en/plugins-reference#manifest-file).
 Before you create an optional skill directory, make sure that its

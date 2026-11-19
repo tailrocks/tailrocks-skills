@@ -1,0 +1,20 @@
+## Release and migration
+
+Update the version in `plugin.json` when shipped files change. Update its
+description only when the package purpose changes. From the catalog checkout,
+generate the shared files in the directory that contains the package checkouts.
+
+```sh
+python3 scripts/sync-packages.py --workspace /path/to/plugin-checkouts
+python3 scripts/sync-packages.py --workspace /path/to/plugin-checkouts --check
+```
+
+Review changes from `standards/native/` and `standards/models/model-routing.md`.
+Update `CHANGELOG.md`. Run the package checks. Regenerate CI when its inputs
+change. Merge the verified package change, then read its manifest at that
+commit. Record the full commit, version, description, and visibility in the
+central catalog. Regenerate and validate the native catalogs.
+
+Existing immutable commits are sufficient for native installation. A release
+tag is optional. If you publish one, point it at the verified commit and keep
+the catalog pinned to that commit. Keep private package content private.

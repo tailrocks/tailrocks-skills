@@ -6,8 +6,8 @@
       "id": "tailrocks-skill-authoring-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-skill-authoring-skills",
-      "rev": "ce96ca6a76ee0af7de3ca77ef9d47f937584da05",
-      "version": "0.29.3"
+      "rev": "6f6f302e7f56f054fec0a0c7f40d5e68fbd57c40",
+      "version": "0.29.4"
     },
     {
       "description": "Target-bound repository orchestration plus a script-backed pull-request lifecycle: status, create, refresh, review threads, guarded merge, and fleet planning.",
@@ -15,8 +15,8 @@
       "id": "tailrocks-repository-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-repository-skills",
-      "rev": "6314256d1dd03bd69a04ab1520f33d77ef542441",
-      "version": "0.6.3"
+      "rev": "d66f3bb8879f4dbf890958d19e21b8724c07491e",
+      "version": "0.6.4"
     },
     {
       "description": "Strict TypeScript, React, and TanStack workflows for project setup, migration, remediation, refactoring, review, web design, and visual regression.",
@@ -24,8 +24,8 @@
       "id": "tailrocks-typescript-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-typescript-skills",
-      "rev": "814d9154cbe990ef6f052decde7f0a68740928a7",
-      "version": "0.29.3"
+      "rev": "511499cde848eaa69b76d9d6a654ffb1657ef0f9",
+      "version": "0.29.4"
     },
     {
       "description": "Native macOS Swift and SwiftUI workflows for Liquid Glass design, project setup, Rust-core integration, visual QA, and regression control.",
@@ -33,8 +33,8 @@
       "id": "tailrocks-macos-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-macos-skills",
-      "rev": "33049318e09cd90c5d1487649e01aa4828d54c82",
-      "version": "0.29.3"
+      "rev": "3c7f0e2b267c057eeff7edc181e0e9dca610c074",
+      "version": "0.29.4"
     },
     {
       "description": "Evidence-bound roadmap delivery from idea capture and research through shaping, planning, execution proof, reconciliation, and retrospection.",
@@ -42,8 +42,8 @@
       "id": "tailrocks-roadmap-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-roadmap-skills",
-      "rev": "4b9b168a39c1550465c84a3f31192201e281de5a",
-      "version": "0.29.3"
+      "rev": "2c65b4bd4196aa54a125d1f35f4cd2c67586e65b",
+      "version": "0.29.4"
     },
     {
       "description": "Contribution procedures for external projects, from reconnaissance and proposal through preparation, submission, and review response.",
@@ -51,8 +51,8 @@
       "id": "tailrocks-contribution-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-contribution-skills",
-      "rev": "19ca40fedf345282ce02fb52aaeed274bf7401cf",
-      "version": "0.29.3"
+      "rev": "e6f2f5343db6efddc5a9520757e716c687b1d16d",
+      "version": "0.29.4"
     },
     {
       "description": "Evidence-driven code audits, root-cause diagnosis, simplification, remediation, improvement plans, and repository instruction policy.",
@@ -60,8 +60,8 @@
       "id": "tailrocks-code-quality-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-code-quality-skills",
-      "rev": "af0861f40b67840ceaba98831b13644099096d86",
-      "version": "0.29.3"
+      "rev": "e16474b557f628636fc8afa14b911bfb78128fe2",
+      "version": "0.29.4"
     },
     {
       "description": "Strict Rust engineering workflows covering Axum, GraphQL, gRPC, TUI design, project baselines, review, refactoring, and remediation.",
@@ -69,8 +69,8 @@
       "id": "tailrocks-rust-skills",
       "private": false,
       "repo": "tailrocks/tailrocks-rust-skills",
-      "rev": "1301813ec635de991d26dfab14cf21993498d868",
-      "version": "0.30.2"
+      "rev": "b04fcb1c4b11242eca9e478bad19988560f7ddd5",
+      "version": "0.30.3"
     },
     {
       "description": "Clear technical English skill with Practical default and Strict ASD-STE100 Issue 9 profiles.",
@@ -78,8 +78,8 @@
       "id": "tailrocks-asd-ste100-skill",
       "private": true,
       "repo": "tailrocks/tailrocks-asd-ste100-skills",
-      "rev": "5eb8a9e10561d367f65dac237d44d0efea71ca57",
-      "version": "0.3.2"
+      "rev": "8abf0be01a9dfeba623ddcd718254455c85f3015",
+      "version": "0.3.3"
     },
     {
       "description": "User-invoked agent execution policies, including Vitalik Mode for faster valuable delivery through whole-plan analysis, deliberate tradeoffs, and tracked recovery.",
@@ -87,8 +87,8 @@
       "id": "tailrocks-agent-policy-skills",
       "private": true,
       "repo": "tailrocks/tailrocks-agent-policy-skills",
-      "rev": "785cf6add0c151884c8bb0c1dca2e3843518bc36",
-      "version": "0.5.0"
+      "rev": "fa74533c9b02ad681ec251f658be30c550cadccc",
+      "version": "0.5.1"
     }
   ]
 }

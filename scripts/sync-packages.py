@@ -94,7 +94,7 @@ def outputs_for(entry, workspace):
         ),
     }
     files = {}
-    files[".claude-plugin/plugin.json"] = json_text(identity)
+    files[".claude-plugin/plugin.json"] = json_text({**identity, "author": portable["author"]})
     kimi = json.loads((directory / ".kimi-plugin/plugin.json").read_text(encoding="utf-8"))
     kimi.update(identity)
     kimi["skills"] = "./skills/"
@@ -121,6 +121,12 @@ def outputs_for(entry, workspace):
     files["adapters/opencode/index.js"] = render("opencode-index.js.template", values)
     for name in ("installation", "compatibility"):
         files[f"docs/{name}.md"] = render(f"{name}.md.template", values)
+    maintenance = (directory / "docs/maintenance.md").read_text(encoding="utf-8")
+    begin = maintenance.index("## Release and migration\n")
+    end = maintenance.index("Use [installation](installation.md)", begin)
+    files["docs/maintenance.md"] = (
+        maintenance[:begin] + render("release.md.template", values) + "\n" + maintenance[end:]
+    )
     files["scripts/validate-package.py"] = validator()
     for skill in skill_dirs:
         prefix = f"skills/{skill.name}"

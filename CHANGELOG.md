@@ -1,5 +1,14 @@
 # Changelog
 
+## Native contract completion - 2026-11-20
+
+- Complete the model API controls and reasoning-state guidance for all nine variants.
+- Explain native discovery limits for user-invoked workflows across hosts.
+- Generate Claude author metadata from the portable manifest and check that match.
+- Generate one package release procedure with full commit pins and optional tags.
+- Align the retired pull-request repository with the current retirement standard.
+- Adopt all ten verified patch releases at their immutable merge commits.
+
 ## Agent Policy consolidation - 2026-11-20
 
 - Move Vitalik Mode into Agent Policy and remove its standalone catalog entry.
