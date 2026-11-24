@@ -1,5 +1,10 @@
 # Changelog
 
+## Taskrock Skills - 2026-11-24
+
+- Add `tailrocks-taskrock-skills` 0.1.0 to the catalog and the native catalogs.
+- Allow eleven catalog entries in the marketplace validator.
+
 ## Native contract completion - 2026-11-20
 
 - Complete the model API controls and reasoning-state guidance for all nine variants.
