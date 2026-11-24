@@ -74,6 +74,7 @@ being used.
 | `tailrocks-contribution-skills` | 5 | GitHub operations may be covered by a connected app; local clones and test runs need an execution environment. |
 | `tailrocks-code-quality-skills` | 14 | Repository-wide shell, build, and static-analysis procedures need an execution environment. |
 | `tailrocks-rust-skills` | 16 | Cargo, Git, local test/build, and native toolchain procedures need an execution environment. |
+| `tailrocks-taskrock-skills` | 3 | Needs the `taskrock` CLI, `gh`, and `git`; GitHub writes depend on available app access and an execution environment. |
 | `tailrocks-asd-ste100-skill` | 1 | Both writing profiles are packaged; testing bundled private references requires a successful private-repository import. |
 | `tailrocks-agent-policy-skills` | 9 | Manual policies and Vitalik Mode. |
 
