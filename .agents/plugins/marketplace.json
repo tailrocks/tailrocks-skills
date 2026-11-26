@@ -110,19 +110,6 @@
     },
     {
       "category": "Productivity",
-      "name": "tailrocks-taskrock-skills",
-      "policy": {
-        "authentication": "ON_INSTALL",
-        "installation": "AVAILABLE"
-      },
-      "source": {
-        "ref": "7bc3298b95076323de0936d393d0669ed5eb0014",
-        "source": "url",
-        "url": "https://github.com/tailrocks/tailrocks-taskrock-skills"
-      }
-    },
-    {
-      "category": "Productivity",
       "name": "tailrocks-asd-ste100-skill",
       "policy": {
         "authentication": "ON_INSTALL",

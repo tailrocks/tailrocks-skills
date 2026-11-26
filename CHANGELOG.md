@@ -1,5 +1,10 @@
 # Changelog
 
+## Taskrock moves out - 2026-11-26
+
+- Remove `tailrocks-taskrock-skills` from the catalog and the native catalogs. The skills are now the plugin `taskrock` in its own marketplace, `tailrocks/taskrock-plugins`.
+- The marketplace validator expects ten catalog entries.
+
 ## Taskrock Skills - 2026-11-24
 
 - Add `tailrocks-taskrock-skills` 0.1.0 to the catalog and the native catalogs.

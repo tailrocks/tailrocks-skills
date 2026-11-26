@@ -105,7 +105,7 @@ def main():
     require(set(sys.argv[1:]) <= {"--verify-github", "--check"}, "usage: validate-marketplace.py [--check] [--verify-github]")
     catalog = read_json(CATALOG)
     plugins = catalog.get("plugins")
-    require(isinstance(plugins, list) and len(plugins) == 11, "catalog must contain exactly eleven plugins")
+    require(isinstance(plugins, list) and len(plugins) == 10, "catalog must contain exactly ten plugins")
 
     ids = set()
     repos = set()

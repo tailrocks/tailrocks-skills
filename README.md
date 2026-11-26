@@ -28,7 +28,6 @@ See [installation](docs/installation.md) and [host compatibility](docs/compatibi
 | [tailrocks-skill-authoring-skills](https://github.com/tailrocks/tailrocks-skill-authoring-skills) | Skill creation, update, audit, refactor |
 | [tailrocks-code-quality-skills](https://github.com/tailrocks/tailrocks-code-quality-skills) | Code health, improvement, security, instruction topology, simplification, root cause, remediation |
 | [tailrocks-contribution-skills](https://github.com/tailrocks/tailrocks-contribution-skills) | Open-source contribution lifecycle |
-| [tailrocks-taskrock-skills](https://github.com/tailrocks/tailrocks-taskrock-skills) | Taskrock planning, issue building, and goal management on GitHub |
 | [tailrocks-asd-ste100-skills](https://github.com/tailrocks/tailrocks-asd-ste100-skills) | ASD-STE100 writing profiles (private) |
 | [tailrocks-agent-policy-skills](https://github.com/tailrocks/tailrocks-agent-policy-skills) | User-invoked execution policies, including Vitalik Mode, delegation, model routing, commit cadence, secret scan, autonomy, incremental delivery, security review, and emergency stop (private) |
 
