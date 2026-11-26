@@ -73,15 +73,6 @@
       "version": "0.30.3"
     },
     {
-      "description": "Plan work on GitHub, build one planned issue, and manage a whole goal through review and merge with the taskrock command-line tool.",
-      "displayName": "Taskrock Skills",
-      "id": "tailrocks-taskrock-skills",
-      "private": false,
-      "repo": "tailrocks/tailrocks-taskrock-skills",
-      "rev": "7bc3298b95076323de0936d393d0669ed5eb0014",
-      "version": "0.1.0"
-    },
-    {
       "description": "Clear technical English skill with Practical default and Strict ASD-STE100 Issue 9 profiles.",
       "displayName": "ASD-STE100: Clear Technical English",
       "id": "tailrocks-asd-ste100-skill",
